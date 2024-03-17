@@ -1,0 +1,2033 @@
+import { DimensionTypes, ItemStack, system, world } from "@minecraft/server";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier } from "../Main";
+import { coordinatesB, evaluateCoordinates } from "./coordinates";
+import { savedPlayer } from "./player_save.js";
+import * as GameTest from "@minecraft/server-gametest";
+import * as mcServer from "@minecraft/server";
+import * as mcServerUi from "@minecraft/server-ui"; /*
+import * as mcServerAdmin from "@minecraft/server-admin";*//*
+import * as mcDebugUtilities from "@minecraft/debug-utilities"; *//*
+import * as mcCommon from "@minecraft/common";*/ /*
+import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import * as main from "../Main";
+import * as coords from "./coordinates";
+import * as cmds from "./commands";
+import * as bans from "./ban";
+import * as uis from "./ui";
+import * as playersave from "./player_save";
+import * as spawnprot from "./spawn_protection";
+mcServer;
+mcServerUi; /*
+mcServerAdmin*//*
+mcDebugUtilities; *//*
+mcCommon*/
+GameTest; /*
+mcVanillaData*/
+main;
+coords;
+cmds;
+bans;
+uis;
+playersave;
+spawnprot;
+export const commands_format_version = "1.0.1";
+export function chatMessage(eventData) {
+    let runreturn;
+    runreturn = false;
+    let returnBeforeChatSend;
+    returnBeforeChatSend = false;
+    let returnBeforeChatCommandsOrChatSend;
+    returnBeforeChatCommandsOrChatSend = false;
+    let event = eventData;
+    const player = eventData.sender;
+    let sendToPlayers = eventData.targets;
+    try {
+        eval(String(world.getDynamicProperty("evalBeforeEvents:chatSend")));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("chatSendBeforeEventDebugErrors")) {
+            currentplayer.sendMessage((e + " " + e.stack));
+        } });
+    }
+    let newMessage = eventData.message;
+    try {
+        world.getAllPlayers().filter((p) => (p.hasTag("getAllChatMessages"))).forEach((p) => { try {
+            p.sendMessage("[§l§dServer§r§f][" + player.name + "]: " + newMessage);
+        }
+        catch { } });
+    }
+    catch { }
+    if (world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") == true) {
+        newMessage = newMessage.escapeCharacters(true);
+    }
+    if (world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") == true) {
+        newMessage = newMessage.escapeCharacters(false, false, 0, true);
+    }
+    if (world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") != false) {
+        if (newMessage.includes("${ea}")) {
+            newMessage = newMessage.replace("${ea}", "");
+            newMessage = newMessage.escapeCharacters(true);
+        }
+        if (newMessage.includes("${eu}")) {
+            newMessage = newMessage.replace("${eu}", "");
+            newMessage = newMessage.escapeCharacters(false, true, 0, false, false, false, false, false, false);
+        }
+        if (newMessage.includes("${ei}")) {
+            newMessage = newMessage.replace("${ei}", "");
+            newMessage = newMessage.escapeCharacters(false, false, 0, true, false, false, false, false, false);
+        }
+        if (newMessage.includes("${eg}")) {
+            newMessage = newMessage.replace("${eg}", "");
+            newMessage = newMessage.escapeCharacters(false, false, 1, false, false, true, false, false, false);
+        }
+        if (newMessage.includes("${ex}")) {
+            newMessage = newMessage.replace("${ex}", "");
+            newMessage = newMessage.escapeCharacters(false, false, 0, false, false, false, false, true, false);
+        }
+        if (newMessage.includes("${escapeall}")) {
+            newMessage = newMessage.replace("${escapeall}", "");
+            newMessage = newMessage.escapeCharacters(true);
+        }
+        if (newMessage.includes("${escapeunicode}")) {
+            newMessage = newMessage.replace("${escapeunicode}", "");
+            newMessage = newMessage.escapeCharacters(false, true, 0, false, false, false, false, false, false);
+        }
+        if (newMessage.includes("${escapeuri}")) {
+            newMessage = newMessage.replace("${escapeuri}", "");
+            newMessage = newMessage.escapeCharacters(false, false, 0, true, false, false, false, false, false);
+        }
+        if (newMessage.includes("${escapegeneral}")) {
+            newMessage = newMessage.replace("${escapegeneral}", "");
+            newMessage = newMessage.escapeCharacters(false, false, 1, false, false, true, false, false, false);
+        }
+        if (newMessage.includes("${escapex}")) {
+            newMessage = newMessage.replace("${escapex}", "");
+            newMessage = newMessage.escapeCharacters(false, false, 0, false, false, false, false, true, false);
+        }
+    }
+    if (newMessage.includes("${se}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)) {
+        newMessage = newMessage.replace("${se}", "");
+        try {
+            eval(newMessage);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            eventData.sender.sendMessage(e + " " + e.stack);
+        }
+        ;
+        eventData.cancel = true;
+        return;
+    }
+    else {
+        if (newMessage.includes("${r}") && ((player.isOp() == true) || (player.getDynamicProperty("canUseCommands") == true))) {
+            newMessage = newMessage.replace("${r}", "");
+            eventData.cancel = true;
+            player.runCommandAsync(newMessage);
+            return;
+        }
+    }
+    if (newMessage.includes("${scripteval}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)) {
+        newMessage = newMessage.replace("${scripteval}", "");
+        try {
+            eval(newMessage);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            eventData.sender.sendMessage(e + " " + e.stack);
+        }
+        ;
+        eventData.cancel = true;
+        return;
+    }
+    else {
+        if (newMessage.includes("${run}") && ((player.isOp() == true) || (player.getDynamicProperty("canUseCommands") == true))) {
+            newMessage = newMessage.replace("${run}", "");
+            eventData.cancel = true;
+            player.runCommandAsync(newMessage);
+            return;
+        }
+    }
+    /*${scripteval}world.getAllPlayers().forEach((t)=>{t.setDynamicProperty("canUseScriptEval", true)}); */
+    if ((player.hasTag('noCustomChatMessages') && !player.hasTag('canUseChatCommands')) || returnBeforeChatCommandsOrChatSend) {
+        return;
+    }
+    /*if(!((eventData.message.includes("${scripteval}") && (player.getDynamicProperty("canUseScriptEval") == true))||(eventData.message.includes("${run}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true)))||(eventData.message.startsWith("\\")))){world.getDimension("overworld").runCommand("/playsound note.harp.ui @a ~~~ 1 0.75 1"); }*/ if (world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != undefined && world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != "") {
+        String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? "").split(", ").forEach((prefix) => { if (newMessage.startsWith(prefix))
+            runreturn = true; });
+    }
+    ;
+    if (Boolean(runreturn) == true) {
+        return;
+    }
+    if (world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false && newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && player.hasTag('canUseChatCommands') /* && (eventData.message.startsWith(".give") || eventData.message.startsWith(".giveb") || eventData.message.startsWith(".h1") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".playersettings") || eventData.message.startsWith(".run") || eventData.message.startsWith(".setitem") || eventData.message.startsWith(".invsee") || eventData.message.startsWith(".settings") || eventData.message.startsWith(".help") || eventData.message.startsWith(".h1 ") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".h4") || eventData.message.startsWith(".h5") || eventData.message.startsWith(".w1") || eventData.message.startsWith(".w2") || eventData.message.startsWith(".debugstick") || eventData.message.startsWith(".playercontroller") || eventData.message.startsWith(".setslot") || eventData.message.startsWith(".worlddebug") || eventData.message.startsWith(".gmc") || eventData.message.startsWith(".gms") || eventData.message.startsWith(".gma") || eventData.message.startsWith(".gmd") || eventData.message.startsWith(".gmp") || eventData.message.startsWith(".spawn") || eventData.message.startsWith(".warp") || eventData.message.startsWith(".home") || eventData.message.startsWith(".all") || eventData.message.startsWith(".getEntityUUIDSelector"))*/) {
+        chatCommands({ returnBeforeChatSend, player, eventData, event, newMessage });
+    }
+    else {
+        if (world.getDynamicProperty("andexdbSettings:disableCustomChatMessages") != true) {
+            chatSend({ returnBeforeChatSend, player, eventData, event, newMessage });
+        }
+    }
+}
+export function chatCommands(params) {
+    let returnBeforeChatSend = params.returnBeforeChatSend ?? false;
+    let player = params.player ?? params.eventData?.sender ?? params.event?.sender;
+    let eventData = params.eventData ?? params.event;
+    let event = params.event ?? params.eventData;
+    let newMessage = params.newMessage ?? params.eventData?.message ?? params.event?.message;
+    function hotbarSwap(row, preset) {
+        let inventorye = player.getComponent("inventory");
+        let inventoryblock = world.getDimension(String(player.getDynamicProperty("hotbarPreset" + preset)).replaceAll(",", "").split(" ")[0]).getBlock({ x: Number(String(player.getDynamicProperty("hotbarPreset" + preset)).replaceAll(",", "").split(" ")[1]), y: Number(String(player.getDynamicProperty("hotbarPreset" + preset)).replaceAll(",", "").split(" ")[2]), z: Number(String(player.getDynamicProperty("hotbarPreset" + preset)).replaceAll(",", "").split(" ")[3]) }).getComponent("inventory");
+        system.run(() => { try {
+            for (let i = 0; i < 9; i++) {
+                inventorye.container.swapItems(i, i + ((row - 1) * 9), inventoryblock.container);
+            }
+            ; /*; eventData.sender.sendMessage(String("l" + slotsArray))*/
+        }
+        catch (e) {
+            eventData.sender.sendMessage("§c" + e + " " + e.stack);
+        } });
+    }
+    let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0];
+    let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length);
+    switch (true) {
+        case !!switchTest.match(/^give$/):
+            eventData.cancel = true;
+            const inventory = player.getComponent("inventory");
+            system.run(() => { try {
+                inventory.container.addItem(new ItemStack(newMessage.slice(6).split(" ")[0], Number(newMessage.slice(6).split(" ")[1])));
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + " " + e.stack);
+            } });
+            break;
+        case !!switchTest.match(/^giveb$/):
+            eventData.cancel = true;
+            const inventoryb = player.getComponent("inventory");
+            system.run(() => { try {
+                let slotsArray = [];
+                for (let i = 0; i < inventoryb.inventorySize; i++) {
+                    if (inventoryb.container.getItem(Number(i)) !== undefined) {
+                        slotsArray = slotsArray.concat(String(inventoryb.container.getItem(Number(i)).typeId));
+                    }
+                    else {
+                        slotsArray = slotsArray.concat("undefined");
+                    }
+                }
+                ;
+                inventoryb.container.setItem(slotsArray.findIndex((itemName) => (itemName == "undefined")), new ItemStack(newMessage.slice(7).split(" ")[0], Number(newMessage.slice(7).split(" ")[1]))); /*; eventData.sender.sendMessage(String("l" + slotsArray))*/
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            } });
+            break; /*
+        case !!switchTest.match(/^h1$/):
+            eventData.cancel = true;
+            let inventorye = player.getComponent("inventory") as EntityInventoryComponent
+            let inventoryblock = world.getDimension(String(player.getDynamicProperty("blockTransferPreset0")).split(", ")[0]).getBlock({x: Number(String(player.getDynamicProperty("blockTransferPreset0")).split(", ")[1]), y: Number(String(player.getDynamicProperty("blockTransferPreset0")).split(", ")[2]), z: Number(String(player.getDynamicProperty("blockTransferPreset0")).split(", ")[3])}).getComponent("inventory") as BlockInventoryComponent
+    system.run(()=>{try{for(let i = 0; i < 9; i++){inventorye.container.swapItems(i, i, inventoryblock.container)}; */ /*; eventData.sender.sendMessage(String("l" + slotsArray))*/ /*}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+            break; */
+        case !!switchTest.match(/^h\d*$/):
+            eventData.cancel = true;
+            try { /*player.sendMessage([String(Number(switchTestB.split(" ")[1] ?? 0)+1), String(switchTestB.split(" ")[0].slice(1))]); */
+                hotbarSwap(Number(switchTestB.split(" ")[1] ?? 0) + 1, Number(switchTestB.split(" ")[0].slice(1)));
+            }
+            catch (e) {
+                player.sendMessage([e, e.stack]);
+            }
+            break;
+        case !!switchTest.match(/^hset$/):
+            eventData.cancel = true;
+            let coordinates = { x: undefined, y: undefined, z: undefined };
+            try {
+                coordinates = evaluateCoordinates((switchTestB?.split(" ")?.slice(3)?.join(" ") ?? undefined).replaceAll(",", "").split("~").join(" ~").split("^").join(" ^").split("*").join(" *").replaceAll("  ", " ").trimStart().split(" ")[0].replaceAll(" ", ""), (switchTestB?.split(" ")?.slice(3)?.join(" ") ?? undefined).replaceAll(",", "").split("~").join(" ~").split("^").join(" ^").split("*").join(" *").replaceAll("  ", " ").trimStart().split(" ")[1].replaceAll(" ", ""), (switchTestB?.split(" ")?.slice(3)?.join(" ") ?? undefined).replaceAll(",", "").split("~").join(" ~").split("^").join(" ^").split("*").join(" *").replaceAll("  ", " ").trimStart().split(" ")[2].replaceAll(" ", ""), player?.location ?? { x: 0, y: 0, z: 0 }, player?.getRotation() ?? { x: 0, y: 0 });
+            }
+            catch { }
+            player.sendMessage(JSON.stringify(coordinates) + ", " + (switchTestB?.split(" ")?.slice(3)?.join(" ") ?? undefined).replaceAll(",", "").split("~").join(" ~").split("^").join(" ^").split("*").join(" *").replaceAll("  ", " ").trimStart().split(" ")[0].replaceAll(" ", ""));
+            if ((switchTestB?.split(" ")?.slice(2)?.join(" ") ?? undefined) != undefined) {
+                player.setDynamicProperty("hotbarPreset" + Number(switchTestB.slice(5).split(" ")[0]), (switchTestB?.split(" ")?.slice(2)[0] ?? undefined) + " " + coordinates.x + " " + coordinates.y + " " + coordinates.z);
+            }
+            else {
+                player.setDynamicProperty("hotbarPreset" + Number(switchTestB.slice(5).split(" ")[0]));
+            } /*
+            hotbarSwap(Number(newMessage.slice(2)) % 3, Math.ceil(Number(newMessage.slice(2))/3)); */
+            if ((switchTestB?.split(" ")?.slice(2)?.join(" ") ?? undefined) != undefined) {
+                player.sendMessage(`Set hotbar preset ${switchTestB.slice(5).split(" ")[0]} to dimension: ${(switchTestB?.split(" ")?.slice(2)?.join(" ") ?? undefined).replaceAll(",", "").split(" ")[0]}, x: ${coordinates.x}, y: ${coordinates.y}, z: ${coordinates.z}. `);
+            }
+            else {
+                player.sendMessage(`Removed hotbar preset ${switchTest.slice(5).split(" ")[0]}. `);
+            }
+            break; /*
+        case !!switchTest.match(/^h2$/):
+            eventData.cancel = true;
+            let inventoryf = player.getComponent("inventory") as EntityInventoryComponent
+            let inventoryblockb = world.getDimension(String(player.getDynamicProperty("blockTransferPreset0")).split(", ")[0]).getBlock({x: Number(String(player.getDynamicProperty("blockTransferPreset0")).split(", ")[1]), y: Number(String(player.getDynamicProperty("blockTransferPreset0")).split(", ")[2]), z: Number(String(player.getDynamicProperty("blockTransferPreset0")).split(", ")[3])}).getComponent("inventory") as BlockInventoryComponent
+    system.run(()=>{try{for(let i = 0; i < 9; i++){inventoryf.container.swapItems(i, i+9, inventoryblockb.container)}; }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+        break;
+        case !!switchTest.match(/^h3$/):
+            eventData.cancel = true;
+            let inventoryg = player.getComponent("inventory") as EntityInventoryComponent
+            let inventoryblockc = world.getDimension(String(player.getDynamicProperty("blockTransferPreset0")).split(", ")[0]).getBlock({x: Number(String(player.getDynamicProperty("blockTransferPreset0")).split(", ")[1]), y: Number(String(player.getDynamicProperty("blockTransferPreset0")).split(", ")[2]), z: Number(String(player.getDynamicProperty("blockTransferPreset0")).split(", ")[3])}).getComponent("inventory") as BlockInventoryComponent
+    system.run(()=>{try{for(let i = 0; i < 9; i++){inventoryg.container.swapItems(i, i+18, inventoryblockc.container)}; }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+        break;
+        case !!switchTest.match(/^h4$/):
+            eventData.cancel = true;
+            let inventoryg4 = player.getComponent("inventory") as EntityInventoryComponent
+            let inventoryblockc4 = world.getDimension(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[0]).getBlock({x: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[1]), y: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[2]), z: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[3])}).getComponent("inventory") as BlockInventoryComponent
+    system.run(()=>{try{for(let i = 0; i < 9; i++){inventoryg4.container.swapItems(i, i, inventoryblockc4.container)}; }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+        break;
+        case !!switchTest.match(/^h5$/):
+            eventData.cancel = true;
+            let inventoryg5 = player.getComponent("inventory") as EntityInventoryComponent
+            let inventoryblockc5 = world.getDimension(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[0]).getBlock({x: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[1]), y: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[2]), z: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[3])}).getComponent("inventory") as BlockInventoryComponent
+    system.run(()=>{try{for(let i = 0; i < 9; i++){inventoryg5.container.swapItems(i, i+9, inventoryblockc5.container)}; }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+        break;
+        case !!switchTest.match(/^h6$/):
+            eventData.cancel = true;
+            let inventoryg6 = player.getComponent("inventory") as EntityInventoryComponent
+            let inventoryblockc6 = world.getDimension(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[0]).getBlock({x: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[1]), y: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[2]), z: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[3])}).getComponent("inventory") as BlockInventoryComponent
+    system.run(()=>{try{for(let i = 0; i < 9; i++){inventoryg6.container.swapItems(i, i+18, inventoryblockc6.container)}; }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+        break; */
+        case !!switchTest.match(/^invsee$$/):
+            eventData.cancel = true;
+            system.run(() => {
+                const inventoryd2 = world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(newMessage.slice(8), "", Number(eventData.sender.id)))).getComponent("inventory");
+                try {
+                    let slotsArray = [];
+                    for (let i = 0; i < inventoryd2.inventorySize; i++) {
+                        if (inventoryd2.container.getItem(Number(i)) !== undefined) {
+                            slotsArray = slotsArray.concat(String("slot: " + i + "§r§f, item: " + inventoryd2.container.getItem(Number(i)).typeId + "§r§f, amount: " + inventoryd2.container.getItem(Number(i)).amount + "§r§f, nameTag: " + inventoryd2.container.getItem(Number(i)).nameTag + "§r§f, lore: " + JSON.stringify(inventoryd2.container.getItem(Number(i)).getLore() ?? []) ?? "[]" + ", enchantments: " + JSON.stringify(inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments() ?? null) ?? "null"));
+                        }
+                        else {
+                            slotsArray = slotsArray.concat("slot: " + i + ", item: minecraft:air");
+                        }
+                    }
+                    ;
+                    ;
+                    eventData.sender.sendMessage(String(world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(newMessage.slice(8), "", Number(eventData.sender.id)))).name + "'s Items: \n" + slotsArray.join("§r§f\n")));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+            });
+            break;
+        case !!switchTest.match(/^offlineinfo$$/):
+            eventData.cancel = true;
+            try {
+                let players = savedPlayer.getSavedPlayers().filter((p) => (p.name == switchTestB.split(" ").slice(1).join(" ")));
+                if (players.length == 0) {
+                    player.sendMessage("§cError: no players with that name were found");
+                }
+                else {
+                    if (players.length > 1) {
+                        player.sendMessage("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
+                    }
+                    else {
+                        let player = players[0];
+                        eventData.sender.sendMessage(String(player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online)" : " (last seen: " + new Date(Number(player.lastOnline) + (Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString( /*'en-US', {dateStyle: "full",timeStyle: 'full',timeZone: String(world.getDynamicProperty("andexdb:timeZone") ?? "UTC"),timeZoneName: "long"}*/) + ")") + " Data: \n" + JSON.stringify(player).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")));
+                    }
+                }
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^offlineuuidinfo$$/):
+            eventData.cancel = true;
+            try {
+                let players = savedPlayer.getSavedPlayers().filter((p) => (p.id == switchTestB.split(" ").slice(1).join(" ")));
+                if (players.length == 0) {
+                    player.sendMessage("§cError: no players with that uuid were found");
+                }
+                else {
+                    let player = players[0];
+                    eventData.sender.sendMessage(String(player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online) " : " (last seen: " + new Date(Number(player.lastOnline) + (Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + ")") + " Data: \n" + JSON.stringify(player).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")));
+                }
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^offlineinforaw$$/):
+            eventData.cancel = true;
+            try {
+                let players = savedPlayer.getSavedPlayers().filter((p) => (p.name == switchTestB.split(" ").slice(1).join(" ")));
+                if (players.length == 0) {
+                    player.sendMessage("§cError: no players with that name were found");
+                }
+                else {
+                    if (players.length > 1) {
+                        player.sendMessage("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
+                    }
+                    else {
+                        let player = players[0];
+                        eventData.sender.sendMessage(String(player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online)" : " (last seen: " + new Date(Number(player.lastOnline) + (Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString( /*'en-US', {dateStyle: "full",timeStyle: 'full',timeZone: String(world.getDynamicProperty("andexdb:timeZone") ?? "UTC"),timeZoneName: "long"}*/) + ")") + " Data: \n" + JSON.stringify(player).replaceAll("§", "§§")));
+                    }
+                }
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^offlineuuidinforaw$$/):
+            eventData.cancel = true;
+            try {
+                let players = savedPlayer.getSavedPlayers().filter((p) => (p.id == switchTestB.split(" ").slice(1).join(" ")));
+                if (players.length == 0) {
+                    player.sendMessage("§cError: no players with that uuid were found");
+                }
+                else {
+                    let player = players[0];
+                    eventData.sender.sendMessage(String(player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online) " : " (last seen: " + new Date(Number(player.lastOnline) + (Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + ")") + " Data: \n" + JSON.stringify(player).replaceAll("§", "§§")));
+                }
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^offlineinfourl$$/):
+            eventData.cancel = true;
+            try {
+                let players = savedPlayer.getSavedPlayers().filter((p) => (p.name == switchTestB.split(" ").slice(1).join(" ")));
+                if (players.length == 0) {
+                    player.sendMessage("§cError: no players with that name were found");
+                }
+                else {
+                    if (players.length > 1) {
+                        player.sendMessage("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
+                    }
+                    else {
+                        let player = players[0];
+                        eventData.sender.sendMessage(String(player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online)" : " (last seen: " + new Date(Number(player.lastOnline) + (Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString( /*'en-US', {dateStyle: "full",timeStyle: 'full',timeZone: String(world.getDynamicProperty("andexdb:timeZone") ?? "UTC"),timeZoneName: "long"}*/) + ")") + " Data: \n" + escape(JSON.stringify(player))));
+                    }
+                }
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^offlineuuidinfourl$$/):
+            eventData.cancel = true;
+            try {
+                let players = savedPlayer.getSavedPlayers().filter((p) => (p.id == switchTestB.split(" ").slice(1).join(" ")));
+                if (players.length == 0) {
+                    player.sendMessage("§cError: no players with that uuid were found");
+                }
+                else {
+                    let player = players[0];
+                    eventData.sender.sendMessage(String(player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online) " : " (last seen: " + new Date(Number(player.lastOnline) + (Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + ")") + " Data: \n" + escape(JSON.stringify(player))));
+                }
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^offlineinfoescaped$$/):
+            eventData.cancel = true;
+            try {
+                let players = savedPlayer.getSavedPlayers().filter((p) => (p.name == switchTestB.split(" ").slice(1).join(" ")));
+                if (players.length == 0) {
+                    player.sendMessage("§cError: no players with that name were found");
+                }
+                else {
+                    if (players.length > 1) {
+                        player.sendMessage("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
+                    }
+                    else {
+                        let player = players[0];
+                        eventData.sender.sendMessage(String(player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online)" : " (last seen: " + new Date(Number(player.lastOnline) + (Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString( /*'en-US', {dateStyle: "full",timeStyle: 'full',timeZone: String(world.getDynamicProperty("andexdb:timeZone") ?? "UTC"),timeZoneName: "long"}*/) + ")") + " Data: \n" + arrayModifier(JSON.stringify(player).split(""), (v) => v.charCodeAt(0)).join()));
+                    }
+                }
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^offlineuuidinfoescaped$$/):
+            eventData.cancel = true;
+            try {
+                let players = savedPlayer.getSavedPlayers().filter((p) => (p.id == switchTestB.split(" ").slice(1).join(" ")));
+                if (players.length == 0) {
+                    player.sendMessage("§cError: no players with that uuid were found");
+                }
+                else {
+                    let player = players[0];
+                    eventData.sender.sendMessage(String(player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online) " : " (last seen: " + new Date(Number(player.lastOnline) + (Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + ")") + " Data: \n" + arrayModifier(JSON.stringify(player).split(""), (v) => v.charCodeAt(0)).join()));
+                }
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^offlineinvsee$$/):
+            eventData.cancel = true;
+            try {
+                let slotsArray = [];
+                let players = savedPlayer.getSavedPlayers().filter((p) => (p.name == switchTestB.split(" ").slice(1).join(" ")));
+                if (players.length == 0) {
+                    player.sendMessage("§cError: no players with that name were found");
+                }
+                else {
+                    if (players.length > 1) {
+                        player.sendMessage("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
+                    }
+                    else {
+                        let player = players[0];
+                        let items = player.items.inventory.concat(player.items.equipment);
+                        items.forEach((item) => { if (item.count != 0) {
+                            slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSON.stringify(item.lore ?? []) ?? "[]" + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? "N/A") ?? "N/A"));
+                        }
+                        else {
+                            slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
+                        } });
+                        ;
+                        eventData.sender.sendMessage(String("(format_version: " + player.format_version + ") " + player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online)" : " (last seen: " + new Date(Number(player.lastOnline) + (Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + ")") + " Items: \n" + slotsArray.join("§r§f\n")));
+                    }
+                }
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^offlineuuidinvsee$$/):
+            eventData.cancel = true;
+            try {
+                let slotsArray = [];
+                let players = savedPlayer.getSavedPlayers().filter((p) => (p.id == switchTestB.split(" ").slice(1).join(" ")));
+                if (players.length == 0) {
+                    player.sendMessage("§cError: no players with that uuid were found");
+                }
+                else {
+                    let player = players[0];
+                    let items = player.items.inventory.concat(player.items.equipment);
+                    items.forEach((item) => { if (item.count != 0) {
+                        slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSON.stringify(item.lore ?? []) ?? "[]" + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? "N/A") ?? "N/A"));
+                    }
+                    else {
+                        slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
+                    } });
+                    ;
+                    eventData.sender.sendMessage(String("(format_version: " + player.format_version + ") " + player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online) " : " (last seen: " + new Date(Number(player.lastOnline) + (Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + ")") + " Items: \n" + slotsArray.join("§r§f\n")));
+                }
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^binvsee$$/):
+            eventData.cancel = true;
+            system.run(() => {
+                let block = world.getDimension("0123456789-!@#$%^&*()".includes(newMessage.trimEnd().split(" ").slice(1).join(" ").slice(-1)) ? player.dimension.id : newMessage.trimEnd().split(" ").slice(-1).join(" ")).getBlock(coordinatesB("0123456789-!@#$%^&*()".includes(newMessage.split(" ").slice(1).join(" ").trimEnd().slice(-1)) ? newMessage.split(" ").slice(1, -1).join(" ").trimEnd() : newMessage.split(" ").slice(1).join(" ").trimEnd(), player.location, player.getViewDirection()));
+                const inventoryd2 = block.getComponent("inventory");
+                try {
+                    let slotsArray = [];
+                    for (let i = 0; i < inventoryd2.container.size; i++) {
+                        if (inventoryd2.container.getItem(Number(i)) !== undefined) {
+                            slotsArray = slotsArray.concat(String("slot: " + i + ", item: " + inventoryd2.container.getItem(Number(i)).typeId + ", amount: " + inventoryd2.container.getItem(Number(i)).amount + ", nameTag: " + inventoryd2.container.getItem(Number(i)).nameTag + ", lore: " + inventoryd2.container.getItem(Number(i)).getLore() + ", enchantments: " + JSON.stringify(inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments() ?? []) ?? "[]"));
+                        }
+                        else {
+                            slotsArray = slotsArray.concat("slot: " + i + ", item: minecraft:air");
+                        }
+                    }
+                    ;
+                    eventData.sender.sendMessage(String("Block At " + JSON.stringify({ dimension: block.dimension, x: block.x, y: block.y, z: block.z }) + " Items: \n" + slotsArray.join("§r§f\n")));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+            });
+            break;
+        case !!switchTest.match(/^einvsee$$/):
+            eventData.cancel = true;
+            system.run(() => {
+                const inventoryd2 = world.getDimension("overworld").getEntities().concat(world.getDimension("nether").getEntities()).concat(world.getDimension("the_end").getEntities()).find((playerFinders) => (playerFinders == targetSelectorB(newMessage.slice(8), "", Number(eventData.sender.id)))).getComponent("inventory");
+                try {
+                    let slotsArray = [];
+                    for (let i = 0; i < inventoryd2.inventorySize; i++) {
+                        if (inventoryd2.container.getItem(Number(i)) !== undefined) {
+                            slotsArray = slotsArray.concat(String("slot: " + i + ", item: " + inventoryd2.container.getItem(Number(i)).typeId + ", amount: " + inventoryd2.container.getItem(Number(i)).amount + ", nameTag: " + inventoryd2.container.getItem(Number(i)).nameTag + ", lore: " + inventoryd2.container.getItem(Number(i)).getLore() + ", enchantments: " + JSON.stringify(inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments() ?? []) ?? "[]"));
+                        }
+                        else {
+                            slotsArray = slotsArray.concat("slot: " + i + ", item: minecraft:air");
+                        }
+                    }
+                    ;
+                    eventData.sender.sendMessage(String(world.getDimension("overworld").getEntities().concat(world.getDimension("nether").getEntities()).concat(world.getDimension("the_end").getEntities()).find((playerFinders) => (playerFinders == targetSelectorB(newMessage.slice(8), "", Number(eventData.sender.id)))).nameTag + "'s Items: \n" + slotsArray.join("§r§f\n")));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+            });
+            break;
+        case !!switchTest.match(/^invseeuuidmode$/):
+            eventData.cancel = true;
+            const inventoryd = world.getDimension("overworld").getEntities().concat(world.getDimension("nether").getEntities()).concat(world.getDimension("the_end").getEntities()).find((playerFinders) => (playerFinders.id == newMessage.slice(8).split(" ")[0])).getComponent("inventory");
+            system.run(() => {
+                try {
+                    let slotsArray = [];
+                    for (let i = 0; i < inventoryd.inventorySize; i++) {
+                        if (inventoryd.container.getItem(Number(i)) !== undefined) {
+                            slotsArray = slotsArray.concat(String("slot: " + i + ", item: " + inventoryd.container.getItem(Number(i)).typeId + ", amount: " + inventoryd.container.getItem(Number(i)).amount + ", nameTag: " + inventoryd.container.getItem(Number(i)).nameTag + ", lore: " + inventoryd.container.getItem(Number(i)).getLore() + ", enchantments: " + JSON.stringify(inventoryd.container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments() ?? []) ?? "[]"));
+                        }
+                        else {
+                            slotsArray = slotsArray.concat("slot: " + i + ", item: minecraft:air");
+                        }
+                    }
+                    ;
+                    eventData.sender.sendMessage(String(world.getDimension("overworld").getEntities().concat(world.getDimension("nether").getEntities()).concat(world.getDimension("the_end").getEntities()).find((playerFinders) => (playerFinders.id == newMessage.slice(8).split(" ")[0])).nameTag + "'s Items: \n" + slotsArray.join("§r§f\n")));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+            });
+            break;
+        case !!switchTest.match(/^setitem$/):
+            eventData.cancel = true;
+            switch (true) {
+                case (newMessage.split(" ").length >= 5):
+                    {
+                        let playerTotalVictimsList;
+                        targetSelectorAllListB(newMessage.split(" ").slice(4).join(" "), "", Number(player.id)).forEach((player2) => {
+                            playerTotalVictimsList.push(player2.name);
+                            const inventoryc = player2.getComponent("inventory");
+                            system.run(() => { try {
+                                inventoryc.container.setItem(Number(newMessage.slice(9).split(" ")[2]), new ItemStack(newMessage.slice(9).split(" ")[0], Number(newMessage.slice(9).split(" ")[1])));
+                                eventData.sender.sendMessage(String("Set Slot " + newMessage.slice(9).split(" ")[2] + " of " + player2.name + "\'s inventory to " + newMessage.slice(9).split(" ")[0] + " * " + newMessage.slice(9).split(" ")[1]));
+                            }
+                            catch (e) {
+                                eventData.sender.sendMessage("§c" + e + e.stack);
+                            } });
+                        });
+                        system.run(() => { targetSelectorAllListC("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", "", "~~~", player).forEach((entity) => { entity.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set Slot §c" + newMessage.slice(9).split(" ")[2] + "§r§f of §n[§f" + playerTotalVictimsList + "§r§u]§f inventories to §u" + newMessage.slice(9).split(" ")[0] + "§r§f * §c" + newMessage.slice(9).split(" ")[1])); }); });
+                    }
+                    break;
+                case (newMessage.split(" ").length <= 4):
+                    {
+                        const inventoryc = player.getComponent("inventory");
+                        system.run(() => { try {
+                            inventoryc.container.setItem(Number(newMessage.slice(9).split(" ")[2]), new ItemStack(newMessage.slice(9).split(" ")[0], Number(newMessage.slice(9).split(" ")[1])));
+                            eventData.sender.sendMessage(String("Set Slot " + newMessage.slice(9).split(" ")[2] + " of " + player.name + "\'s inventory to " + newMessage.slice(9).split(" ")[0] + " * " + newMessage.slice(9).split(" ")[1]));
+                            system.run(() => { targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set Slot " + newMessage.slice(9).split(" ")[2] + " of " + player.name + "\'s inventory to " + newMessage.slice(9).split(" ")[0] + " * " + newMessage.slice(9).split(" ")[1])); }); });
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        } });
+                    }
+                    break;
+            }
+            break;
+        case !!switchTest.match(/^item$/):
+            eventData.cancel = true;
+            try {
+                let command = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length);
+                switch (command.split(" ").slice(0, 2).join(" ")) {
+                    case "item lore":
+                        let lore = JSON.parse(command.split(" ").slice(2).join(" "));
+                        let errs;
+                        errs = [];
+                        lore.forEach((l, i) => { let calc = l.escapeCharactersB(true); lore[i] = calc.v; errs.concat(calc.e); });
+                        if (errs != undefined) {
+                            errs.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
+                        }
+                        ;
+                        system.run(() => { try {
+                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setLore(lore);
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                            player.sendMessage("§c" + e + e.stack);
+                        } });
+                        break;
+                    case "item lorene":
+                        let lorene = JSON.parse(command.split(" ").slice(2).join(" "));
+                        system.run(() => { try {
+                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setLore(lorene);
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                            player.sendMessage("§c" + e + e.stack);
+                        } });
+                        break;
+                    case "item name":
+                        let name = command.split(" ").slice(2).join(" ").escapeCharactersB(true);
+                        if (name.e != undefined) {
+                            name.e.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
+                        }
+                        ;
+                        system.run(() => { try {
+                            player.getComponent("inventory").container.getSlot(player.selectedSlot).nameTag = name.v;
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                            player.sendMessage("§c" + e + e.stack);
+                        } });
+                        break;
+                    case "item property":
+                        eventData.sender.sendMessage("§l§cComing Soon!§r§f");
+                        break;
+                    case "item enchantment":
+                        switch (command.split(" ")[2]) {
+                            case "add":
+                                let enchantment = JSON.parse(command.split(" ").slice(3).join(" "));
+                                let itemd = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
+                                system.run(() => {
+                                    try {
+                                        itemd.getComponent("enchantable").addEnchantment(enchantment);
+                                        player.getComponent("inventory").container.setItem(player.selectedSlot, itemd);
+                                    }
+                                    catch (e) {
+                                        console.error(e, e.stack);
+                                        player.sendMessage("§c" + e + e.stack);
+                                    }
+                                });
+                                break;
+                            case "addlist":
+                                let enchantmentlist = JSON.parse(command.split(" ").slice(3).join(" "));
+                                let itema = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
+                                system.run(() => {
+                                    try {
+                                        itema.getComponent("enchantable").addEnchantments(enchantmentlist);
+                                        player.getComponent("inventory").container.setItem(player.selectedSlot, itema);
+                                    }
+                                    catch (e) {
+                                        console.error(e, e.stack);
+                                        player.sendMessage("§c" + e + e.stack);
+                                    }
+                                });
+                                break;
+                            case "remove":
+                                let itemb = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
+                                system.run(() => {
+                                    try {
+                                        itemb.getComponent("enchantable").removeEnchantment(command.split(" ")[3]);
+                                        player.getComponent("inventory").container.setItem(player.selectedSlot, itemb);
+                                    }
+                                    catch (e) {
+                                        console.error(e, e.stack);
+                                        player.sendMessage("§c" + e + e.stack);
+                                    }
+                                });
+                                break;
+                            case "set":
+                                eventData.sender.sendMessage("§l§cComing Soon!§r§f");
+                                break;
+                            case "list":
+                                eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlot).getComponent("enchantable").getEnchantments()));
+                                break;
+                            case "get":
+                                eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlot).getComponent("enchantable").getEnchantment(command.split(" ")[3])));
+                                break;
+                            case "clear":
+                                const itemc = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
+                                system.run(() => {
+                                    try {
+                                        itemc.getComponent("enchantable").removeAllEnchantments();
+                                        player.getComponent("inventory").container.setItem(player.selectedSlot, itemc);
+                                    }
+                                    catch (e) {
+                                        console.error(e, e.stack);
+                                        player.sendMessage("§c" + e + e.stack);
+                                    }
+                                });
+                                break;
+                            case "testfor":
+                                eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlot).getComponent("enchantable").hasEnchantment(command.split(" ")[3])));
+                                break;
+                            default:
+                                eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ").slice(2).join(" ") + "\": at \"\\item " + command.split(" ").slice(1, 2).join(" ") + " >>" + command.split(" ").slice(2).join(" ") + "<<\"");
+                                break;
+                        }
+                        break;
+                    case "item slot":
+                        switch (command.split(" ")[3]) {
+                            case "lore":
+                                let lore = JSON.parse(command.split(" ").slice(4).join(" "));
+                                let errs;
+                                errs = [];
+                                lore.forEach((l, i) => { let calc = l.escapeCharactersB(true); lore[i] = calc.v; errs.concat(calc.e); });
+                                if (errs != undefined) {
+                                    errs.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
+                                }
+                                ;
+                                system.run(() => { try {
+                                    player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).setLore(lore);
+                                }
+                                catch (e) {
+                                    console.error(e, e.stack);
+                                    player.sendMessage("§c" + e + e.stack);
+                                } });
+                                break;
+                            case "lorene":
+                                let lorene = JSON.parse(command.split(" ").slice(4).join(" "));
+                                system.run(() => { try {
+                                    player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).setLore(lorene);
+                                }
+                                catch (e) {
+                                    console.error(e, e.stack);
+                                    player.sendMessage("§c" + e + e.stack);
+                                } });
+                                break;
+                            case "name":
+                                let name = command.split(" ").slice(4).join(" ").escapeCharactersB(true);
+                                if (name.e != undefined) {
+                                    name.e.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
+                                }
+                                ;
+                                system.run(() => { try {
+                                    player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).nameTag = name.v;
+                                }
+                                catch (e) {
+                                    console.error(e, e.stack);
+                                    player.sendMessage("§c" + e + e.stack);
+                                } });
+                                break;
+                            case "components":
+                                eventData.sender.sendMessage("§l§cComing Soon!§r§f");
+                                break;
+                            case "amount":
+                                system.run(() => { try {
+                                    player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).amount = Number(command.split(" ").slice(4).join(" "));
+                                }
+                                catch (e) {
+                                    console.error(e, e.stack);
+                                    player.sendMessage("§c" + e + e.stack);
+                                } });
+                                break;
+                            case "count":
+                                system.run(() => { try {
+                                    player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).amount = Number(command.split(" ").slice(4).join(" "));
+                                }
+                                catch (e) {
+                                    console.error(e, e.stack);
+                                    player.sendMessage("§c" + e + e.stack);
+                                } });
+                                break;
+                            case "nameTag":
+                                let nameb = command.split(" ").slice(4).join(" ").escapeCharactersB(true);
+                                if (nameb.e != undefined) {
+                                    nameb.e.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
+                                }
+                                ;
+                                system.run(() => { try {
+                                    player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).nameTag = nameb.v;
+                                }
+                                catch (e) {
+                                    console.error(e, e.stack);
+                                    player.sendMessage("§c" + e + e.stack);
+                                } });
+                                break;
+                            case "enchantment":
+                                switch (command.split(" ")[4]) {
+                                    case "add":
+                                        let enchantment = JSON.parse(command.split(" ").slice(5).join(" "));
+                                        let itemd = player.getComponent("inventory").container.getItem(Number(command.split(" ")[2])).clone();
+                                        system.run(() => {
+                                            try {
+                                                itemd.getComponent("enchantable").addEnchantment(enchantment);
+                                                player.getComponent("inventory").container.setItem(Number(command.split(" ")[2]), itemd);
+                                            }
+                                            catch (e) {
+                                                console.error(e, e.stack);
+                                                player.sendMessage("§c" + e + e.stack);
+                                            }
+                                        });
+                                        break;
+                                    case "addlist":
+                                        let enchantmentlist = JSON.parse(command.split(" ").slice(5).join(" "));
+                                        let itema = player.getComponent("inventory").container.getItem(Number(command.split(" ")[2])).clone();
+                                        system.run(() => {
+                                            try {
+                                                itema.getComponent("enchantable").addEnchantments(enchantmentlist);
+                                                player.getComponent("inventory").container.setItem(Number(command.split(" ")[2]), itema);
+                                            }
+                                            catch (e) {
+                                                console.error(e, e.stack);
+                                                player.sendMessage("§c" + e + e.stack);
+                                            }
+                                        });
+                                        break;
+                                    case "remove":
+                                        let itemb = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
+                                        system.run(() => {
+                                            try {
+                                                itemb.getComponent("enchantable").removeEnchantment(command.split(" ")[5]);
+                                                player.getComponent("inventory").container.setItem(Number(command.split(" ")[2]), itemb);
+                                            }
+                                            catch (e) {
+                                                console.error(e, e.stack);
+                                                player.sendMessage("§c" + e + e.stack);
+                                            }
+                                        });
+                                        break;
+                                    case "set":
+                                        eventData.sender.sendMessage("§l§cComing Soon!§r§f");
+                                        break;
+                                    case "list":
+                                        eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(Number(command.split(" ")[2])).getComponent("enchantable").getEnchantments()));
+                                        break;
+                                    case "get":
+                                        eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(Number(command.split(" ")[2])).getComponent("enchantable").getEnchantment(command.split(" ")[5])));
+                                        break;
+                                    case "clear":
+                                        const itemc = player.getComponent("inventory").container.getItem(Number(command.split(" ")[2])).clone();
+                                        system.run(() => {
+                                            try {
+                                                itemc.getComponent("enchantable").removeAllEnchantments();
+                                                player.getComponent("inventory").container.setItem(Number(command.split(" ")[2]), itemc);
+                                            }
+                                            catch (e) {
+                                                console.error(e, e.stack);
+                                                player.sendMessage("§c" + e + e.stack);
+                                            }
+                                        });
+                                        break;
+                                    case "test":
+                                        eventData.sender.sendMessage("§l§cComing Soon!§r§f");
+                                        break;
+                                    default:
+                                        eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ").slice(4).join(" ") + "\": at \"\\item " + command.split(" ").slice(1, 4).join(" ") + " >>" + command.split(" ").slice(4).join(" ") + "<<\"");
+                                        break;
+                                }
+                                break;
+                            default:
+                                eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ")[3] + "\": at \"\\item " + command.split(" ").slice(1, 3).join(" ") + " >>" + command.split(" ").slice(3).join(" ") + "<<\"");
+                                break;
+                        }
+                        break;
+                    case "item components":
+                        eventData.sender.sendMessage("§l§cComing Soon!§r§f");
+                        break;
+                    case "item amount":
+                        system.run(() => { try {
+                            player.getComponent("inventory").container.getSlot(player.selectedSlot).amount = Number(command.split(" ").slice(2).join(" "));
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                            player.sendMessage("§c" + e + e.stack);
+                        } });
+                        break;
+                    case "item count":
+                        system.run(() => { try {
+                            player.getComponent("inventory").container.getSlot(player.selectedSlot).amount = Number(command.split(" ").slice(2).join(" "));
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                            player.sendMessage("§c" + e + e.stack);
+                        } });
+                        break;
+                    case "item nameTag":
+                        let nameb = command.split(" ").slice(2).join(" ").escapeCharactersB(true);
+                        if (nameb.e != undefined) {
+                            nameb.e.forEach((e) => { player.sendMessage(String(e + e.stack)); });
+                        }
+                        ;
+                        system.run(() => { try {
+                            player.getComponent("inventory").container.getSlot(player.selectedSlot).nameTag = nameb.v;
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                            player.sendMessage("§c" + e + e.stack);
+                        } });
+                        break;
+                    default:
+                        eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ").slice(1).join(" ") + "\": at \"\\item >>" + command.split(" ").slice(1).join(" ") + "<<\"");
+                        break;
+                }
+            }
+            catch (e) {
+                console.error(e, e.stack);
+                player.sendMessage(e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^gmc$/):
+            eventData.cancel = true;
+            try {
+                player.runCommandAsync("/gamemode c");
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            system.run(() => { targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set gamemode to creative. ")); }); });
+            break;
+        case !!switchTest.match(/^gms$/):
+            eventData.cancel = true;
+            try {
+                player.runCommandAsync("/gamemode s");
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            system.run(() => { targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set gamemode to survival. ")); }); });
+            break;
+        case !!switchTest.match(/^gma$/):
+            eventData.cancel = true;
+            try {
+                player.runCommandAsync("/gamemode a");
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            system.run(() => { targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set gamemode to adventure. ")); }); });
+            break;
+        case !!switchTest.match(/^gmd$/):
+            eventData.cancel = true;
+            try {
+                player.runCommandAsync("/gamemode d");
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            system.run(() => { targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set gamemode to default. ")); }); });
+            break;
+        case !!switchTest.match(/^gmp$/):
+            eventData.cancel = true;
+            try {
+                player.runCommandAsync("/gamemode spectator");
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            system.run(() => { targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set gamemode to spectator. ")); }); });
+            break;
+        case !!switchTest.match(/^gmr$/):
+            eventData.cancel = true;
+            switch (Math.round(Math.random() * 4)) {
+                case 0:
+                    try {
+                        player.runCommandAsync("/gamemode c");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+                case 1:
+                    try {
+                        player.runCommandAsync("/gamemode s");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+                case 2:
+                    try {
+                        player.runCommandAsync("/gamemode a");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+                case 3:
+                    try {
+                        player.runCommandAsync("/gamemode d");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+                case 4:
+                    try {
+                        player.runCommandAsync("/gamemode spectator");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+            }
+            ; /*
+                try{player.runCommandAsync("/gamemode random")}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}*/
+            system.run(() => { targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set gamemode to random. ")); }); });
+            break; /*
+        case !!switchTest.match(/^settings$/):
+            eventData.cancel = true;
+            switch (Math.min(newMessage.split(" ").length, 3)){
+                case 3:
+                    try{player.runCommandAsync("/scriptevent andexdb:setWorldDynamicPropertyB " + newMessage.slice(10).split(" ")[0] + "|" + newMessage.slice(newMessage.split(" ")[1].length+10))}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    try{eventData.sender.sendMessage("Set " + newMessage.split(" ")[1] + " to " + newMessage.slice(newMessage.split(" ")[1].length+10)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                break;
+                case 2:
+                    try{eventData.sender.sendMessage("Setting " + newMessage.split(" ")[1] + ": " + world.getDynamicProperty(newMessage.split(" ")[1])); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                break;
+            }
+        break; */
+        case !!switchTest.match(/^playersettings$/):
+            eventData.cancel = true;
+            switch (Math.min(newMessage.split(" ").length, 3)) {
+                case 3:
+                    try {
+                        player.setDynamicProperty(newMessage.split(" ")[1], newMessage.slice(newMessage.split(" ")[1].length + 17));
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    try {
+                        eventData.sender.sendMessage("Set " + newMessage.split(" ")[1] + " to " + newMessage.slice(newMessage.split(" ")[1].length + 17));
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+                case 2:
+                    try {
+                        eventData.sender.sendMessage("Setting " + newMessage.split(" ")[1] + ": " + player.getDynamicProperty(newMessage.split(" ")[1]));
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+            }
+            break;
+        case !!switchTest.match(/^entitysettings$/):
+            eventData.cancel = true;
+            switch (Math.min(newMessage.split(" ").length, 3)) {
+                case 3:
+                    try {
+                        targetSelectorAllListB(newMessage.split(" ")[1].replaceAll("\\s", " "), "", Number(eventData.sender.id)).forEach((currentEntitySelectedValues) => { currentEntitySelectedValues.setDynamicProperty(newMessage.split(" ")[1], newMessage.slice(newMessage.split(" ")[1].length + 17)); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    try {
+                        eventData.sender.sendMessage("Set " + newMessage.split(" ")[2] + " to " + newMessage.slice(newMessage.split(" ")[2].length + 17));
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+                case 2:
+                    try {
+                        eventData.sender.sendMessage("Setting " + newMessage.split(" ")[2] + ": " + player.getDynamicProperty(newMessage.split(" ")[2]));
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+            }
+            break;
+        case !!switchTest.match(/^entitysettingsuuidselection$/):
+            eventData.cancel = true;
+            switch (Math.min(newMessage.split(" ").length, 3)) {
+                case 3:
+                    try {
+                        world.getDimension(DimensionTypes.getAll().find((dimension) => (world.getDimension(dimension.typeId).getEntities().find((entity) => (entity.id == newMessage.split(" ")[1])))).typeId).getEntities().find((entity) => (entity.id == newMessage.split(" ")[1])).setDynamicProperty(newMessage.split(" ")[1], newMessage.slice(newMessage.split(" ")[1].length + 30));
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    try {
+                        eventData.sender.sendMessage("Set " + newMessage.split(" ")[1] + " to " + newMessage.slice(newMessage.split(" ")[1].length + 17));
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+                case 2:
+                    try {
+                        eventData.sender.sendMessage("Setting " + newMessage.split(" ")[1] + ": " + player.getDynamicProperty(newMessage.split(" ")[1]));
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+            }
+            break;
+        case !!switchTest.match(/^help$/):
+            eventData.cancel = true;
+            switch (newMessage) {
+                case "\\help":
+                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help chatcommands§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n" + (world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))));
+                    break;
+                case "\\help scriptevent":
+                    eventData.sender.sendMessage("§2/scriptevent Syntax§f\n/scriptevent andexdb:debugStick <message: string>");
+                    break;
+                case "\\help chatcommands":
+                    eventData.sender.sendMessage(`§2Chat Commands Syntax§f\n.give <item: itemType> <amount: int>
+.giveb <item: itemType> <amount: int>
+.setitem <item: itemType> <amount: int> <slot: int>
+.invsee <target: targetSelector>
+.offlineinfo <playerName: string>
+.offlineuuidinfo <playerUUID: int>
+.offlineinvsee <playerName: string>
+.offlineuuidinvsee <playerUUID: int>
+.binvsee <block: blockPos>
+.einvsee <entityUUID: int>
+.invseeuuidmode <playerUUID: int>
+.h<presetId: float> <containerRow: float>
+.hset <presetId: float> [dimensionId: string] [x: float] [y: float] [z: float]
+.gmc
+.gms
+.gma
+.gmd
+.gmp
+.gmr
+.getuuid <target: target>
+.warpset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>
+.warp <name: escapableString>
+.warpremove <name: escapableString>
+.warpreset
+.warplist
+.warplistdetails
+.warplistrawdata
+.run <delayTicks: int> <command: command>
+.eval <ScriptAPICode: JavaScript>
+.top
+.up <count: int> [placeGlass: bool]
+.printlayers
+.mainmenu
+.settings
+.datapickblock`.replaceAll("\n.", ("\n" + (world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))));
+                    break;
+                default:
+                    eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 4) + "\": at \"\\help >>" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 5) + "<<\"");
+                    break;
+            }
+            break;
+        case !!switchTest.match(/^getuuid$/):
+            eventData.cancel = true;
+            try {
+                system.runTimeout(() => { eventData.sender.sendMessage(String(targetSelector(newMessage.slice(23), "", Number(eventData.sender.id)))); }, 2);
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^run$/):
+            eventData.cancel = true;
+            try {
+                system.runTimeout(() => { let a = player.runCommand(newMessage.split(" ").slice(2).join(" ")); eventData.sender.sendMessage(String(a.successCount)); if (a.successCount != 0.0) {
+                    targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: " + a + " Successfully waited " + Number(newMessage.split(" ")[1]) + " ticks and executed the command: " + newMessage.slice(Number(newMessage.split(" ")[1]) + 5))); });
+                } }, Number(newMessage.split(" ")[1]));
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^eval$/):
+            eventData.cancel = true;
+            try {
+                eval(newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 5));
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^warpset$/):
+            eventData.cancel = true;
+            let warpList = String(world.getDynamicProperty("globalWarpListValues")).split("||||"); /*
+            console.warn("wasdqrte\\sanwqhieasdrt\\p\\nasqw".replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f")*/ /*.replaceAll(/[\\x]/g, "\x").replaceAll(/[\\u]/g, "\u")*/ /*.replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, ""))*/
+            if (newMessage.split(" ").slice(5).join(" ").escapeCharactersB(true).e == undefined)
+                switch (warpList.find((findWarp) => (findWarp.split(", ")[0] == newMessage.split(" ").slice(5).join(" ") /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c"))) == undefined) {
+                    case false: /*
+                    if (newMessage.split(" ").slice(5).join(" ").replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "").replaceAll(", ", " ") == ""){*/ /*eventData.sender.sendMessage("§cError: missing required \"name\" field. "); */ /*break; */ /*}*/
+                        try {
+                            warpList[warpList.findIndex((warpItem) => (warpItem.split(", ")[0] == newMessage.split(" ").slice(5).join(" ") /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c")))] = String(newMessage.split(" ").slice(5).join(" ").replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "").replaceAll(", ", " ") + ", " + world.getDimension(newMessage.split(" ")[1]).id + ", " + Number(newMessage.split(" ")[2]) + ", " + Number(newMessage.split(" ")[3]) + ", " + Number(newMessage.split(" ")[4]));
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            break;
+                        }
+                        try {
+                            system.run(() => { world.setDynamicProperty("globalWarpListValues", warpList.join("||||")); });
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        }
+                        try {
+                            eventData.sender.sendMessage("Set global warp \"" + newMessage.split(" ").slice(5).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\" at dimension: " + newMessage.split(" ")[1] + ", x: " + newMessage.split(" ")[2] + ", y: " + newMessage.split(" ")[3] + ", z: " + newMessage.split(" ")[4] + ". ");
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        }
+                        break;
+                    case true:
+                        try {
+                            warpList.push(String(newMessage.split(" ").slice(5).join(" ") /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c") + ", " + newMessage.split(" ")[1] + ", " + newMessage.split(" ")[2] + ", " + newMessage.split(" ")[3] + ", " + newMessage.split(" ")[4]));
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        }
+                        try {
+                            system.run(() => { world.setDynamicProperty("globalWarpListValues", warpList.join("||||")); });
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        }
+                        try {
+                            eventData.sender.sendMessage("Added global warp \"" + newMessage.split(" ").slice(5).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\" at dimension: " + newMessage.split(" ")[1] + ", x: " + newMessage.split(" ")[2] + ", y: " + newMessage.split(" ")[3] + ", z: " + newMessage.split(" ")[4] + ". ");
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        }
+                        break;
+                }
+            break;
+        case !!switchTest.match(/^warpremove$/):
+            eventData.cancel = true;
+            let warpListB = String(world.getDynamicProperty("globalWarpListValues")).split("||||"); /*
+            console.warn("wasdqrte\\sanwqhieasdrt\\p\\nasqw".replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f")*/ /*.replaceAll(/[\\x]/g, "\x").replaceAll(/[\\u]/g, "\u")*/ /*.replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, ""))*/
+            switch (warpListB.find((findWarp) => (findWarp.split(", ")[0].escapeCharacters(true).replaceAll(", ", " ").replaceAll("|", "\\u007c") == newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c"))) == undefined) {
+                case false:
+                    try {
+                        system.run(() => { warpListB[warpListB.findIndex((findWarp) => (findWarp.split(", ")[0].escapeCharacters(true).replaceAll(", ", " ").replaceAll("|", "\\u007c") == newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c")))] = undefined; world.setDynamicProperty("globalWarpListValues", warpListB.join("||||")); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    try {
+                        eventData.sender.sendMessage("Removed global warp with name \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\". ");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+                case true:
+                    try {
+                        eventData.sender.sendMessage("§cError: could not find global warp \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\". ");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+            }
+            break;
+        case !!switchTest.match(/^warp$/):
+            eventData.cancel = true;
+            let warpListD = String(world.getDynamicProperty("globalWarpListValues")).split("||||");
+            let warp = undefined; /*
+            console.warn("wasdqrte\\sanwqhieasdrt\\p\\nasqw".replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f")*/ /*.replaceAll(/[\\x]/g, "\x").replaceAll(/[\\u]/g, "\u")*/ /*.replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, ""))*/
+            switch (warpListD.find((findWarp) => (findWarp.split(", ")[0].escapeCharacters(true).replaceAll("|", "\\u007c") == newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll("|", "\\u007c"))) == undefined) {
+                case false:
+                    try {
+                        warp = warpListD.find((findWarp) => (findWarp.split(", ")[0].escapeCharacters(true).replaceAll("|", "\\u007c") == newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll("|", "\\u007c"))).split(", ");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    try {
+                        system.run(() => { player.teleport({ x: Number(warp[2]), y: Number(warp[3]), z: Number(warp[4]) }, { dimension: world.getDimension(String(warp[1])), keepVelocity: false }); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    try {
+                        eventData.sender.sendMessage("Warped to \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/ + "\". ");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+                case true:
+                    try {
+                        eventData.sender.sendMessage("§cError: could not find global warp \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/ + "\". ");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+            }
+            break;
+        case !!switchTest.match(/^warplistdetails$/):
+            eventData.cancel = true;
+            let warpListC = String(world.getDynamicProperty("globalWarpListValues")).split("||||");
+            if (warpListC.length == 1) {
+                eventData.sender.sendMessage("You have no global warps, set them with \\warpset");
+            }
+            else {
+                try {
+                    eventData.sender.sendMessage(warpListC.join("\n").escapeCharacters(true));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+            }
+            break;
+        case !!switchTest.match(/^warplist$/):
+            eventData.cancel = true;
+            let warpListE = String(world.getDynamicProperty("globalWarpListValues")).split("||||");
+            for (let i in warpListE) {
+                warpListE[i] = warpListE[i].split(", ")[0];
+            }
+            if (warpListE.length == 1) {
+                eventData.sender.sendMessage("You have no global warps, set them with \\warpset");
+            }
+            else {
+                try {
+                    eventData.sender.sendMessage(warpListE.join("\n").escapeCharacters(true));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+            }
+            break;
+        case !!switchTest.match(/^warplistrawdata$/):
+            eventData.cancel = true;
+            try {
+                eventData.sender.sendMessage("Global Warp List Raw Data: \n" + String(world.getDynamicProperty("globalWarpListValues")));
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^warpreset$/):
+            eventData.cancel = true;
+            try {
+                system.run(() => { world.setDynamicProperty("globalWarpListValues"); });
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            try {
+                eventData.sender.sendMessage("Global warps lists has been reset. ");
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^wset$/):
+            eventData.cancel = true;
+            let wList = String(player.getDynamicProperty("warpList")).split("||||"); /*
+            console.warn("wasdqrte\\sanwqhieasdrt\\p\\nasqw".replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f")*/ /*.replaceAll(/[\\x]/g, "\x").replaceAll(/[\\u]/g, "\u")*/ /*.replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, ""))*/
+            switch (wList.find((findWarp) => (findWarp.split(", ")[0].escapeCharacters(true).replaceAll("|", "\\u007c") == newMessage.split(" ").slice(5).join(" ").escapeCharacters(true).replaceAll("|", "\\u007c"))) == undefined) {
+                case false: /*
+                if (newMessage.split(" ").slice(5).join(" ").replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "").replaceAll(", ", " ") == ""){*/ /*eventData.sender.sendMessage("§cError: missing required \"name\" field. "); */ /*break; */ /*}*/
+                    try {
+                        wList[wList.findIndex((warpItem) => (warpItem.split(", ")[0].escapeCharacters(true).replaceAll("|", "\\u007c") == newMessage.split(" ").slice(5).join(" ").escapeCharacters(true).replaceAll("|", "\\u007c")))] = String(newMessage.split(" ").slice(5).join(" ").replaceAll(", ", " ").replaceAll("|", "\\u007c") + ", " + world.getDimension(newMessage.split(" ")[1]).id + ", " + Number(newMessage.split(" ")[2]) + ", " + Number(newMessage.split(" ")[3]) + ", " + Number(newMessage.split(" ")[4]));
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                        break;
+                    }
+                    try {
+                        system.run(() => { player.setDynamicProperty("warpList", wList.join("||||")); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    try {
+                        eventData.sender.sendMessage("Set warp \"" + newMessage.split(" ").slice(5).join(" ").escapeCharacters(true) + "\" at dimension: " + newMessage.split(" ")[1] + ", x: " + newMessage.split(" ")[2] + ", y: " + newMessage.split(" ")[3] + ", z: " + newMessage.split(" ")[4] + ". ");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+                case true:
+                    try {
+                        wList.push(String(newMessage.split(" ").slice(5).join(" ").replaceAll(", ", " ").replaceAll("|", "\\u007c") + ", " + newMessage.split(" ")[1] + ", " + newMessage.split(" ")[2] + ", " + newMessage.split(" ")[3] + ", " + newMessage.split(" ")[4]));
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    try {
+                        system.run(() => { player.setDynamicProperty("warpList", wList.join("||||")); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    try {
+                        eventData.sender.sendMessage("Added warp \"" + newMessage.split(" ").slice(5).join(" ").escapeCharacters(true) + "\" at dimension: " + newMessage.split(" ")[1] + ", x: " + newMessage.split(" ")[2] + ", y: " + newMessage.split(" ")[3] + ", z: " + newMessage.split(" ")[4] + ". ");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+            }
+            break;
+        case !!switchTest.match(/^wremove$/):
+            eventData.cancel = true;
+            let wListB = String(player.getDynamicProperty("warpList")).split("||||"); /*
+            console.warn("wasdqrte\\sanwqhieasdrt\\p\\nasqw".replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f")*/ /*.replaceAll(/[\\x]/g, "\x").replaceAll(/[\\u]/g, "\u")*/ /*.replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, ""))*/
+            switch (wListB.find((findWarp) => (findWarp.split(", ")[0].escapeCharacters(true).replaceAll("|", "\\u007c") == newMessage.split(" ").slice(1).join(" ").escapeCharacters(true).replaceAll("|", "\\u007c"))) == undefined) {
+                case false:
+                    try {
+                        system.run(() => { wListB[wListB.findIndex((findWarp) => (findWarp.split(", ")[0].escapeCharacters(true).replaceAll("|", "\\u007c") == newMessage.split(" ").slice(1).join(" ").escapeCharacters(true).replaceAll("|", "\\u007c")))] = undefined; player.setDynamicProperty("warpList", wListB.join("||||")); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    try {
+                        eventData.sender.sendMessage("Removed warp with name \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) + "\". ");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+                case true:
+                    try {
+                        eventData.sender.sendMessage("§cError: could not find warp \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) + "\". ");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+            }
+            break;
+        case !!switchTest.match(/^w$/):
+            eventData.cancel = true;
+            let wListD = String(player.getDynamicProperty("warpList")).split("||||");
+            let warpB = undefined;
+            switch (wListD.find((findWarp) => (findWarp.split(", ")[0] == newMessage.split(" ").slice(1).join(" ").escapeCharacters(true).replaceAll(", ", " "))) == undefined) {
+                case false:
+                    try {
+                        warpB = wListD.find((findWarp) => (findWarp.split(", ")[0] == newMessage.split(" ").slice(1).join(" ").escapeCharacters(true).replaceAll("|", "\\u007c"))).split(", ");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    try {
+                        system.run(() => { player.teleport({ x: Number(warpB[2]), y: Number(warpB[3]), z: Number(warpB[4]) }, { dimension: world.getDimension(String(warpB[1])), keepVelocity: false }); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    try {
+                        eventData.sender.sendMessage("Warped to \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) + "\". ");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+                case true:
+                    try {
+                        eventData.sender.sendMessage("§cError: could not find warp \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) + "\". ");
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    break;
+            }
+            break;
+        case !!switchTest.match(/^wlistdetails$/):
+            eventData.cancel = true;
+            let wListC = String(player.getDynamicProperty("warpList")).split("||||");
+            if (wListC.length == 1) {
+                eventData.sender.sendMessage("You have no warps, set them with \\wset");
+            }
+            else {
+                try {
+                    eventData.sender.sendMessage(wListC.join("\n").escapeCharacters(true));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+            }
+            break;
+        case !!switchTest.match(/^wlist$/):
+            eventData.cancel = true;
+            let wListE = String(player.getDynamicProperty("warpList")).split("||||");
+            for (let i in wListE) {
+                wListE[i] = wListE[i].split(", ")[0];
+            }
+            if (wListE.length == 1) {
+                eventData.sender.sendMessage("You have no warps, set them with \\wset");
+            }
+            else {
+                try {
+                    eventData.sender.sendMessage(wListE.join("\n").escapeCharacters(true));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+            }
+            break;
+        case !!switchTest.match(/^wlistrawdata$/):
+            eventData.cancel = true;
+            try {
+                eventData.sender.sendMessage("Warp List Raw Data: \n" + String(player.getDynamicProperty("warpList")));
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^wreset$/):
+            eventData.cancel = true;
+            try {
+                system.run(() => { player.setDynamicProperty("warpList", undefined); });
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            try {
+                eventData.sender.sendMessage("Warps lists has been reset. ");
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^up$/):
+            eventData.cancel = true;
+            try {
+                system.run(() => { if (player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1]) - 1).typeId == "minecraft:air" && (((newMessage.split(" ")[2]?.toLowerCase() != "false") && (newMessage.split(" ")[2] != "0")) || (newMessage.split(" ")[2] == undefined))) {
+                    player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1]) - 1).setType("minecraft:glass");
+                } ; player.teleport({ x: player.location.x, y: player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])).location.y, z: player.location.z }); eventData.sender.sendMessage(String()); });
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^top$/):
+            eventData.cancel = true;
+            try {
+                system.run(() => { let block = getTopSolidBlock(player.dimension.getBlock(player.location), player.dimension); if (block != undefined) {
+                    player.teleport({ x: player.location.x, y: block.y + 1, z: player.location.z }, {});
+                }
+                else {
+                    eventData.sender.sendMessage("§4No block could be found. ");
+                } ; eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); }); });
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^printlayers$/):
+            eventData.cancel = true;
+            try {
+                system.run(() => { let block = getTopSolidBlock(player.dimension.getBlock(player.location), player.dimension); let messageCustom = ""; let a = 0; while (a != 1) {
+                    if (messageCustom.endsWith(block.typeId + "; ")) { }
+                    else {
+                        messageCustom = messageCustom + block.y + ". " + block.typeId + "; ";
+                    }
+                    ;
+                    try {
+                        block = block.below(1);
+                    }
+                    catch {
+                        a = 1;
+                    }
+                } ; player.sendMessage(messageCustom); eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage("Printed blocks at: x: " + player.location.x + ", z: " + player.location.z); }); });
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^morph$/):
+            eventData.cancel = true;
+            try {
+                system.run(() => { if (newMessage.split(" ")[2] == undefined) {
+                    player.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]));
+                }
+                else {
+                    targetSelectorAllListB(newMessage.split(" ").slice(2).join(" "), "", Number(player.id)).forEach((p) => { p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1])); });
+                } });
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^tint$/):
+            eventData.cancel = true;
+            try {
+                system.run(() => { if (newMessage.split(" ")[6] == undefined) {
+                    player.setProperty("andexpr:color_tint_r", (Number((newMessage.split(" ")[1] ?? "~").replaceAll("~", String(player.getProperty("andexpr:color_tint_r")))) ?? player.getProperty("andexpr:color_tint_r")));
+                    player.setProperty("andexpr:color_tint_g", (Number((newMessage.split(" ")[2] ?? "~").replaceAll("~", String(player.getProperty("andexpr:color_tint_g")))) ?? player.getProperty("andexpr:color_tint_g")));
+                    player.setProperty("andexpr:color_tint_b", (Number((newMessage.split(" ")[3] ?? "~").replaceAll("~", String(player.getProperty("andexpr:color_tint_b")))) ?? player.getProperty("andexpr:color_tint_b")));
+                    player.setProperty("andexpr:color_tint_a", (Number((newMessage.split(" ")[4] ?? "~").replaceAll("~", String(player.getProperty("andexpr:color_tint_a")))) ?? player.getProperty("andexpr:color_tint_a")));
+                    player.setProperty("andexpr:use_alphablend_player_materials", (Number((newMessage.split(" ")[5] ?? "~").replaceAll("~", String(player.getProperty("andexpr:use_alphablend_player_materials")))) ?? player.getProperty("andexpr:use_alphablend_player_materials")));
+                }
+                else {
+                    targetSelectorAllListB(newMessage.split(" ").slice(6).join(" "), "", Number(player.id)).forEach((p) => { p.setProperty("andexpr:color_tint_r", (Number((newMessage.split(" ")[1] ?? "~").replaceAll("~", String(p.getProperty("andexpr:color_tint_r")))) ?? p.getProperty("andexpr:color_tint_r"))); p.setProperty("andexpr:color_tint_g", (Number((newMessage.split(" ")[2] ?? "~").replaceAll("~", String(p.getProperty("andexpr:color_tint_g")))) ?? p.getProperty("andexpr:color_tint_g"))); p.setProperty("andexpr:color_tint_b", (Number((newMessage.split(" ")[3] ?? "~").replaceAll("~", String(p.getProperty("andexpr:color_tint_b")))) ?? p.getProperty("andexpr:color_tint_b"))); p.setProperty("andexpr:color_tint_a", (Number((newMessage.split(" ")[4] ?? "~").replaceAll("~", String(p.getProperty("andexpr:color_tint_a")))) ?? p.getProperty("andexpr:color_tint_a"))); p.setProperty("andexpr:use_alphablend_player_materials", (Number((newMessage.split(" ")[5] ?? "~").replaceAll("~", String(p.getProperty("andexpr:use_alphablend_player_materials")))) ?? p.getProperty("andexpr:use_alphablend_player_materials"))); });
+                } });
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + " " + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^scale$/):
+            eventData.cancel = true;
+            try {
+                system.run(() => { if (newMessage.split(" ")[2] == undefined) {
+                    player.getComponent("scale").value = Number(newMessage.split(" ")[1]);
+                }
+                else {
+                    targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p) => { p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1])); });
+                } });
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^visualscale$/):
+            eventData.cancel = true;
+            try {
+                system.run(() => { if (newMessage.split(" ")[2] == undefined) {
+                    player.setProperty("andexpr:entity_scale_variable_override", Number(newMessage.split(" ")[1]));
+                }
+                else {
+                    targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p) => { p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1])); });
+                } });
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^visualscaleenabled$/):
+            eventData.cancel = true;
+            try {
+                system.run(() => { if (newMessage.split(" ")[2] == undefined) {
+                    player.setProperty("andexpr:entity_scale_variable_override_enabled", Boolean(newMessage.split(" ")[1].replaceAll("false", "").replaceAll("0", "").replaceAll("False", "").replaceAll("0.0", "")));
+                }
+                else {
+                    targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p) => { p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1])); });
+                } });
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^tps$/):
+            eventData.cancel = true;
+            try {
+                player.runCommandAsync("/scriptevent andexsa:getTPSExtraDetails");
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^managescriptautoeval$/):
+            eventData.cancel = true;
+            try {
+                system.run(() => { if (newMessage.split(" ")[2] == undefined) {
+                    player.setProperty("andexpr:entity_scale_variable_override_enabled", Boolean(newMessage.split(" ")[1].replaceAll("false", "").replaceAll("0", "").replaceAll("False", "").replaceAll("0.0", "")));
+                }
+                else {
+                    targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p) => { p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1])); });
+                } });
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^mainmenu$/):
+            eventData.cancel = true;
+            try {
+                player.runCommandAsync("/scriptevent andexdb:editorMenusAndLists hisa");
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^settings$/):
+            eventData.cancel = true;
+            try {
+                player.runCommandAsync("/scriptevent andexdb:settings hisa");
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        case !!switchTest.match(/^datapickblock$/):
+            eventData.cancel = true;
+            try {
+                let item = player.getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true }).block.getItemStack(1, true);
+                system.run(() => { player.getComponent("inventory").container.addItem(item); });
+            }
+            catch (e) {
+                eventData.sender.sendMessage("§c" + e + e.stack);
+            }
+            break;
+        default:
+            if (world.getDynamicProperty("andexdbSettings:sendMessageOnInvalidChatCommand") != true) {
+                eventData.cancel = true;
+            }
+            else { /*if(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") != true){*/
+                chatSend(params); /*
+                }*/
+            }
+            break;
+    }
+}
+export function chatSend(params) {
+    let returnBeforeChatSend = params.returnBeforeChatSend;
+    let player = params.player;
+    let eventData = params.eventData;
+    let event = params.event;
+    let newMessage = params.newMessage;
+    try {
+        eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendComplete")));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("chatSendBeforeEventDebugErrors")) {
+            currentplayer.sendMessage((e + " " + e.stack));
+        } });
+    }
+    if (returnBeforeChatSend)
+        return;
+    let messageFormattingItalic = "";
+    let messageFormattingBold = "";
+    let messageFormattingObfuscated = "";
+    let messageFormattingColor = "";
+    if (player.hasTag('messageFormatting:o')) {
+        messageFormattingItalic = "§o";
+    }
+    ;
+    if (player.hasTag('messageFormatting:l')) {
+        messageFormattingBold = "§l";
+    }
+    ;
+    if (player.hasTag('messageFormatting:k')) {
+        messageFormattingObfuscated = "§k";
+    }
+    ;
+    if (player.hasTag('messageColor:0')) {
+        messageFormattingColor = "§0";
+    }
+    else {
+        if (player.hasTag('messageColor:1')) {
+            messageFormattingColor = "§1";
+        }
+        else {
+            if (player.hasTag('messageColor:2')) {
+                messageFormattingColor = "§2";
+            }
+            else {
+                if (player.hasTag('messageColor:3')) {
+                    messageFormattingColor = "§3";
+                }
+                else {
+                    if (player.hasTag('messageColor:4')) {
+                        messageFormattingColor = "§4";
+                    }
+                    else {
+                        if (player.hasTag('messageColor:5')) {
+                            messageFormattingColor = "§5";
+                        }
+                        else {
+                            if (player.hasTag('messageColor:6')) {
+                                messageFormattingColor = "§6";
+                            }
+                            else {
+                                if (player.hasTag('messageColor:7')) {
+                                    messageFormattingColor = "§7";
+                                }
+                                else {
+                                    if (player.hasTag('messageColor:8')) {
+                                        messageFormattingColor = "§8";
+                                    }
+                                    else {
+                                        if (player.hasTag('messageColor:9')) {
+                                            messageFormattingColor = "§9";
+                                        }
+                                        else {
+                                            if (player.hasTag('messageColor:a')) {
+                                                messageFormattingColor = "§a";
+                                            }
+                                            else {
+                                                if (player.hasTag('messageColor:b')) {
+                                                    messageFormattingColor = "§b";
+                                                }
+                                                else {
+                                                    if (player.hasTag('messageColor:c')) {
+                                                        messageFormattingColor = "§c";
+                                                    }
+                                                    else {
+                                                        if (player.hasTag('messageColor:d')) {
+                                                            messageFormattingColor = "§d";
+                                                        }
+                                                        else {
+                                                            if (player.hasTag('messageColor:e')) {
+                                                                messageFormattingColor = "§e";
+                                                            }
+                                                            else {
+                                                                if (player.hasTag('messageColor:f')) {
+                                                                    messageFormattingColor = "§f";
+                                                                }
+                                                                else {
+                                                                    if (player.hasTag('messageColor:g')) {
+                                                                        messageFormattingColor = "§g";
+                                                                    }
+                                                                    else {
+                                                                        if (player.hasTag('messageColor:h')) {
+                                                                            messageFormattingColor = "§h";
+                                                                        }
+                                                                        else {
+                                                                            if (player.hasTag('messageColor:i')) {
+                                                                                messageFormattingColor = "§i";
+                                                                            }
+                                                                            else {
+                                                                                if (player.hasTag('messageColor:j')) {
+                                                                                    messageFormattingColor = "§j";
+                                                                                }
+                                                                                else {
+                                                                                    if (player.hasTag('messageColor:m')) {
+                                                                                        messageFormattingColor = "§m";
+                                                                                    }
+                                                                                    else {
+                                                                                        if (player.hasTag('messageColor:n')) {
+                                                                                            messageFormattingColor = "§n";
+                                                                                        }
+                                                                                        else {
+                                                                                            if (player.hasTag('messageColor:p')) {
+                                                                                                messageFormattingColor = "§p";
+                                                                                            }
+                                                                                            else {
+                                                                                                if (player.hasTag('messageColor:q')) {
+                                                                                                    messageFormattingColor = "§q";
+                                                                                                }
+                                                                                                else {
+                                                                                                    if (player.hasTag('messageColor:s')) {
+                                                                                                        messageFormattingColor = "§s";
+                                                                                                    }
+                                                                                                    else {
+                                                                                                        if (player.hasTag('messageColor:t')) {
+                                                                                                            messageFormattingColor = "§t";
+                                                                                                        }
+                                                                                                        else {
+                                                                                                            if (player.hasTag('messageColor:u')) {
+                                                                                                                messageFormattingColor = "§u";
+                                                                                                            }
+                                                                                                            ;
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    let rank = "";
+    let name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + player.name + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " ");
+    let rankMode = 0;
+    for (let index in player.getTags()) {
+        if (player.getTags()[Number(index)].startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"))) {
+            rank = (rank + String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "[") + player.getTags()[Number(index)].slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "]"));
+        }
+        if (player.getTags()[Number(index)] == ("chatHideNameTag")) {
+            name = "";
+            rankMode = 1;
+        }
+        else {
+            if (player.getTags()[Number(index)].startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")) && rankMode !== 1) {
+                name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + player.getTags()[Number(index)].slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length) + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " ");
+                rankMode = 2;
+            }
+            else {
+                if (player.getTags()[Number(index)] == ("chatUseNameTag") && rankMode !== 1 && rankMode !== 2) {
+                    name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<") + player.nameTag + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? ">") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " ");
+                    rankMode = 3;
+                }
+            }
+        }
+    }
+    try {
+        eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendBeforeModifiedMessageSend")));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("chatSendBeforeEventDebugErrors")) {
+            currentplayer.sendMessage((e + " " + e.stack));
+        } });
+    }
+    eventData.cancel = true;
+    if (player.hasTag("doNotSendChatMessages")) {
+        return;
+    }
+    else {
+        if (world.getDynamicProperty("allowCustomChatMessagesMuting") != true) {
+            if (world.getDynamicProperty("allowCustomChatMessagesEscapeCharacters") != true) {
+                world.sendMessage(rank + name + messageFormattingItalic + messageFormattingBold + messageFormattingObfuscated + messageFormattingColor + newMessage);
+            }
+            else {
+                world.sendMessage({ rawtext: [{ text: String(rank + name + messageFormattingItalic + messageFormattingBold + messageFormattingObfuscated + messageFormattingColor + newMessage) }] });
+            }
+        }
+        else {
+            world.getDimension("overworld").runCommandAsync(`/tellraw @a {"rawtext":[{"text":"${String(rank + name + messageFormattingItalic + messageFormattingBold + messageFormattingObfuscated + messageFormattingColor + newMessage).replaceAll("\"", "\\\"")}"}]}`);
+        }
+    }
+}
+export function evaluateParameters(parameters, paramEvalA) {
+    let paramEval = paramEvalA;
+    let args;
+    args = [];
+    let er;
+    er = [];
+    let erb;
+    erb = [];
+    parameters.forEach((p, i) => {
+        try {
+            if (p == "presetText") {
+                args.push(paramEval.split(" ")[0]);
+                paramEval = paramEval.split(" ").slice(1).join(" ");
+            }
+            else {
+                if (p == "string") {
+                    if (paramEval.startsWith("\"")) {
+                        if (!paramEval.includes("\\\"")) {
+                            args.push(paramEval.slice(1, paramEval.indexOf("\"", 1)));
+                            paramEval = paramEval.slice(paramEval.indexOf("\"", 1) + 2);
+                        }
+                        else {
+                            args.push([paramEval.slice(1).split("\\\"").slice(0, paramEval.slice(1).split("\\\"").findIndex((v) => (v.includes("\"")))).join("\\\""), paramEval.slice(1).split("\\\"").find((v) => (v.includes("\""))).split("\"")[0]].join("\""));
+                            paramEval = paramEval.slice(1).split("\\\"").find((v) => (v.includes("\""))).split("\"")[1].slice(1);
+                        }
+                    }
+                    else {
+                        args.push(paramEval.split(" ")[0]);
+                        paramEval = paramEval.split(" ").slice(1).join(" ");
+                    }
+                }
+                else {
+                    if (p == "json") {
+                        let endCharacter = "}";
+                        if (paramEval.startsWith("[")) {
+                            endCharacter = "]";
+                        }
+                        else {
+                            if (paramEval.startsWith("(")) {
+                                endCharacter = ")";
+                            }
+                        }
+                        ;
+                        try {
+                            args.push(JSON.parse((paramEval.split(endCharacter + " ")[0] + endCharacter) ?? paramEval));
+                        }
+                        catch (e) {
+                            er.push([e, e.stack]);
+                            erb.push([String(e), e.stack, i]);
+                        }
+                        ;
+                        paramEval = paramEval.split(endCharacter + " ")[1] ?? "";
+                    }
+                    else {
+                        if (p == "number") {
+                            args.push(Number(paramEval.split(" ")[0]));
+                            paramEval = paramEval.split(" ").slice(1).join(" ");
+                        }
+                        else {
+                            if (p == "boolean") {
+                                args.push(Boolean((paramEval.split(" ")[0].trimStart().toLowerCase().startsWith("t") || paramEval.split(" ")[0].trimStart().toLowerCase().startsWith("y") || paramEval.split(" ")[0].trimStart().toLowerCase().startsWith("1") || paramEval.split(" ")[0].trimStart().toLowerCase().startsWith("+") || paramEval.split(" ")[0].trimStart().toLowerCase().startsWith("c") || paramEval.split(" ")[0].trimStart().toLowerCase().startsWith("v") || paramEval.split(" ")[0].trimStart().toLowerCase().startsWith("p"))));
+                                paramEval = paramEval.split(" ").slice(1).join(" ");
+                            }
+                            else {
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (e) {
+            er.push([e, e.stack]);
+            erb.push([String(e), e.stack, i]);
+        }
+        ;
+    });
+    return { er: er, erb: erb, args: args, paramEval: paramEval, paramEvalA: paramEvalA, parameters: parameters };
+}
+;
