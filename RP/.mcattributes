@@ -1,0 +1,13 @@
+diagnostic.disable.=true
+diagnostic.disable.behaviorpack.entity.component.missing=true
+diagnostic.disable.minecraft.manifest.version.minimum=true
+diagnostic.disable.=true
+diagnostic.disable.molang.query.deprecated=true
+diagnostic.disable.molang.variable.missing=true
+diagnostic.disable.resourcepack.texture.missing=true
+diagnostic.disable.resourcepack.anim_or_controller.missing=true
+diagnostic.disable.minecraft.animation_controller.animation.undefined=true
+diagnostic.disable.molang.query.unknown=true
+diagnostic.disable.resourcepack.texture.undefined=true
+diagnostic.disable.minecraft.format.path.length=true
+diagnostic.disable.minecraft.manifest.version.invalid=true
