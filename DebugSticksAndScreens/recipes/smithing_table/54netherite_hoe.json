@@ -1,0 +1,13 @@
+{
+    "format_version": "1.17",
+        "minecraft:recipe_smithing_transform": {
+            "description": {
+                "identifier": "andexdb:54netherite_hoe"
+            },
+         "tags": ["smithing_table"],
+         "template": "andexdb:enchantment_transfer_smithing_template:54",
+         "base": "andexdb:smithing_table_enchanted_book",
+            "addition": "minecraft:netherite_ingot",
+            "result": "minecraft:netherite_hoe"
+        }
+    }

@@ -1,0 +1,13 @@
+{
+    "format_version": "1.17",
+        "minecraft:recipe_smithing_transform": {
+            "description": {
+                "identifier": "andexdb:55turtle_helmet"
+            },
+         "tags": ["smithing_table"],
+         "template": "andexdb:enchantment_transfer_smithing_template:55",
+         "base": "andexdb:smithing_table_enchanted_book",
+            "addition": "minecraft:netherite_ingot",
+            "result": "minecraft:turtle_helmet"
+        }
+    }

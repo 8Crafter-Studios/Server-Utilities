@@ -1,0 +1,5 @@
+diagnostic.disable.behaviorpack.entity.component.missing=true
+diagnostic.disable.minecraft.manifest.version.minimum=true
+diagnostic.disable.minecraft.format.path.length=true
+diagnostic.disable.molang.query.unknown=true
+diagnostic.disable.minecraft.manifest.version.invalid=true
