@@ -2,7 +2,7 @@ import { Player, system, world } from "@minecraft/server";
 import { format_version } from "Main";
 import { savedPlayer, savedPlayerData } from "./player_save";
 
-export const ban_format_version = "1.0.0-rc.1";
+export const ban_format_version = "1.0.0-rc.2";
 export class ban{
     type: "name"|"id"
     playerName?: string

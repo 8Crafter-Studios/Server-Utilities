@@ -1,8 +1,36 @@
 import { DimensionTypes, ItemStack, system, world } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier } from "Main";
-import { evaluateCoordinates, coordinatesB } from "./coordinates";
-import { savedPlayer } from "./player_save";
-export const commands_format_version = "1.0.0";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier } from "../Main";
+import { coordinatesB, evaluateCoordinates } from "./coordinates";
+import { savedPlayer } from "./player_save.js";
+import * as GameTest from "@minecraft/server-gametest";
+import * as mcServer from "@minecraft/server";
+import * as mcServerUi from "@minecraft/server-ui"; /*
+import * as mcServerAdmin from "@minecraft/server-admin";*/
+import * as mcDebugUtilities from "@minecraft/debug-utilities"; /*
+import * as mcCommon from "@minecraft/common";*/ /*
+import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import * as main from "../Main";
+import * as coords from "./coordinates";
+import * as cmds from "./commands";
+import * as bans from "./ban";
+import * as uis from "./ui";
+import * as playersave from "./player_save";
+import * as spawnprot from "./spawn_protection";
+mcServer;
+mcServerUi; /*
+mcServerAdmin*/
+mcDebugUtilities; /*
+mcCommon*/
+GameTest; /*
+mcVanillaData*/
+main;
+coords;
+cmds;
+bans;
+uis;
+playersave;
+spawnprot;
+export const commands_format_version = "1.0.1";
 export function chatMessage(eventData) {
     let runreturn;
     runreturn = false;

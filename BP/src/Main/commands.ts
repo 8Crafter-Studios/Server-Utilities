@@ -1,9 +1,40 @@
 import { BlockInventoryComponent, ChatSendBeforeEvent, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier } from "Main";
-import { evaluateCoordinates, coordinatesB } from "./coordinates";
-import { savedPlayer } from "./player_save";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject,format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones } from "../Main";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, ILocalTeleport, WorldPosition, rotate, rotate3d } from "./coordinates";
+import { ban, ban_format_version } from "./ban";
+import { player_save_format_version, savedPlayer, savedPlayerData, savedItem } from "./player_save.js";
+import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal } from "./ui.js";
+import * as GameTest from "@minecraft/server-gametest";
+import * as mcServer from "@minecraft/server";
+import * as mcServerUi from "@minecraft/server-ui";/*
+import * as mcServerAdmin from "@minecraft/server-admin";*/
+import * as mcDebugUtilities from "@minecraft/debug-utilities";/*
+import * as mcCommon from "@minecraft/common";*//*
+import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import *  as main from "../Main";
+import *  as coords from "./coordinates";
+import *  as cmds from "./commands";
+import *  as bans from "./ban";
+import *  as uis from "./ui";
+import *  as playersave from "./player_save";
+import *  as spawnprot from "./spawn_protection";
+mcServer
+mcServerUi/*
+mcServerAdmin*/
+mcDebugUtilities/*
+mcCommon*/
+GameTest/*
+mcVanillaData*/
+main
+coords
+cmds
+bans
+uis
+playersave
+spawnprot
 
-export const commands_format_version = "1.0.0";
+export const commands_format_version = "1.0.1";
 export function chatMessage(eventData: ChatSendBeforeEvent){
     let runreturn: boolean; runreturn = false; 
     let returnBeforeChatSend: boolean; returnBeforeChatSend = false; 

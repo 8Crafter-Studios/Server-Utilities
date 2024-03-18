@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.4.0";
+export const format_version = "1.5.0";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -58,28 +58,36 @@ import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, fo
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
-import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
-import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
+import * as mcServerAdmin from "@minecraft/server-admin";*/
+import * as mcDebugUtilities from "@minecraft/debug-utilities"; /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as coords from "Main/coordinates";
 import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
+import * as uis from "Main/ui";
+import * as playersave from "Main/player_save";
+import * as spawnprot from "Main/spawn_protection";
+import { disableWatchdog } from "@minecraft/debug-utilities";
 mcServer;
 mcServerUi; /*
-mcServerAdmin*/ /*
-mcDebugUtilities*/ /*
+mcServerAdmin*/
+mcDebugUtilities; /*
 mcCommon*/
 GameTest; /*
 mcVanillaData*/
 coords;
 cmds;
 bans;
+uis;
+playersave;
+spawnprot;
 SimulatedPlayer;
 Test;
 let crashEnabled = false;
 let tempSavedVariables = [];
 export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]];
+disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog") ?? (!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") ?? false)) ?? false) ?? true) ?? true);
 system.beforeEvents.watchdogTerminate.subscribe(e => {
     try {
         if (crashEnabled == true) { }
@@ -836,17 +844,31 @@ world.beforeEvents.entityRemove.subscribe(event => {
         } });
     }
 });
-world.beforeEvents.itemDefinitionEvent.subscribe(event => {
+world.beforeEvents.playerGameModeChange.subscribe(event => {
     try {
-        eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")));
+        eval(String(world.getDynamicProperty("evalBeforeEvents:playerGameModeChange")));
     }
     catch (e) {
         console.error(e, e.stack);
-        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemDefinitionEventBeforeEventDebugErrors")) {
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("playerGameModeChangeBeforeEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
 });
+world.beforeEvents.weatherChange.subscribe(event => {
+    try {
+        eval(String(world.getDynamicProperty("evalBeforeEvents:weatherChange")));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("weatherChangeBeforeEventDebugErrors")) {
+            currentplayer.sendMessage(e + e.stack);
+        } });
+    }
+}); /*
+world.beforeEvents.itemDefinitionEvent.subscribe(event => {
+  try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});*/ //removed in 1.20.70.21
 world.beforeEvents.playerInteractWithEntity.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithEntity")));
@@ -1043,17 +1065,42 @@ world.afterEvents.itemCompleteUse.subscribe(event => {
         } });
     }
 });
-world.afterEvents.itemDefinitionEvent.subscribe(event => {
+world.afterEvents.gameRuleChange.subscribe(event => {
     try {
-        eval(String(world.getDynamicProperty("evalAfterEvents:itemDefinitionEvent")));
+        eval(String(world.getDynamicProperty("evalAfterEvents:gameRuleChange")));
     }
     catch (e) {
         console.error(e, e.stack);
-        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemDefinitionEventAfterEventDebugErrors")) {
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("gameRuleChangeAfterEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
 });
+world.afterEvents.playerGameModeChange.subscribe(event => {
+    try {
+        eval(String(world.getDynamicProperty("evalAfterEvents:playerGameModeChange")));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("playerGameModeChangeAfterEventDebugErrors")) {
+            currentplayer.sendMessage(e + e.stack);
+        } });
+    }
+});
+world.afterEvents.weatherChange.subscribe(event => {
+    try {
+        eval(String(world.getDynamicProperty("evalAfterEvents:weatherChange")));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("weatherChangeAfterEventDebugErrors")) {
+            currentplayer.sendMessage(e + e.stack);
+        } });
+    }
+}); /*
+world.afterEvents.itemDefinitionEvent.subscribe(event => {
+  try{eval(String(world.getDynamicProperty("evalAfterEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});*/
 world.afterEvents.itemReleaseUse.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")));
@@ -1521,6 +1568,7 @@ system.runInterval(() => { try {
 }
 catch { } ; }, 1); //fixed and this one is also nows new
 world.beforeEvents.itemUse.subscribe(event => {
+    event.source.teleport;
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:itemUse")));
     }
@@ -4157,7 +4205,7 @@ console.error(e, e.stack);
             form.textField("Item Lore\nTo type multiple lines just put \\\\newline in between each line. ", "Item Lore", itemLoreTextField);
             form.textField("Can Destroy", "Can Destroy", "" /*(String(item.getCanDestroy()))*/);
             form.textField("Can Place On", "Can Place On", "" /*(String(item.getCanPlaceOn()))*/);
-            form.textField("Trigger Event", "Trigger Event", "");
+            form.textField("§cTrigger Event (Removed in 1.20.70.71)", "§cTrigger Event (Removed in 1.20.70.71)", "");
             form.slider("Count", 0, 255, 1, currentValueItemAmount);
             form.toggle("keepOnDeath", (itemKeepOnDeath));
             function getItemLockMode(mode, input) {
@@ -4332,13 +4380,8 @@ console.error(e, e.stack);
                 catch (e) {
                     console.error(e, e.stack);
                 }
-                ;
-                try {
-                    item.triggerEvent(String(triggerEvent));
-                }
-                catch (e) {
-                    console.error(e, e.stack);
-                }
+                ; /*
+                try{item.triggerEvent(String(triggerEvent));} catch(e){console.error(e, e.stack);}*/ //removed in 1.20.70.21
                 try {
                     durability2.damage = Number(10);
                 }

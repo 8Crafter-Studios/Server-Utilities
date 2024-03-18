@@ -1,8 +1,36 @@
 import { EquipmentSlot, Enchantment, Vector3, Dimension, Vector2, DimensionLocation, GameMode, world, Player, system } from "@minecraft/server";
 import { format_version } from "Main";
 import { ban } from "./ban";
+import * as GameTest from "@minecraft/server-gametest";
+import * as mcServer from "@minecraft/server";
+import * as mcServerUi from "@minecraft/server-ui";/*
+import * as mcServerAdmin from "@minecraft/server-admin";*/
+import * as mcDebugUtilities from "@minecraft/debug-utilities";/*
+import * as mcCommon from "@minecraft/common";*//*
+import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import *  as main from "Main";
+import *  as coords from "Main/coordinates";
+import *  as cmds from "Main/commands";
+import *  as bans from "Main/ban";
+import *  as uis from "Main/ui";
+import *  as playersave from "Main/player_save";
+import *  as spawnprot from "Main/spawn_protection";
+mcServer
+mcServerUi/*
+mcServerAdmin*/
+mcDebugUtilities/*
+mcCommon*/
+GameTest/*
+mcVanillaData*/
+main
+coords
+cmds
+bans
+uis
+playersave
+spawnprot
 
-export const player_save_format_version = "1.0.0";
+export const player_save_format_version = "1.0.1";
 export interface savedItem { 
     id?: string
     count: number

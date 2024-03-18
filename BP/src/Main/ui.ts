@@ -4,8 +4,36 @@ import { arrayModifier, format_version, getUICustomForm } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
+import * as GameTest from "@minecraft/server-gametest";
+import * as mcServer from "@minecraft/server";
+import * as mcServerUi from "@minecraft/server-ui";/*
+import * as mcServerAdmin from "@minecraft/server-admin";*/
+import * as mcDebugUtilities from "@minecraft/debug-utilities";/*
+import * as mcCommon from "@minecraft/common";*//*
+import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import *  as main from "Main";
+import *  as coords from "Main/coordinates";
+import *  as cmds from "Main/commands";
+import *  as bans from "Main/ban";
+import *  as uis from "Main/ui";
+import *  as playersave from "Main/player_save";
+import *  as spawnprot from "Main/spawn_protection";
+mcServer
+mcServerUi/*
+mcServerAdmin*/
+mcDebugUtilities/*
+mcCommon*/
+GameTest/*
+mcVanillaData*/
+main
+coords
+cmds
+bans
+uis
+playersave
+spawnprot
 
-export const ui_format_version = "1.0.0";
+export const ui_format_version = "1.0.1";
 //${se}console.warn(JSON.stringify(evaluateParameters(["presetText", "string", "json", "number", "boolean", "string", "presetText", "presetText"], "test test [{\"test\": \"test\"}, [\"test\", \"test\"] , \"test\", \"test\"] 1 true \"test \\\"test\" test test"))); 
 /**
  * Returns the sum of a and b
@@ -1585,6 +1613,7 @@ export function managePlayers(sourceEntity: Entity|Player){
                 }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
             break; 
             case players.length+1: 
+            mainMenu(sourceEntity)
             break; 
             default: 
             let player = players[r.selection]; 
