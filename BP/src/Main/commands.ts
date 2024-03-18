@@ -1,5 +1,5 @@
 import { BlockInventoryComponent, ChatSendBeforeEvent, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject,format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones } from "../Main";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject,format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, ILocalTeleport, WorldPosition, rotate, rotate3d } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, savedPlayerData, savedItem } from "./player_save.js";
@@ -8,8 +8,8 @@ import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, fo
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
-import * as mcServerAdmin from "@minecraft/server-admin";*/
-import * as mcDebugUtilities from "@minecraft/debug-utilities";/*
+import * as mcServerAdmin from "@minecraft/server-admin";*//*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import *  as main from "../Main";
@@ -21,8 +21,8 @@ import *  as playersave from "./player_save";
 import *  as spawnprot from "./spawn_protection";
 mcServer
 mcServerUi/*
-mcServerAdmin*/
-mcDebugUtilities/*
+mcServerAdmin*//*
+mcDebugUtilities*//*
 mcCommon*/
 GameTest/*
 mcVanillaData*/
@@ -34,7 +34,7 @@ uis
 playersave
 spawnprot
 
-export const commands_format_version = "1.0.1";
+export const commands_format_version = "1.0.3";
 export function chatMessage(eventData: ChatSendBeforeEvent){
     let runreturn: boolean; runreturn = false; 
     let returnBeforeChatSend: boolean; returnBeforeChatSend = false; 
@@ -878,7 +878,60 @@ let rankMode = 0
         }
     }
 }
-export function evaluateParameters(parameters: string[], paramEvalA: string){
+
+export function evaluateParameters(commandstring: string, parameters: {type: string, maxLength?: number}[]) {
+    let argumentsa = [] as any[]
+    let ea = [] as [Error, any][]
+    let paramEval = commandstring
+    parameters.forEach((p, i) => {
+        if ((p?.type ?? p) == "presetText") {
+            argumentsa.push(paramEval.split(" ")[0]);
+            paramEval = paramEval.split(" ").slice(1).join(" ");
+        } else {
+            if ((p?.type ?? p) == "number") {
+                argumentsa.push(Number(paramEval.split(" ")[0]));
+                paramEval = paramEval.split(" ").slice(1).join(" ");
+            } else {
+                if ((p?.type ?? p) == "boolean") {
+                    argumentsa.push(Boolean(JSON.parse(paramEval.split(" ")[0])));
+                    paramEval = paramEval.split(" ").slice(1).join(" ");
+                } else {
+                    if ((p?.type ?? p) == "string") {
+                        if (paramEval.trimStart().startsWith("\"")) {
+                            let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                            paramEval = paramEval.trimStart().slice(value.s.length + 1) ?? "";
+                            try {
+                                argumentsa.push(value.v);
+                            } catch (e) {
+                                ea.push([e, e.stack])
+                            };
+                        } else {
+                            argumentsa.push(paramEval.split(" ")[0]);
+                            paramEval = paramEval.split(" ").slice(1).join(" ");
+                        }
+                    } else {
+                        if ((p?.type ?? p) == "json") {
+                            let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
+                            paramEval = paramEval.slice(value.s.length + 1) ?? "";
+                            try {
+                                argumentsa.push(value.v ?? JSONParse(value.s ?? paramEval, true));
+                            } catch (e) {
+                                ea.push([e, e.stack])
+                            };
+                        } else {}
+                    }
+                }
+            }
+        }
+    });
+    return {
+        params: parameters,
+        extra: paramEval,
+        args: argumentsa,
+        err: ea
+    }
+}
+export function evaluateParametersOld(parameters: string[], paramEvalA: string){
     let paramEval = paramEvalA
     let args: any[]
     args = []

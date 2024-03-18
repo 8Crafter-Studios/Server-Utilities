@@ -11,11 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "@minecraft/common": "^1.1.0",
-    "@minecraft/server": "^1.9.0-beta.1.20.60-preview.26",
+    "@minecraft/server": "^1.10.0-beta.1.20.70-stable",
     "@minecraft/server-admin": "^1.0.0-beta.1.20.10-stable",
     "@minecraft/server-gametest": "^1.0.0-beta.1.20.40-preview.20",
     "@minecraft/server-net": "^1.0.0-beta.1.20.40-preview.20",
-    "@minecraft/server-ui": "^1.2.0-beta.1.20.60-preview.26",
+    "@minecraft/server-ui": "^1.2.0-beta.1.20.70-stable",
     "@minecraft/vanilla-data": "^1.20.60-preview.24"
   }
 }

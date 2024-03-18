@@ -1,12 +1,12 @@
 import { DimensionTypes, ItemStack, system, world } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier } from "../Main";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, JSONParse, getParametersFromString } from "../Main";
 import { coordinatesB, evaluateCoordinates } from "./coordinates";
 import { savedPlayer } from "./player_save.js";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
-import * as mcServerAdmin from "@minecraft/server-admin";*/
-import * as mcDebugUtilities from "@minecraft/debug-utilities"; /*
+import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "../Main";
@@ -18,8 +18,8 @@ import * as playersave from "./player_save";
 import * as spawnprot from "./spawn_protection";
 mcServer;
 mcServerUi; /*
-mcServerAdmin*/
-mcDebugUtilities; /*
+mcServerAdmin*/ /*
+mcDebugUtilities*/ /*
 mcCommon*/
 GameTest; /*
 mcVanillaData*/
@@ -30,7 +30,7 @@ bans;
 uis;
 playersave;
 spawnprot;
-export const commands_format_version = "1.0.1";
+export const commands_format_version = "1.0.3";
 export function chatMessage(eventData) {
     let runreturn;
     runreturn = false;
@@ -1952,7 +1952,69 @@ export function chatSend(params) {
         }
     }
 }
-export function evaluateParameters(parameters, paramEvalA) {
+export function evaluateParameters(commandstring, parameters) {
+    let argumentsa = [];
+    let ea = [];
+    let paramEval = commandstring;
+    parameters.forEach((p, i) => {
+        if ((p?.type ?? p) == "presetText") {
+            argumentsa.push(paramEval.split(" ")[0]);
+            paramEval = paramEval.split(" ").slice(1).join(" ");
+        }
+        else {
+            if ((p?.type ?? p) == "number") {
+                argumentsa.push(Number(paramEval.split(" ")[0]));
+                paramEval = paramEval.split(" ").slice(1).join(" ");
+            }
+            else {
+                if ((p?.type ?? p) == "boolean") {
+                    argumentsa.push(Boolean(JSON.parse(paramEval.split(" ")[0])));
+                    paramEval = paramEval.split(" ").slice(1).join(" ");
+                }
+                else {
+                    if ((p?.type ?? p) == "string") {
+                        if (paramEval.trimStart().startsWith("\"")) {
+                            let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                            paramEval = paramEval.trimStart().slice(value.s.length + 1) ?? "";
+                            try {
+                                argumentsa.push(value.v);
+                            }
+                            catch (e) {
+                                ea.push([e, e.stack]);
+                            }
+                            ;
+                        }
+                        else {
+                            argumentsa.push(paramEval.split(" ")[0]);
+                            paramEval = paramEval.split(" ").slice(1).join(" ");
+                        }
+                    }
+                    else {
+                        if ((p?.type ?? p) == "json") {
+                            let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
+                            paramEval = paramEval.slice(value.s.length + 1) ?? "";
+                            try {
+                                argumentsa.push(value.v ?? JSONParse(value.s ?? paramEval, true));
+                            }
+                            catch (e) {
+                                ea.push([e, e.stack]);
+                            }
+                            ;
+                        }
+                        else { }
+                    }
+                }
+            }
+        }
+    });
+    return {
+        params: parameters,
+        extra: paramEval,
+        args: argumentsa,
+        err: ea
+    };
+}
+export function evaluateParametersOld(parameters, paramEvalA) {
     let paramEval = paramEvalA;
     let args;
     args = [];

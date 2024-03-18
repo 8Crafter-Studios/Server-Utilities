@@ -1,7 +1,7 @@
 import { system, world } from "@minecraft/server";
-import { format_version } from "Main";
+import { format_version } from "../Main";
 import { savedPlayer } from "./player_save";
-export const ban_format_version = "1.0.0-rc.2";
+export const ban_format_version = "1.0.0-rc.5";
 export class ban {
     constructor(ban) {
         this.format_version = format_version;

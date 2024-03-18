@@ -1,8 +1,8 @@
 import { Player, system, world } from "@minecraft/server";
-import { format_version } from "Main";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject,format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld } from "../Main";
 import { savedPlayer, savedPlayerData } from "./player_save";
 
-export const ban_format_version = "1.0.0-rc.2";
+export const ban_format_version = "1.0.0-rc.5";
 export class ban{
     type: "name"|"id"
     playerName?: string

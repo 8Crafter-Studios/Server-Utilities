@@ -7,8 +7,8 @@ import { ban, ban_format_version } from "./ban";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
-import * as mcServerAdmin from "@minecraft/server-admin";*/
-import * as mcDebugUtilities from "@minecraft/debug-utilities";/*
+import * as mcServerAdmin from "@minecraft/server-admin";*//*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import *  as main from "Main";
@@ -20,8 +20,8 @@ import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
 mcServer
 mcServerUi/*
-mcServerAdmin*/
-mcDebugUtilities/*
+mcServerAdmin*//*
+mcDebugUtilities*//*
 mcCommon*/
 GameTest/*
 mcVanillaData*/
@@ -45,7 +45,7 @@ export const ui_format_version = "1.0.1";
 export async function forceShow(form: ModalFormData|ActionFormData|MessageFormData, player: Player, timeout?: number): Promise<ModalFormResponse|ActionFormResponse|MessageFormResponse>|undefined {
     const timeoutTicks = system.currentTick + (timeout ?? 9999)
     while (system.currentTick <= timeoutTicks){
-        const r = await form.show(player)
+        const r = await form.show(player as any)
         if(r.cancelationReason != "UserBusy"||r.canceled == false){return r}
     }
 }
@@ -657,7 +657,7 @@ export function terminal(sourceEntity: Entity|Player){
         form.textField("Run Command", "Run Command");
         form.textField("Run Delay", "Run Delay");
         form.toggle("Debug", false);
-        form.show(sourceEntity as Player).then(r => {
+        form.show(sourceEntity as any).then(r => {
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return;
@@ -910,7 +910,7 @@ export function inventoryController(sourceEntity: Entity|Player){
     form2.dropdown("Player Target", String(targetList).split(","), 0)
     form2.dropdown("Player Viewer", String(targetList).split(","), 0)
     form2.toggle("Debug2", false);
-    form2.show(sourceEntity as Player).then(t => {
+    form2.show(sourceEntity as any).then(t => {
         if (t.canceled)
             return;
             let [slotNumber, slotType, playerTarget, playerViewer, debug2] = t.formValues;
@@ -1398,7 +1398,7 @@ export function editorStickMenuB(sourceEntity: Entity|Player){
     form.textField("Block Y", "Block Y", String(sourceEntity.location.y))
     form.textField("Block Z", "Block Z", String(sourceEntity.location.z))
 
-form.show(sourceEntity as Player).then(r => {
+form.show(sourceEntity as any).then(r => {
     if (r.canceled) return;
 
     let [ blockDimension, blockX, blockY, blockZ ] = r.formValues;/*

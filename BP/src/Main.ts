@@ -59,8 +59,8 @@ import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, fo
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
-import * as mcServerAdmin from "@minecraft/server-admin";*/
-import * as mcDebugUtilities from "@minecraft/debug-utilities";/*
+import * as mcServerAdmin from "@minecraft/server-admin";*//*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import *  as coords from "Main/coordinates";
@@ -68,12 +68,12 @@ import *  as cmds from "Main/commands";
 import *  as bans from "Main/ban";
 import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
-import *  as spawnprot from "Main/spawn_protection";
-import { disableWatchdog } from "@minecraft/debug-utilities";
+import *  as spawnprot from "Main/spawn_protection";/*
+import { disableWatchdog } from "@minecraft/debug-utilities";*/
 mcServer
 mcServerUi/*
-mcServerAdmin*/
-mcDebugUtilities/*
+mcServerAdmin*//*
+mcDebugUtilities*//*
 mcCommon*/
 GameTest/*
 mcVanillaData*/
@@ -87,8 +87,8 @@ SimulatedPlayer
 Test
 let crashEnabled = false
 let tempSavedVariables = []
-export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]
-disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true); 
+export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]/*
+disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
 system.beforeEvents.watchdogTerminate.subscribe(e => {try{
     if(crashEnabled == true){}else{if(world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") == true){}else{
   e.cancel = true;
@@ -228,7 +228,24 @@ export function roundPlaceNumberObject(object: Object, place: number = Number(wo
     return Object.fromEntries(newObject)
 }/*
 /execute as @e [type=andexsa:custom_arrow] at @s run /scriptevent andexdb:scriptEval let sl = sourceEntity.location; let ol = sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2", "npc", "armor_stand"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location; let d = {x: ol.x-sl.x, y: ol.y-sl.y, z: ol.z-sl.z}; eval("if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.x)*Number(d.x!=0)*d.x, y: Math.abs(1/d.x)*Number(d.y!=0)*d.y, z: Math.abs(1/d.x)*Number(d.z!=0)*d.z})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.y)*Number(d.x!=0)*d.x, y: Math.abs(1/d.y)*Number(d.y!=0)*d.y, z: Math.abs(1/d.y)*Number(d.z!=0)*d.z})}else{sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.z)*Number(d.x!=0)*d.x, y: Math.abs(1/d.z)*Number(d.y!=0)*d.y, z: Math.abs(1/d.z)*Number(d.z!=0)*d.z})}}}; ");*/
-export function arrayModifier(array: any[], callbackfn: (value: any, index: number, array: any[])=>any){array.forEach((v, i, a)=>{array[i]=callbackfn(v, i, a)}); return array}
+export function arrayModifierOld(array: any[], callbackfn: (value: any, index: number, array: any[])=>any){array.forEach((v, i, a)=>{array[i]=callbackfn(v, i, a)}); return array}
+export function arrayModifier<T>(sourcearray: T[], callbackfn: (value: T, index: number, array: T[])=>any, overwrite: boolean = false){
+    if (overwrite) {
+        sourcearray.forEach((v, i, a) => {
+            sourcearray[i] = callbackfn(v, i, a)
+        });
+        return sourcearray
+    } else {
+        let newarray: any[];
+        try {
+            newarray = structuredClone(sourcearray)
+        } catch (e) {newarray = sourcearray};
+        newarray.forEach((v, i, a) => {
+            newarray[i] = callbackfn(v, i, a)
+        });
+        return newarray
+    }
+};
 export function getArrayElementProperty(array: any[], property: string){array.forEach((v, i, a)=>{array[i]=eval(`v.${property}`)}); return array}
 export function combineObjects(obj1: object, obj2: object){return Object.fromEntries(Object.entries(obj1).concat(Object.entries(obj2)))}
 export function generateCUID(classid?: string){let CUID = Number(world.getDynamicProperty("cuidCounter:"+(classid??"default"))??0) + 1; world.setDynamicProperty("cuidCounter:"+(classid??"default"), CUID); return CUID}
@@ -302,7 +319,7 @@ export function JSONStringifyOld(value: any, keepUndefined: boolean = false, spa
     if(String(v).match(/^{{(Infinity|NaN|-Infinity|undefined)}}$/)){v=v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}')}
     return v;
     }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"'); }
-function JSONParse(JSONString, keepUndefined = true) {
+export function JSONParse(JSONString: string, keepUndefined: boolean = true) {
     let g = [];
     let h = [];
     let a = JSON.parse(JSONString.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"').replace(/(?<=(?:[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\[)[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*),(?:\s*)|[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*)\[(?:\s*)))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,\]](?:\s*))/g, '"{{$1}}"').replace(/^(Infinity|NaN|-Infinity|undefined)$/g, '"{{$1}}"'), function(k, v) {
@@ -340,7 +357,7 @@ function JSONParse(JSONString, keepUndefined = true) {
                 let b = a;
                 !!b.forEach((va, i) => {
                     if (String(va).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)) {
-                        b[i] = v.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}');
+                        b[i] = va.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}');
                     }
                     a = b
                 })
@@ -360,8 +377,8 @@ function JSONParse(JSONString, keepUndefined = true) {
             a = Object.fromEntries(b);
             {
                 let b = Object.entries(a);
-                !!b.filter(b => String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)).forEach((v, i) => {
-                    b[b.findIndex(b => b[0] == v[0])] = [v[0], v[1].replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}')];
+                b.filter(b => !!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)).forEach((v, i) => {
+                    b[b.findIndex(b => b[0] == v[0])] = [v[0], (v[1] as any).replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}')];
                     a = Object.fromEntries(b)
                 })
             };
@@ -380,7 +397,7 @@ function JSONParse(JSONString, keepUndefined = true) {
     return a;
 };
 
-function JSONStringify(JSONObject, keepUndefined = false) {
+export function JSONStringify(JSONObject: Object, keepUndefined: boolean = false) {
     return JSON.stringify(JSONObject, function(k, v) {
         if (v === Infinity) return "{{Infinity}}";
         else if (v === -Infinity) return "{{-Infinity}}";
@@ -393,91 +410,94 @@ function JSONStringify(JSONObject, keepUndefined = false) {
     }).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
 };
 
-function getParametersFromString(string) {
-    const arrayModifier = (array: any[], callbackfn, overwrite = false) => {
+export function getParametersFromString(string: string) {
+    function arrayModifier<T>(sourcearray: T[], callbackfn: (value: T, index: number, array: T[])=>any, overwrite: boolean = false){
         if (overwrite) {
-            array.forEach((v, i, a) => {
-                array[i] = callbackfn(v, i, a)
+            sourcearray.forEach((v, i, a) => {
+                sourcearray[i] = callbackfn(v, i, a)
             });
-            return array
+            return sourcearray
         } else {
-            let newarray;
+            let newarray: any[];
             try {
-                newarray = structuredClone(array)
-            } catch (e) {};
+                newarray = structuredClone(sourcearray)
+            } catch (e) {newarray = sourcearray};
             newarray.forEach((v, i, a) => {
                 newarray[i] = callbackfn(v, i, a)
             });
             return newarray
         }
     };
-    const getStringsFromString = (ce) => {
+    const getStringsFromString = (ce: string) => {
         let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/dgis));
         let cc = [];
-        cc.push({t: "non-json", v: ce.substring(0, cd[0]?.indices[0][0])});
+        cc.push({t: "non-json", v: ce.substring(0, (cd[0] as any)?.indices[0][0])});
         cd.forEach((v, i) => {
             cc.push({t: "json", v: v[0]});
-            cc.push({t: "non-json", v: ce.substring(v?.indices[0][1], cd[i + 1]?.indices[0][0] ?? ce.length)})
+            cc.push({t: "non-json", v: ce.substring((v as any)?.indices[0][1], (cd[i + 1] as any)?.indices[0][0] ?? ce.length)})
         });
         return cc
     };
     let rawdata = extractJSONStrings(string)
     let a = rawdata;
     let b = string;
-    let c = [];
+    let c = [] as {t: string, v: string}[];
     c.push(...getStringsFromString(b.substring(0, a[0]?.indices[0][0])));
     a.forEach((v, i) => {
         c.push({t: "json", v: v[0]});
         c.push(...getStringsFromString(b.substring(v?.indices[0][1], a[i + 1]?.indices[0][0] ?? b.length)))
     });
-    let e = [];
+    let e = [] as {i: number, v: Error}[];
     let d = arrayModifier(c, (cb, i) => arrayModifier((cb.t == "json" ? [cb.v] : String(cb.v).trimStart().trimEnd().split(/\x20+?/g)), v => {
-        if (v instanceof Function) {
+        if ((v as any) instanceof Function) {
             return {s: v, v: v.toString()}
         } else {
             try {
                 return {s: v, v: JSONParse(String(v))}
             } catch (f) { 
-                e.push({i: i, v: f});
+                e.push({i: i, v: f as Error});
                 return {s: v, v: String(v)}
             }
         }
-    }), false);
-    let f = [];
+    }), false) as {s: string, v: any}[][];
+    let f = [] as any[];
     arrayModifier(d, d => arrayModifier(d, d => d.v)).forEach(d => f.push(...d));
-    let h = [];
+    let h = [] as {s: string, v: any}[];
     d.forEach(d => h.push(...d));
     return {
-        rawdata: a,
+        rawdata: a as any[]|RegExpMatchArray[],
         input: b,
         resultAndTypeList: c,
-        separatedResultList: arrayModifier(d, d => arrayModifier(d, d => d.v)),
+        separatedResultList: arrayModifier(d, d => arrayModifier(d, d => d.v)) as {s: string, v: any}[],
         errors: e,
         unfilteredresults: f,
         results: f.filter(f => f != ""),
         unfilteredresultsincludingunmodified: h,
-        resultsincludingunmodified: h.filter(f => f.v != "")
+        resultsincludingunmodified: h.filter(h => h.v != "")
     }
 }
 
-function getParametersFromExtractedJSON(rawdata) {
-    const arrayModifier = (array, callbackfn, overwrite = false) => {
+export function getParametersFromExtractedJSON(rawdata: RegExpMatchArray[]) {
+    function arrayModifier<T>(sourcearray: T[], callbackfn: (value: T, index: number, array: T[])=>any, overwrite: boolean = false){
         if (overwrite) {
-            array.forEach((v, i, a) => {
-                array[i] = callbackfn(v, i, a)
+            sourcearray.forEach((v, i, a) => {
+                sourcearray[i] = callbackfn(v, i, a)
             });
-            return array
+            return sourcearray
         } else {
-            let newarray = structuredClone(array);
+            let newarray: any[];
+            try {
+                newarray = structuredClone(sourcearray)
+            } catch (e) {newarray = sourcearray};
             newarray.forEach((v, i, a) => {
                 newarray[i] = callbackfn(v, i, a)
             });
             return newarray
         }
-    }
+    };
     const getStringsFromString = (ce: string) => {
         let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/dgis));
-        let cc = [];
+        let cc = [] as {t: "json"|"non-json", v: string}[];
         cc.push({
             t: "non-json",
             v: ce.substring(0, (cd[0] as any)?.indices[0][0])
@@ -497,10 +517,10 @@ function getParametersFromExtractedJSON(rawdata) {
     let a = rawdata;
     let b = rawdata[0].input;
     let c = [];
-    c.push(...getStringsFromString(b.substring(0, a[0]?.indices[0][0])));
+    c.push(...getStringsFromString(b.substring(0, (a[0] as any)?.indices[0][0])));
     a.forEach((v, i) => {
         c.push({t: "json", v: v[0]});
-        c.push(...getStringsFromString(b.substring(v?.indices[0][1], a[i + 1]?.indices[0][0] ?? b.length)))
+        c.push(...getStringsFromString(b.substring((v as any)?.indices[0][1], (a[i + 1] as any)?.indices[0][0] ?? b.length)))
     })
     c
     let e = [];
@@ -515,7 +535,7 @@ function getParametersFromExtractedJSON(rawdata) {
                 return {s: v, v: String(v)}
             }
         }
-    }), false);
+    }), false) as {s: string, v: any}[][];
     let f = [];
     arrayModifier(d, d => arrayModifier(d, d => d.v)).forEach(d => f.push(...d));
     let h = [];
@@ -533,7 +553,7 @@ function getParametersFromExtractedJSON(rawdata) {
     }
 }
 
-function extractJSONStrings(inputString, includeOtherResultData = true) {
+export function extractJSONStrings(inputString: string, includeOtherResultData: boolean = true) {
     const jsonStringArray = [];
     let currentIndex = 0;
     let inquotes = false
@@ -592,59 +612,6 @@ function extractJSONStrings(inputString, includeOtherResultData = true) {
 
     return jsonStringArray;
 }
-
-function evaluateParameters(commandstring, parameters) {
-    let argumentsa = []
-    let ea = []
-    let paramEval = commandstring
-    parameters.forEach((p, i) => {
-        if ((p?.type ?? p) == "presetText") {
-            argumentsa.push(paramEval.split(" ")[0]);
-            paramEval = paramEval.split(" ").slice(1).join(" ");
-        } else {
-            if ((p?.type ?? p) == "number") {
-                argumentsa.push(Number(paramEval.split(" ")[0]));
-                paramEval = paramEval.split(" ").slice(1).join(" ");
-            } else {
-                if ((p?.type ?? p) == "boolean") {
-                    argumentsa.push(Boolean(JSON.parse(paramEval.split(" ")[0])));
-                    paramEval = paramEval.split(" ").slice(1).join(" ");
-                } else {
-                    if ((p?.type ?? p) == "string") {
-                        if (paramEval.trimStart().startsWith("\"")) {
-                            let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
-                            paramEval = paramEval.trimStart().slice(value.s.length + 1) ?? "";
-                            try {
-                                argumentsa.push(value.v);
-                            } catch (e) {
-                                ea.push([e, e.stack])
-                            };
-                        } else {
-                            argumentsa.push(paramEval.split(" ")[0]);
-                            paramEval = paramEval.split(" ").slice(1).join(" ");
-                        }
-                    } else {
-                        if ((p?.type ?? p) == "json") {
-                            let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
-                            paramEval = paramEval.slice(value.s.length + 1) ?? "";
-                            try {
-                                argumentsa.push(value.v ?? JSONParse(value.s ?? paramEval, true));
-                            } catch (e) {
-                                ea.push([e, e.stack])
-                            };
-                        } else {}
-                    }
-                }
-            }
-        }
-    });
-    return {
-        params: parameters,
-        extra: paramEval,
-        args: arguments,
-        err: ea
-    }
-}
 export function customModulo(dividend: number, min: number, max: number, inclusive: number|boolean = false) {
     inclusive = Number(inclusive)
     max += inclusive;
@@ -668,7 +635,7 @@ export function customModulo(dividend: number, min: number, max: number, inclusi
 
     return dividend;
 }
-export function escapeRegExp(string) {
+export function escapeRegExp(string: string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 };
 export function jsonFromString(str: string, useBetterJSONParse: boolean = true) {
@@ -1569,7 +1536,7 @@ world.beforeEvents.itemUse.subscribe(event => {event.source.teleport
             form.textField("Run Command", "Run Command");
             form.textField("Run Delay", "Run Delay");
             form.toggle("Debug", false);
-            form.show(event.source as Player).then(r => {
+            form.show(event.source as any).then(r => {
                 // This will stop the code when the player closes the form
                 if (r.canceled)
                     return;
@@ -1820,7 +1787,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
         form2.title("Player Debug");
         form2.dropdown("Player Target", String(targetList).split(","), 0)
         form2.dropdown("Player Viewer", String(targetList).split(","), 0)
-        form2.show(players[players.findIndex((x) => x == sourceEntity)]).then(t => {
+        form2.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(t => {
             if (t.canceled)
                 return;
                 let [playerTarget, playerViewer] = t.formValues;
@@ -1902,7 +1869,7 @@ console.error(e, e.stack);
         form2.textField("Entity UUID", "Entity UUID", "0");
         form2.textField("Entity Block Location Index", "0", "0");
         form2.textField("Entity Block Location Coordinates", "overworld, 0, 0, 0", "0");
-        form2.show(players[players.findIndex((x) => x == sourceEntity)]).then(t => {
+        form2.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(t => {
             if (t.canceled)
                 return;
                 let [playerViewer, selectionType, entityUUID, blockLocationIndex, blockLocationCoordinates] = t.formValues;
@@ -1974,7 +1941,7 @@ console.error(e, e.stack);
     form.button("Mange Restricted Areas", "textures/ui/xyz_axis.png");
     form.button("Manage Custom UIs", "textures/ui/feedIcon");
     form.button("Settings", "textures/ui/settings_glyph_color_2x");
-    forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {let r = (ra as ActionFormResponse); 
+    forceShow(form, players[players.findIndex((x) => x == sourceEntity)] as any).then(ra => {let r = (ra as ActionFormResponse); 
         // This will stop the code when the player closes the form
         if (r.canceled) return;
     
@@ -2209,7 +2176,7 @@ console.error(e, e.stack);
         form2.dropdown("Player Target", String(targetList).split(","), 0)
         form2.dropdown("Player Viewer", String(targetList).split(","), 0)
         form2.toggle("Debug2", false);
-        form2.show(event.sourceEntity as Player).then(t => {
+        form2.show(event.sourceEntity as any).then(t => {
             if (t.canceled)
                 return;
                 let [slotNumber, slotType, playerTarget, playerViewer, debug2] = t.formValues;
@@ -2306,7 +2273,7 @@ console.error(e, e.stack);
         form.textField("To Container Block", "overworld, 500, 60, 500", players[playerTargetB].dimension.id + ", " + players[playerTargetB].location.x + ", " + players[playerTargetB].location.y + ", " + players[playerTargetB].location.z)
         form.toggle("Debug", false);
     
-        form.show(players[playerViewerB]).then(r => {
+        form.show(players[playerViewerB] as any).then(r => {
             // This will stop the code when the player closes the form
             if (r.canceled) return;
         
@@ -2483,7 +2450,7 @@ console.error(e, e.stack);
     if (id == "andexdb:inventoryTransfer") {
         let form = new ActionFormData();
         let players = world.getPlayers();
-        let callerPlayer = players[players.findIndex((x) => x == sourceEntity)]
+        let callerPlayer = players[players.findIndex((x) => x == sourceEntity)] as any
     form.title("Inventory Transfer");
     form.body("Choose menu to open. ");
     form.button("Inventory", "textures/items/stick");
@@ -2491,7 +2458,7 @@ console.error(e, e.stack);
     form.button("Full Inventory + Hotbar", "textures/items/stick");
     form.button("Inventory Row", "textures/ui/ui_debug_glyph_color");
     form.button("§4Edit The Block Presets", "textures/ui/ui_debug_glyph_color");
-    form.show(players[players.findIndex((x) => x == sourceEntity)]).then(r => {
+    form.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(r => {
         // This will stop the code when the player closes the form
         if (r.canceled) return;
     
@@ -2506,7 +2473,7 @@ console.error(e, e.stack);
             form2.button("Block & Block", "textures/items/stick");
             form2.button("Player & Player", "textures/ui/switch_accounts");
             form2.button("Block & Player", "textures/items/stick");
-            form2.show(players[players.findIndex((x) => x == sourceEntity)]).then(s => {
+            form2.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(s => {
             // This will stop the code when the player closes the form
                 if (s.canceled) return;
     
@@ -2519,7 +2486,7 @@ console.error(e, e.stack);
                         form3.button("Use Coordinates And Dimension Instead", "textures/items/stick");
                         form3.button("Preset 1", "textures/items/stick");
                         form3.button("Edit Presets", "textures/items/stick");
-                        form3.show(players[players.findIndex((x) => x == sourceEntity)]).then(s => {
+                        form3.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(s => {
                         // This will stop the code when the player closes the form
                             if (s.canceled) return;
                 
@@ -2564,7 +2531,7 @@ console.error(e, e.stack);
                     form3.dropdown("Block", ["Position", "Preset 1", "Preset 2", "Preset 3"], 0)
                     form3.textField("To Block", "dimension, x, y, z", callerPlayer.dimension.id + ", " + Math.floor(callerPlayer.location.x) + ", " + Math.floor(callerPlayer.location.y) + ", " + Math.floor(callerPlayer.location.z))
                     form3.toggle("Debug2", false);
-                    form3.show(event.sourceEntity as Player).then(t => {
+                    form3.show(event.sourceEntity as any).then(t => {
                         if (t.canceled)
                             return;
                             let [transferType, fromBlockSelectionMode, fromBlockPosition, toBlockSelectionMode, toBlockPosition, debug2] = t.formValues;
@@ -2631,7 +2598,7 @@ console.error(e, e.stack);
                     form2.dropdown("From Player", String(targetList).split(","), 0)
                     form2.dropdown("To Player", String(targetList).split(","), 0)
                     form2.toggle("Debug2", false);
-                    form2.show(event.sourceEntity as Player).then(t => {
+                    form2.show(event.sourceEntity as any).then(t => {
                         if (t.canceled)
                             return;
                             let [transferType, playerTarget, playerViewer, debug2] = t.formValues;
@@ -2681,7 +2648,7 @@ console.error(e, e.stack);
                         form3.button("Use Coordinates And Dimension Instead", "textures/items/stick");
                         form3.button("Preset 1", "textures/items/stick");
                         form3.button("Edit Presets", "textures/items/stick");
-                        form3.show(players[players.findIndex((x) => x == sourceEntity)]).then(s => {
+                        form3.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(s => {
                         // This will stop the code when the player closes the form
                             if (s.canceled) return;
                 
@@ -2727,7 +2694,7 @@ console.error(e, e.stack);
                     form4.textField("To Block", "dimension, x, y, z", callerPlayer.dimension.id + ", " + Math.floor(callerPlayer.location.x) + ", " + Math.floor(callerPlayer.location.y) + ", " + Math.floor(callerPlayer.location.z))*/
                     form4.dropdown("Player", String(targetList2).split(","), 0)
                     form4.toggle("Debug2", false);
-                    form4.show(event.sourceEntity as Player).then(t => {
+                    form4.show(event.sourceEntity as any).then(t => {
                         if (t.canceled)
                             return;
                             let [transferType, blockSelectionMode, fromBlockPosition, playerTarget, debug2] = t.formValues;
@@ -2805,7 +2772,7 @@ console.error(e, e.stack);
             form3.body("Choose menu to open. ");
             form3.button("Player & Player", "textures/ui/switch_accounts.png");
             form3.button("Block & Player", "textures/items/stick");
-            form3.show(players[players.findIndex((x) => x == sourceEntity)]).then(u => {
+            form3.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(u => {
             // This will stop the code when the player closes the form
                 if (u.canceled) return;
     
@@ -2825,7 +2792,7 @@ console.error(e, e.stack);
                     form2.dropdown("From Player", String(targetList).split(","), 0)
                     form2.dropdown("To Player", String(targetList).split(","), 0)
                     form2.toggle("Debug2", false);
-                    form2.show(event.sourceEntity as Player).then(t => {
+                    form2.show(event.sourceEntity as any).then(t => {
                         if (t.canceled)
                             return;
                             let [transferType, playerTarget, playerViewer, debug2] = t.formValues;
@@ -2885,7 +2852,7 @@ console.error(e, e.stack);
             form5.body("Choose menu to open. ");
             form5.button("Player & Player", "textures/ui/switch_accounts");
             form5.button("Block & Player", "textures/items/stick");
-            form5.show(players[players.findIndex((x) => x == sourceEntity)]).then(s => {
+            form5.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(s => {
             // This will stop the code when the player closes the form
                 if (s.canceled) return;
     
@@ -2904,7 +2871,7 @@ console.error(e, e.stack);
                     form2.dropdown("From Player", String(targetList).split(","), 0)
                     form2.dropdown("To Player", String(targetList).split(","), 0)
                     form2.toggle("Debug2", false);
-                    form2.show(event.sourceEntity as Player).then(t => {
+                    form2.show(event.sourceEntity as any).then(t => {
                         if (t.canceled)
                             return;
                             let [transferType, playerTarget, playerViewer, debug2] = t.formValues;
@@ -2966,7 +2933,7 @@ console.error(e, e.stack);
             form4.button("Block & Block", "textures/ui/train");
             form4.button("Player & Player", "textures/ui/switch_accounts");
             form4.button("Block & Player", "textures/ui/upload_glyph");
-            form4.show(players[players.findIndex((x) => x == sourceEntity)]).then(s => {
+            form4.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(s => {
             // This will stop the code when the player closes the form
                 if (s.canceled) return;
     
@@ -2988,7 +2955,7 @@ console.error(e, e.stack);
                     form3.dropdown("Block", ["Position", "Preset 1", "Preset 2", "Preset 3"], 0)
                     form3.textField("To Player", "dimension, x, y, z", callerPlayer.dimension.id + ", " + Math.floor(callerPlayer.location.x) + ", " + Math.floor(callerPlayer.location.y) + ", " + Math.floor(callerPlayer.location.z))
                     form3.toggle("Debug2", false);
-                    form3.show(event.sourceEntity as Player).then(t => {
+                    form3.show(event.sourceEntity as any).then(t => {
                         if (t.canceled)
                             return;
                             let [transferType, inventoryRow, fromBlockSelectionMode, fromBlockPosition, toBlockSelectionMode, toBlockPosition, debug2] = t.formValues;
@@ -3056,7 +3023,7 @@ console.error(e, e.stack);
                     form2.dropdown("From Player", String(targetList).split(","), 0)
                     form2.dropdown("To Player", String(targetList).split(","), 0)
                     form2.toggle("Debug2", false);
-                    form2.show(event.sourceEntity as Player).then(t => {
+                    form2.show(event.sourceEntity as any).then(t => {
                         if (t.canceled)
                             return;
                             let [transferType, inventoryRow, playerTarget, playerViewer, debug2] = t.formValues;
@@ -3116,7 +3083,7 @@ console.error(e, e.stack);
                 form6.dropdown("Preset Name", ["Preset 1", "Preset 2", "Preset 3", "Preset 4", "Preset 5", "Preset 6"], 0)
                 form6.textField("From Block", "dimension, x, y, z", callerPlayer.dimension.id + ", " + Math.floor(callerPlayer.location.x) + ", " + Math.floor(callerPlayer.location.y) + ", " + Math.floor(callerPlayer.location.z))
                 form6.toggle("Debug2", false);
-                form6.show(players[players.findIndex((x) => x == sourceEntity)]).then(s => {
+                form6.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(s => {
                 // This will stop the code when the player closes the form
                     if (s.canceled) return;
         
@@ -3130,7 +3097,7 @@ console.error(e, e.stack);
                             form3.textField("Block Location", "dimension, x, y, z", presetValues)
                         }
                         form3.toggle("Debug2", false);
-                        form3.show(event.sourceEntity as Player).then(t => {
+                        form3.show(event.sourceEntity as any).then(t => {
                             if (t.canceled)
                                 return;
                                 let [newBlockPresetValues, debug2] = t.formValues;
@@ -3170,7 +3137,7 @@ console.error(e, e.stack);
         form2.dropdown("Player Target", String(targetList).split(","), 0)
         form2.dropdown("Player Viewer", String(targetList).split(","), 0)
         form2.toggle("Debug2", false);
-        form2.show(event.sourceEntity as Player).then(t => {
+        form2.show(event.sourceEntity as any).then(t => {
             if (t.canceled)
                 return;
                 let [slotNumber, playerTarget, playerViewer, debug2] = t.formValues;
@@ -3261,7 +3228,7 @@ console.error(e, e.stack);
         form.textField("To Container Block", "overworld, 500, 60, 500", players[playerTargetB].dimension.id + ", " + players[playerTargetB].location.x + ", " + players[playerTargetB].location.y + ", " + players[playerTargetB].location.z)
         form.toggle("Debug", false);
     
-        form.show(players[playerViewerB]).then(r => {
+        form.show(players[playerViewerB] as any).then(r => {
             // This will stop the code when the player closes the form
             if (r.canceled) return;
         
@@ -3500,7 +3467,7 @@ console.error(e, e.stack);
             form.toggle("resetLevel", false)
             form.toggle("§4Debug", false)
   
-            form.show(playerList[playerViewerB]).then(r => {
+            form.show(playerList[playerViewerB] as any).then(r => {
                 if (r.canceled) return;
     
                 let [ changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug ] = r.formValues;
@@ -3608,7 +3575,7 @@ console.error(e, e.stack);
         form2.title("Player Controller");
         form2.dropdown("Player Target", String(targetList).split(","), 0)
         form2.dropdown("Player Viewer", String(targetList).split(","), 0)
-        form2.show(playerList[playerList.findIndex((x) => x == sourceEntity)]).then(t => {
+        form2.show(playerList[playerList.findIndex((x) => x == sourceEntity)] as any).then(t => {
             if (t.canceled)
                 return;
                 let [playerTarget, playerViewer] = t.formValues;
@@ -3721,7 +3688,7 @@ if (id == "andexdb:playerControllerForAdnexter8AdminsOnlyDoNotUseThisUnlessYouAr
         form.toggle("resetLevel", false)
         form.toggle("§4Debug", false)
 
-        form.show(playerList[playerViewerB]).then(r => {
+        form.show(playerList[playerViewerB] as any).then(r => {
             if (r.canceled) return;
 
             let [ changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug ] = r.formValues;
@@ -3827,7 +3794,7 @@ if (id == "andexdb:playerControllerForAdnexter8AdminsOnlyDoNotUseThisUnlessYouAr
     form2.title("Player Controller");
     form2.dropdown("Player Target", String(targetList).split(","), 0)
     form2.dropdown("Player Viewer", String(targetList).split(","), 0)
-    form2.show(playerList[playerList.findIndex((x) => x == sourceEntity)]).then(t => {
+    form2.show(playerList[playerList.findIndex((x) => x == sourceEntity)] as any).then(t => {
         if (t.canceled)
             return;
             let [playerTarget, playerViewer] = t.formValues;
@@ -4163,7 +4130,7 @@ forceShow(form, (sourceEntity as Player)).then(ro => {
         form2.dropdown("Player Target", String(targetList).split(","), 0)
         form2.dropdown("Player Viewer", String(targetList).split(","), 0)
         form2.toggle("Debug2", false);*/
-        forceShow(form2, (event.sourceEntity as Player)).then(to => {
+        forceShow(form2, (event.sourceEntity as any)).then(to => {
             let t = (to as ModalFormResponse)
             if (t.canceled) return;
         
@@ -4269,7 +4236,7 @@ forceShow(form, (sourceEntity as Player)).then(ro => {
         form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
         form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
         form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
-        forceShow(form2, (event.sourceEntity as Player)).then(to => {
+        forceShow(form2, (event.sourceEntity as any)).then(to => {
             let t = (to as ModalFormResponse)
             if (t.canceled) return;*//*
             GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
@@ -4319,7 +4286,7 @@ forceShow(form, (sourceEntity as Player)).then(ro => {
         form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
         form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
         form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));*//*
-        forceShow(form2, (event.sourceEntity as Player)).then(to => {
+        forceShow(form2, (event.sourceEntity as any)).then(to => {
             let t = (to as ModalFormResponse)
             if (t.canceled) return;*//*
             GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
@@ -4355,7 +4322,7 @@ forceShow(form, (sourceEntity as Player)).then(ro => {
         }
         let formId = event.message ?? "test1234"
         let form = editCustomFormUI(formId)
-        forceShow(form.form, (event.sourceEntity as Player)).then(to => {
+        forceShow(form.form, (event.sourceEntity as any)).then(to => {
             let t = (to as ModalFormResponse)
             if (t.canceled) return;
             world.setDynamicProperty(`customUI:${formId}`, `${t.formValues[0]}|${t.formValues[1]}`)
@@ -4371,10 +4338,10 @@ forceShow(form, (sourceEntity as Player)).then(ro => {
     });
     }
     if (id == "andexdb:customUISelector") {
-        customFormListSelectionMenu((event.sourceEntity as Player)); 
+        customFormListSelectionMenu((event.sourceEntity as any)); 
     }
     if (id == "andexdb:showCustomUI") {
-        showCustomFormUI(event.message, (event.sourceEntity as Player)); 
+        showCustomFormUI(event.message, (event.sourceEntity as any)); 
     }
     if (id == "andexdb:debugStickMenuB"||id == "andexdb:editorStickMenuB") {/*
         let form = new ModalFormData();
@@ -4403,7 +4370,7 @@ forceShow(form, (sourceEntity as Player)).then(ro => {
         form.toggle("includePassableBlocks", true)
         form.textField("maxDistance ( Optional )", "maxDistance ( Optional )")
   
-    form.show(playerList[playerList.findIndex((x) => x == sourceEntity)]).then(r => {
+    form.show(playerList[playerList.findIndex((x) => x == sourceEntity)] as any).then(r => {
         if (r.canceled) return;
     
         let [ includeLiquidBlocks, includePassableBlocks, maxDistance ] = r.formValues;
@@ -4629,7 +4596,7 @@ forceShow(form, (sourceEntity as Player)).then(ro => {
         if(block2.getComponent("sign") != undefined){form.textField(`Sign Back Text Color\Text: §g${block2.getComponent("sign").getTextDyeColor(SignSide.Back)}`, `dye color`, block2.getComponent("sign").getTextDyeColor(SignSide.Back))}else{form.textField(`§4Sign Back Text Color`, `§r§4Unavailable`)}
         form.toggle("setSignIsWaxed", block2.getComponent("sign")?.isWaxed)
   
-    form.show(playerList[playerList.findIndex((x) => x == sourceEntity)]).then(r => {
+    form.show(playerList[playerList.findIndex((x) => x == sourceEntity)] as any).then(r => {
         if (r.canceled) return;
     
         let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled/*, selectedSlot*/, isWaterlogged/*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = r.formValues;
@@ -4748,12 +4715,12 @@ forceShow(form, (sourceEntity as Player)).then(ro => {
       form.toggle("Clear Velocity", false)
       form.toggle("Debug", false)
   
-  form.show(players[players.findIndex((x) => x == sourceEntity)]).then(r => {
+  form.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(r => {
       if (r.canceled) return;
   
       let [ setType, blockPropertyIdentifier, blockPropertyValue, toggle ] = r.formValues;
   
-    players[players.findIndex((x) => x == sourceEntity)].onScreenDisplay.setActionBar("");
+    (players[players.findIndex((x) => x == sourceEntity)] as any).onScreenDisplay.setActionBar("");
   }).catch(e => {
       console.error(e, e.stack);
   });
@@ -4857,7 +4824,7 @@ forceShow(form, (sourceEntity as Player)).then(ro => {
             form.toggle("§4Open The Item Modification Form Afterwards", false)
             form.toggle("§4Debug", false)
   
-            form.show(playerList[playerViewerB]).then(r => {
+            form.show(playerList[playerViewerB] as any).then(r => {
                 if (r.canceled) return;
     
                 let [ changeNameTag, nameTag, triggerEvent, setProperty, propertyIdentifier, propertyValue, resetProperty, resetPropertyIdentifier, setDynamicProperty, dynamicPropertyIdentifier, dynamicPropertyValue, removeDynamicProperty, removeDynamicPropertyIdentifier, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, sendMessage, messageToSend, openTheItemModificationFormAfterwards, debug ] = r.formValues;
@@ -4955,7 +4922,7 @@ forceShow(form, (sourceEntity as Player)).then(ro => {
         form2.dropdown("Player Viewer", String(targetList).split(","), 0)
         form2.dropdown("Selection Type", ["Facing", "Nearest", "§4Block§r§f", "§4UUID"], 0)
         form2.textField("§4Entity UUID", "§4Entity UUID", "0");
-        form2.show(playerList[playerList.findIndex((x) => x == sourceEntity)]).then(t => {
+        form2.show(playerList[playerList.findIndex((x) => x == sourceEntity)] as any).then(t => {
             if (t.canceled)
                 return;
                 let [playerViewer, selectionType, entityUUID] = t.formValues;
@@ -5008,7 +4975,7 @@ console.error(e, e.stack);
       form.toggle("Debug", false)
   
   
-  form.show(players[players.findIndex((x) => x == sourceEntity)]).then(r => {
+  form.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(r => {
       if (r.canceled) return;
   
       let [ nameTag, triggerEvent, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, removeEffect, effectToRemove, removeTag, tagToRemove, setRot, rotX, rotY, teleport, teleportX, teleportY, teleportZ, tryTeleport, tryTeleportX, tryTeleportY, tryTeleportZ, openTheItemModificationFormAfterwards, debug ] = r.formValues;
@@ -5038,10 +5005,10 @@ console.error(e, e.stack);
           try {entity[0].entity.triggerEvent(String(triggerEvent));} catch(e){console.error(e, e.stack);}
       }
   
-  if (players[players.findIndex((x) => x == sourceEntity)].hasTag("showDebug")) {
+  if (players[players.findIndex((x) => x == sourceEntity)] as any.hasTag("showDebug")) {
     system.runInterval( () => {
     players[0].onScreenDisplay.setActionBar("dimension: " + entity[0].entity.dimension + "\nfallDistance: " + entity[0].entity.fallDistance + "\nid: entity[0].entity.id: " + entity[0].entity.id + "\nisClimbing: " + entity[0].entity.isClimbing + "\nisFalling: " + entity[0].entity.isFalling + "\nisInWater: " + entity[0].entity.isInWater + "\nisOnGround: " + entity[0].entity.isOnGround + "\nisSleeping: " + entity[0].entity.isSleeping + "\nisSneaking: " + entity[0].entity.isSneaking + "\nisSprinting: " + entity[0].entity.isSprinting + "\nisSwimming: " + entity[0].entity.isSwimming + "\nlifetimeState: " + entity[0].entity.lifetimeState + "\nlocation: " + entity[0].entity.location + "\nnameTag: " + entity[0].entity.nameTag + "\nscoreboardIdentity(or_the_actor_id_very_long_complicated_number): " + entity[0].entity.scoreboardIdentity + "\ntarget: " + entity[0].entity.target + "\ntypeId: " + entity[0].entity.typeId + "\ngetBlockFromViewDirection(): " + entity[0].entity.getBlockFromViewDirection() + "\ngetComponents(): " + entity[0].entity.getComponents() + "\ngetEffects(): " + entity[0].entity.getEffects() + "\ngetEntitiesFromViewDirection(): " + entity[0].entity.getEntitiesFromViewDirection() + "\ngetHeadLocation(): " + entity[0].entity.getHeadLocation() + "\ngetRotation(): " + entity[0].entity.getRotation() + "\ngetTags(): " + entity[0].entity.getTags() + "\ngetVelocity(): " + entity[0].entity.getVelocity() + "\ngetViewDirection(): " + entity[0].entity.getViewDirection + "\nisValid(): " + entity[0].entity.isValid());
-    if (players[players.findIndex((x) => x == sourceEntity)].hasTag("showDebug") == false) {
+    if (players[players.findIndex((x) => x == sourceEntity)] as any.hasTag("showDebug") == false) {
     return
     }
     }, 2)
@@ -5120,7 +5087,7 @@ console.error(e, e.stack);
             let weatherList2 = ["Clear", "Rain", "Thunder"]
             let weatherList3 = [WeatherType.Clear, WeatherType.Rain, WeatherType.Thunder]
   
-            form.show(playerList[playerList.findIndex((x) => x == sourceEntity)]).then(r => {
+            form.show(playerList[playerList.findIndex((x) => x == sourceEntity)] as any).then(r => {
                 if (r.canceled) return;
     
                 let [ setWeather, weatherType, weatherDimension, weatherDuration, brodcastClientMessage, clientMessageId, clientMessageValue, sendMessage, messageMessage, setAbsoluteTime, newAbsoluteTime, setDefaultSpawnLocation, spawnX, spawnY, spawnZ, setDynamicProperty, dynamicPropertyId, dynamicPropertyValue, setTimeOfDay, newTimeOfDay, spawnEntity, entityIdentifier, entityX, entityY, entityZ, entityDimension, debug ] = r.formValues;
@@ -5594,7 +5561,7 @@ console.error(e, e.stack);
         let block: BlockRaycastHit
         block = undefined
         try {block = sourceEntity.getBlockFromViewDirection({includePassableBlocks: true})} catch(e){}
-        try {(event.sourceEntity as Player).onScreenDisplay.setActionBar("§cRedstone Power: §a" + block.block.getRedstonePower());} catch(e){}
+        try {(event.sourceEntity as any).onScreenDisplay.setActionBar("§cRedstone Power: §a" + block.block.getRedstonePower());} catch(e){}
   
     }
     if (id == "andexdb:getRedstoneAndLiquid") {
@@ -5602,7 +5569,7 @@ console.error(e, e.stack);
         let block: BlockRaycastHit
         block = undefined
         try {block = sourceEntity.getBlockFromViewDirection({includePassableBlocks: true, includeLiquidBlocks: true})} catch(e){}
-        try {(event.sourceEntity as Player).onScreenDisplay.setActionBar("§cRedstone Power: §a" + block.block.getRedstonePower());} catch(e){}
+        try {(event.sourceEntity as any).onScreenDisplay.setActionBar("§cRedstone Power: §a" + block.block.getRedstonePower());} catch(e){}
   
     }
     if (id == "andexdb:getBlockStates") {
@@ -5614,7 +5581,7 @@ console.error(e, e.stack);
         try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]).split(","); } catch(e){console.error(e, e.stack);}*/
         try {block = sourceEntity.getBlockFromViewDirection({includePassableBlocks: true, includeLiquidBlocks: true})} catch(e){}
         try {BlockPermutation.resolve("minecraft:bedrock", block.block.permutation.getAllStates()); } catch(e){if (String(e).includes("Error: Failed to resolve block \"minecraft:bedrock\" with properties")) {blockStatesFullList = "§r§b" + String(e).slice(68, String(e).length - 2).split(",").join("\n§b").split("\":").join("\": §a") + "§r§f";} else  {blockStatesFullList = "§r§cThis block has no block states. §f";}}
-        try {(event.sourceEntity as Player).onScreenDisplay.setActionBar("§eBlock States For §c" + block.block.typeId + "§e: §a\n" + blockStatesFullList);} catch(e){}
+        try {(event.sourceEntity as any).onScreenDisplay.setActionBar("§eBlock States For §c" + block.block.typeId + "§e: §a\n" + blockStatesFullList);} catch(e){}
   
     }
     if (id == "andexdb:getBlockStatesNoLiquid") {
@@ -5626,7 +5593,7 @@ console.error(e, e.stack);
         try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]).split(","); } catch(e){console.error(e, e.stack);}*/
         try {block = sourceEntity.getBlockFromViewDirection({includePassableBlocks: true})} catch(e){}
         try {BlockPermutation.resolve("minecraft:bedrock", block.block.permutation.getAllStates()); } catch(e){if (String(e).includes("Error: Failed to resolve block \"minecraft:bedrock\" with properties")) {blockStatesFullList = "§r§b" + String(e).slice(68, String(e).length - 2).split(",").join("\n§b").split("\":").join("\": §a") + "§r§f";} else  {blockStatesFullList = "§r§cThis block has no block states. §f";}}
-        try {(event.sourceEntity as Player).onScreenDisplay.setActionBar("§eBlock States For §c" + block.block.typeId + "§e: §a\n" + blockStatesFullList);} catch(e){}
+        try {(event.sourceEntity as any).onScreenDisplay.setActionBar("§eBlock States For §c" + block.block.typeId + "§e: §a\n" + blockStatesFullList);} catch(e){}
   
     }
     if (id == "andexdb:spawnWithNoAI") {

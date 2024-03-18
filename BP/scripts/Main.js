@@ -58,8 +58,8 @@ import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, fo
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
-import * as mcServerAdmin from "@minecraft/server-admin";*/
-import * as mcDebugUtilities from "@minecraft/debug-utilities"; /*
+import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as coords from "Main/coordinates";
@@ -67,12 +67,12 @@ import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
-import * as spawnprot from "Main/spawn_protection";
-import { disableWatchdog } from "@minecraft/debug-utilities";
+import * as spawnprot from "Main/spawn_protection"; /*
+import { disableWatchdog } from "@minecraft/debug-utilities";*/
 mcServer;
 mcServerUi; /*
-mcServerAdmin*/
-mcDebugUtilities; /*
+mcServerAdmin*/ /*
+mcDebugUtilities*/ /*
 mcCommon*/
 GameTest; /*
 mcVanillaData*/
@@ -86,8 +86,8 @@ SimulatedPlayer;
 Test;
 let crashEnabled = false;
 let tempSavedVariables = [];
-export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]];
-disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog") ?? (!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") ?? false)) ?? false) ?? true) ?? true);
+export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]; /*
+disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
 system.beforeEvents.watchdogTerminate.subscribe(e => {
     try {
         if (crashEnabled == true) { }
@@ -227,7 +227,30 @@ export function roundPlaceNumberObject(object, place = Number(world.getDynamicPr
     return Object.fromEntries(newObject);
 } /*
 /execute as @e [type=andexsa:custom_arrow] at @s run /scriptevent andexdb:scriptEval let sl = sourceEntity.location; let ol = sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2", "npc", "armor_stand"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location; let d = {x: ol.x-sl.x, y: ol.y-sl.y, z: ol.z-sl.z}; eval("if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.x)*Number(d.x!=0)*d.x, y: Math.abs(1/d.x)*Number(d.y!=0)*d.y, z: Math.abs(1/d.x)*Number(d.z!=0)*d.z})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.y)*Number(d.x!=0)*d.x, y: Math.abs(1/d.y)*Number(d.y!=0)*d.y, z: Math.abs(1/d.y)*Number(d.z!=0)*d.z})}else{sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.z)*Number(d.x!=0)*d.x, y: Math.abs(1/d.z)*Number(d.y!=0)*d.y, z: Math.abs(1/d.z)*Number(d.z!=0)*d.z})}}}; ");*/
-export function arrayModifier(array, callbackfn) { array.forEach((v, i, a) => { array[i] = callbackfn(v, i, a); }); return array; }
+export function arrayModifierOld(array, callbackfn) { array.forEach((v, i, a) => { array[i] = callbackfn(v, i, a); }); return array; }
+export function arrayModifier(sourcearray, callbackfn, overwrite = false) {
+    if (overwrite) {
+        sourcearray.forEach((v, i, a) => {
+            sourcearray[i] = callbackfn(v, i, a);
+        });
+        return sourcearray;
+    }
+    else {
+        let newarray;
+        try {
+            newarray = structuredClone(sourcearray);
+        }
+        catch (e) {
+            newarray = sourcearray;
+        }
+        ;
+        newarray.forEach((v, i, a) => {
+            newarray[i] = callbackfn(v, i, a);
+        });
+        return newarray;
+    }
+}
+;
 export function getArrayElementProperty(array, property) { array.forEach((v, i, a) => { array[i] = eval(`v.${property}`); }); return array; }
 export function combineObjects(obj1, obj2) { return Object.fromEntries(Object.entries(obj1).concat(Object.entries(obj2))); }
 export function generateCUID(classid) { let CUID = Number(world.getDynamicProperty("cuidCounter:" + (classid ?? "default")) ?? 0) + 1; world.setDynamicProperty("cuidCounter:" + (classid ?? "default"), CUID); return CUID; }
@@ -284,7 +307,7 @@ export function fromBaseToBase(num, base = 10, radix = 10, keysa = radix > 62 ? 
  * @param {boolean} keepUndefined Whether or not to include undefined variables when parsing, defaults to true.
  * @returns {any} The parsed JSON data.
  */
-export function JSONParse(text, keepUndefined = true) {
+export function JSONParseOld(text, keepUndefined = true) {
     let g = [];
     let h = [];
     let a = JSON.parse(text.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"'), function (k, v) {
@@ -322,7 +345,7 @@ export function JSONParse(text, keepUndefined = true) {
  * @param {string|number} space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
  * @returns {any} The JSON string.
  */
-export function JSONStringify(value, keepUndefined = false, space) {
+export function JSONStringifyOld(value, keepUndefined = false, space) {
     return JSON.stringify(value, function (k, v) {
         if (v === Infinity)
             return "{{Infinity}}";
@@ -336,7 +359,360 @@ export function JSONStringify(value, keepUndefined = false, space) {
             v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}');
         }
         return v;
-    }, space).replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '$1').replace(/(?<="(?:\s*):(?:\s*))"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"');
+    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
+}
+export function JSONParse(JSONString, keepUndefined = true) {
+    let g = [];
+    let h = [];
+    let a = JSON.parse(JSONString.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"').replace(/(?<=(?:[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\[)[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*),(?:\s*)|[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*)\[(?:\s*)))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,\]](?:\s*))/g, '"{{$1}}"').replace(/^(Infinity|NaN|-Infinity|undefined)$/g, '"{{$1}}"'), function (k, v) {
+        if (v === '{{Infinity}}')
+            return Infinity;
+        else if (v === '{{-Infinity}}')
+            return -Infinity;
+        else if (v === '{{NaN}}')
+            return NaN;
+        else if (v === '{{undefined}}') {
+            g.push(k);
+            if (keepUndefined) {
+                return v;
+            }
+            else {
+                undefined;
+            }
+        }
+        ;
+        h.push(k);
+        return v;
+    });
+    function recursiveFind(a) {
+        if (a instanceof Array) {
+            let b = a;
+            b.forEach((v, i) => {
+                if (v instanceof Array || v instanceof Object) {
+                    b[i] = recursiveFind(v);
+                    return;
+                }
+                ;
+                if (String(v) == "{{undefined}}") {
+                    b[i] = undefined;
+                    return;
+                }
+                ;
+            });
+            a = b;
+            {
+                let b = a;
+                !!b.forEach((va, i) => {
+                    if (String(va).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)) {
+                        b[i] = va.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}');
+                    }
+                    a = b;
+                });
+            }
+            ;
+        }
+        else if (a instanceof Object) {
+            let b = Object.entries(a);
+            b.forEach((v, i) => {
+                if (v[1] instanceof Object || v[1] instanceof Array) {
+                    b[i] = [v[0], recursiveFind(v[1])];
+                    return;
+                }
+                ;
+                if (String(v[1]) == "{{undefined}}") {
+                    b[i] = [v[0], undefined];
+                    return;
+                }
+                ;
+            });
+            a = Object.fromEntries(b);
+            {
+                let b = Object.entries(a);
+                b.filter(b => !!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)).forEach((v, i) => {
+                    b[b.findIndex(b => b[0] == v[0])] = [v[0], v[1].replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}')];
+                    a = Object.fromEntries(b);
+                });
+            }
+            ;
+        }
+        else if (typeof a === "string") {
+            if (a == "{{undefined}}") {
+                a = undefined;
+            }
+            else {
+                if (a.match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)) {
+                    a = a.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}');
+                }
+            }
+        }
+        ;
+        return a;
+    }
+    a = recursiveFind(a);
+    return a;
+}
+;
+export function JSONStringify(JSONObject, keepUndefined = false) {
+    return JSON.stringify(JSONObject, function (k, v) {
+        if (v === Infinity)
+            return "{{Infinity}}";
+        else if (v === -Infinity)
+            return "{{-Infinity}}";
+        else if (Number.isNaN(v))
+            return "{{NaN}}";
+        else if (v === undefined && keepUndefined)
+            return "{{undefined}}";
+        if (String(v).match(/^{{(Infinity|NaN|-Infinity|undefined)}}$/)) {
+            v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}');
+        }
+        return v;
+    }).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
+}
+;
+export function getParametersFromString(string) {
+    function arrayModifier(sourcearray, callbackfn, overwrite = false) {
+        if (overwrite) {
+            sourcearray.forEach((v, i, a) => {
+                sourcearray[i] = callbackfn(v, i, a);
+            });
+            return sourcearray;
+        }
+        else {
+            let newarray;
+            try {
+                newarray = structuredClone(sourcearray);
+            }
+            catch (e) {
+                newarray = sourcearray;
+            }
+            ;
+            newarray.forEach((v, i, a) => {
+                newarray[i] = callbackfn(v, i, a);
+            });
+            return newarray;
+        }
+    }
+    ;
+    const getStringsFromString = (ce) => {
+        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/dgis));
+        let cc = [];
+        cc.push({ t: "non-json", v: ce.substring(0, cd[0]?.indices[0][0]) });
+        cd.forEach((v, i) => {
+            cc.push({ t: "json", v: v[0] });
+            cc.push({ t: "non-json", v: ce.substring(v?.indices[0][1], cd[i + 1]?.indices[0][0] ?? ce.length) });
+        });
+        return cc;
+    };
+    let rawdata = extractJSONStrings(string);
+    let a = rawdata;
+    let b = string;
+    let c = [];
+    c.push(...getStringsFromString(b.substring(0, a[0]?.indices[0][0])));
+    a.forEach((v, i) => {
+        c.push({ t: "json", v: v[0] });
+        c.push(...getStringsFromString(b.substring(v?.indices[0][1], a[i + 1]?.indices[0][0] ?? b.length)));
+    });
+    let e = [];
+    let d = arrayModifier(c, (cb, i) => arrayModifier((cb.t == "json" ? [cb.v] : String(cb.v).trimStart().trimEnd().split(/\x20+?/g)), v => {
+        if (v instanceof Function) {
+            return { s: v, v: v.toString() };
+        }
+        else {
+            try {
+                return { s: v, v: JSONParse(String(v)) };
+            }
+            catch (f) {
+                e.push({ i: i, v: f });
+                return { s: v, v: String(v) };
+            }
+        }
+    }), false);
+    let f = [];
+    arrayModifier(d, d => arrayModifier(d, d => d.v)).forEach(d => f.push(...d));
+    let h = [];
+    d.forEach(d => h.push(...d));
+    return {
+        rawdata: a,
+        input: b,
+        resultAndTypeList: c,
+        separatedResultList: arrayModifier(d, d => arrayModifier(d, d => d.v)),
+        errors: e,
+        unfilteredresults: f,
+        results: f.filter(f => f != ""),
+        unfilteredresultsincludingunmodified: h,
+        resultsincludingunmodified: h.filter(h => h.v != "")
+    };
+}
+export function getParametersFromExtractedJSON(rawdata) {
+    function arrayModifier(sourcearray, callbackfn, overwrite = false) {
+        if (overwrite) {
+            sourcearray.forEach((v, i, a) => {
+                sourcearray[i] = callbackfn(v, i, a);
+            });
+            return sourcearray;
+        }
+        else {
+            let newarray;
+            try {
+                newarray = structuredClone(sourcearray);
+            }
+            catch (e) {
+                newarray = sourcearray;
+            }
+            ;
+            newarray.forEach((v, i, a) => {
+                newarray[i] = callbackfn(v, i, a);
+            });
+            return newarray;
+        }
+    }
+    ;
+    const getStringsFromString = (ce) => {
+        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/dgis));
+        let cc = [];
+        cc.push({
+            t: "non-json",
+            v: ce.substring(0, cd[0]?.indices[0][0])
+        });
+        cd.forEach((v, i) => {
+            cc.push({
+                t: "json",
+                v: v[0]
+            });
+            cc.push({
+                t: "non-json",
+                v: ce.substring(v?.indices[0][1], cd[0][i + 1]?.indices[0][0] ?? ce.length)
+            });
+        });
+        return cc;
+    };
+    let a = rawdata;
+    let b = rawdata[0].input;
+    let c = [];
+    c.push(...getStringsFromString(b.substring(0, a[0]?.indices[0][0])));
+    a.forEach((v, i) => {
+        c.push({ t: "json", v: v[0] });
+        c.push(...getStringsFromString(b.substring(v?.indices[0][1], a[i + 1]?.indices[0][0] ?? b.length)));
+    });
+    c;
+    let e = [];
+    let d = arrayModifier(c, (cb, i) => arrayModifier((cb.t == "json" ? [cb.v] : String(cb.v).trimStart().trimEnd().split(/\x20+?/g)), v => {
+        if (v instanceof Function) {
+            return { s: v, v: v.toString() };
+        }
+        else {
+            try {
+                return { s: v, v: JSONParse(String(v)) };
+            }
+            catch (f) {
+                e.push({ i: i, v: f });
+                return { s: v, v: String(v) };
+            }
+        }
+    }), false);
+    let f = [];
+    arrayModifier(d, d => arrayModifier(d, d => d.v)).forEach(d => f.push(...d));
+    let h = [];
+    d.forEach(d => h.push(...d));
+    return {
+        input: a,
+        originalinput: b,
+        resultAndTypeList: c,
+        separatedResultList: d,
+        errors: e,
+        unfilteredresults: f,
+        results: f.filter(f => f != ""),
+        unfilteredresultsincludingunmodified: h,
+        resultsincludingunmodified: h.filter(f => f.v != "")
+    };
+}
+export function extractJSONStrings(inputString, includeOtherResultData = true) {
+    const jsonStringArray = [];
+    let currentIndex = 0;
+    let inquotes = false;
+    while (currentIndex < inputString.length) {
+        let currentChar = inputString[currentIndex];
+        if (inputString[currentIndex] == "\"" && !!inputString.slice(0, currentIndex + 1).match(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))"$/g)) {
+            inquotes = !inquotes;
+        }
+        // Find potential start of JSON string
+        if ((currentChar === '{' || currentChar === '[') && !inquotes) {
+            let jsonString = '';
+            let openBrackets = 0;
+            let closeBrackets = 0;
+            // Iterate until balanced brackets are found
+            for (let i = currentIndex; i < inputString.length; i++) {
+                jsonString += inputString[i];
+                if ((inputString[i] === '{' || inputString[i] === '[') && !inquotes) {
+                    openBrackets++;
+                }
+                else if ((inputString[i] === '}' || inputString[i] === ']') && !inquotes) {
+                    closeBrackets++;
+                }
+                if (inputString[i] == "\"" && !!inputString.slice(0, i + 1).match(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))"$/g)) {
+                    inquotes = !inquotes;
+                }
+                // If brackets are balanced, attempt to parse JSON
+                if (openBrackets === closeBrackets) {
+                    try {
+                        JSONParse(jsonString); // Attempt to parse JSON
+                        jsonStringArray.push(includeOtherResultData ? (() => {
+                            let atest = Array.from((" ".repeat(currentIndex) + inputString.slice(currentIndex))?.matchAll(new RegExp("")?.compile("" + escapeRegExp(jsonString) + "", `dg`)))[0];
+                            try {
+                                atest.value = JSONParse(atest[0]);
+                            }
+                            catch (e) {
+                                atest.value = atest[0];
+                            }
+                            ;
+                            atest.modifiedinput = structuredClone(atest.input);
+                            atest.input = inputString;
+                            atest.evaluationindex = currentIndex;
+                            return atest;
+                        })() : jsonString); // Convert string into RegExp match data, then push valid JSON string to array. 
+                        currentIndex = i;
+                        break;
+                    }
+                    catch (error) {
+                        // Invalid JSON, continue searching
+                    }
+                }
+            }
+        }
+        currentIndex++;
+    }
+    return jsonStringArray;
+}
+export function customModulo(dividend, min, max, inclusive = false) {
+    inclusive = Number(inclusive);
+    max += inclusive;
+    if (min >= max) {
+        throw new Error('Invalid range: min value must be less than max value');
+    }
+    if (!Number.isFinite(dividend)) {
+        return dividend;
+    }
+    if (dividend < min) {
+        const range = max - min;
+        return customModulo(dividend + range, min, max);
+    }
+    if (dividend >= max) {
+        const range = max - min;
+        return customModulo(dividend - range, min, max);
+    }
+    return dividend;
+}
+export function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+;
+export function jsonFromString(str, useBetterJSONParse = true) {
+    const regex = /([{\["]{1}([,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]|".*?")+[}\]"]{1}|["]{1}(([^(")]|\\")*)+(?<!\\)["]){1}/gis;
+    const matches = str.match(regex);
+    if (useBetterJSONParse)
+        return matches.map((m) => JSONParse(m));
+    else
+        return matches.map((m) => JSON.parse(m));
 }
 export function targetSelector(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return Number((selectedEntityUUIDValue)); }
 export function targetSelectorB(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return world.getDimension(DimensionTypes.getAll().find((dimension) => (world.getDimension(dimension.typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)))).typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)); } /*
@@ -2470,7 +2846,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
     form.button("Mange Restricted Areas", "textures/ui/xyz_axis.png");
     form.button("Manage Custom UIs", "textures/ui/feedIcon");
     form.button("Settings", "textures/ui/settings_glyph_color_2x");
-    forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {let r = (ra as ActionFormResponse);
+    forceShow(form, players[players.findIndex((x) => x == sourceEntity)] as any).then(ra => {let r = (ra as ActionFormResponse);
         // This will stop the code when the player closes the form
         if (r.canceled) return;
     
@@ -3343,7 +3719,7 @@ console.error(e, e.stack);
                                 form3.button("Use Coordinates And Dimension Instead", "textures/items/stick");
                                 form3.button("Preset 1", "textures/items/stick");
                                 form3.button("Edit Presets", "textures/items/stick");
-                                form3.show(players[players.findIndex((x) => x == sourceEntity)]).then(s => {
+                                form3.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(s => {
                                 // This will stop the code when the player closes the form
                                     if (s.canceled) return;
                         
@@ -3542,7 +3918,7 @@ console.error(e, e.stack);
                                 form3.button("Use Coordinates And Dimension Instead", "textures/items/stick");
                                 form3.button("Preset 1", "textures/items/stick");
                                 form3.button("Edit Presets", "textures/items/stick");
-                                form3.show(players[players.findIndex((x) => x == sourceEntity)]).then(s => {
+                                form3.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(s => {
                                 // This will stop the code when the player closes the form
                                     if (s.canceled) return;
                         
@@ -5905,7 +6281,7 @@ console.error(e, e.stack);
         form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
         form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
         form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
-        forceShow(form2, (event.sourceEntity as Player)).then(to => {
+        forceShow(form2, (event.sourceEntity as any)).then(to => {
             let t = (to as ModalFormResponse)
             if (t.canceled) return;*/ /*
     GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
@@ -5955,7 +6331,7 @@ console.error(e, e.stack);
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));*/ /*
-    forceShow(form2, (event.sourceEntity as Player)).then(to => {
+    forceShow(form2, (event.sourceEntity as any)).then(to => {
         let t = (to as ModalFormResponse)
         if (t.canceled) return;*/ /*
     GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
@@ -6982,7 +7358,7 @@ console.error(e, e.stack);
         form.toggle("Debug", false)
     
     
-    form.show(players[players.findIndex((x) => x == sourceEntity)]).then(r => {
+    form.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(r => {
         if (r.canceled) return;
     
         let [ nameTag, triggerEvent, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, removeEffect, effectToRemove, removeTag, tagToRemove, setRot, rotX, rotY, teleport, teleportX, teleportY, teleportZ, tryTeleport, tryTeleportX, tryTeleportY, tryTeleportZ, openTheItemModificationFormAfterwards, debug ] = r.formValues;
@@ -7012,10 +7388,10 @@ console.error(e, e.stack);
             try {entity[0].entity.triggerEvent(String(triggerEvent));} catch(e){console.error(e, e.stack);}
         }
     
-    if (players[players.findIndex((x) => x == sourceEntity)].hasTag("showDebug")) {
+    if (players[players.findIndex((x) => x == sourceEntity)] as any.hasTag("showDebug")) {
       system.runInterval( () => {
       players[0].onScreenDisplay.setActionBar("dimension: " + entity[0].entity.dimension + "\nfallDistance: " + entity[0].entity.fallDistance + "\nid: entity[0].entity.id: " + entity[0].entity.id + "\nisClimbing: " + entity[0].entity.isClimbing + "\nisFalling: " + entity[0].entity.isFalling + "\nisInWater: " + entity[0].entity.isInWater + "\nisOnGround: " + entity[0].entity.isOnGround + "\nisSleeping: " + entity[0].entity.isSleeping + "\nisSneaking: " + entity[0].entity.isSneaking + "\nisSprinting: " + entity[0].entity.isSprinting + "\nisSwimming: " + entity[0].entity.isSwimming + "\nlifetimeState: " + entity[0].entity.lifetimeState + "\nlocation: " + entity[0].entity.location + "\nnameTag: " + entity[0].entity.nameTag + "\nscoreboardIdentity(or_the_actor_id_very_long_complicated_number): " + entity[0].entity.scoreboardIdentity + "\ntarget: " + entity[0].entity.target + "\ntypeId: " + entity[0].entity.typeId + "\ngetBlockFromViewDirection(): " + entity[0].entity.getBlockFromViewDirection() + "\ngetComponents(): " + entity[0].entity.getComponents() + "\ngetEffects(): " + entity[0].entity.getEffects() + "\ngetEntitiesFromViewDirection(): " + entity[0].entity.getEntitiesFromViewDirection() + "\ngetHeadLocation(): " + entity[0].entity.getHeadLocation() + "\ngetRotation(): " + entity[0].entity.getRotation() + "\ngetTags(): " + entity[0].entity.getTags() + "\ngetVelocity(): " + entity[0].entity.getVelocity() + "\ngetViewDirection(): " + entity[0].entity.getViewDirection + "\nisValid(): " + entity[0].entity.isValid());
-      if (players[players.findIndex((x) => x == sourceEntity)].hasTag("showDebug") == false) {
+      if (players[players.findIndex((x) => x == sourceEntity)] as any.hasTag("showDebug") == false) {
       return
       }
       }, 2)
