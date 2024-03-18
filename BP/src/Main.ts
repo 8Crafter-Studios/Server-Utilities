@@ -394,7 +394,7 @@ function JSONStringify(JSONObject, keepUndefined = false) {
 };
 
 function getParametersFromString(string) {
-    const arrayModifier = (array, callbackfn, overwrite = false) => {
+    const arrayModifier = (array: any[], callbackfn, overwrite = false) => {
         if (overwrite) {
             array.forEach((v, i, a) => {
                 array[i] = callbackfn(v, i, a)
