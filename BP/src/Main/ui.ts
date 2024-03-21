@@ -1,4 +1,4 @@
-import { Player, system, world, Entity, DimensionLocation, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Vector, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode } from "@minecraft/server";
+import { Player, system, world, Entity, type DimensionLocation, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Vector, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
 import { arrayModifier, format_version, getUICustomForm } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
@@ -505,7 +505,9 @@ export function personalSettings(sourceEntity: Entity|Player){
     form2.textField("§l§frankDisplaySuffix§r§f\nSuffix that appears after your chat ranks in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ?? "§r§f]"));
     form2.textField("§l§fnameDisplayPrefix§r§f\nPrefix that appears before your names in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? "<"));
     form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after your names in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? "§r§f>"));
-    form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:andexdbPersonalSettings")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? " "));/*
+    form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? " "));
+    form2.textField("§l§fdebugStickUseCooldown§r§f\nCooldown between changing the block state of a block with a debug stick after you have just changed that state on the same block, default is 4", "number; default: 4", !!!sourceEntity.getDynamicProperty("debugStickUseCooldown")?undefined:String(sourceEntity.getDynamicProperty("debugStickUseCooldown") ?? 4));
+    form2.textField("§l§fdebugStickHoldDuration§r§f\nTime after the actionbar for changing a block state with the debug stick appears before the actionbar can be changed again, default is 10", "number; default: 10", !!!sourceEntity.getDynamicProperty("debugStickHoldDuration")?undefined:String(sourceEntity.getDynamicProperty("debugStickHoldDuration") ?? 10));/*
     form2.textField("§l§fvalidChatCommandPrefixes§r§f\nList of valid prefixes for chat commands, use this if you have other add-ons with chat commands in them active, messages that start with any of these will not be sent and will not be modified by this add-on so it will work for you other packs, default is blank", "Comma-Separated List of Strings", String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? ""));
     form2.textField("§l§fchatRankPrefix§r§f\nPrefix for chat ranks, default is rank:", "string", String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"));
     form2.textField("§l§fchatSudoPrefix§r§f\nPrefix for custom chat names, default is sudo:", "string", String(world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:"));
@@ -524,7 +526,7 @@ export function personalSettings(sourceEntity: Entity|Player){
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
-        let [ timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator ] = t.formValues;
+        let [ timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, debugStickUseCooldown, debugStickHoldDuration ] = t.formValues;
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:timeZone", timeZone==""?undefined:timeZone)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatRankPrefix", chatRankPrefix==""?undefined:chatRankPrefix)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatSudoPrefix", chatSudoPrefix==""?undefined:chatSudoPrefix)
@@ -532,7 +534,9 @@ export function personalSettings(sourceEntity: Entity|Player){
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix", rankDisplaySuffix==""?undefined:rankDisplaySuffix)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix", nameDisplayPrefix==""?undefined:nameDisplayPrefix)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix", nameDisplaySuffix==""?undefined:nameDisplaySuffix)
-        sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator==""?undefined:chatNameAndMessageSeparator)/*
+        sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator==""?undefined:chatNameAndMessageSeparator)
+        sourceEntity.setDynamicProperty("debugStickUseCooldown", debugStickUseCooldown==""?undefined:debugStickUseCooldown)
+        sourceEntity.setDynamicProperty("debugStickHoldDuration", debugStickHoldDuration==""?undefined:debugStickHoldDuration)/*
         world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", validChatCommandPrefixes)
         world.setDynamicProperty("andexdbSettings:chatRankPrefix", chatRankPrefix)
         world.setDynamicProperty("andexdbSettings:chatSudoPrefix", chatSudoPrefix)

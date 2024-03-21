@@ -1,5 +1,5 @@
-import { Block, Dimension, DimensionLocation, DimensionType, Player, Vector, Vector2, Vector3, world, Entity } from "@minecraft/server";
-import { targetSelectorAllListC, targetSelectorAllListE } from "Main";
+import { Block, Dimension, type DimensionLocation, DimensionType, Player, Vector, type Vector2, type Vector3, world, Entity } from "@minecraft/server";
+import { targetSelectorAllListC, targetSelectorAllListE } from "../Main";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
@@ -7,7 +7,7 @@ import * as mcServerAdmin from "@minecraft/server-admin";*//*
 import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
-import *  as main from "Main";
+import *  as main from "../Main";
 import *  as coords from "Main/coordinates";
 import *  as cmds from "Main/commands";
 import *  as bans from "Main/ban";

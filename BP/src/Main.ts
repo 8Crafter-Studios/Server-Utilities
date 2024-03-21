@@ -47,13 +47,13 @@ import "Main/ui.js";
 import "Main/player_save.js";
 import "Main/spawn_protection.js";
 
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, Vector2, ItemEnchantableComponent, RawText, RawMessage, DyeColor, DimensionLocation, Enchantment, GameMode } from "@minecraft/server";
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, ILocalTeleport, WorldPosition, rotate, rotate3d } from "Main/coordinates";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d } from "Main/coordinates";
 import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
-import { player_save_format_version, savedPlayer, savedPlayerData, savedItem } from "Main/player_save.js";
+import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal } from "Main/ui.js";
 import * as GameTest from "@minecraft/server-gametest";
@@ -245,7 +245,8 @@ export function arrayModifier<T>(sourcearray: T[], callbackfn: (value: T, index:
         });
         return newarray
     }
-};
+};/*
+import("Main").then(a=>{Object.entries(a)})*/
 export function getArrayElementProperty(array: any[], property: string){array.forEach((v, i, a)=>{array[i]=eval(`v.${property}`)}); return array}
 export function combineObjects(obj1: object, obj2: object){return Object.fromEntries(Object.entries(obj1).concat(Object.entries(obj2)))}
 export function generateCUID(classid?: string){let CUID = Number(world.getDynamicProperty("cuidCounter:"+(classid??"default"))??0) + 1; world.setDynamicProperty("cuidCounter:"+(classid??"default"), CUID); return CUID}
@@ -397,7 +398,11 @@ export function JSONParse(JSONString: string, keepUndefined: boolean = true) {
     return a;
 };
 
-export function JSONStringify(JSONObject: Object, keepUndefined: boolean = false) {
+export function objectify(object: Object|any[]){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=objectify(v[1])}else if(v[1] instanceof Object){entries[i][1]=objectify(v[1])}}); return Object.fromEntries(entries)}; 
+export function arrayify(object: Object|any[]){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=arrayify(v[1])}else if(v[1] instanceof Object){entries[i][1]=arrayify(v[1])}}); return entries}; 
+export function stringify(object: Object|any[], entriesmode: boolean|1|0 = 0, escapedarrayorobjecttag: boolean|1|0 = 0, objectifyinfinity: boolean|1|0 = 0, objectifynan: boolean|1|0 = 0, objectifyundefined: boolean|1|0 = 0, objectifynull: boolean|1|0 = 0, recursivemode: boolean|1|0 = 0){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1)}else if(v[1] instanceof Object){entries[i][1]=stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1)}else if(v[1] instanceof Function){entries[i][1]={escval: (v[1] as Function).toString()}}else if(v[1] == Infinity&&Boolean(objectifyinfinity)){entries[i][1]={escval: "Infinity"}}else if(v[1] == -Infinity&&Boolean(objectifyinfinity)){entries[i][1]={escval: "-Infinity"}}else if(Number.isNaN(v[1])&&Boolean(objectifynan)){entries[i][1]={escval: "NaN"}}else if(v[1] == undefined&&Boolean(objectifyundefined)){entries[i][1]={escval: "undefined"}}else if(v[1] == null&&Boolean(objectifynull)){entries[i][1]={escval: "null"}}}); return recursivemode?((Boolean(escapedarrayorobjecttag)&&(((object instanceof Array)&&!Boolean(entriesmode))||((object instanceof Object)&&Boolean(entriesmode))))?(Boolean(entriesmode)?{escobj: entries}:{escarray: Object.fromEntries(entries)}):(Boolean(entriesmode)?entries:Object.fromEntries(entries))):JSONStringify(Boolean(entriesmode)?entries:Object.fromEntries(entries), true)}; 
+
+export function JSONStringify(JSONObject: Object, keepUndefined: boolean = false, space?: string|number) {
     return JSON.stringify(JSONObject, function(k, v) {
         if (v === Infinity) return "{{Infinity}}";
         else if (v === -Infinity) return "{{-Infinity}}";
@@ -407,7 +412,7 @@ export function JSONStringify(JSONObject: Object, keepUndefined: boolean = false
             v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}')
         }
         return v;
-    }).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
+    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
 };
 
 export function getParametersFromString(string: string) {
@@ -429,7 +434,8 @@ export function getParametersFromString(string: string) {
         }
     };
     const getStringsFromString = (ce: string) => {
-        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/dgis));
+        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/gis));
+        cd.forEach((v, i)=>(cd[i] as any).indices=[[v?.index, v?.index+v[0]?.length]])
         let cc = [];
         cc.push({t: "non-json", v: ce.substring(0, (cd[0] as any)?.indices[0][0])});
         cd.forEach((v, i) => {
@@ -496,7 +502,8 @@ export function getParametersFromExtractedJSON(rawdata: RegExpMatchArray[]) {
         }
     };
     const getStringsFromString = (ce: string) => {
-        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/dgis));
+        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/gis));
+        cd.forEach((v, i)=>cd[i]=Object.assign(cd[i], {indices: [[v?.index, v?.index+v[0]?.length]]}))
         let cc = [] as {t: "json"|"non-json", v: string}[];
         cc.push({
             t: "non-json",
@@ -587,13 +594,14 @@ export function extractJSONStrings(inputString: string, includeOtherResultData: 
                     try {
                         JSONParse(jsonString); // Attempt to parse JSON
                         jsonStringArray.push(includeOtherResultData ? (() => {
-                            let atest = Array.from((" ".repeat(currentIndex) + inputString.slice(currentIndex))?.matchAll(new RegExp("")?.compile("" + escapeRegExp(jsonString) + "", `dg`)))[0];
+                            let atest = Array.from((" ".repeat(currentIndex) + inputString.slice(currentIndex))?.matchAll(new RegExp("")?.compile("" + escapeRegExp(jsonString) + "", `g`)))[0];
+                            (atest as any).indices=[[atest?.index, atest?.index+atest[0]?.length]]
                             try {
                                 (atest as any).value = JSONParse(atest[0])
                             } catch (e) {
                                 (atest as any).value = atest[0]
                             };
-                            (atest as any).modifiedinput = structuredClone(atest.input);
+                            try{(atest as any).modifiedinput = structuredClone(atest.input)}catch(e){(atest as any).modifiedinput = atest.input};
                             atest.input = inputString;
                             (atest as any).evaluationindex = currentIndex;
                             return atest
@@ -678,7 +686,7 @@ export function targetSelectorAllListB(selector: string, filters: string, UUID: 
 export function targetSelectorAllListC(selector: string, filters: string, position: string, sourceEntityCommandExecution?: Entity|Player){let scoreboardUUID = Math.round((Math.random()*1000+500)); if(sourceEntityCommandExecution == undefined){world.getAllPlayers()[0].runCommand("/execute positioned " + position + " as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); }else{sourceEntityCommandExecution.runCommand("/execute positioned " + position + " as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); }let selectedEntity: Entity[]; selectedEntity = []; for(let i in world.scoreboard.getObjective("andexdbDebug").getScores()){try{selectedEntity.push((world.scoreboard.getObjective("andexdbDebug").getScores().filter((score)=>(score.score == scoreboardUUID)))[i].participant.getEntity()); }catch(e){}}if (sourceEntityCommandExecution == undefined){world.getAllPlayers()[0].runCommand("/execute positioned " + position + " as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); }else{sourceEntityCommandExecution.runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); }return selectedEntity}
 export function targetSelectorAllListD(selector: string, position: string, dimension: Dimension = world.getDimension("overworld")){let scoreboardUUID = Math.round((Math.random()*1000+500)); dimension.runCommand("/execute positioned " + position + " as " + selector + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntity: Entity[]; selectedEntity = []; for(let i in world.scoreboard.getObjective("andexdbDebug").getScores()){try{selectedEntity.push((world.scoreboard.getObjective("andexdbDebug").getScores().filter((score)=>(score.score == scoreboardUUID)))[i].participant.getEntity()); }catch(e){}}; dimension.runCommand("/execute as " + selector + " at @s run /scoreboard players set @s andexdbDebug 0"); return selectedEntity; }
 export function targetSelectorAllListE(selector: string, position: string){let scoreboardUUID = Math.round((Math.random()*1000+500)); DimensionTypes.getAll().forEach((dt)=>{let dimension = world.getDimension(dt.typeId); dimension.runCommand("/execute positioned " + position + " as " + selector + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); }); let selectedEntity: Entity[]; selectedEntity = []; for(let i in world.scoreboard.getObjective("andexdbDebug").getScores()){try{selectedEntity.push((world.scoreboard.getObjective("andexdbDebug").getScores().filter((score)=>(score.score == scoreboardUUID)))[i].participant.getEntity()); }catch(e){}}; DimensionTypes.getAll().forEach((dt)=>{let dimension = world.getDimension(dt.typeId); dimension.runCommand("/execute as " + selector + " at @s run /scoreboard players set @s andexdbDebug 0"); }); return selectedEntity; }
-export function debugAction(block: Block, player: Player, mode: Number, direction?: Number){
+export function debugActionb(block: Block, player: Player, mode: number, direction?: number){
     if(player.getDynamicProperty("debugStickSelectedBlock") != block.typeId){
         player.setDynamicProperty("debugStickSelectedBlock", block.typeId); 
         if(((Object.entries(block.permutation.getAllStates()).findIndex((entry)=>(entry[0] == player.getDynamicProperty("debugStickPropertyIndexName"))) == -1) && ((player.getDynamicProperty("debugStickPropertyIndexName") != "waterlogged") || !block.type.canBeWaterlogged))){
@@ -691,14 +699,14 @@ export function debugAction(block: Block, player: Player, mode: Number, directio
         if((Object.entries(block.permutation.getAllStates()).length+Number(block.type.canBeWaterlogged))!=0){
             if (mode == 1){
                 if(direction == 1){
-                    player.setDynamicProperty("debugStickPropertyIndex", Number((Number(player.getDynamicProperty("debugStickPropertyIndex")) - 1)  % (Object.entries(block.permutation.getAllStates()).length+Number(block.type.canBeWaterlogged)))); 
+                    player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo((Number(player.getDynamicProperty("debugStickPropertyIndex")) - 1), 0, (Object.entries(block.permutation.getAllStates()).length+Number(block.type.canBeWaterlogged))))); 
                     if(player.getDynamicProperty("debugStickPropertyIndex") == Object.entries(block.permutation.getAllStates()).length){
                         player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged")
                     }else{
                         player.setDynamicProperty("debugStickPropertyIndexName", Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0])
                     }
                 }else{
-                    player.setDynamicProperty("debugStickPropertyIndex", Number((Number(player.getDynamicProperty("debugStickPropertyIndex")) + 1)  % (Object.entries(block.permutation.getAllStates()).length+Number(block.type.canBeWaterlogged)))); 
+                    player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo((Number(player.getDynamicProperty("debugStickPropertyIndex")) + 1), 0, (Object.entries(block.permutation.getAllStates()).length+Number(block.type.canBeWaterlogged))))); 
                     if(player.getDynamicProperty("debugStickPropertyIndex") == Object.entries(block.permutation.getAllStates()).length){
                         player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged")
                     }else{
@@ -711,13 +719,9 @@ export function debugAction(block: Block, player: Player, mode: Number, directio
                         player.setDynamicProperty("debugStickPropertyIndexIndex", (1-Number(block.isWaterlogged))); 
                     }else{
                         if(direction == 1){
-                            if(Number(player.getDynamicProperty("debugStickPropertyIndexIndex")) > 0){
-                                player.setDynamicProperty("debugStickPropertyIndexIndex", ((((BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value)=>(value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) - 1)  % BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length))))
-                            }else{
-                                player.setDynamicProperty("debugStickPropertyIndexIndex", (BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length-1))
-                            }
+                            player.setDynamicProperty("debugStickPropertyIndexIndex", (((customModulo((BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value)=>(value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) - 1), 0, BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)))))
                         }else{
-                            player.setDynamicProperty("debugStickPropertyIndexIndex", ((BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value)=>(value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) + 1)  % BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length))
+                            player.setDynamicProperty("debugStickPropertyIndexIndex", (customModulo((BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value)=>(value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) + 1), 0, BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)))
                         }
                     }
                 }
@@ -733,6 +737,79 @@ export function debugAction(block: Block, player: Player, mode: Number, directio
                 permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1] = BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues[Number(player.getDynamicProperty("debugStickPropertyIndexIndex"))]; 
                 system.run(()=>{player.onScreenDisplay.setActionBar(`"${Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]}" to ${permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1]}`); 
                 block.setPermutation(BlockPermutation.resolve(block.typeId, Object.fromEntries(permutation)))}); 
+            }
+        }else{
+            if (mode == 1){
+                let permutation = Object.entries(block.permutation.getAllStates()); 
+                if(true/*typeof Object.values(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))] == typeof String*/){
+                    if(player.getDynamicProperty("debugStickPropertyIndexName") == "waterlogged"){
+                        system.run(()=>{player.onScreenDisplay.setActionBar(`selected "waterlogged" (${block.isWaterlogged})`); }); 
+                    }else{
+                        system.run(()=>{player.onScreenDisplay.setActionBar(`selected "${permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0]}" (${Object.values(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]})`); }); 
+                    }
+                }else{
+                    system.run(()=>{player.onScreenDisplay.setActionBar(`selected "${permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0]}" ${Object.values(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]}`); })
+                }
+            }
+        }
+    }; 
+    if ((Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)) == 0) {
+        system.run(()=>{player.onScreenDisplay.setActionBar(`${block.typeId} has no properties`); }); 
+    }; /*
+    console.warn(Object.entries(block.permutation.getAllStates()))*/
+}
+export function debugAction(block: Block, player: Player, mode: number, direction?: number){
+    player.setDynamicProperty("debugStickBlockLocation", block.location)
+    if(player.getDynamicProperty("debugStickSelectedBlock") != block.typeId){
+        player.setDynamicProperty("debugStickSelectedBlock", block.typeId); 
+        if(((Object.entries(block.permutation.getAllStates()).findIndex((entry)=>(entry[0] == player.getDynamicProperty("debugStickPropertyIndexName"))) == -1) && ((player.getDynamicProperty("debugStickPropertyIndexName") != "waterlogged") || !block.type.canBeWaterlogged))){
+            player.setDynamicProperty("debugStickPropertyIndex", 0); player.setDynamicProperty("debugStickPropertyIndexName", "")
+        }else{
+            player.setDynamicProperty("debugStickPropertyIndex", Object.entries(block.permutation.getAllStates()).findIndex((entry)=>(entry[0] == player.getDynamicProperty("debugStickPropertyIndexName"))))
+        }; 
+    } else {
+        if((Object.entries(block.permutation.getAllStates()).length+Number(block.type.canBeWaterlogged))!=0){
+            if (mode == 1){
+                if(direction == 1){
+                    player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo((Number(player.getDynamicProperty("debugStickPropertyIndex")) - 1), 0, (Object.entries(block.permutation.getAllStates()).length+Number(block.type.canBeWaterlogged))))); 
+                    if(player.getDynamicProperty("debugStickPropertyIndex") == Object.entries(block.permutation.getAllStates()).length){
+                        player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged")
+                    }else{
+                        player.setDynamicProperty("debugStickPropertyIndexName", Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0])
+                    }
+                }else{
+                    player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo((Number(player.getDynamicProperty("debugStickPropertyIndex")) + 1), 0, (Object.entries(block.permutation.getAllStates()).length+Number(block.type.canBeWaterlogged))))); 
+                    if(player.getDynamicProperty("debugStickPropertyIndex") == Object.entries(block.permutation.getAllStates()).length){
+                        player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged")
+                    }else{
+                        player.setDynamicProperty("debugStickPropertyIndexName", Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0])
+                    }
+                }
+            } else { 
+                if (mode == 0){/*
+                    if (player.getDynamicProperty("debugStickPropertyIndexName") == "waterlogged") {
+                        player.setDynamicProperty("debugStickPropertyIndexIndex", (1-Number(block.isWaterlogged))); 
+                    }else{
+                        if(direction == 1){
+                            player.setDynamicProperty("debugStickPropertyIndexIndex", (((customModulo((BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value)=>(value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) - 1), 0, BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)))))
+                        }else{
+                            player.setDynamicProperty("debugStickPropertyIndexIndex", (customModulo((BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value)=>(value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) + 1), 0, BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)))
+                        }
+                    }*/
+                }
+            }
+        }
+    };  /*BlockStates.getAll().forEach((stateb)=>{player.sendMessage(stateb.id + ": " + stateb.validValues)}); *//*let test = Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]; console.warn(Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))] + "\n" + String(Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]) + "\n" + test + "\n" + BlockStates.getAll()[BlockStates.getAll().length-2].id + BlockStates.getAll().findIndex((statec)=>{console.warn("\"" + String(statec.id) + "\", \"" + String(Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]) + "\""); statec.id == test})); */
+    if ((Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)) != 0) {
+        if (mode == 0){
+            if(player.getDynamicProperty("debugStickPropertyIndexName") == "waterlogged"||(block.type.canBeWaterlogged&&(Object.entries(block.permutation.getAllStates()).length==0))){
+                system.run(()=>{block.setWaterlogged(Boolean(1-Number(block.isWaterlogged))); player.onScreenDisplay.setActionBar(`"waterlogged" to ${block.isWaterlogged}`); }); 
+            }else{
+                let permutation = Object.entries(block.permutation.getAllStates()); 
+                let permindex = BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex(v=>(v==permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1]))
+                permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1] = BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues[customModulo(permindex+1+(-2*(direction)), 0, BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)]; 
+                system.run(()=>{block.setPermutation(BlockPermutation.resolve(block.typeId, Object.fromEntries(permutation))); 
+                player.onScreenDisplay.setActionBar(`"${Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]}" to ${permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1]}`)}); 
             }
         }else{
             if (mode == 1){
@@ -1187,7 +1264,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     if (event.player.getDynamicProperty("debugStickUseCooldown") != undefined){delay = Number(event.player.getDynamicProperty("debugStickUseCooldown"))}; 
     if (event.player.getDynamicProperty("debugStickHoldDuration") != undefined){holdDuration = Number(event.player.getDynamicProperty("debugStickHoldDuration"))}; 
     if (interactable_block.find((playerId)=>(playerId.id == event.player.id)) == undefined){interactable_block.push({id: event.player.id, delay: 0})}; 
-    if ((interactable_block.find((playerId)=>(playerId.id == event.player.id)).delay == 0) || ((event.player.getDynamicProperty("debugStickSelectedBlock") != event.block.typeId))){
+    if ((interactable_block.find((playerId)=>(playerId.id == event.player.id)).delay == 0) || (String(Object.values(event.player.getDynamicProperty("debugStickBlockLocation"))) != String(Object.values(event.block.location)))){
         interactable_block.find((playerId)=>(playerId.id == event.player.id)).delay = delay; 
         interactable_block.find((playerId)=>(playerId.id == event.player.id)).holdDuration = holdDuration; 
     debugAction(event.block, event.player, 0, Number(event.player.isSneaking))

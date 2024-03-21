@@ -1,4 +1,4 @@
-import { EquipmentSlot, Enchantment, Vector3, Dimension, Vector2, DimensionLocation, GameMode, world, Player, system } from "@minecraft/server";
+import { EquipmentSlot, type Enchantment, type Vector3, Dimension, type Vector2, type DimensionLocation, GameMode, world, Player, system } from "@minecraft/server";
 import { format_version } from "Main";
 import { ban } from "./ban";
 import * as GameTest from "@minecraft/server-gametest";

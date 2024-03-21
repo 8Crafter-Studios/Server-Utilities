@@ -1,4 +1,4 @@
-import { BlockVolume, CompoundBlockVolume, Player, Vector3, system, world, Entity } from "@minecraft/server";
+import { BlockVolume, CompoundBlockVolume, Player, type Vector3, system, world, Entity } from "@minecraft/server";
 import { ActionFormData, ModalFormData, ActionFormResponse, ModalFormResponse } from "@minecraft/server-ui";
 import { forceShow, mainMenu } from "./ui";
 import * as GameTest from "@minecraft/server-gametest";

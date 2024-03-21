@@ -1,8 +1,8 @@
 import { BlockInventoryComponent, ChatSendBeforeEvent, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject,format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, ILocalTeleport, WorldPosition, rotate, rotate3d } from "./coordinates";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject,format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify } from "../Main";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
-import { player_save_format_version, savedPlayer, savedPlayerData, savedItem } from "./player_save.js";
+import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal } from "./ui.js";
 import * as GameTest from "@minecraft/server-gametest";
@@ -34,7 +34,137 @@ uis
 playersave
 spawnprot
 
-export const commands_format_version = "1.0.3";
+export const commands_format_version = "2.0.0-beta.1";
+export type evaluateParametersArgumentTypes = "presetText"|"number"|"boolean"|"string"|"json"
+export const commands = [
+    {type: "built-in", formatting_code: "§r§f", commandName: "give", escregexp: {v: "^give$"}, formats: [{format: "give <item: itemType> <amount: int>"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:give"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "giveb", escregexp: {v: "^giveb$"}, formats: [{format: "giveb <item: itemType> <amount: int>"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:giveb"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "setitem", escregexp: {v: "^setitem$"}, formats: [{format: "invsee <target: targetSelector>"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:setitem"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "item", escregexp: {v: "^item$"}, formats: [{format: ""}], command_version: "1.5.0", description: "", commandSettingsId: "built-inCommandSettings:item"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "invsee", escregexp: {v: "^invsee$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:invsee"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "offlineinfo", escregexp: {v: "^offlineinfo$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:offlineinfo"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "offlineuuidinfo", escregexp: {v: "^offlineuuidinfo$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:offlineuuidinfo"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "offlineinvsee", escregexp: {v: "^offlineinvsee$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:offlineinvsee"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "offlineuuidinvsee", escregexp: {v: "^offlineuuidinvsee$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:offlineuuidinvsee"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "binvsee", escregexp: {v: "^binvsee$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:binvsee"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "einvsee", escregexp: {v: "^einvsee$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:einvsee"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "invseeuuidmode", escregexp: {v: "^invseeuuidmode$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:invseeuuidmode"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "h#", escregexp: {v: "^h#$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:h#"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "hset", escregexp: {v: "^hset$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:hset"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "gmc", escregexp: {v: "^gmc$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:gmc"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "gms", escregexp: {v: "^gms$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:gms"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "gma", escregexp: {v: "^gma$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:gma"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "gmd", escregexp: {v: "^gmd$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:gmd"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "gmp", escregexp: {v: "^gmp$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:gmp"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "gmr", escregexp: {v: "^gmr$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:gmr"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "getuuid", escregexp: {v: "^getuuid$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:getuuid"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "warpset", escregexp: {v: "^warpset$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warpset"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "warp", escregexp: {v: "^warp$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warp"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "warpremove", escregexp: {v: "^warpremove$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warpremove"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "warpreset", escregexp: {v: "^warpreset$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warpreset"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "warplist", escregexp: {v: "^warplist$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warplist"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "warplistdetails", escregexp: {v: "^warplistdetails$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warplistdetails"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "warplistrawdata", escregexp: {v: "^warplistrawdata$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warplistrawdata"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "run", escregexp: {v: "^run$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:run"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "eval", escregexp: {v: "^eval$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:eval"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "top", escregexp: {v: "^top$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:top"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "up", escregexp: {v: "^up$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:up"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "printlayers", escregexp: {v: "^printlayers$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:printlayers"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "mainmenu", escregexp: {v: "^mainmenu$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:mainmenu"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "settings", escregexp: {v: "^settings$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:settings"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "datapickblock", escregexp: {v: "^datapickblock$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:datapickblock"}, 
+    {type: "built-in", formatting_code: "§r§6", commandName: "morph", escregexp: {v: "^morph$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:morph"}, 
+    {type: "built-in", formatting_code: "§r§6", commandName: "", escregexp: {v: "^$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:"}, 
+    {type: "built-in", formatting_code: "§r§6", commandName: "", escregexp: {v: "^$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "", escregexp: {v: "^$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "", escregexp: {v: "^$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "", escregexp: {v: "^$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "", escregexp: {v: "^$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "", escregexp: {v: "^$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "", escregexp: {v: "^$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "", escregexp: {v: "^$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "", escregexp: {v: "^$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:"}, 
+    {type: "built-in", formatting_code: "§r§f", commandName: "help", escregexp: {v: "^help$"}, formats: [{format: "help"}, {format: "help chatcommands", description: "lists the available chat commands and their main formats"}, {format: "help javascriptfunctions", description: "lists all available javascript functions, constants, variables, and classes"}, {format: "help jsfunctions"}], command_version: "1.5.0", description: "", commandSettingsId: "built-inCommandSettings:help"}
+]/*
+export let abcdefgh = escapeRegExp.arguments*/
+export type command_formats_type_list = (string|string[]|command_formats_type_list|{format: string|command_formats_type_list, description?: string})[]|string|{format: string|command_formats_type_list, description?: string}
+export class command{
+    type: "built-in"|"custom"|"unknown"
+    commandName: string
+    parameters?: {name: string, internalType?: evaluateParametersArgumentTypes, type?: "string"|"integer"|"float"|"decimal"|"hexadecimal"|"binary"|"triary"|"base64"|"unicode"|"letter"|"regexp"|"text"|"message"|"any"|"customjson"|"escapablestring"|"boolean"|"array"|"number"|"object"|"javascript"|"json"|"identifier"|"targetselector"|"none"|string, displayType?: "string"|"str"|"integer"|"int"|"float"|"flt"|"decimal"|"dec"|"hexadecimal"|"hex"|"binary"|"bin"|"triary"|"tri"|"base64"|"b64"|"unicode"|"uni"|"letter"|"let"|"regexp"|"regex"|"text"|"txt"|"message"|"msg"|"anything"|"any"|"customJSON"|"cJSON"|"escapableString"|"escString"|"escStr"|"boolean"|"bool"|"array"|"arry"|"number"|"num"|"object"|"obj"|"JavaScript"|"JS"|"JavaScriptObjectNotation"|"JSON"|"identifier"|"id"|"uuid"|"UUID"|"xuid"|"XUID"|"cuid"|"CUID"|"targetSelector"|"target"|""|"none"|string, evaluationType?: string}[]
+    escregexp?: {v: string, f?: string}
+    command_version?: string|number
+    formats: command_formats_type_list
+    description?: string
+    format_version: string|number = format_version
+    commands_format_version: string|number = commands_format_version
+    customCommandId?: string
+    commandSettingsId: string
+    constructor(command: {type: "built-in"|"custom"|"unknown", commandSettingsId?: string, command_version?: string|number, commandName: string, description?: string, escregexp?: {v: string, f?: string}, formats?: command_formats_type_list, format_version?: string|number, commands_format_version?: string|number}|command) {
+        this.type = command.type??"unknown"; 
+        this.description = command.description; 
+        this.commandName = command.commandName; 
+        this.command_version = command.command_version; 
+        this.escregexp = command.escregexp ?? {v: "^"+command.commandName+"$"}; 
+        this.formats = command.formats; /*
+        this.parameters = command.parameters; */
+        this.format_version = command.format_version ?? format_version; 
+        this.commands_format_version = command.commands_format_version ?? commands_format_version; 
+        this.commandSettingsId = command.commandSettingsId ?? (command.type=="built-in"?("built-inCommandSettings:"+command.commandName):("customCommandSettings:"+command.commandName)); 
+    }
+    get regexp(){return new RegExp(this?.escregexp?.v ?? "", this?.escregexp?.f)}
+    get settings(){return new commandSettings(this.commandSettingsId, this)}/*
+    get testPlayerCanUse(){return Number(this.unbanDate)-Date.now()}
+    get timeRemaining(){let time = new Date(Math.abs((Number(this.unbanDate)-Date.now()))+(new Date().setUTCFullYear(0))); let timeList = {days: (-1*Number(this.isExpired)+1)*Math.floor((time.getTime()-(new Date().setUTCFullYear(0)))/86400000), hours: (-1*Number(this.isExpired)+1)*time.getHours(), minutes: (-1*Number(this.isExpired)+1)*time.getMinutes(), seconds: (-1*Number(this.isExpired)+1)*time.getSeconds(), milliseconds: (-1*Number(this.isExpired)+1)*time.getMilliseconds()}; return timeList}
+    save(){world.setDynamicProperty(this.banId, JSON.stringify(this))}
+    remove(){world.setDynamicProperty(this.banId)}
+    static getBanIds(banType: string = "both"){return world.getDynamicPropertyIds().filter((s)=>(banType=="both"?(s.startsWith("ban:")||s.startsWith("banId:")):(banType=="name"?s.startsWith("ban:"):banType=="id"?s.startsWith("banId:"):undefined)))}
+    static getValidBanIds(banType: string = "both"){return world.getDynamicPropertyIds().filter((s)=>(banType=="both"?((s.startsWith("ban:")?ban.getBan(s).isValid:false)||(s.startsWith("banId:")?ban.getBan(s).isValid:false)):(banType=="name"?(s.startsWith("ban:")?ban.getBan(s).isValid:false):banType=="id"?(s.startsWith("banId:")?ban.getBan(s).isValid:false):undefined)))}
+    static getExpiredBanIds(banType: string = "both"){return world.getDynamicPropertyIds().filter((s)=>(banType=="both"?((s.startsWith("ban:")?ban.getBan(s).isExpired:false)||(s.startsWith("banId:")?ban.getBan(s).isExpired:false)):(banType=="name"?(s.startsWith("ban:")?ban.getBan(s).isExpired:false):banType=="id"?(s.startsWith("banId:")?ban.getBan(s).isExpired:false):undefined)))}*//*
+saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playerName}`, `${Number(ban.removeAfterBanExpires)}||${ban.unbanDate.valueOf()}||${ban.banDate.valueOf()}||${ban.originalPlayerId}||${ban.bannedById}||${ban.bannedByName.replaceAll("|", "\\|")}||${ban.reason}`)}else{if(ban.type=="id"){world.setDynamicProperty(`idBan:${ban.playerId}`, `${Number(ban.removeAfterBanExpires)}||${ban.unbanDate.valueOf()}||${ban.banDate.valueOf()}||${ban.originalPlayerName.replaceAll("|", "\\|")}||${ban.bannedById}||${ban.bannedByName.replaceAll("|", "\\|")}||${ban.reason}`)}else{}}}*//*
+static saveBan(ban: {type: "name"|"id", unbanDate: Date|number, banDate: Date|number, bannedById: string|number, bannedByName: string, reason: string, removeAfterBanExpires?: boolean, playerName?: string, originalPlayerId?: string|number, playerId?: string|number, originalPlayerName?: string, format_version?: string|number, ban_format_version?: string|number, banId?: string}|ban){ban.removeAfterBanExpires = ban.removeAfterBanExpires ?? true; ban.format_version = ban.format_version ?? format_version; ban.ban_format_version = ban.ban_format_version ?? ban_format_version; if(ban.type=="name"){world.setDynamicProperty(ban.banId??`ban:${ban.banDate}:${ban.playerName}`, JSON.stringify(ban))}else{if(ban.type=="id"){world.setDynamicProperty(ban.banId??`idBan:${ban.banDate}:${ban.playerId}`, JSON.stringify(ban))}else{}}}*//*
+getBan(banId: string){let banString = String(world.getDynamicProperty(banId)).split("||"); this.removeAfterBanExpires=Boolean(Number(banString[0])); this.unbanDate=new Date(Number(banString[1])); this.banDate=new Date(Number(banString[2])); if(banId.startsWith("ban")){this.originalPlayerId=Number(banString[3]); this.playerName=banId.split(":").slice(1).join(":"); }else{if(banId.startsWith("idBan")){this.originalPlayerName=Number(banString[3]); this.playerName=Number(playerId.split(":")[1]); }else{}}; this.bannedById=Number(banString[4]); this.bannedByName=banString[5].replaceAll("\\|", "|"); this.playerName=banString.slice(6).join("||"); return this as ban}*/
+static get(commandName: string, type: "built-in"|"custom"|"unknown" = "built-in"){try{if(type=="built-in"){return new command({type: type, commandName: commandName})}}catch(e){console.error(e, e.stack)}}/*
+static getBans(){let bans: ban[]; bans = []; ban.getBanIds().forEach((b)=>{try{bans.push(ban.getBan(b))}catch(e){console.error(e, e.stack)}}); return {idBans: bans.filter((b)=>(b.type=="id")), nameBans: bans.filter((b)=>(b.type=="name")), allBans: bans}}
+static getValidBans(){let bans: ban[]; bans = []; ban.getValidBanIds().forEach((b)=>{try{bans.push(ban.getBan(b))}catch(e){console.error(e, e.stack)}}); return {idBans: bans.filter((b)=>(b.type=="id")), nameBans: bans.filter((b)=>(b.type=="name")), allBans: bans}}
+static getExpiredBans(){let bans: ban[]; bans = []; ban.getExpiredBanIds().forEach((b)=>{try{bans.push(ban.getBan(b))}catch(e){console.error(e, e.stack)}}); return {idBans: bans.filter((b)=>(b.type=="id")), nameBans: bans.filter((b)=>(b.type=="name")), allBans: bans}}
+static testForBannedPlayer(player: Player|savedPlayer|savedPlayerData){return ban.getBans().idBans.find(b=>b.isValid&&b.playerId==player.id)!=undefined?true:(ban.getBans().nameBans.find(b=>b.isValid&&b.playerName==player.name)!=undefined?true:false)}
+static testForNameBannedPlayer(player: Player|savedPlayer|savedPlayerData){return ban.getBans().nameBans.find(b=>b.isValid&&b.playerName==player.name)!=undefined?true:false}
+static testForIdBannedPlayer(player: Player|savedPlayer|savedPlayerData){return ban.getBans().idBans.find(b=>b.isValid&&b.playerId==player.id)!=undefined?true:false}
+static executeOnBannedPlayers(callbackfn: (player: Player, index: Number, array: any[])=>unknown){let feedback: any[]; feedback = []; world.getAllPlayers().filter((p)=>ban.testForBannedPlayer(p)).forEach((p, i, a)=>{try{feedback.push(callbackfn(p, i, a))}catch(e){feedback.push(e)}}); return feedback}*/
+}
+export class commandSettings{
+    type: "built-in"|"custom"|"unknown"
+    commandName: string
+    customCommandId?: string
+    commandSettingsId: string
+    command?: command
+    defaultSettings?: Object
+    constructor(commandSettingsId: string, command?: command) {
+        this.type = commandSettingsId.startsWith("built-inCommandSettings:")?"built-in":commandSettingsId.startsWith("customCommandSettings:")?"custom":"unknown"; 
+        this.commandName = commandSettingsId.startsWith("built-inCommandSettings:")?commandSettingsId.slice(24):commandSettingsId.startsWith("customCommandSettings:")?commandSettingsId.slice(22):commandSettingsId; 
+        this.commandSettingsId = commandSettingsId
+        this.customCommandId = (this.type=="custom")?command?.customCommandId??("customCommand:"+this.commandName):undefined
+        this.command = command
+        this.defaultSettings = (this.type=="built-in"||this.type=="unknown")?commands.find(v=>v.commandName==this.commandName):undefined
+    }
+    get parsed(){return JSONParse(String(world.getDynamicProperty(this.commandSettingsId)))}
+    get enabled(){return this?.parsed?.enabled as boolean ?? true}
+    set enabled(enabled){this.enabled = enabled}
+    get requiredTags(){return this?.parsed?.requiredTags as string[]}
+    set requiredTags(requiredTags){this.requiredTags = requiredTags}
+    get requiredPermissionLevel(){return this?.parsed?.requiredPermissionLevel as string|number}
+    set requiredPermissionLevel(requiredPermissionLevel: string|number|undefined){this.requiredPermissionLevel = requiredPermissionLevel}
+    get requiresOp(){return this?.parsed?.requiresOp as boolean ?? false}
+    set requiresOp(requiresOp){this.requiresOp = requiresOp}/*
+    get description(){return this?.parsed?.description ?? true}*/
+    get settings_version(){return this?.parsed?.settings_version ?? true}
+    get isSaved(){return world.getDynamicProperty(this.commandSettingsId) != undefined}
+    toJSON(){return Object.assign(this.defaultSettings??{}, {type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version})}
+    save(settings?: Object){world.setDynamicProperty(this.commandSettingsId, JSONStringify(Object.assign(this.defaultSettings??{type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version}, settings??{})))}
+    remove(){world.setDynamicProperty(this.commandSettingsId)}
+}
+export function send(message: string){world.sendMessage(message)}; 
 export function chatMessage(eventData: ChatSendBeforeEvent){
     let runreturn: boolean; runreturn = false; 
     let returnBeforeChatSend: boolean; returnBeforeChatSend = false; 
@@ -545,14 +675,14 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
         break; 
         case !!switchTest.match(/^help$/): 
             eventData.cancel = true;
-            switch (newMessage){
-                case "\\help": 
-                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help chatcommands§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
+            switch (newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(0, 2).join(" ")){
+                case "help": 
+                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help chatcommands\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
                 break; 
-                case "\\help scriptevent": 
+                case "help scriptevent": 
                     eventData.sender.sendMessage("§2/scriptevent Syntax§f\n/scriptevent andexdb:debugStick <message: string>"); 
                 break; 
-                case "\\help chatcommands": 
+                case "help chatcommands": 
                     eventData.sender.sendMessage(`§2Chat Commands Syntax§f\n.give <item: itemType> <amount: int>
 .giveb <item: itemType> <amount: int>
 .setitem <item: itemType> <amount: int> <slot: int>
@@ -589,8 +719,14 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
 .settings
 .datapickblock`.replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
                 break; 
+                case "help javascriptfunctions": 
+                    eventData.sender.sendMessage(`§2List of JavaScript Functions, Constants, Variables, and Classes§f\n{main: [${Object.keys(main).join(", ")}], coords: [${Object.keys(coords).join(", ")}], cmds: [${Object.keys(cmds).join(", ")}], bans: [${Object.keys(bans).join(", ")}], uis: [${Object.keys(uis).join(", ")}], playersave: [${Object.keys(playersave).join(", ")}], spawnprot: [${Object.keys(spawnprot).join(", ")}]}`); 
+                break; 
+                case "help jsfunction": 
+                    eventData.sender.sendMessage(`§2${newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" ")} js object definition§f\n${([...Object.entries(main), ...Object.entries(coords), ...Object.entries(cmds), ...Object.entries(bans), ...Object.entries(uis), ...Object.entries(playersave), ...Object.entries(spawnprot)].find(v=>v[0]==newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" "))??[, "§cError: The specified javascript function/constant/variable/class does not exist, check your spelling and capitallization. "])[1].toString().replaceAll("\\n", "\n")}`); 
+                break; 
                 default: 
-                    eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length+4) + "\": at \"\\help >>" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length+5) + "<<\""); 
+                    eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length+4) + "\": at \"" + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "help >>" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length+5) + "<<\""); 
                 break; 
             }
         break; 
