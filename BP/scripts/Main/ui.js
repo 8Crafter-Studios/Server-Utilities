@@ -1,6 +1,6 @@
 import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Vector, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { arrayModifier, format_version, getUICustomForm } from "Main";
+import { JSONStringify, arrayModifier, format_version, getUICustomForm } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -18,6 +18,7 @@ import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
+import { command, commands, commands_format_version } from "Main/commands";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -327,6 +328,7 @@ export function mainMenu(sourceEntity) {
     form.button("Manage Custom UIs", "textures/ui/feedIcon");
     form.button("Settings", "textures/ui/settings_glyph_color_2x");
     form.button("Manage Players", "textures/ui/user_icon_white");
+    form.button("§eManage Commands", "textures/ui/chat_keyboard_hover");
     forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {
         let r = ra;
         // This will stop the code when the player closes the form
@@ -505,6 +507,9 @@ export function mainMenu(sourceEntity) {
                 break;
             case 21:
                 managePlayers(sourceEntity);
+                break;
+            case 22:
+                manageCommands(sourceEntity);
                 break;
             default:
         }
@@ -2781,6 +2786,147 @@ export function managePlayers(sourceEntity) {
                             break;
                         case 4:
                             managePlayers(sourceEntity);
+                            break;
+                        default:
+                    }
+                    ;
+                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+        }
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export function manageCommands(sourceEntity) {
+    let form = new ActionFormData;
+    form.title("Manage Commands");
+    let defaultCommands = command.getDefaultCommands();
+    defaultCommands.forEach((p) => { form.button(`${p.commandName}\n${p.formatting_code + p.type + ": " + (p.settings.enabled ? "enabled" : "disabled")}` /*, "textures/ui/online"*/); });
+    let customCommands = command.getCustomCommands();
+    customCommands.forEach((p) => { form.button(`${p.commandName}\n${p.formatting_code + p.type + ": " + (p.settings.enabled ? "enabled" : "disabled")}` /*, "textures/ui/online"*/); });
+    let commandsList = defaultCommands.concat(customCommands);
+    form.button("Add Custom Command");
+    form.button("Back");
+    forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        if (r.canceled) {
+            return;
+        }
+        ;
+        switch (r.selection) {
+            case commandsList.length:
+                let form5 = new ModalFormData;
+                form5.title(`Add Custom Command`);
+                form5.textField("Command Name", "myCommand");
+                form5.dropdown("Command Code Type", ["commands", "javascript"]);
+                form5.textField("Command Version", "SemVer String; ex. 1.7.0-beta.1.2.3.4.a.b.c.d", "1.0.0");
+                form5.textField("Formatting Code", "§§r§§f", "§r§f");
+                form5.textField("Description", "String");
+                form5.textField("formats", "Array", "[\"myCommand\", \"myCommand <string: string> [integer: int]\"]");
+                forceShow(form5, sourceEntity).then(ha => {
+                    let h = ha;
+                    if (h.canceled) {
+                        return;
+                    }
+                    ;
+                    new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[2]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], description: String(h.formValues[4]), type: "custom", formatting_code: String(h.formValues[3]), formats: sourceEntity?.name ?? sourceEntity?.nameTag, format_version: format_version }).save();
+                    manageCommands(sourceEntity);
+                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                break;
+            case commandsList.length + 1:
+                mainMenu(sourceEntity);
+                break;
+            default:
+                let commandsItem = commandsList[r.selection];
+                let form2 = new ActionFormData;
+                form2.title(commandsItem.commandName + "\nhisa");
+                form2.body(`Command Name: ${commandsItem.commandName}\nType: ${commandsItem.type}\nCommand Version: ${commandsItem.command_version}\nCommand Settings Id: ${commandsItem.commandSettingsId}\nDescription: ${commandsItem.description}\nFormats: ${JSONStringify(commandsItem.formats)}`);
+                if (commandsItem.type == "custom") {
+                    form2.button("Delete Command");
+                }
+                ;
+                if (commandsItem.type == "custom") {
+                    form2.button("Edit Command");
+                }
+                ;
+                form2.button("Show Info");
+                form2.button("Settings");
+                form2.button("Back");
+                forceShow(form2, sourceEntity).then(ga => {
+                    let g = ga;
+                    if (g.canceled) {
+                        return;
+                    }
+                    ;
+                    switch (g.selection + Number(commandsItem.type != "custom")) {
+                        case 0:
+                            let form3 = new MessageFormData;
+                            form3.title("Confirm Deletion of Command");
+                            form3.body(`Are you sure you want to delete the custom ${commandsItem.commandName} command?\nThis action cannot be undone.`);
+                            form3.button2("Delete Command");
+                            form3.button1("Cancel");
+                            forceShow(form3, sourceEntity).then(ha => {
+                                let h = ha;
+                                if (h.canceled) {
+                                    return;
+                                }
+                                ;
+                                if (h.selection == 0) {
+                                    manageCommands(sourceEntity);
+                                }
+                                ;
+                                if (h.selection == 1) {
+                                    commandsItem.remove();
+                                    manageCommands(sourceEntity);
+                                }
+                                ;
+                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                            break;
+                        case 1:
+                            let form5 = new ModalFormData;
+                            form5.title(`Edit Custom Command`);
+                            form5.textField("Command Name", "myCommand", commandsItem.commandName);
+                            form5.textField("", "Decimal");
+                            form5.textField("Reason", "JavaScript Object ex. `\nDate: ${new Date(D\nate\n.now()).toLo\ncaleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
+                            forceShow(form5, sourceEntity).then(ha => {
+                                let h = ha;
+                                if (h.canceled) {
+                                    return;
+                                }
+                                ;
+                                ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: String(h.formValues[0]), originalPlayerName: undefined, type: "id", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "banId:" + Date.now() + ":" + String(h.formValues[0]), unbanDate: Number(h.formValues[1]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[2]) });
+                                manageCommands(sourceEntity);
+                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                            break;
+                        case 2:
+                            let form4 = new ActionFormData;
+                            form4.title(`${commandsItem.commandName} Command Info`);
+                            form4.body(`${ /*arrayModifier(*/JSON.stringify(commandsItem).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"") /*.split(""), (v, i)=>(Number(String((i/30).toFixed(4)))==Math.round(i/30)?"\n"+v:v))*/}`);
+                            form4.button("Done");
+                            forceShow(form4, sourceEntity).then(ha => {
+                                let h = ha;
+                                if (h.canceled) {
+                                    return;
+                                }
+                                ;
+                                manageCommands(sourceEntity);
+                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                            break;
+                        case 3:
+                            let form6 = new ModalFormData;
+                            form6.title(`Command Settings`);
+                            form6.textField("Command Name", JSONStringify(commandsItem.settings?.defaultSettings?.requiredTags ?? ["canUseChatCommands", "canUseCustomCommands"]), JSONStringify(commandsItem.settings.requiredTags));
+                            form6.textField("", "Decimal");
+                            form6.textField("Reason", "JavaScript Object ex. `\nDate: ${new Date(D\nate\n.now()).toLo\ncaleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
+                            forceShow(form6, sourceEntity).then(ha => {
+                                let h = ha;
+                                if (h.canceled) {
+                                    return;
+                                }
+                                ;
+                                ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: String(h.formValues[0]), originalPlayerName: undefined, type: "id", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "banId:" + Date.now() + ":" + String(h.formValues[0]), unbanDate: Number(h.formValues[1]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[2]) });
+                                manageCommands(sourceEntity);
+                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                            break;
+                        case 4:
+                            manageCommands(sourceEntity);
                             break;
                         default:
                     }

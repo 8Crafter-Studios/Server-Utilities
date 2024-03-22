@@ -6,9 +6,9 @@
       "allowSyntheticDefaultImports": true,
       "baseUrl": "./src",
       "rootDir": "./src",
-      "outDir": "./scripts",
-      "allowJs": true,
-      "declaration": true,
+      "outDir": "./scripts",/*
+      "allowJs": true,*//*
+      "declaration": true,*/
       "verbatimModuleSyntax": true
     },
     "exclude": [ "node_modules" ],
