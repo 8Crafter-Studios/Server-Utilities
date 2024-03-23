@@ -323,6 +323,12 @@ export function JSONStringifyOld(value: any, keepUndefined: boolean = false, spa
 export function JSONParse(JSONString: string, keepUndefined: boolean = true) {
     let g = [];
     let h = [];
+    if(JSONString==undefined){let nothing; return nothing}
+    if(JSONString=="undefined"){return undefined}
+    if(JSONString=="Infinity"){return Infinity}
+    if(JSONString=="-Infinity"){return -Infinity}
+    if(JSONString=="NaN"){return NaN}
+    if(JSONString=="null"){return null}
     let a = JSON.parse(JSONString.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"').replace(/(?<=(?:[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\[)[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*),(?:\s*)|[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*)\[(?:\s*)))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,\]](?:\s*))/g, '"{{$1}}"').replace(/^(Infinity|NaN|-Infinity|undefined)$/g, '"{{$1}}"'), function(k, v) {
         if (v === '{{Infinity}}') return Infinity;
         else if (v === '{{-Infinity}}') return -Infinity;
@@ -402,7 +408,11 @@ export function objectify(object: Object|any[]){let entries = Object.entries(obj
 export function arrayify(object: Object|any[]){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=arrayify(v[1])}else if(v[1] instanceof Object){entries[i][1]=arrayify(v[1])}}); return entries}; 
 export function stringify(object: Object|any[], entriesmode: boolean|1|0 = 0, escapedarrayorobjecttag: boolean|1|0 = 0, objectifyinfinity: boolean|1|0 = 0, objectifynan: boolean|1|0 = 0, objectifyundefined: boolean|1|0 = 0, objectifynull: boolean|1|0 = 0, recursivemode: boolean|1|0 = 0){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1)}else if(v[1] instanceof Object){entries[i][1]=stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1)}else if(v[1] instanceof Function){entries[i][1]={escval: (v[1] as Function).toString()}}else if(v[1] == Infinity&&Boolean(objectifyinfinity)){entries[i][1]={escval: "Infinity"}}else if(v[1] == -Infinity&&Boolean(objectifyinfinity)){entries[i][1]={escval: "-Infinity"}}else if(Number.isNaN(v[1])&&Boolean(objectifynan)){entries[i][1]={escval: "NaN"}}else if(v[1] == undefined&&Boolean(objectifyundefined)){entries[i][1]={escval: "undefined"}}else if(v[1] == null&&Boolean(objectifynull)){entries[i][1]={escval: "null"}}}); return recursivemode?((Boolean(escapedarrayorobjecttag)&&(((object instanceof Array)&&!Boolean(entriesmode))||((object instanceof Object)&&Boolean(entriesmode))))?(Boolean(entriesmode)?{escobj: entries}:{escarray: Object.fromEntries(entries)}):(Boolean(entriesmode)?entries:Object.fromEntries(entries))):JSONStringify(Boolean(entriesmode)?entries:Object.fromEntries(entries), true)}; 
 
+export function mainEval(x: string){return eval(x)}
+export function indirectMainEval(x: string){return eval?.(x)}
+export function mainRun(x: (...args)=>any, ...args){return x(...args)}
 export function JSONStringify(JSONObject: Object, keepUndefined: boolean = false, space?: string|number) {
+    if(JSONObject==undefined){return keepUndefined?"undefined":""}
     return JSON.stringify(JSONObject, function(k, v) {
         if (v === Infinity) return "{{Infinity}}";
         else if (v === -Infinity) return "{{-Infinity}}";

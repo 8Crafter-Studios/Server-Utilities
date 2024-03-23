@@ -365,6 +365,25 @@ export function JSONStringifyOld(value, keepUndefined = false, space) {
 export function JSONParse(JSONString, keepUndefined = true) {
     let g = [];
     let h = [];
+    if (JSONString == undefined) {
+        let nothing;
+        return nothing;
+    }
+    if (JSONString == "undefined") {
+        return undefined;
+    }
+    if (JSONString == "Infinity") {
+        return Infinity;
+    }
+    if (JSONString == "-Infinity") {
+        return -Infinity;
+    }
+    if (JSONString == "NaN") {
+        return NaN;
+    }
+    if (JSONString == "null") {
+        return null;
+    }
     let a = JSON.parse(JSONString.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"').replace(/(?<=(?:[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\[)[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*),(?:\s*)|[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*)\[(?:\s*)))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,\]](?:\s*))/g, '"{{$1}}"').replace(/^(Infinity|NaN|-Infinity|undefined)$/g, '"{{$1}}"'), function (k, v) {
         if (v === '{{Infinity}}')
             return Infinity;
@@ -492,7 +511,13 @@ else if (v[1] == null && Boolean(objectifynull)) {
     entries[i][1] = { escval: "null" };
 } }); return recursivemode ? ((Boolean(escapedarrayorobjecttag) && (((object instanceof Array) && !Boolean(entriesmode)) || ((object instanceof Object) && Boolean(entriesmode)))) ? (Boolean(entriesmode) ? { escobj: entries } : { escarray: Object.fromEntries(entries) }) : (Boolean(entriesmode) ? entries : Object.fromEntries(entries))) : JSONStringify(Boolean(entriesmode) ? entries : Object.fromEntries(entries), true); }
 ;
+export function mainEval(x) { return eval(x); }
+export function indirectMainEval(x) { return eval?.(x); }
+export function mainRun(x, ...args) { return x(...args); }
 export function JSONStringify(JSONObject, keepUndefined = false, space) {
+    if (JSONObject == undefined) {
+        return keepUndefined ? "undefined" : "";
+    }
     return JSON.stringify(JSONObject, function (k, v) {
         if (v === Infinity)
             return "{{Infinity}}";
