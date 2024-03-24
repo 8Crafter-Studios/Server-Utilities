@@ -29,7 +29,7 @@ bans;
 uis;
 playersave;
 spawnprot;
-export const player_save_format_version = "1.1.0";
+export const player_save_format_version = "1.2.0";
 export class savedPlayer {
     constructor(data) {
         this.format_version = format_version;

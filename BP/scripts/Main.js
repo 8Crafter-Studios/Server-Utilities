@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.5.0";
+export const format_version = "1.6.0";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -46,7 +46,7 @@ import "Main/ban.js";
 import "Main/ui.js";
 import "Main/player_save.js";
 import "Main/spawn_protection.js";
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode } from "@minecraft/server";
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d } from "Main/coordinates";
@@ -62,6 +62,7 @@ import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
 import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import * as main from "Main";
 import * as coords from "Main/coordinates";
 import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
@@ -76,6 +77,7 @@ mcDebugUtilities*/ /*
 mcCommon*/
 GameTest; /*
 mcVanillaData*/
+main;
 coords;
 cmds;
 bans;
@@ -105,6 +107,12 @@ system.beforeEvents.watchdogTerminate.subscribe(e => {
     }
 });
 world.setDynamicProperty("format_version", format_version);
+try {
+    eval(String(world.getDynamicProperty("evalEvents:scriptInitialize")));
+}
+catch (e) {
+    console.error(e, e.stack);
+}
 export class worldPlayers {
     static get savedPlayers() {
         return savedPlayer.getSavedPlayers();
@@ -788,6 +796,18 @@ export function jsonFromString(str, useBetterJSONParse = true) {
     else
         return matches.map((m) => JSON.parse(m));
 }
+export function gwdp(propertyId) { return world.getDynamicProperty(propertyId); }
+;
+export function swdp(propertyId, newValue) { return world.setDynamicProperty(propertyId, newValue); }
+;
+export function gedp(entity, propertyId) { return entity.getDynamicProperty(propertyId); }
+;
+export function sedp(entity, propertyId, newValue) { return entity.setDynamicProperty(propertyId, newValue); }
+;
+export function gidp(item, propertyId) { return item.getDynamicProperty(propertyId); }
+;
+export function sidp(item, entity, propertyId, newValue) { return item.setDynamicProperty(propertyId, newValue); }
+;
 export function targetSelector(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return Number((selectedEntityUUIDValue)); }
 export function targetSelectorB(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return world.getDimension(DimensionTypes.getAll().find((dimension) => (world.getDimension(dimension.typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)))).typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)); } /*
 let a = world.getDimension("the_end").getBlock({x: 0, y: 0, z: 0}).permutation
@@ -1405,6 +1425,17 @@ world.beforeEvents.itemDefinitionEvent.subscribe(event => {
   try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });*/ //removed in 1.20.70.21
 world.beforeEvents.playerInteractWithEntity.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemPlayerInteractWithEntityCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithEntity")));
     }
@@ -1954,6 +1985,17 @@ world.beforeEvents.explosion.subscribe(event => {
     }
 });
 world.afterEvents.itemReleaseUse.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("itemReleaseUseCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("itemReleaseUseCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemReleaseUseCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")));
     }
@@ -1969,6 +2011,17 @@ world.afterEvents.itemReleaseUse.subscribe(event => {
     ;
 });
 world.beforeEvents.playerInteractWithBlock.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemPlayerInteractWithBlockCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithBlock")));
     }
@@ -2007,6 +2060,17 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     }
 });
 world.beforeEvents.itemUseOn.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("itemUseOnCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("itemUseOnCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemUseOnCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:itemUseOn")));
     }
@@ -2027,6 +2091,17 @@ world.beforeEvents.itemUseOn.subscribe(event => {
     }
 });
 world.beforeEvents.playerBreakBlock.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("playerBreakBlockCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("playerBreakBlockCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemPlayerBreakBlockCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerBreakBlock")));
     }
@@ -2104,6 +2179,17 @@ system.runInterval(() => { try {
 catch { } ; }, 1); //fixed and this one is also nows new
 world.beforeEvents.itemUse.subscribe(event => {
     event.source.teleport;
+    if (!!event?.itemStack?.getDynamicProperty("code")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("code")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:itemUse")));
     }

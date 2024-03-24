@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.5.0";
+export const format_version = "1.6.0";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -47,7 +47,7 @@ import "Main/ui.js";
 import "Main/player_save.js";
 import "Main/spawn_protection.js";
 
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode } from "@minecraft/server";
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d } from "Main/coordinates";
@@ -63,6 +63,7 @@ import * as mcServerAdmin from "@minecraft/server-admin";*//*
 import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import *  as main from "Main";
 import *  as coords from "Main/coordinates";
 import *  as cmds from "Main/commands";
 import *  as bans from "Main/ban";
@@ -77,6 +78,7 @@ mcDebugUtilities*//*
 mcCommon*/
 GameTest/*
 mcVanillaData*/
+main
 coords
 cmds
 bans
@@ -99,6 +101,7 @@ system.beforeEvents.watchdogTerminate.subscribe(e => {try{
     }
 });
 world.setDynamicProperty("format_version", format_version)
+try{eval(String(world.getDynamicProperty("evalEvents:scriptInitialize")))}catch(e){console.error(e, e.stack)}
 
 export class worldPlayers {/*
     savedPlayers: savedPlayerData[]; 
@@ -663,6 +666,12 @@ export function jsonFromString(str: string, useBetterJSONParse: boolean = true) 
     else
     return matches.map((m) => JSON.parse(m));
 }
+export function gwdp(propertyId: string){return world.getDynamicProperty(propertyId)}; 
+export function swdp(propertyId: string, newValue?: string|number|boolean|Vector3|undefined){return world.setDynamicProperty(propertyId, newValue)}; 
+export function gedp(entity: Entity|Player, propertyId: string){return entity.getDynamicProperty(propertyId)}; 
+export function sedp(entity: Entity|Player, propertyId: string, newValue?: string|number|boolean|Vector3|undefined){return entity.setDynamicProperty(propertyId, newValue)}; 
+export function gidp(item: ItemStack|ContainerSlot, propertyId: string){return item.getDynamicProperty(propertyId)}; 
+export function sidp(item: ItemStack|ContainerSlot, entity: Entity|Player, propertyId: string, newValue?: string|number|boolean|Vector3|undefined){return item.setDynamicProperty(propertyId, newValue)}; 
 export function targetSelector(selector: string, filters: string, UUID: number){let scoreboardUUID = Math.round((Math.random()*100+50)); world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score)=>(score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return Number((selectedEntityUUIDValue))}
 export function targetSelectorB(selector: string, filters: string, UUID: number){let scoreboardUUID = Math.round((Math.random()*100+50)); world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score)=>(score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return world.getDimension(DimensionTypes.getAll().find((dimension)=>(world.getDimension(dimension.typeId).getEntities().find((entity)=>(entity.id == selectedEntityUUIDValue)))).typeId).getEntities().find((entity)=>(entity.id == selectedEntityUUIDValue))}/*
 let a = world.getDimension("the_end").getBlock({x: 0, y: 0, z: 0}).permutation
@@ -1105,6 +1114,7 @@ world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(event => {
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
   });*///removed in 1.20.70.21
   world.beforeEvents.playerInteractWithEntity.subscribe(event => {
+    if(!!event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerInteractWithEntityCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithEntityBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
   });
   world.beforeEvents.playerLeave.subscribe(event => {
@@ -1259,6 +1269,7 @@ world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(event => {
   });
 
   world.afterEvents.itemReleaseUse.subscribe(event => {
+    if(!!event?.itemStack?.getDynamicProperty("itemReleaseUseCode")){try{eval(String(event?.itemStack?.getDynamicProperty("itemReleaseUseCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemReleaseUseCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemReleaseUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
       if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
         event.source.setDynamicProperty("interactable_block", 0)
@@ -1266,6 +1277,7 @@ world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(event => {
   }); 
 
 world.beforeEvents.playerInteractWithBlock.subscribe(event => {
+    if(!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerInteractWithBlockCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithBlockBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
     event.cancel = true
@@ -1286,6 +1298,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
 }); 
 
 world.beforeEvents.itemUseOn.subscribe(event => {
+    if(!!event?.itemStack?.getDynamicProperty("itemUseOnCode")){try{eval(String(event?.itemStack?.getDynamicProperty("itemUseOnCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseOnCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemUseOn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseOnBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
         event.cancel = true/*
@@ -1298,6 +1311,7 @@ world.beforeEvents.itemUseOn.subscribe(event => {
 }); 
 
 world.beforeEvents.playerBreakBlock.subscribe(event => {
+    if(!!event?.itemStack?.getDynamicProperty("playerBreakBlockCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerBreakBlockCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerBreakBlockCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerBreakBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerBreakBlockBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
     event.cancel = true
@@ -1336,6 +1350,7 @@ system.runInterval(()=>{world.getAllPlayers().forEach((player)=>{if (interactabl
 
 system.runInterval(() => {try{eval(String(world.getDynamicProperty("autoEval:everyTick")))}catch{}; }, 1);//fixed and this one is also nows new
 world.beforeEvents.itemUse.subscribe(event => {event.source.teleport
+    if(!!event?.itemStack?.getDynamicProperty("code")){try{eval(String(event?.itemStack?.getDynamicProperty("code")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     world.getAllPlayers().filter((player) => ( player.hasTag("getPlayerItemUseEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.itemUseOn]Location: [ " + event.source.location.x+", "+event.source.location.y+", "+event.source.location.z + " ], Dimension: " + event.source.dimension.id + ", Item Type: " + (event.itemStack?.typeId ?? "")+ ", Player: " + event.source.name) });/*
     if (event.itemStack.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){*//*

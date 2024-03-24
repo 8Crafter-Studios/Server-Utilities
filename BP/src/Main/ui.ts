@@ -1,4 +1,4 @@
-import { Player, system, world, Entity, type DimensionLocation, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Vector, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode } from "@minecraft/server";
+import { Player, system, world, Entity, type DimensionLocation, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Vector, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
 import { JSONParse, JSONStringify, arrayModifier, format_version, getUICustomForm } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
@@ -34,7 +34,7 @@ uis
 playersave
 spawnprot
 
-export const ui_format_version = "1.0.1";
+export const ui_format_version = "1.5.0";
 //${se}console.warn(JSON.stringify(evaluateParameters(["presetText", "string", "json", "number", "boolean", "string", "presetText", "presetText"], "test test [{\"test\": \"test\"}, [\"test\", \"test\"] , \"test\", \"test\"] 1 true \"test \\\"test\" test test"))); 
 /**
  * Returns the sum of a and b
@@ -1724,7 +1724,7 @@ export function manageCommands(sourceEntity: Entity|Player){
     let form = new ActionFormData; 
     form.title("Manage Commands"); 
     let defaultCommands = command.getDefaultCommands(); 
-    defaultCommands.forEach((p)=>{form.button(`${p.commandName}\n${p.formatting_code+p.type+": "+(p.settings.enabled?"enabled":"disabled")}`/*, "textures/ui/online"*/)}); 
+    defaultCommands.forEach((p)=>{form.button(`${p.formatting_code}${p.commandName}\n${+p.type+": "+(p.settings.enabled?"enabled":"disabled")}`/*, "textures/ui/online"*/)}); 
     let customCommands = command.getCustomCommands(); 
     customCommands.forEach((p)=>{form.button(`${p.commandName}\n${p.formatting_code+p.type+": "+(p.settings.enabled?"enabled":"disabled")}`/*, "textures/ui/online"*/)}); 
     let commandsList = defaultCommands.concat(customCommands); 
@@ -1750,8 +1750,8 @@ export function manageCommands(sourceEntity: Entity|Player){
             default: 
             let commandsItem = commandsList[r.selection]; 
             let form2 = new ActionFormData; 
-            form2.title(commandsItem.commandName+"\nhisa"); 
-            form2.body(`Command Name: ${commandsItem.commandName}\nType: ${commandsItem.type}\nCommand Version: ${commandsItem.command_version}\nCommand Settings Id: ${commandsItem.commandSettingsId}\nDescription: ${commandsItem.description}\nFormats: ${JSONStringify(commandsItem.formats)}`)
+            form2.title(commandsItem.commandName); 
+            form2.body(`Command Name: ${commandsItem.commandName}\nType: ${commandsItem.type}\nCommand Version: ${commandsItem.command_version}\nCustom Command Id: ${commandsItem.customCommandId}\nCommand Settings Id: ${commandsItem.commandSettingsId}\nDescription: ${commandsItem.description}\nFormats: ${JSONStringify(commandsItem.formats)}`)
             if(commandsItem.type=="custom"){form2.button("Delete Command")}; 
             if(commandsItem.type=="custom"){form2.button("Edit Command")}; 
             if(commandsItem.type=="custom"){form2.button("Edit Code")}; 
@@ -1820,7 +1820,7 @@ export function manageCommands(sourceEntity: Entity|Player){
                     }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                     break
                     case 3: 
-                    let form4 = new ActionFormData; form4.title(`${commandsItem.commandName} Command Info`); form4.body(`${/*arrayModifier(*/JSON.stringify(commandsItem).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")/*.split(""), (v, i)=>(Number(String((i/30).toFixed(4)))==Math.round(i/30)?"\n"+v:v))*/}`); form4.button("Done")
+                    let form4 = new ActionFormData; form4.title(`${commandsItem.commandName} Command Info`); form4.body(`§r§f${/*arrayModifier(*/JSON.stringify(commandsItem).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")/*.split(""), (v, i)=>(Number(String((i/30).toFixed(4)))==Math.round(i/30)?"\n"+v:v))*/}`); form4.button("Done")
                     forceShow(form4, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
                         if(h.canceled){return};
                         manageCommands(sourceEntity)
@@ -1841,5 +1841,97 @@ export function manageCommands(sourceEntity: Entity|Player){
                 }; 
             }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
         }
+    }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+}
+export async function onlinePlayerSelector(sourceEntity: Entity|Player, backFunction: Function = mainMenu, ...functionargs: any){
+    let form = new ActionFormData; 
+    form.title("Select Player"); 
+    let playerslist = world.getAllPlayers(); 
+    playerslist.forEach((p)=>{form.button(`${p.name}\n${p.id}`/*, "textures/ui/online"*/)}); 
+    form.button("Back"); 
+    return forceShow(form, sourceEntity as Player).then(ra=>{
+        let r = (ra as ActionFormResponse); 
+        if(r.canceled){return}; 
+        switch(r.selection){
+            case playerslist.length: 
+            return backFunction(...functionargs)
+            break
+            default: 
+            return playerslist[r.selection]
+        }
+    }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+}
+export async function itemSelector(sourceEntity: Entity|Player, targetPlayer: Entity|Player, backFunction: Function = mainMenu, ...functionargs: any){
+    let form = new ActionFormData; 
+    form.title("Select Player"); 
+    let itemsList = [] as {slot: number|EquipmentSlot, item: ContainerSlot}[]; 
+    for(let i = 0; i<targetPlayer.getComponent("inventory").inventorySize; i++){itemsList.push({slot: i, item: targetPlayer.getComponent("inventory").container.getSlot(i)})}; 
+    let equipmentList = [] as {slot: number|EquipmentSlot, item: ContainerSlot}[]; 
+    for(let i = 0; i<6; i++){itemsList.push({slot: [EquipmentSlot.Mainhand, EquipmentSlot.Offhand, EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet][i], item: targetPlayer.getComponent("equippable").getEquipmentSlot([EquipmentSlot.Mainhand, EquipmentSlot.Offhand, EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet][i])})}; 
+    let slotsList = equipmentList.concat(itemsList); 
+    slotsList.forEach((p)=>{form.button(`${p.slot}: ${p.item.typeId}\n${p.item.amount}; ${p.item.nameTag}`/*, "textures/ui/online"*/)}); 
+    form.button("Back"); 
+    return forceShow(form, sourceEntity as Player).then(ra=>{
+        let r = (ra as ActionFormResponse); 
+        if(r.canceled){return}; 
+        switch(r.selection){
+            case slotsList.length: 
+            return backFunction(...functionargs)
+            break
+            default: 
+            return slotsList[r.selection]
+        }
+    }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+}
+export async function itemEditorTypeSelection(sourceEntity: Entity|Player, targetPlayer: Entity|Player, item: {slot: number|EquipmentSlot, item: ContainerSlot}, selectionItems?: {edit?: {f: Function, a?: any[]}, editCode?: {f: Function, a?: any[]}, editDynamicProperties?: {f: Function, a?: any[]}, editEnchantments?: {f: Function, a?: any[]}, newItem?: {f: Function, a?: any[]}, transfer?: {f: Function, a?: any[]}, clone?: {f: Function, a?: any[]}, delete?: {f: Function, a?: any[]}}, backFunction: Function = mainMenu, ...functionargs: any){
+    let form = new ActionFormData; 
+    form.title("Select Player"); 
+    form.button("Edit Item"/*, "textures/ui/online"*/); 
+    form.button("Edit Code"/*, "textures/ui/online"*/); 
+    form.button("Edit Dynamic Properties"/*, "textures/ui/online"*/);
+    form.button("Edit Enchantments"/*, "textures/ui/online"*/);
+    form.button("New Item"/*, "textures/ui/online"*/); 
+    form.button("Transfer Item"/*, "textures/ui/online"*/); 
+    form.button("Clone Item"/*, "textures/ui/online"*/); 
+    form.button("Delete Item"/*, "textures/ui/online"*/); 
+//    form.button("Ban Item"/*, "textures/ui/online"*/); 
+    form.button("Back"); 
+    let result: any; 
+    result = undefined
+    return forceShow(form, sourceEntity as Player).then(ra=>{
+        let r = (ra as ActionFormResponse); 
+        if(r.canceled){return}; 
+        switch(r.selection){
+            case 0: 
+            result = !!selectionItems?.edit?.f?selectionItems?.edit?.f(...functionargs??(sourceEntity as Player)):itemEditor(sourceEntity, targetPlayer, item.item)
+            break; 
+            case 4: 
+            result = backFunction(...functionargs??(sourceEntity as Player))
+            break; 
+            default: 
+            result = backFunction(...functionargs??(sourceEntity as Player))
+        }
+        return result
+    }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+}
+export async function itemEditor(sourceEntity: Entity|Player, targetPlayer: Entity|Player, item: ContainerSlot){
+    let form = new ModalFormData; 
+    form.title("Select Player"); 
+    form.textField("Item Name (escape characters such as \\n are allowed)", "string", !!!item.nameTag?undefined:item.nameTag); 
+    form.textField("Item Lore (escape characters such as \\n are allowed)(set to [] to clear)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getLore())); 
+    form.slider("Amount", 0, 127, 1, item.amount); 
+    form.textField("Can Destroy (escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getCanDestroy())); 
+    form.textField("Can Place On (escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getCanPlaceOn())); 
+    form.dropdown("Item Lock Mode", [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory], [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory][item.lockMode]); 
+    form.toggle("Keep On Death", item.keepOnDeath); 
+    form.textField((!!!item.getItem().getComponent("cooldown")?"§c(UNAVAILABLE)§f ":"")+"Set Cooldown (In Ticks)", "ticks", String(item.getItem().getComponent("cooldown")?.cooldownTicks)); 
+    form.textField((!!!item.getItem().getComponent("durability")?"§c(UNAVAILABLE)§f ":"")+"Set Damage (In Ticks)", "ticks", String(item.getItem().getComponent("durability")?.damage)); 
+    let result: any; 
+    result = undefined
+    return forceShow(form, sourceEntity as Player).then(ra=>{
+        let r = (ra as ModalFormResponse); 
+        if(r.canceled){return}; 
+        let [name, count] = r.formValues
+        return result
     }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
 }

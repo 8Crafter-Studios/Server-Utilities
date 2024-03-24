@@ -30,7 +30,7 @@ uis
 playersave
 spawnprot
 
-export const player_save_format_version = "1.1.0";
+export const player_save_format_version = "1.2.0";
 export interface savedItem { 
     id?: string
     count: number

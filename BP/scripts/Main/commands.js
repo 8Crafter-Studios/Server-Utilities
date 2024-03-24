@@ -1,5 +1,5 @@
 import { BlockInventoryComponent, ChatSendBeforeEvent, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject, format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval } from "../Main";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject, format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
@@ -33,7 +33,7 @@ bans;
 uis;
 playersave;
 spawnprot;
-export const commands_format_version = "2.0.0-beta.2";
+export const commands_format_version = "2.0.0-rc.1";
 export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "give", escregexp: { v: "^give$" }, formats: [{ format: "give <item: itemType> <amount: int>" }], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:give" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "giveb", escregexp: { v: "^giveb$" }, formats: [{ format: "giveb <item: itemType> <amount: int>" }], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:giveb" },
@@ -152,7 +152,7 @@ export class command {
     else {
         throw new TypeError("Cannot remove command because it is not a custom command or the type of the command is unknown. ");
     } }
-    testCanPlayerUseCommand(player) { return (this.settings.requiredTags.map(v => player.hasTag(v)).every(v => v) && ((player.getDynamicProperty("permissionLevel") >= this.settings.requiredPermissionLevel) || (this.settings.requiredPermissionLevel == 0))); }
+    testCanPlayerUseCommand(player) { return (this.settings.requiredTags.map(v => player.hasTag(v)).every(v => v) && (this.settings.requiresOp ? Number(player.isOp()) : true) && ((Number(player.getDynamicProperty("permissionLevel") ?? 0) >= Number(this.settings.requiredPermissionLevel ?? 0)) || (this.settings.requiredPermissionLevel == 0))); }
     run(commandstring, executor, player, event) { if (this.type == "custom") {
         if (this?.code != undefined) {
             let eventData = event;
@@ -271,7 +271,7 @@ export function chatMessage(eventData) {
     let newMessage = eventData.message;
     let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0];
     let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length);
-    let commanda = commands.find(v => (newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && (command.get(v.commandName, "built-in").settings.enabled && !!switchTest.match(command.get(v.commandName, "built-in").regexp)))) ?? command.getCustomCommands().find(v => (v.settings.enabled && ((v.customCommandPrefix == undefined || v.customCommandPrefix == "") && (!!switchTest.match(v.regexp))) || ((v.customCommandPrefix != "" || !!v.customCommandPrefix) && newMessage.split(" ")[0].startsWith(v.customCommandPrefix) && (!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp)))));
+    let commanda = commands.find(v => (newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && (command.get(v.commandName, "built-in").settings.enabled && !!switchTest.match(command.get(v.commandName, "built-in").regexp))) && (command.get(v.commandName, "built-in").testCanPlayerUseCommand(player))) ?? command.getCustomCommands().find(v => (v.settings.enabled && ((v.customCommandPrefix == undefined || v.customCommandPrefix == "") && (!!switchTest.match(v.regexp))) || ((v.customCommandPrefix != "" && !!v.customCommandPrefix) && newMessage.split(" ")[0].startsWith(v.customCommandPrefix) && (!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp)) && (command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))));
     try {
         world.getAllPlayers().filter((p) => (p.hasTag("getAllChatMessages"))).forEach((p) => { try {
             p.sendMessage("[§l§dServer§r§f][" + player.name + "]: " + newMessage);
@@ -411,8 +411,8 @@ export function chatCommands(params) {
     }
     let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0];
     let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length);
-    let commanda = commands.find(v => ((!!switchTest.match(command.get(v.commandName, "built-in").regexp)))) ?? command.getCustomCommands().find(v => (((v.customCommandPrefix == undefined || v.customCommandPrefix == "") && (!!switchTest.match(v.regexp))) || ((v.customCommandPrefix != "" || !!v.customCommandPrefix) && newMessage.split(" ")[0].startsWith(v.customCommandPrefix) && (!!switchTest.match(v.regexp)))));
-    if (commanda.type == "built-in") {
+    let commanda = commands.find(v => (newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && (command.get(v.commandName, "built-in").settings.enabled && !!switchTest.match(command.get(v.commandName, "built-in").regexp))) && (command.get(v.commandName, "built-in").testCanPlayerUseCommand(player))) ?? command.getCustomCommands().find(v => (v.settings.enabled && ((v.customCommandPrefix == undefined || v.customCommandPrefix == "") && (!!switchTest.match(v.regexp))) || ((v.customCommandPrefix != "" && !!v.customCommandPrefix) && newMessage.split(" ")[0].startsWith(v.customCommandPrefix) && (!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp)) && (command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))));
+    if (commanda?.type == "built-in") {
         switch (true) {
             case !!switchTest.match(/^give$/):
                 eventData.cancel = true;
