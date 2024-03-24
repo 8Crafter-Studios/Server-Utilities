@@ -1964,7 +1964,7 @@ export function chatCommands(params) {
         }
     }
     else {
-        if (commanda.type == "custom") {
+        if (commanda?.type == "custom") {
             eventData.cancel = true;
             if (commanda.customCommandType == "commands") {
                 system.run(() => commanda.run(newMessage.slice(commanda.customCommandPrefix.length), player, player, event));

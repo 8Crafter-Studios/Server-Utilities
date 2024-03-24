@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.4.0";
+export const format_version = "1.6.0";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -46,15 +46,15 @@ import "Main/ban.js";
 import "Main/ui.js";
 import "Main/player_save.js";
 import "Main/spawn_protection.js";
-import { BlockPermutation, ItemLockMode, ItemStack, ScriptEventSource, WeatherType, system, world, EquipmentSlot, Vector, BlockTypes, MolangVariableMap, DimensionTypes, EnchantmentTypes, BlockStates, SignSide, DyeColor } from "@minecraft/server";
-import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent } from "@minecraft/server";
+import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
-import { coordinates, evaluateCoordinates } from "Main/coordinates";
-import { chatMessage } from "Main/commands";
-import { ban } from "Main/ban";
-import { savedPlayer } from "Main/player_save.js";
-import { noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges } from "Main/spawn_protection.js";
-import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings } from "Main/ui.js";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d } from "Main/coordinates";
+import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld } from "Main/commands";
+import { ban, ban_format_version } from "Main/ban";
+import { player_save_format_version, savedPlayer } from "Main/player_save.js";
+import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal } from "Main/ui.js";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
@@ -62,9 +62,14 @@ import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
 import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import * as main from "Main";
 import * as coords from "Main/coordinates";
 import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
+import * as uis from "Main/ui";
+import * as playersave from "Main/player_save";
+import * as spawnprot from "Main/spawn_protection"; /*
+import { disableWatchdog } from "@minecraft/debug-utilities";*/
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -72,14 +77,19 @@ mcDebugUtilities*/ /*
 mcCommon*/
 GameTest; /*
 mcVanillaData*/
+main;
 coords;
 cmds;
 bans;
+uis;
+playersave;
+spawnprot;
 SimulatedPlayer;
 Test;
 let crashEnabled = false;
 let tempSavedVariables = [];
-export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]];
+export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]; /*
+disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
 system.beforeEvents.watchdogTerminate.subscribe(e => {
     try {
         if (crashEnabled == true) { }
@@ -97,6 +107,12 @@ system.beforeEvents.watchdogTerminate.subscribe(e => {
     }
 });
 world.setDynamicProperty("format_version", format_version);
+try {
+    eval(String(world.getDynamicProperty("evalEvents:scriptInitialize")));
+}
+catch (e) {
+    console.error(e, e.stack);
+}
 export class worldPlayers {
     static get savedPlayers() {
         return savedPlayer.getSavedPlayers();
@@ -219,7 +235,31 @@ export function roundPlaceNumberObject(object, place = Number(world.getDynamicPr
     return Object.fromEntries(newObject);
 } /*
 /execute as @e [type=andexsa:custom_arrow] at @s run /scriptevent andexdb:scriptEval let sl = sourceEntity.location; let ol = sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2", "npc", "armor_stand"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location; let d = {x: ol.x-sl.x, y: ol.y-sl.y, z: ol.z-sl.z}; eval("if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.x)*Number(d.x!=0)*d.x, y: Math.abs(1/d.x)*Number(d.y!=0)*d.y, z: Math.abs(1/d.x)*Number(d.z!=0)*d.z})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.y)*Number(d.x!=0)*d.x, y: Math.abs(1/d.y)*Number(d.y!=0)*d.y, z: Math.abs(1/d.y)*Number(d.z!=0)*d.z})}else{sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.z)*Number(d.x!=0)*d.x, y: Math.abs(1/d.z)*Number(d.y!=0)*d.y, z: Math.abs(1/d.z)*Number(d.z!=0)*d.z})}}}; ");*/
-export function arrayModifier(array, callbackfn) { array.forEach((v, i, a) => { array[i] = callbackfn(v, i, a); }); return array; }
+export function arrayModifierOld(array, callbackfn) { array.forEach((v, i, a) => { array[i] = callbackfn(v, i, a); }); return array; }
+export function arrayModifier(sourcearray, callbackfn, overwrite = false) {
+    if (overwrite) {
+        sourcearray.forEach((v, i, a) => {
+            sourcearray[i] = callbackfn(v, i, a);
+        });
+        return sourcearray;
+    }
+    else {
+        let newarray;
+        try {
+            newarray = structuredClone(sourcearray);
+        }
+        catch (e) {
+            newarray = sourcearray;
+        }
+        ;
+        newarray.forEach((v, i, a) => {
+            newarray[i] = callbackfn(v, i, a);
+        });
+        return newarray;
+    }
+}
+; /*
+import("Main").then(a=>{Object.entries(a)})*/
 export function getArrayElementProperty(array, property) { array.forEach((v, i, a) => { array[i] = eval(`v.${property}`); }); return array; }
 export function combineObjects(obj1, obj2) { return Object.fromEntries(Object.entries(obj1).concat(Object.entries(obj2))); }
 export function generateCUID(classid) { let CUID = Number(world.getDynamicProperty("cuidCounter:" + (classid ?? "default")) ?? 0) + 1; world.setDynamicProperty("cuidCounter:" + (classid ?? "default"), CUID); return CUID; }
@@ -276,7 +316,7 @@ export function fromBaseToBase(num, base = 10, radix = 10, keysa = radix > 62 ? 
  * @param {boolean} keepUndefined Whether or not to include undefined variables when parsing, defaults to true.
  * @returns {any} The parsed JSON data.
  */
-export function JSONParse(text, keepUndefined = true) {
+export function JSONParseOld(text, keepUndefined = true) {
     let g = [];
     let h = [];
     let a = JSON.parse(text.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"'), function (k, v) {
@@ -314,7 +354,7 @@ export function JSONParse(text, keepUndefined = true) {
  * @param {string|number} space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
  * @returns {any} The JSON string.
  */
-export function JSONStringify(value, keepUndefined = false, space) {
+export function JSONStringifyOld(value, keepUndefined = false, space) {
     return JSON.stringify(value, function (k, v) {
         if (v === Infinity)
             return "{{Infinity}}";
@@ -328,8 +368,453 @@ export function JSONStringify(value, keepUndefined = false, space) {
             v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}');
         }
         return v;
-    }, space).replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '$1').replace(/(?<="(?:\s*):(?:\s*))"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"');
+    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
 }
+export function JSONParse(JSONString, keepUndefined = true) {
+    let g = [];
+    let h = [];
+    if (JSONString == undefined) {
+        let nothing;
+        return nothing;
+    }
+    if (JSONString == "undefined") {
+        return undefined;
+    }
+    if (JSONString == "Infinity") {
+        return Infinity;
+    }
+    if (JSONString == "-Infinity") {
+        return -Infinity;
+    }
+    if (JSONString == "NaN") {
+        return NaN;
+    }
+    if (JSONString == "null") {
+        return null;
+    }
+    let a = JSON.parse(JSONString.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"').replace(/(?<=(?:[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\[)[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*),(?:\s*)|[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*)\[(?:\s*)))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,\]](?:\s*))/g, '"{{$1}}"').replace(/^(Infinity|NaN|-Infinity|undefined)$/g, '"{{$1}}"'), function (k, v) {
+        if (v === '{{Infinity}}')
+            return Infinity;
+        else if (v === '{{-Infinity}}')
+            return -Infinity;
+        else if (v === '{{NaN}}')
+            return NaN;
+        else if (v === '{{undefined}}') {
+            g.push(k);
+            if (keepUndefined) {
+                return v;
+            }
+            else {
+                undefined;
+            }
+        }
+        ;
+        h.push(k);
+        return v;
+    });
+    function recursiveFind(a) {
+        if (a instanceof Array) {
+            let b = a;
+            b.forEach((v, i) => {
+                if (v instanceof Array || v instanceof Object) {
+                    b[i] = recursiveFind(v);
+                    return;
+                }
+                ;
+                if (String(v) == "{{undefined}}") {
+                    b[i] = undefined;
+                    return;
+                }
+                ;
+            });
+            a = b;
+            {
+                let b = a;
+                !!b.forEach((va, i) => {
+                    if (String(va).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)) {
+                        b[i] = va.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}');
+                    }
+                    a = b;
+                });
+            }
+            ;
+        }
+        else if (a instanceof Object) {
+            let b = Object.entries(a);
+            b.forEach((v, i) => {
+                if (v[1] instanceof Object || v[1] instanceof Array) {
+                    b[i] = [v[0], recursiveFind(v[1])];
+                    return;
+                }
+                ;
+                if (String(v[1]) == "{{undefined}}") {
+                    b[i] = [v[0], undefined];
+                    return;
+                }
+                ;
+            });
+            a = Object.fromEntries(b);
+            {
+                let b = Object.entries(a);
+                b.filter(b => !!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)).forEach((v, i) => {
+                    b[b.findIndex(b => b[0] == v[0])] = [v[0], v[1].replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}')];
+                    a = Object.fromEntries(b);
+                });
+            }
+            ;
+        }
+        else if (typeof a === "string") {
+            if (a == "{{undefined}}") {
+                a = undefined;
+            }
+            else {
+                if (a.match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)) {
+                    a = a.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}');
+                }
+            }
+        }
+        ;
+        return a;
+    }
+    a = recursiveFind(a);
+    return a;
+}
+;
+export function objectify(object) { let entries = Object.entries(object); entries.forEach((v, i) => { if (v[1] instanceof Array) {
+    entries[i][1] = objectify(v[1]);
+}
+else if (v[1] instanceof Object) {
+    entries[i][1] = objectify(v[1]);
+} }); return Object.fromEntries(entries); }
+;
+export function arrayify(object) { let entries = Object.entries(object); entries.forEach((v, i) => { if (v[1] instanceof Array) {
+    entries[i][1] = arrayify(v[1]);
+}
+else if (v[1] instanceof Object) {
+    entries[i][1] = arrayify(v[1]);
+} }); return entries; }
+;
+export function stringify(object, entriesmode = 0, escapedarrayorobjecttag = 0, objectifyinfinity = 0, objectifynan = 0, objectifyundefined = 0, objectifynull = 0, recursivemode = 0) { let entries = Object.entries(object); entries.forEach((v, i) => { if (v[1] instanceof Array) {
+    entries[i][1] = stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1);
+}
+else if (v[1] instanceof Object) {
+    entries[i][1] = stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1);
+}
+else if (v[1] instanceof Function) {
+    entries[i][1] = { escval: v[1].toString() };
+}
+else if (v[1] == Infinity && Boolean(objectifyinfinity)) {
+    entries[i][1] = { escval: "Infinity" };
+}
+else if (v[1] == -Infinity && Boolean(objectifyinfinity)) {
+    entries[i][1] = { escval: "-Infinity" };
+}
+else if (Number.isNaN(v[1]) && Boolean(objectifynan)) {
+    entries[i][1] = { escval: "NaN" };
+}
+else if (v[1] == undefined && Boolean(objectifyundefined)) {
+    entries[i][1] = { escval: "undefined" };
+}
+else if (v[1] == null && Boolean(objectifynull)) {
+    entries[i][1] = { escval: "null" };
+} }); return recursivemode ? ((Boolean(escapedarrayorobjecttag) && (((object instanceof Array) && !Boolean(entriesmode)) || ((object instanceof Object) && Boolean(entriesmode)))) ? (Boolean(entriesmode) ? { escobj: entries } : { escarray: Object.fromEntries(entries) }) : (Boolean(entriesmode) ? entries : Object.fromEntries(entries))) : JSONStringify(Boolean(entriesmode) ? entries : Object.fromEntries(entries), true); }
+;
+export function mainEval(x) { return eval(x); }
+export function indirectMainEval(x) { return eval?.(x); }
+export function mainRun(x, ...args) { return x(...args); }
+export function JSONStringify(JSONObject, keepUndefined = false, space) {
+    if (JSONObject == undefined) {
+        return keepUndefined ? "undefined" : "";
+    }
+    return JSON.stringify(JSONObject, function (k, v) {
+        if (v === Infinity)
+            return "{{Infinity}}";
+        else if (v === -Infinity)
+            return "{{-Infinity}}";
+        else if (Number.isNaN(v))
+            return "{{NaN}}";
+        else if (v === undefined && keepUndefined)
+            return "{{undefined}}";
+        if (String(v).match(/^{{(Infinity|NaN|-Infinity|undefined)}}$/)) {
+            v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}');
+        }
+        return v;
+    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
+}
+;
+export function getParametersFromString(string) {
+    function arrayModifier(sourcearray, callbackfn, overwrite = false) {
+        if (overwrite) {
+            sourcearray.forEach((v, i, a) => {
+                sourcearray[i] = callbackfn(v, i, a);
+            });
+            return sourcearray;
+        }
+        else {
+            let newarray;
+            try {
+                newarray = structuredClone(sourcearray);
+            }
+            catch (e) {
+                newarray = sourcearray;
+            }
+            ;
+            newarray.forEach((v, i, a) => {
+                newarray[i] = callbackfn(v, i, a);
+            });
+            return newarray;
+        }
+    }
+    ;
+    const getStringsFromString = (ce) => {
+        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/gis));
+        cd.forEach((v, i) => cd[i].indices = [[v?.index, v?.index + v[0]?.length]]);
+        let cc = [];
+        cc.push({ t: "non-json", v: ce.substring(0, cd[0]?.indices[0][0]) });
+        cd.forEach((v, i) => {
+            cc.push({ t: "json", v: v[0] });
+            cc.push({ t: "non-json", v: ce.substring(v?.indices[0][1], cd[i + 1]?.indices[0][0] ?? ce.length) });
+        });
+        return cc;
+    };
+    let rawdata = extractJSONStrings(string);
+    let a = rawdata;
+    let b = string;
+    let c = [];
+    c.push(...getStringsFromString(b.substring(0, a[0]?.indices[0][0])));
+    a.forEach((v, i) => {
+        c.push({ t: "json", v: v[0] });
+        c.push(...getStringsFromString(b.substring(v?.indices[0][1], a[i + 1]?.indices[0][0] ?? b.length)));
+    });
+    let e = [];
+    let d = arrayModifier(c, (cb, i) => arrayModifier((cb.t == "json" ? [cb.v] : String(cb.v).trimStart().trimEnd().split(/\x20+?/g)), v => {
+        if (v instanceof Function) {
+            return { s: v, v: v.toString() };
+        }
+        else {
+            try {
+                return { s: v, v: JSONParse(String(v)) };
+            }
+            catch (f) {
+                e.push({ i: i, v: f });
+                return { s: v, v: String(v) };
+            }
+        }
+    }), false);
+    let f = [];
+    arrayModifier(d, d => arrayModifier(d, d => d.v)).forEach(d => f.push(...d));
+    let h = [];
+    d.forEach(d => h.push(...d));
+    return {
+        rawdata: a,
+        input: b,
+        resultAndTypeList: c,
+        separatedResultList: arrayModifier(d, d => arrayModifier(d, d => d.v)),
+        errors: e,
+        unfilteredresults: f,
+        results: f.filter(f => f != ""),
+        unfilteredresultsincludingunmodified: h,
+        resultsincludingunmodified: h.filter(h => h.v != "")
+    };
+}
+export function getParametersFromExtractedJSON(rawdata) {
+    function arrayModifier(sourcearray, callbackfn, overwrite = false) {
+        if (overwrite) {
+            sourcearray.forEach((v, i, a) => {
+                sourcearray[i] = callbackfn(v, i, a);
+            });
+            return sourcearray;
+        }
+        else {
+            let newarray;
+            try {
+                newarray = structuredClone(sourcearray);
+            }
+            catch (e) {
+                newarray = sourcearray;
+            }
+            ;
+            newarray.forEach((v, i, a) => {
+                newarray[i] = callbackfn(v, i, a);
+            });
+            return newarray;
+        }
+    }
+    ;
+    const getStringsFromString = (ce) => {
+        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/gis));
+        cd.forEach((v, i) => cd[i] = Object.assign(cd[i], { indices: [[v?.index, v?.index + v[0]?.length]] }));
+        let cc = [];
+        cc.push({
+            t: "non-json",
+            v: ce.substring(0, cd[0]?.indices[0][0])
+        });
+        cd.forEach((v, i) => {
+            cc.push({
+                t: "json",
+                v: v[0]
+            });
+            cc.push({
+                t: "non-json",
+                v: ce.substring(v?.indices[0][1], cd[0][i + 1]?.indices[0][0] ?? ce.length)
+            });
+        });
+        return cc;
+    };
+    let a = rawdata;
+    let b = rawdata[0].input;
+    let c = [];
+    c.push(...getStringsFromString(b.substring(0, a[0]?.indices[0][0])));
+    a.forEach((v, i) => {
+        c.push({ t: "json", v: v[0] });
+        c.push(...getStringsFromString(b.substring(v?.indices[0][1], a[i + 1]?.indices[0][0] ?? b.length)));
+    });
+    c;
+    let e = [];
+    let d = arrayModifier(c, (cb, i) => arrayModifier((cb.t == "json" ? [cb.v] : String(cb.v).trimStart().trimEnd().split(/\x20+?/g)), v => {
+        if (v instanceof Function) {
+            return { s: v, v: v.toString() };
+        }
+        else {
+            try {
+                return { s: v, v: JSONParse(String(v)) };
+            }
+            catch (f) {
+                e.push({ i: i, v: f });
+                return { s: v, v: String(v) };
+            }
+        }
+    }), false);
+    let f = [];
+    arrayModifier(d, d => arrayModifier(d, d => d.v)).forEach(d => f.push(...d));
+    let h = [];
+    d.forEach(d => h.push(...d));
+    return {
+        input: a,
+        originalinput: b,
+        resultAndTypeList: c,
+        separatedResultList: d,
+        errors: e,
+        unfilteredresults: f,
+        results: f.filter(f => f != ""),
+        unfilteredresultsincludingunmodified: h,
+        resultsincludingunmodified: h.filter(f => f.v != "")
+    };
+}
+export function extractJSONStrings(inputString, includeOtherResultData = true) {
+    const jsonStringArray = [];
+    let currentIndex = 0;
+    let inquotes = false;
+    while (currentIndex < inputString.length) {
+        let currentChar = inputString[currentIndex];
+        if (inputString[currentIndex] == "\"" && !!inputString.slice(0, currentIndex + 1).match(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))"$/g)) {
+            inquotes = !inquotes;
+        }
+        // Find potential start of JSON string
+        if ((currentChar === '{' || currentChar === '[') && !inquotes) {
+            let jsonString = '';
+            let openBrackets = 0;
+            let closeBrackets = 0;
+            // Iterate until balanced brackets are found
+            for (let i = currentIndex; i < inputString.length; i++) {
+                jsonString += inputString[i];
+                if ((inputString[i] === '{' || inputString[i] === '[') && !inquotes) {
+                    openBrackets++;
+                }
+                else if ((inputString[i] === '}' || inputString[i] === ']') && !inquotes) {
+                    closeBrackets++;
+                }
+                if (inputString[i] == "\"" && !!inputString.slice(0, i + 1).match(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))"$/g)) {
+                    inquotes = !inquotes;
+                }
+                // If brackets are balanced, attempt to parse JSON
+                if (openBrackets === closeBrackets) {
+                    try {
+                        JSONParse(jsonString); // Attempt to parse JSON
+                        jsonStringArray.push(includeOtherResultData ? (() => {
+                            let atest = Array.from((" ".repeat(currentIndex) + inputString.slice(currentIndex))?.matchAll(new RegExp("")?.compile("" + escapeRegExp(jsonString) + "", `g`)))[0];
+                            atest.indices = [[atest?.index, atest?.index + atest[0]?.length]];
+                            try {
+                                atest.value = JSONParse(atest[0]);
+                            }
+                            catch (e) {
+                                atest.value = atest[0];
+                            }
+                            ;
+                            try {
+                                atest.modifiedinput = structuredClone(atest.input);
+                            }
+                            catch (e) {
+                                atest.modifiedinput = atest.input;
+                            }
+                            ;
+                            atest.input = inputString;
+                            atest.evaluationindex = currentIndex;
+                            return atest;
+                        })() : jsonString); // Convert string into RegExp match data, then push valid JSON string to array. 
+                        currentIndex = i;
+                        break;
+                    }
+                    catch (error) {
+                        // Invalid JSON, continue searching
+                    }
+                }
+            }
+        }
+        currentIndex++;
+    }
+    return jsonStringArray;
+}
+export function customModulo(dividend, min, max, inclusive = false) {
+    inclusive = Number(inclusive);
+    max += inclusive;
+    if (min >= max) {
+        throw new Error('Invalid range: min value must be less than max value');
+    }
+    if (!Number.isFinite(dividend)) {
+        return dividend;
+    }
+    if (dividend < min) {
+        const range = max - min;
+        return customModulo(dividend + range, min, max);
+    }
+    if (dividend >= max) {
+        const range = max - min;
+        return customModulo(dividend - range, min, max);
+    }
+    return dividend;
+}
+export function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+;
+export function jsonFromString(str, useBetterJSONParse = true) {
+    const regex = /([{\["]{1}([,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]|".*?")+[}\]"]{1}|["]{1}(([^(")]|\\")*)+(?<!\\)["]){1}/gis;
+    const matches = str.match(regex);
+    if (useBetterJSONParse)
+        return matches.map((m) => JSONParse(m));
+    else
+        return matches.map((m) => JSON.parse(m));
+}
+export function gwdp(propertyId) { return world.getDynamicProperty(propertyId); }
+;
+export function swdp(propertyId, newValue) { return world.setDynamicProperty(propertyId, newValue); }
+;
+export function gedp(entity, propertyId) { return entity.getDynamicProperty(propertyId); }
+;
+export function sedp(entity, propertyId, newValue) { return entity.setDynamicProperty(propertyId, newValue); }
+;
+export function gidp(item, propertyId) { return item.getDynamicProperty(propertyId); }
+;
+export function sidp(item, entity, propertyId, newValue) { return item.setDynamicProperty(propertyId, newValue); }
+;
+export function shootEntity(entityType, location, velocity, shootOptions = {}, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try {
+    setProjectileComponentPropertiesCallbackFn(entityProjectileComponent);
+}
+catch (e) {
+    console.error(e, e.stack);
+} ; entityProjectileComponent?.shoot(velocity, shootOptions); }
+;
 export function targetSelector(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return Number((selectedEntityUUIDValue)); }
 export function targetSelectorB(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return world.getDimension(DimensionTypes.getAll().find((dimension) => (world.getDimension(dimension.typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)))).typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)); } /*
 let a = world.getDimension("the_end").getBlock({x: 0, y: 0, z: 0}).permutation
@@ -406,7 +891,7 @@ export function targetSelectorAllListE(selector, position) { let scoreboardUUID 
     }
     catch (e) { }
 } ; DimensionTypes.getAll().forEach((dt) => { let dimension = world.getDimension(dt.typeId); dimension.runCommand("/execute as " + selector + " at @s run /scoreboard players set @s andexdbDebug 0"); }); return selectedEntity; }
-export function debugAction(block, player, mode, direction) {
+export function debugActionb(block, player, mode, direction) {
     if (player.getDynamicProperty("debugStickSelectedBlock") != block.typeId) {
         player.setDynamicProperty("debugStickSelectedBlock", block.typeId);
         if (((Object.entries(block.permutation.getAllStates()).findIndex((entry) => (entry[0] == player.getDynamicProperty("debugStickPropertyIndexName"))) == -1) && ((player.getDynamicProperty("debugStickPropertyIndexName") != "waterlogged") || !block.type.canBeWaterlogged))) {
@@ -423,7 +908,7 @@ export function debugAction(block, player, mode, direction) {
         if ((Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)) != 0) {
             if (mode == 1) {
                 if (direction == 1) {
-                    player.setDynamicProperty("debugStickPropertyIndex", Number((Number(player.getDynamicProperty("debugStickPropertyIndex")) - 1) % (Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged))));
+                    player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo((Number(player.getDynamicProperty("debugStickPropertyIndex")) - 1), 0, (Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)))));
                     if (player.getDynamicProperty("debugStickPropertyIndex") == Object.entries(block.permutation.getAllStates()).length) {
                         player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged");
                     }
@@ -432,7 +917,7 @@ export function debugAction(block, player, mode, direction) {
                     }
                 }
                 else {
-                    player.setDynamicProperty("debugStickPropertyIndex", Number((Number(player.getDynamicProperty("debugStickPropertyIndex")) + 1) % (Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged))));
+                    player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo((Number(player.getDynamicProperty("debugStickPropertyIndex")) + 1), 0, (Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)))));
                     if (player.getDynamicProperty("debugStickPropertyIndex") == Object.entries(block.permutation.getAllStates()).length) {
                         player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged");
                     }
@@ -448,15 +933,10 @@ export function debugAction(block, player, mode, direction) {
                     }
                     else {
                         if (direction == 1) {
-                            if (Number(player.getDynamicProperty("debugStickPropertyIndexIndex")) > 0) {
-                                player.setDynamicProperty("debugStickPropertyIndexIndex", ((((BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value) => (value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) - 1) % BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length))));
-                            }
-                            else {
-                                player.setDynamicProperty("debugStickPropertyIndexIndex", (BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length - 1));
-                            }
+                            player.setDynamicProperty("debugStickPropertyIndexIndex", (((customModulo((BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value) => (value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) - 1), 0, BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)))));
                         }
                         else {
-                            player.setDynamicProperty("debugStickPropertyIndexIndex", ((BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value) => (value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) + 1) % BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length));
+                            player.setDynamicProperty("debugStickPropertyIndexIndex", (customModulo((BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value) => (value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) + 1), 0, BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)));
                         }
                     }
                 }
@@ -475,6 +955,96 @@ export function debugAction(block, player, mode, direction) {
                 system.run(() => {
                     player.onScreenDisplay.setActionBar(`"${Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]}" to ${permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1]}`);
                     block.setPermutation(BlockPermutation.resolve(block.typeId, Object.fromEntries(permutation)));
+                });
+            }
+        }
+        else {
+            if (mode == 1) {
+                let permutation = Object.entries(block.permutation.getAllStates());
+                if (true /*typeof Object.values(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))] == typeof String*/) {
+                    if (player.getDynamicProperty("debugStickPropertyIndexName") == "waterlogged") {
+                        system.run(() => { player.onScreenDisplay.setActionBar(`selected "waterlogged" (${block.isWaterlogged})`); });
+                    }
+                    else {
+                        system.run(() => { player.onScreenDisplay.setActionBar(`selected "${permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0]}" (${Object.values(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]})`); });
+                    }
+                }
+                else {
+                    system.run(() => { player.onScreenDisplay.setActionBar(`selected "${permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0]}" ${Object.values(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]}`); });
+                }
+            }
+        }
+    }
+    ;
+    if ((Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)) == 0) {
+        system.run(() => { player.onScreenDisplay.setActionBar(`${block.typeId} has no properties`); });
+    }
+    ; /*
+    console.warn(Object.entries(block.permutation.getAllStates()))*/
+}
+export function debugAction(block, player, mode, direction) {
+    player.setDynamicProperty("debugStickBlockLocation", block.location);
+    if (player.getDynamicProperty("debugStickSelectedBlock") != block.typeId) {
+        player.setDynamicProperty("debugStickSelectedBlock", block.typeId);
+        if (((Object.entries(block.permutation.getAllStates()).findIndex((entry) => (entry[0] == player.getDynamicProperty("debugStickPropertyIndexName"))) == -1) && ((player.getDynamicProperty("debugStickPropertyIndexName") != "waterlogged") || !block.type.canBeWaterlogged))) {
+            player.setDynamicProperty("debugStickPropertyIndex", 0);
+            player.setDynamicProperty("debugStickPropertyIndexName", "");
+        }
+        else {
+            player.setDynamicProperty("debugStickPropertyIndex", Object.entries(block.permutation.getAllStates()).findIndex((entry) => (entry[0] == player.getDynamicProperty("debugStickPropertyIndexName"))));
+        }
+        ;
+    }
+    else {
+        if ((Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)) != 0) {
+            if (mode == 1) {
+                if (direction == 1) {
+                    player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo((Number(player.getDynamicProperty("debugStickPropertyIndex")) - 1), 0, (Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)))));
+                    if (player.getDynamicProperty("debugStickPropertyIndex") == Object.entries(block.permutation.getAllStates()).length) {
+                        player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged");
+                    }
+                    else {
+                        player.setDynamicProperty("debugStickPropertyIndexName", Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0]);
+                    }
+                }
+                else {
+                    player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo((Number(player.getDynamicProperty("debugStickPropertyIndex")) + 1), 0, (Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)))));
+                    if (player.getDynamicProperty("debugStickPropertyIndex") == Object.entries(block.permutation.getAllStates()).length) {
+                        player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged");
+                    }
+                    else {
+                        player.setDynamicProperty("debugStickPropertyIndexName", Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0]);
+                    }
+                }
+            }
+            else {
+                if (mode == 0) { /*
+                    if (player.getDynamicProperty("debugStickPropertyIndexName") == "waterlogged") {
+                        player.setDynamicProperty("debugStickPropertyIndexIndex", (1-Number(block.isWaterlogged)));
+                    }else{
+                        if(direction == 1){
+                            player.setDynamicProperty("debugStickPropertyIndexIndex", (((customModulo((BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value)=>(value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) - 1), 0, BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)))))
+                        }else{
+                            player.setDynamicProperty("debugStickPropertyIndexIndex", (customModulo((BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value)=>(value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) + 1), 0, BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)))
+                        }
+                    }*/
+                }
+            }
+        }
+    }
+    ; /*BlockStates.getAll().forEach((stateb)=>{player.sendMessage(stateb.id + ": " + stateb.validValues)}); */ /*let test = Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]; console.warn(Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))] + "\n" + String(Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]) + "\n" + test + "\n" + BlockStates.getAll()[BlockStates.getAll().length-2].id + BlockStates.getAll().findIndex((statec)=>{console.warn("\"" + String(statec.id) + "\", \"" + String(Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]) + "\""); statec.id == test})); */
+    if ((Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)) != 0) {
+        if (mode == 0) {
+            if (player.getDynamicProperty("debugStickPropertyIndexName") == "waterlogged" || (block.type.canBeWaterlogged && (Object.entries(block.permutation.getAllStates()).length == 0))) {
+                system.run(() => { block.setWaterlogged(Boolean(1 - Number(block.isWaterlogged))); player.onScreenDisplay.setActionBar(`"waterlogged" to ${block.isWaterlogged}`); });
+            }
+            else {
+                let permutation = Object.entries(block.permutation.getAllStates());
+                let permindex = BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex(v => (v == permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1]));
+                permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1] = BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues[customModulo(permindex + 1 + (-2 * (direction)), 0, BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)];
+                system.run(() => {
+                    block.setPermutation(BlockPermutation.resolve(block.typeId, Object.fromEntries(permutation)));
+                    player.onScreenDisplay.setActionBar(`"${Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]}" to ${permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1]}`);
                 });
             }
         }
@@ -836,18 +1406,43 @@ world.beforeEvents.entityRemove.subscribe(event => {
         } });
     }
 });
-world.beforeEvents.itemDefinitionEvent.subscribe(event => {
+world.beforeEvents.playerGameModeChange.subscribe(event => {
     try {
-        eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")));
+        eval(String(world.getDynamicProperty("evalBeforeEvents:playerGameModeChange")));
     }
     catch (e) {
         console.error(e, e.stack);
-        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemDefinitionEventBeforeEventDebugErrors")) {
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("playerGameModeChangeBeforeEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
 });
+world.beforeEvents.weatherChange.subscribe(event => {
+    try {
+        eval(String(world.getDynamicProperty("evalBeforeEvents:weatherChange")));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("weatherChangeBeforeEventDebugErrors")) {
+            currentplayer.sendMessage(e + e.stack);
+        } });
+    }
+}); /*
+world.beforeEvents.itemDefinitionEvent.subscribe(event => {
+  try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});*/ //removed in 1.20.70.21
 world.beforeEvents.playerInteractWithEntity.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemPlayerInteractWithEntityCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithEntity")));
     }
@@ -1043,17 +1638,42 @@ world.afterEvents.itemCompleteUse.subscribe(event => {
         } });
     }
 });
-world.afterEvents.itemDefinitionEvent.subscribe(event => {
+world.afterEvents.gameRuleChange.subscribe(event => {
     try {
-        eval(String(world.getDynamicProperty("evalAfterEvents:itemDefinitionEvent")));
+        eval(String(world.getDynamicProperty("evalAfterEvents:gameRuleChange")));
     }
     catch (e) {
         console.error(e, e.stack);
-        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemDefinitionEventAfterEventDebugErrors")) {
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("gameRuleChangeAfterEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
 });
+world.afterEvents.playerGameModeChange.subscribe(event => {
+    try {
+        eval(String(world.getDynamicProperty("evalAfterEvents:playerGameModeChange")));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("playerGameModeChangeAfterEventDebugErrors")) {
+            currentplayer.sendMessage(e + e.stack);
+        } });
+    }
+});
+world.afterEvents.weatherChange.subscribe(event => {
+    try {
+        eval(String(world.getDynamicProperty("evalAfterEvents:weatherChange")));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("weatherChangeAfterEventDebugErrors")) {
+            currentplayer.sendMessage(e + e.stack);
+        } });
+    }
+}); /*
+world.afterEvents.itemDefinitionEvent.subscribe(event => {
+  try{eval(String(world.getDynamicProperty("evalAfterEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});*/
 world.afterEvents.itemReleaseUse.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")));
@@ -1372,6 +1992,17 @@ world.beforeEvents.explosion.subscribe(event => {
     }
 });
 world.afterEvents.itemReleaseUse.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("itemReleaseUseCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("itemReleaseUseCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemReleaseUseCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")));
     }
@@ -1387,6 +2018,17 @@ world.afterEvents.itemReleaseUse.subscribe(event => {
     ;
 });
 world.beforeEvents.playerInteractWithBlock.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemPlayerInteractWithBlockCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithBlock")));
     }
@@ -1412,7 +2054,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
             interactable_block.push({ id: event.player.id, delay: 0 });
         }
         ;
-        if ((interactable_block.find((playerId) => (playerId.id == event.player.id)).delay == 0) || ((event.player.getDynamicProperty("debugStickSelectedBlock") != event.block.typeId))) {
+        if ((interactable_block.find((playerId) => (playerId.id == event.player.id)).delay == 0) || (String(Object.values(event.player.getDynamicProperty("debugStickBlockLocation"))) != String(Object.values(event.block.location)))) {
             interactable_block.find((playerId) => (playerId.id == event.player.id)).delay = delay;
             interactable_block.find((playerId) => (playerId.id == event.player.id)).holdDuration = holdDuration;
             debugAction(event.block, event.player, 0, Number(event.player.isSneaking));
@@ -1425,6 +2067,17 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     }
 });
 world.beforeEvents.itemUseOn.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("itemUseOnCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("itemUseOnCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemUseOnCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:itemUseOn")));
     }
@@ -1445,6 +2098,17 @@ world.beforeEvents.itemUseOn.subscribe(event => {
     }
 });
 world.beforeEvents.playerBreakBlock.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("playerBreakBlockCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("playerBreakBlockCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemPlayerBreakBlockCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerBreakBlock")));
     }
@@ -1521,6 +2185,18 @@ system.runInterval(() => { try {
 }
 catch { } ; }, 1); //fixed and this one is also nows new
 world.beforeEvents.itemUse.subscribe(event => {
+    event.source.teleport;
+    if (!!event?.itemStack?.getDynamicProperty("code")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("code")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:itemUse")));
     }
@@ -2422,7 +3098,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
     form.button("Mange Restricted Areas", "textures/ui/xyz_axis.png");
     form.button("Manage Custom UIs", "textures/ui/feedIcon");
     form.button("Settings", "textures/ui/settings_glyph_color_2x");
-    forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {let r = (ra as ActionFormResponse);
+    forceShow(form, players[players.findIndex((x) => x == sourceEntity)] as any).then(ra => {let r = (ra as ActionFormResponse);
         // This will stop the code when the player closes the form
         if (r.canceled) return;
     
@@ -3295,7 +3971,7 @@ console.error(e, e.stack);
                                 form3.button("Use Coordinates And Dimension Instead", "textures/items/stick");
                                 form3.button("Preset 1", "textures/items/stick");
                                 form3.button("Edit Presets", "textures/items/stick");
-                                form3.show(players[players.findIndex((x) => x == sourceEntity)]).then(s => {
+                                form3.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(s => {
                                 // This will stop the code when the player closes the form
                                     if (s.canceled) return;
                         
@@ -3494,7 +4170,7 @@ console.error(e, e.stack);
                                 form3.button("Use Coordinates And Dimension Instead", "textures/items/stick");
                                 form3.button("Preset 1", "textures/items/stick");
                                 form3.button("Edit Presets", "textures/items/stick");
-                                form3.show(players[players.findIndex((x) => x == sourceEntity)]).then(s => {
+                                form3.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(s => {
                                 // This will stop the code when the player closes the form
                                     if (s.canceled) return;
                         
@@ -4157,7 +4833,7 @@ console.error(e, e.stack);
             form.textField("Item Lore\nTo type multiple lines just put \\\\newline in between each line. ", "Item Lore", itemLoreTextField);
             form.textField("Can Destroy", "Can Destroy", "" /*(String(item.getCanDestroy()))*/);
             form.textField("Can Place On", "Can Place On", "" /*(String(item.getCanPlaceOn()))*/);
-            form.textField("Trigger Event", "Trigger Event", "");
+            form.textField("§cTrigger Event (Removed in 1.20.70.71)", "§cTrigger Event (Removed in 1.20.70.71)", "");
             form.slider("Count", 0, 255, 1, currentValueItemAmount);
             form.toggle("keepOnDeath", (itemKeepOnDeath));
             function getItemLockMode(mode, input) {
@@ -4332,13 +5008,8 @@ console.error(e, e.stack);
                 catch (e) {
                     console.error(e, e.stack);
                 }
-                ;
-                try {
-                    item.triggerEvent(String(triggerEvent));
-                }
-                catch (e) {
-                    console.error(e, e.stack);
-                }
+                ; /*
+                try{item.triggerEvent(String(triggerEvent));} catch(e){console.error(e, e.stack);}*/ //removed in 1.20.70.21
                 try {
                     durability2.damage = Number(10);
                 }
@@ -5862,7 +6533,7 @@ console.error(e, e.stack);
         form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
         form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
         form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
-        forceShow(form2, (event.sourceEntity as Player)).then(to => {
+        forceShow(form2, (event.sourceEntity as any)).then(to => {
             let t = (to as ModalFormResponse)
             if (t.canceled) return;*/ /*
     GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
@@ -5912,7 +6583,7 @@ console.error(e, e.stack);
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));*/ /*
-    forceShow(form2, (event.sourceEntity as Player)).then(to => {
+    forceShow(form2, (event.sourceEntity as any)).then(to => {
         let t = (to as ModalFormResponse)
         if (t.canceled) return;*/ /*
     GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
@@ -6939,7 +7610,7 @@ console.error(e, e.stack);
         form.toggle("Debug", false)
     
     
-    form.show(players[players.findIndex((x) => x == sourceEntity)]).then(r => {
+    form.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(r => {
         if (r.canceled) return;
     
         let [ nameTag, triggerEvent, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, removeEffect, effectToRemove, removeTag, tagToRemove, setRot, rotX, rotY, teleport, teleportX, teleportY, teleportZ, tryTeleport, tryTeleportX, tryTeleportY, tryTeleportZ, openTheItemModificationFormAfterwards, debug ] = r.formValues;
@@ -6969,10 +7640,10 @@ console.error(e, e.stack);
             try {entity[0].entity.triggerEvent(String(triggerEvent));} catch(e){console.error(e, e.stack);}
         }
     
-    if (players[players.findIndex((x) => x == sourceEntity)].hasTag("showDebug")) {
+    if (players[players.findIndex((x) => x == sourceEntity)] as any.hasTag("showDebug")) {
       system.runInterval( () => {
       players[0].onScreenDisplay.setActionBar("dimension: " + entity[0].entity.dimension + "\nfallDistance: " + entity[0].entity.fallDistance + "\nid: entity[0].entity.id: " + entity[0].entity.id + "\nisClimbing: " + entity[0].entity.isClimbing + "\nisFalling: " + entity[0].entity.isFalling + "\nisInWater: " + entity[0].entity.isInWater + "\nisOnGround: " + entity[0].entity.isOnGround + "\nisSleeping: " + entity[0].entity.isSleeping + "\nisSneaking: " + entity[0].entity.isSneaking + "\nisSprinting: " + entity[0].entity.isSprinting + "\nisSwimming: " + entity[0].entity.isSwimming + "\nlifetimeState: " + entity[0].entity.lifetimeState + "\nlocation: " + entity[0].entity.location + "\nnameTag: " + entity[0].entity.nameTag + "\nscoreboardIdentity(or_the_actor_id_very_long_complicated_number): " + entity[0].entity.scoreboardIdentity + "\ntarget: " + entity[0].entity.target + "\ntypeId: " + entity[0].entity.typeId + "\ngetBlockFromViewDirection(): " + entity[0].entity.getBlockFromViewDirection() + "\ngetComponents(): " + entity[0].entity.getComponents() + "\ngetEffects(): " + entity[0].entity.getEffects() + "\ngetEntitiesFromViewDirection(): " + entity[0].entity.getEntitiesFromViewDirection() + "\ngetHeadLocation(): " + entity[0].entity.getHeadLocation() + "\ngetRotation(): " + entity[0].entity.getRotation() + "\ngetTags(): " + entity[0].entity.getTags() + "\ngetVelocity(): " + entity[0].entity.getVelocity() + "\ngetViewDirection(): " + entity[0].entity.getViewDirection + "\nisValid(): " + entity[0].entity.isValid());
-      if (players[players.findIndex((x) => x == sourceEntity)].hasTag("showDebug") == false) {
+      if (players[players.findIndex((x) => x == sourceEntity)] as any.hasTag("showDebug") == false) {
       return
       }
       }, 2)

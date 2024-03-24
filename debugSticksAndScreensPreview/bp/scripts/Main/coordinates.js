@@ -1,6 +1,34 @@
-import { Vector, world } from "@minecraft/server";
-import { targetSelectorAllListC, targetSelectorAllListE } from "Main";
-export const coordinates_format_version = "1.0.0";
+import { Block, Dimension, DimensionType, Player, Vector, world, Entity } from "@minecraft/server";
+import { targetSelectorAllListC, targetSelectorAllListE } from "../Main";
+import * as GameTest from "@minecraft/server-gametest";
+import * as mcServer from "@minecraft/server";
+import * as mcServerUi from "@minecraft/server-ui"; /*
+import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
+import * as mcCommon from "@minecraft/common";*/ /*
+import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import * as main from "../Main";
+import * as coords from "Main/coordinates";
+import * as cmds from "Main/commands";
+import * as bans from "Main/ban";
+import * as uis from "Main/ui";
+import * as playersave from "Main/player_save";
+import * as spawnprot from "Main/spawn_protection";
+mcServer;
+mcServerUi; /*
+mcServerAdmin*/ /*
+mcDebugUtilities*/ /*
+mcCommon*/
+GameTest; /*
+mcVanillaData*/
+main;
+coords;
+cmds;
+bans;
+uis;
+playersave;
+spawnprot;
+export const coordinates_format_version = "1.0.1";
 export class WorldPosition {
     constructor(location, rotation, dimension, entity, block) {
         this.location = location;

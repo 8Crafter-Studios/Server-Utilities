@@ -1,7 +1,35 @@
-import { CompoundBlockVolume, system, world } from "@minecraft/server";
-import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
-import { forceShow } from "./ui";
-export const spawn_protection_format_version = "1.0.0";
+import { BlockVolume, CompoundBlockVolume, Player, system, world, Entity } from "@minecraft/server";
+import { ActionFormData, ModalFormData, ActionFormResponse, ModalFormResponse } from "@minecraft/server-ui";
+import { forceShow, mainMenu } from "./ui";
+import * as GameTest from "@minecraft/server-gametest";
+import * as mcServer from "@minecraft/server";
+import * as mcServerUi from "@minecraft/server-ui"; /*
+import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
+import * as mcCommon from "@minecraft/common";*/ /*
+import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import * as main from "Main";
+import * as coords from "Main/coordinates";
+import * as cmds from "Main/commands";
+import * as bans from "Main/ban";
+import * as uis from "Main/ui";
+import * as playersave from "Main/player_save";
+import * as spawnprot from "Main/spawn_protection";
+mcServer;
+mcServerUi; /*
+mcServerAdmin*/ /*
+mcDebugUtilities*/ /*
+mcCommon*/
+GameTest; /*
+mcVanillaData*/
+main;
+coords;
+cmds;
+bans;
+uis;
+playersave;
+spawnprot;
+export const spawn_protection_format_version = "1.0.1";
 export const spawnProtectionTypeList = [/*"noPistonExtensionArea:", */ "noExplosionArea:", "noInteractArea:", "noBlockInteractArea:", "noBlockBreakArea:", "protectedArea:", "noBlockPlaceArea:"];
 export let noPistonExtensionAreas;
 noPistonExtensionAreas = undefined;
@@ -98,6 +126,7 @@ export function editAreas(player, prefix) {
             case (t.selection == a.length + 1): /*
             editPistonExtensionAreas(player)*/ /*
             screenForm123(); */
+                editAreasMainMenu(player);
                 break;
             default:
                 form1234567.button("Edit", "textures/ui/book_edit_default");
