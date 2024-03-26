@@ -1,6 +1,6 @@
 import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Vector, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, arrayModifier, format_version, getUICustomForm } from "Main";
+import { JSONParse, JSONStringify, arrayModifier, format_version, getUICustomForm, targetSelectorAllListC } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -328,7 +328,8 @@ export function mainMenu(sourceEntity) {
     form.button("Manage Custom UIs", "textures/ui/feedIcon");
     form.button("Settings", "textures/ui/settings_glyph_color_2x");
     form.button("Manage Players", "textures/ui/user_icon_white");
-    form.button("§eManage Commands", "textures/ui/chat_keyboard_hover");
+    form.button("§eManage Commands §f[§6Beta§f]", "textures/ui/chat_keyboard_hover");
+    form.button("§eItem Editor §f[§cAlpha§f]", "textures/ui/chat_keyboard_hover");
     forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {
         let r = ra;
         // This will stop the code when the player closes the form
@@ -510,6 +511,14 @@ export function mainMenu(sourceEntity) {
                 break;
             case 22:
                 manageCommands(sourceEntity);
+                break;
+            case 23:
+                try {
+                    uis.itemSelector(sourceEntity, sourceEntity).then(a => { if (!!a) {
+                        uis.itemEditorTypeSelection(sourceEntity, sourceEntity, a);
+                    } });
+                }
+                catch { }
                 break;
             default:
         }
@@ -2798,9 +2807,9 @@ export function manageCommands(sourceEntity) {
     let form = new ActionFormData;
     form.title("Manage Commands");
     let defaultCommands = command.getDefaultCommands();
-    defaultCommands.forEach((p) => { form.button(`${p.formatting_code}${p.commandName}\n${+p.type + ": " + (p.settings.enabled ? "enabled" : "disabled")}` /*, "textures/ui/online"*/); });
+    defaultCommands.forEach((p) => { form.button(`${p.formatting_code + p.commandName}\n${p.type + ": " + (p.settings.enabled ? "enabled" : "disabled") + "; " + p.command_version}` /*, "textures/ui/online"*/); });
     let customCommands = command.getCustomCommands();
-    customCommands.forEach((p) => { form.button(`${p.commandName}\n${p.formatting_code + p.type + ": " + (p.settings.enabled ? "enabled" : "disabled")}` /*, "textures/ui/online"*/); });
+    customCommands.forEach((p) => { form.button(`${p.formatting_code + p.commandName}\n${p.type + ": " + (p.settings.enabled ? "enabled" : "disabled") + "; " + p.command_version}` /*, "textures/ui/online"*/); });
     let commandsList = defaultCommands.concat(customCommands);
     form.button("Add Custom Command");
     form.button("Back");
@@ -3054,7 +3063,7 @@ export async function onlinePlayerSelector(sourceEntity, backFunction = mainMenu
         ;
         switch (r.selection) {
             case playerslist.length:
-                return backFunction(...functionargs);
+                return backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
                 break;
             default:
                 return playerslist[r.selection];
@@ -3063,7 +3072,7 @@ export async function onlinePlayerSelector(sourceEntity, backFunction = mainMenu
 }
 export async function itemSelector(sourceEntity, targetPlayer, backFunction = mainMenu, ...functionargs) {
     let form = new ActionFormData;
-    form.title("Select Player");
+    form.title("Select Item");
     let itemsList = [];
     for (let i = 0; i < targetPlayer.getComponent("inventory").inventorySize; i++) {
         itemsList.push({ slot: i, item: targetPlayer.getComponent("inventory").container.getSlot(i) });
@@ -3071,11 +3080,16 @@ export async function itemSelector(sourceEntity, targetPlayer, backFunction = ma
     ;
     let equipmentList = [];
     for (let i = 0; i < 6; i++) {
-        itemsList.push({ slot: [EquipmentSlot.Mainhand, EquipmentSlot.Offhand, EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet][i], item: targetPlayer.getComponent("equippable").getEquipmentSlot([EquipmentSlot.Mainhand, EquipmentSlot.Offhand, EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet][i]) });
+        equipmentList.push({ slot: [EquipmentSlot.Mainhand, EquipmentSlot.Offhand, EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet][i], item: targetPlayer.getComponent("equippable").getEquipmentSlot([EquipmentSlot.Mainhand, EquipmentSlot.Offhand, EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet][i]) });
     }
     ;
     let slotsList = equipmentList.concat(itemsList);
-    slotsList.forEach((p) => { form.button(`${p.slot}: ${p.item.typeId}\n${p.item.amount}; ${p.item.nameTag}` /*, "textures/ui/online"*/); });
+    slotsList.forEach((p) => { if (p.item.hasItem()) {
+        form.button(`${p?.slot}: ${p?.item?.typeId}\n${p?.item?.amount}; ${p?.item?.nameTag}` /*, "textures/ui/online"*/);
+    }
+    else {
+        form.button(`${p?.slot}: empty\n0; ` /*, "textures/ui/online"*/);
+    } });
     form.button("Back");
     return forceShow(form, sourceEntity).then(ra => {
         let r = ra;
@@ -3085,7 +3099,7 @@ export async function itemSelector(sourceEntity, targetPlayer, backFunction = ma
         ;
         switch (r.selection) {
             case slotsList.length:
-                return backFunction(...functionargs);
+                return backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
                 break;
             default:
                 return slotsList[r.selection];
@@ -3094,15 +3108,15 @@ export async function itemSelector(sourceEntity, targetPlayer, backFunction = ma
 }
 export async function itemEditorTypeSelection(sourceEntity, targetPlayer, item, selectionItems, backFunction = mainMenu, ...functionargs) {
     let form = new ActionFormData;
-    form.title("Select Player");
-    form.button("Edit Item" /*, "textures/ui/online"*/);
-    form.button("Edit Code" /*, "textures/ui/online"*/);
-    form.button("Edit Dynamic Properties" /*, "textures/ui/online"*/);
-    form.button("Edit Enchantments" /*, "textures/ui/online"*/);
+    form.title("§eItem Editor §f[§cAlpha§f]");
+    form.button((!item.item.hasItem() ? "§c" : "") + "Edit Item" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "") + "Edit Code" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() || !item.item?.isStackable ? "§c" : "") + "§eEdit Dynamic Properties" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "") + "§cEdit Enchantments" /*, "textures/ui/online"*/);
     form.button("New Item" /*, "textures/ui/online"*/);
-    form.button("Transfer Item" /*, "textures/ui/online"*/);
-    form.button("Clone Item" /*, "textures/ui/online"*/);
-    form.button("Delete Item" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "") + "§cTransfer Item" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "") + "§cClone Item" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "") + "§cDelete Item" /*, "textures/ui/online"*/);
     //    form.button("Ban Item"/*, "textures/ui/online"*/); 
     form.button("Back");
     let result;
@@ -3115,20 +3129,44 @@ export async function itemEditorTypeSelection(sourceEntity, targetPlayer, item, 
         ;
         switch (r.selection) {
             case 0:
-                result = !!selectionItems?.edit?.f ? selectionItems?.edit?.f(...functionargs ?? sourceEntity) : itemEditor(sourceEntity, targetPlayer, item.item);
+                if (item.item?.hasItem()) {
+                    result = !!selectionItems?.edit?.f ? selectionItems?.edit?.f(...selectionItems?.edit?.a ?? [sourceEntity, sourceEntity]) : itemEditor(sourceEntity, targetPlayer, item.item);
+                }
+                else {
+                    backFunction(...functionargs ?? sourceEntity);
+                }
+                break;
+            case 1:
+                if (item.item?.hasItem() && item.item?.isStackable) {
+                    result = !!selectionItems?.editCode?.f ? selectionItems?.editCode?.f(...selectionItems?.editCode?.a ?? [sourceEntity, sourceEntity]) : itemCodePropertyEditor(sourceEntity, item.item);
+                }
+                else {
+                    backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
+                }
+                break;
+            case 2:
+                if (item.item?.hasItem() && item.item?.isStackable) {
+                    result = !!selectionItems?.editDynamicProperties?.f ? selectionItems?.editDynamicProperties?.f(...selectionItems?.editDynamicProperties?.a ?? [sourceEntity, sourceEntity]) : itemDynamicPropertyEditor(sourceEntity, item.item);
+                }
+                else {
+                    backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
+                }
                 break;
             case 4:
-                result = backFunction(...functionargs ?? sourceEntity);
+                result = !!selectionItems?.editCode?.f ? selectionItems?.editCode?.f(...selectionItems?.editCode?.a ?? [sourceEntity, sourceEntity]) : newItemInSlot(sourceEntity, item.item);
+                break;
+            case 5:
+                result = backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
                 break;
             default:
-                result = backFunction(...functionargs ?? sourceEntity);
+                result = backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
         }
         return result;
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
 export async function itemEditor(sourceEntity, targetPlayer, item) {
     let form = new ModalFormData;
-    form.title("Select Player");
+    form.title("Edit Item");
     form.textField("Item Name (escape characters such as \\n are allowed)", "string", !!!item.nameTag ? undefined : item.nameTag);
     form.textField("Item Lore (escape characters such as \\n are allowed)(set to [] to clear)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getLore()));
     form.slider("Amount", 0, 127, 1, item.amount);
@@ -3136,8 +3174,8 @@ export async function itemEditor(sourceEntity, targetPlayer, item) {
     form.textField("Can Place On (escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getCanPlaceOn()));
     form.dropdown("Item Lock Mode", [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory], [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory][item.lockMode]);
     form.toggle("Keep On Death", item.keepOnDeath);
-    form.textField((!!!item.getItem().getComponent("cooldown") ? "§c(UNAVAILABLE)§f " : "") + "Set Cooldown (In Ticks)", "ticks", String(item.getItem().getComponent("cooldown")?.cooldownTicks));
-    form.textField((!!!item.getItem().getComponent("durability") ? "§c(UNAVAILABLE)§f " : "") + "Set Damage (In Ticks)", "ticks", String(item.getItem().getComponent("durability")?.damage));
+    form.textField((!!!item.getItem().getComponent("cooldown") ? "§c(UNAVAILABLE)§f " : "") + "Set Cooldown (In Ticks)", "ticks");
+    form.textField((!!!item.getItem().getComponent("durability") ? "§c(UNAVAILABLE)§f " : "") + "Set Damage", "int", String(item.getItem().getComponent("durability")?.damage));
     let result;
     result = undefined;
     return forceShow(form, sourceEntity).then(ra => {
@@ -3146,7 +3184,200 @@ export async function itemEditor(sourceEntity, targetPlayer, item) {
             return;
         }
         ;
-        let [name, count] = r.formValues;
+        let [name, lore, count, canDestroy, canPlaceOn, lockMode, keepOnDeath, cooldown, durability] = r.formValues;
+        try {
+            if (String(name) != item.nameTag) {
+                item.nameTag = String(name);
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if (JSONParse((String(lore) == "" ? "[]" : String(lore))) != item.getLore()) {
+                item.setLore(JSONParse(String(lore)));
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if (Number(count) != item.amount) {
+                item.amount = Number(count);
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if (JSONParse((String(canDestroy) == "" ? "[]" : String(canDestroy))) != item.getCanDestroy()) {
+                item.setCanDestroy(JSONParse(String(canDestroy)));
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if (JSONParse((String(canPlaceOn) == "" ? "[]" : String(canPlaceOn))) != item.getCanPlaceOn()) {
+                item.setCanPlaceOn(JSONParse(String(canPlaceOn)));
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if ([ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory][Number(lockMode)] != item.lockMode) {
+                item.lockMode = [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory][Number(lockMode)];
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if (Boolean(keepOnDeath) != item.keepOnDeath) {
+                item.keepOnDeath = Boolean(keepOnDeath);
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        if (!!item.getItem().getComponent("cooldown")) {
+            try {
+                if (String(cooldown) != "") {
+                    targetPlayer.startItemCooldown(item.getItem().getComponent("cooldown").cooldownCategory, Number(cooldown));
+                }
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+        }
+        if (!!item.getItem().getComponent("durability")) {
+            try {
+                if (Number(durability) != item.getItem().getComponent("durability").damage) {
+                    const a = item.getItem();
+                    a.getComponent("durability").damage = Number(durability);
+                    item.setItem(a);
+                }
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+        }
         return result;
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export function itemDynamicPropertyEditor(sourceEntity, item) {
+    let formb = new ActionFormData;
+    formb.title("Item Dynamic Property Editor");
+    formb.button("Add Property");
+    formb.button("Edit Property");
+    formb.button("Remove Property");
+    formb.button("Back");
+    forceShow(formb, sourceEntity).then(ba => {
+        let b = ba;
+        if (b.canceled) {
+            return;
+        }
+        ;
+        let form = new ModalFormData;
+        form.title("Item Dynamic Property Editor");
+        let properties = item.getDynamicPropertyIds();
+        switch (b.selection) {
+            case 0:
+                form.textField("Property Name", "string");
+                form.textField("Property Value", "string|number|boolean|vector3json");
+                form.dropdown("Property Type", ["String", "Number", "Boolean", "Vector3"]);
+                forceShow(form, sourceEntity).then(ra => {
+                    let r = ra;
+                    if (r.canceled) {
+                        return;
+                    }
+                    ;
+                    let [name, value, type] = r.formValues;
+                    try {
+                        item.setDynamicProperty(String(name), Number(type) == 0 ? String(value) : Number(type) == 1 ? Number(value) : Number(type) == 2 ? Boolean(value) : JSONParse(String(value)));
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+        }
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export function itemCodePropertyEditor(sourceEntity, item) {
+    let form = new ModalFormData;
+    form.title("Code Editor");
+    form.textField("Item Use Code", "JavaScript", String(item.getDynamicProperty("code")));
+    form.textField("Item Use On Code", "JavaScript", String(item.getDynamicProperty("itemUseOnCode")));
+    forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        if (r.canceled) {
+            return;
+        }
+        ;
+        let [code, itemUseOnCode] = r.formValues;
+        try {
+            if (String(code) != String(item.getDynamicProperty("code"))) {
+                item.setDynamicProperty("code", String(code));
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if (String(itemUseOnCode) != String(item.getDynamicProperty("itemUseOnCode"))) {
+                item.setDynamicProperty("itemUseOnCode", String(itemUseOnCode));
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export function newItemInSlot(sourceEntity, item) {
+    let form = new ModalFormData;
+    form.title("New Item");
+    form.textField("Item Type", "Item Id", "minecraft:grass_block");
+    form.textField("Count", "int", "1");
+    forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        if (r.canceled) {
+            return;
+        }
+        ;
+        let [type, count] = r.formValues;
+        try {
+            item.setItem(new ItemStack(String(type), Number(count)));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export function createExplosion(sourceEntity, parameterDefaults) {
+    let form = new ModalFormData;
+    form.title("New Item");
+    form.textField("x", "number", String(parameterDefaults?.x ?? sourceEntity.location.x));
+    form.textField("y", "number", String(parameterDefaults?.y ?? sourceEntity.location.y));
+    form.textField("z", "number", String(parameterDefaults?.z ?? sourceEntity.location.z));
+    form.textField("dimension", "dimensionId", String(parameterDefaults?.dimension?.id ?? sourceEntity.dimension.id));
+    form.textField("radius", "number", String(parameterDefaults?.radius ?? 1));
+    form.textField("source", "targetSelector");
+    form.toggle("allowUnderwater", parameterDefaults?.explosionOptions?.allowUnderwater ?? false);
+    form.toggle("breaksBlocks", parameterDefaults?.explosionOptions?.breaksBlocks ?? true);
+    form.toggle("causesFire", parameterDefaults?.explosionOptions?.causesFire ?? false);
+    forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        if (r.canceled) {
+            return;
+        }
+        ;
+        let [x, y, z, dimension, radius, source, allowUnderwater, breaksBlocks, causesFire] = r.formValues;
+        try {
+            world.getDimension(String(dimension)).createExplosion({ x: Number(x), y: Number(y), z: Number(z) }, Number(radius), { allowUnderwater: Boolean(allowUnderwater), breaksBlocks: Boolean(breaksBlocks), causesFire: Boolean(causesFire), source: targetSelectorAllListC(String(source), "", `${sourceEntity.location.x} ${sourceEntity.location.y} ${sourceEntity.location.z}`, sourceEntity)[0] });
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }

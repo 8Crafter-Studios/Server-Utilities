@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.6.0";
+export const format_version = "1.7.0";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -46,7 +46,8 @@ import "Main/ban.js";
 import "Main/ui.js";
 import "Main/player_save.js";
 import "Main/spawn_protection.js";
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent } from "@minecraft/server";
+export const mainmetaimport = import.meta;
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d } from "Main/coordinates";
@@ -796,6 +797,43 @@ export function jsonFromString(str, useBetterJSONParse = true) {
     else
         return matches.map((m) => JSON.parse(m));
 }
+export function cinfo(...data) { console.info(data); }
+;
+export function clog(...data) { console.log(data); }
+;
+export function cwarn(...data) { console.warn(data); }
+;
+export function cerror(...data) { console.error(data); }
+;
+export function asend(value) { world.sendMessage(String(value)); }
+;
+export function bsend(value) { world.sendMessage(JSONStringify(value)); }
+;
+export function csend(value) { world.sendMessage(JSON.stringify(value)); }
+;
+export function splitTextByMaxProperyLength(string) { let length = string.length / 32767; let substringlist; substringlist = []; for (let i = 0; i < Math.ceil(length); i++) {
+    substringlist.push(string.slice((i - 1) * 32767, i == Math.ceil(length) ? string.length : i * 32767));
+} ; return substringlist; }
+;
+export function fillBlocks(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, to).getBlockLocationIterator()).forEach(v => { if (subArray.length <= new BlockVolume(from, to).getSpan().x) {
+    subArray.push(v);
+}
+else {
+    mainArray.push(new BlockVolume({ x: subArray.sort((a, b) => a.x - b.x)[0].x, y: subArray.sort((a, b) => a.y - b.y)[0].y, z: subArray.sort((a, b) => a.z - b.z)[0].z }, { x: subArray.sort((a, b) => b.x - a.x)[0].x, y: subArray.sort((a, b) => b.y - a.y)[0].y, z: subArray.sort((a, b) => b.z - a.z)[0].z }));
+} }); let counter = 0; mainArray.forEach(v => counter += dimension.fillBlocks(v.from, v.to, block, options)); return counter; }
+;
+export function fillBlocksB(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += dimension.fillBlocks(v.from, v.to, block, options)); return counter; }
+;
+export function catchtry(trycallbackfn, catchcallbackfn = (e) => console.error(e, e.stack), finallycallbackfn = (v) => { return v; }) { let v; v = undefined; try {
+    v = trycallbackfn();
+}
+catch (e) {
+    v = catchcallbackfn(e) ?? v;
+}
+finally {
+    return finallycallbackfn(v) ?? v;
+} }
+;
 export function gwdp(propertyId) { return world.getDynamicProperty(propertyId); }
 ;
 export function swdp(propertyId, newValue) { return world.setDynamicProperty(propertyId, newValue); }
@@ -808,12 +846,33 @@ export function gidp(item, propertyId) { return item.getDynamicProperty(property
 ;
 export function sidp(item, entity, propertyId, newValue) { return item.setDynamicProperty(propertyId, newValue); }
 ;
-export function shootEntity(entityType, location, velocity, shootOptions = {}, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try {
+export function shootProjectile(entityType, location, velocity, shootOptions = {}, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try {
     setProjectileComponentPropertiesCallbackFn(entityProjectileComponent);
 }
 catch (e) {
     console.error(e, e.stack);
 } ; entityProjectileComponent?.shoot(velocity, shootOptions); }
+;
+export function shootEntity(entityType, location, velocity, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entity = location.dimension.spawnEntity(String(entityType), location); try {
+    setProjectileComponentPropertiesCallbackFn(entity);
+}
+catch (e) {
+    console.error(e, e.stack);
+} ; entity.applyImpulse(velocity); }
+;
+export function shootProjectileB(entityType, location, rotation, power, shootOptions = {}, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try {
+    setProjectileComponentPropertiesCallbackFn(entityProjectileComponent);
+}
+catch (e) {
+    console.error(e, e.stack);
+} ; entityProjectileComponent?.shoot(caretNotationC(Vector.zero, Vector.multiply(Vector.forward, power), rotation), shootOptions); }
+;
+export function shootEntityB(entityType, location, rotation, power, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entity = location.dimension.spawnEntity(String(entityType), location); try {
+    setProjectileComponentPropertiesCallbackFn(entity);
+}
+catch (e) {
+    console.error(e, e.stack);
+} ; entity.applyImpulse(caretNotationC(Vector.zero, Vector.multiply(Vector.forward, power), rotation)); }
 ;
 export function targetSelector(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return Number((selectedEntityUUIDValue)); }
 export function targetSelectorB(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return world.getDimension(DimensionTypes.getAll().find((dimension) => (world.getDimension(dimension.typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)))).typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)); } /*
