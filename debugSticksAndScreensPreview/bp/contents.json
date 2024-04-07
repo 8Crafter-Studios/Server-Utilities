@@ -1,19 +1,7 @@
 {
    "content" : [
       {
-         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/package.json"
-      },
-      {
-         "path" : "structures/DripstoneTests/stalagmite_hurt.mcstructure"
-      },
-      {
-         "path" : "items/debug_stick.json"
-      },
-      {
-         "path" : "recipes/smithing_table/55turtle_helmet.json"
-      },
-      {
-         "path" : "structures/BlockTests/concrete_pops_off_waterlogged_chest.mcstructure"
+         "path" : ".gitattributes"
       },
       {
          "path" : "node_modules/@minecraft/server-gametest/node_modules/@minecraft/server/package.json"
@@ -67,12 +55,6 @@
          "path" : "scripts/WaterPathfindingTests.js"
       },
       {
-         "path" : "items/debug_screen.json"
-      },
-      {
-         "path" : "items/entity_controller.json"
-      },
-      {
          "path" : "items/entity_debug_stick.json"
       },
       {
@@ -80,6 +62,42 @@
       },
       {
          "path" : "items/command_runner.json"
+      },
+      {
+         "path" : "items/player_debug_stick.json"
+      },
+      {
+         "path" : "structures/AllayTests/allay_pickup_item.mcstructure"
+      },
+      {
+         "path" : "scripts/RedstoneTests.js"
+      },
+      {
+         "path" : "structures/ComponentTests/large_animal_pen.mcstructure"
+      },
+      {
+         "path" : "items/chargeable_item_1.json"
+      },
+      {
+         "path" : "items/debug_screen.json"
+      },
+      {
+         "path" : "items/entity_controller.json"
+      },
+      {
+         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/package.json"
+      },
+      {
+         "path" : "structures/DripstoneTests/stalagmite_hurt.mcstructure"
+      },
+      {
+         "path" : "items/debug_stick.json"
+      },
+      {
+         "path" : "recipes/smithing_table/55turtle_helmet.json"
+      },
+      {
+         "path" : "structures/BlockTests/concrete_pops_off_waterlogged_chest.mcstructure"
       },
       {
          "path" : "structures/VibrationTests/activation_wool_occlusion_no_bias.mcstructure"
@@ -148,13 +166,13 @@
          "path" : "structures/VibrationTests/event_projectile_shoot.mcstructure"
       },
       {
+         "path" : "structures/VibrationTests/event_entity_move_dampening.mcstructure"
+      },
+      {
          "path" : "items/liquid_clipped_debug_stick.json"
       },
       {
          "path" : "structures/PistonTests/observer_retraction_timing.mcstructure"
-      },
-      {
-         "path" : "structures/VibrationTests/event_entity_move_dampening.mcstructure"
       },
       {
          "path" : "structures/RedstoneTests/observer_clock.mcstructure"
@@ -172,10 +190,7 @@
          "path" : "items/player_controller.json"
       },
       {
-         "path" : "items/player_debug_stick.json"
-      },
-      {
-         "path" : "structures/AllayTests/allay_pickup_item.mcstructure"
+         "path" : "scripts/Main/coordinates.d.ts"
       },
       {
          "path" : "node_modules/@minecraft/server-gametest/README.md"
@@ -245,15 +260,6 @@
       },
       {
          "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-block.d.ts"
-      },
-      {
-         "path" : "structures/MultifaceTests/spread_on_flat_wall.mcstructure"
-      },
-      {
-         "path" : "structures/PistonTests/block_leave.mcstructure"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/README.md"
       },
       {
          "path" : "structures/BlockTests/sand_fall_shulker.mcstructure"
@@ -380,6 +386,15 @@
       },
       {
          "path" : "structures/MultifaceTests/spread_within_water.mcstructure"
+      },
+      {
+         "path" : "structures/MultifaceTests/spread_on_flat_wall.mcstructure"
+      },
+      {
+         "path" : "structures/PistonTests/block_leave.mcstructure"
+      },
+      {
+         "path" : "node_modules/@minecraft/server-net/README.md"
       },
       {
          "path" : "node_modules/@minecraft/server-net/tsconfig.json"
@@ -544,10 +559,10 @@
          "path" : "recipes/smithing_table/38diamond_leggings.json"
       },
       {
-         "path" : "recipes/smithing_table/42diamond_axe.json"
+         "path" : "structures/VibrationTests/event_entity_move_carpet.mcstructure"
       },
       {
-         "path" : "structures/VibrationTests/event_entity_move_carpet.mcstructure"
+         "path" : "recipes/smithing_table/42diamond_axe.json"
       },
       {
          "path" : "recipes/smithing_table/43diamond_pickaxe.json"
@@ -635,6 +650,9 @@
       },
       {
          "path" : "structures/SmallMobTests/fence_corner.mcstructure"
+      },
+      {
+         "path" : "scripts/Main/commands.d.ts"
       },
       {
          "path" : "structures/VibrationTests/event_splash.mcstructure"
@@ -763,6 +781,9 @@
          "path" : "structures/MultifaceTests/spread_from_ceiling_around_corner.mcstructure"
       },
       {
+         "path" : "scripts/Main/ban.d.ts"
+      },
+      {
          "path" : "scripts/Main/ban.js"
       },
       {
@@ -781,10 +802,16 @@
          "path" : "scripts/Main/coordinates.js"
       },
       {
+         "path" : "scripts/Main/player_save.d.ts"
+      },
+      {
          "path" : "scripts/Main/player_save.js"
       },
       {
          "path" : "structures/DispenserTests/dispenser_horsearmor_on_horse.mcstructure"
+      },
+      {
+         "path" : "scripts/Main/spawn_protection.d.ts"
       },
       {
          "path" : "scripts/Main/spawn_protection.js"
@@ -800,6 +827,9 @@
       },
       {
          "path" : "structures/PistonTests/triple_extender_bedrock.mcstructure"
+      },
+      {
+         "path" : "scripts/Main.d.ts"
       },
       {
          "path" : "structures/DispenserTests/dispenser_saddle_on_pig.mcstructure"
@@ -833,12 +863,6 @@
       },
       {
          "path" : "structures/SculkTests/spread_pillar_up.mcstructure"
-      },
-      {
-         "path" : "scripts/RedstoneTests.js"
-      },
-      {
-         "path" : "structures/ComponentTests/large_animal_pen.mcstructure"
       },
       {
          "path" : "scripts/RespawnAnchorTests.js"
@@ -1036,9 +1060,6 @@
          "path" : "structures/BlockTests/turtle_eggs_squish.mcstructure"
       },
       {
-         "path" : "structures/VibrationTests/event_entity_move_wool.mcstructure"
-      },
-      {
          "path" : "structures/BlockTests/turtle_eggs_squished_by_mob.mcstructure"
       },
       {
@@ -1091,9 +1112,6 @@
       },
       {
          "path" : "structures/SimulatedPlayerTests/destroy_block.mcstructure"
-      },
-      {
-         "path" : "structures/VibrationTests/event_entity_move_cobweb.mcstructure"
       },
       {
          "path" : "structures/DispenserTests/dispenser_fire.mcstructure"
@@ -1564,6 +1582,9 @@
          "path" : "structures/VibrationTests/event_entity_move.mcstructure"
       },
       {
+         "path" : "structures/VibrationTests/event_entity_move_cobweb.mcstructure"
+      },
+      {
          "path" : "structures/VibrationTests/event_entity_move_powder_snow.mcstructure"
       },
       {
@@ -1574,6 +1595,9 @@
       },
       {
          "path" : "structures/VibrationTests/event_entity_move_sneaking_on_sensor.mcstructure"
+      },
+      {
+         "path" : "structures/VibrationTests/event_entity_move_wool.mcstructure"
       },
       {
          "path" : "structures/VibrationTests/event_entity_place.mcstructure"
