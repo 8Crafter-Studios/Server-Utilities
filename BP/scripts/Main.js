@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.6.0";
+export const format_version = "1.8.0";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -2244,7 +2244,6 @@ system.runInterval(() => { try {
 }
 catch { } ; }, 1); //fixed and this one is also nows new
 world.beforeEvents.itemUse.subscribe(event => {
-    event.source.teleport;
     if (!!event?.itemStack?.getDynamicProperty("code")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("code")));
@@ -3038,7 +3037,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
                     playerTargetB = players[playerViewerB].getEntitiesFromViewDirection()[0].entity;
                 }
                 if (selectionType == 1) {
-                    playerTargetB = world.getDimension("overworld").getEntities().concat(world.getDimension("overworld").getEntities().concat(world.getDimension("overworld").getEntities())).find((entityValue) => (entityValue.id == entityUUID));
+                    playerTargetB = world.getDimension("overworld").getEntities().concat(world.getDimension("nether").getEntities().concat(world.getDimension("the_end").getEntities())).find((entityValue) => (entityValue.id == entityUUID));
                 }
                 if (selectionType == 4) {
                     playerTargetB = world.getDimension(blockLocation[0]).getEntitiesAtBlockLocation({ x: Number(blockLocation[1]), y: Number(blockLocation[2]), z: Number(blockLocation[3]) })[Number(blockLocationIndex)];

@@ -34,7 +34,7 @@ uis
 playersave
 spawnprot
 
-export const ui_format_version = "1.5.0";
+export const ui_format_version = "1.7.0";
 //${se}console.warn(JSON.stringify(evaluateParameters(["presetText", "string", "json", "number", "boolean", "string", "presetText", "presetText"], "test test [{\"test\": \"test\"}, [\"test\", \"test\"] , \"test\", \"test\"] 1 true \"test \\\"test\" test test"))); 
 /**
  * Returns the sum of a and b
@@ -386,6 +386,7 @@ forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra =>
             break;
 
         case 16:
+            terminal(sourceEntity)
             break;
 
         case 17:
@@ -679,8 +680,8 @@ export function terminal(sourceEntity: Entity|Player){
             // This will assign every input their own variable
             let [commandId, commandDelay, debug] = r.formValues; /*
             console.warn(r.formValues);*/
-            system.runTimeout(() => {console.warn(
-            (sourceEntity).runCommand(String(commandId)).successCount);}, Number(commandDelay))
+            system.runTimeout(() => {(sourceEntity as Player).sendMessage(String(
+            (sourceEntity).runCommand(String(commandId)).successCount));}, Number(commandDelay))
             // Do something
         }).catch(e => {
             console.error(e, e.stack);

@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.6.0";
+export const format_version = "1.8.0";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -1326,6 +1326,7 @@ world.beforeEvents.itemUseOn.subscribe(event => {
     }
 }); 
 
+
 world.beforeEvents.playerBreakBlock.subscribe(event => {
     if(!!event?.itemStack?.getDynamicProperty("playerBreakBlockCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerBreakBlockCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerBreakBlockCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerBreakBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerBreakBlockBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
@@ -1365,7 +1366,7 @@ system.runInterval(()=>{world.getAllPlayers().forEach((player)=>{if (interactabl
     player.onScreenDisplay.setActionBar(`§l§eTags: §r§a${player.getBlockFromViewDirection().block.getTags().join(", ")}\n§l§eBlock States: §r§a${Object.entries(player.getBlockFromViewDirection().block.permutation.getAllStates()).join("\n")}`)}; */})}, 1)
 
 system.runInterval(() => {try{eval(String(world.getDynamicProperty("autoEval:everyTick")))}catch{}; }, 1);//fixed and this one is also nows new
-world.beforeEvents.itemUse.subscribe(event => {event.source.teleport
+world.beforeEvents.itemUse.subscribe(event => {
     if(!!event?.itemStack?.getDynamicProperty("code")){try{eval(String(event?.itemStack?.getDynamicProperty("code")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     world.getAllPlayers().filter((player) => ( player.hasTag("getPlayerItemUseEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.itemUseOn]Location: [ " + event.source.location.x+", "+event.source.location.y+", "+event.source.location.z + " ], Dimension: " + event.source.dimension.id + ", Item Type: " + (event.itemStack?.typeId ?? "")+ ", Player: " + event.source.name) });/*
@@ -1995,7 +1996,7 @@ console.error(e, e.stack);
                 let playerTargetB: Entity
                 let blockLocation = String(blockLocationCoordinates).split(", ")
                 if (selectionType == 0){playerTargetB = players[playerViewerB].getEntitiesFromViewDirection()[0].entity}
-                if (selectionType == 1){playerTargetB = world.getDimension("overworld").getEntities().concat(world.getDimension("overworld").getEntities().concat(world.getDimension("overworld").getEntities())).find((entityValue)=>(entityValue.id == entityUUID))}
+                if (selectionType == 1){playerTargetB = world.getDimension("overworld").getEntities().concat(world.getDimension("nether").getEntities().concat(world.getDimension("the_end").getEntities())).find((entityValue)=>(entityValue.id == entityUUID))}
                 if (selectionType == 4){playerTargetB = world.getDimension(blockLocation[0]).getEntitiesAtBlockLocation({x: Number(blockLocation[1]), y: Number(blockLocation[2]), z: Number(blockLocation[3])})[Number(blockLocationIndex)]}
                 let distance = Vector.distance(players[playerViewerB].location, playerTargetB.location)
                 try {entityViewedEntityType = playerTargetB.getEntitiesFromViewDirection()[0].entity.typeId} catch(e){entityViewedEntityType = "§4None§a"}
