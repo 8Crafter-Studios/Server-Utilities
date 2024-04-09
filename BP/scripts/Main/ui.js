@@ -2918,7 +2918,7 @@ export function manageCommands(sourceEntity) {
                             let form5 = new ModalFormData;
                             form5.title(`Edit Custom Command`);
                             form5.textField("Command Name§c*", "mycommand", commandsItem.commandName);
-                            form5.dropdown("Command Code Type (commands means the command just runs a list of minecraft commands, and javascript means that the command runs a list of javascript scripts/code)", ["commands", "javascript"], ["commands", "javascript"][commandsItem.customCommandType]);
+                            form5.dropdown("Command Code Type (commands means the command just runs a list of minecraft commands, and javascript means that the command runs a list of javascript scripts/code)", ["commands", "javascript"], ["commands", "javascript"].findIndex(v => v == commandsItem.customCommandType));
                             form5.slider("Number of Code Lines", 1, 100, 1, Number(commandsItem.customCommandCodeLines ?? 1));
                             form5.textField("Command Version§c*", "SemVer String; ex. 1.7.0-beta.1.2.a.b.c.d", String(commandsItem.command_version));
                             form5.textField("Formatting Code§c*", "required: string", commandsItem.formatting_code);

@@ -1,4 +1,4 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world } from "@minecraft/server";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, Vector } from "@minecraft/server";
 import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject, format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
@@ -602,12 +602,16 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "datapickblock", escregexp: { v: "^datapickblock$" }, formats: [{ format: "" }], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:datapickblock" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fill", escregexp: { v: "^fill$" }, formats: [{ format: "fill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> [replaceTileName: Block] [replaceBlockStates: block states]" }, { format: "fill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states]" }], command_version: "1.0.0-beta.27", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain. ", commandSettingsId: "built-inCommandSettings:fill" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "ifill", escregexp: { v: "^ifill$" }, formats: [{ format: "fill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> [replaceTileName: Block] [replaceBlockStates: block states]" }, { format: "fill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states]" }], command_version: "1.0.0-beta.27", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. ", commandSettingsId: "built-inCommandSettings:ifill" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "cloneitem", escregexp: { v: "^cloneitem$" }, formats: [{ format: "cloneitem <toPlayer: playerName>" }], command_version: "0.1.9-beta.1", description: "", commandSettingsId: "built-inCommandSettings:cloneitem" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "dupeitem", escregexp: { v: "^dupeitem$" }, formats: [{ format: "dupeitem" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:dupeitem" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "transferitem", escregexp: { v: "^transferitem$" }, formats: [{ format: "transferitem" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:transferitem" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "swapitems", escregexp: { v: "^swapitems$" }, formats: [{ format: "swapitems <fromSlot: number|!> <toSlot: number|!> <toPlayer: playerName>" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:swapitems" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "takeitem", escregexp: { v: "^takeitem$" }, formats: [{ format: "takeitem <fromSlot: number|~> <fromPlayer: playerName>" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:takeitem" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "swapinventories", escregexp: { v: "^swapinventories$" }, formats: [{ format: "swapinventories <player1: string|~> <player2: string|~>" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:swapinventories" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "cloneitem", escregexp: { v: "^cloneitem$" }, formats: [{ format: "cloneitem <toPlayer: playerName>" }], command_version: "0.1.9-beta.1", description: "", commandSettingsId: "built-inCommandSettings:cloneitem" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "copyitem", escregexp: { v: "^copyitem$" }, formats: [{ format: "copyitem <slot: int|\"head\"|\"chest\"|\"legs\"|\"feet\"|\"mainhand\"|\"offhand\"> <toPlayer: playerName>" }], command_version: "0.1.4-beta.1", description: "", commandSettingsId: "built-inCommandSettings:copyitem" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "dupeitem", escregexp: { v: "^dupeitem$" }, formats: [{ format: "dupeitem" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:dupeitem" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "transferitem", escregexp: { v: "^transferitem$" }, formats: [{ format: "transferitem <toPlayer: playerName>" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:transferitem" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapitems", escregexp: { v: "^swapitems$" }, formats: [{ format: "swapitems <fromSlot: number|~> <toSlot: number|~> <toPlayer: playerName>" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:swapitems" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "takeitem", escregexp: { v: "^takeitem$" }, formats: [{ format: "takeitem <fromSlot: number|~> <fromPlayer: playerName>" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:takeitem" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventories", escregexp: { v: "^swapinventories$" }, formats: [{ format: "swapinventories <player1: string|~> <player2: string|~>" }], command_version: "0.2.1-beta.1", description: "Swaps the inventory, offhand, hotbar, and armor of two specified players. ", commandSettingsId: "built-inCommandSettings:swapinventories" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventories", escregexp: { v: "^swapinventoriesb$" }, formats: [{ format: "swapinventoriesb <player1: string|~> <player2: string|~>" }], command_version: "0.2.1-beta.1", description: "Swaps the inventory and hotbar of two specified players. ", commandSettingsId: "built-inCommandSettings:swapinventoriesb" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "extinguish", escregexp: { v: "^extinguish$" }, formats: [{ format: "extinguish [radius: number]" }], command_version: "0.2.0-beta.10", description: "", commandSettingsId: "built-inCommandSettings:extinguish" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "remexp", escregexp: { v: "^remexp$" }, formats: [{ format: "remexp [radius: number]" }], command_version: "0.2.0-beta.5", description: "", commandSettingsId: "built-inCommandSettings:remexp" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: { v: "^morph$" }, formats: [{ format: "" }], command_version: "1.0.1", description: "", commandSettingsId: "built-inCommandSettings:morph" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "tint", escregexp: { v: "^tint$" }, formats: [{ format: "tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1]" }], command_version: "1.0.4", description: "", commandSettingsId: "built-inCommandSettings:tint" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "scale", escregexp: { v: "^scale$" }, formats: [{ format: "" }], command_version: "1.0.1", description: "", commandSettingsId: "built-inCommandSettings:scale" },
@@ -811,7 +815,7 @@ export function chatMessage(eventData) {
     let newMessage = eventData.message;
     let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0];
     let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length);
-    let commanda = commands.find(v => (newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && (command.get(v.commandName, "built-in").settings.enabled && !!switchTest.match(command.get(v.commandName, "built-in").regexp))) && (command.get(v.commandName, "built-in").testCanPlayerUseCommand(player))) ?? command.getCustomCommands().find(v => (v.settings.enabled && ((v.customCommandPrefix == undefined || v.customCommandPrefix == "") && (!!switchTest.match(v.regexp))) || ((v.customCommandPrefix != "" && !!v.customCommandPrefix) && newMessage.split(" ")[0].startsWith(v.customCommandPrefix) && (!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp)) && (command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))));
+    let commanda = commands.find(v => (newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && (command.get(v.commandName, "built-in").settings.enabled && !!switchTest.match(command.get(v.commandName, "built-in").regexp))) && (command.get(v.commandName, "built-in").testCanPlayerUseCommand(player))) ?? command.getCustomCommands().find(v => (v.settings.enabled && ((v.customCommandPrefix == undefined || v.customCommandPrefix == "") && (!!switchTest.match(v.regexp)) && (command.get(v.commandName, "custom").testCanPlayerUseCommand(player))) || ((v.customCommandPrefix != "" && !!v.customCommandPrefix) && newMessage.split(" ")[0].startsWith(v.customCommandPrefix) && (!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp)) && (command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))));
     try {
         world.getAllPlayers().filter((p) => (p.hasTag("getAllChatMessages"))).forEach((p) => { try {
             p.sendMessage("[§l§dServer§r§f][" + player.name + "]: " + newMessage);
@@ -960,6 +964,25 @@ export function chatCommands(params) {
         } });
     }
     function inventorySwap(player1, player2) {
+        system.run(() => { try {
+            for (let i = 0; i < 36; i++) {
+                player1.getComponent("inventory").container.swapItems(i, i, player2.getComponent("inventory").container);
+            }
+            ;
+            let slots = [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Offhand];
+            for (let i = 0; i < 5; i++) {
+                let item1 = player1.getComponent("equippable").getEquipment(slots[i]);
+                let item2 = player2.getComponent("equippable").getEquipment(slots[i]);
+                player1.getComponent("equippable").setEquipment(slots[i], item2);
+                player2.getComponent("equippable").setEquipment(slots[i], item1);
+            }
+            ;
+        }
+        catch (e) {
+            eventData.sender.sendMessage("§c" + e + " " + e.stack);
+        } });
+    }
+    function inventorySwapB(player1, player2) {
         system.run(() => { try {
             for (let i = 0; i < 36; i++) {
                 player1.swapItems(i, i, player2);
@@ -2563,6 +2586,10 @@ export function chatCommands(params) {
                     system.run(() => { world.getAllPlayers().find(_ => _.name == switchTestB.split(" ").slice(1).join(" ")).getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlot).clone()); });
                 }
                 break;
+            case !!switchTest.match(/^copyitem$/): {
+                eventData.cancel = true;
+                system.run(() => { let slot = [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand"].findIndex(v => v == switchTestB.split(" ")[1].toLowerCase())] ?? Number(switchTestB.split(" ")[1]); let toSlot = typeof slot == "string" ? world.getAllPlayers().find(_ => _.name == switchTestB.split(" ").slice(1).join(" ")).getComponent("equippable").getEquipmentSlot(slot) : world.getAllPlayers().find(_ => _.name == switchTestB.split(" ").slice(1).join(" ")).getComponent("inventory").container.getSlot(slot).setItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlot).clone()); });
+            }
             case !!switchTest.match(/^dupeitem$/):
                 {
                     eventData.cancel = true;
@@ -2590,7 +2617,72 @@ export function chatCommands(params) {
             case !!switchTest.match(/^swapinventories$/):
                 {
                     eventData.cancel = true;
-                    system.run(() => { inventorySwap(world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[1]).getComponent("inventory").container, world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[3]).getComponent("inventory").container); });
+                    system.run(() => { inventorySwap(world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[1]), world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[3])); });
+                }
+                break;
+            case !!switchTest.match(/^swapinventoriesb$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => { inventorySwapB(world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[1]).getComponent("inventory").container, world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[3]).getComponent("inventory").container); });
+                }
+                break;
+            case !!switchTest.match(/^extinguish$/):
+                {
+                    eventData.cancel = true;
+                    let radius = Number(String(switchTestB.split(" ")[1] ?? "").trim() == "" ? 10 : String(switchTestB.split(" ")[1] ?? "").trim());
+                    let froma = Vector.subtract(player.location, { x: radius, y: radius, z: radius });
+                    let from = { x: froma.x, y: froma.y, z: froma.z };
+                    let toa = Vector.add(player.location, { x: radius, y: radius, z: radius });
+                    let to = { x: toa.x, y: toa.y, z: toa.z };
+                    try {
+                        system.run(() => { let a = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("fire") }); let b = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("soul_fire") }); player.sendMessage(`${a == 0 ? "§c" : ""}${a + b} blocks extinguished in radius of ${radius}`); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                }
+                break;
+            case !!switchTest.match(/^remexp$/):
+                {
+                    eventData.cancel = true;
+                    let radius = Number(String(switchTestB.split(" ")[1] ?? "").trim() == "" ? 10 : String(switchTestB.split(" ")[1] ?? "").trim());
+                    let froma = Vector.subtract(player.location, { x: radius, y: radius, z: radius });
+                    let from = { x: froma.x, y: froma.y, z: froma.z };
+                    let toa = Vector.add(player.location, { x: radius, y: radius, z: radius });
+                    let to = { x: toa.x, y: toa.y, z: toa.z };
+                    switch (player.dimension.id) {
+                        case "minecraft:overworld":
+                            try {
+                                system.run(() => { let a = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("tnt") }); let b = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("respawn_anchor") }); player.sendMessage(`${a == 0 ? "§c" : ""}${a + b} explosives removed in radius of ${radius}`); });
+                            }
+                            catch (e) {
+                                eventData.sender.sendMessage("§c" + e + e.stack);
+                            }
+                            break;
+                        case "minecraft:nether":
+                            try {
+                                system.run(() => { let a = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("tnt") }); let b = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("bed") }); player.sendMessage(`${a == 0 ? "§c" : ""}${a + b} explosives removed in radius of ${radius}`); });
+                            }
+                            catch (e) {
+                                eventData.sender.sendMessage("§c" + e + e.stack);
+                            }
+                            break;
+                        case "minecraft:the_end":
+                            try {
+                                system.run(() => { let a = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("tnt") }); let b = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("respawn_anchor") }); let c = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("bed") }); player.sendMessage(`${a == 0 ? "§c" : ""}${a + b + c} explosives removed in radius of ${radius}`); });
+                            }
+                            catch (e) {
+                                eventData.sender.sendMessage("§c" + e + e.stack);
+                            }
+                            break;
+                        default:
+                            try {
+                                system.run(() => { let a = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("tnt") }); player.sendMessage(`${a == 0 ? "§c" : ""}${a} explosives removed in radius of ${radius}`); });
+                            }
+                            catch (e) {
+                                eventData.sender.sendMessage("§c" + e + e.stack);
+                            }
+                    }
                 }
                 break;
         }

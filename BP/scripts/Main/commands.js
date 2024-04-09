@@ -1,5 +1,5 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject, format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport } from "../Main";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, Vector, ContainerSlot } from "@minecraft/server";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject, format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
@@ -600,14 +600,22 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "mainmenu", escregexp: { v: "^mainmenu$" }, formats: [{ format: "mainmenu" }], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:mainmenu" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "settings", escregexp: { v: "^settings$" }, formats: [{ format: "settings" }], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:settings" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "datapickblock", escregexp: { v: "^datapickblock$" }, formats: [{ format: "" }], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:datapickblock" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fill", escregexp: { v: "^fill$" }, formats: [{ format: "fill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> [replaceTileName: Block] [replaceBlockStates: block states]" }, { format: "fill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states]" }], command_version: "1.0.0-beta.27", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain. ", commandSettingsId: "built-inCommandSettings:fill" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "ifill", escregexp: { v: "^ifill$" }, formats: [{ format: "fill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> [replaceTileName: Block] [replaceBlockStates: block states]" }, { format: "fill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states]" }], command_version: "1.0.0-beta.27", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. ", commandSettingsId: "built-inCommandSettings:ifill" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "cloneitem", escregexp: { v: "^cloneitem$" }, formats: [{ format: "cloneitem <toPlayer: playerName>" }], command_version: "0.1.9-beta.1", description: "", commandSettingsId: "built-inCommandSettings:cloneitem" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "dupeitem", escregexp: { v: "^dupeitem$" }, formats: [{ format: "dupeitem" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:dupeitem" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "transferitem", escregexp: { v: "^transferitem$" }, formats: [{ format: "transferitem" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:transferitem" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "swapitems", escregexp: { v: "^swapitems$" }, formats: [{ format: "swapitems <fromSlot: number|!> <toSlot: number|!> <toPlayer: playerName>" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:swapitems" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "takeitem", escregexp: { v: "^takeitem$" }, formats: [{ format: "takeitem <fromSlot: number|~> <fromPlayer: playerName>" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:takeitem" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "swapinventories", escregexp: { v: "^swapinventories$" }, formats: [{ format: "swapinventories <player1: string|~> <player2: string|~>" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:swapinventories" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "fill", escregexp: { v: "^fill$" }, formats: [{ format: "fill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]" }, { format: "fill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]" }], command_version: "1.1.0-rc.5", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain. ", commandSettingsId: "built-inCommandSettings:fill" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "ifill", escregexp: { v: "^ifill$" }, formats: [{ format: "ifill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]" }, { format: "ifill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]" }], command_version: "4.0.1-beta.99", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. ", commandSettingsId: "built-inCommandSettings:ifill" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "iofill", escregexp: { v: "^iofill$" }, formats: [{ format: "iofill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]" }, { format: "iofill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]" }], command_version: "4.1.1-beta.17", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. Same as \\ifill except for the fact that it always resets any non-specified block states to the defaults instead of keeping them as what they were if possible. ", commandSettingsId: "built-inCommandSettings:iofill" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "ifillb", escregexp: { v: "^ifillb$" }, formats: [{ format: "ifillb <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]" }, { format: "ifillb <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]" }], command_version: "1.0.1-beta.27", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. Original version of the \\ifill command, only allows for matching exact block states but is much quicker. ", commandSettingsId: "built-inCommandSettings:ifillb" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "stopgen", escregexp: { v: "^stopgen$" }, formats: [{ format: "stopgen <generatorId: int>" }], command_version: "1.0.0", description: "Stops generator functions such as the \\ifill and \\iofill commands. ", commandSettingsId: "built-inCommandSettings:stopgen" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "cloneitem", escregexp: { v: "^cloneitem$" }, formats: [{ format: "cloneitem <toPlayer: playerName>" }], command_version: "0.1.9-beta.1", description: "", commandSettingsId: "built-inCommandSettings:cloneitem" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "copyitem", escregexp: { v: "^copyitem$" }, formats: [{ format: "copyitem <slot: int|\"head\"|\"chest\"|\"legs\"|\"feet\"|\"mainhand\"|\"offhand\"> <toPlayer: playerName>" }], command_version: "0.1.4-beta.1", description: "", commandSettingsId: "built-inCommandSettings:copyitem" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "dupeitem", escregexp: { v: "^dupeitem$" }, formats: [{ format: "dupeitem" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:dupeitem" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "transferitem", escregexp: { v: "^transferitem$" }, formats: [{ format: "transferitem <toPlayer: playerName>" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:transferitem" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "shuffleinventory", escregexp: { v: "^shuffleinventory$" }, formats: [{ format: "shuffleinventory [toPlayer: playerName]" }], command_version: "0.2.2-beta.2", description: "", commandSettingsId: "built-inCommandSettings:shuffleinventory" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapitems", escregexp: { v: "^swapitems$" }, formats: [{ format: "swapitems <fromSlot: number|~> <toSlot: number|~> <toPlayer: playerName>" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:swapitems" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "takeitem", escregexp: { v: "^takeitem$" }, formats: [{ format: "takeitem <fromSlot: number|~> <fromPlayer: playerName>" }], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:takeitem" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventories", escregexp: { v: "^swapinventories$" }, formats: [{ format: "swapinventories <player1: string|~> <player2: string|~>" }], command_version: "0.2.1-beta.1", description: "Swaps the inventory, offhand, hotbar, and armor of two specified players. ", commandSettingsId: "built-inCommandSettings:swapinventories" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventories", escregexp: { v: "^swapinventoriesb$" }, formats: [{ format: "swapinventoriesb <player1: string|~> <player2: string|~>" }], command_version: "0.2.1-beta.1", description: "Swaps the inventory and hotbar of two specified players. ", commandSettingsId: "built-inCommandSettings:swapinventoriesb" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "extinguish", escregexp: { v: "^extinguish$" }, formats: [{ format: "extinguish [radius: number]" }], command_version: "0.2.0-beta.10", description: "", commandSettingsId: "built-inCommandSettings:extinguish" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "remexp", escregexp: { v: "^remexp$" }, formats: [{ format: "remexp [radius: number]" }], command_version: "0.2.0-beta.5", description: "", commandSettingsId: "built-inCommandSettings:remexp" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: { v: "^morph$" }, formats: [{ format: "" }], command_version: "1.0.1", description: "", commandSettingsId: "built-inCommandSettings:morph" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "tint", escregexp: { v: "^tint$" }, formats: [{ format: "tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1]" }], command_version: "1.0.4", description: "", commandSettingsId: "built-inCommandSettings:tint" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "scale", escregexp: { v: "^scale$" }, formats: [{ format: "" }], command_version: "1.0.1", description: "", commandSettingsId: "built-inCommandSettings:scale" },
@@ -811,7 +819,7 @@ export function chatMessage(eventData) {
     let newMessage = eventData.message;
     let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0];
     let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length);
-    let commanda = commands.find(v => (newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && (command.get(v.commandName, "built-in").settings.enabled && !!switchTest.match(command.get(v.commandName, "built-in").regexp))) && (command.get(v.commandName, "built-in").testCanPlayerUseCommand(player))) ?? command.getCustomCommands().find(v => (v.settings.enabled && ((v.customCommandPrefix == undefined || v.customCommandPrefix == "") && (!!switchTest.match(v.regexp))) || ((v.customCommandPrefix != "" && !!v.customCommandPrefix) && newMessage.split(" ")[0].startsWith(v.customCommandPrefix) && (!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp)) && (command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))));
+    let commanda = commands.find(v => (newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && (command.get(v.commandName, "built-in").settings.enabled && !!switchTest.match(command.get(v.commandName, "built-in").regexp))) && (command.get(v.commandName, "built-in").testCanPlayerUseCommand(player))) ?? command.getCustomCommands().find(v => (v.settings.enabled && ((v.customCommandPrefix == undefined || v.customCommandPrefix == "") && (!!switchTest.match(v.regexp)) && (command.get(v.commandName, "custom").testCanPlayerUseCommand(player))) || ((v.customCommandPrefix != "" && !!v.customCommandPrefix) && newMessage.split(" ")[0].startsWith(v.customCommandPrefix) && (!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp)) && (command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))));
     try {
         world.getAllPlayers().filter((p) => (p.hasTag("getAllChatMessages"))).forEach((p) => { try {
             p.sendMessage("[§l§dServer§r§f][" + player.name + "]: " + newMessage);
@@ -933,6 +941,16 @@ export function chatMessage(eventData) {
         }
     }
 }
+function shuffle(array) {
+    var m = array.length, t, i;
+    while (m) {
+        i = Math.floor(Math.random() * m--);
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+    }
+    return array;
+}
 export function chatCommands(params) {
     let returnBeforeChatSend = params.returnBeforeChatSend ?? false;
     let player = params.player ?? params.eventData?.sender ?? params.event?.sender;
@@ -962,6 +980,25 @@ export function chatCommands(params) {
     function inventorySwap(player1, player2) {
         system.run(() => { try {
             for (let i = 0; i < 36; i++) {
+                player1.getComponent("inventory").container.swapItems(i, i, player2.getComponent("inventory").container);
+            }
+            ;
+            let slots = [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Offhand];
+            for (let i = 0; i < 5; i++) {
+                let item1 = player1.getComponent("equippable").getEquipment(slots[i]);
+                let item2 = player2.getComponent("equippable").getEquipment(slots[i]);
+                player1.getComponent("equippable").setEquipment(slots[i], item2);
+                player2.getComponent("equippable").setEquipment(slots[i], item1);
+            }
+            ;
+        }
+        catch (e) {
+            eventData.sender.sendMessage("§c" + e + " " + e.stack);
+        } });
+    }
+    function inventorySwapB(player1, player2) {
+        system.run(() => { try {
+            for (let i = 0; i < 36; i++) {
                 player1.swapItems(i, i, player2);
             }
             ;
@@ -969,6 +1006,34 @@ export function chatCommands(params) {
         catch (e) {
             eventData.sender.sendMessage("§c" + e + " " + e.stack);
         } });
+    }
+    function containerToItemStackArray(container) {
+        let itemList = [];
+        try {
+            for (let i = 0; i < container.size; i++) {
+                itemList.push(container.getItem(i));
+            }
+            ;
+        }
+        catch (e) {
+            eventData.sender.sendMessage("§c" + e + " " + e.stack);
+        }
+        ;
+        return itemList;
+    }
+    function containerToContainerSlotArray(container) {
+        let itemList = [];
+        try {
+            for (let i = 0; i < container.size; i++) {
+                itemList.push(container.getSlot(i));
+            }
+            ;
+        }
+        catch (e) {
+            eventData.sender.sendMessage("§c" + e + " " + e.stack);
+        }
+        ;
+        return itemList;
     }
     let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0];
     let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length);
@@ -2527,7 +2592,7 @@ export function chatCommands(params) {
                 let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? BlockPermutation.resolve("air") : BlockPermutation.resolve(lastblockname, lastblockstates); /*
                 console.warn(JSONStringify({coordinatesa, coordiantesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                 try {
-                    system.run(() => { player.dimension.fillBlocks(coordinatesa, coordiantesb, BlockPermutation.resolve(firstblockname, firstblockstates), { matchingBlock: matchingblock }); });
+                    system.run(() => { let a = player.dimension.fillBlocks(coordinatesa, coordiantesb, BlockPermutation.resolve(firstblockname, firstblockstates), { matchingBlock: matchingblock }); player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled`); });
                 }
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -2535,6 +2600,111 @@ export function chatCommands(params) {
                 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                 break;
             case !!switchTest.match(/^ifill$/):
+                {
+                    eventData.cancel = true;
+                    let coordinatesa = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation());
+                    let coordiantesb = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation());
+                    let firstblocknameindex = Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index + Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ") + 1;
+                    let reststringaftercoordinates = switchTestB.split(" ").slice(1).join(" ").slice(firstblocknameindex);
+                    let firstblockname = reststringaftercoordinates.split(" ")[0];
+                    let firstblockstates = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? JSONParse(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0]) : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? JSONParse(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
+                    let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
+                    let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
+                    let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
+                    let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    console.warn(JSONStringify({coordinatesa, coordiantesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
+                    try {
+                        system.run(() => { player.sendMessage("IFill Command Started, to cancel type in " + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "stopgen " + system.runJob(fillBlocksCG(coordinatesa, coordiantesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], false, (a, timea, timeb, totalTime, player) => { player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${totalTime} ms`); }, player))); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                }
+                break;
+            case !!switchTest.match(/^iofill$/):
+                {
+                    eventData.cancel = true;
+                    let coordinatesa = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation());
+                    let coordiantesb = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation());
+                    let firstblocknameindex = Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index + Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ") + 1;
+                    let reststringaftercoordinates = switchTestB.split(" ").slice(1).join(" ").slice(firstblocknameindex);
+                    let firstblockname = reststringaftercoordinates.split(" ")[0];
+                    let firstblockstates = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? JSONParse(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0]) : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? JSONParse(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
+                    let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
+                    let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
+                    let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
+                    let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    console.warn(JSONStringify({coordinatesa, coordiantesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
+                    try {
+                        system.run(() => { player.sendMessage("IOFill Generator/Job Started, to cancel type in " + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "stopgen " + system.runJob(fillBlocksCG(coordinatesa, coordiantesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], false, (a, timea, timeb, totalTime, player) => { player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${totalTime} ms`); }, player))); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                }
+                break;
+            case !!switchTest.match(/^stopgen$/):
+                {
+                    eventData.cancel = true;
+                    try {
+                        system.clearJob(Number(switchTestB.split(" ")[1]));
+                        player.sendMessage(`Successfully Clear Job/Generator With ID: ${switchTestB.split(" ")[1]}`);
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                }
+                break;
+            case !!switchTest.match(/^ingfill$/):
+                {
+                    eventData.cancel = true;
+                    let coordinatesa = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation());
+                    let coordiantesb = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation());
+                    let firstblocknameindex = Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index + Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ") + 1;
+                    let reststringaftercoordinates = switchTestB.split(" ").slice(1).join(" ").slice(firstblocknameindex);
+                    let firstblockname = reststringaftercoordinates.split(" ")[0];
+                    let firstblockstates = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? JSONParse(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0]) : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? JSONParse(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
+                    let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
+                    let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
+                    let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
+                    let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    console.warn(JSONStringify({coordinatesa, coordiantesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
+                    try {
+                        system.run(() => { let a = system.runJob(fillBlocksCG(coordinatesa, coordiantesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], true, (a) => { player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled`); })); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                }
+                break;
+            case !!switchTest.match(/^iongfill$/):
+                {
+                    eventData.cancel = true;
+                    let coordinatesa = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation());
+                    let coordiantesb = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation());
+                    let firstblocknameindex = Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index + Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ") + 1;
+                    let reststringaftercoordinates = switchTestB.split(" ").slice(1).join(" ").slice(firstblocknameindex);
+                    let firstblockname = reststringaftercoordinates.split(" ")[0];
+                    let firstblockstates = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? JSONParse(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0]) : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? JSONParse(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
+                    let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
+                    let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
+                    let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
+                    let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    console.warn(JSONStringify({coordinatesa, coordiantesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
+                    try {
+                        system.run(() => { let a = fillBlocksC(coordinatesa, coordiantesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], true); player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled`); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                    //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                }
+                break;
+            case !!switchTest.match(/^ifillb$/):
                 {
                     eventData.cancel = true;
                     let coordinatesa = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation());
@@ -2563,16 +2733,32 @@ export function chatCommands(params) {
                     system.run(() => { world.getAllPlayers().find(_ => _.name == switchTestB.split(" ").slice(1).join(" ")).getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlot).clone()); });
                 }
                 break;
+            case !!switchTest.match(/^copyitem$/): {
+                eventData.cancel = true;
+                system.run(() => { let slot = [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand"].findIndex(v => v == switchTestB.split(" ")[1]?.trim()?.toLowerCase()) % 6] ?? Number((!!!switchTestB.split(" ")[1]?.trim() ? "~" : switchTestB.split(" ")[1].trim()).replaceAll("~", String((world.getAllPlayers().find(_ => _.name == switchTestB.split(" ").slice(2).join(" ")) ?? player).selectedSlot))); let toSlot = typeof slot == "string" ? (world.getAllPlayers().find(_ => _.name == switchTestB.split(" ").slice(2).join(" ")) ?? player).getComponent("equippable").getEquipmentSlot(slot) : (world.getAllPlayers().find(_ => _.name == switchTestB.split(" ").slice(2).join(" ")) ?? player).getComponent("inventory").container.getSlot(slot); toSlot.setItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlot)); });
+            }
             case !!switchTest.match(/^dupeitem$/):
                 {
                     eventData.cancel = true;
-                    system.run(() => { player.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlot).clone()); });
+                    system.run(() => { let slot = [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand"].findIndex(v => v == switchTestB.split(" ")[1]?.trim()?.toLowerCase()) % 6] ?? Number((!!!switchTestB.split(" ")[1]?.trim() ? "~" : switchTestB.split(" ")[1].trim()).replaceAll("~", String(player.selectedSlot))); let fromSlot = typeof slot == "string" ? player.getComponent("equippable").getEquipmentSlot(slot) : player.getComponent("inventory").container.getSlot(slot); player.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlot).clone()); });
                 }
                 break;
             case !!switchTest.match(/^transferitem$/):
                 {
                     eventData.cancel = true;
                     system.run(() => { player.getComponent("inventory").container.transferItem(player.selectedSlot, world.getAllPlayers().find(_ => _.name == switchTestB.split(" ").slice(1).join(" ")).getComponent("inventory").container); });
+                }
+                break;
+            case !!switchTest.match(/^shuffleinventory$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        let items = shuffle(containerToItemStackArray((world.getAllPlayers().find(_ => _.name == switchTestB.split(" ").slice(1).join(" ")) ?? player).getComponent("inventory").container));
+                        containerToContainerSlotArray((world.getAllPlayers().find(_ => _.name == switchTestB.split(" ").slice(1).join(" ")) ?? player).getComponent("inventory").container).forEach((s, i) => {
+                            s.setItem(items[i]);
+                        });
+                        player.sendMessage(`Successfully shuffled ${(world.getAllPlayers().find(_ => _.name == switchTestB.split(" ").slice(1).join(" ")) ?? player).name}'s inventory. `);
+                    });
                 }
                 break;
             case !!switchTest.match(/^swapitems$/):
@@ -2590,7 +2776,72 @@ export function chatCommands(params) {
             case !!switchTest.match(/^swapinventories$/):
                 {
                     eventData.cancel = true;
-                    system.run(() => { inventorySwap(world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[1]).getComponent("inventory").container, world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[3]).getComponent("inventory").container); });
+                    system.run(() => { inventorySwap(world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[1]), world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[3])); });
+                }
+                break;
+            case !!switchTest.match(/^swapinventoriesb$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => { inventorySwapB(world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[1]).getComponent("inventory").container, world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[3]).getComponent("inventory").container); });
+                }
+                break;
+            case !!switchTest.match(/^extinguish$/):
+                {
+                    eventData.cancel = true;
+                    let radius = Number(String(switchTestB.split(" ")[1] ?? "").trim() == "" ? 10 : String(switchTestB.split(" ")[1] ?? "").trim());
+                    let froma = Vector.subtract(player.location, { x: radius, y: radius, z: radius });
+                    let from = { x: froma.x, y: froma.y, z: froma.z };
+                    let toa = Vector.add(player.location, { x: radius, y: radius, z: radius });
+                    let to = { x: toa.x, y: toa.y, z: toa.z };
+                    try {
+                        system.run(() => { let a = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("fire") }); let b = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("soul_fire") }); player.sendMessage(`${a == 0 ? "§c" : ""}${a + b} blocks extinguished in radius of ${radius}`); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                }
+                break;
+            case !!switchTest.match(/^remexp$/):
+                {
+                    eventData.cancel = true;
+                    let radius = Number(String(switchTestB.split(" ")[1] ?? "").trim() == "" ? 10 : String(switchTestB.split(" ")[1] ?? "").trim());
+                    let froma = Vector.subtract(player.location, { x: radius, y: radius, z: radius });
+                    let from = { x: froma.x, y: froma.y, z: froma.z };
+                    let toa = Vector.add(player.location, { x: radius, y: radius, z: radius });
+                    let to = { x: toa.x, y: toa.y, z: toa.z };
+                    switch (player.dimension.id) {
+                        case "minecraft:overworld":
+                            try {
+                                system.run(() => { let a = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("tnt") }); let b = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("respawn_anchor") }); player.sendMessage(`${a == 0 ? "§c" : ""}${a + b} explosives removed in radius of ${radius}`); });
+                            }
+                            catch (e) {
+                                eventData.sender.sendMessage("§c" + e + e.stack);
+                            }
+                            break;
+                        case "minecraft:nether":
+                            try {
+                                system.run(() => { let a = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("tnt") }); let b = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("bed") }); player.sendMessage(`${a == 0 ? "§c" : ""}${a + b} explosives removed in radius of ${radius}`); });
+                            }
+                            catch (e) {
+                                eventData.sender.sendMessage("§c" + e + e.stack);
+                            }
+                            break;
+                        case "minecraft:the_end":
+                            try {
+                                system.run(() => { let a = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("tnt") }); let b = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("respawn_anchor") }); let c = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("bed") }); player.sendMessage(`${a == 0 ? "§c" : ""}${a + b + c} explosives removed in radius of ${radius}`); });
+                            }
+                            catch (e) {
+                                eventData.sender.sendMessage("§c" + e + e.stack);
+                            }
+                            break;
+                        default:
+                            try {
+                                system.run(() => { let a = fillBlocksB(from, to, player.dimension, BlockPermutation.resolve("air"), { matchingBlock: BlockPermutation.resolve("tnt") }); player.sendMessage(`${a == 0 ? "§c" : ""}${a} explosives removed in radius of ${radius}`); });
+                            }
+                            catch (e) {
+                                eventData.sender.sendMessage("§c" + e + e.stack);
+                            }
+                    }
                 }
                 break;
         }
