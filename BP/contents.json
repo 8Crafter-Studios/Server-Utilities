@@ -4,6 +4,24 @@
          "path" : ".gitattributes"
       },
       {
+         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/package.json"
+      },
+      {
+         "path" : "structures/DripstoneTests/stalagmite_hurt.mcstructure"
+      },
+      {
+         "path" : "items/debug_stick.json"
+      },
+      {
+         "path" : "recipes/smithing_table/55turtle_helmet.json"
+      },
+      {
+         "path" : "structures/BlockTests/concrete_pops_off_waterlogged_chest.mcstructure"
+      },
+      {
+         "path" : "blocks/ifill_placeholder_block_preset.json"
+      },
+      {
          "path" : "node_modules/@minecraft/server-gametest/node_modules/@minecraft/server/package.json"
       },
       {
@@ -58,10 +76,10 @@
          "path" : "items/entity_debug_stick.json"
       },
       {
-         "path" : "dialogue/scene.json"
+         "path" : "items/command_runner.json"
       },
       {
-         "path" : "items/command_runner.json"
+         "path" : "dialogue/scene.json"
       },
       {
          "path" : "items/player_debug_stick.json"
@@ -79,25 +97,31 @@
          "path" : "items/chargeable_item_1.json"
       },
       {
+         "path" : "structures/FireAvoidTests/villager_dont_flee_over_fire.mcstructure"
+      },
+      {
+         "path" : "items/chargeable_item_2.json"
+      },
+      {
+         "path" : "items/chargeable_item_3.json"
+      },
+      {
+         "path" : "items/chargeable_item_4.json"
+      },
+      {
+         "path" : "structures/PathFindingTests/carpet_walk_around.mcstructure"
+      },
+      {
+         "path" : "structures/SmallMobTests/fence_post.mcstructure"
+      },
+      {
+         "path" : "items/chargeable_item_5.json"
+      },
+      {
          "path" : "items/debug_screen.json"
       },
       {
          "path" : "items/entity_controller.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/package.json"
-      },
-      {
-         "path" : "structures/DripstoneTests/stalagmite_hurt.mcstructure"
-      },
-      {
-         "path" : "items/debug_stick.json"
-      },
-      {
-         "path" : "recipes/smithing_table/55turtle_helmet.json"
-      },
-      {
-         "path" : "structures/BlockTests/concrete_pops_off_waterlogged_chest.mcstructure"
       },
       {
          "path" : "structures/VibrationTests/activation_wool_occlusion_no_bias.mcstructure"
@@ -173,6 +197,18 @@
       },
       {
          "path" : "structures/PistonTests/observer_retraction_timing.mcstructure"
+      },
+      {
+         "path" : "structures/DuplicationTests/powered_rail_twist.mcstructure"
+      },
+      {
+         "path" : "node_modules/@minecraft/server-gametest/node_modules/@minecraft/server/.eslintrc.json"
+      },
+      {
+         "path" : "node_modules/@minecraft/server/.eslintrc.json"
+      },
+      {
+         "path" : "items/non_chargeable_item_3.json"
       },
       {
          "path" : "structures/RedstoneTests/observer_clock.mcstructure"
@@ -283,25 +319,16 @@
          "path" : "node_modules/@minecraft/common/README.md"
       },
       {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server-admin/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/common/tsconfig.json"
-      },
-      {
          "path" : "scripts/ExtensionTests.js"
       },
       {
          "path" : "node_modules/@minecraft/server-net/index.d.ts"
       },
       {
-         "path" : "structures/DuplicationTests/powered_rail_twist.mcstructure"
+         "path" : "node_modules/@minecraft/common/tsconfig.json"
       },
       {
-         "path" : "node_modules/@minecraft/server-gametest/node_modules/@minecraft/server/.eslintrc.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server/.eslintrc.json"
+         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server-admin/package.json"
       },
       {
          "path" : "node_modules/@minecraft/server-gametest/node_modules/@minecraft/server/README.md"
@@ -1225,13 +1252,7 @@
          "path" : "structures/FireAvoidTests/fire_maze.mcstructure"
       },
       {
-         "path" : "structures/VibrationTests/event_block_open.mcstructure"
-      },
-      {
          "path" : "structures/FireAvoidTests/golem_chase_zombie_over_fire.mcstructure"
-      },
-      {
-         "path" : "structures/FireAvoidTests/villager_dont_flee_over_fire.mcstructure"
       },
       {
          "path" : "structures/FireAvoidTests/walk_far_out_of_magma.mcstructure"
@@ -1264,10 +1285,10 @@
          "path" : "structures/FlyingMachineTests/m3_bedrock.mcstructure"
       },
       {
-         "path" : "structures/MultifaceTests/spread_around_partly_blocked_corner.mcstructure"
+         "path" : "structures/VibrationTests/event_dispense_fail.mcstructure"
       },
       {
-         "path" : "structures/VibrationTests/event_dispense_fail.mcstructure"
+         "path" : "structures/MultifaceTests/spread_around_partly_blocked_corner.mcstructure"
       },
       {
          "path" : "structures/FlyingMachineTests/machine_a.mcstructure"
@@ -1379,12 +1400,6 @@
       },
       {
          "path" : "structures/PathFindingTests/bottleneck.mcstructure"
-      },
-      {
-         "path" : "structures/PathFindingTests/carpet_walk_around.mcstructure"
-      },
-      {
-         "path" : "structures/SmallMobTests/fence_post.mcstructure"
       },
       {
          "path" : "structures/PathFindingTests/doorway.mcstructure"
@@ -1568,6 +1583,9 @@
       },
       {
          "path" : "structures/VibrationTests/event_block_destroy.mcstructure"
+      },
+      {
+         "path" : "structures/VibrationTests/event_block_open.mcstructure"
       },
       {
          "path" : "structures/VibrationTests/event_container_close.mcstructure"

@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.8.0";
+export const format_version = "1.10.0";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -47,7 +47,7 @@ import "Main/ui.js";
 import "Main/player_save.js";
 import "Main/spawn_protection.js";
 export const mainmetaimport = import.meta;
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase } from "@minecraft/server";
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d } from "Main/coordinates";
@@ -114,6 +114,10 @@ try {
 catch (e) {
     console.error(e, e.stack);
 }
+const srununbound = system.run;
+export const srun = srununbound.bind(system);
+globalThis.srun = srun;
+export const gt = globalThis;
 export class worldPlayers {
     static get savedPlayers() {
         return savedPlayer.getSavedPlayers();
@@ -807,9 +811,17 @@ export function cerror(...data) { console.error(data); }
 ;
 export function asend(value) { world.sendMessage(String(value)); }
 ;
-export function bsend(value) { world.sendMessage(JSONStringify(value)); }
+export function bsend(value) { world.sendMessage(JSONStringify(value, true)); }
 ;
 export function csend(value) { world.sendMessage(JSON.stringify(value)); }
+;
+export function psend(player, value) { world.sendMessage(value); }
+;
+export function pasend(player, value) { world.sendMessage(String(value)); }
+;
+export function pbsend(player, value) { world.sendMessage(JSONStringify(value, true)); }
+;
+export function pcsend(player, value) { world.sendMessage(JSON.stringify(value)); }
 ;
 export function splitTextByMaxProperyLength(string) { let length = string.length / 32767; let substringlist; substringlist = []; for (let i = 0; i < Math.ceil(length); i++) {
     substringlist.push(string.slice((i - 1) * 32767, i == Math.ceil(length) ? string.length : i * 32767));
@@ -823,6 +835,468 @@ else {
 } }); let counter = 0; mainArray.forEach(v => counter += dimension.fillBlocks(v.from, v.to, block, options)); return counter; }
 ;
 export function fillBlocksB(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += dimension.fillBlocks(v.from, v.to, block, options)); return counter; }
+;
+export function fillBlocksF(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block instanceof BlockPermutation ? block.type.id : block instanceof BlockType ? block.id : block} ${block instanceof BlockPermutation ? "[" + Object.entries(block.getAllStates()).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""} ${!!options?.matchingBlock ? options?.matchingBlock instanceof BlockPermutation ? "replace " + options?.matchingBlock?.type?.id ?? "" : "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlock ? options?.matchingBlock instanceof BlockPermutation ? "[" + Object.entries(options?.matchingBlock.getAllStates()).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : "" : ""}`).successCount); return counter; }
+;
+export function fillBlocksH(from, to, dimension, block, blockStates, options, placeholderid) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => { try {
+    counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
+}
+catch {
+    counter += fillBlocksB(v.from, v.to, dimension, BlockPermutation.resolve(placeholderid ?? "andexdb:ifill_command_placeholder_block", {}), { matchingBlock: BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates) });
+} ; fillBlocksB(v.from, v.to, dimension, BlockPermutation.resolve(block, blockStates), { matchingBlock: BlockPermutation.resolve(placeholderid ?? "andexdb:ifill_command_placeholder_block", {}) }); }); return counter; }
+;
+export function fillBlocksHB(from, to, dimension, block, blockStates, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => { counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block} ${!!blockStates ? "[" + Object.entries(blockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}  ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount; }); return counter; }
+;
+export function fillBlocksHW(from, to, dimension, block, blockStates, options, placeholderid) { let mainArray = []; let subArray = []; let CBVA = new CompoundBlockVolume(); CBVA.pushVolume({ volume: new BlockVolume(from, { x: to.x, y: from.y, z: to.z }), action: 0 }); if (new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getSpan().x > 2 && new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getSpan().z > 2) {
+    CBVA.pushVolume({ volume: new BlockVolume({ x: from.x + (from.x > to.x ? -1 : 1), y: from.y, z: from.z + (from.z > to.z ? -1 : 1) }, { x: to.x + (from.x < to.x ? -1 : 1), y: from.y, z: to.z + (from.z < to.z ? -1 : 1) }), action: 1 });
+} ; Array.from(CBVA.getBlockLocationIterator()).forEach(va => { mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z })); }); let counter = 0; mainArray.forEach(v => { counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount; fillBlocksB(v.from, v.to, dimension, BlockPermutation.resolve(block, blockStates), { matchingBlock: BlockPermutation.resolve(placeholderid, {}) }); }); return counter; }
+;
+export function fillBlocksC(begin, end, dimension, blocktype = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) {
+    let mainArray = Array.from(new BlockVolume(begin, end).getBlockLocationIterator());
+    let counter = 0;
+    let block = BlockTypes.get(matchingBlock).id;
+    let blockmatching = BlockTypes.get(matchingBlock).id;
+    if (overrideAllBlockStates) {
+        if (!!matchingBlock) { //console.warn("3"); 
+            if (!!matchingBlockStates) { //console.warn("4"); 
+                if (!!blockStates) { //console.warn("10b"); 
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, blockStates)) { //console.warn("2"); 
+                                if (blockmatching == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+                else {
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, blockStates)) { //console.warn("2"); 
+                                if (blockmatching == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+            }
+            else { //console.warn("7"); 
+                if (!!blockStates) { //console.warn("10c"); 
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, blockStates)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+                else {
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+            }
+        }
+        else { //console.warn("9"); 
+            if (!!blockStates) { //console.warn("10"); 
+                mainArray.forEach(v => {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(v)?.typeId != block) { //console.warn("2"); 
+                            dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                            counter++; //; console.warn("11"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                });
+            }
+            else { //console.warn("12"); 
+                mainArray.forEach(v => {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(v)?.typeId != block) { //console.warn("2"); 
+                            dimension.getBlock(v).setType(blocktype);
+                            counter++; //; console.warn("13"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                });
+            }
+        }
+    }
+    else {
+        if (!!matchingBlock) { //console.warn("3"); 
+            if (!!matchingBlockStates) { //console.warn("4"); 
+                if (!!blockStates) { //console.warn("10b"); 
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                                if (BlockTypes.get(matchingBlock).id == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+                else {
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                                if (BlockTypes.get(matchingBlock).id == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+            }
+            else { //console.warn("7"); 
+                if (!!blockStates) { //console.warn("10c"); 
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && block == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+                else {
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && block == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : undefined)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : undefined));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+            }
+        }
+        else { //console.warn("9"); 
+            if (!!blockStates) { //console.warn("10"); 
+                mainArray.forEach(v => {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                            dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                            counter++; //; console.warn("11"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                });
+            }
+            else { //console.warn("12"); 
+                mainArray.forEach(v => {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(v)?.typeId != block) { //console.warn("2"); 
+                            dimension.getBlock(v).setType(blocktype);
+                            counter++; //; console.warn("13"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                });
+            }
+        }
+    }
+    return counter;
+}
+;
+export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false, onComplete = () => { }, onCompleteArgsObject, ...onCompleteArgs) {
+    var timea = Date.now();
+    var mainArray = Array.from(new BlockVolume(begin, end).getBlockLocationIterator());
+    var counter = 0;
+    var block = BlockTypes.get(matchingBlock).id;
+    var blockmatching = BlockTypes.get(matchingBlock).id;
+    if (overrideAllBlockStates) {
+        if (!!matchingBlock) { //console.warn("3"); 
+            if (!!matchingBlockStates) { //console.warn("4"); 
+                if (!!blockStates) { //console.warn("10b"); 
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, blockStates)) { //console.warn("2"); 
+                                if (blockmatching == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+                else {
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, blockStates)) { //console.warn("2"); 
+                                if (blockmatching == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+            }
+            else { //console.warn("7"); 
+                if (!!blockStates) { //console.warn("10c"); 
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, blockStates)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+                else {
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+            }
+        }
+        else { //console.warn("9"); 
+            if (!!blockStates) { //console.warn("10"); 
+                for (let i = 0; i < mainArray.length; i++) {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(mainArray[i])?.typeId != block) { //console.warn("2"); 
+                            dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                            counter++; //; console.warn("11"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    yield;
+                }
+                ;
+            }
+            else { //console.warn("12"); 
+                for (let i = 0; i < mainArray.length; i++) {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(mainArray[i])?.typeId != block) { //console.warn("2"); 
+                            dimension.getBlock(mainArray[i]).setType(blocktype);
+                            counter++; //; console.warn("13"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    yield;
+                }
+                ;
+            }
+        }
+    }
+    else {
+        if (!!matchingBlock) { //console.warn("3"); 
+            if (!!matchingBlockStates) { //console.warn("4"); 
+                if (!!blockStates) { //console.warn("10b"); 
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(mainArray[i])?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                                if (BlockTypes.get(matchingBlock).id == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(mainArray[i])?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+                else {
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                                if (BlockTypes.get(matchingBlock).id == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+            }
+            else { //console.warn("7"); 
+                if (!!blockStates) { //console.warn("10c"); 
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && block == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(mainArray[i])?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(mainArray[i])?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+                else {
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && block == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : undefined)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : undefined));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+            }
+        }
+        else { //console.warn("9"); 
+            if (!!blockStates) { //console.warn("10"); 
+                for (let i = 0; i < mainArray.length; i++) {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(mainArray[i])?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                            dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(mainArray[i])?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                            counter++; //; console.warn("11"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    yield;
+                }
+                ;
+            }
+            else { //console.warn("12"); 
+                for (let i = 0; i < mainArray.length; i++) {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(mainArray[i])?.typeId != block) { //console.warn("2"); 
+                            dimension.getBlock(mainArray[i]).setType(blocktype);
+                            counter++; //; console.warn("13"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    yield;
+                }
+                ;
+            }
+        }
+    }
+    var timeb = Date.now(); /*
+    world.sendMessage(String(counter))*/
+    onComplete(counter, timea, timeb, timeb - timea, onCompleteArgsObject, ...onCompleteArgs);
+}
+;
+export function fillBlocksD(from, to, dimension, block = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += fillBlocksC(v.from, v.to, dimension, block, blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates)); return counter; }
+;
+export async function fillBlocksE(from, to, dimension, block = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => system.run(() => counter += fillBlocksC(v.from, v.to, dimension, block, blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates))); return counter; }
 ;
 export function catchtry(trycallbackfn, catchcallbackfn = (e) => console.error(e, e.stack), finallycallbackfn = (v) => { return v; }) { let v; v = undefined; try {
     v = trycallbackfn();
