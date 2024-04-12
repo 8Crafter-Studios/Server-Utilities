@@ -2794,7 +2794,7 @@ export function chatCommands(params) {
             case !!switchTest.match(/^mainmenu$/):
                 eventData.cancel = true;
                 try {
-                    mainMenu(player);
+                    system.run(() => mainMenu(player));
                 }
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -2803,7 +2803,7 @@ export function chatCommands(params) {
             case !!switchTest.match(/^terminal$/):
                 eventData.cancel = true;
                 try {
-                    terminal(player);
+                    system.run(() => terminal(player));
                 }
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -2812,7 +2812,7 @@ export function chatCommands(params) {
             case !!switchTest.match(/^managecommands$/):
                 eventData.cancel = true;
                 try {
-                    manageCommands(player);
+                    system.run(() => manageCommands(player));
                 }
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -2821,7 +2821,7 @@ export function chatCommands(params) {
             case !!switchTest.match(/^manageplayers$/):
                 eventData.cancel = true;
                 try {
-                    managePlayers(player);
+                    system.run(() => managePlayers(player));
                 }
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -2830,7 +2830,7 @@ export function chatCommands(params) {
             case !!switchTest.match(/^settings$/):
                 eventData.cancel = true;
                 try {
-                    settings(player);
+                    system.run(() => settings(player));
                 }
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);

@@ -1747,23 +1747,23 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
         break; 
         case !!switchTest.match(/^mainmenu$/): 
             eventData.cancel = true;
-            try{mainMenu(player); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>mainMenu(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^terminal$/): 
             eventData.cancel = true;
-            try{terminal(player)}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>terminal(player))}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^managecommands$/): 
             eventData.cancel = true;
-            try{manageCommands(player)}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>manageCommands(player))}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^manageplayers$/): 
             eventData.cancel = true;
-            try{managePlayers(player)}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>managePlayers(player))}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^settings$/): 
             eventData.cancel = true;
-            try{settings(player); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>settings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^datapickblock$/): 
             eventData.cancel = true;
