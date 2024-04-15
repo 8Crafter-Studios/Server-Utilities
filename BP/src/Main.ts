@@ -245,10 +245,8 @@ export function arrayModifier<T>(sourcearray: T[], callbackfn: (value: T, index:
         return sourcearray
     } else {
         let newarray: any[];
-        try {
-            newarray = structuredClone(sourcearray)
-        } catch (e) {newarray = sourcearray};
-        newarray.forEach((v, i, a) => {
+        newarray = []
+        sourcearray.forEach((v, i, a) => {
             newarray[i] = callbackfn(v, i, a)
         });
         return newarray
@@ -442,10 +440,8 @@ export function getParametersFromString(string: string) {
             return sourcearray
         } else {
             let newarray: any[];
-            try {
-                newarray = structuredClone(sourcearray)
-            } catch (e) {newarray = sourcearray};
-            newarray.forEach((v, i, a) => {
+            newarray = []
+            sourcearray.forEach((v, i, a) => {
                 newarray[i] = callbackfn(v, i, a)
             });
             return newarray
@@ -510,9 +506,7 @@ export function getParametersFromExtractedJSON(rawdata: RegExpMatchArray[]) {
             return sourcearray
         } else {
             let newarray: any[];
-            try {
-                newarray = structuredClone(sourcearray)
-            } catch (e) {newarray = sourcearray};
+            newarray = []
             newarray.forEach((v, i, a) => {
                 newarray[i] = callbackfn(v, i, a)
             });
@@ -689,6 +683,7 @@ export function fillBlocksF(from: Vector3, to: Vector3, dimension: Dimension, bl
 export function fillBlocksH(from: Vector3, to: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))}); subArray.forEach(v=>{Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))}); let counter = 0; mainArray.forEach(v=>{try{counter+=dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid??"andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock? "replace " + options?.matchingBlock??"" :""} ${!!options?.matchingBlockStates? "["+Object.entries(options?.matchingBlockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}`).successCount}catch{counter+=fillBlocksB(v.from, v.to, dimension, BlockPermutation.resolve(placeholderid??"andexdb:ifill_command_placeholder_block", {}), {matchingBlock: BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)})}; fillBlocksB(v.from, v.to, dimension, BlockPermutation.resolve(block, blockStates), {matchingBlock: BlockPermutation.resolve(placeholderid??"andexdb:ifill_command_placeholder_block", {})})}); return counter}; 
 export function fillBlocksHB(from: Vector3, to: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))}); subArray.forEach(v=>{Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))}); let counter = 0; mainArray.forEach(v=>{counter+=dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block} ${!!blockStates ?  "["+Object.entries(blockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}  ${!!options?.matchingBlock? "replace " + options?.matchingBlock??"" :""} ${!!options?.matchingBlockStates? "["+Object.entries(options?.matchingBlockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}`).successCount}); return counter}; 
 export function fillBlocksHW(from: Vector3, to: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; let CBVA = new CompoundBlockVolume(); CBVA.pushVolume({volume: new BlockVolume(from, {x: to.x, y: from.y, z: to.z}), action: 0}); if(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getSpan().x>2&&new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getSpan().z>2){CBVA.pushVolume({volume: new BlockVolume({x: from.x+(from.x>to.x?-1:1), y: from.y, z: from.z+(from.z>to.z?-1:1)}, {x: to.x+(from.x<to.x?-1:1), y: from.y, z: to.z+(from.z<to.z?-1:1)}), action: 1})}; Array.from(CBVA.getBlockLocationIterator()).forEach(va=>{mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z}))}); let counter = 0; mainArray.forEach(v=>{counter+=dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid??"andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock? "replace " + options?.matchingBlock??"" :""} ${!!options?.matchingBlockStates? "["+Object.entries(options?.matchingBlockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}`).successCount; fillBlocksB(v.from, v.to, dimension, BlockPermutation.resolve(block, blockStates), {matchingBlock: BlockPermutation.resolve(placeholderid, {})})}); return counter}; 
+export function scanForBlockType(from: Vector3|Vector, to: Vector3|Vector, dimension: Dimension, block: string, returnMode?: ""|"Vector3"|"Block"){let blockType = BlockTypes.get(block).id; if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>dimension.getBlock(v).typeId==blockType)}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>v.typeId==blockType)}}; 
 export function fillBlocksC(begin: Vector3, end: Vector3, dimension: Dimension, blocktype: string = "air", blockStates?: Record<string, string | number | boolean>, matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, overrideAllBlockStates: boolean = false){
     let mainArray = Array.from(new BlockVolume(begin, end).getBlockLocationIterator()); 
     let counter = 0; 

@@ -1,4 +1,4 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, Vector, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType } from "@minecraft/server";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, Vector, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2 } from "@minecraft/server";
 import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject,format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
@@ -575,9 +575,11 @@ export const commands_format_version = "3.1.0-rc.2";
 export type evaluateParametersArgumentTypes = "presetText"|"number"|"boolean"|"string"|"json"
 export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "give", escregexp: {v: "^give$"}, formats: [{format: "give <item: itemType> <amount: int>"}], command_version: "1.0.0", description: "This command can give you items of any type, even ones that normally require an nbt editor to obtain. ", commandSettingsId: "built-inCommandSettings:give"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "giveb", escregexp: {v: "^giveb$"}, formats: [{format: "giveb <item: itemType> <amount: int>"}], command_version: "1.0.0", description: "This command can give you items of any type, even ones that normally require an nbt editor to obtain, with any stack size up to 127, in your next unoccupied inventory slot. ", commandSettingsId: "built-inCommandSettings:giveb"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "giveb", escregexp: {v: "^giveb$"}, formats: [{format: "giveb <item: itemType> <amount: int>"}], command_version: "1.0.0", description: "This command can give you items of any type, even ones that normally require an nbt editor to obtain, with any stack size up to 255, in your next unoccupied inventory slot. ", commandSettingsId: "built-inCommandSettings:giveb"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "givec", escregexp: {v: "^givec$"}, formats: [{format: "givec <itemJSON: itemJSON>"}], command_version: "2.0.0", description: "This command can give you items of any type with lots of properties already set on it through the item JSON, even ones that normally require an nbt editor to obtain, with any stack size up to 255, in your next unoccupied inventory slot. ", commandSettingsId: "built-inCommandSettings:givec"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "setitem", escregexp: {v: "^setitem$"}, formats: [{format: "setitem <item: itemType> <amount: int> <slot: int>"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:setitem"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "item", escregexp: {v: "^item$"}, formats: [{format: "item lore <loreArray: escapableStringJSON>"}, {format: "item lorene <loreArray: JSON>"}, {format: "item name <name: escapableString>"}, {format: "item count <itemCount: int>"}, {format: "item amount <itemAmount: int>"}, {format: "§citem preoperty..."}, {format: ["item slot <inventorySlotNumber: int> lore <loreArray: escapableStringJSON>", "item slot <inventorySlotNumber: int> lorene <loreArray: JSON>", "item slot <inventorySlotNumber: int> name <name: escapableString>"]}, {format: "§citem components..."}], command_version: "1.5.1", description: "", commandSettingsId: "built-inCommandSettings:item"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "setitemb", escregexp: {v: "^setitemb$"}, formats: [{format: "setitemb <itemJSON: itemJSON> [slot: int] [playerTargets: targetSelector]"}], command_version: "2.0.0", description: "", commandSettingsId: "built-inCommandSettings:setitemb"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "item", escregexp: {v: "^item$"}, formats: [{format: "item lore <loreArray: escapableStringJSON>"}, {format: "item lorene <loreArray: JSON>"}, {format: "item name <name: escapableString>"}, {format: "item json <itemJSON: itemJSON>"}, {format: "item jsonb <itemJSON: itemJSON>"}, {format: "item count <itemCount: int>"}, {format: "item amount <itemAmount: int>"}, {format: "item property..."}, {format: ["item slot <inventorySlotNumber: int|~> lore <loreArray: escapableStringJSON>", "item slot <inventorySlotNumber: int|~> lorene <loreArray: JSON>", "item slot <inventorySlotNumber: int|~> name <name: escapableString>", "item slot <inventorySlotNumber: int|~> json <itemJSON: itemJSON>", "item slot <inventorySlotNumber: int|~> jsonb <itemJSON: itemJSON>"]}, {format: "§citem components..."}], command_version: "1.5.1", description: "", commandSettingsId: "built-inCommandSettings:item"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "invsee", escregexp: {v: "^invsee$"}, formats: [{format: "invsee <target: targetSelector>"}], command_version: "1.6.0", description: "", commandSettingsId: "built-inCommandSettings:invsee"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "invseep", escregexp: {v: "^invseep$"}, formats: [{format: "invseep <target: targetSelector>"}], command_version: "1.6.0", description: "", commandSettingsId: "built-inCommandSettings:invseep"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "offlineinfo", escregexp: {v: "^offlineinfo$"}, formats: [{format: "offlineinfo <player: playerName>"}], command_version: "1.1.0", description: "", commandSettingsId: "built-inCommandSettings:offlineinfo"}, 
@@ -587,9 +589,9 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "binvsee", escregexp: {v: "^binvsee$"}, formats: [{format: "binvsee <dimension: dimensionId|~> <blockLocation: x y z>"}], command_version: "4.1.0", description: "Invsees into a block. ", commandSettingsId: "built-inCommandSettings:binvsee"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "einvsee", escregexp: {v: "^einvsee$"}, formats: [{format: "einvsee <targetSelector: targetSelector>"}], command_version: "1.6.0", description: "Invsees into and entity's inventory and equipment slots. ", commandSettingsId: "built-inCommandSettings:einvsee"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "einvseeb", escregexp: {v: "^einvseeb$"}, formats: [{format: "einvseeb <targetSelector: targetSelector>"}], command_version: "1.6.0", description: "The original version of the \\einvsee command that does not scan equipment slots. ", commandSettingsId: "built-inCommandSettings:einvseeb"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "invseeuuidmode", escregexp: {v: "^invseeuuidmode$"}, formats: [{format: "invseeuuidmode <entityUUID: UUID>"}], command_version: "1.2.0", description: "Invsees intot he entity matching the inputted UUID. ", commandSettingsId: "built-inCommandSettings:invseeuuidmode"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "h#", escregexp: {v: "^h(\\d*)$"}, formats: [{format: "h<presetId: float> <containerRow: float>"}], command_version: "1.0.0-beta.1", description: "", commandSettingsId: "built-inCommandSettings:h#"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "hset", escregexp: {v: "^hset$"}, formats: [{format: "hset <presetId: float> [dimensionId: string] [x: float] [y: float] [z: float]"}], command_version: "1.0.0-beta.10", description: "", commandSettingsId: "built-inCommandSettings:hset"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "invseeuuidmode", escregexp: {v: "^invseeuuidmode$"}, formats: [{format: "invseeuuidmode <entityUUID: UUID>"}], command_version: "1.2.0", description: "Invsees into he entity matching the inputted UUID. ", commandSettingsId: "built-inCommandSettings:invseeuuidmode"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "h#", escregexp: {v: "^h(\\d*)$"}, formats: [{format: "h<presetId: float> <containerRow: float>"}], command_version: "1.0.0-beta.1", description: "Swaps your hotbar with the specified hotbar preset. ", commandSettingsId: "built-inCommandSettings:h#"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "hset", escregexp: {v: "^hset$"}, formats: [{format: "hset <presetId: float> [dimensionId: string] [x: float] [y: float] [z: float]"}], command_version: "1.0.0-beta.10", description: "Sets the specified hotbar preset to the specified location. ", commandSettingsId: "built-inCommandSettings:hset"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gmc", escregexp: {v: "^gmc$"}, formats: [{format: "gmc"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:gmc"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gms", escregexp: {v: "^gms$"}, formats: [{format: "gms"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:gms"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gma", escregexp: {v: "^gma$"}, formats: [{format: "gma"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:gma"}, 
@@ -599,30 +601,30 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "getuuid", escregexp: {v: "^getuuid$"}, formats: [{format: "getuuid <targetSelector: targetSelector>"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:getuuid"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warpset", escregexp: {v: "^warpset$"}, formats: [{format: "warpset <dimension: dimension|~> <x: float|~> <y: float|~> <z: float|~> <name: escapableString>"}], command_version: "1.1.0", description: "", commandSettingsId: "built-inCommandSettings:warpset"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warp", escregexp: {v: "^warp$"}, formats: [{format: "warp <warpName: escapableString>"}], command_version: "1.1.0", description: "", commandSettingsId: "built-inCommandSettings:warp"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warpremove", escregexp: {v: "^warpremove$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warpremove"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warpreset", escregexp: {v: "^warpreset$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warpreset"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warplist", escregexp: {v: "^warplist$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warplist"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warplistdetails", escregexp: {v: "^warplistdetails$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warplistdetails"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warplistrawdata", escregexp: {v: "^warplistrawdata$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warplistrawdata"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warpremove", escregexp: {v: "^warpremove$"}, formats: [{format: "warpremove <warpName: escapableString>"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warpremove"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warpreset", escregexp: {v: "^warpreset$"}, formats: [{format: "warpreset"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warpreset"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warplist", escregexp: {v: "^warplist$"}, formats: [{format: "warlist"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warplist"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warplistdetails", escregexp: {v: "^warplistdetails$"}, formats: [{format: "warplistdetails"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warplistdetails"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warplistrawdata", escregexp: {v: "^warplistrawdata$"}, formats: [{format: "warplistrawdata"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:warplistrawdata"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wset", escregexp: {v: "^wset$"}, formats: [{format: "wset <dimension: dimension|~> <x: float|~> <y: float|~> <z: float|~> <name: escapableString>"}], command_version: "1.1.0", description: "", commandSettingsId: "built-inCommandSettings:wset"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "w", escregexp: {v: "^w$"}, formats: [{format: "w <wName: escapableString>"}], command_version: "1.1.0", description: "", commandSettingsId: "built-inCommandSettings:w"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wremove", escregexp: {v: "^wremove$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:wremove"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wreset", escregexp: {v: "^wreset$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:wreset"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wlist", escregexp: {v: "^wlist$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:wlist"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wlistdetails", escregexp: {v: "^wlistdetails$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:wlistdetails"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wlistrawdata", escregexp: {v: "^wlistrawdata$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:wlistrawdata"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wremove", escregexp: {v: "^wremove$"}, formats: [{format: "wremove <wName: escapableString>"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:wremove"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wreset", escregexp: {v: "^wreset$"}, formats: [{format: "wreset"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:wreset"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wlist", escregexp: {v: "^wlist$"}, formats: [{format: "wlist"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:wlist"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wlistdetails", escregexp: {v: "^wlistdetails$"}, formats: [{format: "wlistdetails"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:wlistdetails"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wlistrawdata", escregexp: {v: "^wlistrawdata$"}, formats: [{format: "wlistrawdata"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:wlistrawdata"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "run", escregexp: {v: "^run$"}, formats: [{format: "run <tickDelay: int>=1> <command: command>"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:run"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "eval", escregexp: {v: "^eval$"}, formats: [{format: "eval <script: JavaScript>"}], command_version: "1.1.0", description: "", commandSettingsId: "built-inCommandSettings:eval"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "top", escregexp: {v: "^top$"}, formats: [{format: "top"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:top"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "up", escregexp: {v: "^up$"}, formats: [{format: "up [placeGlass: boolean]"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:up"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "printlayers", escregexp: {v: "^printlayers$"}, formats: [{format: "printlayers"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:printlayers"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "managescriptautoeval", escregexp: {v: "^managescriptautoeval$"}, formats: [{format: "managescriptautoeval"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:managescriptautoeval"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "mainmenu", escregexp: {v: "^mainmenu$"}, formats: [{format: "mainmenu"}], command_version: "2.0.0", description: "", commandSettingsId: "built-inCommandSettings:mainmenu"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "terminal", escregexp: {v: "^terminal$"}, formats: [{format: "terminal"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:terminal"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "managecommands", escregexp: {v: "^managecommands$"}, formats: [{format: "managecommands"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:managecommands"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "manageplayers", escregexp: {v: "^manageplayers$"}, formats: [{format: "manageplayers"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:manageplayers"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "mainmenu", escregexp: {v: "^mainmenu$"}, aliases: [{commandName: "menu", escregexp: {v: "^menu$"}}], formats: [{format: "mainmenu"}], command_version: "2.0.0", description: "", commandSettingsId: "built-inCommandSettings:mainmenu"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "terminal", escregexp: {v: "^terminal$"}, aliases: [{commandName: "cmdrunner", escregexp: {v: "^cmdrunner$"}}], formats: [{format: "terminal"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:terminal"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "managecommands", escregexp: {v: "^managecommands$"}, aliases: [{commandName: "mngcmds", escregexp: {v: "^mngcmds$"}}], formats: [{format: "managecommands"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:managecommands"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "manageplayers", escregexp: {v: "^manageplayers$"}, aliases: [{commandName: "mngplyrs", escregexp: {v: "^mngplyrs$"}}], formats: [{format: "manageplayers"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:manageplayers"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "settings", escregexp: {v: "^settings$"}, formats: [{format: "settings"}], command_version: "2.0.0", description: "", commandSettingsId: "built-inCommandSettings:settings"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "datapickblock", escregexp: {v: "^datapickblock$"}, formats: [{format: ""}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:datapickblock"},
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "datapickblock", escregexp: {v: "^datapickblock$"}, aliases: [{commandName: "dpb", escregexp: {v: "^dpb$"}}], formats: [{format: "datapickblock"}], command_version: "1.0.0", description: "", commandSettingsId: "built-inCommandSettings:datapickblock"},
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "fill", escregexp: {v: "^fill$"}, formats: [{format: "fill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "fill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "1.1.0-rc.5", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain. ", commandSettingsId: "built-inCommandSettings:fill"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "ifill", escregexp: {v: "^ifill$"}, formats: [{format: "ifill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "ifill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "4.0.1-beta.99", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. ", commandSettingsId: "built-inCommandSettings:ifill"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "iwalls", escregexp: {v: "^iwalls$"}, formats: [{format: "iwalls <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "iwalls <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "5.0.0-beta.11", description: "Same as the \\ifill command except for the fact that it only fills the walls of the specified area. ", commandSettingsId: "built-inCommandSettings:iwalls"}, 
@@ -634,28 +636,30 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "copyitem", escregexp: {v: "^copyitem$"}, formats: [{format: "copyitem <slot: int|\"head\"|\"chest\"|\"legs\"|\"feet\"|\"mainhand\"|\"offhand\"> <toPlayer: playerName>"}], command_version: "0.1.4-beta.1", description: "", commandSettingsId: "built-inCommandSettings:copyitem"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "dupeitem", escregexp: {v: "^dupeitem$"}, formats: [{format: "dupeitem"}], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:dupeitem"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "transferitem", escregexp: {v: "^transferitem$"}, formats: [{format: "transferitem <toPlayer: playerName>"}], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:transferitem"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "shuffleinventory", escregexp: {v: "^shuffleinventory$"}, formats: [{format: "shuffleinventory [toPlayer: playerName]"}], command_version: "0.2.2-beta.2", description: "", commandSettingsId: "built-inCommandSettings:shuffleinventory"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapitems", escregexp: {v: "^swapitems$"}, formats: [{format: "swapitems <fromSlot: number|~> <toSlot: number|~> <toPlayer: playerName>"}], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:swapitems"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "shuffleinventory", escregexp: {v: "^shuffleinventory$"}, aliases: [{commandName: "invshuffle", escregexp: {v: "^invshuffle$"}}], formats: [{format: "shuffleinventory [player: string|~]"}], command_version: "0.2.2-beta.2", description: "", commandSettingsId: "built-inCommandSettings:shuffleinventory"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapitems", escregexp: {v: "^swapitems$"}, formats: [{format: "swapitems <slot: number|~> <otherSlot: number|~> <otherPlayer: playerName>"}], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:swapitems"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "clear", escregexp: {v: "^clear$"}, formats: [{format: "clear <target: string> [itemType: Item]"}], command_version: "0.0.1-indev.1", description: "", commandSettingsId: "built-inCommandSettings:clear"},
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "takeitem", escregexp: {v: "^takeitem$"}, formats: [{format: "takeitem <fromSlot: number|~> <fromPlayer: playerName>"}], command_version: "0.1.1-beta.1", description: "", commandSettingsId: "built-inCommandSettings:takeitem"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventories", escregexp: {v: "^swapinventories$"}, formats: [{format: "swapinventories <player1: string|~> <player2: string|~>"}], command_version: "0.2.1-beta.1", description: "Swaps the inventory, offhand, hotbar, and armor of two specified players. ", commandSettingsId: "built-inCommandSettings:swapinventories"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventoriesb", escregexp: {v: "^swapinventoriesb$"}, formats: [{format: "swapinventoriesb <player1: string|~> <player2: string|~>"}], command_version: "0.2.1-beta.1", description: "Swaps the inventory and hotbar of two specified players. ", commandSettingsId: "built-inCommandSettings:swapinventoriesb"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventories", escregexp: {v: "^swapinventories$"}, aliases: [{commandName: "invswap", escregexp: {v: "^invswap$"}}], formats: [{format: "swapinventories <player1: string|~> <player2: string|~>"}], command_version: "0.2.1-beta.1", description: "Swaps the inventory, offhand, hotbar, and armor of two specified players. ", commandSettingsId: "built-inCommandSettings:swapinventories"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventoriesb", escregexp: {v: "^swapinventoriesb$"}, aliases: [{commandName: "invswapb", escregexp: {v: "^invswapb$"}}], formats: [{format: "swapinventoriesb <player1: string|~> <player2: string|~>"}], command_version: "0.2.1-beta.1", description: "Swaps the inventory and hotbar of two specified players. ", commandSettingsId: "built-inCommandSettings:swapinventoriesb"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitems", escregexp: {v: "^compressitems$"}, formats: [{format: "compressitems [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "1.0.0-rc.5", description: "Compresses your items into chest(s) and gives you those chest(s) as items. ", commandSettingsId: "built-inCommandSettings:compressitems"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemsshulker", escregexp: {v: "^compressitemsshulker$"}, formats: [{format: "compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "1.0.0-rc.5", description: "Compresses your items into shulker box(es) and gives you those shulker box(es) as items. ", commandSettingsId: "built-inCommandSettings:compressitemsshulker"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainer", escregexp: {v: "^compressitemscontainer$"}, formats: [{format: "compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "1.0.0-rc.5", description: "Compresses your items into container(s) and gives you those container(s) as items. ", commandSettingsId: "built-inCommandSettings:compressitemscontainer"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainerb", escregexp: {v: "^compressitemscontainerb$"}, formats: [{format: "compressitemscontainerb [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "0.0.1-alpha.76", description: "Compresses your items into container(s) and gives you those container(s) as items. ", commandSettingsId: "built-inCommandSettings:compressitemscontainerb"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchest", escregexp: {v: "^scanenderchest$"}, formats: [{format: "scanenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.2.0-alpha.17", description: "", commandSettingsId: "built-inCommandSettings:scanenderchest"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchest", escregexp: {v: "^scanenderchest$"}, aliases: [{commandName: "ecinvsee", escregexp: {v: "^ecinvsee$"}}, {commandName: "sncendchest", escregexp: {v: "^scnendchest$"}}], formats: [{format: "scanenderchest [target: string|~]"}], command_version: "0.2.0-alpha.17", description: "", commandSettingsId: "built-inCommandSettings:scanenderchest"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchestc", escregexp: {v: "^scanenderchestc$"}, aliases: [{commandName: "ecinvseec", escregexp: {v: "^ecinvseec$"}}, {commandName: "sncendchestc", escregexp: {v: "^scnendchestc$"}}], formats: [{format: "scanenderchestc [target: string|~]"}], command_version: "0.3.0-alpha.36", description: "", commandSettingsId: "built-inCommandSettings:scanenderchestc"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "clearenderchestslot", escregexp: {v: "^clearenderchestslot$"}, formats: [{format: "clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.2.0-alpha.37", description: "", commandSettingsId: "built-inCommandSettings:clearenderchestslot"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "clearenderchest", escregexp: {v: "^clearenderchest$"}, formats: [{format: "clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.0.0", description: "", commandSettingsId: "built-inCommandSettings:clearenderchest"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "filljunk", escregexp: {v: "^filljunk$"}, formats: [{format: "filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.9.0-alpha.21", description: "", commandSettingsId: "built-inCommandSettings:filljunk"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "fillrandom", escregexp: {v: "^fillrandom$"}, formats: [{format: "fillrandom [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "1.0.0-rc.77", description: "", commandSettingsId: "built-inCommandSettings:fillrandom"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillop", escregexp: {v: "^fillop$"}, formats: [{format: "fillop [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.9.0-alpha.21", description: "", commandSettingsId: "built-inCommandSettings:fillop"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillillegal", escregexp: {v: "^fillillegal$"}, formats: [{format: "fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.9.0-alpha.21", description: "", commandSettingsId: "built-inCommandSettings:fillillegal"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "filljunk", escregexp: {v: "^filljunk$"}, aliases: [{commandName: "invfilljunk", escregexp: {v: "^invfilljunk$"}}], formats: [{format: "filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.9.0-alpha.21", description: "", commandSettingsId: "built-inCommandSettings:filljunk"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "fillrandom", escregexp: {v: "^fillrandom$"}, aliases: [{commandName: "invfillrandom", escregexp: {v: "^invfillrandom$"}}], formats: [{format: "fillrandom [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "1.0.0-rc.77", description: "", commandSettingsId: "built-inCommandSettings:fillrandom"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillop", escregexp: {v: "^fillop$"}, aliases: [{commandName: "invfillop", escregexp: {v: "^invfillop$"}}], formats: [{format: "fillop [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.9.0-alpha.21", description: "", commandSettingsId: "built-inCommandSettings:fillop"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillillegal", escregexp: {v: "^fillillegal$"}, aliases: [{commandName: "invfillillegal", escregexp: {v: "^invfillillegal$"}}], formats: [{format: "fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.9.0-alpha.21", description: "", commandSettingsId: "built-inCommandSettings:fillillegal"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillinventory", escregexp: {v: "^fillinventory$"}, aliases: [{commandName: "invfill", escregexp: {v: "^invfill$"}}], formats: [{format: "fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]"}], command_version: "1.0.0-beta.17", description: "", commandSettingsId: "built-inCommandSettings:fillinventory"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands", "canUseDangerousCommands"], formatting_code: "§r§4", commandName: "chunkban", escregexp: {v: "^chunkban$"}, formats: [{format: "chunkban [loopCount: int] [target: string|~]"}], command_version: "0.0.1-beta.72", description: "", commandSettingsId: "built-inCommandSettings:chunkban"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "extinguish", escregexp: {v: "^extinguish$"}, formats: [{format: "extinguish [radius: number]"}], command_version: "2.2.0-beta.10", description: "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ", commandSettingsId: "built-inCommandSettings:extinguish"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "extinguish", escregexp: {v: "^extinguish$"}, aliases: [{commandName: "ext", escregexp: {v: "^ext$"}}], formats: [{format: "extinguish [radius: number]"}], command_version: "2.2.0-beta.10", description: "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ", commandSettingsId: "built-inCommandSettings:extinguish"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "remexp", escregexp: {v: "^remexp$"}, formats: [{format: "remexp [radius: number]"}], command_version: "2.2.0-beta.5", description: "Removes explosives in the specified radius, the radius default to 10 if not specified. ", commandSettingsId: "built-inCommandSettings:remexp"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: {v: "^morph$"}, formats: [{format: ""}], command_version: "1.0.1", description: "", commandSettingsId: "built-inCommandSettings:morph"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "tint", escregexp: {v: "^tint$"}, formats: [{format: "tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1]"}], command_version: "1.0.4", description: "", commandSettingsId: "built-inCommandSettings:tint"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "tint", escregexp: {v: "^tint$"}, formats: [{format: "tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: targetSelector]"}], command_version: "1.0.4", description: "", commandSettingsId: "built-inCommandSettings:tint"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "scale", escregexp: {v: "^scale$"}, formats: [{format: ""}], command_version: "1.0.1", description: "", commandSettingsId: "built-inCommandSettings:scale"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "visualscale", escregexp: {v: "^visualscale$"}, formats: [{format: ""}], command_version: "1.0.0-beta", description: "", commandSettingsId: "built-inCommandSettings:visualscale"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "visualscaleenabled", escregexp: {v: "^visualscaleenabled$"}, formats: [{format: ""}], command_version: "1.0.0-beta", description: "", commandSettingsId: "built-inCommandSettings:visualscaleenabled"}, 
@@ -667,14 +671,17 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineinfoescaped", escregexp: {v: "^offlineinfoescaped$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", commandSettingsId: "built-inCommandSettings:offlineinfoescaped"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineuuidinfoescaped", escregexp: {v: "^offlineuuidinfoescaped$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", commandSettingsId: "built-inCommandSettings:offlineuuidinfoescaped"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "help", escregexp: {v: "^help$"}, formats: [{format: "help"}, {format: "help chatcommands", description: "lists the available chat commands and their main formats"}, {format: "help javascriptfunctions", description: "lists all available javascript functions, constants, variables, and classes"}, {format: "help jsfunction <jsObjectId: string>", description: "gets the source code of a specific javascript function, constant, variable, or class"}], command_version: "1.5.2", description: "", commandSettingsId: "built-inCommandSettings:help"}
-] as {type: "built-in"|"custom"|"unknown"; requiredTags: string[]; formatting_code: string; commandName: string; escregexp: {v: string; }; formats: command_formats_type_list; command_version: string; description: string; commandSettingsId: string; }[]/*
+] as {type: "built-in"|"custom"|"unknown"; requiredTags: string[]; formatting_code: string; commandName: string; escregexp: {v: string; f?: string; }; formats: command_formats_type_list; command_version: string; description: string; commandSettingsId: string; aliases?: {commandName: string, escregexp?: {v?: string, f?: string}}[]; }[]/*
 export let abcdefgh = escapeRegExp.arguments*/
 export type command_formats_type_list = (string|string[]|command_formats_type_list|{format: string|command_formats_type_list, description?: string})[]|string|{format: string|command_formats_type_list, description?: string}
 export class command{
     type: "built-in"|"custom"|"unknown"
     commandName: string
+    currentCommandName: string
     parameters?: {name: string, internalType?: evaluateParametersArgumentTypes, type?: "string"|"integer"|"float"|"decimal"|"hexadecimal"|"binary"|"triary"|"base64"|"unicode"|"letter"|"regexp"|"text"|"message"|"any"|"customjson"|"escapablestring"|"boolean"|"array"|"number"|"object"|"javascript"|"json"|"identifier"|"targetselector"|"none"|string, displayType?: "string"|"str"|"integer"|"int"|"float"|"flt"|"decimal"|"dec"|"hexadecimal"|"hex"|"binary"|"bin"|"triary"|"tri"|"base64"|"b64"|"unicode"|"uni"|"letter"|"let"|"regexp"|"regex"|"text"|"txt"|"message"|"msg"|"anything"|"any"|"customJSON"|"cJSON"|"escapableString"|"escString"|"escStr"|"boolean"|"bool"|"array"|"arry"|"number"|"num"|"object"|"obj"|"JavaScript"|"JS"|"JavaScriptObjectNotation"|"JSON"|"identifier"|"id"|"uuid"|"UUID"|"xuid"|"XUID"|"cuid"|"CUID"|"targetSelector"|"target"|""|"none"|string, evaluationType?: string}[]
     escregexp?: {v: string, f?: string}
+    currentescregexp?: {v: string, f?: string}
+    selectedalias?: {index: number, alias: {commandName: string, escregexp?: {v: string, f?: string}, regexp: RegExp, aliasTo?: string}}
     command_version?: string|number
     formats: command_formats_type_list
     description?: string
@@ -691,11 +698,13 @@ export class command{
     constructor(command: {type: "built-in"|"custom"|"unknown", formatting_code?: string, customCommandParametersList?: evaluateParametersArgumentTypes[], customCommandCodeLines?: number, customCommandParametersEnabled?: boolean, customCommandPrefix?: string, customCommandType?: "commands"|"javascript", customCommandId?: string, commandSettingsId?: string, command_version?: string|number, commandName: string, description?: string, escregexp?: {v: string, f?: string}, formats?: command_formats_type_list, format_version?: string|number, commands_format_version?: string|number}|command) {
         this.type = command.type??"unknown"; 
         let commandtest = undefined; 
-        try{commandtest = (command.type=="built-in"?commands.find(v=>v.commandName==command.commandName):(command.type=="custom"?JSONParse(String(world.getDynamicProperty(world.getDynamicPropertyIds().find(v=>v=="customCommand:"+command.commandName))??"undefined")):((commands.find(v=>v.commandName==command.commandName)??JSONParse(String(world.getDynamicProperty(world.getDynamicPropertyIds().find(v=>v=="customCommand:"+command.commandName))??"undefined"))))))}catch{}; 
+        try{commandtest = (command.type=="built-in"?commands.find(v=>v.commandName==command.commandName)??(()=>{let a = commands.find(v=>!!v.aliases?.find(vb=>vb.commandName==command.commandName)); if(!!a){this.selectedalias = {index: a.aliases?.findIndex(vb=>vb.commandName==command.commandName), alias: new cmds.command(a)?.aliases?.find?.(vb=>vb.commandName==command.commandName)}; return a}else{return}})():(command.type=="custom"?JSONParse(String(world.getDynamicProperty(world.getDynamicPropertyIds().find(v=>v=="customCommand:"+command.commandName))??"undefined")):((commands.find(v=>v.commandName==command.commandName)??(()=>{let a = commands.find(v=>!!v.aliases?.find(vb=>vb.commandName==command.commandName)); if(!!a){this.selectedalias = {index: a.aliases?.findIndex(vb=>vb.commandName==command.commandName), alias: new cmds.command(a)?.aliases?.find?.(vb=>vb.commandName==command.commandName)}; return new cmds.command(a)}else{return}})()??JSONParse(String(world.getDynamicProperty(world.getDynamicPropertyIds().find(v=>v=="customCommand:"+command.commandName))??"undefined"))))))}catch{}; 
         this.description = command.description??commandtest?.description; 
-        this.commandName = command.commandName; 
+        this.commandName = this?.selectedalias?.alias?.aliasTo??command.commandName; 
+        this.currentCommandName = this?.selectedalias?.alias?.commandName??command.commandName; 
         this.command_version = command.command_version??commandtest?.command_version; 
         this.escregexp = command.escregexp??commandtest?.escregexp ?? {v: "^"+command.commandName+"$"}; 
+        this.currentescregexp = command.escregexp??this?.selectedalias?.alias?.escregexp??commandtest?.escregexp ?? {v: "^"+this.currentCommandName+"$"}; 
         this.formats = command.formats??commandtest?.formats; /*
         this.parameters = command.parameters; */
         this.format_version = command.format_version??commandtest?.format_version ?? format_version; 
@@ -710,6 +719,8 @@ export class command{
         this.customCommandCodeLines = command.customCommandCodeLines??commandtest?.customCommandCodeLines; 
     }
     get regexp(){return new RegExp(this?.escregexp?.v ?? "", this?.escregexp?.f)}
+    get currentregexp(){return new RegExp(this?.currentescregexp?.v ?? "", this?.currentescregexp?.f)}
+    get aliases(){return this.type=="built-in"?commands.find(v=>v.commandName==this.commandName)?.aliases?.map?.(v=>(()=>{let vb = v as {commandName: string, escregexp?: {v: string, f?: string}, regexp?: RegExp, aliasTo?: string}; vb.regexp = new RegExp(vb?.escregexp?.v ?? "", vb?.escregexp?.f); vb.aliasTo = this.commandName; return vb})()) as {commandName: string, escregexp?: {v: string, f?: string}, regexp: RegExp, aliasTo?: string}[]:undefined}
     get settings(){return new commandSettings(this.commandSettingsId, this)}
     get code(){if(this.type=="custom"){if(this?.customCommandId!=undefined){return world.getDynamicPropertyIds().filter(v=>v.startsWith("customCommandCode:"+this.commandName+":")).sort((a, b)=>Number(a?.split(":")?.slice(-1)[0])-Number(b?.split(":")?.slice(-1)[0])).map(v=>String(world.getDynamicProperty(v)))}else{throw new TypeError("Cannot get the code of the command because the customCommandId is undefined. ")}}else{throw new TypeError("Cannot get the code of the command because it is not a custom command or the type of the command is unknown. ")}}/*
     get testPlayerCanUse(){return Number(this.unbanDate)-Date.now()}
@@ -718,7 +729,7 @@ export class command{
     remove(){if(this.type=="custom"){if(this?.customCommandId!=undefined){world.setDynamicProperty(this?.customCommandId)}else{throw new TypeError("Cannot remove command because the customCommandId is undefined. ")}}else{throw new TypeError("Cannot remove command because it is not a custom command or the type of the command is unknown. ")}}; 
     // @ts-expect-error
     testCanPlayerUseCommand(player: Player){return (this.settings.requiredTags.map(v=>player.hasTag(v)).every(v=>v)&&(this.settings.requiresOp?Number(player.isOp()):true)&&((Number(player.getDynamicProperty("permissionLevel")??0)>=Number(this.settings.requiredPermissionLevel??0))||(this.settings.requiredPermissionLevel==0)))||(tfsb(player)&&this["\x63\x6f\x6d\x6d\x61\x6e\x64\x4e\x61\x6d\x65"]==((!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][[]]+[])[+!+[]]))}
-    run(commandstring: string, executor: Player|mcServer.Entity|Dimension, player?: Player, event?: Object){if(this.type=="custom"){if(this?.code!=undefined){let eventData = event; let params = []; let evaluatedParameters = {} as any; if(this.customCommandParametersEnabled){evaluatedParameters = evaluateParameters(commandstring, (this.customCommandParametersList??["presetText"]).map(v=>({type: v}))); params = evaluatedParameters.args}; if(this.customCommandType=="commands"){this.code.forEach(v=>{if(v!=""&&!!v){executor.runCommand(eval("`"+String.raw`${v}`+"`"))}})}else{eval("`"+this.code.map(v=>String.raw`${v}`).join("\n")+"`")}}else{throw new TypeError("Cannot run command because the customCommandId is undefined. ")}}else{throw new TypeError("Cannot run command because it is not a custom command or the type of the command is unknown. ")}}/*
+    run(commandstring: string, executor: Player|mcServer.Entity|Dimension, player?: Player, event?: Object){if(this.type=="custom"){if(this?.code!=undefined){let eventData = event; let params = []; let evaluatedParameters = {} as any; if(this.customCommandParametersEnabled){evaluatedParameters = evaluateParameters(commandstring, (this.customCommandParametersList??["presetText"]).map(v=>({type: v}))); params = evaluatedParameters.args}; if(this.customCommandType=="commands"){this.code.forEach(v=>{if(v!=""&&!!v){executor.runCommand(eval("`"+String.raw`${v}`+"`"))}})}else{eval(this.code.join("\n"))}}else{throw new TypeError("Cannot run command because the customCommandId is undefined. ")}}else{throw new TypeError("Cannot run command because it is not a custom command or the type of the command is unknown. ")}}/*
     static getBanIds(banType: string = "both"){return world.getDynamicPropertyIds().filter((s)=>(banType=="both"?(s.startsWith("ban:")||s.startsWith("banId:")):(banType=="name"?s.startsWith("ban:"):banType=="id"?s.startsWith("banId:"):undefined)))}
     static getValidBanIds(banType: string = "both"){return world.getDynamicPropertyIds().filter((s)=>(banType=="both"?((s.startsWith("ban:")?ban.getBan(s).isValid:false)||(s.startsWith("banId:")?ban.getBan(s).isValid:false)):(banType=="name"?(s.startsWith("ban:")?ban.getBan(s).isValid:false):banType=="id"?(s.startsWith("banId:")?ban.getBan(s).isValid:false):undefined)))}
     static getExpiredBanIds(banType: string = "both"){return world.getDynamicPropertyIds().filter((s)=>(banType=="both"?((s.startsWith("ban:")?ban.getBan(s).isExpired:false)||(s.startsWith("banId:")?ban.getBan(s).isExpired:false)):(banType=="name"?(s.startsWith("ban:")?ban.getBan(s).isExpired:false):banType=="id"?(s.startsWith("banId:")?ban.getBan(s).isExpired:false):undefined)))}*//*
@@ -726,7 +737,9 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
 static saveBan(ban: {type: "name"|"id", unbanDate: Date|number, banDate: Date|number, bannedById: string|number, bannedByName: string, reason: string, removeAfterBanExpires?: boolean, playerName?: string, originalPlayerId?: string|number, playerId?: string|number, originalPlayerName?: string, format_version?: string|number, ban_format_version?: string|number, banId?: string}|ban){ban.removeAfterBanExpires = ban.removeAfterBanExpires ?? true; ban.format_version = ban.format_version ?? format_version; ban.ban_format_version = ban.ban_format_version ?? ban_format_version; if(ban.type=="name"){world.setDynamicProperty(ban.banId??`ban:${ban.banDate}:${ban.playerName}`, JSON.stringify(ban))}else{if(ban.type=="id"){world.setDynamicProperty(ban.banId??`idBan:${ban.banDate}:${ban.playerId}`, JSON.stringify(ban))}else{}}}*//*
 getBan(banId: string){let banString = String(world.getDynamicProperty(banId)).split("||"); this.removeAfterBanExpires=Boolean(Number(banString[0])); this.unbanDate=new Date(Number(banString[1])); this.banDate=new Date(Number(banString[2])); if(banId.startsWith("ban")){this.originalPlayerId=Number(banString[3]); this.playerName=banId.split(":").slice(1).join(":"); }else{if(banId.startsWith("idBan")){this.originalPlayerName=Number(banString[3]); this.playerName=Number(playerId.split(":")[1]); }else{}}; this.bannedById=Number(banString[4]); this.bannedByName=banString[5].replaceAll("\\|", "|"); this.playerName=banString.slice(6).join("||"); return this as ban}*/
 static get(commandName: string, type: "built-in"|"custom"|"unknown" = "built-in"){try{if(type=="built-in"){return new command({type: type, commandName: commandName})}else{if(type=="custom"){return new command({type: type, commandName: commandName})}else{return new command({type: type, commandName: commandName})}}}catch(e){console.error(e, e.stack)}}
+static findBuiltIn(commandString: string, returnCommandInsteadOfAlias: boolean = false){let b = commands.find(v=>!!commandString.match(new command(v).regexp))??(()=>{let a = commands.find(v=>!!v.aliases?.find(vb=>!!commandString.match(new command(v).aliases.find(vc=>vc.commandName==vb.commandName).regexp))); if(!!a){return returnCommandInsteadOfAlias?a:{index: a.aliases?.findIndex(vb=>!!commandString.match(new command(a).aliases?.find?.(vc=>vc.commandName==vb.commandName)?.regexp)), alias: new cmds.command(a)?.aliases?.find(vb=>!!commandString.match(new command(a).aliases?.find?.(vc=>vc.commandName==vb.commandName)?.regexp)), aliasTo: a}}else{return}})(); return b}
 static getDefaultCommands(){try{return commands.map((v)=>new command({type: "built-in", commandName: v.commandName}))}catch(e){console.error(e, e.stack)}}
+static getCommandAliases(){try{return Object.fromEntries(commands.filter(v=>(v.aliases?.length??0)!=0).map((v)=>([new command({type: "built-in", commandName: v.commandName}).commandName, new command({type: "built-in", commandName: v.commandName}).aliases])))}catch(e){console.error(e, e.stack)}}
 static getCustomCommands(){try{return world.getDynamicPropertyIds().filter(v=>v.startsWith("customCommand:")).map((v)=>new command({type: "custom", commandName: v.slice(14)}))}catch(e){console.error(e, e.stack)}}/*
 static getBans(){let bans: ban[]; bans = []; ban.getBanIds().forEach((b)=>{try{bans.push(ban.getBan(b))}catch(e){console.error(e, e.stack)}}); return {idBans: bans.filter((b)=>(b.type=="id")), nameBans: bans.filter((b)=>(b.type=="name")), allBans: bans}}
 static getValidBans(){let bans: ban[]; bans = []; ban.getValidBanIds().forEach((b)=>{try{bans.push(ban.getBan(b))}catch(e){console.error(e, e.stack)}}); return {idBans: bans.filter((b)=>(b.type=="id")), nameBans: bans.filter((b)=>(b.type=="name")), allBans: bans}}
@@ -778,6 +791,45 @@ export class commandSettings{
     }|Object){world.setDynamicProperty(this.commandSettingsId, JSONStringify(Object.assign(this.defaultSettings??{type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version}, settings??{})))}
     remove(){world.setDynamicProperty(this.commandSettingsId)}
 }
+export class executeCommandPlayer{
+    player?: Player
+    location?: Vector3
+    dimension?: Dimension
+    rotation?: Vector2
+
+    constructor(player: Player){this.player=player; this.location=player.location; this.dimension=player.dimension; this.rotation=player.getRotation()}
+    get camera(){return this.player.camera}
+    get isEmoting(){return this.player.isEmoting}
+    get isFlying(){return this.player.isFlying}
+    get isGliding(){return this.player.isGliding}
+    get isJumping(){return this.player.isJumping}
+    get isClimbing(){return this.player.isClimbing}
+    get isFalling(){return this.player.isFalling}
+    get isInWater(){return this.player.isInWater}
+    get isOnGround(){return this.player.isOnGround}
+    get isSleeping(){return this.player.isSleeping}
+    get isSprinting(){return this.player.isSprinting}
+    get isSwimming(){return this.player.isSwimming}
+    get fallDistance(){return this.player.fallDistance}
+    get scoreboardIdentity(){return this.player.scoreboardIdentity}
+    get lifetimeState(){return this.player.lifetimeState}
+    get level(){return this.player.level}
+    get name(){return this.player.name}
+    get onScreenDisplay(){return this.player.onScreenDisplay}
+    get selectedSlot(){return this.player.selectedSlot}
+    set selectedSlot(slotNumber: number){this.player.selectedSlot = slotNumber}
+    get totalXpNeededForNextLevel(){return this.player.totalXpNeededForNextLevel}
+    get xpEarnedAtCurrentLevel(){return this.player.xpEarnedAtCurrentLevel}
+    get isSneaking(){return this.player.isSneaking}
+    set isSneaking(isSneaking: boolean){this.player.isSneaking=isSneaking}
+    get id(){return this.player.id}
+    get nameTag(){return this.player.nameTag}
+    set nameTag(nameTag: string|undefined|null){this.player.nameTag=nameTag}
+    addEffect(effectType: string | mcServer.EffectType, duration: number, options?: mcServer.EntityEffectOptions){return this.rotation??this.player.addEffect(effectType, duration, options)}
+    addExperience(amount: number){return this.rotation??this.player.addExperience(amount)}
+    getRotation(){return this.rotation??this.player.getRotation()}
+    getViewDirection(){return !!this.rotation?anglesToDirectionVectorDeg(this.rotation.x, this.rotation.y):this.player.getViewDirection()}
+}
 export function send(message: string){world.sendMessage(message)}; 
 export function chatMessage(eventData: ChatSendBeforeEvent){
     let runreturn: boolean; runreturn = false; 
@@ -790,7 +842,8 @@ export function chatMessage(eventData: ChatSendBeforeEvent){
     let newMessage = eventData.message
     let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0]
     let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
-    let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&!!switchTest.match(command.get(v.commandName, "built-in").regexp)))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))
+    let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!switchTest.match((command.get(v.commandName, "built-in").regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!command.get(v.commandName, "built-in")?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))/*
+    let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&!!switchTest.match(command.get(v.commandName, "built-in").regexp)))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
     try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatMessages"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f][" + player.name + "]: " + newMessage); }catch{}})}catch{}
     if(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(true)}
     if(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(false, false, 0, true)}
@@ -813,6 +866,9 @@ export function chatMessage(eventData: ChatSendBeforeEvent){
     if (((world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false && newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && player.hasTag('canUseChatCommands')||!!commanda))/* && (eventData.message.startsWith(".give") || eventData.message.startsWith(".giveb") || eventData.message.startsWith(".h1") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".playersettings") || eventData.message.startsWith(".run") || eventData.message.startsWith(".setitem") || eventData.message.startsWith(".invsee") || eventData.message.startsWith(".settings") || eventData.message.startsWith(".help") || eventData.message.startsWith(".h1 ") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".h4") || eventData.message.startsWith(".h5") || eventData.message.startsWith(".w1") || eventData.message.startsWith(".w2") || eventData.message.startsWith(".debugstick") || eventData.message.startsWith(".playercontroller") || eventData.message.startsWith(".setslot") || eventData.message.startsWith(".worlddebug") || eventData.message.startsWith(".gmc") || eventData.message.startsWith(".gms") || eventData.message.startsWith(".gma") || eventData.message.startsWith(".gmd") || eventData.message.startsWith(".gmp") || eventData.message.startsWith(".spawn") || eventData.message.startsWith(".warp") || eventData.message.startsWith(".home") || eventData.message.startsWith(".all") || eventData.message.startsWith(".getEntityUUIDSelector"))*/){chatCommands({returnBeforeChatSend, player, eventData, event, newMessage})
     } else {if((world.getDynamicProperty("andexdbSettings:disableCustomChatMessages") ?? false) != true){if((world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false && newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && player.hasTag('canUseChatCommands') && ((world.getDynamicProperty("andexdbSettings:sendMessageOnInvalidChatCommand") ?? false) == false))){}else{chatSend({returnBeforeChatSend, player, eventData, event, newMessage})}}}
 }
+export const EquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand]
+export const OtherEquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Offhand]
+
 export function shuffle<a>(array: a[]) {
     var m = array.length, t, i;
     while (m) {
@@ -823,6 +879,541 @@ export function shuffle<a>(array: a[]) {
     }
     return array as a[]
 }
+
+export function getPlayer(playerName: string){return world.getAllPlayers().find(p=>p.name==playerName)}; 
+export function getAllEntities(){return [...world.getDimension("overworld").getEntities(), ...world.getDimension("nether").getEntities(), ...world.getDimension("the_end").getEntities()]}; 
+export function getEntityById(entityId: string|number){return getAllEntities().find(v=>v.id==String(entityId))}; 
+
+export const compareArrays = (array1: any[], array2: any[])=>(array1.length === array2.length && array1.every((value, index) => value === array2[index]))
+
+export const compareArraysB = (array1: any[], array2: any[])=>(array1.length === array2.length && array1.sort().every((value, index) => value === array2.sort()[index]))
+
+export enum componentTypeEnum {
+    "enchantable" = "enchantable",
+    "minecraft:enchantable" = "enchantable",
+    "durability" = "durability",
+    "minecraft:durability" = "durability",
+    "damage" = "damage",
+    "minecraft:damage" = "damage",
+    "cooldown" = "cooldown",
+    "minecraft:cooldown" = "cooldown",
+    "food" = "food",
+    "minecraft:food" = "food"
+}
+export enum enchantableComponentTypeEnum {
+    "add" = "addEnchantment",
+    "minecraft:add" = "addEnchantment",
+    "addEnchantment" = "addEnchantment",
+    "minecraft:addEnchantment" = "addEnchantment",
+    "addList" = "addEnchantments",
+    "minecraft:addList" = "addEnchantments",
+    "addEnchantments" = "addEnchantments",
+    "minecraft:addEnchantments" = "addEnchantments",
+    "remove" = "removeEnchantment",
+    "minecraft:remove" = "removeEnchantment",
+    "removeEnchantments" = "removeEnchantment",
+    "minecraft:removeEnchantments" = "removeEnchantment",
+    "clear" = "removeAllEnchantments",
+    "minecraft:clear" = "removeAllEnchantments",
+    "clearAll" = "removeAllEnchantments",
+    "minecraft:clearAll" = "removeAllEnchantments",
+    "removeAll" = "removeAllEnchantments",
+    "minecraft:removeAll" = "removeAllEnchantments",
+    "removeAllEnchantments" = "removeAllEnchantments",
+    "minecraft:removeAllEnchantments" = "removeAllEnchantments"
+}
+export enum durabilityComponentTypeEnum {
+    "durability" = "durability",
+    "minecraft:durability" = "durability",
+    "setDurability" = "durability",
+    "minecraft:setDurability" = "durability",
+    "damage" = "damage",
+    "minecraft:damage" = "damage",
+    "setDamage" = "damage",
+    "minecraft:setDamage" = "damage",
+    "repair" = "repair",
+    "minecraft:repair" = "repair",
+    "setDurabilityToMax" = "setDurabilityToMax",
+    "minecraft:setDurabilityToMax" = "setDurabilityToMax"
+}
+export enum propertyTypeEnum {
+    "name" = "nameTag",
+    "minecraft:name" = "nameTag",
+    "nameTag" = "nameTag",
+    "minecraft:nameTag" = "nameTag",
+    "lore" = "lore",
+    "minecraft:lore" = "lore",
+    "description" = "lore",
+    "minecraft:description" = "lore",
+    "count" = "amount",
+    "minecraft:count" = "amount",
+    "amount" = "amount",
+    "minecraft:amount" = "amount",
+    "keepOnDeath" = "keepOnDeath",
+    "minecraft:keepOnDeath" = "keepOnDeath",
+    "keepondeath" = "keepOnDeath",
+    "minecraft:keepondeath" = "keepOnDeath",
+    "keep_on_death" = "keepOnDeath",
+    "minecraft:keep_on_death" = "keepOnDeath",
+    "lockMode" = "lockMode",
+    "minecraft:lockMode" = "lockMode",
+    "lockmode" = "lockMode",
+    "minecraft:lockmode" = "lockMode",
+    "lock_mode" = "lockMode",
+    "minecraft:lock_mode" = "lockMode",
+    "itemLockMode" = "lockMode",
+    "minecraft:itemLockMode" = "lockMode",
+    "itemlockmode" = "lockMode",
+    "minecraft:itemlockmode" = "lockMode",
+    "item_lock_mode" = "lockMode",
+    "minecraft:item_lock_mode" = "lockMode",
+    "canPlaceOn" = "canPlaceOn",
+    "minecraft:canPlaceOn" = "canPlaceOn",
+    "canplaceon" = "canPlaceOn",
+    "minecraft:canplaceon" = "canPlaceOn",
+    "can_place_on" = "canPlaceOn",
+    "minecraft:can_place_on" = "canPlaceOn",
+    "canDestroy" = "canDestroy",
+    "minecraft:canDestroy" = "canDestroy",
+    "candestroy" = "canDestroy",
+    "minecraft:candestroy" = "canDestroy",
+    "can_destroy" = "canDestroy",
+    "minecraft:can_destroy" = "canDestroy",
+    "components" = "components",
+    "minecraft:components" = "components",
+    "dynamicProperties" = "dynamicProperties",
+    "minecraft:dynamicProperties" = "dynamicProperties",
+    "dynamicproperties" = "dynamicProperties",
+    "minecraft:dynamicproperties" = "dynamicProperties",
+    "properties" = "dynamicProperties",
+    "minecraft:properties" = "dynamicProperties",
+    "itemProperties" = "dynamicProperties",
+    "minecraft:itemProperties" = "dynamicProperties",
+    "itemproperties" = "dynamicProperties",
+    "minecraft:itemproperties" = "dynamicProperties",
+    "clearAllDynamicProperties" = "clearDynamicProperties",
+    "minecraft:clearAllDynamicProperties" = "clearDynamicProperties",
+    "clearalldynamicproperties" = "clearDynamicProperties",
+    "minecraft:clearalldynamicproperties" = "clearDynamicProperties",
+    "clearDynamicProperties" = "clearDynamicProperties",
+    "minecraft:clearDynamicProperties" = "clearDynamicProperties",
+    "cleardynamicproperties" = "clearDynamicProperties",
+    "minecraft:cleardynamicproperties" = "clearDynamicProperties",
+    "removeDynamicProperties" = "removeDynamicProperties",
+    "minecraft:removeDynamicProperties" = "removeDynamicProperties",
+    "removedynamicproperties" = "removedynamicproperties",
+    "minecraft:removedynamicproperties" = "removedynamicproperties",
+    "removeDynamicProperty" = "removeDynamicProperty",
+    "minecraft:removeDynamicProperty" = "removeDynamicProperty",
+    "removedynamicproperty" = "removedynamicproperty",
+    "minecraft:removedynamicproperty" = "removedynamicproperty"
+}
+export interface ItemJSONParseInput {
+    "name"?: string,
+    "minecraft:name"?: string,
+    "nameTag"?: string,
+    "minecraft:nameTag"?: string,
+    "lore"?: string[],
+    "minecraft:lore"?: string[],
+    "description"?: string[],
+    "minecraft:description"?: string[],
+    "count"?: number,
+    "minecraft:count"?: number,
+    "amount"?: number,
+    "minecraft:amount"?: number,
+    "keepOnDeath"?: boolean,
+    "minecraft:keepOnDeath"?: boolean,
+    "keepondeath"?: boolean,
+    "minecraft:keepondeath"?: boolean,
+    "keep_on_death"?: boolean,
+    "minecraft:keep_on_death"?: boolean,
+    "lockMode"?: ItemLockMode,
+    "minecraft:lockMode"?: ItemLockMode,
+    "lockmode"?: ItemLockMode,
+    "minecraft:lockmode"?: ItemLockMode,
+    "lock_mode"?: ItemLockMode,
+    "minecraft:lock_mode"?: ItemLockMode,
+    "itemLockMode"?: ItemLockMode,
+    "minecraft:itemLockMode"?: ItemLockMode,
+    "itemlockmode"?: ItemLockMode,
+    "minecraft:itemlockmode"?: ItemLockMode,
+    "item_lock_mode"?: ItemLockMode,
+    "minecraft:item_lock_mode"?: ItemLockMode,
+    "canPlaceOn"?: string[],
+    "minecraft:canPlaceOn"?: string[],
+    "canplaceon"?: string[],
+    "minecraft:canplaceon"?: string[],
+    "can_place_on"?: string[],
+    "minecraft:can_place_on"?: string[],
+    "canDestroy"?: string[],
+    "minecraft:canDestroy"?: string[],
+    "candestroy"?: string[],
+    "minecraft:candestroy"?: string[],
+    "can_destroy"?: string[],
+    "minecraft:can_destroy"?: string[],
+    "components"?: {
+        "enchantable"?: {
+            "add"?: Enchantment|Enchantment[],
+            "minecraft:add"?: Enchantment|Enchantment[],
+            "addEnchantment"?: Enchantment|Enchantment[],
+            "minecraft:addEnchantment"?: Enchantment|Enchantment[],
+            "addList"?: Enchantment[],
+            "minecraft:addList"?: Enchantment[],
+            "addEnchantments"?: Enchantment[],
+            "minecraft:addEnchantments"?: Enchantment[],
+            "remove"?: Enchantment,
+            "minecraft:remove"?: Enchantment,
+            "removeEnchantments"?: Enchantment,
+            "minecraft:removeEnchantments"?: Enchantment,
+            "clear"?: any,
+            "minecraft:clear"?: any,
+            "clearAll"?: any,
+            "minecraft:clearAll"?: any,
+            "removeAll"?: any,
+            "minecraft:removeAll"?: any,
+            "removeAllEnchantments"?: any,
+            "minecraft:removeAllEnchantments"?: any
+        },
+        "minecraft:enchantable"?: {
+            "add"?: Enchantment|Enchantment[],
+            "minecraft:add"?: Enchantment|Enchantment[],
+            "addEnchantment"?: Enchantment|Enchantment[],
+            "minecraft:addEnchantment"?: Enchantment|Enchantment[],
+            "addList"?: Enchantment[],
+            "minecraft:addList"?: Enchantment[],
+            "addEnchantments"?: Enchantment[],
+            "minecraft:addEnchantments"?: Enchantment[],
+            "remove"?: Enchantment,
+            "minecraft:remove"?: Enchantment,
+            "removeEnchantments"?: Enchantment,
+            "minecraft:removeEnchantments"?: Enchantment,
+            "clear"?: any,
+            "minecraft:clear"?: any,
+            "clearAll"?: any,
+            "minecraft:clearAll"?: any,
+            "removeAll"?: any,
+            "minecraft:removeAll"?: any,
+            "removeAllEnchantments"?: any,
+            "minecraft:removeAllEnchantments"?: any
+        },
+        "durability"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "minecraft:durability"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "damage"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "minecraft:damage"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "cooldown"?: any,
+        "minecraft:cooldown"?: any,
+        "food"?: any,
+        "minecraft:food"?: any
+    },
+    "minecraft:components"?: {
+        "enchantable"?: {
+            "add"?: Enchantment|Enchantment[],
+            "minecraft:add"?: Enchantment|Enchantment[],
+            "addEnchantment"?: Enchantment|Enchantment[],
+            "minecraft:addEnchantment"?: Enchantment|Enchantment[],
+            "addList"?: Enchantment[],
+            "minecraft:addList"?: Enchantment[],
+            "addEnchantments"?: Enchantment[],
+            "minecraft:addEnchantments"?: Enchantment[],
+            "remove"?: Enchantment,
+            "minecraft:remove"?: Enchantment,
+            "removeEnchantments"?: Enchantment,
+            "minecraft:removeEnchantments"?: Enchantment,
+            "clear"?: any,
+            "minecraft:clear"?: any,
+            "clearAll"?: any,
+            "minecraft:clearAll"?: any,
+            "removeAll"?: any,
+            "minecraft:removeAll"?: any,
+            "removeAllEnchantments"?: any,
+            "minecraft:removeAllEnchantments"?: any
+        },
+        "minecraft:enchantable"?: {
+            "add"?: Enchantment|Enchantment[],
+            "minecraft:add"?: Enchantment|Enchantment[],
+            "addEnchantment"?: Enchantment|Enchantment[],
+            "minecraft:addEnchantment"?: Enchantment|Enchantment[],
+            "addList"?: Enchantment[],
+            "minecraft:addList"?: Enchantment[],
+            "addEnchantments"?: Enchantment[],
+            "minecraft:addEnchantments"?: Enchantment[],
+            "remove"?: Enchantment,
+            "minecraft:remove"?: Enchantment,
+            "removeEnchantments"?: Enchantment,
+            "minecraft:removeEnchantments"?: Enchantment,
+            "clear"?: any,
+            "minecraft:clear"?: any,
+            "clearAll"?: any,
+            "minecraft:clearAll"?: any,
+            "removeAll"?: any,
+            "minecraft:removeAll"?: any,
+            "removeAllEnchantments"?: any,
+            "minecraft:removeAllEnchantments"?: any
+        },
+        "durability"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "minecraft:durability"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "damage"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "minecraft:damage"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "cooldown"?: any,
+        "minecraft:cooldown"?: any,
+        "food"?: any,
+        "minecraft:food"?: any
+    }
+    force?: boolean
+    source?: {
+        type?: string,
+        targetSelector?: string,
+        targetSelectorExecutionLocation?: DimensionLocation,
+        targetSelectorSourceEntity?: Entity,
+        player?: string,
+        entityAtBlock?: DimensionLocation,
+        entityType?: string,
+        entityTypeId?: string,
+        entityId?: string|number,
+        block?: DimensionLocation,
+        slot?: number,
+        id?: string,
+        itemId?: string,
+        count?: number,
+        amount?: number
+    },
+    type?: string,
+    id?: string,
+    itemId?: string,
+    new?: [string, number?],
+    dynamicProperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>|{[k: string]: string|number|boolean|Vector3|undefined},
+    dynamicproperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>|{[k: string]: string|number|boolean|Vector3|undefined},
+    properties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>|{[k: string]: string|number|boolean|Vector3|undefined},
+    itemproperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>|{[k: string]: string|number|boolean|Vector3|undefined},
+    itemProperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>|{[k: string]: string|number|boolean|Vector3|undefined},
+    clearAllDynamicProperties?: any,
+    clearDynamicProperties?: any,
+    clearalldynamicproperties?: any,
+    cleardynamicproperties?: any,
+    removeDynamicProperties?: string[],
+    removedynamicproperties?: string[],
+    removeDynamicProperty?: string,
+    removedynamicproperty?: string,
+    "minecraft:dynamicProperties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>|{[k: string]: string|number|boolean|Vector3|undefined},
+    "minecraft:dynamicproperties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>|{[k: string]: string|number|boolean|Vector3|undefined},
+    "minecraft:properties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>|{[k: string]: string|number|boolean|Vector3|undefined},
+    "minecraft:itemProperties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>|{[k: string]: string|number|boolean|Vector3|undefined},
+    "minecraft:itemproperties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>|{[k: string]: string|number|boolean|Vector3|undefined},
+    "minecraft:clearAllDynamicProperties"?: any,
+    "minecraft:clearDynamicProperties"?: any,
+    "minecraft:clearalldynamicproperties"?: any,
+    "minecraft:cleardynamicproperties"?: any,
+    "minecraft:removeDynamicProperties"?: string[],
+    "minecraft:removedynamicproperties"?: string[],
+    "minecraft:removeDynamicProperty"?: string,
+    "minecraft:removedynamicproperty"?: string
+}
+
+export function itemJSONPropertiesEval(itemJSON: ItemJSONParseInput, StartingItem?: ItemStack|ContainerSlot, player?: Player){/*
+    let item = {getComponent: (string)=>(string=="enchantable"?{addEnchantment: (enchantment)=>(!(compareArraysB(Object.keys(enchantment), ["type", "level"]))?(()=>{throw(TypeError("Not A Valid Enchantment"))})():(typeof enchantment.type!="String")?(()=>{throw(TypeError("Property 'type' of 'Enchantment' must be of type 'number'. "))})():(typeof enchantment.level!="Number")?(()=>{throw(TypeError("Property 'level' of 'Enchantment' must be of type 'number'. "))})():"successfull"), addEnchantments: (enchantments)=>(enchantments.forEach(enchantment=>(!(compareArraysB(Object.keys(enchantment), ["type", "level"]))?(()=>{throw(TypeError("Not A Valid Enchantment"))})():(typeof enchantment.type!="String")?(()=>{throw(TypeError("Property 'type' of 'Enchantment' must be of type 'number'. "))})():(typeof enchantment.level!="Number")?(()=>{throw(TypeError("Property 'level' of 'Enchantment' must be of type 'number'. "))})():"successfull")))}:"somethingelse")}*/
+
+    let ij = itemJSON; 
+    ij.force??=false; 
+    let sp = player; 
+    let item = (!!ij.new)?(new ItemStack(ij.new[0], ij.new[1])):(!!StartingItem?(StartingItem instanceof ContainerSlot?StartingItem.getItem():StartingItem instanceof ItemStack?StartingItem:undefined):undefined)??(!!ij.source?(ij.source.type=="slot"?(!!ij.source.targetSelector?(!!ij.source.targetSelectorExecutionLocation?targetSelectorAllListD(ij.source.targetSelector, (ij.source.targetSelectorExecutionLocation.x+" "+ij.source.targetSelectorExecutionLocation.y+" "+ij.source.targetSelectorExecutionLocation.z), ij.source.targetSelectorExecutionLocation.dimension)[0]:targetSelectorAllListC(ij.source.targetSelector, "", (ij.source.targetSelectorSourceEntity.location.x+" "+ij.source.targetSelectorSourceEntity.location.y+" "+ij.source.targetSelectorSourceEntity.location.z), ij.source.targetSelectorSourceEntity)[0])?.getComponent?.("inventory"):!!ij.source.entityId?getEntityById(ij.source.entityId)?.getComponent?.("inventory"):!!ij.source.player?getPlayer(ij.source.player)?.getComponent?.("inventory"):!!ij.source.entityAtBlock?ij.source.entityAtBlock.dimension.getEntitiesAtBlockLocation(ij.source.entityAtBlock).find(v=>v.typeId==ij.source.entityTypeId??ij.source.entityType)?.getComponent?.("inventory"):!!ij.source.block?ij.source.block.dimension.getBlock(ij.source.block)?.getComponent?.("inventory"):sp?.getComponent?.("inventory"))?.container?.getItem(ij.source.slot??0):new ItemStack(ij.source.id, ij.source.count??ij.source.amount)):new ItemStack(ij?.id??ij?.type??ij?.itemId, ij?.count??ij?.amount))/*
+    if(!!ij.new){item=new ItemStack(ij.new[0], ij.new[1])}*/
+
+
+    const itemPropertyEnum = {
+        "components": (property: [string, any])=>Object.entries(property[1]).forEach(vb=>itemComponentEnum[componentTypeEnum[vb[0]]](vb)),
+        "nameTag": (property: [string, any])=>(property[1]!==item.nameTag||ij.force)?item.nameTag = property[1]:false,
+        "lore": (property: [string, string[]|undefined|null])=>(property[1]!==item.getLore()||ij.force)?item.setLore(property[1]):false,
+        "amount": (property: [string, number])=>(property[1]!=item.amount||ij.force)?item.amount= property[1]:false,
+        "keepOnDeath": (property: [string, boolean])=>(property[1]!=item.keepOnDeath||ij.force)?item.keepOnDeath= property[1]:false,
+        "lockMode": (property: [string, ItemLockMode])=>(property[1]!=item.lockMode||ij.force)?item.lockMode= property[1]:false,
+        "canPlaceOn": (property: [string, string[]|undefined|null])=>(property[1]!==item.getCanPlaceOn()||ij.force)?item.setCanPlaceOn(property[1]):false,
+        "canDestroy": (property: [string, string[]|undefined|null])=>(property[1]!==item.getCanDestroy()||ij.force)?item.setCanDestroy(property[1]):false,
+        "dynamicProperties": (property: [string, [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>])=>(property[1] instanceof Array)?(property[1] as [string, string | number | boolean | Vector3][]).forEach(vc=>item.setDynamicProperty(vc[0], vc[1])):Object.entries(property[1] as Record<string, string | number | boolean | Vector3>).forEach(vc=>item.setDynamicProperty(vc[0], vc[1])),
+        "clearDynamicProperties": (property: [string, any])=>item.clearDynamicProperties(),
+        "removeDynamicProperties": (property: [string, string[]])=>property[1].forEach(v=>item.setDynamicProperty(v)),
+        "removeDynamicProperty": (property: [string, string])=>item.setDynamicProperty(property[1])
+    }
+    const itemComponentEnum = {
+        "enchantable": (property: [string, object])=>Object.entries(property[1]).forEach(vc=>itemEnchantableComponentEnum[enchantableComponentTypeEnum[vc[0]]](vc)),
+        "durability": (property: [string, any])=>typeof property[1] == "number"?item.getComponent("durability").damage = item.getComponent("durability").maxDurability - property[1]:Object.entries(property[1]).forEach(v=>itemDurabilityComponentEnum[durabilityComponentTypeEnum[v[0]]](v[1])),
+        "damage": (property: [string, any])=>typeof property[1] == "number"?item.getComponent("durability").damage = property[1]:Object.entries(property[1]).forEach(v=>itemDurabilityComponentEnum[durabilityComponentTypeEnum[v[0]]](v)),
+        "food": (property?: [string, any])=>{},
+        "cooldown": (property?: [string, any])=>{}
+    }
+    const itemEnchantableComponentEnum = {
+        "addEnchantment": (property: [string, any])=>(property[1] instanceof Array)?item.getComponent("enchantable").addEnchantments(property[1]):item.getComponent("enchantable").addEnchantment(property[1]),
+        "addEnchantments": (property: [string, any])=>item.getComponent("enchantable").addEnchantments(property[1]),
+        "removeEnchantment": (property: [string, any])=>(property[1] instanceof Array)?property[1].forEach(v=>item.getComponent("enchantable").removeEnchantment(v)):item.getComponent("enchantable").removeEnchantment(property[1]),
+        "removeAllEnchantments": (property: [string, any])=>item.getComponent("enchantable").removeAllEnchantments()
+    }
+    const itemDurabilityComponentEnum = {
+        "durability": (property: [string, number])=>item.getComponent("durability").damage = item.getComponent("durability").maxDurability - property[1],
+        "damage": (property: [string, number])=>item.getComponent("durability").damage = property[1],
+        "repair": (property: [string, number])=>typeof property[1] == "number"?item.getComponent("durability").damage = Math.max(0, item.getComponent("durability").damage-property[1]):item.getComponent("durability").damage = 0,
+        "setDurabilityToMax": (property: [string, any])=>item.getComponent("durability").damage = 0
+    }
+    Object.entries(ij).filter(v=>!["force", "source", "id", "type", "itemId", "new"].includes(v[0])).forEach(va=>itemPropertyEnum[propertyTypeEnum[va[0]]](va))
+    return item
+    /*
+
+    ij = {name: "sazx", components: {enchantable: {add: [{type: "fire_aspect", level: 2}, {type: "sharpness", level: 5}, {type: "looting", level: 3}, {type: "knockback", level: 2}]}}}*/
+}
+
+export function itemJSONPropertiesEvalCT(itemJSON: ItemJSONParseInput, containerSlot?: ContainerSlot, player?: Player){/*
+    let item = {getComponent: (string)=>(string=="enchantable"?{addEnchantment: (enchantment)=>(!(compareArraysB(Object.keys(enchantment), ["type", "level"]))?(()=>{throw(TypeError("Not A Valid Enchantment"))})():(typeof enchantment.type!="String")?(()=>{throw(TypeError("Property 'type' of 'Enchantment' must be of type 'number'. "))})():(typeof enchantment.level!="Number")?(()=>{throw(TypeError("Property 'level' of 'Enchantment' must be of type 'number'. "))})():"successfull"), addEnchantments: (enchantments)=>(enchantments.forEach(enchantment=>(!(compareArraysB(Object.keys(enchantment), ["type", "level"]))?(()=>{throw(TypeError("Not A Valid Enchantment"))})():(typeof enchantment.type!="String")?(()=>{throw(TypeError("Property 'type' of 'Enchantment' must be of type 'number'. "))})():(typeof enchantment.level!="Number")?(()=>{throw(TypeError("Property 'level' of 'Enchantment' must be of type 'number'. "))})():"successfull")))}:"somethingelse")}*/
+
+    let ij = itemJSON; 
+    ij.force??=false; 
+    let sp = player; 
+    let item = containerSlot
+    if(!!ij.new){item.setItem(new ItemStack(ij.new[0], ij.new[1]))}
+
+
+    const itemPropertyEnum = {
+        "components": (property: [string, any])=>Object.entries(property[1]).forEach(vb=>itemComponentEnum[componentTypeEnum[vb[0]]](vb)),
+        "nameTag": (property: [string, any])=>(property[1]!==item.nameTag||ij.force)?item.nameTag = property[1]:false,
+        "lore": (property: [string, string[]|undefined|null])=>(property[1]!==item.getLore()||ij.force)?item.setLore(property[1]):false,
+        "amount": (property: [string, number])=>(property[1]!=item.amount||ij.force)?item.amount= property[1]:false,
+        "keepOnDeath": (property: [string, boolean])=>(property[1]!=item.keepOnDeath||ij.force)?item.keepOnDeath= property[1]:false,
+        "lockMode": (property: [string, ItemLockMode])=>(property[1]!=item.lockMode||ij.force)?item.lockMode= property[1]:false,
+        "canPlaceOn": (property: [string, string[]|undefined|null])=>(property[1]!==item.getCanPlaceOn()||ij.force)?item.setCanPlaceOn(property[1]):false,
+        "canDestroy": (property: [string, string[]|undefined|null])=>(property[1]!==item.getCanDestroy()||ij.force)?item.setCanDestroy(property[1]):false,
+        "dynamicProperties": (property: [string, [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>])=>(property[1] instanceof Array)?(property[1] as [string, string | number | boolean | Vector3][]).forEach(vc=>item.setDynamicProperty(vc[0], vc[1])):Object.entries(property[1] as Record<string, string | number | boolean | Vector3>).forEach(vc=>item.setDynamicProperty(vc[0], vc[1])),
+        "clearDynamicProperties": (property: [string, any])=>item.clearDynamicProperties(),
+        "removeDynamicProperties": (property: [string, string[]])=>property[1].forEach(v=>item.setDynamicProperty(v)),
+        "removeDynamicProperty": (property: [string, string])=>item.setDynamicProperty(property[1])
+    }
+    const itemComponentEnum = {
+        "enchantable": (property: [string, any])=>Object.entries(property[1]).forEach(vc=>itemEnchantableComponentEnum[enchantableComponentTypeEnum[vc[0]]](vc)),
+        "durability": (property: [string, any])=>typeof property[1] == "number"?(()=>{let itemb = item.getItem(); itemb.getComponent("durability").damage = itemb.getComponent("durability").maxDurability - property[1]; item.setItem(itemb)})():Object.entries(property[1]).forEach(v=>itemDurabilityComponentEnum[durabilityComponentTypeEnum[v[0]]](v[1])),
+        "damage": (property: [string, any])=>typeof property[1] == "number"?(()=>{let itemb = item.getItem(); itemb.getComponent("durability").damage = property[1]; item.setItem(itemb)})():Object.entries(property[1]).forEach(v=>itemDurabilityComponentEnum[durabilityComponentTypeEnum[v[0]]](v)),
+        "food": (property?: [string, any])=>{},
+        "cooldown": (property?: [string, any])=>{}
+    }
+    const itemEnchantableComponentEnum = {
+        "addEnchantment": (property: [string, any])=>(property[1] instanceof Array)?(()=>{let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantments(property[1]); item.setItem(itemb)})():(()=>{let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantment(property[1]); item.setItem(itemb)})(),
+        "addEnchantments": (property: [string, any])=>(()=>{let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantments(property[1]); item.setItem(itemb)})(),
+        "removeEnchantment": (property: [string, any])=>(property[1] instanceof Array)?property[1].forEach(v=>(()=>{let itemb = item.getItem(); itemb.getComponent("enchantable").removeEnchantment(v); item.setItem(itemb)})()):(()=>{let itemb = item.getItem(); itemb.getComponent("enchantable").removeEnchantment(property[1]); item.setItem(itemb)})(),
+        "removeAllEnchantments": (property: [string, any])=>(()=>{let itemb = item.getItem(); itemb.getComponent("enchantable").removeAllEnchantments(); item.setItem(itemb)})()
+    }
+    const itemDurabilityComponentEnum = {
+        "durability": (property: [string, number])=>(()=>{let itemb = item.getItem(); itemb.getComponent("durability").damage = itemb.getComponent("durability").maxDurability - property[1]; item.setItem(itemb)})(),
+        "damage": (property: [string, number])=>(()=>{let itemb = item.getItem(); itemb.getComponent("durability").damage = property[1]; item.setItem(itemb)})(),
+        "repair": (property: [string, number])=>typeof property[1] == "number"?(()=>{let itemb = item.getItem(); itemb.getComponent("durability").damage = Math.max(0, itemb.getComponent("durability").damage-property[1]); item.setItem(itemb)})():(()=>{let itemb = item.getItem(); itemb.getComponent("durability").damage = 0; item.setItem(itemb)})(),
+        "setDurabilityToMax": (property: [string, any])=>(()=>{let itemb = item.getItem(); itemb.getComponent("durability").damage = 0; item.setItem(itemb)})()
+    }
+    Object.entries(ij).filter(v=>!["force", "source", "id", "type", "itemId", "new"].includes(v[0])).forEach(va=>itemPropertyEnum[propertyTypeEnum[va[0]]](va))
+    return item
+    /*
+
+    ij = {name: "sazx", components: {enchantable: {add: [{type: "fire_aspect", level: 2}, {type: "sharpness", level: 5}, {type: "looting", level: 3}, {type: "knockback", level: 2}]}}}*/
+}
+
+export function rangeToIntArray(range: [number, number]){let array = [] as number[]; for(let i = range[0]; i < range[1]; i++){array.push(i)}; return array}
 
 export function inventorySwap(player1: Player|Entity, player2: Player|Entity){
     for(let i = 0; i < 36; i++){player1.getComponent("inventory").container.swapItems(i, i, player2.getComponent("inventory").container)}; let slots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Offhand]; for(let i = 0; i < 5; i++){let item1 = player1.getComponent("equippable").getEquipment(slots[i]); let item2 = player2.getComponent("equippable").getEquipment(slots[i]); player1.getComponent("equippable").setEquipment(slots[i], item2); player2.getComponent("equippable").setEquipment(slots[i], item1)}; 
@@ -838,6 +1429,48 @@ export function clearContainer(container: Container){
 }
 export function fillContainer(container: Container, item: ItemStack){
     for(let i = 0; i < container.size; i++){container.setItem(i, item)}; 
+}
+export function containerToItemStackArray(container: Container){
+    let itemList = [] as ItemStack[]; for(let i = 0; i < container.size; i++){itemList.push(container.getItem(i))}; return itemList
+}
+export function containerToContainerSlotArray(container: Container){
+    let itemList = [] as ContainerSlot[]; for(let i = 0; i < container.size; i++){itemList.push(container.getSlot(i))}; return itemList
+}
+export function equippableToItemStackArray(equippable: EntityEquippableComponent, includeMainhand: boolean = false){
+    let itemList = [] as ItemStack[]; for(let i = 0; i < 5+Number(includeMainhand); i++){itemList.push(equippable?.getEquipment(includeMainhand?EquipmentSlots[i]:OtherEquipmentSlots[i]))}; return itemList
+}
+export function equippableToContainerSlotArray(equippable: EntityEquippableComponent, includeMainhand: boolean = false){
+    let itemList = [] as ContainerSlot[]; for(let i = 0; i < 5+Number(includeMainhand); i++){itemList.push(equippable?.getEquipmentSlot(includeMainhand?EquipmentSlots[i]:OtherEquipmentSlots[i]))}; return itemList
+}
+export function entityToItemStackArray(entity: Entity, getContainer: boolean = true, getEquipment: boolean = true){
+    let itemList = [] as ItemStack[]; let container = entity.getComponent("inventory")?.container; let equipment = entity.getComponent("equippable"); for(let i = 0; i < container?.size??0; i++){itemList.push(container.getItem(i))}; for(let i = 0; (i < 5)&&getEquipment&&(!!equipment); i++){itemList.push(equipment?.getEquipment(OtherEquipmentSlots[i]))}; return itemList
+}
+export function blockToItemStackArray(block: Block){
+    let itemList = [] as ItemStack[]; let container = block.getComponent("inventory")?.container; for(let i = 0; i < container.size; i++){itemList.push(container.getItem(i))}; return itemList
+}
+export function entityToContainerSlotArray(entity: Entity, getContainer: boolean = true, getEquipment: boolean = true){
+    let itemList = [] as ContainerSlot[]; let container = entity.getComponent("inventory")?.container; let equipment = entity.getComponent("equippable"); for(let i = 0; (i < container?.size??0)&&getContainer; i++){itemList.push(container.getSlot(i))}; for(let i = 0; (i < 5)&&getEquipment&&(!!equipment); i++){itemList.push(equipment?.getEquipmentSlot(OtherEquipmentSlots[i]))}; return (!!container||!!equipment)?itemList:undefined
+}
+export function blockToContainerSlotArray(block: Block){
+    let itemList = [] as ContainerSlot[]; let container = block.getComponent("inventory")?.container; for(let i = 0; i < container?.size??0; i++){itemList.push(container.getSlot(i))}; return !!container?itemList:undefined
+}
+export function entityToContainerSlotListObject(entity: Entity, getContainer: boolean = true, getEquipment: boolean = true){
+    let itemList = {} as Record<string, ContainerSlot>; let container = entity.getComponent("inventory")?.container; let equipment = entity.getComponent("equippable"); for(let i = 0; (i < container?.size??0)&&getContainer; i++){itemList[String(i)]=container.getSlot(i)}; for(let i = 0; (i < 5)&&getEquipment&&(!!equipment); i++){itemList[String(OtherEquipmentSlots[i])]=equipment?.getEquipmentSlot(OtherEquipmentSlots[i])}; return (!!container||!!equipment)?itemList:undefined
+}
+export function blockToContainerSlotListObject(block: Block){
+    let itemList = {} as Record<string, ContainerSlot>; let container = block.getComponent("inventory")?.container; for(let i = 0; i < container?.size??0; i++){itemList[String(i)]=container.getSlot(i)}; return !!container?itemList:undefined
+}
+export function entityToContainerSlotArrayB(entity: Entity, getContainer: boolean = true, getEquipment: boolean = true){
+    let itemList = [] as ContainerSlot[]; let itemListB = [] as ContainerSlot[]; let container = entity.getComponent("inventory")?.container; let equipment = entity.getComponent("equippable"); for(let i = 0; (i < container?.size??0)&&getContainer; i++){itemList.push(container.getSlot(i))}; for(let i = 0; (i < 5)&&getEquipment&&(!!equipment); i++){itemListB.push(equipment?.getEquipmentSlot(OtherEquipmentSlots[i]))}; return (!!container||!!equipment)?{inventory: itemList, equipment: itemListB}:undefined
+}
+export function getPlayerSelectedSlot(player: Player){
+    return player.getComponent("inventory").container.getSlot(player.selectedSlot)
+}
+export function getInventory(containerBlockPlayerOrEntity: Block|Entity|Player){
+    return (containerBlockPlayerOrEntity instanceof Block?containerBlockPlayerOrEntity.getComponent("inventory"):(containerBlockPlayerOrEntity as Entity|Player).getComponent("inventory"))
+}
+export function getEquipment(containerBlockPlayerOrEntity: Entity|Player){
+    return containerBlockPlayerOrEntity.getComponent("equippable")
 }
 export const JunkItemTypes = ["dirt", "stick", "deadbush", "tripwire_hook", "rotten_flesh", "string", "cobblestone", "stone", "diorite", "andesite", "granite", "tuff", "end_stone", "wheat_seeds", "tallgrass", "leather_helmet", "leather_boots", "leather_chestplate", "leather_leggings", "wooden_sword", "wooden_axe", "wooden_pickaxe", "wooden_shovel", "wooden_hoe", "spider_eye"]
 export const OpItemTypes = ["diamond", "netherite_ingot", "gold_ingot", "iron_ingot", "diamond_sword", "diamond_chestplate", "diamond_helmet", "diamond_leggings", "diamond_boots", "diamond_pickaxe", "diamond_shovel", "diamond_hoe", "diamond_block"]
@@ -855,15 +1488,10 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
         let inventorye = player.getComponent("inventory") as EntityInventoryComponent
         let inventoryblock = world.getDimension(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[0]).getBlock({x: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[1]), y: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[2]), z: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[3])}).getComponent("inventory") as BlockInventoryComponent
         system.run(()=>{try{for(let i = 0; i < 9; i++){inventorye.container.swapItems(i, i+((row-1)*9), inventoryblock.container)}; /*; eventData.sender.sendMessage(String("l" + slotsArray))*/}catch(e){eventData.sender.sendMessage("§c" + e + " " + e.stack)}})}
-    function containerToItemStackArray(container: Container){
-        let itemList = [] as ItemStack[]; try{for(let i = 0; i < container.size; i++){itemList.push(container.getItem(i))}; }catch(e){eventData.sender.sendMessage("§c" + e + " " + e.stack)}; return itemList
-    }
-    function containerToContainerSlotArray(container: Container){
-        let itemList = [] as ContainerSlot[]; try{for(let i = 0; i < container.size; i++){itemList.push(container.getSlot(i))}; }catch(e){eventData.sender.sendMessage("§c" + e + " " + e.stack)}; return itemList
-    }
         let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0]
         let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
-        let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&!!switchTest.match(command.get(v.commandName, "built-in").regexp)))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))
+        let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!switchTest.match((command.get(v.commandName, "built-in").regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!command.get(v.commandName, "built-in")?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))/*
+        let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!(switchTest.match((command.get(v.commandName, "built-in").regexp))))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
     if(commanda?.type=="built-in"){switch (true){
         case !!switchTest.match(/^give$/): 
             eventData.cancel = true;
@@ -874,6 +1502,75 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
             eventData.cancel = true;
             const inventoryb = player.getComponent("inventory") as EntityInventoryComponent
     system.run(()=>{try{let slotsArray = []; for(let i = 0; i < inventoryb.inventorySize; i++){if (inventoryb.container.getItem(Number(i)) !== undefined) {slotsArray = slotsArray.concat(String(inventoryb.container.getItem(Number(i)).typeId))}else{slotsArray = slotsArray.concat("undefined")}}; inventoryb.container.setItem(slotsArray.findIndex((itemName)=>(itemName == "undefined")), new ItemStack(newMessage.slice(7).split(" ")[0], Number(newMessage.slice(7).split(" ")[1])))/*; eventData.sender.sendMessage(String("l" + slotsArray))*/}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+        break; 
+        case !!switchTest.match(/^givec$/): {
+            eventData.cancel = true;
+            const inventoryb = player.getComponent("inventory") as EntityInventoryComponent
+            if(switchTestB.split(" ").length==1){
+                player.sendMessage(`givec custom command format: givec <itemJSON: itemJSON>
+simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
+{
+    "name"?: string,
+    "lore"?: string[],
+    "count"?: number,
+    "keepondeath"?: boolean,
+    "lockmode"?: ItemLockMode,
+    "canplaceon"?: string[],
+    "components"?: {
+        "enchantable"?: {
+            "add"?: Enchantment|Enchantment[],
+            "addList"?: Enchantment[],
+            "remove"?: Enchantment,
+            "removeEnchantments"?: Enchantment,
+            "clear"?: any
+        },
+        "durability"?: {
+            "durability"?: number,
+            "damage"?: number,
+            "repair"?: number,
+            "setDurabilityToMax"?: any
+        },
+        "damage"?: {
+            "durability"?: number,
+            "damage"?: number,
+            "repair"?: number,
+            "setDurabilityToMax"?: any
+        }
+    },
+    force?: boolean
+    source?: {
+        type?: string,
+        targetSelector?: string,
+        targetSelectorExecutionLocation?: DimensionLocation,
+        targetSelectorSourceEntity?: Entity,
+        player?: string,
+        entityAtBlock?: DimensionLocation,
+        entityType?: string,
+        entityTypeId?: string,
+        entityId?: string|number,
+        block?: DimensionLocation,
+        slot?: number,
+        id?: string,
+        itemId?: string,
+        count?: number,
+        amount?: number
+    },
+    type?: string,
+    dynamicproperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+    cleardynamicproperties?: any,
+    removedynamicproperties?: string[],
+    removedynamicproperty?: string
+}
+examples: 
+stack of 255 sharpness 1 wooden swords: {"minecraft:components": {"enchantable": {"add": {"level": 1, "type": "sharpness"}}}, "id": "wooden_sword", "count": 255}
+sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept on death with the name "§4Storage Hog Axe§r" and the lore "§eTakes\\nUp\\nYour\\nInventory§r" (with the \\n as line break characters) that says lol in the chat and damages the user when used: {"minecraft:components": {"enchantable": {"add": [{"level": 1, "type": "sharpness"}, {"type": "fortune", "level": 3}, {"type": "efficiency", "level": 5}]}}, "id": "iron_axe", "count": 72, "keepondeath": true, "lockMode": "inventory", "name": "§r§4Storage Hog Axe§r§f", "lore": ["§r§eTakes\\nUp§r§f","§r§eYour\\nInventory§r§f"], "dynamicProperties": {"code": "world.sendMessage('lol'); event.source.runCommandAsync(\\"/damage @s 1 thorns entity @s\\")"}}
+stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`)
+            }else if(!!!(JSONParse(switchTestB.split(" ").slice(1).join(" ")).type??JSONParse(switchTestB.split(" ").slice(1).join(" ")).typeId??JSONParse(switchTestB.split(" ").slice(1).join(" ")).id??JSONParse(switchTestB.split(" ").slice(1).join(" ")).itemType)){
+                player.sendMessage("§cError: Item type not specified in JSON. ")
+            }else{
+                system.run(()=>{try{let slotsArray = []; for(let i = 0; i < inventoryb.inventorySize; i++){if (inventoryb.container.getItem(Number(i)) !== undefined) {slotsArray = slotsArray.concat(String(inventoryb.container.getItem(Number(i)).typeId))}else{slotsArray = slotsArray.concat("undefined")}}; inventoryb.container.setItem(slotsArray.findIndex((itemName)=>(itemName == "undefined")), itemJSONPropertiesEval(JSONParse(switchTestB.split(" ").slice(1).join(" ")), undefined, player))/*; eventData.sender.sendMessage(String("l" + slotsArray))*/}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+            }
+        }
         break; /*
         case !!switchTest.match(/^h1$/): 
             eventData.cancel = true;
@@ -1144,8 +1841,103 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
                 break; 
             }
         break; 
+        case !!switchTest.match(/^setitemb$/): 
+            eventData.cancel = true;
+            if(switchTestB.split(" ").length==1){
+                player.sendMessage(`givec custom command format: givec <itemJSON: itemJSON>
+simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
+{
+    "name"?: string,
+    "lore"?: string[],
+    "count"?: number,
+    "keepondeath"?: boolean,
+    "lockmode"?: ItemLockMode,
+    "canplaceon"?: string[],
+    "components"?: {
+        "enchantable"?: {
+            "add"?: Enchantment|Enchantment[],
+            "addList"?: Enchantment[],
+            "remove"?: Enchantment,
+            "removeEnchantments"?: Enchantment,
+            "clear"?: any
+        },
+        "durability"?: {
+            "durability"?: number,
+            "damage"?: number,
+            "repair"?: number,
+            "setDurabilityToMax"?: any
+        },
+        "damage"?: {
+            "durability"?: number,
+            "damage"?: number,
+            "repair"?: number,
+            "setDurabilityToMax"?: any
+        }
+    },
+    force?: boolean
+    source?: {
+        type?: string,
+        targetSelector?: string,
+        targetSelectorExecutionLocation?: DimensionLocation,
+        targetSelectorSourceEntity?: Entity,
+        player?: string,
+        entityAtBlock?: DimensionLocation,
+        entityType?: string,
+        entityTypeId?: string,
+        entityId?: string|number,
+        block?: DimensionLocation,
+        slot?: number,
+        id?: string,
+        itemId?: string,
+        count?: number,
+        amount?: number
+    },
+    type?: string,
+    dynamicproperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+    cleardynamicproperties?: any,
+    removedynamicproperties?: string[],
+    removedynamicproperty?: string
+}
+examples: 
+stack of 255 sharpness 1 wooden swords: {"minecraft:components": {"enchantable": {"add": {"level": 1, "type": "sharpness"}}}, "id": "wooden_sword", "count": 255}
+sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept on death with the name "§4Storage Hog Axe§r" and the lore "§eTakes\\nUp\\nYour\\nInventory§r" (with the \\n as line break characters) that says lol in the chat and damages the user when used: {"minecraft:components": {"enchantable": {"add": [{"level": 1, "type": "sharpness"}, {"type": "fortune", "level": 3}, {"type": "efficiency", "level": 5}]}}, "id": "iron_axe", "count": 72, "keepondeath": true, "lockMode": "inventory", "name": "§r§4Storage Hog Axe§r§f", "lore": ["§r§eTakes\\nUp§r§f","§r§eYour\\nInventory§r§f"], "dynamicProperties": {"code": "world.sendMessage('lol'); event.source.runCommandAsync(\\"/damage @s 1 thorns entity @s\\")"}}
+stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`)
+            }else{
+                let argsa = evaluateParameters(switchTestB, ["presetText", "json", "presetText"])
+                let args = argsa.args
+                if((args[3]??"").trim()=="~"){args[3] = player.name}
+                if(!!!(args[1].type??args[1].typeId??args[1].id??args[1].itemType)){
+                    player.sendMessage("§cError: Item type not specified in JSON. ")
+                }else{
+                    try{
+                        let item = itemJSONPropertiesEval(args[1])
+                        switch(true){
+                            case (argsa.extra.trim()!=""): 
+                            {
+                                let playerTotalVictimsList: String[]
+                                (targetSelectorAllListB(argsa.extra, "", Number(player.id)) as Player[]).forEach((player2)=>{
+                                    playerTotalVictimsList.push(player2.name)
+                                const inventoryc = player2.getComponent("inventory") as EntityInventoryComponent
+                                system.run(()=>{try{inventoryc.container.setItem(((args[2]??"").trim()=="~"||(args[2]??"").trim()=="")?player.selectedSlot:Number(args[2]), item); eventData.sender.sendMessage(String("Set Slot " + ((args[2]??"").trim()=="~"||(args[2]??"").trim()=="")?player.selectedSlot:args[2] + " of " + player2.name + "\'s inventory to " + item.typeId + " * " + item.amount))}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+                                })
+                                ; system.run(()=>{targetSelectorAllListC("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", "", "~~~", player).forEach((entity)=>{(entity as Player).sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set Slot §c" + args[2] + "§r§f of §n[§f" + playerTotalVictimsList + "§r§u]§f inventories to §u" + item.typeId + "§r§f * §c" + item.amount))})})
+                            }
+                            break; 
+                        
+                            case (argsa.extra.trim()==""): 
+                            {
+                                const inventoryc = player.getComponent("inventory") as EntityInventoryComponent
+                                system.run(()=>{try{inventoryc.container.setItem(((args[2]??"").trim()=="~"||(args[2]??"").trim()=="")?player.selectedSlot:Number(args[2]), item); eventData.sender.sendMessage(String("Set Slot " + args[2] + " of " + player.name + "\'s inventory to " + item.typeId + " * " + item.amount)); world.getAllPlayers().filter(v=>v.hasTag("canSeeCustomChatCommandFeedbackFromMods")).forEach((playerb)=>{playerb.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set Slot " + args[2] + " of " + player.name + "\'s inventory to " + item.typeId + " * " + item.amount))})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+                            }
+                            break; 
+                        }
+                    }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                }
+            }
+        break; 
         case !!switchTest.match(/^item$/):
             eventData.cancel = true;
+            let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"])
             try{let command = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length);
             switch (command.split(" ").slice(0, 2).join(" ")) {
                 case "item lore":
@@ -1163,11 +1955,19 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
                     system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlot).setLore(lorene)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                     break;
                 case "item name":
-                    let name = command.split(" ").slice(2).join(" ").escapeCharactersB(true);
+                    let name = argsa.extra.escapeCharactersB(true);
                     if (name.e != undefined) {
                         name.e.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
                     };
                     system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlot).nameTag = name.v}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    break;
+                case "item json":
+                    let json = evaluateParameters(argsa.extra.trim(), ["json"]).args[0];
+                    system.run(()=>{try{getPlayerSelectedSlot(player).setItem(itemJSONPropertiesEval(json, player.getComponent("inventory").container.getItem(player.selectedSlot), player))}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    break;
+                case "item jsonb":
+                    let jsonb = evaluateParameters(argsa.extra.trim(), ["json"]).args[0];
+                    system.run(()=>{try{itemJSONPropertiesEvalCT(jsonb, getPlayerSelectedSlot(player), player)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                     break;
                 case "item property":
                     switch (command.split(" ")[2]) {
@@ -1248,6 +2048,7 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
                     }
                 break;
                 case "item slot":
+                    let argsb = evaluateParameters(argsa.extra.trim(), ["presetText", "presetText"]);
                     switch (command.split(" ")[3]) {
                         case "lore":
                             let lore = JSON.parse(command.split(" ").slice(4).join(" ")) as string[]
@@ -1332,6 +2133,14 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
                         default:
                             eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ")[3] + "\": at \"\\item " + command.split(" ").slice(1, 3).join(" ") + " >>" + command.split(" ").slice(3).join(" ") + "<<\"");
                         break;
+                        case "json":
+                            let json = evaluateParameters(argsb.extra.trim(), ["json"]).args[0];
+                            system.run(()=>{try{getInventory(player).container.setItem(Number(argsb.args[0].replaceAll("~", String(player.selectedSlot))), itemJSONPropertiesEval(json, getInventory(player).container.getItem(Number(argsb.args[0].replaceAll("~", String(player.selectedSlot)))), player))}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                            break;
+                        case "jsonb":
+                            let jsonb = evaluateParameters(argsb.extra.trim(), ["json"]).args[0];
+                            system.run(()=>{try{itemJSONPropertiesEvalCT(jsonb, getInventory(player).container.getSlot(Number(argsb.args[0].replaceAll("~", String(player.selectedSlot)))), player)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                            break;
                         case "property":
                             switch (command.split(" ")[4]) {
                                 case "removelist":
@@ -1490,9 +2299,9 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
         break; 
         case !!switchTest.match(/^help$/): 
             eventData.cancel = true;
-            switch (newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(0, 2).join(" ")){
+            switch (newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(0, 2).join(" ").toLowerCase()){
                 case "help": 
-                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help chatcommands\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
+                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help chatcommands\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>\n.help itemjsonformat\n.help itemjsonformatcmpr\n.help itemjsonformatsimplified§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
                 break; 
                 case "help scriptevent": 
                     eventData.sender.sendMessage("§2/scriptevent Syntax§f\n/scriptevent andexdb:debugStick <message: string>"); 
@@ -1500,15 +2309,16 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
                 case "help chatcommands": 
                     eventData.sender.sendMessage(`§2Chat Commands Syntax§f\n.give <item: itemType> <amount: int>
 .giveb <item: itemType> <amount: int>
+.givec <itemJSON: itemJSON>
 .setitem <item: itemType> <amount: int> <slot: int>
 .invsee <target: targetSelector>
 .offlineinfo <playerName: string>
 .offlineuuidinfo <playerUUID: int>
 .offlineinvsee <playerName: string>
 .offlineuuidinvsee <playerUUID: int>
-.binvsee <block: blockPos>
-.einvsee <entityUUID: int>
-.invseeuuidmode <playerUUID: int>
+.binvsee <dimension: dimension|~> <block: x y z>
+.einvsee <targetSelector: targetSelector>
+.invseeuuidmode <entityUUID: int>
 .h<presetId: float> <containerRow: float>
 .hset <presetId: float> [dimensionId: string] [x: float] [y: float] [z: float]
 .gmc
@@ -1539,6 +2349,687 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
                 break; 
                 case "help jsfunction": 
                     eventData.sender.sendMessage(`§2${newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" ")} js object definition§f\n${([...Object.entries(main), ...Object.entries(coords), ...Object.entries(cmds), ...Object.entries(bans), ...Object.entries(uis), ...Object.entries(playersave), ...Object.entries(spawnprot)].find(v=>v[0]==newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" "))??[, "§cError: The specified javascript function/constant/variable/class does not exist, check your spelling and capitallization. "])[1].toString().replaceAll("\\n", "\n")}`); 
+                break; 
+                case "help itemjsonformat": 
+                    eventData.sender.sendMessage(`itemJSON Format: 
+export interface ItemJSONParseInput {
+    "name"?: string,
+    "minecraft:name"?: string,
+    "nameTag"?: string,
+    "minecraft:nameTag"?: string,
+    "lore"?: string[],
+    "minecraft:lore"?: string[],
+    "description"?: string[],
+    "minecraft:description"?: string[],
+    "count"?: number,
+    "minecraft:count"?: number,
+    "amount"?: number,
+    "minecraft:amount"?: number,
+    "keepOnDeath"?: boolean,
+    "minecraft:keepOnDeath"?: boolean,
+    "keepondeath"?: boolean,
+    "minecraft:keepondeath"?: boolean,
+    "keep_on_death"?: boolean,
+    "minecraft:keep_on_death"?: boolean,
+    "lockMode"?: ItemLockMode,
+    "minecraft:lockMode"?: ItemLockMode,
+    "lockmode"?: ItemLockMode,
+    "minecraft:lockmode"?: ItemLockMode,
+    "lock_mode"?: ItemLockMode,
+    "minecraft:lock_mode"?: ItemLockMode,
+    "itemLockMode"?: ItemLockMode,
+    "minecraft:itemLockMode"?: ItemLockMode,
+    "itemlockmode"?: ItemLockMode,
+    "minecraft:itemlockmode"?: ItemLockMode,
+    "item_lock_mode"?: ItemLockMode,
+    "minecraft:item_lock_mode"?: ItemLockMode,
+    "canPlaceOn"?: string[],
+    "minecraft:canPlaceOn"?: string[],
+    "canplaceon"?: string[],
+    "minecraft:canplaceon"?: string[],
+    "can_place_on"?: string[],
+    "minecraft:can_place_on"?: string[],
+    "canDestroy"?: string[],
+    "minecraft:canDestroy"?: string[],
+    "candestroy"?: string[],
+    "minecraft:candestroy"?: string[],
+    "can_destroy"?: string[],
+    "minecraft:can_destroy"?: string[],
+    "components"?: {
+        "enchantable"?: {
+            "add"?: Enchantment|Enchantment[],
+            "minecraft:add"?: Enchantment|Enchantment[],
+            "addEnchantment"?: Enchantment|Enchantment[],
+            "minecraft:addEnchantment"?: Enchantment|Enchantment[],
+            "addList"?: Enchantment[],
+            "minecraft:addList"?: Enchantment[],
+            "addEnchantments"?: Enchantment[],
+            "minecraft:addEnchantments"?: Enchantment[],
+            "remove"?: Enchantment,
+            "minecraft:remove"?: Enchantment,
+            "removeEnchantments"?: Enchantment,
+            "minecraft:removeEnchantments"?: Enchantment,
+            "clear"?: any,
+            "minecraft:clear"?: any,
+            "clearAll"?: any,
+            "minecraft:clearAll"?: any,
+            "removeAll"?: any,
+            "minecraft:removeAll"?: any,
+            "removeAllEnchantments"?: any,
+            "minecraft:removeAllEnchantments"?: any
+        },
+        "minecraft:enchantable"?: {
+            "add"?: Enchantment|Enchantment[],
+            "minecraft:add"?: Enchantment|Enchantment[],
+            "addEnchantment"?: Enchantment|Enchantment[],
+            "minecraft:addEnchantment"?: Enchantment|Enchantment[],
+            "addList"?: Enchantment[],
+            "minecraft:addList"?: Enchantment[],
+            "addEnchantments"?: Enchantment[],
+            "minecraft:addEnchantments"?: Enchantment[],
+            "remove"?: Enchantment,
+            "minecraft:remove"?: Enchantment,
+            "removeEnchantments"?: Enchantment,
+            "minecraft:removeEnchantments"?: Enchantment,
+            "clear"?: any,
+            "minecraft:clear"?: any,
+            "clearAll"?: any,
+            "minecraft:clearAll"?: any,
+            "removeAll"?: any,
+            "minecraft:removeAll"?: any,
+            "removeAllEnchantments"?: any,
+            "minecraft:removeAllEnchantments"?: any
+        },
+        "durability"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "minecraft:durability"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "damage"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "minecraft:damage"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "cooldown"?: any,
+        "minecraft:cooldown"?: any,
+        "food"?: any,
+        "minecraft:food"?: any
+    },
+    "minecraft:components"?: {
+        "enchantable"?: {
+            "add"?: Enchantment|Enchantment[],
+            "minecraft:add"?: Enchantment|Enchantment[],
+            "addEnchantment"?: Enchantment|Enchantment[],
+            "minecraft:addEnchantment"?: Enchantment|Enchantment[],
+            "addList"?: Enchantment[],
+            "minecraft:addList"?: Enchantment[],
+            "addEnchantments"?: Enchantment[],
+            "minecraft:addEnchantments"?: Enchantment[],
+            "remove"?: Enchantment,
+            "minecraft:remove"?: Enchantment,
+            "removeEnchantments"?: Enchantment,
+            "minecraft:removeEnchantments"?: Enchantment,
+            "clear"?: any,
+            "minecraft:clear"?: any,
+            "clearAll"?: any,
+            "minecraft:clearAll"?: any,
+            "removeAll"?: any,
+            "minecraft:removeAll"?: any,
+            "removeAllEnchantments"?: any,
+            "minecraft:removeAllEnchantments"?: any
+        },
+        "minecraft:enchantable"?: {
+            "add"?: Enchantment|Enchantment[],
+            "minecraft:add"?: Enchantment|Enchantment[],
+            "addEnchantment"?: Enchantment|Enchantment[],
+            "minecraft:addEnchantment"?: Enchantment|Enchantment[],
+            "addList"?: Enchantment[],
+            "minecraft:addList"?: Enchantment[],
+            "addEnchantments"?: Enchantment[],
+            "minecraft:addEnchantments"?: Enchantment[],
+            "remove"?: Enchantment,
+            "minecraft:remove"?: Enchantment,
+            "removeEnchantments"?: Enchantment,
+            "minecraft:removeEnchantments"?: Enchantment,
+            "clear"?: any,
+            "minecraft:clear"?: any,
+            "clearAll"?: any,
+            "minecraft:clearAll"?: any,
+            "removeAll"?: any,
+            "minecraft:removeAll"?: any,
+            "removeAllEnchantments"?: any,
+            "minecraft:removeAllEnchantments"?: any
+        },
+        "durability"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "minecraft:durability"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "damage"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "minecraft:damage"?: {
+            "durability"?: number,
+            "minecraft:durability"?: number,
+            "setDurability"?: number,
+            "minecraft:setDurability"?: number,
+            "damage"?: number,
+            "minecraft:damage"?: number,
+            "setDamage"?: number,
+            "minecraft:setDamage"?: number,
+            "repair"?: number,
+            "minecraft:repair"?: number,
+            "setDurabilityToMax"?: any,
+            "minecraft:setDurabilityToMax"?: any
+        },
+        "cooldown"?: any,
+        "minecraft:cooldown"?: any,
+        "food"?: any,
+        "minecraft:food"?: any
+    }
+    force?: boolean
+    source?: {
+        type?: string,
+        targetSelector?: string,
+        targetSelectorExecutionLocation?: DimensionLocation,
+        targetSelectorSourceEntity?: Entity,
+        player?: string,
+        entityAtBlock?: DimensionLocation,
+        entityType?: string,
+        entityTypeId?: string,
+        entityId?: string|number,
+        block?: DimensionLocation,
+        slot?: number,
+        id?: string,
+        itemId?: string,
+        count?: number,
+        amount?: number
+    },
+    type?: string,
+    id?: string,
+    itemId?: string,
+    new?: [string, number?],
+    dynamicProperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+    dynamicproperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+    properties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+    itemproperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+    itemProperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>
+    clearAllDynamicProperties?: any,
+    clearDynamicProperties?: any,
+    clearalldynamicproperties?: any,
+    cleardynamicproperties?: any,
+    removeDynamicProperties?: string[],
+    removedynamicproperties?: string[],
+    removeDynamicProperty?: string,
+    removedynamicproperty?: string,
+    "minecraft:dynamicProperties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+    "minecraft:dynamicproperties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+    "minecraft:properties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+    "minecraft:itemProperties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+    "minecraft:itemproperties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+    "minecraft:clearAllDynamicProperties"?: any,
+    "minecraft:clearDynamicProperties"?: any,
+    "minecraft:clearalldynamicproperties"?: any,
+    "minecraft:cleardynamicproperties"?: any,
+    "minecraft:removeDynamicProperties"?: string[],
+    "minecraft:removedynamicproperties"?: string[],
+    "minecraft:removeDynamicProperty"?: string,
+    "minecraft:removedynamicproperty"?: string
+}
+examples: 
+stack of 255 sharpness 1 wooden swords: {"minecraft:components": {"enchantable": {"add": {"level": 1, "type": "sharpness"}}}, "id": "wooden_sword", "count": 255}
+sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept on death with the name "§4Storage Hog Axe§r" and the lore "§eTakes\\nUp\\nYour\\nInventory§r" (with the \\n as line break characters) that says lol in the chat and damages the user when used: {"minecraft:components": {"enchantable": {"add": [{"level": 1, "type": "sharpness"}, {"type": "fortune", "level": 3}, {"type": "efficiency", "level": 5}]}}, "id": "iron_axe", "count": 72, "keepondeath": true, "lockMode": "inventory", "name": "§r§4Storage Hog Axe§r§f", "lore": ["§r§eTakes\\nUp§r§f","§r§eYour\\nInventory§r§f"], "dynamicProperties": {"code": "world.sendMessage('lol'); event.source.runCommandAsync(\\"/damage @s 1 thorns entity @s\\")"}}
+stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`); 
+                break; 
+                case "help itemjsonformatcmpr": 
+                    eventData.sender.sendMessage(`itemJSON Format: 
+${`export interface ItemJSONParseInput {
+"name"?: string,
+"minecraft:name"?: string,
+"nameTag"?: string,
+"minecraft:nameTag"?: string,
+"lore"?: string[],
+"minecraft:lore"?: string[],
+"description"?: string[],
+"minecraft:description"?: string[],
+"count"?: number,
+"minecraft:count"?: number,
+"amount"?: number,
+"minecraft:amount"?: number,
+"keepOnDeath"?: boolean,
+"minecraft:keepOnDeath"?: boolean,
+"keepondeath"?: boolean,
+"minecraft:keepondeath"?: boolean,
+"keep_on_death"?: boolean,
+"minecraft:keep_on_death"?: boolean,
+"lockMode"?: ItemLockMode,
+"minecraft:lockMode"?: ItemLockMode,
+"lockmode"?: ItemLockMode,
+"minecraft:lockmode"?: ItemLockMode,
+"lock_mode"?: ItemLockMode,
+"minecraft:lock_mode"?: ItemLockMode,
+"itemLockMode"?: ItemLockMode,
+"minecraft:itemLockMode"?: ItemLockMode,
+"itemlockmode"?: ItemLockMode,
+"minecraft:itemlockmode"?: ItemLockMode,
+"item_lock_mode"?: ItemLockMode,
+"minecraft:item_lock_mode"?: ItemLockMode,
+"canPlaceOn"?: string[],
+"minecraft:canPlaceOn"?: string[],
+"canplaceon"?: string[],
+"minecraft:canplaceon"?: string[],
+"can_place_on"?: string[],
+"minecraft:can_place_on"?: string[],
+"canDestroy"?: string[],
+"minecraft:canDestroy"?: string[],
+"candestroy"?: string[],
+"minecraft:candestroy"?: string[],
+"can_destroy"?: string[],
+"minecraft:can_destroy"?: string[],
+"components"?: {
+"enchantable"?: {
+"add"?: Enchantment|Enchantment[],
+"minecraft:add"?: Enchantment|Enchantment[],
+"addEnchantment"?: Enchantment|Enchantment[],
+"minecraft:addEnchantment"?: Enchantment|Enchantment[],
+"addList"?: Enchantment[],
+"minecraft:addList"?: Enchantment[],
+"addEnchantments"?: Enchantment[],
+"minecraft:addEnchantments"?: Enchantment[],
+"remove"?: Enchantment,
+"minecraft:remove"?: Enchantment,
+"removeEnchantments"?: Enchantment,
+"minecraft:removeEnchantments"?: Enchantment,
+"clear"?: any,
+"minecraft:clear"?: any,
+"clearAll"?: any,
+"minecraft:clearAll"?: any,
+"removeAll"?: any,
+"minecraft:removeAll"?: any,
+"removeAllEnchantments"?: any,
+"minecraft:removeAllEnchantments"?: any
+},
+"minecraft:enchantable"?: {
+"add"?: Enchantment|Enchantment[],
+"minecraft:add"?: Enchantment|Enchantment[],
+"addEnchantment"?: Enchantment|Enchantment[],
+"minecraft:addEnchantment"?: Enchantment|Enchantment[],
+"addList"?: Enchantment[],
+"minecraft:addList"?: Enchantment[],
+"addEnchantments"?: Enchantment[],
+"minecraft:addEnchantments"?: Enchantment[],
+"remove"?: Enchantment,
+"minecraft:remove"?: Enchantment,
+"removeEnchantments"?: Enchantment,
+"minecraft:removeEnchantments"?: Enchantment,
+"clear"?: any,
+"minecraft:clear"?: any,
+"clearAll"?: any,
+"minecraft:clearAll"?: any,
+"removeAll"?: any,
+"minecraft:removeAll"?: any,
+"removeAllEnchantments"?: any,
+"minecraft:removeAllEnchantments"?: any
+},
+"durability"?: {
+"durability"?: number,
+"minecraft:durability"?: number,
+"setDurability"?: number,
+"minecraft:setDurability"?: number,
+"damage"?: number,
+"minecraft:damage"?: number,
+"setDamage"?: number,
+"minecraft:setDamage"?: number,
+"repair"?: number,
+"minecraft:repair"?: number,
+"setDurabilityToMax"?: any,
+"minecraft:setDurabilityToMax"?: any
+},
+"minecraft:durability"?: {
+"durability"?: number,
+"minecraft:durability"?: number,
+"setDurability"?: number,
+"minecraft:setDurability"?: number,
+"damage"?: number,
+"minecraft:damage"?: number,
+"setDamage"?: number,
+"minecraft:setDamage"?: number,
+"repair"?: number,
+"minecraft:repair"?: number,
+"setDurabilityToMax"?: any,
+"minecraft:setDurabilityToMax"?: any
+},
+"damage"?: {
+"durability"?: number,
+"minecraft:durability"?: number,
+"setDurability"?: number,
+"minecraft:setDurability"?: number,
+"damage"?: number,
+"minecraft:damage"?: number,
+"setDamage"?: number,
+"minecraft:setDamage"?: number,
+"repair"?: number,
+"minecraft:repair"?: number,
+"setDurabilityToMax"?: any,
+"minecraft:setDurabilityToMax"?: any
+},
+"minecraft:damage"?: {
+"durability"?: number,
+"minecraft:durability"?: number,
+"setDurability"?: number,
+"minecraft:setDurability"?: number,
+"damage"?: number,
+"minecraft:damage"?: number,
+"setDamage"?: number,
+"minecraft:setDamage"?: number,
+"repair"?: number,
+"minecraft:repair"?: number,
+"setDurabilityToMax"?: any,
+"minecraft:setDurabilityToMax"?: any
+},
+"cooldown"?: any,
+"minecraft:cooldown"?: any,
+"food"?: any,
+"minecraft:food"?: any
+},
+"minecraft:components"?: {
+"enchantable"?: {
+"add"?: Enchantment|Enchantment[],
+"minecraft:add"?: Enchantment|Enchantment[],
+"addEnchantment"?: Enchantment|Enchantment[],
+"minecraft:addEnchantment"?: Enchantment|Enchantment[],
+"addList"?: Enchantment[],
+"minecraft:addList"?: Enchantment[],
+"addEnchantments"?: Enchantment[],
+"minecraft:addEnchantments"?: Enchantment[],
+"remove"?: Enchantment,
+"minecraft:remove"?: Enchantment,
+"removeEnchantments"?: Enchantment,
+"minecraft:removeEnchantments"?: Enchantment,
+"clear"?: any,
+"minecraft:clear"?: any,
+"clearAll"?: any,
+"minecraft:clearAll"?: any,
+"removeAll"?: any,
+"minecraft:removeAll"?: any,
+"removeAllEnchantments"?: any,
+"minecraft:removeAllEnchantments"?: any
+},
+"minecraft:enchantable"?: {
+"add"?: Enchantment|Enchantment[],
+"minecraft:add"?: Enchantment|Enchantment[],
+"addEnchantment"?: Enchantment|Enchantment[],
+"minecraft:addEnchantment"?: Enchantment|Enchantment[],
+"addList"?: Enchantment[],
+"minecraft:addList"?: Enchantment[],
+"addEnchantments"?: Enchantment[],
+"minecraft:addEnchantments"?: Enchantment[],
+"remove"?: Enchantment,
+"minecraft:remove"?: Enchantment,
+"removeEnchantments"?: Enchantment,
+"minecraft:removeEnchantments"?: Enchantment,
+"clear"?: any,
+"minecraft:clear"?: any,
+"clearAll"?: any,
+"minecraft:clearAll"?: any,
+"removeAll"?: any,
+"minecraft:removeAll"?: any,
+"removeAllEnchantments"?: any,
+"minecraft:removeAllEnchantments"?: any
+},
+"durability"?: {
+"durability"?: number,
+"minecraft:durability"?: number,
+"setDurability"?: number,
+"minecraft:setDurability"?: number,
+"damage"?: number,
+"minecraft:damage"?: number,
+"setDamage"?: number,
+"minecraft:setDamage"?: number,
+"repair"?: number,
+"minecraft:repair"?: number,
+"setDurabilityToMax"?: any,
+"minecraft:setDurabilityToMax"?: any
+},
+"minecraft:durability"?: {
+"durability"?: number,
+"minecraft:durability"?: number,
+"setDurability"?: number,
+"minecraft:setDurability"?: number,
+"damage"?: number,
+"minecraft:damage"?: number,
+"setDamage"?: number,
+"minecraft:setDamage"?: number,
+"repair"?: number,
+"minecraft:repair"?: number,
+"setDurabilityToMax"?: any,
+"minecraft:setDurabilityToMax"?: any
+},
+"damage"?: {
+"durability"?: number,
+"minecraft:durability"?: number,
+"setDurability"?: number,
+"minecraft:setDurability"?: number,
+"damage"?: number,
+"minecraft:damage"?: number,
+"setDamage"?: number,
+"minecraft:setDamage"?: number,
+"repair"?: number,
+"minecraft:repair"?: number,
+"setDurabilityToMax"?: any,
+"minecraft:setDurabilityToMax"?: any
+},
+"minecraft:damage"?: {
+"durability"?: number,
+"minecraft:durability"?: number,
+"setDurability"?: number,
+"minecraft:setDurability"?: number,
+"damage"?: number,
+"minecraft:damage"?: number,
+"setDamage"?: number,
+"minecraft:setDamage"?: number,
+"repair"?: number,
+"minecraft:repair"?: number,
+"setDurabilityToMax"?: any,
+"minecraft:setDurabilityToMax"?: any
+},
+"cooldown"?: any,
+"minecraft:cooldown"?: any,
+"food"?: any,
+"minecraft:food"?: any
+}
+force?: boolean
+source?: {
+type?: string,
+targetSelector?: string,
+targetSelectorExecutionLocation?: DimensionLocation,
+targetSelectorSourceEntity?: Entity,
+player?: string,
+entityAtBlock?: DimensionLocation,
+entityType?: string,
+entityTypeId?: string,
+entityId?: string|number,
+block?: DimensionLocation,
+slot?: number,
+id?: string,
+itemId?: string,
+count?: number,
+amount?: number
+},
+type?: string,
+id?: string,
+itemId?: string,
+new?: [string, number?],
+dynamicProperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+dynamicproperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+properties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+itemproperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+itemProperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>
+clearAllDynamicProperties?: any,
+clearDynamicProperties?: any,
+clearalldynamicproperties?: any,
+cleardynamicproperties?: any,
+removeDynamicProperties?: string[],
+removedynamicproperties?: string[],
+removeDynamicProperty?: string,
+removedynamicproperty?: string,
+"minecraft:dynamicProperties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+"minecraft:dynamicproperties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+"minecraft:properties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+"minecraft:itemProperties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+"minecraft:itemproperties"?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+"minecraft:clearAllDynamicProperties"?: any,
+"minecraft:clearDynamicProperties"?: any,
+"minecraft:clearalldynamicproperties"?: any,
+"minecraft:cleardynamicproperties"?: any,
+"minecraft:removeDynamicProperties"?: string[],
+"minecraft:removedynamicproperties"?: string[],
+"minecraft:removeDynamicProperty"?: string,
+"minecraft:removedynamicproperty"?: string
+}
+examples: 
+stack of 255 sharpness 1 wooden swords: {"minecraft:components": {"enchantable": {"add": {"level": 1, "type": "sharpness"}}}, "id": "wooden_sword", "count": 255}
+sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept on death with the name "§4Storage Hog Axe§r" and the lore "§eTakes\\nUp\\nYour\\nInventory§r" (with the \\n as line break characters) that says lol in the chat and damages the user when used: {"minecraft:components": {"enchantable": {"add": [{"level": 1, "type": "sharpness"}, {"type": "fortune", "level": 3}, {"type": "efficiency", "level": 5}]}}, "id": "iron_axe", "count": 72, "keepondeath": true, "lockMode": "inventory", "name": "§r§4Storage Hog Axe§r§f", "lore": ["§r§eTakes\\nUp§r§f","§r§eYour\\nInventory§r§f"], "dynamicProperties": {"code": "world.sendMessage('lol'); event.source.runCommandAsync(\\"/damage @s 1 thorns entity @s\\")"}}
+stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`.replaceAll("\n", "")}`); 
+                break; 
+                case "help itemjsonformatsimplified": 
+                    eventData.sender.sendMessage(`simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
+{
+    "name"?: string,
+    "lore"?: string[],
+    "count"?: number,
+    "keepondeath"?: boolean,
+    "lockmode"?: ItemLockMode,
+    "canplaceon"?: string[],
+    "components"?: {
+        "enchantable"?: {
+            "add"?: Enchantment|Enchantment[],
+            "addList"?: Enchantment[],
+            "remove"?: Enchantment,
+            "removeEnchantments"?: Enchantment,
+            "clear"?: any
+        },
+        "durability"?: {
+            "durability"?: number,
+            "damage"?: number,
+            "repair"?: number,
+            "setDurabilityToMax"?: any
+        },
+        "damage"?: {
+            "durability"?: number,
+            "damage"?: number,
+            "repair"?: number,
+            "setDurabilityToMax"?: any
+        }
+    },
+    force?: boolean
+    source?: {
+        type?: string,
+        targetSelector?: string,
+        targetSelectorExecutionLocation?: DimensionLocation,
+        targetSelectorSourceEntity?: Entity,
+        player?: string,
+        entityAtBlock?: DimensionLocation,
+        entityType?: string,
+        entityTypeId?: string,
+        entityId?: string|number,
+        block?: DimensionLocation,
+        slot?: number,
+        id?: string,
+        itemId?: string,
+        count?: number,
+        amount?: number
+    },
+    type?: string,
+    dynamicproperties?: [string, string|number|boolean|Vector3|undefined][]|Record<string, string|number|boolean|Vector3|undefined>,
+    cleardynamicproperties?: any,
+    removedynamicproperties?: string[],
+    removedynamicproperty?: string
+}
+examples: 
+stack of 255 sharpness 1 wooden swords: {"minecraft:components": {"enchantable": {"add": {"level": 1, "type": "sharpness"}}}, "id": "wooden_sword", "count": 255}
+sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept on death with the name "§4Storage Hog Axe§r" and the lore "§eTakes\\nUp\\nYour\\nInventory§r" (with the \\n as line break characters) that says lol in the chat and damages the user when used: {"minecraft:components": {"enchantable": {"add": [{"level": 1, "type": "sharpness"}, {"type": "fortune", "level": 3}, {"type": "efficiency", "level": 5}]}}, "id": "iron_axe", "count": 72, "keepondeath": true, "lockMode": "inventory", "name": "§r§4Storage Hog Axe§r§f", "lore": ["§r§eTakes\\nUp§r§f","§r§eYour\\nInventory§r§f"], "dynamicProperties": {"code": "world.sendMessage('lol'); event.source.runCommandAsync(\\"/damage @s 1 thorns entity @s\\")"}}
+stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`); 
                 break; 
                 default: 
                     eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length+4) + "\": at \"" + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "help >>" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length+5) + "<<\""); 
@@ -1961,18 +3452,38 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
         case !!switchTest.match(/^shuffleinventory$/): {
             eventData.cancel = true;
             let args = evaluateParametersOld(["presetText", "string"], switchTestB).args
-            system.run(()=>{
-                let items = shuffle(containerToItemStackArray((world.getAllPlayers().find(_=>_.name==switchTestB.split(" ").slice(1).join(" "))??player).getComponent("inventory").container)); 
-                containerToContainerSlotArray((world.getAllPlayers().find(_=>_.name==switchTestB.split(" ").slice(1).join(" "))??player).getComponent("inventory").container).forEach((s, i)=>{
-                    s.setItem(items[i])
-                }); 
-                player.sendMessage(`Successfully shuffled ${(world.getAllPlayers().find(_=>_.name==switchTestB.split(" ").slice(1).join(" "))??player).name}'s inventory. `)})
+            if(switchTestB.split(/\s+/g)[1].trim()=="~"){args[1] = player.name}
+            let target = world.getAllPlayers().find(_=>_.name==args[1])
+            if(!!!target){
+                player.sendMessage(`§cError: Unable to find player with the name ${args[1]}. `)
+            }else{
+                system.run(()=>{
+                    let items = shuffle(containerToItemStackArray(target.getComponent("inventory").container)); 
+                    containerToContainerSlotArray(target.getComponent("inventory").container).forEach((s, i)=>{s.setItem(items[i])}); 
+                    player.sendMessage(`Successfully shuffled ${target.name}'s inventory. `)
+                })
+            }
         }
         break; 
         case !!switchTest.match(/^swapitems$/): {
             eventData.cancel = true;
-            let args = evaluateParametersOld(["presetText", "number", "number", "string"], switchTestB).args
-            system.run(()=>{player.getComponent("inventory").container.swapItems(Number(switchTestB.split(" ")[1].replace("~", String(player.selectedSlot))), Number(switchTestB.split(" ")[2].replace("~", String(world.getAllPlayers().find(_=>_.name==switchTestB.split(" ").slice(3).join(" ")).selectedSlot))), world.getAllPlayers().find(_=>_.name==switchTestB.split(" ").slice(3).join(" ")).getComponent("inventory").container)})
+            let args = evaluateParametersOld(["presetText", "presetText", "presetText", "string", "string"], switchTestB).args
+            if((switchTestB.split(/\s+/g)[4]??"").trim()==""){args[4] = player.name}else{
+            if((switchTestB.split(/\s+/g)[4]??"").trim()=="~"){args[4] = player.name}}
+            if((switchTestB.split(/\s+/g)[3]??"").trim()==""){args[3] = player.name}else{
+            if((switchTestB.split(/\s+/g)[3]??"").trim()=="~"){args[3] = player.name}}
+            let target = world.getAllPlayers().find(_=>_.name==args[3])
+            let targetb = world.getAllPlayers().find(_=>_.name==args[4])
+            if((switchTestB.split(/\s+/g)[2]??"").trim()==""){args[2] = targetb?.selectedSlot}
+            if((switchTestB.split(/\s+/g)[1]??"").trim()==""){args[1] = target?.selectedSlot}
+            if(!!!target){
+                player.sendMessage(`§cError: Unable to find player with the name ${args[1]}. `)
+            }else if(!!!targetb){
+                player.sendMessage(`§cError: Unable to find player with the name ${args[2]}. `)
+            }else{
+                system.run(()=>{target.getComponent("inventory").container.swapItems(Number(args[1].replace(/^~$/, String(target.selectedSlot))), Number(args[2].replace(/^~$/, String(targetb.selectedSlot))), targetb.getComponent("inventory").container)})
+                player.sendMessage(`Successfully swapped slot ${args[1]} of ${target.name}'s inventory with slot ${args[2]} of ${targetb.name}'s inventory. `)
+            }
         }
         break; 
         case !!switchTest.match(/^clear$/): {
@@ -2013,7 +3524,7 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
             }
         }
         break; 
-        case !!switchTest.match(/^swapinventories$/): {
+        case !!switchTest.match(/^swapinventories$/)||!!switchTest.match(/^invswap$/): {
             eventData.cancel = true;
             let args = evaluateParametersOld(["presetText", "string", "string"], switchTestB).args
             if(switchTestB.split(/\s+/g)[1]?.trim()=="~"){args[1] = player.name}
@@ -2034,7 +3545,7 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
             }
         }
         break; 
-        case !!switchTest.match(/^swapinventoriesb$/): {
+        case !!switchTest.match(/^swapinventoriesb$/)||!!switchTest.match(/^invswapb$/): {
             eventData.cancel = true;
             system.run(()=>{inventorySwapB(world.getAllPlayers().find(_=>_.name==switchTestB.split("\"")[1]).getComponent("inventory").container, world.getAllPlayers().find(_=>_.name==switchTestB.split("\"")[3]).getComponent("inventory").container)})
         }
@@ -2201,7 +3712,7 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
                 })
         }
         break; 
-        case !!switchTest.match(/^scanenderchest$/): {
+        case !!switchTest.match(/^scanenderchest$/)||!!switchTest.match(/^ecinvsee$/)||!!switchTest.match(/^scnendchest$/): {
             eventData.cancel = true;
             let args = evaluateParametersOld(["presetText", "string"], switchTestB).args
             if(switchTestB.split(/\s+/g)[1]?.trim()=="~"){args[1] = player.name}
@@ -2211,6 +3722,20 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
                 player.sendMessage(`§cError: Unable to find player with the name ${args[1]}. `)
             }else system.run(()=>{let slots = [] as string[]
                 for(let i = 0; i < 27; i++){slots.push(`slot: ${i}, item: ${ItemTypes.getAll().find(v=>target.runCommand(`testfor @s[hasitem={location=slot.enderchest,item=${v.id},slot=${i}}]`).successCount!=0)?.id??"minecraft:air"}`)}; 
+                player.sendMessage(`${target.name}'s Ender Chest Contents: \n${slots.join("§r§f\n")}`)
+            })
+        }
+        break; 
+        case !!switchTest.match(/^scanenderchestc$/)||!!switchTest.match(/^ecinvseec$/)||!!switchTest.match(/^scnendchestc$/): {
+            eventData.cancel = true;
+            let args = evaluateParametersOld(["presetText", "string"], switchTestB).args
+            if(switchTestB.split(/\s+/g)[1]?.trim()=="~"){args[1] = player.name}
+            if((switchTestB.split(/\s+/g)[1]??"").trim()==""){args[1] = player.name}
+            let target = world.getAllPlayers().find(_=>_.name==args[1])
+            if(!!!target){
+                player.sendMessage(`§cError: Unable to find player with the name ${args[1]}. `)
+            }else system.run(()=>{let slots = [] as string[]
+                for(let i = 0; i < 27; i++){slots.push(`slot: ${i}, item: ${ItemTypes.getAll().find(v=>target.runCommand(`testfor @s[hasitem={location=slot.enderchest,item=${v.id},slot=${i}}]`).successCount!=0)?.id??"minecraft:air"}, amount: ${rangeToIntArray([0, 255]).reverse().find(v=>target.runCommand(`testfor @s[hasitem={location=slot.enderchest,count=${v},slot=${i}}]`).successCount!=0)}`)}; 
                 player.sendMessage(`${target.name}'s Ender Chest Contents: \n${slots.join("§r§f\n")}`)
             })
         }
@@ -2259,7 +3784,7 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
             })
         }
         break; 
-        case !!switchTest.match(/^fillrandom$/): {
+        case !!switchTest.match(/^fillrandom$/)||!!switchTest.match(/^invfillrandom$/): {
             eventData.cancel = true;
             let args = evaluateParametersOld(["presetText", "presetText", "presetText", "string"], switchTestB).args
             if(switchTestB.split(/\s+/g)[3]?.trim()=="~"){args[3] = player.name}
@@ -2278,7 +3803,7 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
             })
         }
         break; 
-        case !!switchTest.match(/^fillop$/): {
+        case !!switchTest.match(/^fillop$/)||!!switchTest.match(/^invfillop$/): {
             eventData.cancel = true;
             let args = evaluateParametersOld(["presetText", "presetText", "presetText", "string"], switchTestB).args
             if(switchTestB.split(/\s+/g)[3]?.trim()=="~"){args[3] = player.name}
@@ -2297,7 +3822,7 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
             })
         }
         break; 
-        case !!switchTest.match(/^fillillegal$/): {
+        case !!switchTest.match(/^fillillegal$/)||!!switchTest.match(/^invfillillegal$/): {
             eventData.cancel = true;
             let args = evaluateParametersOld(["presetText", "presetText", "presetText", "string"], switchTestB).args
             if(switchTestB.split(/\s+/g)[3]?.trim()=="~"){args[3] = player.name}
@@ -2314,6 +3839,31 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
                     for(let i = 0; i < Number(args[1].trim().toLowerCase().replace(/~+/, "36")); i++){let t = shuffle(IllegalItemTypes)[0]; target.getComponent("inventory").container.addItem(new ItemStack(t, (args[2].trim().toLowerCase()=="max"?new ItemStack(t).maxAmount:Number(args[2].trim().toLowerCase().replace(/~+/, "255")))))}; 
                 }
             })
+        }
+        break; 
+        case !!switchTest.match(/^fillinventory$/)||!!switchTest.match(/^invfill$/): {
+            eventData.cancel = true;/*
+            console.warn(switchTestB.split(" ")?.length)*/
+            if(switchTestB.split(" ")?.length==1){
+                player.sendMessage(`${switchTest} command format: ${switchTest} <itemJSON: itemJSON> [mode: fill|replacefill|replaceall] [player: string|~]\nfor the format for the itemJSON just type in "\\help itemjsonformat". `)
+            }else{
+                let argsa = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "json"}, {type: "presetText"}, {type: "string"}])
+                let args = argsa.args
+                if(args[3]?.trim()=="~"){args[3] = player.name}
+                if((args[3]??"").trim()==""){args[3] = player.name}
+                let target = world.getAllPlayers().find(_=>_.name==args[3])
+                if(!!!target){
+                    player.sendMessage(`§cError: Unable to find player with the name ${args[3]}. `)
+                }else system.run(()=>{
+                    if((args[2]??"").trim().toLowerCase()==""||(args[2]??"").trim().toLowerCase()=="fill"){
+                        entityToContainerSlotArray(target, true, false).filter(v=>!!!v.getItem()).forEach(v=>v.setItem(!!(args[1]?.count??args[1]?.amount)?Object.assign(itemJSONPropertiesEval(args[1]), {count: 255}):itemJSONPropertiesEval(args[1]))); 
+                    }else if((args[2]??"").trim().toLowerCase()=="replacefill"||(args[2]??"").trim().toLowerCase()=="replaceall"){
+                        entityToContainerSlotArray(target, true, false).forEach(v=>v.setItem(!!(args[1]?.count??args[1]?.amount)?Object.assign(itemJSONPropertiesEval(args[1]), {count: 255}):itemJSONPropertiesEval(args[1]))); 
+                    }else{
+                        entityToContainerSlotArray(target, true, false).filter(v=>!!!v.getItem()).slice(0, Number(args[2])).forEach(v=>v.setItem(!!(args[1]?.count??args[1]?.amount)?Object.assign(itemJSONPropertiesEval(args[1]), {count: 255}):itemJSONPropertiesEval(args[1]))); 
+                    }
+                })
+            }
         }
         break; 
         case !!switchTest.match(/^chunkban$/): {
@@ -2430,30 +3980,80 @@ let rankMode = 0
         }
     }
 }
+export function evaluateSelectors(selector: string, options?: {source?: Block|Entity|Player, rotation?: Vector2, viewDirection?: Vector3, location?: Vector3|DimensionLocation, dimension?: Dimension, indirect?: number|boolean, asDimension?: number|boolean, asWorld?: number|boolean, inAllDimensions?: number|boolean, enableJ?: boolean, enableI?: boolean}){
+    if(!!selector.trimStart().replaceAll("\\", "").match(/^(@[aeprs]\s*\[|@[aeprs]\s+)/)){
+        return (!!options)?!!options?.source?!(options.source instanceof Block)?targetSelectorAllListC(selector, "", (options.location??options.source.location).x+" "+(options.location??options.source.location).y+" "+(options.location??options.source.location).z, options.source):targetSelectorAllListD(selector, (options.location??options.source.location).x+" "+(options.location??options.source.location).y+" "+(options.location??options.source.location).z, options.dimension??(options.location as DimensionLocation)?.dimension):(!!options.dimension??(options.location as DimensionLocation)?.dimension)?targetSelectorAllListE(selector, ((options.location??{x: 0, y: 0, z: 0}).x+" "+(options.location??{x: 0, y: 0, z: 0}).y+" "+(options.location??{x: 0, y: 0, z: 0}).z)):targetSelectorAllListD(selector, ((options.location??{x: 0, y: 0, z: 0}).x+" "+(options.location??{x: 0, y: 0, z: 0}).y+" "+(options.location??{x: 0, y: 0, z: 0}).z), options.dimension??(options.location as DimensionLocation)?.dimension):targetSelectorAllListE(selector, "0 0 0")
+    }else if((options?.enableI??true)==true&&!!selector.trimStart().replaceAll("\\", "").match(/^(@i\s*\[|@i\s+)/)){
+        return getEntityById(selector.trim().match(/^(?<=@i\s*\[((?:uu)?id=)?(?:")?)[\-\+]?\d(?=(?:")?\])/)[0])
+    }else if((options?.enableJ??false)==true&&!!selector.trimStart().replaceAll("\\", "").match(/^(@j\s*\[|@j\s+)/)){
+        return eval(selector.trim().match(/^(?<=@j\s*\[)[\-\+]?\d(?=\])/)[0])
+    }
+}
 
-export function evaluateParameters(commandstring: string, parameters: {type: string, maxLength?: number}[]) {
+export function extractSelectors(str: string) {
+    const selectors = [] as string[];
+    let startIndex = -1;
+    const stack = [];
+    let insideQuotes = false;
+
+    for (let i = 0; i < str.length; i++) {
+        if (str[i] === '"' && str[i - 1] !== '\\') {
+            insideQuotes = !insideQuotes;
+        }
+        if (!insideQuotes && str[i] === '@' && startIndex === -1) {
+            startIndex = i;
+        }
+        if (!insideQuotes) {
+            if (str[i] === '[') {
+                stack.push('[');
+            } else if (str[i] === ']') {
+                if (stack.length > 0) {
+                    stack.pop();
+                    if (stack.length === 0 && startIndex !== -1) {
+                        selectors.push(str.substring(startIndex, i + 1));
+                        startIndex = -1;
+                    }
+                } else {
+                    // Invalid selector, reset startIndex
+                    startIndex = -1;
+                }
+            }
+        }
+    }
+
+    return selectors;
+}/*
+
+// Example usage
+const str = "something @e[type='pig',family=mob,hasitem=[{item=stick,slot=0,location=\"slot.enderchest\"},{item='iron_sword',location=slot.weapon.offhand,slot=0}],name=entityname] somethingelseelse";
+const selectors = extractSelectors(str);
+console.log(selectors);*/
+
+export function evaluateParameters(commandstring: string, parameters: ({type: "presetText"|"number"|"boolean"|"string"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector", maxLength?: number}|{type: "Vectors", vectorCount?: number, maxLength?: number}|string)[]) {
     let argumentsa = [] as any[]
     let ea = [] as [Error, any][]
-    let paramEval = commandstring
-    parameters.forEach((p, i) => {
-        if ((p?.type ?? p) == "presetText") {
+    let paramEval = commandstring/*
+    let parametersb = []
+    if(typeof parameters[0] == "string"){parametersb = parameters.map(v=>({type: v}))}else{parametersb = parameters}*/
+    parameters.map(v=>(typeof v == "string"?(v=="Vectors"?{type: v, vectorCount: 3, maxLength: undefined} as {type: "Vectors", vectorCount?: number, maxLength?: number}:{type: v, vectorCount: undefined, maxLength: undefined} as {type: "Vectors", vectorCount?: number, maxLength?: number}):v?.type=="Vectors"?v:v)).forEach((p, i) => {if(paramEval.trim()==""){return}else{
+        if (p.type == "presetText") {
             argumentsa.push(paramEval.split(" ")[0]);
             paramEval = paramEval.split(" ").slice(1).join(" ");
         } else {
-            if ((p?.type ?? p) == "number") {
+            if (p.type == "number") {
                 argumentsa.push(Number(paramEval.split(" ")[0]));
                 paramEval = paramEval.split(" ").slice(1).join(" ");
             } else {
-                if ((p?.type ?? p) == "boolean") {
-                    argumentsa.push(Boolean(JSON.parse(paramEval.split(" ")[0])));
+                if (p.type == "boolean") {
+                    argumentsa.push(paramEval.split(" ")[0]?.trim?.()==""?undefined:Boolean(JSON.parse(paramEval.split(" ")[0])));
                     paramEval = paramEval.split(" ").slice(1).join(" ");
                 } else {
-                    if ((p?.type ?? p) == "string") {
+                    if (p.type == "string") {
                         if (paramEval.trimStart().startsWith("\"")) {
                             let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
-                            paramEval = paramEval.trimStart().slice(value.s.length + 1) ?? "";
+                            paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
                             try {
-                                argumentsa.push(value.v);
+                                argumentsa.push(value?.v);
                             } catch (e) {
                                 ea.push([e, e.stack])
                             };
@@ -2462,20 +4062,75 @@ export function evaluateParameters(commandstring: string, parameters: {type: str
                             paramEval = paramEval.split(" ").slice(1).join(" ");
                         }
                     } else {
-                        if ((p?.type ?? p) == "json") {
+                        if (p.type == "json") {
                             let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
-                            paramEval = paramEval.slice(value.s.length + 1) ?? "";
+                            paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
                             try {
-                                argumentsa.push(value.v ?? JSONParse(value.s ?? paramEval, true));
+                                argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
                             } catch (e) {
                                 ea.push([e, e.stack])
                             };
-                        } else {}
+                        } else {
+                            if (p.type == "targetSelector") {
+                                if(!paramEval.trimStart().startsWith("@")){
+                                    if (paramEval.trimStart().startsWith("\"")) {
+                                        let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                        paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
+                                        try {
+                                            argumentsa.push(value?.v);
+                                        } catch (e) {
+                                            ea.push([e, e.stack])
+                                        };
+                                    } else {
+                                        argumentsa.push(paramEval.split(" ")[0]);
+                                        return paramEval.split(" ").slice(1).join(" ");
+                                    }
+                                }else{
+                                    let value = extractSelectors(paramEval)[0];
+                                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length + 1) ?? "";
+                                    try {
+                                        argumentsa.push(value);
+                                    } catch (e) {
+                                        ea.push([e, e.stack])
+                                    };
+                                }
+                            } else {
+                                if (p.type == "Vector"||(p?.type ?? p) == "Vector1") {
+                                    let value = paramEval.match(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*]([\-\+]?\d+(\.\d+)?)?|((?<=\s)|^)[\-\+]?\d+(\.\d+)?)(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g)[0];
+                                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length + 1) ?? "";
+                                    try {
+                                        argumentsa.push(value);
+                                    } catch (e) {
+                                        ea.push([e, e.stack])
+                                    };
+                                } else {
+                                    if (!!p.type.match(/^Vector[2-8]$/)) {
+                                        let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.type.slice(6)}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))[0];
+                                        paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length + 1) ?? "";
+                                        try {
+                                            argumentsa.push(value);
+                                        } catch (e) {
+                                            ea.push([e, e.stack])
+                                        };
+                                    } else {
+                                        if (p.type == "Vectors") {
+                                            let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.vectorCount??3}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                            paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length + 1) ?? "";
+                                            try {
+                                                argumentsa.push(value);
+                                            } catch (e) {
+                                                ea.push([e, e.stack])
+                                            };
+                                        } else {}
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-    });
+    }});
     return {
         params: parameters,
         extra: paramEval,
