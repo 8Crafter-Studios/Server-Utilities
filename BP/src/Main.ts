@@ -51,8 +51,8 @@ export const mainmetaimport = import.meta
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d } from "Main/coordinates";
-import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld } from "Main/commands";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG } from "Main/coordinates";
+import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
@@ -680,10 +680,759 @@ export function splitTextByMaxProperyLength(string: string){let length = string.
 export function fillBlocks(from: Vector3, to: Vector3, dimension: Dimension, block: string | BlockPermutation | BlockType, options?: mcServer.BlockFillOptions){let mainArray = [] as BlockVolume[]; let subArray = [] as Vector3[]; Array.from(new BlockVolume(from, to).getBlockLocationIterator()).forEach(v=>{if(subArray.length<=new BlockVolume(from, to).getSpan().x){subArray.push(v)}else{mainArray.push(new BlockVolume({x: subArray.sort((a, b)=>a.x-b.x)[0].x, y: subArray.sort((a, b)=>a.y-b.y)[0].y, z: subArray.sort((a, b)=>a.z-b.z)[0].z}, {x: subArray.sort((a, b)=>b.x-a.x)[0].x, y: subArray.sort((a, b)=>b.y-a.y)[0].y, z: subArray.sort((a, b)=>b.z-a.z)[0].z}))}}); let counter = 0; mainArray.forEach(v=>counter+=dimension.fillBlocks(v.from, v.to, block, options)); return counter}; 
 export function fillBlocksB(from: Vector3, to: Vector3, dimension: Dimension, block: string | BlockPermutation | BlockType, options?: mcServer.BlockFillOptions){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))}); subArray.forEach(v=>{Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))}); let counter = 0; mainArray.forEach(v=>counter+=dimension.fillBlocks(v.from, v.to, block, options)); return counter}; 
 export function fillBlocksF(from: Vector3, to: Vector3, dimension: Dimension, block: string | BlockPermutation | BlockType, options?: {matchingBlock?: BlockPermutation|BlockType|string}){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))}); subArray.forEach(v=>{Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))}); let counter = 0; mainArray.forEach(v=>counter+=dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block instanceof BlockPermutation ?  block.type.id : block instanceof BlockType ?  block.id : block} ${block instanceof BlockPermutation ?  "["+Object.entries(block.getAllStates()).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""} ${!!options?.matchingBlock?options?.matchingBlock instanceof BlockPermutation ?  "replace " + options?.matchingBlock?.type?.id??"" : "replace " + options?.matchingBlock??"":""} ${!!options?.matchingBlock?options?.matchingBlock instanceof BlockPermutation ?  "["+Object.entries(options?.matchingBlock.getAllStates()).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : "":""}`).successCount); return counter}; 
-export function fillBlocksH(from: Vector3, to: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))}); subArray.forEach(v=>{Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))}); let counter = 0; mainArray.forEach(v=>{try{counter+=dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid??"andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock? "replace " + options?.matchingBlock??"" :""} ${!!options?.matchingBlockStates? "["+Object.entries(options?.matchingBlockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}`).successCount}catch{counter+=fillBlocksB(v.from, v.to, dimension, BlockPermutation.resolve(placeholderid??"andexdb:ifill_command_placeholder_block", {}), {matchingBlock: BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)})}; fillBlocksB(v.from, v.to, dimension, BlockPermutation.resolve(block, blockStates), {matchingBlock: BlockPermutation.resolve(placeholderid??"andexdb:ifill_command_placeholder_block", {})})}); return counter}; 
+export function fillBlocksH(from: Vector3, to: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string){
+    let mainArray = [] as BlockVolume[]; 
+    let subArray = [] as BlockVolume[]; 
+    Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{
+        subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))
+    }); 
+    subArray.forEach(v=>{
+        Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))
+    }); 
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    if(!!!options?.matchingBlock){
+        mainArray.forEach(v=>{
+            counter+=fillBlocksB(v.from, v.to, dimension, blockb)
+        }); 
+    }else{
+        let placeholderblockb = BlockPermutation.resolve(placeholderid??"andexdb:ifill_command_placeholder_block")
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        mainArray.forEach(v=>{
+            try{
+                counter+=dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid??"andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock? "replace " + options?.matchingBlock??"" :""} ${!!options?.matchingBlockStates? "["+Object.entries(options?.matchingBlockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}`).successCount
+            }catch{
+                counter+=fillBlocksB(v.from, v.to, dimension, placeholderblockb, {matchingBlock: matchingblockb})
+            }; 
+            fillBlocksB(v.from, v.to, dimension, blockb, {matchingBlock: placeholderblockb})
+        }); 
+    }
+    return counter
+}; 
 export function fillBlocksHB(from: Vector3, to: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))}); subArray.forEach(v=>{Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))}); let counter = 0; mainArray.forEach(v=>{counter+=dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block} ${!!blockStates ?  "["+Object.entries(blockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}  ${!!options?.matchingBlock? "replace " + options?.matchingBlock??"" :""} ${!!options?.matchingBlockStates? "["+Object.entries(options?.matchingBlockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}`).successCount}); return counter}; 
-export function fillBlocksHW(from: Vector3, to: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; let CBVA = new CompoundBlockVolume(); CBVA.pushVolume({volume: new BlockVolume(from, {x: to.x, y: from.y, z: to.z}), action: 0}); if(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getSpan().x>2&&new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getSpan().z>2){CBVA.pushVolume({volume: new BlockVolume({x: from.x+(from.x>to.x?-1:1), y: from.y, z: from.z+(from.z>to.z?-1:1)}, {x: to.x+(from.x<to.x?-1:1), y: from.y, z: to.z+(from.z<to.z?-1:1)}), action: 1})}; Array.from(CBVA.getBlockLocationIterator()).forEach(va=>{mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z}))}); let counter = 0; mainArray.forEach(v=>{counter+=dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid??"andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock? "replace " + options?.matchingBlock??"" :""} ${!!options?.matchingBlockStates? "["+Object.entries(options?.matchingBlockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}`).successCount; fillBlocksB(v.from, v.to, dimension, BlockPermutation.resolve(block, blockStates), {matchingBlock: BlockPermutation.resolve(placeholderid, {})})}); return counter}; 
+export function fillBlocksHW(from: Vector3, to: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string, replacemode: boolean = false){
+    let mainArray = [] as BlockVolume[]; 
+    let subArray = [] as BlockVolume[]; 
+    let CBVA = new CompoundBlockVolume(); 
+    CBVA.pushVolume({volume: new BlockVolume(from, {x: to.x, y: from.y, z: to.z}), action: 0}); 
+    if(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getSpan().x>2&&new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getSpan().z>2){CBVA.pushVolume({volume: new BlockVolume({x: from.x+(from.x>to.x?-1:1), y: from.y, z: from.z+(from.z>to.z?-1:1)}, {x: to.x+(from.x<to.x?-1:1), y: from.y, z: to.z+(from.z<to.z?-1:1)}), action: 1})}; 
+    Array.from(CBVA.getBlockLocationIterator()).forEach(va=>{
+        mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z}))
+    }); 
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    if(replacemode){
+        mainArray.forEach(v=>{
+            clearAllContainerBlocks(scanForContainerBlocks(v.from, v.to, dimension, "Block") as Block[])
+        }); 
+    }; 
+    if(!!!options?.matchingBlock){/*
+        console.warn("a")*/
+        mainArray.forEach(v=>{
+            counter+=fillBlocksB(v.from, v.to, dimension, blockb)
+        }); 
+    }else{
+        let placeholderblockb = BlockPermutation.resolve(placeholderid??"andexdb:ifill_command_placeholder_block")
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        mainArray.forEach(v=>{
+            try{
+                counter+=dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid??"andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock? "replace " + options?.matchingBlock??"" :""} ${!!options?.matchingBlockStates? "["+Object.entries(options?.matchingBlockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}`).successCount
+            }catch{
+                counter+=fillBlocksB(v.from, v.to, dimension, placeholderblockb, {matchingBlock: matchingblockb})
+            }; 
+            fillBlocksB(v.from, v.to, dimension, blockb, {matchingBlock: placeholderblockb})
+        }); 
+    }
+    return counter
+}; 
+export function fillBlocksHH(from: Vector3, to: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string, replacemode: boolean = false){
+    let mainArray = [] as BlockVolume[]; 
+    let mainArrayB = [] as BlockVolume[]; 
+    let subArray = [] as BlockVolume[]; 
+    let CBVA = new CompoundBlockVolume(); 
+    CBVA.pushVolume({volume: new BlockVolume(from, {x: to.x, y: from.y, z: to.z}), action: 0}); 
+    if(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getSpan().x>2&&new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getSpan().z>2){CBVA.pushVolume({volume: new BlockVolume({x: from.x+(from.x>to.x?-1:1), y: from.y, z: from.z+(from.z>to.z?-1:1)}, {x: to.x+(from.x<to.x?-1:1), y: from.y, z: to.z+(from.z<to.z?-1:1)}), action: 1})}; 
+    Array.from(CBVA.getBlockLocationIterator()).forEach(va=>{
+        mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z}))
+    }); 
+    let CBVAB = new CompoundBlockVolume(); 
+    CBVAB.pushVolume({volume: new BlockVolume({x: from.x+(from.x>to.x?-1:1), y: from.y, z: from.z+(from.z>to.z?-1:1)}, {x: from.x+(from.x>to.x?-1:1), y: from.y, z: to.z+(from.z<to.z?-1:1)}), action: 0}); 
+    CBVAB.pushVolume({volume: new BlockVolume({x: from.x+(from.x>to.x?-1:1), y: to.y, z: from.z+(from.z>to.z?-1:1)}, {x: from.x+(from.x>to.x?-1:1), y: to.y, z: to.z+(from.z<to.z?-1:1)}), action: 0}); 
+    Array.from(CBVAB.getBlockLocationIterator()).forEach(va=>{
+        mainArray.push(new BlockVolume(va, {x: to.x+(from.x<to.x?-1:1), y: va.y, z: va.z}))
+    }); 
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    if(replacemode){
+        mainArray.forEach(v=>{
+            clearAllContainerBlocks(scanForContainerBlocks(v.from, v.to, dimension, "Block") as Block[])
+        }); 
+    }; 
+    if(!!!options?.matchingBlock){
+        mainArray.forEach(v=>{
+            counter+=fillBlocksB(v.from, v.to, dimension, blockb)
+        }); 
+    }else{
+        let placeholderblockb = BlockPermutation.resolve(placeholderid??"andexdb:ifill_command_placeholder_block")
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        mainArray.forEach(v=>{
+            try{
+                counter+=dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid??"andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock? "replace " + options?.matchingBlock??"" :""} ${!!options?.matchingBlockStates? "["+Object.entries(options?.matchingBlockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}`).successCount
+            }catch{
+                counter+=fillBlocksB(v.from, v.to, dimension, placeholderblockb, {matchingBlock: matchingblockb})
+            }; 
+            fillBlocksB(v.from, v.to, dimension, blockb, {matchingBlock: placeholderblockb})
+        }); 
+    }
+    return counter
+}; 
+export function fillBlocksHO(from: Vector3, to: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string, replacemode: boolean = false){
+    let mainArray = [] as BlockVolume[]; 
+    let mainArrayB = [] as BlockVolume[]; 
+    let subArray = [] as BlockVolume[]; 
+    //full distance
+    mainArray.push(new BlockVolume(from, {x: from.x, y: to.y, z: from.z}))
+    mainArray.push(new BlockVolume({x: to.x, y: from.y, z: from.z}, {x: to.x, y: to.y, z: from.z}))
+    mainArray.push(new BlockVolume({x: to.x, y: from.y, z: to.z}, to))
+    mainArray.push(new BlockVolume({x: from.x, y: from.y, z: to.z}, {x: from.x, y: to.y, z: to.z}))
+    //1 less than full distance
+    mainArray.push(new BlockVolume({x: to.x+(to.x>from.x?-1:1), y: from.y, z: from.z}, {x: from.x+(from.x>to.x?-1:1), y: from.y, z: from.z}))
+    mainArray.push(new BlockVolume({x: to.x+(to.x>from.x?-1:1), y: to.y, z: from.z}, {x: from.x+(from.x>to.x?-1:1), y: to.y, z: from.z}))
+    mainArray.push(new BlockVolume({x: to.x+(to.x>from.x?-1:1), y: from.y, z: to.z}, {x: from.x+(from.x>to.x?-1:1), y: from.y, z: to.z}))
+    mainArray.push(new BlockVolume({x: to.x+(to.x>from.x?-1:1), y: to.y, z: to.z}, {x: from.x+(from.x>to.x?-1:1), y: to.y, z: to.z}))
+    mainArray.push(new BlockVolume({x: to.x, y: from.y, z: to.z+(to.z>from.z?-1:1)}, {x: to.x, y: from.y, z: from.z+(from.z>to.z?-1:1)}))
+    mainArray.push(new BlockVolume({x: to.x, y: to.y, z: to.z+(to.z>from.z?-1:1)}, {x: to.x, y: to.y, z: from.z+(from.z>to.z?-1:1)}))
+    mainArray.push(new BlockVolume({x: from.x, y: from.y, z: to.z+(to.z>from.z?-1:1)}, {x: from.x, y: from.y, z: from.z+(from.z>to.z?-1:1)}))
+    mainArray.push(new BlockVolume({x: from.x, y: to.y, z: to.z+(to.z>from.z?-1:1)}, {x: from.x, y: to.y, z: from.z+(from.z>to.z?-1:1)}))
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    if(replacemode){
+        mainArray.forEach(v=>{
+            clearAllContainerBlocks(scanForContainerBlocks(v.from, v.to, dimension, "Block") as Block[])
+        }); 
+    }; 
+    if(!!!options?.matchingBlock){
+        mainArray.forEach(v=>{
+            counter+=fillBlocksB(v.from, v.to, dimension, blockb)
+        }); 
+    }else{
+        let placeholderblockb = BlockPermutation.resolve(placeholderid??"andexdb:ifill_command_placeholder_block")
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        mainArray.forEach(v=>{
+            try{
+                counter+=dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid??"andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock? "replace " + options?.matchingBlock??"" :""} ${!!options?.matchingBlockStates? "["+Object.entries(options?.matchingBlockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}`).successCount
+            }catch{
+                counter+=fillBlocksB(v.from, v.to, dimension, placeholderblockb, {matchingBlock: matchingblockb})
+            }; 
+            fillBlocksB(v.from, v.to, dimension, blockb, {matchingBlock: placeholderblockb})
+        }); 
+    }
+    return counter
+}; 
+export function fillBlocksHP(from: Vector3, to: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string, replacemode: boolean = false){
+    let mainArray = [] as BlockVolume[]; 
+    let mainArrayB = [] as BlockVolume[]; 
+    let subArray = [] as BlockVolume[]; 
+    mainArray.push(new BlockVolume(from, {x: from.x, y: to.y, z: from.z}))
+    mainArray.push(new BlockVolume({x: to.x, y: from.y, z: from.z}, {x: to.x, y: to.y, z: from.z}))
+    mainArray.push(new BlockVolume({x: to.x, y: from.y, z: to.z}, to))
+    mainArray.push(new BlockVolume({x: from.x, y: from.y, z: to.z}, {x: from.x, y: to.y, z: to.z}))
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    if(replacemode){
+        mainArray.forEach(v=>{
+            clearAllContainerBlocks(scanForContainerBlocks(v.from, v.to, dimension, "Block") as Block[])
+        }); 
+    }; 
+    if(!!!options?.matchingBlock){
+        mainArray.forEach(v=>{
+            counter+=fillBlocksB(v.from, v.to, dimension, blockb)
+        }); 
+    }else{
+        let placeholderblockb = BlockPermutation.resolve(placeholderid??"andexdb:ifill_command_placeholder_block")
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        mainArray.forEach(v=>{
+            try{
+                counter+=dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid??"andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock? "replace " + options?.matchingBlock??"" :""} ${!!options?.matchingBlockStates? "["+Object.entries(options?.matchingBlockStates).map(v=>"\""+v[0]+"\""+"="+(typeof v[1] == "string"?"\""+v[1]+"\"":typeof v[1] == "number"?String(v[1]):String(v[1]))).join(",")+"]" : ""}`).successCount
+            }catch{
+                counter+=fillBlocksB(v.from, v.to, dimension, placeholderblockb, {matchingBlock: matchingblockb})
+            }; 
+            fillBlocksB(v.from, v.to, dimension, blockb, {matchingBlock: placeholderblockb})
+        }); 
+    }
+    return counter
+}; 
+export function fillBlocksHC(center: Vector3, radius: number, dimension: Dimension, axis: string/*"x"|"y"|"z"|"ns"|"sn"|"ew"|"we"|"ud"|"du"|"X"|"Y"|"Z"|"NS"|"SN"|"EW"|"WE"|"UD"|"DU"*/, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string, replacemode: boolean = false){
+    let mainArray = drawMinecraftCircle(center, radius, axis).map(v=>dimension.getBlock(v)); 
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    if(replacemode){
+        mainArray.filter(v=>!!v.getComponent("inventory")).forEach(v=>{
+            clearContainer(v.getComponent("inventory").container)
+        }); 
+    }; /*
+    console.warn(JSONStringify(mainArray))*/
+    if(!!!options?.matchingBlock){
+        mainArray.forEach(v=>{
+            v.setPermutation(blockb)
+            counter++
+        }); 
+    }else{
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        mainArray.forEach(v=>{
+            if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.type)){
+                v.setPermutation(blockb)
+                counter++
+            }
+        }); 
+    }
+    return counter
+}; 
+export function fillBlocksHS(center: Vector3, radius: number, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string, replacemode: boolean = false){
+    /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    if(!!!options?.matchingBlock){
+        if(replacemode){
+            generateMinecraftSphereB(center, radius, dimension, (v)=>{
+                if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                }
+                v.dimension.getBlock(v).setPermutation(blockb)
+                counter++
+            })
+        }else{
+            generateMinecraftSphereB(center, radius, dimension, (v)=>{
+                v.dimension.getBlock(v).setPermutation(blockb)
+                counter++
+            })
+        }
+    }else{
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        if(replacemode){
+            generateMinecraftSphereB(center, radius, dimension, (v)=>{
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }
+            }); 
+        }else{
+            generateMinecraftSphereB(center, radius, dimension, (v)=>{
+                if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                }
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }
+            }); 
+        }
+    }
+    return counter
+}; 
+export async function fillBlocksHSG(center: Vector3, radius: number, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    const id = generateMinecraftSphereBGIdGenerator()
+    if(!!!options?.matchingBlock){
+        if(replacemode){
+            system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                try{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, undefined, integrity))
+        }else{
+            system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, undefined, integrity))
+        }
+    }else{
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        if(replacemode){
+            system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                try{
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, undefined, integrity)); 
+        }else{
+            system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                try{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, undefined, integrity)); 
+        }
+    }
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean}}) => void, reject) => {
+        function a(){if((generateMinecraftSphereBGProgress[id]?.done)!==true){system.run(() => {
+           a()
+        })}else{let returns = generateMinecraftSphereBGProgress[id]; delete generateMinecraftSphereBGProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
+}; 
+export async function fillBlocksHSSG(center: Vector3, radius: number, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    const id = generateMinecraftSphereBGIdGenerator()
+    if(!!!options?.matchingBlock){
+        if(replacemode){
+            system.runJob(generateMinecraftSemiSphereBG(center, radius, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                try{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, undefined, integrity))
+        }else{
+            system.runJob(generateMinecraftSemiSphereBG(center, radius, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, undefined, integrity))
+        }
+    }else{
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        if(replacemode){
+            system.runJob(generateMinecraftSemiSphereBG(center, radius, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                try{
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, undefined, integrity)); 
+        }else{
+            system.runJob(generateMinecraftSemiSphereBG(center, radius, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                try{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, undefined, integrity)); 
+        }
+    }
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean}}) => void, reject) => {
+        function a(){if(generateMinecraftSphereBGProgress[id]?.done!==true){system.run(() => {
+           a()
+        })}else{let returns = generateMinecraftSphereBGProgress[id]; delete generateMinecraftSphereBGProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
+}; 
+export function fillBlocksHHS(center: Vector3, radius: number, thickness: number, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
+    let mainArray = generateHollowSphere(center, radius, thickness).map(v=>dimension.getBlock(v)); 
+    if(integrity!=100){mainArray = degradeArray(mainArray, integrity)}
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    if(replacemode){
+        mainArray.filter(v=>!!v.getComponent("inventory")).forEach(v=>{
+            clearContainer(v.getComponent("inventory").container)
+        }); 
+    }; /*
+    console.warn(JSONStringify(mainArray))*/
+    if(!!!options?.matchingBlock){
+        mainArray.forEach(v=>{
+            v.setPermutation(blockb)
+            counter++
+        }); 
+    }else{
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        mainArray.forEach(v=>{
+            if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.type)){
+                v.setPermutation(blockb)
+                counter++
+            }
+        }); 
+    }
+    return counter
+}; 
+export async function fillBlocksHHSG(center: Vector3, radius: number, thickness: number, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    const id = generatorProgressIdGenerator()
+    if(!!!options?.matchingBlock){
+        if(replacemode){
+            system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                try{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, undefined, integrity))
+        }else{
+            system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, undefined, integrity))
+        }
+    }else{
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        if(replacemode){
+            system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }
+            }, undefined, integrity)); 
+        }else{
+            system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                }
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }
+            }, undefined, integrity)); 
+        }
+    }
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean; }}) => void, reject) => {
+        function a(){if(generatorProgress[id]?.done!==true){system.run(() => {
+           a()
+        })}else{let returns = generatorProgress[id]; delete generatorProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
+}; 
+export async function fillBlocksHDG(center: Vector3, radius: number, thickness: number, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    const id = generatorProgressIdGenerator()
+    if(!!!options?.matchingBlock){
+        if(replacemode){
+            system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                try{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, undefined, integrity))
+        }else{
+            system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, undefined, integrity))
+        }
+    }else{
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        if(replacemode){
+            system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }
+            }, undefined, integrity)); 
+        }else{
+            system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                }
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }
+            }, undefined, integrity)); 
+        }
+    }
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean; }}) => void, reject) => {
+        function a(){if(generatorProgress[id]?.done!==true){system.run(() => {
+           a()
+        })}else{let returns = generatorProgress[id]; delete generatorProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
+}; 
+export async function fillBlocksHHOG(center: Vector3, radius: Vector3, offset: Vector3, thickness: number, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    const id = generatorProgressIdGenerator()
+    if(!!!options?.matchingBlock){
+        if(replacemode){
+            system.runJob(generateMinecraftOvoidCG(center, radius, offset, thickness, id, dimension, (v)=>{
+                try{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000}))
+        }else{
+            system.runJob(generateMinecraftOvoidCG(center, radius, offset, thickness, id, dimension, (v)=>{
+                try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000}))
+        }
+    }else{
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        if(replacemode){
+            system.runJob(generateMinecraftOvoidCG(center, radius, offset, thickness, id, dimension, (v)=>{
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000})); 
+        }else{
+            system.runJob(generateMinecraftOvoidCG(center, radius, offset, thickness, id, dimension, (v)=>{
+                if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                }
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000})); 
+        }
+    }
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean; }}) => void, reject) => {
+        function a(){if(generatorProgress[id]?.done!==true){system.run(() => {
+           a()
+        })}else{let returns = generatorProgress[id]; delete generatorProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
+}; 
+export async function fillBlocksHOG(center: Vector3, radius: Vector3, offset: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    const id = generatorProgressIdGenerator()
+    if(!!!options?.matchingBlock){
+        if(replacemode){
+            system.runJob(generateSolidOvoidBG(center, radius, offset, id, dimension, (v)=>{
+                try{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000}))
+        }else{
+            system.runJob(generateSolidOvoidBG(center, radius, offset, id, dimension, (v)=>{
+                try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000}))
+        }
+    }else{
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        if(replacemode){
+            system.runJob(generateSolidOvoidBG(center, radius, offset, id, dimension, (v)=>{
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000})); 
+        }else{
+            system.runJob(generateSolidOvoidBG(center, radius, offset, id, dimension, (v)=>{
+                if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                }
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000})); 
+        }
+    }
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean; }}) => void, reject) => {
+        function a(){if(generatorProgress[id]?.done!==true){system.run(() => {
+           a()
+        })}else{let returns = generatorProgress[id]; delete generatorProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
+}; 
+export async function fillBlocksHSGG(from: Vector3, to: Vector3, skygridSize: number, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    const id = generatorProgressIdGenerator()
+    if(!!!options?.matchingBlock){
+        if(replacemode){
+            system.runJob(generateSkygridBG(from, to, skygridSize, id, dimension, (v)=>{
+                try{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000}))
+        }else{
+            system.runJob(generateSkygridBG(from, to, skygridSize, id, dimension, (v)=>{
+                try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000}))
+        }
+    }else{
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        if(replacemode){
+            system.runJob(generateSkygridBG(from, to, skygridSize, id, dimension, (v)=>{
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000})); 
+        }else{
+            system.runJob(generateSkygridBG(from, to, skygridSize, id, dimension, (v)=>{
+                if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                }
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000})); 
+        }
+    }
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean; }}) => void, reject) => {
+        function a(){if(generatorProgress[id]?.done!==true){system.run(() => {
+           a()
+        })}else{let returns = generatorProgress[id]; delete generatorProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
+}; 
+export async function fillBlocksHISGG(from: Vector3, to: Vector3, skygridSize: number, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    const id = generatorProgressIdGenerator()
+    if(!!!options?.matchingBlock){
+        if(replacemode){
+            system.runJob(generateInverseSkygridBG(from, to, skygridSize, id, dimension, (v)=>{
+                try{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000}))
+        }else{
+            system.runJob(generateInverseSkygridBG(from, to, skygridSize, id, dimension, (v)=>{
+                try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000}))
+        }
+    }else{
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        if(replacemode){
+            system.runJob(generateInverseSkygridBG(from, to, skygridSize, id, dimension, (v)=>{
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000})); 
+        }else{
+            system.runJob(generateInverseSkygridBG(from, to, skygridSize, id, dimension, (v)=>{
+                if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                }
+                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                    try{
+                    v.dimension.getBlock(v).setPermutation(blockb)
+                    counter++
+                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }
+            }, {integrity, minMSBetweenYields: options?.minMSBetweenYields??5000})); 
+        }
+    }
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean; }}) => void, reject) => {
+        function a(){if(generatorProgress[id]?.done!==true){system.run(() => {
+           a()
+        })}else{let returns = generatorProgress[id]; delete generatorProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
+}; 
+export function fillBlocksHT(center: Vector3, radius: number, length: number, axis: string, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
+    let mainArray = [...new Set(generateMinecraftTunnel(center, radius, length, axis).map(v=>dimension.getBlock(v)))]; 
+    if(integrity!=100){mainArray = degradeArray(mainArray, integrity)}
+    let counter = 0; 
+    let blockb = BlockPermutation.resolve(block, blockStates)
+    if(replacemode){
+        mainArray.filter(v=>!!v.getComponent("inventory")).forEach(v=>{
+            clearContainer(v.getComponent("inventory").container)
+        }); 
+    }; /*
+    console.warn(JSONStringify(mainArray))*/
+    if(!!!options?.matchingBlock){
+        mainArray.forEach(v=>{
+            try{
+                v.setPermutation(blockb)
+                counter++
+            }catch{}
+        }); 
+    }else{
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+        mainArray.forEach(v=>{
+            if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.type)){
+                v.setPermutation(blockb)
+                counter++
+            }
+        }); 
+    }
+    return counter
+}; 
 export function scanForBlockType(from: Vector3|Vector, to: Vector3|Vector, dimension: Dimension, block: string, returnMode?: ""|"Vector3"|"Block"){let blockType = BlockTypes.get(block).id; if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>dimension.getBlock(v).typeId==blockType)}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>v.typeId==blockType)}}; 
+export function scanForContainerBlocks(from: Vector3|Vector, to: Vector3|Vector, dimension: Dimension, returnMode?: ""|"Vector3"|"Block"){if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>!!dimension.getBlock(v).getComponent("inventory"))}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>!!v.getComponent("inventory"))}}; 
+export function clearAllContainerBlocks(blocks: Block[]){blocks.forEach(v=>cmds.clearContainer(v.getComponent("inventory").container)); return blocks}; 
 export function fillBlocksC(begin: Vector3, end: Vector3, dimension: Dimension, blocktype: string = "air", blockStates?: Record<string, string | number | boolean>, matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, overrideAllBlockStates: boolean = false){
     let mainArray = Array.from(new BlockVolume(begin, end).getBlockLocationIterator()); 
     let counter = 0; 
@@ -1594,7 +2343,7 @@ world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(event => {
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:explosion")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("explosionBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}/*
     eval(String(world.getDynamicProperty("scriptEvalBeforeEventsExplosion")))*/
       world.getAllPlayers().filter((player) => ( player.hasTag("getExplosionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("Location: [ " + event.source.location.x+", "+event.source.location.y+", "+event.source.location.z + " ], Dimension: " + event.dimension.id) });
-      if ((((testIsWithinRanges(noExplosionAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(noExplosionAreas.negative, event.source.location) ?? false) == false))||(((testIsWithinRanges(protectedAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative, event.source.location) ?? false) == false))) {
+      if (!!!event.source?.location?false:(((testIsWithinRanges(noExplosionAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(noExplosionAreas.negative, event.source.location) ?? false) == false))||(((testIsWithinRanges(protectedAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative, event.source.location) ?? false) == false))) {
         event.cancel = true/*
           console.warn(event.isExpanding);
           console.warn(event.block.x, event.block.y, event.block.z);

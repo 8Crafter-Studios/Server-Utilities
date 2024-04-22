@@ -1,4 +1,4 @@
-import { Block, Dimension, type DimensionLocation, DimensionType, Player, Vector, type Vector2, type Vector3, world, Entity } from "@minecraft/server";
+import { Block, Dimension, type DimensionLocation, DimensionType, Player, Vector, type Vector2, type Vector3, world, Entity, system, BlockVolume, CompoundBlockVolume } from "@minecraft/server";
 import { targetSelectorAllListC, targetSelectorAllListE } from "../Main";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -14,6 +14,7 @@ import *  as bans from "Main/ban";
 import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
+import { shuffle, vTStr } from "Main/commands";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -29,7 +30,7 @@ uis
 playersave
 spawnprot
 
-export const coordinates_format_version = "1.0.1";
+export const coordinates_format_version = "6.0.1";
 // LocalTeleport (Caret Notation ^^^)
 export interface ILocalTeleport { 
     sway_1: number 
@@ -201,6 +202,13 @@ Object.defineProperty(String.prototype, 'localTeleport', {value: function (local
 
     this.teleport(newPosition) 
 }});
+export function getDistance(point1: Vector3, point2: Vector3) {
+    const deltaX = point2.x - point1.x;
+    const deltaY = point2.y - point1.y;
+    const deltaZ = point2.z - point1.z;
+
+    return Math.sqrt(deltaX ** 2 + deltaY ** 2 + deltaZ ** 2);
+}
 export function facingPoint(location: Vector3, otherLocation: Vector3) { 
     const sl = location
     const ol = otherLocation
@@ -324,7 +332,7 @@ export function anglesToDirectionVectorDeg(yaw: number, pitch: number/*, roll: n
 
     return { x, y, z };
 }
-export function rotate(pitchb, rollb, yawb, points) {
+export function rotate(pitchb: number, rollb: number, yawb: number, points) {
     let pitch = (pitchb*(Math.PI/180))
     let roll = (rollb*(Math.PI/180))
     let yaw = (yawb*(Math.PI/180))
@@ -434,6 +442,959 @@ export function coordinatesE(coordinateText: string, source: Entity|Block, rotat
     let startingPosition = source?.location ?? {x: 0, y: 0, z: 0}
     try{location = evaluateCoordinatesB(coordinateText.split("~").join(" ~").split("^").join(" ^").split("*").join(" *").replaceAll("  ", " ").trimStart().split(" ")[0].replaceAll(" ", ""), coordinateText.split("~").join(" ~").split("^").join(" ^").split("*").join(" *").replaceAll("  ", " ").trimStart().split(" ")[1].replaceAll(" ", ""), coordinateText.split("~").join(" ~").split("^").join(" ^").split("*").join(" *").replaceAll("  ", " ").trimStart().split(" ")[2].replaceAll(" ", ""), startingPosition, rotation)}catch(e){console.error(e, e.stack)}
 return location
+}
+export function degradeArray(array: any[]/*, mode: "removeElements"|"changeTextOfStrings"|"corruptElements"|"removeElementsAndSubElements"*/, integrity: number, seed?: number) {
+    return shuffle([...array]).slice(0, array.length*(Math.min(array.length, integrity/100)))
+}
+export function generateCircleCoordinates(centerX: number, centerY: number, centerZ: number, radius: number, axis: "x"|"y"|"z"|"ns"|"sn"|"ew"|"we"|"ud"|"du"|"X"|"Y"|"Z"|"NS"|"SN"|"EW"|"WE"|"UD"|"DU") {
+    const coordinates = [];
+    const diameter = radius * 2;
+
+    if(axis.toLowerCase()=="y"||axis.toLowerCase()=="ud"||axis.toLowerCase()=="du"){
+    for (let x = -radius; x <= radius; x++) {
+        for (let z = -radius; z <= radius; z++) {
+            if (x * x + z * z <= radius * radius) {
+                const blockX = centerX + x;
+                const blockZ = centerZ + z;
+                coordinates.push({ x: blockX, y: centerY, z: blockZ });
+            }
+        }
+    }
+    }else if(axis.toLowerCase()=="x"||axis.toLowerCase()=="ew"||axis.toLowerCase()=="we"){
+    for (let y = -radius; y <= radius; y++) {
+        for (let z = -radius; z <= radius; z++) {
+            if (y * y + z * z <= radius * radius) {
+                const blockY = centerY + y;
+                const blockZ = centerZ + z;
+                coordinates.push({ x: centerX, y: blockY, z: blockZ });
+            }
+        }
+    }
+    }else if(axis.toLowerCase()=="z"||axis.toLowerCase()=="ns"||axis.toLowerCase()=="sn"){
+    for (let x = -radius; x <= radius; x++) {
+        for (let y = -radius; y <= radius; y++) {
+            if (x * x + y * y <= radius * radius) {
+                const blockX = centerX + x;
+                const blockY = centerY + y;
+                coordinates.push({ x: blockX, y: blockY, z: centerZ });
+            }
+        }
+    }
+    }
+
+    return coordinates;
+}
+export function generateCircleCoordinatesB(center: Vector3, radius: number, axis: "x"|"y"|"z"|"ns"|"sn"|"ew"|"we"|"ud"|"du"|"X"|"Y"|"Z"|"NS"|"SN"|"EW"|"WE"|"UD"|"DU") {
+    const coordinates = [] as Vector3[];
+    const diameter = radius * 2;
+
+    if(axis.toLowerCase()=="y"||axis.toLowerCase()=="ud"||axis.toLowerCase()=="du"){
+    for (let x = -radius; x <= radius; x++) {
+        for (let z = -radius; z <= radius; z++) {
+            if (x * x + z * z <= radius * radius) {
+                const blockX = center.x + x;
+                const blockZ = center.z + z;
+                coordinates.push({ x: blockX, y: center.y, z: blockZ });
+            }
+        }
+    }
+    }else if(axis.toLowerCase()=="x"||axis.toLowerCase()=="ew"||axis.toLowerCase()=="we"){
+    for (let y = -radius; y <= radius; y++) {
+        for (let z = -radius; z <= radius; z++) {
+            if (y * y + z * z <= radius * radius) {
+                const blockY = center.y + y;
+                const blockZ = center.z + z;
+                coordinates.push({ x: center.x, y: blockY, z: blockZ });
+            }
+        }
+    }
+    }else if(axis.toLowerCase()=="z"||axis.toLowerCase()=="ns"||axis.toLowerCase()=="sn"){
+    for (let x = -radius; x <= radius; x++) {
+        for (let y = -radius; y <= radius; y++) {
+            if (x * x + y * y <= radius * radius) {
+                const blockX = center.x + x;
+                const blockY = center.y + y;
+                coordinates.push({ x: blockX, y: blockY, z: center.z });
+            }
+        }
+    }
+    }
+
+    return coordinates as Vector3[];
+}
+export function generateCircleCoordinatesC(centerX, centerY, centerZ, radius) {
+    const coordinates = [] as Vector3[];
+    const diameter = radius * 2;
+
+    for (let x = centerX - radius; x <= centerX + radius; x++) {
+        for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+            const distanceSquared = (x - centerX) * (x - centerX) + (z - centerZ) * (z - centerZ);
+            if (distanceSquared <= radius * radius) {
+                coordinates.push({ x: x, y: centerY, z: z });
+            }
+        }
+    }
+
+    return coordinates;
+}/*
+export function drawCircleOutline(ctx, centerX, centerY, radius, thickness, color) {
+    const numSegments = 100; // Number of segments for drawing the circle
+    const step = (2 * Math.PI) / numSegments;
+
+    for (let i = 0; i < numSegments; i++) {
+        const angle = i * step;
+        const x1 = centerX + radius * Math.cos(angle);
+        const y1 = centerY + radius * Math.sin(angle);
+
+        // Calculate the new radius for the outline
+        const newRadius = radius + thickness;
+
+        const x2 = centerX + newRadius * Math.cos(angle);
+        const y2 = centerY + newRadius * Math.sin(angle);
+
+        // Draw a line segment between (x1, y1) and (x2, y2)
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = color;
+        ctx.stroke();
+    }
+}*/
+export function generateMinecraftCircleOutline(center: Vector3, radius: number, thickness: number, dimension: Dimension, placeBlockCallback: (location: DimensionLocation)=>any, integrity: number = 100) {
+    const innerRadius = radius - thickness;
+    const outerRadius = radius;
+    
+    for (let x = Math.floor(center.x - outerRadius); x <= Math.ceil(center.x + outerRadius); x++) {
+        for (let z = Math.floor(center.z - outerRadius); z <= Math.ceil(center.z + outerRadius); z++) {
+            const distanceSquared = (x - center.x) ** 2 + (z - center.z) ** 2;
+            
+            if (distanceSquared <= outerRadius ** 2 && distanceSquared >= innerRadius ** 2) {
+                placeBlockCallback({x: x, y: center.y, z: z, dimension: dimension});
+            }
+        }
+    }
+}
+export function* generateMinecraftCircleOutlineBG(center: Vector3, radius: number, thickness: number, generatorProgressId: string, dimension?: Dimension, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, options?: {integrity?: number, minMSBetweenYields?: number}) {
+    try{
+        const innerRadius = radius - thickness;
+        const outerRadius = radius;
+        generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+
+        if((options?.integrity??100)!=100){
+            for (let x = Math.floor(center.x - outerRadius); x <= Math.ceil(center.x + outerRadius); x++) {
+                for (let z = Math.floor(center.z - outerRadius); z <= Math.ceil(center.z + outerRadius); z++) {
+                    const distanceSquared = (x - center.x) ** 2 + (z - center.z) ** 2;
+                    
+                    if (distanceSquared <= outerRadius ** 2 && distanceSquared >= innerRadius ** 2) {
+                        if(Math.random()<=((options?.integrity??100)/100)){placeBlockCallback({x: x, y: center.y, z: z, dimension: dimension});}
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = Math.floor(center.x - outerRadius); x <= Math.ceil(center.x + outerRadius); x++) {
+                for (let z = Math.floor(center.z - outerRadius); z <= Math.ceil(center.z + outerRadius); z++) {
+                    const distanceSquared = (x - center.x) ** 2 + (z - center.z) ** 2;
+                    
+                    if (distanceSquared <= outerRadius ** 2 && distanceSquared >= innerRadius ** 2) {
+                        placeBlockCallback({x: x, y: center.y, z: z, dimension: dimension});
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        generatorProgress[generatorProgressId].endTick=system.currentTick; 
+        generatorProgress[generatorProgressId].endTime=Date.now(); 
+        generatorProgress[generatorProgressId].done=true; 
+        return
+    }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
+}
+export function generateMinecraftOvoid(center: Vector3, radius: Vector3, offset: Vector3, thickness: number, dimension?: Dimension, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, integrity: number = 100) {
+    const innerRadiusX = radius.x - thickness;
+    const innerRadiusY = radius.y - thickness;
+    const innerRadiusZ = radius.z - thickness;
+    const outerRadiusX = radius.x + offset.x
+    const outerRadiusY = radius.y + offset.y;
+    const outerRadiusZ = radius.z + offset.z;
+
+    for (let x = Math.floor(center.x - outerRadiusX); x <= Math.ceil(center.x + outerRadiusX); x++) {
+        for (let y = Math.floor(center.y - outerRadiusY); y <= Math.ceil(center.y + outerRadiusY); y++) {
+            for (let z = Math.floor(center.z - outerRadiusZ); z <= Math.ceil(center.z + outerRadiusZ); z++) {
+                const distanceSquared = ((x - center.x) / outerRadiusX) ** 2 + ((y - center.y) / outerRadiusY) ** 2 + ((z - center.z) / outerRadiusZ) ** 2;
+
+                if (distanceSquared <= 1 && distanceSquared >= (innerRadiusX / outerRadiusX) ** 2 && distanceSquared >= (innerRadiusY / outerRadiusY) ** 2 && distanceSquared >= (innerRadiusZ / outerRadiusZ) ** 2) {
+                    placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                }
+            }
+        }
+    }
+}
+export function* generateMinecraftOvoidBG(center: Vector3, radius: Vector3, offset: Vector3, thickness: number, generatorProgressId: string, dimension?: Dimension, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, options?: {integrity?: number, minMSBetweenYields?: number}) {
+    try{
+        const innerRadiusX = radius.x - thickness;
+        const innerRadiusY = radius.y - thickness;
+        const innerRadiusZ = radius.z - thickness;
+        const outerRadiusX = radius.x + offset.x
+        const outerRadiusY = radius.y + offset.y;
+        const outerRadiusZ = radius.z + offset.z;
+        generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+
+        if((options?.integrity??100)!=100){
+            for (let x = Math.floor(center.x - outerRadiusX); x <= Math.ceil(center.x + outerRadiusX); x++) {
+                for (let y = Math.floor(center.y - outerRadiusY); y <= Math.ceil(center.y + outerRadiusY); y++) {
+                    for (let z = Math.floor(center.z - outerRadiusZ); z <= Math.ceil(center.z + outerRadiusZ); z++) {
+                        const distanceSquared = ((x - center.x) / outerRadiusX) ** 2 + ((y - center.y) / outerRadiusY) ** 2 + ((z - center.z) / outerRadiusZ) ** 2;
+
+                        if (distanceSquared <= 1 && distanceSquared >= (innerRadiusX / outerRadiusX) ** 2 && distanceSquared >= (innerRadiusY / outerRadiusY) ** 2 && distanceSquared >= (innerRadiusZ / outerRadiusZ) ** 2) {
+                            if(Math.random()<=((options?.integrity??100)/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                        }
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = Math.floor(center.x - outerRadiusX); x <= Math.ceil(center.x + outerRadiusX); x++) {
+                for (let y = Math.floor(center.y - outerRadiusY); y <= Math.ceil(center.y + outerRadiusY); y++) {
+                    for (let z = Math.floor(center.z - outerRadiusZ); z <= Math.ceil(center.z + outerRadiusZ); z++) {
+                        const distanceSquared = ((x - center.x) / outerRadiusX) ** 2 + ((y - center.y) / outerRadiusY) ** 2 + ((z - center.z) / outerRadiusZ) ** 2;
+
+                        if (distanceSquared <= 1 && distanceSquared >= (innerRadiusX / outerRadiusX) ** 2 && distanceSquared >= (innerRadiusY / outerRadiusY) ** 2 && distanceSquared >= (innerRadiusZ / outerRadiusZ) ** 2) {
+                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                        }
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        
+        generatorProgress[generatorProgressId].endTick=system.currentTick; 
+        generatorProgress[generatorProgressId].endTime=Date.now(); 
+        generatorProgress[generatorProgressId].done=true; 
+        return
+    }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
+}
+export function generateMinecraftOvoidC(center: Vector3, radius: Vector3, offset: Vector3, thickness: number, dimension?: Dimension, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, integrity: number = 100) {
+    const innerRadiusX = radius.x - thickness;
+    const innerRadiusY = radius.y - thickness;
+    const innerRadiusZ = radius.z - thickness;
+
+    if((integrity)!=100){
+        for (let x = Math.floor(center.x - radius.x - offset.x); x <= Math.ceil(center.x + radius.x + offset.x); x++) {
+            for (let y = Math.floor(center.y - radius.y - offset.y); y <= Math.ceil(center.y + radius.y + offset.y); y++) {
+                for (let z = Math.floor(center.z - radius.z - offset.z); z <= Math.ceil(center.z + radius.z + offset.z); z++) {
+                    const distanceSquared = ((x - center.x) / (radius.x + offset.x)) ** 2 + ((y - center.y) / (radius.y + offset.y)) ** 2 + ((z - center.z) / (radius.z + offset.z)) ** 2;
+
+                    if (distanceSquared <= 1 && distanceSquared >= (innerRadiusX / (radius.x + offset.x)) ** 2 && distanceSquared >= (innerRadiusY / (radius.y + offset.y)) ** 2 && distanceSquared >= (innerRadiusZ / (radius.z + offset.z)) ** 2) {
+                        if(Math.random()<=((integrity??100)/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                    }
+                }
+            }
+        }
+    }else{
+        for (let x = Math.floor(center.x - radius.x - offset.x); x <= Math.ceil(center.x + radius.x + offset.x); x++) {
+            for (let y = Math.floor(center.y - radius.y - offset.y); y <= Math.ceil(center.y + radius.y + offset.y); y++) {
+                for (let z = Math.floor(center.z - radius.z - offset.z); z <= Math.ceil(center.z + radius.z + offset.z); z++) {
+                    const distanceSquared = ((x - center.x) / (radius.x + offset.x)) ** 2 + ((y - center.y) / (radius.y + offset.y)) ** 2 + ((z - center.z) / (radius.z + offset.z)) ** 2;
+
+                    if (distanceSquared <= 1 && distanceSquared >= (innerRadiusX / (radius.x + offset.x)) ** 2 && distanceSquared >= (innerRadiusY / (radius.y + offset.y)) ** 2 && distanceSquared >= (innerRadiusZ / (radius.z + offset.z)) ** 2) {
+                        placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                    }
+                }
+            }
+        }
+    }
+}
+export function* generateMinecraftOvoidCG(center: Vector3, radius: Vector3, offset: Vector3, thickness: number, generatorProgressId: string, dimension?: Dimension, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, options?: {integrity?: number, minMSBetweenYields?: number}) {
+    try{
+        const innerRadiusX = radius.x - thickness;
+        const innerRadiusY = radius.y - thickness;
+        const innerRadiusZ = radius.z - thickness;
+        generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+
+        if((options?.integrity??100)!=100){
+            for (let x = Math.floor(center.x - radius.x); x <= Math.ceil(center.x + radius.x); x++) {
+                for (let y = Math.floor(center.y - radius.y); y <= Math.ceil(center.y + radius.y); y++) {
+                    for (let z = Math.floor(center.z - radius.z); z <= Math.ceil(center.z + radius.z); z++) {
+                        const distanceSquared = ((x - center.x - offset.x) / radius.x) ** 2 + ((y - center.y - offset.y) / radius.y) ** 2 + ((z - center.z - offset.z) / radius.z) ** 2;
+
+                        if (distanceSquared <= 1 && distanceSquared >= (innerRadiusX / radius.x) ** 2 && distanceSquared >= (innerRadiusY / radius.y) ** 2 && distanceSquared >= (innerRadiusZ / radius.z) ** 2) {
+                            if(Math.random()<=((options?.integrity??100)/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                        }
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = Math.floor(center.x - radius.x); x <= Math.ceil(center.x + radius.x); x++) {
+                for (let y = Math.floor(center.y - radius.y); y <= Math.ceil(center.y + radius.y); y++) {
+                    for (let z = Math.floor(center.z - radius.z); z <= Math.ceil(center.z + radius.z); z++) {
+                        const distanceSquared = ((x - center.x - offset.x) / radius.x) ** 2 + ((y - center.y - offset.y) / radius.y) ** 2 + ((z - center.z - offset.z) / radius.z) ** 2;
+
+                        if (distanceSquared <= 1 && distanceSquared >= ((innerRadiusX + offset.x) / radius.x) ** 2 && distanceSquared >= ((innerRadiusY + offset.y) / radius.y) ** 2 && distanceSquared >= ((innerRadiusZ + offset.z) / radius.z) ** 2) {
+                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                        }
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        generatorProgress[generatorProgressId].endTick=system.currentTick; 
+        generatorProgress[generatorProgressId].endTime=Date.now(); 
+        generatorProgress[generatorProgressId].done=true; 
+        return
+    }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
+}
+export function generateSolidOvoid(center: Vector3, radius: Vector3, offset: Vector3, dimension?: Dimension, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, integrity: number = 100) {
+
+    if((integrity)!=100){
+        for (let x = Math.floor(center.x - radius.x); x <= Math.ceil(center.x + radius.x); x++) {
+            for (let y = Math.floor(center.y - radius.y); y <= Math.ceil(center.y + radius.y); y++) {
+                for (let z = Math.floor(center.z - radius.z); z <= Math.ceil(center.z + radius.z); z++) {
+                    const distanceSquared = ((x - center.x - offset.x) / radius.x) ** 2 + ((y - center.y - offset.y) / radius.y) ** 2 + ((z - center.z - offset.z) / radius.z) ** 2;
+
+                    if (distanceSquared <= 1) {
+                        if(Math.random()<=((integrity??100)/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                    }
+                }
+            }
+        }
+    }else{
+        for (let x = Math.floor(center.x - radius.x); x <= Math.ceil(center.x + radius.x); x++) {
+            for (let y = Math.floor(center.y - radius.y); y <= Math.ceil(center.y + radius.y); y++) {
+                for (let z = Math.floor(center.z - radius.z); z <= Math.ceil(center.z + radius.z); z++) {
+                    const distanceSquared = ((x - center.x - offset.x) / radius.x) ** 2 + ((y - center.y - offset.y) / radius.y) ** 2 + ((z - center.z - offset.z) / radius.z) ** 2;
+
+                    if (distanceSquared <= 1) {
+                        placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                    }
+                }
+            }
+        }
+    }
+}
+export function* generateSolidOvoidBG(center: Vector3, radius: Vector3, offset: Vector3, generatorProgressId: string, dimension?: Dimension, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, options?: {integrity?: number, minMSBetweenYields?: number}) {
+    try{
+        generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+
+        if((options?.integrity)!=100){
+            for (let x = Math.floor(center.x - radius.x); x <= Math.ceil(center.x + radius.x); x++) {
+                for (let y = Math.floor(center.y - radius.y); y <= Math.ceil(center.y + radius.y); y++) {
+                    for (let z = Math.floor(center.z - radius.z); z <= Math.ceil(center.z + radius.z); z++) {
+                        const distanceSquared = ((x - center.x) / radius.x) ** 2 + ((y - center.y) / radius.y) ** 2 + ((z - center.z) / radius.z) ** 2;
+
+                        if (distanceSquared <= 1) {
+                            if(Math.random()<=((options?.integrity??100)/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                        }
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = Math.floor(center.x - radius.x); x <= Math.ceil(center.x + radius.x); x++) {
+                for (let y = Math.floor(center.y - radius.y); y <= Math.ceil(center.y + radius.y); y++) {
+                    for (let z = Math.floor(center.z - radius.z); z <= Math.ceil(center.z + radius.z); z++) {
+                        const distanceSquared = ((x - center.x) / radius.x) ** 2 + ((y - center.y) / radius.y) ** 2 + ((z - center.z) / radius.z) ** 2;
+
+                        if (distanceSquared <= 1) {
+                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                        }
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        generatorProgress[generatorProgressId].endTick=system.currentTick; 
+        generatorProgress[generatorProgressId].endTime=Date.now(); 
+        generatorProgress[generatorProgressId].done=true; 
+        return
+    }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
+}
+export function generateSkygrid(from: Vector3, to: Vector3, gridSize: number, dimension?: Dimension, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, integrity: number = 100) {
+    const startX = Math.floor(from.x);
+    const startY = Math.floor(from.y);
+    const startZ = Math.floor(from.z);
+    const endX = Math.floor(to.x);
+    const endY = Math.floor(to.y);
+    const endZ = Math.floor(to.z);
+
+    if((integrity??100)!=100){
+        for (let x = startX; x <= endX; x += gridSize) {
+            for (let y = startY; y <= endY; y += gridSize) {
+                for (let z = startZ; z <= endZ; z += gridSize) {
+                    if(Math.random()<=((integrity??100)/100)){placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension });}
+                }
+            }
+        }
+    }else{
+        for (let x = startX; x <= endX; x += gridSize) {
+            for (let y = startY; y <= endY; y += gridSize) {
+                for (let z = startZ; z <= endZ; z += gridSize) {
+                    placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension });
+                }
+            }
+        }
+    }
+}
+export function generateInverseSkygrid(from: Vector3, to: Vector3, gridSize: number, dimension?: Dimension, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, integrity: number = 100) {
+    const startX = Math.floor(from.x);
+    const startY = Math.floor(from.y);
+    const startZ = Math.floor(from.z);
+    const endX = Math.floor(to.x);
+    const endY = Math.floor(to.y);
+    const endZ = Math.floor(to.z);
+
+    if((integrity??100)!=100){
+        for (let x = startX; x <= endX; x++) {
+            for (let y = startY; y <= endY; y++) {
+                for (let z = startZ; z <= endZ; z++) {
+                    if (Math.floor(x) % gridSize !== 0 && Math.floor(y) % gridSize !== 0 && Math.floor(z) % gridSize !== 0) {
+                        if(Math.random()<=((integrity??100)/100)){placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension });}
+                    }
+                }
+            }
+        }
+    }else{
+        for (let x = startX; x <= endX; x++) {
+            for (let y = startY; y <= endY; y++) {
+                for (let z = startZ; z <= endZ; z++) {
+                    if (Math.floor(x) % gridSize !== 0 && Math.floor(y) % gridSize !== 0 && Math.floor(z) % gridSize !== 0) {
+                        placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension });
+                    }
+                }
+            }
+        }
+    }
+}
+export function* generateSkygridBG(from: Vector3, to: Vector3, gridSize: number, generatorProgressId: string, dimension?: Dimension, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, options?: {integrity?: number, minMSBetweenYields?: number}) {
+    try{
+        const startX = Math.floor(from.x);
+        const startY = Math.floor(from.y);
+        const startZ = Math.floor(from.z);
+        const endX = Math.floor(to.x);
+        const endY = Math.floor(to.y);
+        const endZ = Math.floor(to.z);
+        generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+
+        if((options?.integrity??100)!=100){
+            for (let x = startX; x <= endX; x += gridSize) {
+                for (let y = startY; y <= endY; y += gridSize) {
+                    for (let z = startZ; z <= endZ; z += gridSize) {
+                        if(Math.random()<=((options?.integrity??100)/100)){placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension });}
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = startX; x <= endX; x += gridSize) {
+                for (let y = startY; y <= endY; y += gridSize) {
+                    for (let z = startZ; z <= endZ; z += gridSize) {
+                        placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension });
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        generatorProgress[generatorProgressId].endTick=system.currentTick; 
+        generatorProgress[generatorProgressId].endTime=Date.now(); 
+        generatorProgress[generatorProgressId].done=true; 
+        return
+    }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
+}
+export function* generateInverseSkygridBG(from: Vector3, to: Vector3, gridSize: number, generatorProgressId: string, dimension?: Dimension, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, options?: {integrity?: number, minMSBetweenYields?: number}) {
+    try{
+        const startX = Math.floor(from.x);
+        const startY = Math.floor(from.y);
+        const startZ = Math.floor(from.z);
+        const endX = Math.floor(to.x);
+        const endY = Math.floor(to.y);
+        const endZ = Math.floor(to.z);
+        generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+
+        if((options?.integrity??100)!=100){
+            for (let x = startX; x <= endX; x++) {
+                for (let y = startY; y <= endY; y++) {
+                    for (let z = startZ; z <= endZ; z++) {
+                        if (Math.floor(startX-x) % gridSize === 0 && Math.floor(startY-y) % gridSize === 0 && Math.floor(startZ-z) % gridSize === 0) {
+                            continue; // Skip positions where the skygrid would generate blocks
+                        }
+                            if(Math.random()<=((options?.integrity??100)/100)){placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension });}
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = startX; x <= endX; x++) {
+                for (let y = startY; y <= endY; y++) {
+                    for (let z = startZ; z <= endZ; z++) {
+                        //console.warn(x % gridSize, y % gridSize, z % gridSize)
+                        if (Math.floor(startX-x) % gridSize === 0 && Math.floor(startY-y) % gridSize === 0 && Math.floor(startZ-z) % gridSize === 0) {
+                            continue; // Skip positions where the skygrid would generate blocks
+                        }else{
+                            placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension });}
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=(options?.minMSBetweenYields??2000)){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        generatorProgress[generatorProgressId].endTick=system.currentTick; 
+        generatorProgress[generatorProgressId].endTime=Date.now(); 
+        generatorProgress[generatorProgressId].done=true; 
+        return
+    }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
+}
+export function generateTickingAreaFillCoordinates(area: CompoundBlockVolume, dimension: Dimension) {
+    const locations = [] as DimensionLocation[]
+    //${se}let b = new CompoundBlockVolume(); b.pushVolume({volume: new BlockVolume(Vector.one, Vector.multiply(Vector.one, 20)), action: 0}); bsend(b.getBlockLocationIterator()?.next()?.value); 
+    
+    for (let x = 0; !!(()=>{for(const c of area.getBlockLocationIterator()){return c}})(); x++) {
+        let a = (()=>{for(const c of area.getBlockLocationIterator()){return c}})()
+        area.pushVolume({volume: new BlockVolume({x: a.x-64, y: area.getMin().y, z: a.z-64}, {x: a.x+64, y: area.getMax().y, z: a.z+64}), action: 1})
+        locations.push(Object.assign(a, {dimension: dimension, y: 320}));
+    }
+    return locations
+}
+export function generateTickingAreaFillCoordinatesB(area: CompoundBlockVolume, dimension: Dimension, spawnEntityCallback: (location: DimensionLocation, locations: DimensionLocation[], index: number)=>any = (l, e, i)=>{try{let name = `generateTickingAreaFillCoordinates${Date.now()}EntityTickingArea${i}`; l.dimension.runCommand(`summon andexdb:tickingarea_6 ${name} ${vTStr(l)}`); e.push(l)}catch(e){console.warn(e, e.stack)}}) {
+    const locations = [] as DimensionLocation[]
+    //${se}let b = new CompoundBlockVolume(); b.pushVolume({volume: new BlockVolume(Vector.one, Vector.multiply(Vector.one, 20)), action: 0}); bsend(b.getBlockLocationIterator()?.next()?.value); 
+    
+    for (let x = 0; !!(()=>{for(const c of area.getBlockLocationIterator()){return c}})(); x++) {
+        let a = (()=>{for(const c of area.getBlockLocationIterator()){return c}})()
+        area.pushVolume({volume: new BlockVolume({x: a.x-64, y: area.getMin().y, z: a.z-64}, {x: a.x+64, y: area.getMax().y, z: a.z+64}), action: 1})
+        spawnEntityCallback(Object.assign(a, {dimension: dimension, y: 320}), locations, x);
+    }
+    return locations
+}
+export async function generateTickingAreaFillCoordinatesC(center: Vector3, area: CompoundBlockVolume, dimension: Dimension, spawnEntityCallback: (location: DimensionLocation, locations: Entity[], index: number)=>any = (l, e, i)=>{try{let name = `generateTickingAreaFillCoordinates${Date.now()}EntityTickingArea${i}`; l.dimension.runCommand(`summon andexdb:tickingarea_6 ${name} ${vTStr(l)}`); e.push(l.dimension.getEntitiesAtBlockLocation(l).find(v=>v.typeId=="andexdb:tickingarea"&&v.nameTag==name))}catch(e){console.warn(e, e.stack)}}) {
+    const locations = generateTickingAreaFillCoordinates(area, dimension).sort((a, b) => getDistance(a, center) - getDistance(b, center))
+    const entities = [] as Entity[]
+    //${se}let b = new CompoundBlockVolume(); b.pushVolume({volume: new BlockVolume(Vector.one, Vector.multiply(Vector.one, 20)), action: 0}); bsend(b.getBlockLocationIterator()?.next()?.value); 
+    
+    for (const l of locations) {
+        system.runTimeout(()=>spawnEntityCallback(l, entities, locations.indexOf(l)), 2*locations.indexOf(l));
+    }
+    return new Promise((resolve: (value: Entity[]) => void, reject) => {
+        system.runTimeout(()=>resolve(entities), locations.length*2)
+    })
+}
+export function drawMinecraftCircle(center: Vector3, radius: number, axis: string, precision: number = 360) {
+    const coordinates = [] as Vector3[];
+
+    if(axis.toLowerCase().includes("y")||axis.toLowerCase().includes("ud")||axis.toLowerCase().includes("du")){
+        for (let i = 0; i < precision; i++) {
+            const angle = i * Math.PI / 180;
+            const xPos = center.x + (radius) * Math.cos(angle);
+            const zPos = center.z + (radius) * Math.sin(angle);
+            coordinates.push({ x: Math.floor(xPos), y: center.y, z: Math.floor(zPos) });
+
+        }
+    }else if(axis.toLowerCase().includes("x")||axis.toLowerCase().includes("ew")||axis.toLowerCase().includes("we")){
+        for (let i = 0; i < precision; i++) {
+            const angle = i * Math.PI / 180;
+            const zPos = center.z + (radius) * Math.cos(angle);
+            const yPos = center.y + (radius) * Math.sin(angle);
+            coordinates.push({ x: center.x, y: Math.floor(yPos), z: Math.floor(zPos) });
+
+        }
+    }else if(axis.toLowerCase().includes("z")||axis.toLowerCase().includes("ns")||axis.toLowerCase().includes("sn")){
+        for (let i = 0; i < precision; i++) {
+            const angle = i * Math.PI / 180;
+            const xPos = center.x + radius * Math.cos(angle);
+            const yPos = center.y + radius * Math.sin(angle);
+            coordinates.push({ x: Math.floor(xPos), y: Math.floor(yPos), z: center.z });
+
+        }
+    }
+
+    return coordinates;
+}
+export function generateMinecraftTunnel(center: Vector3, radius: number, length: number, axis: string, precision: number = 360) {
+    const coordinates = new Set([] as Vector3[]);
+
+    if(axis.toLowerCase().includes("y")||axis.toLowerCase().includes("ud")||axis.toLowerCase().includes("du")){
+        for (let i = 0; i < precision; i++) {
+            const angle = i * Math.PI / 180;
+            const xPos = center.x + (radius) * Math.cos(angle);
+            const zPos = center.z + (radius) * Math.sin(angle);
+            Array.from(new BlockVolume({ x: Math.floor(xPos), y: center.y-(length/2), z: Math.floor(zPos) }, { x: Math.floor(xPos), y: center.y+(length/2), z: Math.floor(zPos) }).getBlockLocationIterator()).forEach(v=>coordinates.add(v));
+
+        }
+    }else if(axis.toLowerCase().includes("x")||axis.toLowerCase().includes("ew")||axis.toLowerCase().includes("we")){
+        for (let i = 0; i < precision; i++) {
+            const angle = i * Math.PI / 180;
+            const zPos = center.z + (radius) * Math.cos(angle);
+            const yPos = center.y + (radius) * Math.sin(angle);
+            Array.from(new BlockVolume({ x: center.x-(length/2), y: Math.floor(yPos), z: Math.floor(zPos) }, { x: center.x+(length/2), y: Math.floor(yPos), z: Math.floor(zPos) }).getBlockLocationIterator()).forEach(v=>coordinates.add(v));
+
+        }
+    }else if(axis.toLowerCase().includes("z")||axis.toLowerCase().includes("ns")||axis.toLowerCase().includes("sn")){
+        for (let i = 0; i < precision; i++) {
+            const angle = i * Math.PI / 180;
+            const xPos = center.x + radius * Math.cos(angle);
+            const yPos = center.y + radius * Math.sin(angle);
+            Array.from(new BlockVolume({ x: Math.floor(xPos), y: Math.floor(yPos), z: center.z-(length/2) }, { x: Math.floor(xPos), y: Math.floor(yPos), z: center.z+(length/2) }).getBlockLocationIterator()).forEach(v=>coordinates.add(v));
+
+        }
+    }
+
+    return Array.from(coordinates);
+}
+export function generateMinecraftTunnelSet(center: Vector3, radius: number, length: number, axis: string, precision: number = 360) {
+    const coordinates = new Set([] as Vector3[]);
+
+    if(axis.toLowerCase().includes("y")||axis.toLowerCase().includes("ud")||axis.toLowerCase().includes("du")){
+        for (let i = 0; i < precision; i++) {
+            const angle = i * Math.PI / 180;
+            const xPos = center.x + (radius) * Math.cos(angle);
+            const zPos = center.z + (radius) * Math.sin(angle);
+            Array.from(new BlockVolume({ x: Math.floor(xPos), y: center.y-(length/2), z: Math.floor(zPos) }, { x: Math.floor(xPos), y: center.y+(length/2), z: Math.floor(zPos) }).getBlockLocationIterator()).forEach(v=>coordinates.add(v));
+
+        }
+    }else if(axis.toLowerCase().includes("x")||axis.toLowerCase().includes("ew")||axis.toLowerCase().includes("we")){
+        for (let i = 0; i < precision; i++) {
+            const angle = i * Math.PI / 180;
+            const zPos = center.z + (radius) * Math.cos(angle);
+            const yPos = center.y + (radius) * Math.sin(angle);
+            Array.from(new BlockVolume({ x: center.x-(length/2), y: Math.floor(yPos), z: Math.floor(zPos) }, { x: center.y+(length/2), y: Math.floor(yPos), z: Math.floor(zPos) }).getBlockLocationIterator()).forEach(v=>coordinates.add(v));
+
+        }
+    }else if(axis.toLowerCase().includes("z")||axis.toLowerCase().includes("ns")||axis.toLowerCase().includes("sn")){
+        for (let i = 0; i < precision; i++) {
+            const angle = i * Math.PI / 180;
+            const xPos = center.x + radius * Math.cos(angle);
+            const yPos = center.y + radius * Math.sin(angle);
+            Array.from(new BlockVolume({ x: Math.floor(xPos), y: Math.floor(yPos), z: center.z-(length/2) }, { x: Math.floor(xPos), y: Math.floor(yPos), z: center.z+(length/2) }).getBlockLocationIterator()).forEach(v=>coordinates.add(v));
+
+        }
+    }
+
+    return coordinates;
+}
+export function drawMinecraftCircleB(center: Vector3, radius: number, rotation: Vector2, precision: number = 360) {
+    const coordinates = new Set([] as Vector3[]);
+    for (let i = 0; i < precision; i++) {
+        const angle = i * Math.PI / 180;
+        const xPos = (radius) * Math.cos(angle);
+        const zPos = (radius) * Math.sin(angle);
+        const newPos = rotate(rotation.x, 0, rotation.y, [{ x: Math.floor(xPos), y: 0, z: Math.floor(zPos) }])[0]
+        const value = {x: center.x+newPos.x, y: center.y+newPos.y, z: center.z+newPos.z}
+        coordinates.add(value);
+
+    }
+
+    return Array.from(coordinates);
+}
+export function generateHollowSphere(center: Vector3, radius: number, thickness: number) {
+    const centerX = center.x
+    const centerY = center.y
+    const centerZ = center.z
+    const coordinates = [] as Vector3[]
+    for (let x = centerX - radius; x <= centerX + radius; x++) {
+        for (let y = centerY - radius; y <= centerY + radius; y++) {
+            for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2 + (z - centerZ) ** 2);
+                if (distance >= radius - thickness && distance <= radius) {
+                    coordinates.push({x: x, y: y, z: z});
+                }
+            }
+        }
+    }
+    return coordinates
+}
+export function generateHollowSphereB(center: Vector3, radius: number, thickness: number, dimension: Dimension, placeBlockCallback: (location: DimensionLocation)=>any) {
+    const centerX = center.x
+    const centerY = center.y
+    const centerZ = center.z
+    for (let x = centerX - radius; x <= centerX + radius; x++) {
+        for (let y = centerY - radius; y <= centerY + radius; y++) {
+            for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2 + (z - centerZ) ** 2);
+                if (distance >= radius - thickness && distance <= radius) {
+                    placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                }
+            }
+        }
+    }
+    return coordinates
+}
+export function* generateHollowSphereBG(center: Vector3, radius: number, thickness: number, dimension: Dimension, generatorProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
+    try{
+        const centerX = center.x
+        const centerY = center.y
+        const centerZ = center.z
+        generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+        if(integrity!=100){
+            for (let x = centerX - radius; x <= centerX + radius; x++) {
+                for (let y = centerY - radius; y <= centerY + radius; y++) {
+                    for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                        const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2 + (z - centerZ) ** 2);
+                        if (distance >= radius - thickness && distance <= radius) {
+                            if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                        }
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = centerX - radius; x <= centerX + radius; x++) {
+                for (let y = centerY - radius; y <= centerY + radius; y++) {
+                    for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                        const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2 + (z - centerZ) ** 2);
+                        if (distance >= radius - thickness && distance <= radius) {
+                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                        }
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        onComplete()
+        generatorProgress[generatorProgressId].endTick=system.currentTick; 
+        generatorProgress[generatorProgressId].endTime=Date.now(); 
+        generatorProgress[generatorProgressId].done=true; 
+        return
+    }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
+}
+export function* generateDomeBG(center: Vector3, radius: number, thickness: number, dimension: Dimension, generatorProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
+    try{
+        const centerX = center.x
+        const centerY = center.y
+        const centerZ = center.z
+        generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+        if(integrity!=100){
+            for (let x = centerX - radius; x <= centerX + radius; x++) {
+                for (let y = centerY - radius; y <= centerY + radius; y++) {
+                    if(y>=centerY){
+                        for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                            const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2 + (z - centerZ) ** 2);
+                            if (distance >= radius - thickness && distance <= radius) {
+                                if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                            }
+                        }
+                        if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                    }
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = centerX - radius; x <= centerX + radius; x++) {
+                for (let y = centerY - radius; y <= centerY + radius; y++) {
+                    if(y>=centerY){
+                        for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                            const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2 + (z - centerZ) ** 2);
+                            if (distance >= radius - thickness && distance <= radius) {
+                                placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                            }
+                        }
+                        if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                    }
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        onComplete()
+        generatorProgress[generatorProgressId].endTick=system.currentTick; 
+        generatorProgress[generatorProgressId].endTime=Date.now(); 
+        generatorProgress[generatorProgressId].done=true; 
+        return
+    }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
+}
+
+export function generateMinecraftSphere(center: Vector3, radius: number) {
+    const centerX = center.x
+    const centerY = center.y
+    const centerZ = center.z
+    const coordinates = [] as Vector3[]
+    for (let x = centerX - radius; x <= centerX + radius; x++) {
+        for (let y = centerY - radius; y <= centerY + radius; y++) {
+            for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                if (distanceSquared <= Math.pow(radius, 2)) {
+                    coordinates.push({x: x, y: y, z: z});
+                }
+            }
+        }
+    }
+    return coordinates
+}
+export function generateMinecraftSphereB(center: Vector3, radius: number, dimension: Dimension, placeBlockCallback: (location: DimensionLocation)=>any) {
+    const centerX = center.x
+    const centerY = center.y
+    const centerZ = center.z
+    var counter = 0
+    for (let x = centerX - radius; x <= centerX + radius; x++) {
+        for (let y = centerY - radius; y <= centerY + radius; y++) {
+            for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                if (distanceSquared <= Math.pow(radius, 2)) {
+                    placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                }
+            }
+        }
+    }
+    return counter
+}
+export let generatorProgressIndex = 0
+export const generatorProgress = {} as {[k: string]: {done: boolean, startTick: number, endTick?: number, startTime: number, endTime?: number, containsUnloadedChunks: boolean}}
+export function generatorProgressIdGenerator() {
+    let id = "generatorId"+generatorProgressIndex+"Time"+Date.now()
+    generatorProgressIndex = (generatorProgressIndex+1)%32767
+    return id
+}
+export let generateMinecraftSphereBGProgressIndex = 0
+export const generateMinecraftSphereBGProgress = {} as {[k: string]: {done: boolean, startTick: number, endTick?: number, startTime: number, endTime?: number, containsUnloadedChunks: boolean}}
+export function generateMinecraftSphereBGIdGenerator() {
+    let id = "generatorId"+generateMinecraftSphereBGProgressIndex+"Time"+Date.now()
+    generateMinecraftSphereBGProgressIndex = (generateMinecraftSphereBGProgressIndex+1)%32767
+    return id
+}
+export function* generateMinecraftSphereBG(center: Vector3, radius: number, dimension: Dimension, generateMinecraftSphereBGProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
+    try{
+        const centerX = center.x
+        const centerY = center.y
+        const centerZ = center.z
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+        if(integrity!=100){
+            for (let x = centerX - radius; x <= centerX + radius; x++) {
+                for (let y = centerY - radius; y <= centerY + radius; y++) {
+                    for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                        const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                        if (distanceSquared <= Math.pow(radius, 2)) {
+                            if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                        }
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = centerX - radius; x <= centerX + radius; x++) {
+                for (let y = centerY - radius; y <= centerY + radius; y++) {
+                    for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                        const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                        if (distanceSquared <= Math.pow(radius, 2)) {
+                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                        }
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        onComplete()
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].endTick=system.currentTick; 
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].endTime=Date.now(); 
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].done=true; 
+        return
+    }catch(e){generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].endTick=system.currentTick; generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].endTime=Date.now(); generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].done=true; throw(e)}
+}
+export function* generateMinecraftSemiSphereBG(center: Vector3, radius: number, dimension: Dimension, generateMinecraftSphereBGProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
+    try{
+        const centerX = center.x
+        const centerY = center.y
+        const centerZ = center.z
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+        if(integrity!=100){
+            for (let x = centerX - radius; x <= centerX + radius; x++) {
+                for (let y = centerY - radius; y <= centerY + radius; y++) {
+                    if(y>=centerY){
+                        for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                            const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                            if (distanceSquared <= Math.pow(radius, 2)) {
+                                if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                            }
+                        }
+                        if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                    }
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = centerX - radius; x <= centerX + radius; x++) {
+                for (let y = centerY - radius; y <= centerY + radius; y++) {
+                    if(y>=centerY){
+                        for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                            const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                            if (distanceSquared <= Math.pow(radius, 2)) {
+                                placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                            }
+                        }
+                        if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                    }
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        onComplete()
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].endTick=system.currentTick; 
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].endTime=Date.now(); 
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].done=true; 
+        return
+    }catch(e){generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].endTick=system.currentTick; generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].endTime=Date.now(); generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].done=true; throw(e)}
+}
+export async function drawMinecraftSphere(center: Vector3, radius: number, precision: number = 360) {
+    const coordinates = [] as Vector3[];
+    for (let i = 0; i < precision; i++) {
+        coordinates.push(...drawMinecraftCircleB(center, radius, {x: 0, y: i}));
+
+    }
+    return (async ()=>{
+        for (let i = 0; i < precision; i++) {
+            coordinates.push(...drawMinecraftCircleB(center, radius, {x: 90, y: i}));
+        }; 
+        return [...new Set(coordinates)]
+    })()
+    
+}
+export function drawMinecraftLopsidedSphere(center: Vector3, radius: number) {
+    const coordinates = [] as Vector3[];
+    for (let i = 0; i < 360; i++) {
+        coordinates.push(...drawMinecraftCircleB(center, radius, {x: i, y: i}));
+
+    }
+    return coordinates;
+}
+export function generateMinecraftCylinder(blockType, radius, thickness, centerX, centerY, centerZ) {
+    // Example command to create a hollow cylinder with air inside:
+    const commands = [];
+    for (let y = -radius; y <= radius; y++) {
+        const height = Math.floor(Math.sqrt(radius * radius - y * y));
+        for (let x = -height; x <= height; x++) {
+            for (let z = -height; z <= height; z++) {
+                const distance = Math.sqrt(x * x + y * y + z * z);
+                if (distance >= radius - thickness && distance <= radius) {
+                    commands.push(`/setblock ${centerX + x} ${centerY + y} ${centerZ + z} ${blockType}`);
+                }
+            }
+        }
+    }
+    return commands;
+}
+export function roundVector3ToMiddleOfBlock(vector: Vector3) {
+    return {x: Math.floor(vector.x)+0.5, y: Math.floor(vector.y)+0.5, z: Math.floor(vector.z)+0.5};
 }
 declare global {
     class Entity {
