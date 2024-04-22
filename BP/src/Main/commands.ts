@@ -762,12 +762,12 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "takeitem", escregexp: {v: "^takeitem$"}, formats: [{format: "takeitem <fromSlot: number|~> <fromPlayer: playerName>"}], command_version: "0.1.1-beta.1", description: "", category: ["items"], commandSettingsId: "built-inCommandSettings:takeitem"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventories", escregexp: {v: "^swapinventories$"}, aliases: [{commandName: "invswap", escregexp: {v: "^invswap$"}}], formats: [{format: "swapinventories <player1: string|~> <player2: string|~>"}], command_version: "0.2.1-beta.1", description: "Swaps the inventory, offhand, hotbar, and armor of two specified players. ", category: ["players"], commandSettingsId: "built-inCommandSettings:swapinventories"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventoriesb", escregexp: {v: "^swapinventoriesb$"}, aliases: [{commandName: "invswapb", escregexp: {v: "^invswapb$"}}], formats: [{format: "swapinventoriesb <player1: string|~> <player2: string|~>"}], command_version: "0.2.1-beta.1", description: "Swaps the inventory and hotbar of two specified players. ", category: ["players"], commandSettingsId: "built-inCommandSettings:swapinventoriesb"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitems", escregexp: {v: "^compressitems$"}, formats: [{format: "compressitems [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "1.0.0-rc.5", description: "Compresses your items into chest(s) and gives you those chest(s) as items. ", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:compressitems"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemsshulker", escregexp: {v: "^compressitemsshulker$"}, formats: [{format: "compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "1.0.0-rc.5", description: "Compresses your items into shulker box(es) and gives you those shulker box(es) as items. ", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:compressitemsshulker"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainer", escregexp: {v: "^compressitemscontainer$"}, formats: [{format: "compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "1.0.0-rc.5", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:compressitemscontainer"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainerb", escregexp: {v: "^compressitemscontainerb$"}, formats: [{format: "compressitemscontainerb [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "0.0.1-alpha.76", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:compressitemscontainerb"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchest", escregexp: {v: "^scanenderchest$"}, aliases: [{commandName: "ecinvsee", escregexp: {v: "^ecinvsee$"}}, {commandName: "sncendchest", escregexp: {v: "^scnendchest$"}}], formats: [{format: "scanenderchest [target: string|~]"}], command_version: "0.2.0-alpha.17", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:scanenderchest"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchestc", escregexp: {v: "^scanenderchestc$"}, aliases: [{commandName: "ecinvseec", escregexp: {v: "^ecinvseec$"}}, {commandName: "sncendchestc", escregexp: {v: "^scnendchestc$"}}], formats: [{format: "scanenderchestc [target: string|~]"}], command_version: "0.3.0-alpha.36", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:scanenderchestc"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitems", escregexp: {v: "^compressitems$"}, formats: [{format: "compressitems [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "1.0.0-rc.5", description: "Compresses your items into chest(s) and gives you those chest(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitems"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemsshulker", escregexp: {v: "^compressitemsshulker$"}, formats: [{format: "compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "1.0.0-rc.5", description: "Compresses your items into shulker box(es) and gives you those shulker box(es) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemsshulker"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainer", escregexp: {v: "^compressitemscontainer$"}, formats: [{format: "compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "1.0.0-rc.5", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemscontainer"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainerb", escregexp: {v: "^compressitemscontainerb$"}, formats: [{format: "compressitemscontainerb [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "0.0.1-alpha.76", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemscontainerb"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchest", escregexp: {v: "^scanenderchest$"}, aliases: [{commandName: "ecinvsee", escregexp: {v: "^ecinvsee$"}}, {commandName: "sncendchest", escregexp: {v: "^scnendchest$"}}], formats: [{format: "scanenderchest [target: string|~]"}], command_version: "0.2.0-alpha.17", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchest"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchestc", escregexp: {v: "^scanenderchestc$"}, aliases: [{commandName: "ecinvseec", escregexp: {v: "^ecinvseec$"}}, {commandName: "sncendchestc", escregexp: {v: "^scnendchestc$"}}], formats: [{format: "scanenderchestc [target: string|~]"}], command_version: "0.3.0-alpha.36", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchestc"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "clearenderchestslot", escregexp: {v: "^clearenderchestslot$"}, formats: [{format: "clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.2.0-alpha.37", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:clearenderchestslot"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "clearenderchest", escregexp: {v: "^clearenderchest$"}, formats: [{format: "clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.0.0", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:clearenderchest"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "filljunk", escregexp: {v: "^filljunk$"}, aliases: [{commandName: "invfilljunk", escregexp: {v: "^invfilljunk$"}}], formats: [{format: "filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.9.0-alpha.21", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:filljunk"}, 
@@ -777,7 +777,8 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillinventory", escregexp: {v: "^fillinventory$"}, aliases: [{commandName: "invfill", escregexp: {v: "^invfill$"}}], formats: [{format: "fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]"}], command_version: "1.0.0-beta.17", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillinventory"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands", "canUseDangerousCommands"], formatting_code: "§r§4", commandName: "chunkban", escregexp: {v: "^chunkban$"}, formats: [{format: "chunkban [slot: int|~] [loopCount: int] [target: string|~]"}], command_version: "0.0.1-beta.72", description: "", category: ["dangerous"], commandSettingsId: "built-inCommandSettings:chunkban"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "extinguish", escregexp: {v: "^extinguish$"}, aliases: [{commandName: "ext", escregexp: {v: "^ext$"}}], formats: [{format: "extinguish [radius: number]"}], command_version: "2.2.0-beta.10", description: "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:extinguish"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "remexp", escregexp: {v: "^remexp$"}, formats: [{format: "remexp [radius: number]"}], command_version: "2.2.0-beta.5", description: "Removes explosives in the specified radius, the radius default to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:remexp"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "remexp", escregexp: {v: "^remexp$"}, formats: [{format: "remexp [radius: number]"}], command_version: "2.2.0-beta.5", description: "Removes explosives in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:remexp"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "drain", escregexp: {v: "^drain$"}, formats: [{format: "drain [radius: number]"}], command_version: "2.2.0-beta.5", description: "Drains liquids in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:drain"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: {v: "^morph$"}, formats: [{format: ""}], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:morph"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "tint", escregexp: {v: "^tint$"}, formats: [{format: "tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: targetSelector]"}], command_version: "1.0.4", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:tint"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "scale", escregexp: {v: "^scale$"}, formats: [{format: ""}], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:scale"}, 
@@ -3179,110 +3180,110 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                 break; 
                 case "help chatcommands": 
                     eventData.sender.sendMessage(`§2Chat Commands Syntax§r
-.binvsee - §oDisplays the contents of the specified block's inventory. 
-.clear - §oClears a player's inventory. 
-.clearenderchest - §oClears a player's ender chest. 
-.clearenderchestslot - §oClears a slot of a player's ender chest. 
-.cloneitem - §oClones the item in your hand to the specified player's inventory. 
-.compressitems - §oCompresses your inventory into 2 chests and inserts those chests into your inventory. 
-.compressitemsshulker - §oCompresses your inventory into 2 shulker boxes and inserts those shulker boxes into your inventory. 
-.compressitemscontainer - §oCompresses your inventory into a specified container type and inserts those containers into your inventory. 
-.copyitem - §oCopies the item in your hand to the specified slot of the specified player's inventory. 
-.createexplosion - §oCreates an explosion. 
-.datapickblock - §oPick Blocks the block that your are looking at while copying the nbt data of the block as well, just like using the pick block button while holding CTRL on your keyboard. 
-.drain - §oDrains liquids in the specified radius. 
-.dupeitem - §oDuplicates teh item in your hand. 
-.einvsee - §oDisplays the contents of the specified entity's inventory. 
-.ecinvsee - §oScans a player's ender chest and displays the contents of it. 
-.ecinvseec - §oScans a player's ender chest and displays the contents of it. 
-.eval - §oRuns the specified JavaScript Script/ScriptAPI Code. 
-.extinguish - §oExtinguishes fire in the specified radius. 
-.fill - §oFills all or parts of a reigon with a specific block, can use any block type including NBT Editor only ones. 
-.fillillegal - §oFills a player's inventory with illegal items. 
-.fillinventory - §oFills a player's inventory with items based on the provided itemJSON. 
-.filljunk - §oFills a player's inventory with junk items. 
-.fillop - §oFills a player's inventory with op items. 
-.fillrandom - §oFills a player's inventory with random items. 
-.give - §oGives you a specified amount of an item of a specified type. 
-.giveb - §oGives you an item stack with a specified type and stack size in your next empty inventory slot. 
-.givec - §oGives you an item stack based on the provided itemJSON in your next empty inventory slot. 
-.getuuid - §oGets the UUID of the specified entity. 
-.gma - §oSets your gamemode to adventure. 
-.gmc - §oSets your gamemode to creative. 
-.gmd - §oSets your gamemode to default. 
-.gmp - §oSets your gamemode to spectator. 
-.gmr - §oSets your gamemode to a random gamemode. 
-.gms - §oSets your gamemode to survival. 
-.h# - §oSwaps your hotbar with the specified hotbar preset. 
-.hset - §oSets a hotbar preset. 
-.idtfill - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. 
-.ifill - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. 
-.ifillb - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. 
-.ifillc - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. 
-.igfill - §oFills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. 
-.invfillillegal - §oFills a player's inventory with illegal items. 
-.invfill - §oFills a player's inventory with items based on the provided itemJSON. 
-.invfilljunk - §oFills a player's inventory with junk items. 
-.invfillop - §oFills a player's inventory with op items. 
-.invfillrandom - §oFills a player's inventory with random items. 
-.invsee - §oDisplays the contents of the specified player's inventory. 
-.invseeuuidmode - §oDisplays the contents of the inventory of the entity with the specified UUID. 
-.invshuffle - §oShuffles the inventory of the specified player
-.invswap - §oSwaps the inventories of 2 players. 
-.invswapb - §oSwaps the inventories of 2 players. 
-.iogfill - §oFills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. 
-.item - §oSuper advanced item modification command. 
-.itfill - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. 
-.itfillc - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. 
-.mainmenu - §oOpens up the main menu. 
-.managecommands - §oOpens up the commands editor menu. 
-.manageplayers - §oOpens up the manage players menu. 
-.managescriptautoeval - §oOpens up the Script Auto Eval settings menu. 
-.offlineinfo - §oDisplays the saved player data of the specified player. 
-.offlineuuidinfo - §oDisplays the saved player data of the player with the specified UUID. 
-.offlineinvsee - §oDisplays the saved contents of the specified player's inventory. 
-.offlineuuidinvsee - §oDisplays the saved contents of the inventory of the player with the specified UUID. 
-.printlayers - §oDisplays a list of all the blocks at your specified x and z coordinates. 
-.remexp - §oRemoves explosive blocks in the specified radius. 
-.run - §oRuns the specified command. 
-.scanenderchest - §oScans a player's ender chest and displays the contents of it. 
-.scanenderchestc - §oScans a player's ender chest and displays the contents of it. 
-.scnendchst - §oScans a player's ender chest and displays the contents of it. 
-.scnendchstc - §oScans a player's ender chest and displays the contents of it. 
-.setitem - §oReplaces the item stack in the specified inventory slot with an item stack with a specified type and stack size. 
-setitemb - §oReplaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. 
-.settings - §oOpens up the settings menu. 
-.shuffleinventory - §oShuffles the inventory of the specified player. 
-.swapinventories - §oSwaps the inventories of 2 players. 
-.swapinventoriesb - §oSwaps the inventories of 2 players. 
-.swapitems - §oSwaps an item in a slot of one player's inventory with another slot of another player's inventory. 
-.takeitem - §oSteals an item from another player's inventory and puts it into yoru inventory. 
-.terminal - §oOpens up the command runner/terminal menu. 
-.transferitem - §oTransfers the item in your hand to the specified player's inventory. 
-.top - §oTeleports on top of the highest solid block at your x and z coordinates. 
-.up - §oTeleports up the specified number of blocks and places glass below you if placeGlass is not set to false. 
-.warp - §oWarps to the specified global warp. 
-.warplist - §oLists all global warps. 
-.warplistdetails - §oLists all global warps with more details. 
-.warplistrawdata - §oLists the raw data of the global warps. 
-.warpremove - §oRemoves the specified global warp. 
-.warpreset - §oRemoves all global warps. 
-.warpset - §oSets a global warp. 
-.w - §oWarps to the specified private warp. 
-.wlist - §oLists all private warps. 
-.wlistdetails - §oLists all private warps with more details. 
-.wlistrawdata - §oLists the raw data of the private warps. 
-.wremove - §oRemoves the specified private warp. 
-.wreset - §oRemoves all private warps. 
-.wset - §oSets a private warp. 
+.binvsee - §oDisplays the contents of the specified block's inventory. §r
+.clear - §oClears a player's inventory. §r
+.clearenderchest - §oClears a player's ender chest. §r
+.clearenderchestslot - §oClears a slot of a player's ender chest. §r
+.cloneitem - §oClones the item in your hand to the specified player's inventory. §r
+.compressitems - §oCompresses your inventory into 2 chests and inserts those chests into your inventory. §r
+.compressitemsshulker - §oCompresses your inventory into 2 shulker boxes and inserts those shulker boxes into your inventory. §r
+.compressitemscontainer - §oCompresses your inventory into a specified container type and inserts those containers into your inventory. §r
+.copyitem - §oCopies the item in your hand to the specified slot of the specified player's inventory. §r
+.createexplosion - §oCreates an explosion. §r
+.datapickblock - §oPick Blocks the block that your are looking at while copying the nbt data of the block as well, just like using the pick block button while holding CTRL on your keyboard. §r
+.drain - §oDrains liquids in the specified radius. §r
+.dupeitem - §oDuplicates teh item in your hand. §r
+.einvsee - §oDisplays the contents of the specified entity's inventory. §r
+.ecinvsee - §oScans a player's ender chest and displays the contents of it. §r
+.ecinvseec - §oScans a player's ender chest and displays the contents of it. §r
+.eval - §oRuns the specified JavaScript Script/ScriptAPI Code. §r
+.extinguish - §oExtinguishes fire in the specified radius. §r
+.fill - §oFills all or parts of a reigon with a specific block, can use any block type including NBT Editor only ones. §r
+.fillillegal - §oFills a player's inventory with illegal items. §r
+.fillinventory - §oFills a player's inventory with items based on the provided itemJSON. §r
+.filljunk - §oFills a player's inventory with junk items. §r
+.fillop - §oFills a player's inventory with op items. §r
+.fillrandom - §oFills a player's inventory with random items. §r
+.give - §oGives you a specified amount of an item of a specified type. §r
+.giveb - §oGives you an item stack with a specified type and stack size in your next empty inventory slot. §r
+.givec - §oGives you an item stack based on the provided itemJSON in your next empty inventory slot. §r
+.getuuid - §oGets the UUID of the specified entity. §r
+.gma - §oSets your gamemode to adventure. §r
+.gmc - §oSets your gamemode to creative. §r
+.gmd - §oSets your gamemode to default. §r
+.gmp - §oSets your gamemode to spectator. §r
+.gmr - §oSets your gamemode to a random gamemode. §r
+.gms - §oSets your gamemode to survival. §r
+.h# - §oSwaps your hotbar with the specified hotbar preset. §r
+.hset - §oSets a hotbar preset. §r
+.idtfill - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. §r
+.ifill - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. §r
+.ifillb - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. §r
+.ifillc - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. §r
+.igfill - §oFills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. §r
+.invfillillegal - §oFills a player's inventory with illegal items. §r
+.invfill - §oFills a player's inventory with items based on the provided itemJSON. §r
+.invfilljunk - §oFills a player's inventory with junk items. §r
+.invfillop - §oFills a player's inventory with op items. §r
+.invfillrandom - §oFills a player's inventory with random items. §r
+.invsee - §oDisplays the contents of the specified player's inventory. §r
+.invseeuuidmode - §oDisplays the contents of the inventory of the entity with the specified UUID. §r
+.invshuffle - §oShuffles the inventory of the specified player§r
+.invswap - §oSwaps the inventories of 2 players. §r
+.invswapb - §oSwaps the inventories of 2 players. §r
+.iogfill - §oFills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. §r
+.item - §oSuper advanced item modification command. §r
+.itfill - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r
+.itfillc - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r
+.mainmenu - §oOpens up the main menu. §r
+.managecommands - §oOpens up the commands editor menu. §r
+.manageplayers - §oOpens up the manage players menu. §r
+.managescriptautoeval - §oOpens up the Script Auto Eval settings menu. §r
+.offlineinfo - §oDisplays the saved player data of the specified player. §r
+.offlineuuidinfo - §oDisplays the saved player data of the player with the specified UUID. §r
+.offlineinvsee - §oDisplays the saved contents of the specified player's inventory. §r
+.offlineuuidinvsee - §oDisplays the saved contents of the inventory of the player with the specified UUID. §r
+.printlayers - §oDisplays a list of all the blocks at your specified x and z coordinates. §r
+.remexp - §oRemoves explosive blocks in the specified radius. §r
+.run - §oRuns the specified command. §r
+.scanenderchest - §oScans a player's ender chest and displays the contents of it. §r
+.scanenderchestc - §oScans a player's ender chest and displays the contents of it. §r
+.scnendchst - §oScans a player's ender chest and displays the contents of it. §r
+.scnendchstc - §oScans a player's ender chest and displays the contents of it. §r
+.setitem - §oReplaces the item stack in the specified inventory slot with an item stack with a specified type and stack size. §r
+.setitemb - §oReplaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. §r
+.settings - §oOpens up the settings menu. §r
+.shuffleinventory - §oShuffles the inventory of the specified player. §r
+.swapinventories - §oSwaps the inventories of 2 players. §r
+.swapinventoriesb - §oSwaps the inventories of 2 players. §r
+.swapitems - §oSwaps an item in a slot of one player's inventory with another slot of another player's inventory. §r
+.takeitem - §oSteals an item from another player's inventory and puts it into yoru inventory. §r
+.terminal - §oOpens up the command runner/terminal menu. §r
+.transferitem - §oTransfers the item in your hand to the specified player's inventory. §r
+.top - §oTeleports on top of the highest solid block at your x and z coordinates. §r
+.up - §oTeleports up the specified number of blocks and places glass below you if placeGlass is not set to false. §r
+.warp - §oWarps to the specified global warp. §r
+.warplist - §oLists all global warps. §r
+.warplistdetails - §oLists all global warps with more details. §r
+.warplistrawdata - §oLists the raw data of the global warps. §r
+.warpremove - §oRemoves the specified global warp. §r
+.warpreset - §oRemoves all global warps. §r
+.warpset - §oSets a global warp. §r
+.w - §oWarps to the specified private warp. §r
+.wlist - §oLists all private warps. §r
+.wlistdetails - §oLists all private warps with more details. §r
+.wlistrawdata - §oLists the raw data of the private warps. §r
+.wremove - §oRemoves the specified private warp. §r
+.wreset - §oRemoves all private warps. §r
+.wset - §oSets a private warp. §r
 §cDangerous Commands: §4
-.chunkban - §oFills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. 
+.chunkban - §oFills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. §r
 §bCommands that require "8Crafter's Entity Scale, NBT, and Behavior Modifier, Bossbar, and Morph Addon" in order to function: §6
-.morph - §oMorphs into the morph with the specified ID. 
-.scale - §oSets your scale value to the specified amount. 
-.tint - §oTints the specified player's skin the specified color, or makes it glow, and optionally adjusts the opacity of their skin. 
-.tps - §oDisplays the TPS. 
-.visualscale - §oSets your visual scale (the one that does not actually change your hitbox size) to the specified amount. 
+.morph - §oMorphs into the morph with the specified ID. §r§6
+.scale - §oSets your scale value to the specified amount. §r§6
+.tint - §oTints the specified player's skin the specified color, or makes it glow, and optionally adjusts the opacity of their skin. §r§6
+.tps - §oDisplays the TPS. §r§6
+.visualscale - §oSets your visual scale (the one that does not actually change your hitbox size) to the specified amount. §r§6
 .visualscaleenabled - §oEnables or diables your visual scaling. `.replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
                 break; 
                 case "help chatcommandsb": 
