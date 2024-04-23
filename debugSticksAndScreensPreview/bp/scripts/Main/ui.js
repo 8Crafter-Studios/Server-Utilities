@@ -1,6 +1,6 @@
-import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Vector, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot } from "@minecraft/server";
+import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, arrayModifier, format_version, getUICustomForm, targetSelectorAllListC } from "Main";
+import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -18,6 +18,8 @@ import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
+import mcMath from "@minecraft/math.js";
+export const format_version = "1.12.3";
 import { command, commandSettings, command_settings_format_version, commands, commands_format_version } from "Main/commands";
 mcServer;
 mcServerUi; /*
@@ -33,6 +35,7 @@ bans;
 uis;
 playersave;
 spawnprot;
+mcMath;
 export const ui_format_version = "1.7.0";
 //${se}console.warn(JSON.stringify(evaluateParameters(["presetText", "string", "json", "number", "boolean", "string", "presetText", "presetText"], "test test [{\"test\": \"test\"}, [\"test\", \"test\"] , \"test\", \"test\"] 1 true \"test \\\"test\" test test"))); 
 /**
@@ -574,6 +577,7 @@ export function globalSettings(sourceEntity) {
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
+    form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
         if (t.canceled)
@@ -633,6 +637,7 @@ export function personalSettings(sourceEntity) {
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));*/
+    form2.submitButton("SaVE");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
         if (t.canceled)
@@ -734,6 +739,7 @@ export function scriptEvalRunWindow(sourceEntity) {
     form.textField("Script", "JavaScript");
     form.textField("Script", "JavaScript");
     form.textField("Script", "JavaScript");
+    form.submitButton("Run");
     forceShow(form, sourceEntity).then(ro => {
         let r = ro;
         if (r.canceled)
@@ -776,6 +782,7 @@ export function terminal(sourceEntity) {
         form.textField("Run Command", "Run Command");
         form.textField("Run Delay", "Run Delay");
         form.toggle("Debug", false);
+        form.submitButton("Run");
         form.show(sourceEntity).then(r => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -1826,7 +1833,7 @@ export function editorStick(sourceEntity, message = "") {
     console.warn(targetList);*/ /*
 }*/
     try {
-        form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + Vector.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
+        form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
     }
     catch (e) {
         console.error(e, e.stack);
@@ -2229,7 +2236,7 @@ export function editorStickB(sourceEntity, dimensionLocation) {
     console.warn(targetList);*/ /*
 }*/
     try {
-        form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + Vector.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nsetType", "Block Type", block2.typeId);
+        form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nsetType", "Block Type", block2.typeId);
     }
     catch (e) {
         console.error(e, e.stack);
@@ -2849,6 +2856,7 @@ export function manageCommands(sourceEntity) {
                             form5.textField("Formats", "JSON", "[\"myCommand\", \"myCommand <string: string> [integer: int]\"]");
                             form5.textField("Command Prefix (leave blank to use default)", "default");
                             form5.toggle("Enable Automatic Parameter Evaluation", true);
+                            form5.submitButton("Create Command");
                             forceShow(form5, sourceEntity).then(ha => {
                                 let h = ha;
                                 if (h.canceled) {
@@ -2944,6 +2952,7 @@ export function manageCommands(sourceEntity) {
                                         form5.textField("Command Prefix (leave blank to use default)", "default", commandsItem.customCommandPrefix);
                                         form5.toggle("Enable Automatic Parameter Evaluation", commandsItem.customCommandParametersEnabled);
                                         form5.textField("Parameters for Automatic Parameter Evaluation (requires enable automatic parameter evaluation to be enabled)\nThis is a list of strings stating the parameter types, valid values are \"presetText\", \"number\", \"boolean\", \"string\", and\"json\". \npresetText matches a string of text with no quotation marks or spaces in it\nnumber matches a number, boolean matches a boolean\nstring matches either a string of text with no quotation marks or spaces, or a string of text inside of quotation marks that may include spaces and also escape characters\njson matches a JSON array, object, or string\nthis list should always start with presetText to match the command name\nfor example: if you have the command 'say hi \"test stuff\" 9768 true 8 {\"some\": \"thing\", \"a\": [1, 2, 3, 4, 5]} [1, 2, 3, 4, \"5\"]' and you set this value to [\"presetText\", \"presetText\", \"string\", \"number\", \"boolean\", \"string\", \"json\", \"json\"] then it would return [\"say\", \"hi\", \"test stuff\", 9768, true, \"8\", {\"some\": \"thing\", \"a\": [1, 2, 3, 4, 5]}, [1, 2, 3, 4, \"5\"]]", "JSON", JSONStringify(commandsItem.customCommandParametersList ?? ["presetText"]));
+                                        form5.submitButton("Save");
                                         forceShow(form5, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
@@ -3015,6 +3024,7 @@ export function manageCommands(sourceEntity) {
                                                 form7.textField("Line " + i + (i == 0 ? "\nUse ${params[index]} to acess the value of a parameter or to access a javascript variable use ${javascript code}." : ""), commandsItem.customCommandType == "commands" ? "Minecraft Command" : "JavaScript Code", commandsItem.code[i]);
                                             }
                                         }
+                                        form7.submitButton("Save");
                                         forceShow(form7, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
@@ -3047,6 +3057,7 @@ export function manageCommands(sourceEntity) {
                                         form6.slider("Required Permission Level", 0, 15, 1, Number(commandsItem.settings.requiredPermissionLevel ?? 0));
                                         form6.toggle("Requires OP", commandsItem.settings.requiresOp);
                                         form6.toggle("Enabled", commandsItem.settings.enabled);
+                                        form6.submitButton("Save");
                                         forceShow(form6, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
@@ -3198,6 +3209,7 @@ export async function itemEditor(sourceEntity, targetPlayer, item) {
     form.toggle("Keep On Death", item.keepOnDeath);
     form.textField((!!!item.getItem().getComponent("cooldown") ? "§c(UNAVAILABLE)§f " : "") + "Set Cooldown (In Ticks)", "ticks");
     form.textField((!!!item.getItem().getComponent("durability") ? "§c(UNAVAILABLE)§f " : "") + "Set Damage", "int", String(item.getItem().getComponent("durability")?.damage));
+    form.submitButton("Done");
     let result;
     result = undefined;
     return forceShow(form, sourceEntity).then(ra => {
@@ -3331,6 +3343,7 @@ export function itemCodePropertyEditor(sourceEntity, item) {
     form.title("Code Editor");
     form.textField("Item Use Code", "JavaScript", String(item.getDynamicProperty("code")));
     form.textField("Item Use On Code", "JavaScript", !!item.getDynamicProperty("itemUseOnCode") ? String(item.getDynamicProperty("itemUseOnCode")) : undefined);
+    form.submitButton("Done");
     forceShow(form, sourceEntity).then(ra => {
         let r = ra;
         if (r.canceled) {
@@ -3388,6 +3401,7 @@ export function createExplosion(sourceEntity, parameterDefaults) {
     form.toggle("allowUnderwater", parameterDefaults?.explosionOptions?.allowUnderwater ?? false);
     form.toggle("breaksBlocks", parameterDefaults?.explosionOptions?.breaksBlocks ?? true);
     form.toggle("causesFire", parameterDefaults?.explosionOptions?.causesFire ?? false);
+    form.submitButton("Create");
     forceShow(form, sourceEntity).then(ra => {
         let r = ra;
         if (r.canceled) {

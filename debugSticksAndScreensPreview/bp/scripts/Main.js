@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.10.0";
+export const format_version = "1.12.3";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -46,8 +46,9 @@ import "Main/ban.js";
 import "Main/ui.js";
 import "Main/player_save.js";
 import "Main/spawn_protection.js";
+import "@minecraft/math.js";
 export const mainmetaimport = import.meta;
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction } from "@minecraft/server";
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG } from "Main/coordinates";
@@ -69,7 +70,8 @@ import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
-import * as spawnprot from "Main/spawn_protection"; /*
+import * as spawnprot from "Main/spawn_protection";
+import mcMath from "@minecraft/math.js"; /*
 import { disableWatchdog } from "@minecraft/debug-utilities";*/
 mcServer;
 mcServerUi; /*
@@ -87,6 +89,7 @@ playersave;
 spawnprot;
 SimulatedPlayer;
 Test;
+mcMath;
 let crashEnabled = false;
 let tempSavedVariables = [];
 export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]; /*
@@ -2342,6 +2345,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
     onComplete(counter, timea, timeb, timeb - timea, onCompleteArgsObject, ...onCompleteArgs);
 }
 ;
+export function v3Multiply(a, b) { return typeof b == "object" ? { x: a.x * b.x, y: a.y * b.y, z: a.z * b.z } : { x: a.x * b, y: a.y * b, z: a.z * b }; }
 export function fillBlocksD(from, to, dimension, block = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += fillBlocksC(v.from, v.to, dimension, block, blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates)); return counter; }
 ;
 export async function fillBlocksE(from, to, dimension, block = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => system.run(() => counter += fillBlocksC(v.from, v.to, dimension, block, blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates))); return counter; }
@@ -2387,14 +2391,14 @@ export function shootProjectileB(entityType, location, rotation, power, shootOpt
 }
 catch (e) {
     console.error(e, e.stack);
-} ; entityProjectileComponent?.shoot(caretNotationC(Vector.zero, Vector.multiply(Vector.forward, power), rotation), shootOptions); }
+} ; entityProjectileComponent?.shoot(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation), shootOptions); }
 ;
 export function shootEntityB(entityType, location, rotation, power, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entity = location.dimension.spawnEntity(String(entityType), location); try {
     setProjectileComponentPropertiesCallbackFn(entity);
 }
 catch (e) {
     console.error(e, e.stack);
-} ; entity.applyImpulse(caretNotationC(Vector.zero, Vector.multiply(Vector.forward, power), rotation)); }
+} ; entity.applyImpulse(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation)); }
 ;
 export function targetSelector(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return Number((selectedEntityUUIDValue)); }
 export function targetSelectorB(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return world.getDimension(DimensionTypes.getAll().find((dimension) => (world.getDimension(dimension.typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)))).typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)); } /*
@@ -2926,34 +2930,33 @@ world.afterEvents.entitySpawn.subscribe((event) => {
     try{if (world.scoreboard.getObjective("andexdbDebug") == undefined){world.scoreboard.addObjective("andexdbDebug", "andexdbScriptDebuggingService")}}catch(e){}
     try{event.entity.runCommand("/scoreboard players @s set andexdbDebug 0")}catch(e){}
   });*/
+/*
 world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:dataDrivenEntityTriggerEvent")));
     }
     catch (e) {
         console.error(e, e.stack);
-        world.getAllPlayers().forEach((currentplayer) => {
-            if (currentplayer.hasTag("dataDrivenEntityTriggerEventBeforeEventDebugErrors")) {
-                currentplayer.sendMessage(e + e.stack);
-            }
-        });
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("dataDrivenEntityTriggerEventBeforeEventDebugErrors")) {
+            currentplayer.sendMessage(e + e.stack);
+        } });
     }
     ;
     try {
         world.getAllPlayers().filter((player) => { player.hasTag("getEntityTriggerEventNotifications"); }).forEach((currentPlayer) => { currentPlayer.sendMessage("id: " + event.id + ", getComponentGroupsToAdd: " + event.getModifiers()[0].addedComponentGroups + ", getComponentGroupsToRemove: " + event.getModifiers()[0].removedComponentGroups + ", getTriggers: " + event.getModifiers()[0].triggers); });
         if (event.id == "andexsa:friction_modifier_0.9") {
-            let componentGroups = event.getModifiers()[0]; /*
-            console.warn(event.id)
-            console.warn(componentGroups.getComponentGroupsToAdd())*/
-            componentGroups.addedComponentGroups = ["andexsa:player_is_baby"]; /*
-            console.warn(componentGroups.getComponentGroupsToAdd())*/
-            event.setModifiers([componentGroups]);
-            console.warn(event.getModifiers()[0].addedComponentGroups);
-        }
-    }
-    catch { }
-});
-; /*
+            let componentGroups = event.getModifiers()[0]; */ /*
+console.warn(event.id)
+console.warn(componentGroups.getComponentGroupsToAdd())*/ /*
+componentGroups.addedComponentGroups = ["andexsa:player_is_baby"]; */ /*
+console.warn(componentGroups.getComponentGroupsToAdd())*/ /*
+event.setModifiers([componentGroups]);
+console.warn(event.getModifiers()[0].addedComponentGroups);
+}
+}
+catch { }
+}); ;*/ //removed in minecraft 1.20.80 >:(
+/*
   world.beforeEvents.pistonActivate.subscribe(event => {
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:pistonActivate")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pistonActivateBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
       world.getAllPlayers().filter((player) => ( player.hasTag("getEntityTriggerEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("id: " + event.block.typeId + ", getComponentGroupsToAdd: " + event.piston.getAttachedBlocks()[0].x + ", getComponentGroupsToRemove: " + event.isExpanding) + ", getTriggers: " + event.dimension; });
@@ -4316,7 +4319,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
         inventory.container.setItem(0, diamondAwesomeSword);
         let item = inventory.container.getItem(0);
         let enchants = item.getComponent("enchantable");
-        let knockbackEnchant = { type: "knockback", level: 2 };
+        let knockbackEnchant = { type: EnchantmentTypes.get("knockback"), level: 2 };
         enchants.addEnchantment(knockbackEnchant);
         inventory.container.setItem(0, item);
         const ironFireSword = new ItemStack("minecraft:iron_sword", 1); /*
@@ -4344,7 +4347,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
         inventory.container.setItem(0, item);
         let itema = inventory2.container.getItem(0);
         let enchants3 = itema.getComponent("enchantable");
-        let knockbackEnchant2 = { type: "knockback", level: 1 };
+        let knockbackEnchant2 = { type: EnchantmentTypes.get("knockback"), level: 1 };
         enchants3.addEnchantment(knockbackEnchant2); /*
         inventory2.container.setItem(0, itema);*/
     }
@@ -4429,7 +4432,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
                     blockProperties = "§4None§a";
                 } /*
                 let effectsList = [players[playerTargetB].getComponents[0]]*/
-                let distance = Vector.distance(players[playerViewerB].location, players[playerTargetB].location);
+                let distance = mcMath.Vector3Utils.distance(players[playerViewerB].location, players[playerTargetB].location);
                 try {
                     entityViewedEntityType = players[playerTargetB].getEntitiesFromViewDirection()[0].entity.typeId;
                 }
@@ -4564,7 +4567,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
                 if (selectionType == 4) {
                     playerTargetB = world.getDimension(blockLocation[0]).getEntitiesAtBlockLocation({ x: Number(blockLocation[1]), y: Number(blockLocation[2]), z: Number(blockLocation[3]) })[Number(blockLocationIndex)];
                 }
-                let distance = Vector.distance(players[playerViewerB].location, playerTargetB.location);
+                let distance = mcMath.Vector3Utils.distance(players[playerViewerB].location, playerTargetB.location);
                 try {
                     entityViewedEntityType = playerTargetB.getEntitiesFromViewDirection()[0].entity.typeId;
                 }
@@ -7622,7 +7625,7 @@ console.error(e, e.stack);
         console.warn(targetList);*/ /*
     }*/
         try {
-            form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + Vector.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
+            form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
         }
         catch (e) {
             console.error(e, e.stack);
@@ -8477,7 +8480,7 @@ console.error(e, e.stack);
         console.warn(targetList);*/ /*
     }*/
         try {
-            form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + Vector.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
+            form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
         }
         catch (e) {
             console.error(e, e.stack);
