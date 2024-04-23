@@ -317,7 +317,7 @@ export function mainMenu(sourceEntity) {
     form.button("Entity Controller", "textures/ui/controller_glyph_color_switch");
     form.button("World Options§b", "textures/ui/settings_glyph_color_2x");
     form.button("§4Dimension Options§f(§cComing Soon!§f)§b", "textures/ui/icon_setting");
-    form.button("§4Create Explosion(§cComing Soon!§f)§b", "textures/blocks/tnt_side");
+    form.button("§eCreate Explosion §f[§cAlpha§f]", "textures/blocks/tnt_side");
     form.button("§4Fill Blocks(§cComing Soon!§f)§b", "textures/blocks/stone");
     form.button("§4World Debug§f(§cComing Soon!§f)§b", "textures/ui/xyz_axis.png");
     form.button("§4Dimension Debug§f(§cComing Soon!§f)§b", "textures/ui/NetherPortal");
@@ -460,15 +460,7 @@ export function mainMenu(sourceEntity) {
                 // Do something when button 2 is pressed
                 break;
             case 11:
-                try {
-                    (sourceEntity).runCommand(String("/scriptevent andexdb:createExplosion saqw"));
-                }
-                // Do something
-                catch (e) {
-                    console.error(e, e.stack);
-                }
-                ;
-                // Do something when button 2 is pressed
+                createExplosion(sourceEntity);
                 break;
             case 12:
                 try {
@@ -2804,15 +2796,19 @@ export function managePlayers(sourceEntity) {
         }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
+export function getAllBuiltInCommandsCategories() { let set = new Set(); commands.map(v => v.category).forEach(v => typeof v == "string" ? set.add(v) : v.forEach(v => set.add(v))); return [...set]; }
+export const commandCategories = ["items", "misc", "invsee", "players", "containers/inventories", "entities", "warps", "world", "uis", "dangerous", "Entity Scale Add-On", "built-in", "custom", "all"];
+export const commandCategoriesDisplay = [{ name: "Items", icon: "" }, { name: "Misc" }, { name: "Invsee" }, { name: "Players" }, { name: "Containers/Inventories" }, { name: "Entities" }, { name: "Warps" }, { name: "World" }, { name: "UIs" }, { name: "§4Dangerous" }, { name: "§6Entity Scale Add-On" }, { name: "All Built-In" }, { name: "Custom" }, { name: "All" }];
 export function manageCommands(sourceEntity) {
     let form = new ActionFormData;
     form.title("Manage Commands");
     let defaultCommands = command.getDefaultCommands();
-    defaultCommands.forEach((p) => { form.button(`${p.formatting_code + p.commandName}\n${p.type + ": " + (p.settings.enabled ? "enabled" : "disabled") + "; " + p.command_version}` /*, "textures/ui/online"*/); });
+    //defaultCommands.forEach((p)=>{form.button(`${p.formatting_code+p.commandName}\n${p.type+": "+(p.settings.enabled?"enabled":"disabled")+"; "+p.command_version}`/*, "textures/ui/online"*/)}); 
     let customCommands = command.getCustomCommands();
-    customCommands.forEach((p) => { form.button(`${p.formatting_code + p.commandName}\n${p.type + ": " + (p.settings.enabled ? "enabled" : "disabled") + "; " + p.command_version}` /*, "textures/ui/online"*/); });
+    //customCommands.forEach((p)=>{form.button(`${p.formatting_code+p.commandName}\n${p.type+": "+(p.settings.enabled?"enabled":"disabled")+"; "+p.command_version}`/*, "textures/ui/online"*/)}); 
     let commandsList = defaultCommands.concat(customCommands);
-    form.button("Add Custom Command");
+    //form.button("Add Custom Command"); 
+    commandCategoriesDisplay.forEach((p) => { form.button(p.name, p.icon); });
     form.button("Back");
     forceShow(form, sourceEntity).then(ra => {
         let r = ra;
@@ -2821,112 +2817,38 @@ export function manageCommands(sourceEntity) {
         }
         ;
         switch (r.selection) {
-            case commandsList.length:
-                let form5 = new ModalFormData;
-                form5.title(`Add Custom Command`);
-                form5.textField("Command Name§c*", "mycommand");
-                form5.dropdown("Command Code Type (commands means the command just runs a list of minecraft commands, and javascript means that the command runs a list of javascript scripts/code)", ["commands", "javascript"]);
-                form5.textField("Command Version§c*", "SemVer String; ex. 1.7.0-beta.1.2.a.b.c.d", "1.0.0");
-                form5.textField("Formatting Code§c*", "required: string", "§r§f");
-                form5.textField("Description", "string");
-                form5.textField("Formats", "JSON", "[\"myCommand\", \"myCommand <string: string> [integer: int]\"]");
-                form5.textField("Command Prefix (leave blank to use default)", "default");
-                form5.toggle("Enable Automatic Parameter Evaluation", true);
-                forceShow(form5, sourceEntity).then(ha => {
-                    let h = ha;
-                    if (h.canceled) {
-                        return;
-                    }
-                    ;
-                    if (!!!h.formValues[0]) {
-                        let formErrora = new MessageFormData;
-                        formErrora.body(`Required parameter 'Command Name' was left blank`);
-                        formErrora.title("Error");
-                        formErrora.button1("Back");
-                        formErrora.button2("Cancel");
-                        forceShow(formErrora, sourceEntity).then(() => { manageCommands(sourceEntity); return; });
-                        return;
-                    }
-                    if (!!command.getCustomCommands().find(v => v.commandName == String(h.formValues[0]))) {
-                        let formError = new MessageFormData;
-                        formError.body(`There is already a custom command with the name '${String(h.formValues[0]).replaceAll("'", "\\'")}`);
-                        formError.title("Error");
-                        formError.button1("Done");
-                        forceShow(formError, sourceEntity).then(() => { return; });
-                        manageCommands(sourceEntity);
-                        return;
-                    }
-                    ;
-                    new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[2]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], description: String(h.formValues[4]), type: "custom", formatting_code: String(h.formValues[3]), formats: JSONParse(h.formValues[5] == "" ? "undefined" : String(h.formValues[5] ?? "undefined")), customCommandPrefix: String(h.formValues[6]), customCommandParametersEnabled: Boolean(h.formValues[7]), customCommandId: "customCommand:" + String(h.formValues[0]), format_version: format_version }).save();
-                    manageCommands(sourceEntity);
-                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
-                break;
-            case commandsList.length + 1:
+            case commandCategories.length:
                 mainMenu(sourceEntity);
                 break;
             default:
-                let commandsItem = commandsList[r.selection];
-                let form2 = new ActionFormData;
-                form2.title(commandsItem.commandName);
-                form2.body(`Command Name: ${commandsItem.commandName}\nType: ${commandsItem.type}\nCommand Version: ${commandsItem.command_version}\nCustom Command Id: ${commandsItem.customCommandId}\nCommand Settings Id: ${commandsItem.commandSettingsId}\nDescription: ${commandsItem.description}\nFormats: ${JSONStringify(commandsItem.formats)}`);
-                if (commandsItem.type == "custom") {
-                    form2.button("Delete Command");
+                let category = commandCategories[r.selection];
+                let categoryDisplay = commandCategories[r.selection];
+                let commandsListB = category == "all" ? commandsList : category == "built-in" ? defaultCommands : category == "custom" ? customCommands : command.getDefaultCommandsOfCategory(category);
+                let formB = new ActionFormData;
+                form.title(`Manage ${categoryDisplay}§r Commands`);
+                commandsListB.forEach((p) => { formB.button(`${p.formatting_code + p.commandName}\n${p.type + ": " + (p.settings.enabled ? "enabled" : "disabled") + "; " + p.command_version}` /*, "textures/ui/online"*/); });
+                if (category == "custom" || category == "all") {
+                    formB.button("Add Custom Command");
                 }
-                ;
-                if (commandsItem.type == "custom") {
-                    form2.button("Edit Command");
-                }
-                ;
-                if (commandsItem.type == "custom") {
-                    form2.button("Edit Code");
-                }
-                ;
-                form2.button("Show Info");
-                form2.button("Settings");
-                form2.button("Back");
-                forceShow(form2, sourceEntity).then(ga => {
-                    let g = ga;
-                    if (g.canceled) {
+                formB.button("Back");
+                forceShow(formB, sourceEntity).then(ra => {
+                    let r = ra;
+                    if (r.canceled) {
                         return;
                     }
                     ;
-                    switch (g.selection + (Number(commandsItem.type != "custom") * 3)) {
-                        case 0:
-                            let form3 = new MessageFormData;
-                            form3.title("Confirm Deletion of Command");
-                            form3.body(`Are you sure you want to delete the custom ${commandsItem.commandName} command?\nThis action cannot be undone.`);
-                            form3.button2("Delete Command");
-                            form3.button1("Cancel");
-                            forceShow(form3, sourceEntity).then(ha => {
-                                let h = ha;
-                                if (h.canceled) {
-                                    return;
-                                }
-                                ;
-                                if (h.selection == 0) {
-                                    manageCommands(sourceEntity);
-                                }
-                                ;
-                                if (h.selection == 1) {
-                                    commandsItem.remove();
-                                    manageCommands(sourceEntity);
-                                }
-                                ;
-                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
-                            break;
-                        case 1:
+                    switch (r.selection) {
+                        case commandsListB.length + (+(category != "custom" && category != "all")):
                             let form5 = new ModalFormData;
-                            form5.title(`Edit Custom Command`);
-                            form5.textField("Command Name§c*", "mycommand", commandsItem.commandName);
-                            form5.dropdown("Command Code Type (commands means the command just runs a list of minecraft commands, and javascript means that the command runs a list of javascript scripts/code)", ["commands", "javascript"], ["commands", "javascript"].findIndex(v => v == commandsItem.customCommandType));
-                            form5.slider("Number of Code Lines", 1, 100, 1, Number(commandsItem.customCommandCodeLines ?? 1));
-                            form5.textField("Command Version§c*", "SemVer String; ex. 1.7.0-beta.1.2.a.b.c.d", String(commandsItem.command_version));
-                            form5.textField("Formatting Code§c*", "required: string", commandsItem.formatting_code);
-                            form5.textField("Description", "string", commandsItem.description);
-                            form5.textField("Formats", "JSON", JSONStringify(commandsItem.formats));
-                            form5.textField("Command Prefix (leave blank to use default)", "default", commandsItem.customCommandPrefix);
-                            form5.toggle("Enable Automatic Parameter Evaluation", commandsItem.customCommandParametersEnabled);
-                            form5.textField("Parameters for Automatic Parameter Evaluation (requires enable automatic parameter evaluation to be enabled)\nThis is a list of strings stating the parameter types, valid values are \"presetText\", \"number\", \"boolean\", \"string\", and\"json\". \npresetText matches a string of text with no quotation marks or spaces in it\nnumber matches a number, boolean matches a boolean\nstring matches either a string of text with no quotation marks or spaces, or a string of text inside of quotation marks that may include spaces and also escape characters\njson matches a JSON array, object, or string\nthis list should always start with presetText to match the command name\nfor example: if you have the command 'say hi \"test stuff\" 9768 true 8 {\"some\": \"thing\", \"a\": [1, 2, 3, 4, 5]} [1, 2, 3, 4, \"5\"]' and you set this value to [\"presetText\", \"presetText\", \"string\", \"number\", \"boolean\", \"string\", \"json\", \"json\"] then it would return [\"say\", \"hi\", \"test stuff\", 9768, true, \"8\", {\"some\": \"thing\", \"a\": [1, 2, 3, 4, 5]}, [1, 2, 3, 4, \"5\"]]", "JSON", JSONStringify(commandsItem.customCommandParametersList ?? ["presetText"]));
+                            form5.title(`Add Custom Command`);
+                            form5.textField("Command Name§c*", "mycommand");
+                            form5.dropdown("Command Code Type (commands means the command just runs a list of minecraft commands, and javascript means that the command runs a list of javascript scripts/code)", ["commands", "javascript"]);
+                            form5.textField("Command Version§c*", "SemVer String; ex. 1.7.0-beta.1.2.a.b.c.d", "1.0.0");
+                            form5.textField("Formatting Code§c*", "required: string", "§r§f");
+                            form5.textField("Description", "string");
+                            form5.textField("Formats", "JSON", "[\"myCommand\", \"myCommand <string: string> [integer: int]\"]");
+                            form5.textField("Command Prefix (leave blank to use default)", "default");
+                            form5.toggle("Enable Automatic Parameter Evaluation", true);
                             forceShow(form5, sourceEntity).then(ha => {
                                 let h = ha;
                                 if (h.canceled) {
@@ -2938,118 +2860,217 @@ export function manageCommands(sourceEntity) {
                                     formErrora.body(`Required parameter 'Command Name' was left blank`);
                                     formErrora.title("Error");
                                     formErrora.button1("Back");
+                                    formErrora.button2("Cancel");
                                     forceShow(formErrora, sourceEntity).then(() => { manageCommands(sourceEntity); return; });
                                     return;
                                 }
-                                if ((!!command.getCustomCommands().find(v => v.commandName == String(h.formValues[0]))) && (String(h.formValues[0]) != commandsItem.commandName)) {
+                                if (!!command.getCustomCommands().find(v => v.commandName == String(h.formValues[0]))) {
                                     let formError = new MessageFormData;
-                                    formError.body(`There is already a custom command with the name '${String(h.formValues[0]).replaceAll("'", "\\'")}, saving this will overwrite it, are you sure you want to do this?\nThis action cannot be undone.`);
+                                    formError.body(`There is already a custom command with the name '${String(h.formValues[0]).replaceAll("'", "\\'")}`);
                                     formError.title("Error");
-                                    formError.button2("Confirm");
-                                    formError.button1("Cancel");
-                                    forceShow(formError, sourceEntity).then(sa => {
-                                        console.warn(sa.selection);
-                                        if (sa.selection == 0) {
-                                            manageCommands(sourceEntity);
-                                            return;
-                                        }
-                                        else {
-                                            if (String(h.formValues[0]) != commandsItem.commandName) {
-                                                JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9]));
-                                                JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined"));
-                                                commandsItem.remove();
-                                                commandsItem.settings.remove();
-                                                new commandSettings("customCommandSettings:" + String(h.formValues[0])).save(commandsItem.settings.toJSON());
-                                                commandsItem = new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[3]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], customCommandCodeLines: Number(h.formValues[2]), description: String(h.formValues[5]), type: "custom", formatting_code: String(h.formValues[4]), formats: JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined")), customCommandPrefix: String(h.formValues[7]), customCommandParametersEnabled: Boolean(h.formValues[8]), customCommandId: "customCommand:" + String(h.formValues[0]), commandSettingsId: "customCommandSettings:" + String(h.formValues[0]), customCommandParametersList: JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9])), format_version: format_version });
-                                                commandsItem.save();
-                                            }
-                                            ;
-                                        }
-                                    });
+                                    formError.button1("Done");
+                                    forceShow(formError, sourceEntity).then(() => { return; });
                                     manageCommands(sourceEntity);
-                                }
-                                else {
-                                    if (String(h.formValues[0]) != commandsItem.commandName) {
-                                        JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9]));
-                                        JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined"));
-                                        commandsItem.remove();
-                                        commandsItem.settings.remove();
-                                        new commandSettings("customCommandSettings:" + String(h.formValues[0])).save(commandsItem.settings.toJSON());
-                                        commandsItem = new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[3]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], customCommandCodeLines: Number(h.formValues[2]), description: String(h.formValues[5]), type: "custom", formatting_code: String(h.formValues[4]), formats: JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined")), customCommandPrefix: String(h.formValues[7]), customCommandParametersEnabled: Boolean(h.formValues[8]), customCommandId: "customCommand:" + String(h.formValues[0]), commandSettingsId: "customCommandSettings:" + String(h.formValues[0]), customCommandParametersList: JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9])), format_version: format_version });
-                                        commandsItem.save();
-                                    }
-                                    else {
-                                        JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9]));
-                                        JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined"));
-                                        new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[3]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], customCommandCodeLines: Number(h.formValues[2]), description: String(h.formValues[5]), type: "custom", formatting_code: String(h.formValues[4]), formats: JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined")), customCommandPrefix: String(h.formValues[7]), customCommandParametersEnabled: Boolean(h.formValues[8]), customCommandId: "customCommand:" + String(h.formValues[0]), commandSettingsId: "customCommandSettings:" + String(h.formValues[0]), customCommandParametersList: JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9])), format_version: format_version }).save();
-                                    }
-                                    manageCommands(sourceEntity);
-                                }
-                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
-                            break;
-                        case 2:
-                            let form7 = new ModalFormData;
-                            form7.title(`Editing Code for ${commandsItem.commandName}`);
-                            if (commandsItem.customCommandCodeLines == 1 || commandsItem.customCommandCodeLines == 0 || !!!commandsItem.customCommandCodeLines) {
-                                form7.textField("Line " + 0 + "\nUse ${params[index]} to acess the value of a parameter or to access a javascript variable use ${javascript code}.", commandsItem.customCommandType == "commands" ? "Minecraft Command" : "JavaScript Code", commandsItem.code[0]);
-                            }
-                            else {
-                                for (let i = 0; i < commandsItem.customCommandCodeLines; i++) {
-                                    form7.textField("Line " + i + (i == 0 ? "\nUse ${params[index]} to acess the value of a parameter or to access a javascript variable use ${javascript code}." : ""), commandsItem.customCommandType == "commands" ? "Minecraft Command" : "JavaScript Code", commandsItem.code[i]);
-                                }
-                            }
-                            forceShow(form7, sourceEntity).then(ha => {
-                                let h = ha;
-                                if (h.canceled) {
                                     return;
                                 }
                                 ;
-                                h.formValues.forEach((v, i) => { world.setDynamicProperty("customCommandCode:" + commandsItem.commandName + ":" + i, v); });
-                                world.getDynamicPropertyIds().filter(v => ((v.startsWith("customCommandCode:" + commandsItem.commandName + ":")) && (Number(v.slice(("customCommandCode:" + commandsItem.commandName + ":").length)) >= commandsItem.customCommandCodeLines))).forEach(v => world.setDynamicProperty(v));
+                                new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[2]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], description: String(h.formValues[4]), type: "custom", formatting_code: String(h.formValues[3]), formats: JSONParse(h.formValues[5] == "" ? "undefined" : String(h.formValues[5] ?? "undefined")), customCommandPrefix: String(h.formValues[6]), customCommandParametersEnabled: Boolean(h.formValues[7]), customCommandId: "customCommand:" + String(h.formValues[0]), format_version: format_version }).save();
                                 manageCommands(sourceEntity);
                             }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                             break;
-                        case 3:
-                            let form4 = new ActionFormData;
-                            form4.title(`${commandsItem.commandName} Command Info`);
-                            form4.body(`§r§f${ /*arrayModifier(*/JSON.stringify(commandsItem).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"") /*.split(""), (v, i)=>(Number(String((i/30).toFixed(4)))==Math.round(i/30)?"\n"+v:v))*/}`);
-                            form4.button("Done");
-                            forceShow(form4, sourceEntity).then(ha => {
-                                let h = ha;
-                                if (h.canceled) {
-                                    return;
-                                }
-                                ;
-                                manageCommands(sourceEntity);
-                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
-                            break;
-                        case 4:
-                            let form6 = new ModalFormData;
-                            form6.title(`Command Settings for ${commandsItem.type} ${commandsItem.commandName}`);
-                            form6.textField("Required Tags", "JSON", JSONStringify(commandsItem.settings.requiredTags ?? ["canUseChatCommands"]));
-                            form6.slider("Required Permission Level", 0, 15, 1, Number(commandsItem.settings.requiredPermissionLevel ?? 0));
-                            form6.toggle("Requires OP", commandsItem.settings.requiresOp);
-                            form6.toggle("Enabled", commandsItem.settings.enabled);
-                            forceShow(form6, sourceEntity).then(ha => {
-                                let h = ha;
-                                if (h.canceled) {
-                                    return;
-                                }
-                                ;
-                                commandsItem.settings.save({ requiredTags: h.formValues[0] == "" ? [] : JSONParse(String(h.formValues[0])), requiredPermissionLevel: Number(h.formValues[1]), requiresOp: Boolean(h.formValues[2]), enabled: Boolean(h.formValues[3]), settings_version: command_settings_format_version, format_version: format_version });
-                                manageCommands(sourceEntity);
-                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
-                            break;
-                        case 5:
+                        case commandsListB.length + 1 - +(category != "custom" && category != "all"):
                             manageCommands(sourceEntity);
                             break;
                         default:
+                            let commandsItem = commandsListB[r.selection];
+                            let form2 = new ActionFormData;
+                            form2.title(commandsItem.commandName);
+                            form2.body(`Command Name: ${commandsItem.commandName}\nType: ${commandsItem.type}\nCommand Version: ${commandsItem.command_version}\nCustom Command Id: ${commandsItem.customCommandId}\nCommand Settings Id: ${commandsItem.commandSettingsId}\nCategor${typeof commandsItem.category == "string" ? "y" : "ies"}: ${JSONStringify(commandsItem.category)}\n\nDescription: ${commandsItem.description}\nFormats: ${JSONStringify(commandsItem.formats)}`);
+                            if (commandsItem.type == "custom") {
+                                form2.button("Delete Command");
+                            }
+                            ;
+                            if (commandsItem.type == "custom") {
+                                form2.button("Edit Command");
+                            }
+                            ;
+                            if (commandsItem.type == "custom") {
+                                form2.button("Edit Code");
+                            }
+                            ;
+                            form2.button("Show Info");
+                            form2.button("Settings");
+                            form2.button("Back");
+                            forceShow(form2, sourceEntity).then(ga => {
+                                let g = ga;
+                                if (g.canceled) {
+                                    return;
+                                }
+                                ;
+                                switch (g.selection + (Number(commandsItem.type != "custom") * 3)) {
+                                    case 0:
+                                        let form3 = new MessageFormData;
+                                        form3.title("Confirm Deletion of Command");
+                                        form3.body(`Are you sure you want to delete the custom ${commandsItem.commandName} command?\nThis action cannot be undone.`);
+                                        form3.button2("Delete Command");
+                                        form3.button1("Cancel");
+                                        forceShow(form3, sourceEntity).then(ha => {
+                                            let h = ha;
+                                            if (h.canceled) {
+                                                return;
+                                            }
+                                            ;
+                                            if (h.selection == 0) {
+                                                manageCommands(sourceEntity);
+                                            }
+                                            ;
+                                            if (h.selection == 1) {
+                                                commandsItem.remove();
+                                                manageCommands(sourceEntity);
+                                            }
+                                            ;
+                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                                        break;
+                                    case 1:
+                                        let form5 = new ModalFormData;
+                                        form5.title(`Edit Custom Command`);
+                                        form5.textField("Command Name§c*", "mycommand", commandsItem.commandName);
+                                        form5.dropdown("Command Code Type (commands means the command just runs a list of minecraft commands, and javascript means that the command runs a list of javascript scripts/code)", ["commands", "javascript"], ["commands", "javascript"].findIndex(v => v == commandsItem.customCommandType));
+                                        form5.slider("Number of Code Lines", 1, 100, 1, Number(commandsItem.customCommandCodeLines ?? 1));
+                                        form5.textField("Command Version§c*", "SemVer String; ex. 1.7.0-beta.1.2.a.b.c.d", String(commandsItem.command_version));
+                                        form5.textField("Formatting Code§c*", "required: string", commandsItem.formatting_code);
+                                        form5.textField("Description", "string", commandsItem.description);
+                                        form5.textField("Formats", "JSON", JSONStringify(commandsItem.formats));
+                                        form5.textField("Command Prefix (leave blank to use default)", "default", commandsItem.customCommandPrefix);
+                                        form5.toggle("Enable Automatic Parameter Evaluation", commandsItem.customCommandParametersEnabled);
+                                        form5.textField("Parameters for Automatic Parameter Evaluation (requires enable automatic parameter evaluation to be enabled)\nThis is a list of strings stating the parameter types, valid values are \"presetText\", \"number\", \"boolean\", \"string\", and\"json\". \npresetText matches a string of text with no quotation marks or spaces in it\nnumber matches a number, boolean matches a boolean\nstring matches either a string of text with no quotation marks or spaces, or a string of text inside of quotation marks that may include spaces and also escape characters\njson matches a JSON array, object, or string\nthis list should always start with presetText to match the command name\nfor example: if you have the command 'say hi \"test stuff\" 9768 true 8 {\"some\": \"thing\", \"a\": [1, 2, 3, 4, 5]} [1, 2, 3, 4, \"5\"]' and you set this value to [\"presetText\", \"presetText\", \"string\", \"number\", \"boolean\", \"string\", \"json\", \"json\"] then it would return [\"say\", \"hi\", \"test stuff\", 9768, true, \"8\", {\"some\": \"thing\", \"a\": [1, 2, 3, 4, 5]}, [1, 2, 3, 4, \"5\"]]", "JSON", JSONStringify(commandsItem.customCommandParametersList ?? ["presetText"]));
+                                        forceShow(form5, sourceEntity).then(ha => {
+                                            let h = ha;
+                                            if (h.canceled) {
+                                                return;
+                                            }
+                                            ;
+                                            if (!!!h.formValues[0]) {
+                                                let formErrora = new MessageFormData;
+                                                formErrora.body(`Required parameter 'Command Name' was left blank`);
+                                                formErrora.title("Error");
+                                                formErrora.button1("Back");
+                                                forceShow(formErrora, sourceEntity).then(() => { manageCommands(sourceEntity); return; });
+                                                return;
+                                            }
+                                            if ((!!command.getCustomCommands().find(v => v.commandName == String(h.formValues[0]))) && (String(h.formValues[0]) != commandsItem.commandName)) {
+                                                let formError = new MessageFormData;
+                                                formError.body(`There is already a custom command with the name '${String(h.formValues[0]).replaceAll("'", "\\'")}, saving this will overwrite it, are you sure you want to do this?\nThis action cannot be undone.`);
+                                                formError.title("Error");
+                                                formError.button2("Confirm");
+                                                formError.button1("Cancel");
+                                                forceShow(formError, sourceEntity).then(sa => {
+                                                    console.warn(sa.selection);
+                                                    if (sa.selection == 0) {
+                                                        manageCommands(sourceEntity);
+                                                        return;
+                                                    }
+                                                    else {
+                                                        if (String(h.formValues[0]) != commandsItem.commandName) {
+                                                            JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9]));
+                                                            JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined"));
+                                                            commandsItem.remove();
+                                                            commandsItem.settings.remove();
+                                                            new commandSettings("customCommandSettings:" + String(h.formValues[0])).save(commandsItem.settings.toJSON());
+                                                            commandsItem = new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[3]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], customCommandCodeLines: Number(h.formValues[2]), description: String(h.formValues[5]), type: "custom", formatting_code: String(h.formValues[4]), formats: JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined")), customCommandPrefix: String(h.formValues[7]), customCommandParametersEnabled: Boolean(h.formValues[8]), customCommandId: "customCommand:" + String(h.formValues[0]), commandSettingsId: "customCommandSettings:" + String(h.formValues[0]), customCommandParametersList: JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9])), format_version: format_version });
+                                                            commandsItem.save();
+                                                        }
+                                                        ;
+                                                    }
+                                                });
+                                                manageCommands(sourceEntity);
+                                            }
+                                            else {
+                                                if (String(h.formValues[0]) != commandsItem.commandName) {
+                                                    JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9]));
+                                                    JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined"));
+                                                    commandsItem.remove();
+                                                    commandsItem.settings.remove();
+                                                    new commandSettings("customCommandSettings:" + String(h.formValues[0])).save(commandsItem.settings.toJSON());
+                                                    commandsItem = new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[3]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], customCommandCodeLines: Number(h.formValues[2]), description: String(h.formValues[5]), type: "custom", formatting_code: String(h.formValues[4]), formats: JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined")), customCommandPrefix: String(h.formValues[7]), customCommandParametersEnabled: Boolean(h.formValues[8]), customCommandId: "customCommand:" + String(h.formValues[0]), commandSettingsId: "customCommandSettings:" + String(h.formValues[0]), customCommandParametersList: JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9])), format_version: format_version });
+                                                    commandsItem.save();
+                                                }
+                                                else {
+                                                    JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9]));
+                                                    JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined"));
+                                                    new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[3]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], customCommandCodeLines: Number(h.formValues[2]), description: String(h.formValues[5]), type: "custom", formatting_code: String(h.formValues[4]), formats: JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined")), customCommandPrefix: String(h.formValues[7]), customCommandParametersEnabled: Boolean(h.formValues[8]), customCommandId: "customCommand:" + String(h.formValues[0]), commandSettingsId: "customCommandSettings:" + String(h.formValues[0]), customCommandParametersList: JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9])), format_version: format_version }).save();
+                                                }
+                                                manageCommands(sourceEntity);
+                                            }
+                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                                        break;
+                                    case 2:
+                                        let form7 = new ModalFormData;
+                                        form7.title(`Editing Code for ${commandsItem.commandName}`);
+                                        if (commandsItem.customCommandCodeLines == 1 || commandsItem.customCommandCodeLines == 0 || !!!commandsItem.customCommandCodeLines) {
+                                            form7.textField("Line " + 0 + "\nUse ${params[index]} to acess the value of a parameter or to access a javascript variable use ${javascript code}.", commandsItem.customCommandType == "commands" ? "Minecraft Command" : "JavaScript Code", commandsItem.code[0]);
+                                        }
+                                        else {
+                                            for (let i = 0; i < commandsItem.customCommandCodeLines; i++) {
+                                                form7.textField("Line " + i + (i == 0 ? "\nUse ${params[index]} to acess the value of a parameter or to access a javascript variable use ${javascript code}." : ""), commandsItem.customCommandType == "commands" ? "Minecraft Command" : "JavaScript Code", commandsItem.code[i]);
+                                            }
+                                        }
+                                        forceShow(form7, sourceEntity).then(ha => {
+                                            let h = ha;
+                                            if (h.canceled) {
+                                                return;
+                                            }
+                                            ;
+                                            h.formValues.forEach((v, i) => { world.setDynamicProperty("customCommandCode:" + commandsItem.commandName + ":" + i, v); });
+                                            world.getDynamicPropertyIds().filter(v => ((v.startsWith("customCommandCode:" + commandsItem.commandName + ":")) && (Number(v.slice(("customCommandCode:" + commandsItem.commandName + ":").length)) >= commandsItem.customCommandCodeLines))).forEach(v => world.setDynamicProperty(v));
+                                            manageCommands(sourceEntity);
+                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                                        break;
+                                    case 3:
+                                        let form4 = new ActionFormData;
+                                        form4.title(`${commandsItem.commandName} Command Info`);
+                                        form4.body(`§r§f${ /*arrayModifier(*/JSON.stringify(commandsItem).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"") /*.split(""), (v, i)=>(Number(String((i/30).toFixed(4)))==Math.round(i/30)?"\n"+v:v))*/}`);
+                                        form4.button("Done");
+                                        forceShow(form4, sourceEntity).then(ha => {
+                                            let h = ha;
+                                            if (h.canceled) {
+                                                return;
+                                            }
+                                            ;
+                                            manageCommands(sourceEntity);
+                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                                        break;
+                                    case 4:
+                                        let form6 = new ModalFormData;
+                                        form6.title(`Command Settings for ${commandsItem.type} ${commandsItem.commandName}`);
+                                        form6.textField("Required Tags", "JSON", JSONStringify(commandsItem.settings.requiredTags ?? ["canUseChatCommands"]));
+                                        form6.slider("Required Permission Level", 0, 15, 1, Number(commandsItem.settings.requiredPermissionLevel ?? 0));
+                                        form6.toggle("Requires OP", commandsItem.settings.requiresOp);
+                                        form6.toggle("Enabled", commandsItem.settings.enabled);
+                                        forceShow(form6, sourceEntity).then(ha => {
+                                            let h = ha;
+                                            if (h.canceled) {
+                                                return;
+                                            }
+                                            ;
+                                            commandsItem.settings.save({ requiredTags: h.formValues[0] == "" ? [] : JSONParse(String(h.formValues[0])), requiredPermissionLevel: Number(h.formValues[1]), requiresOp: Boolean(h.formValues[2]), enabled: Boolean(h.formValues[3]), settings_version: command_settings_format_version, format_version: format_version });
+                                            manageCommands(sourceEntity);
+                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                                        break;
+                                    case 5:
+                                        manageCommands(sourceEntity);
+                                        break;
+                                    default:
+                                }
+                                ;
+                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                     }
-                    ;
                 }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
         }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
+//1320
+//2013
 export async function onlinePlayerSelector(sourceEntity, backFunction = mainMenu, ...functionargs) {
     let form = new ActionFormData;
     form.title("Select Player");
@@ -3111,13 +3132,13 @@ export async function itemEditorTypeSelection(sourceEntity, targetPlayer, item, 
     let form = new ActionFormData;
     form.title("§eItem Editor §f[§cAlpha§f]");
     form.button((!item.item.hasItem() ? "§c" : "") + "Edit Item" /*, "textures/ui/online"*/);
-    form.button((!item.item.hasItem() ? "§c" : "") + "Edit Code" /*, "textures/ui/online"*/);
-    form.button((!item.item.hasItem() || !item.item?.isStackable ? "§c" : "") + "§eEdit Dynamic Properties" /*, "textures/ui/online"*/);
-    form.button((!item.item.hasItem() ? "§c" : "") + "§cEdit Enchantments" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() || item.item?.isStackable ? "§c" : "") + "Edit Code" + (item.item?.isStackable ? "\n(Item Must Be Non-Stackable)" : "") /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() || item.item?.isStackable ? "§c" : "§e") + "Edit Dynamic Properties" + (item.item?.isStackable ? "\n(Item Must Be Non-Stackable)" : "") /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "§c") + "Edit Enchantments" /*, "textures/ui/online"*/);
     form.button("New Item" /*, "textures/ui/online"*/);
-    form.button((!item.item.hasItem() ? "§c" : "") + "§cTransfer Item" /*, "textures/ui/online"*/);
-    form.button((!item.item.hasItem() ? "§c" : "") + "§cClone Item" /*, "textures/ui/online"*/);
-    form.button((!item.item.hasItem() ? "§c" : "") + "§cDelete Item" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "§c") + "Transfer Item" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "§c") + "Clone Item" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "§c") + "Delete Item" /*, "textures/ui/online"*/);
     //    form.button("Ban Item"/*, "textures/ui/online"*/); 
     form.button("Back");
     let result;
@@ -3138,7 +3159,7 @@ export async function itemEditorTypeSelection(sourceEntity, targetPlayer, item, 
                 }
                 break;
             case 1:
-                if (item.item?.hasItem() && item.item?.isStackable) {
+                if (item.item?.hasItem() && (!item.item?.isStackable)) {
                     result = !!selectionItems?.editCode?.f ? selectionItems?.editCode?.f(...selectionItems?.editCode?.a ?? [sourceEntity, sourceEntity]) : itemCodePropertyEditor(sourceEntity, item.item);
                 }
                 else {
@@ -3146,7 +3167,7 @@ export async function itemEditorTypeSelection(sourceEntity, targetPlayer, item, 
                 }
                 break;
             case 2:
-                if (item.item?.hasItem() && item.item?.isStackable) {
+                if (item.item?.hasItem() && (!item.item?.isStackable)) {
                     result = !!selectionItems?.editDynamicProperties?.f ? selectionItems?.editDynamicProperties?.f(...selectionItems?.editDynamicProperties?.a ?? [sourceEntity, sourceEntity]) : itemDynamicPropertyEditor(sourceEntity, item.item);
                 }
                 else {
@@ -3271,8 +3292,8 @@ export function itemDynamicPropertyEditor(sourceEntity, item) {
     let formb = new ActionFormData;
     formb.title("Item Dynamic Property Editor");
     formb.button("Add Property");
-    formb.button("Edit Property");
-    formb.button("Remove Property");
+    formb.button("§cEdit Property");
+    formb.button("§cRemove Property");
     formb.button("Back");
     forceShow(formb, sourceEntity).then(ba => {
         let b = ba;
@@ -3309,7 +3330,7 @@ export function itemCodePropertyEditor(sourceEntity, item) {
     let form = new ModalFormData;
     form.title("Code Editor");
     form.textField("Item Use Code", "JavaScript", String(item.getDynamicProperty("code")));
-    form.textField("Item Use On Code", "JavaScript", String(item.getDynamicProperty("itemUseOnCode")));
+    form.textField("Item Use On Code", "JavaScript", !!item.getDynamicProperty("itemUseOnCode") ? String(item.getDynamicProperty("itemUseOnCode")) : undefined);
     forceShow(form, sourceEntity).then(ra => {
         let r = ra;
         if (r.canceled) {
@@ -3326,8 +3347,8 @@ export function itemCodePropertyEditor(sourceEntity, item) {
             console.error(e, e.stack);
         }
         try {
-            if (String(itemUseOnCode) != String(item.getDynamicProperty("itemUseOnCode"))) {
-                item.setDynamicProperty("itemUseOnCode", String(itemUseOnCode));
+            if (itemUseOnCode == "" ? undefined : String(itemUseOnCode) != String(item.getDynamicProperty("itemUseOnCode"))) {
+                item.setDynamicProperty("itemUseOnCode", itemUseOnCode == "" ? undefined : String(itemUseOnCode));
             }
         }
         catch (e) {
@@ -3357,13 +3378,13 @@ export function newItemInSlot(sourceEntity, item) {
 }
 export function createExplosion(sourceEntity, parameterDefaults) {
     let form = new ModalFormData;
-    form.title("New Item");
+    form.title("Create Explosion");
     form.textField("x", "number", String(parameterDefaults?.x ?? sourceEntity.location.x));
     form.textField("y", "number", String(parameterDefaults?.y ?? sourceEntity.location.y));
     form.textField("z", "number", String(parameterDefaults?.z ?? sourceEntity.location.z));
     form.textField("dimension", "dimensionId", String(parameterDefaults?.dimension?.id ?? sourceEntity.dimension.id));
     form.textField("radius", "number", String(parameterDefaults?.radius ?? 1));
-    form.textField("source", "targetSelector");
+    form.textField("source", "targetSelector", parameterDefaults?.source);
     form.toggle("allowUnderwater", parameterDefaults?.explosionOptions?.allowUnderwater ?? false);
     form.toggle("breaksBlocks", parameterDefaults?.explosionOptions?.breaksBlocks ?? true);
     form.toggle("causesFire", parameterDefaults?.explosionOptions?.causesFire ?? false);
@@ -3375,7 +3396,7 @@ export function createExplosion(sourceEntity, parameterDefaults) {
         ;
         let [x, y, z, dimension, radius, source, allowUnderwater, breaksBlocks, causesFire] = r.formValues;
         try {
-            world.getDimension(String(dimension)).createExplosion({ x: Number(x), y: Number(y), z: Number(z) }, Number(radius), { allowUnderwater: Boolean(allowUnderwater), breaksBlocks: Boolean(breaksBlocks), causesFire: Boolean(causesFire), source: targetSelectorAllListC(String(source), "", `${sourceEntity.location.x} ${sourceEntity.location.y} ${sourceEntity.location.z}`, sourceEntity)[0] });
+            world.getDimension(String(dimension)).createExplosion({ x: Number(x), y: Number(y), z: Number(z) }, Number(radius), { allowUnderwater: Boolean(allowUnderwater), breaksBlocks: Boolean(breaksBlocks), causesFire: Boolean(causesFire), source: source == "" ? undefined : targetSelectorAllListC(String(source), "", `${sourceEntity.location.x} ${sourceEntity.location.y} ${sourceEntity.location.z}`, sourceEntity)[0] });
         }
         catch (e) {
             console.error(e, e.stack);
