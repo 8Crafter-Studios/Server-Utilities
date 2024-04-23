@@ -15,6 +15,8 @@ import *  as bans from "Main/ban";
 import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
+import mcMath from "@minecraft/math.js";
+export const format_version = "1.12.3";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -29,6 +31,7 @@ bans
 uis
 playersave
 spawnprot
+mcMath
 
 export const spawn_protection_format_version = "1.0.1";
 export const spawnProtectionTypeList = [/*"noPistonExtensionArea:", */"noExplosionArea:", "noInteractArea:", "noBlockInteractArea:", "noBlockBreakArea:", "protectedArea:", "noBlockPlaceArea:"]

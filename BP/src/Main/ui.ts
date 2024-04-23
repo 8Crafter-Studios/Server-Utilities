@@ -1,6 +1,6 @@
-import { Player, system, world, Entity, type DimensionLocation, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Vector, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, type ExplosionOptions } from "@minecraft/server";
+import { Player, system, world, Entity, type DimensionLocation, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, type ExplosionOptions } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, arrayModifier, format_version, getUICustomForm, targetSelectorAllListC } from "Main";
+import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -18,6 +18,8 @@ import *  as bans from "Main/ban";
 import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
+import mcMath from "@minecraft/math.js";
+export const format_version = "1.12.3";
 import { command, commandSettings, command_settings_format_version, commands, commands_format_version } from "Main/commands";
 mcServer
 mcServerUi/*
@@ -33,6 +35,7 @@ bans
 uis
 playersave
 spawnprot
+mcMath
 
 export const ui_format_version = "1.7.0";
 //${se}console.warn(JSON.stringify(evaluateParameters(["presetText", "string", "json", "number", "boolean", "string", "presetText", "presetText"], "test test [{\"test\": \"test\"}, [\"test\", \"test\"] , \"test\", \"test\"] 1 true \"test \\\"test\" test test"))); 
@@ -471,6 +474,7 @@ export function globalSettings(sourceEntity: Entity|Player){
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
+    form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
         if (t.canceled) return;/*
@@ -527,6 +531,7 @@ export function personalSettings(sourceEntity: Entity|Player){
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));*/
+    form2.submitButton("SaVE")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
         if (t.canceled) return;/*
@@ -626,6 +631,7 @@ export function scriptEvalRunWindow(sourceEntity: Entity|Player){
     form.textField("Script", "JavaScript")
     form.textField("Script", "JavaScript")
     form.textField("Script", "JavaScript")
+    form.submitButton("Run")
 
 forceShow(form, (sourceEntity as Player)).then(ro => {
     let r = (ro as ModalFormResponse)
@@ -668,6 +674,7 @@ export function terminal(sourceEntity: Entity|Player){
         form.textField("Run Command", "Run Command");
         form.textField("Run Delay", "Run Delay");
         form.toggle("Debug", false);
+        form.submitButton("Run")
         form.show(sourceEntity as any).then(r => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -1212,7 +1219,7 @@ export function editorStick(sourceEntity: Entity|Player, message: string = ""){
         }*//*
         console.warn(targetList);*//*
     }*/
-    try { form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + Vector.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId) } catch(e){console.error(e, e.stack); form.textField("setType\nERROR: NO BLOCK SELECTED", "Block Type", "minecraft:air");}/*Error: Failed To resolve block "minecraft:bedrock" with properties */
+    try { form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId) } catch(e){console.error(e, e.stack); form.textField("setType\nERROR: NO BLOCK SELECTED", "Block Type", "minecraft:air");}/*Error: Failed To resolve block "minecraft:bedrock" with properties */
     form.toggle("setType Enabled", false)
     try {form.textField("List Of Block Properties: " + blockStatesFullList/*(BlockPermutation.resolve("minecraft:bedrock", block.block.permutation.getAllStates()))*/ + "\nBlock Property Identifier", "bool_state, num_state, str_state") } catch(e){console.error(e, e.type/*e.stack*/); console.warn("test: " + String(e).slice(67)/*e.stack*/); form.textField("Block Property Identifier", "bool_state, num_state, str_state");}
     form.textField("Block Property Value", "true, 1, \"North\"")
@@ -1439,7 +1446,7 @@ export function editorStickB(sourceEntity: Entity|Player, dimensionLocation: Dim
         }*//*
         console.warn(targetList);*//*
     }*/
-    try { form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + Vector.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nsetType", "Block Type", block2.typeId) } catch(e){console.error(e, e.stack); form.textField("setType\nERROR: NO BLOCK SELECTED", "Block Type", "minecraft:air");}/*Error: Failed To resolve block "minecraft:bedrock" with properties */
+    try { form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nsetType", "Block Type", block2.typeId) } catch(e){console.error(e, e.stack); form.textField("setType\nERROR: NO BLOCK SELECTED", "Block Type", "minecraft:air");}/*Error: Failed To resolve block "minecraft:bedrock" with properties */
     form.toggle("setType Enabled", false)
     try {form.textField("List Of Block Properties: " + blockStatesFullList/*(BlockPermutation.resolve("minecraft:bedrock", block.block.permutation.getAllStates()))*/ + "\nBlock Property Identifier", "bool_state, num_state, str_state") } catch(e){console.error(e, e.type/*e.stack*/); console.warn("test: " + String(e).slice(67)/*e.stack*/); form.textField("Block Property Identifier", "bool_state, num_state, str_state");}
     form.textField("Block Property Value", "true, 1, \"North\"")
@@ -1759,6 +1766,7 @@ export function manageCommands(sourceEntity: Entity|Player){
                     switch(r.selection){
                         case commandsListB.length+(+(category!="custom"&&category!="all")): 
                             let form5 = new ModalFormData; form5.title(`Add Custom Command`); form5.textField("Command Name§c*", "mycommand"); form5.dropdown("Command Code Type (commands means the command just runs a list of minecraft commands, and javascript means that the command runs a list of javascript scripts/code)", ["commands", "javascript"]); form5.textField("Command Version§c*", "SemVer String; ex. 1.7.0-beta.1.2.a.b.c.d", "1.0.0"); form5.textField("Formatting Code§c*", "required: string", "§r§f"); form5.textField("Description", "string"); form5.textField("Formats", "JSON", "[\"myCommand\", \"myCommand <string: string> [integer: int]\"]"); form5.textField("Command Prefix (leave blank to use default)", "default"); form5.toggle("Enable Automatic Parameter Evaluation", true)
+                            form5.submitButton("Create Command")
                             forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                                 if(h.canceled){return};
                                 if(!!!h.formValues[0]){let formErrora = new MessageFormData; formErrora.body(`Required parameter 'Command Name' was left blank`); formErrora.title("Error"); formErrora.button1("Back"); formErrora.button2("Cancel"); forceShow(formErrora, sourceEntity as Player).then(()=>{manageCommands(sourceEntity); return}); return}
@@ -1794,6 +1802,7 @@ export function manageCommands(sourceEntity: Entity|Player){
                                     break
                                     case 1: 
                                     let form5 = new ModalFormData; form5.title(`Edit Custom Command`); form5.textField("Command Name§c*", "mycommand", commandsItem.commandName); form5.dropdown("Command Code Type (commands means the command just runs a list of minecraft commands, and javascript means that the command runs a list of javascript scripts/code)", ["commands", "javascript"], ["commands", "javascript"].findIndex(v=>v==commandsItem.customCommandType)); form5.slider("Number of Code Lines", 1, 100, 1, Number(commandsItem.customCommandCodeLines??1)); form5.textField("Command Version§c*", "SemVer String; ex. 1.7.0-beta.1.2.a.b.c.d", String(commandsItem.command_version)); form5.textField("Formatting Code§c*", "required: string", commandsItem.formatting_code); form5.textField("Description", "string", commandsItem.description); form5.textField("Formats", "JSON", JSONStringify(commandsItem.formats)); form5.textField("Command Prefix (leave blank to use default)", "default", commandsItem.customCommandPrefix); form5.toggle("Enable Automatic Parameter Evaluation", commandsItem.customCommandParametersEnabled); form5.textField("Parameters for Automatic Parameter Evaluation (requires enable automatic parameter evaluation to be enabled)\nThis is a list of strings stating the parameter types, valid values are \"presetText\", \"number\", \"boolean\", \"string\", and\"json\". \npresetText matches a string of text with no quotation marks or spaces in it\nnumber matches a number, boolean matches a boolean\nstring matches either a string of text with no quotation marks or spaces, or a string of text inside of quotation marks that may include spaces and also escape characters\njson matches a JSON array, object, or string\nthis list should always start with presetText to match the command name\nfor example: if you have the command 'say hi \"test stuff\" 9768 true 8 {\"some\": \"thing\", \"a\": [1, 2, 3, 4, 5]} [1, 2, 3, 4, \"5\"]' and you set this value to [\"presetText\", \"presetText\", \"string\", \"number\", \"boolean\", \"string\", \"json\", \"json\"] then it would return [\"say\", \"hi\", \"test stuff\", 9768, true, \"8\", {\"some\": \"thing\", \"a\": [1, 2, 3, 4, 5]}, [1, 2, 3, 4, \"5\"]]", "JSON", JSONStringify(commandsItem.customCommandParametersList??["presetText"]))
+                                    form5.submitButton("Save")
                                     forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                                         if(h.canceled){return};
                                         if(!!!h.formValues[0]){let formErrora = new MessageFormData; formErrora.body(`Required parameter 'Command Name' was left blank`); formErrora.title("Error"); formErrora.button1("Back"); forceShow(formErrora, sourceEntity as Player).then(()=>{manageCommands(sourceEntity); return}); return}
@@ -1835,6 +1844,7 @@ export function manageCommands(sourceEntity: Entity|Player){
                                     break
                                     case 2: 
                                     let form7 = new ModalFormData; form7.title(`Editing Code for ${commandsItem.commandName}`); if(commandsItem.customCommandCodeLines==1||commandsItem.customCommandCodeLines==0||!!!commandsItem.customCommandCodeLines){form7.textField("Line "+0+"\nUse ${params[index]} to acess the value of a parameter or to access a javascript variable use ${javascript code}.", commandsItem.customCommandType=="commands"?"Minecraft Command":"JavaScript Code", commandsItem.code[0])}else{for(let i = 0; i<commandsItem.customCommandCodeLines; i++){form7.textField("Line "+i+(i==0?"\nUse ${params[index]} to acess the value of a parameter or to access a javascript variable use ${javascript code}.":""), commandsItem.customCommandType=="commands"?"Minecraft Command":"JavaScript Code", commandsItem.code[i])}}
+                                    form7.submitButton("Save")
                                     forceShow(form7, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                                         if(h.canceled){return};
                                         h.formValues.forEach((v, i)=>{world.setDynamicProperty("customCommandCode:"+commandsItem.commandName+":"+i, v)})
@@ -1851,6 +1861,7 @@ export function manageCommands(sourceEntity: Entity|Player){
                                     break
                                     case 4: 
                                     let form6 = new ModalFormData; form6.title(`Command Settings for ${commandsItem.type} ${commandsItem.commandName}`); form6.textField("Required Tags", "JSON", JSONStringify(commandsItem.settings.requiredTags??["canUseChatCommands"])); form6.slider("Required Permission Level", 0, 15, 1, Number(commandsItem.settings.requiredPermissionLevel??0)); form6.toggle("Requires OP", commandsItem.settings.requiresOp); form6.toggle("Enabled", commandsItem.settings.enabled)
+                                    form6.submitButton("Save")
                                     forceShow(form6, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                                         if(h.canceled){return};
                                         commandsItem.settings.save({requiredTags: h.formValues[0]==""?[]:JSONParse(String(h.formValues[0])), requiredPermissionLevel: Number(h.formValues[1]), requiresOp: Boolean(h.formValues[2]), enabled: Boolean(h.formValues[3]), settings_version: command_settings_format_version, format_version: format_version})
@@ -1962,6 +1973,7 @@ export async function itemEditor(sourceEntity: Entity|Player, targetPlayer: Enti
     form.toggle("Keep On Death", item.keepOnDeath); 
     form.textField((!!!item.getItem().getComponent("cooldown")?"§c(UNAVAILABLE)§f ":"")+"Set Cooldown (In Ticks)", "ticks"); 
     form.textField((!!!item.getItem().getComponent("durability")?"§c(UNAVAILABLE)§f ":"")+"Set Damage", "int", String(item.getItem().getComponent("durability")?.damage)); 
+    form.submitButton("Done")
     let result: any; 
     result = undefined
     return forceShow(form, sourceEntity as Player).then(ra=>{
@@ -2012,6 +2024,7 @@ export function itemCodePropertyEditor(sourceEntity: Entity|Player, item: Contai
     form.title("Code Editor"); 
     form.textField("Item Use Code", "JavaScript", String(item.getDynamicProperty("code"))); 
     form.textField("Item Use On Code", "JavaScript", !!item.getDynamicProperty("itemUseOnCode")?String(item.getDynamicProperty("itemUseOnCode")):undefined); 
+    form.submitButton("Done")
     forceShow(form, sourceEntity as Player).then(ra=>{
         let r = (ra as ModalFormResponse); 
         if(r.canceled){return}; 
@@ -2044,6 +2057,7 @@ export function createExplosion(sourceEntity: Entity|Player, parameterDefaults?:
     form.toggle("allowUnderwater", parameterDefaults?.explosionOptions?.allowUnderwater??false); 
     form.toggle("breaksBlocks", parameterDefaults?.explosionOptions?.breaksBlocks??true); 
     form.toggle("causesFire", parameterDefaults?.explosionOptions?.causesFire??false); 
+    form.submitButton("Create")
     forceShow(form, sourceEntity as Player).then(ra=>{
         let r = (ra as ModalFormResponse); 
         if(r.canceled){return}; 

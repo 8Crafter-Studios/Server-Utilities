@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.11.0";
+export const format_version = "1.12.3";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -46,8 +46,10 @@ import "Main/ban.js";
 import "Main/ui.js";
 import "Main/player_save.js";
 import "Main/spawn_protection.js";
+import "@minecraft/math.js";
 export const mainmetaimport = import.meta
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, Vector, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction } from "@minecraft/server";
+
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG } from "Main/coordinates";
@@ -69,7 +71,8 @@ import *  as cmds from "Main/commands";
 import *  as bans from "Main/ban";
 import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
-import *  as spawnprot from "Main/spawn_protection";/*
+import *  as spawnprot from "Main/spawn_protection";
+import mcMath from "@minecraft/math.js";/*
 import { disableWatchdog } from "@minecraft/debug-utilities";*/
 mcServer
 mcServerUi/*
@@ -87,6 +90,7 @@ playersave
 spawnprot
 SimulatedPlayer
 Test
+mcMath
 let crashEnabled = false
 let tempSavedVariables = []
 export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]/*
@@ -1429,8 +1433,8 @@ export function fillBlocksHT(center: Vector3, radius: number, length: number, ax
     }
     return counter
 }; 
-export function scanForBlockType(from: Vector3|Vector, to: Vector3|Vector, dimension: Dimension, block: string, returnMode?: ""|"Vector3"|"Block"){let blockType = BlockTypes.get(block).id; if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>dimension.getBlock(v).typeId==blockType)}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>v.typeId==blockType)}}; 
-export function scanForContainerBlocks(from: Vector3|Vector, to: Vector3|Vector, dimension: Dimension, returnMode?: ""|"Vector3"|"Block"){if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>!!dimension.getBlock(v).getComponent("inventory"))}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>!!v.getComponent("inventory"))}}; 
+export function scanForBlockType(from: Vector3, to: Vector3, dimension: Dimension, block: string, returnMode?: ""|"Vector3"|"Block"){let blockType = BlockTypes.get(block).id; if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>dimension.getBlock(v).typeId==blockType)}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>v.typeId==blockType)}}; 
+export function scanForContainerBlocks(from: Vector3, to: Vector3, dimension: Dimension, returnMode?: ""|"Vector3"|"Block"){if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>!!dimension.getBlock(v).getComponent("inventory"))}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>!!v.getComponent("inventory"))}}; 
 export function clearAllContainerBlocks(blocks: Block[]){blocks.forEach(v=>cmds.clearContainer(v.getComponent("inventory").container)); return blocks}; 
 export function fillBlocksC(begin: Vector3, end: Vector3, dimension: Dimension, blocktype: string = "air", blockStates?: Record<string, string | number | boolean>, matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, overrideAllBlockStates: boolean = false){
     let mainArray = Array.from(new BlockVolume(begin, end).getBlockLocationIterator()); 
@@ -1743,19 +1747,20 @@ export function* fillBlocksCG(begin: Vector3, end: Vector3, dimension: Dimension
     world.sendMessage(String(counter))*/
     onComplete(counter, timea, timeb, timeb-timea, onCompleteArgsObject, ...onCompleteArgs)
 }; 
+export function v3Multiply(a: Vector3, b: number | Vector3){return typeof b == "object"?{x: a.x*b.x, y: a.y*b.y, z: a.z*b.z}:{x: a.x*b, y: a.y*b, z: a.z*b}}
 export function fillBlocksD(from: Vector3, to: Vector3, dimension: Dimension, block: string = "air", blockStates?: Record<string, string | number | boolean>, matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, overrideAllBlockStates: boolean = false){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))}); subArray.forEach(v=>{Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))}); let counter = 0; mainArray.forEach(v=>counter+=fillBlocksC(v.from, v.to, dimension, block, blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates)); return counter}; 
 export async function fillBlocksE(from: Vector3, to: Vector3, dimension: Dimension, block: string = "air", blockStates?: Record<string, string | number | boolean>, matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, overrideAllBlockStates: boolean = false){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))}); subArray.forEach(v=>{Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))}); let counter = 0; mainArray.forEach(v=>system.run(()=>counter+=fillBlocksC(v.from, v.to, dimension, block, blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates))); return counter}; 
 export function catchtry(trycallbackfn: ()=>any, catchcallbackfn: (e: Error)=>any = (e)=>console.error(e, e.stack), finallycallbackfn: (v)=>any = (v)=>{return v}){let v: any; v = undefined; try{v = trycallbackfn()}catch(e){v = catchcallbackfn(e)??v}finally{return finallycallbackfn(v)??v}}; 
 export function gwdp(propertyId: string){return world.getDynamicProperty(propertyId)}; 
-export function swdp(propertyId: string, newValue?: string|number|boolean|Vector3|undefined){return world.setDynamicProperty(propertyId, newValue)}; 
+export function swdp(propertyId: string, newValue?: string|number|boolean|undefined){return world.setDynamicProperty(propertyId, newValue)}; 
 export function gedp(entity: Entity|Player, propertyId: string){return entity.getDynamicProperty(propertyId)}; 
-export function sedp(entity: Entity|Player, propertyId: string, newValue?: string|number|boolean|Vector3|undefined){return entity.setDynamicProperty(propertyId, newValue)}; 
+export function sedp(entity: Entity|Player, propertyId: string, newValue?: string|number|boolean|undefined){return entity.setDynamicProperty(propertyId, newValue)}; 
 export function gidp(item: ItemStack|ContainerSlot, propertyId: string){return item.getDynamicProperty(propertyId)}; 
-export function sidp(item: ItemStack|ContainerSlot, entity: Entity|Player, propertyId: string, newValue?: string|number|boolean|Vector3|undefined){return item.setDynamicProperty(propertyId, newValue)}; 
+export function sidp(item: ItemStack|ContainerSlot, entity: Entity|Player, propertyId: string, newValue?: string|number|boolean|undefined){return item.setDynamicProperty(propertyId, newValue)}; 
 export function shootProjectile(entityType: string|EntityType, location: DimensionLocation, velocity: Vector3, shootOptions: mcServer.ProjectileShootOptions = {}, setProjectileComponentPropertiesCallbackFn: (EntityProjectileComponent: EntityProjectileComponent)=>any = (a)=>{}){let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try{setProjectileComponentPropertiesCallbackFn(entityProjectileComponent)}catch(e){console.error(e, e.stack)}; entityProjectileComponent?.shoot(velocity, shootOptions)}; 
 export function shootEntity(entityType: string|EntityType, location: DimensionLocation, velocity: Vector3, setProjectileComponentPropertiesCallbackFn: (entity: Entity)=>any = (a)=>{}){let entity = location.dimension.spawnEntity(String(entityType), location); try{setProjectileComponentPropertiesCallbackFn(entity)}catch(e){console.error(e, e.stack)}; entity.applyImpulse(velocity)}; 
-export function shootProjectileB(entityType: string|EntityType, location: DimensionLocation, rotation: Vector2, power: number, shootOptions: mcServer.ProjectileShootOptions = {}, setProjectileComponentPropertiesCallbackFn: (entityProjectileComponent: EntityProjectileComponent)=>any = (a)=>{}){let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try{setProjectileComponentPropertiesCallbackFn(entityProjectileComponent)}catch(e){console.error(e, e.stack)}; entityProjectileComponent?.shoot(caretNotationC(Vector.zero, Vector.multiply(Vector.forward, power), rotation), shootOptions)}; 
-export function shootEntityB(entityType: string|EntityType, location: DimensionLocation, rotation: Vector2, power: number, setProjectileComponentPropertiesCallbackFn: (entity: Entity)=>any = (a)=>{}){let entity = location.dimension.spawnEntity(String(entityType), location); try{setProjectileComponentPropertiesCallbackFn(entity)}catch(e){console.error(e, e.stack)}; entity.applyImpulse(caretNotationC(Vector.zero, Vector.multiply(Vector.forward, power), rotation))}; 
+export function shootProjectileB(entityType: string|EntityType, location: DimensionLocation, rotation: Vector2, power: number, shootOptions: mcServer.ProjectileShootOptions = {}, setProjectileComponentPropertiesCallbackFn: (entityProjectileComponent: EntityProjectileComponent)=>any = (a)=>{}){let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try{setProjectileComponentPropertiesCallbackFn(entityProjectileComponent)}catch(e){console.error(e, e.stack)}; entityProjectileComponent?.shoot(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation), shootOptions)}; 
+export function shootEntityB(entityType: string|EntityType, location: DimensionLocation, rotation: Vector2, power: number, setProjectileComponentPropertiesCallbackFn: (entity: Entity)=>any = (a)=>{}){let entity = location.dimension.spawnEntity(String(entityType), location); try{setProjectileComponentPropertiesCallbackFn(entity)}catch(e){console.error(e, e.stack)}; entity.applyImpulse(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation))}; 
 export function targetSelector(selector: string, filters: string, UUID: number){let scoreboardUUID = Math.round((Math.random()*100+50)); world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score)=>(score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return Number((selectedEntityUUIDValue))}
 export function targetSelectorB(selector: string, filters: string, UUID: number){let scoreboardUUID = Math.round((Math.random()*100+50)); world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score)=>(score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return world.getDimension(DimensionTypes.getAll().find((dimension)=>(world.getDimension(dimension.typeId).getEntities().find((entity)=>(entity.id == selectedEntityUUIDValue)))).typeId).getEntities().find((entity)=>(entity.id == selectedEntityUUIDValue))}/*
 let a = world.getDimension("the_end").getBlock({x: 0, y: 0, z: 0}).permutation
@@ -2145,7 +2150,7 @@ world.afterEvents.worldInitialize.subscribe((event) => {
     });*/
 
     
-
+/*
 world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:dataDrivenEntityTriggerEvent")));
@@ -2160,17 +2165,18 @@ world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(event => {
     try {
         world.getAllPlayers().filter((player) => { player.hasTag("getEntityTriggerEventNotifications"); }).forEach((currentPlayer) => { currentPlayer.sendMessage("id: " + event.id + ", getComponentGroupsToAdd: " + event.getModifiers()[0].addedComponentGroups + ", getComponentGroupsToRemove: " + event.getModifiers()[0].removedComponentGroups + ", getTriggers: " + event.getModifiers()[0].triggers); });
         if (event.id == "andexsa:friction_modifier_0.9") {
-            let componentGroups = event.getModifiers()[0]; /*
+            let componentGroups = event.getModifiers()[0]; *//*
             console.warn(event.id)
-            console.warn(componentGroups.getComponentGroupsToAdd())*/
-            componentGroups.addedComponentGroups = ["andexsa:player_is_baby"]; /*
-            console.warn(componentGroups.getComponentGroupsToAdd())*/
+            console.warn(componentGroups.getComponentGroupsToAdd())*//*
+            componentGroups.addedComponentGroups = ["andexsa:player_is_baby"]; *//*
+            console.warn(componentGroups.getComponentGroupsToAdd())*//*
             event.setModifiers([componentGroups]);
             console.warn(event.getModifiers()[0].addedComponentGroups);
         }
     }
     catch { }
-}); ;/*
+}); ;*///removed in minecraft 1.20.80 >:(
+/*
   world.beforeEvents.pistonActivate.subscribe(event => {
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:pistonActivate")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pistonActivateBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
       world.getAllPlayers().filter((player) => ( player.hasTag("getEntityTriggerEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("id: " + event.block.typeId + ", getComponentGroupsToAdd: " + event.piston.getAttachedBlocks()[0].x + ", getComponentGroupsToRemove: " + event.isExpanding) + ", getTriggers: " + event.dimension; });
@@ -2890,7 +2896,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
       
         
           let enchants = item.getComponent("enchantable");
-          let knockbackEnchant = {type: "knockback", level: 2};
+          let knockbackEnchant = {type: EnchantmentTypes.get("knockback"), level: 2};
           enchants.addEnchantment(knockbackEnchant);
           inventory.container.setItem(0, item);
           const ironFireSword = new ItemStack("minecraft:iron_sword", 1);/*
@@ -2921,7 +2927,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
           inventory.container.setItem(0, item);
           let itema = inventory2.container.getItem(0);
           let enchants3 = itema.getComponent("enchantable");
-          let knockbackEnchant2 = {type: "knockback", level: 1};
+          let knockbackEnchant2 = {type: EnchantmentTypes.get("knockback"), level: 1};
           enchants3.addEnchantment(knockbackEnchant2);/*
           inventory2.container.setItem(0, itema);*/
         
@@ -2990,7 +2996,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
                 try {effectsList = [("§9{ §stypeId§a: §u" + players[playerTargetB].getEffects()[0].typeId + "§a, §sdisplayName§a: §u" + players[playerTargetB].getEffects()[0].displayName + "§a, §sduration§a: §c" + players[playerTargetB].getEffects()[0].duration + "§a, §samplifier§a: §c" + players[playerTargetB].getEffects()[0].amplifier + "§9 }§a")]} catch(e){effectsList = "§4None§a"}
                 try {blockProperties = [players[playerTargetB].getBlockFromViewDirection().block.permutation.getAllStates()[0]]} catch(e){blockProperties = "§4None§a"}/*
                 let effectsList = [players[playerTargetB].getComponents[0]]*/
-                let distance = Vector.distance(players[playerViewerB].location, players[playerTargetB].location)
+                let distance = mcMath.Vector3Utils.distance(players[playerViewerB].location, players[playerTargetB].location)
                 try {entityViewedEntityType = players[playerTargetB].getEntitiesFromViewDirection()[0].entity.typeId} catch(e){entityViewedEntityType = "§4None§a"}
                 try {entityViewedEntityName = players[playerTargetB].getEntitiesFromViewDirection()[0].entity.typeId} catch(e){entityViewedEntityName = "§4None§a"}
                 try {entityViewedEntityDistance = players[playerTargetB].getEntitiesFromViewDirection()[0].distance;} catch(e){entityViewedEntityDistance = "§4None§a"}
@@ -3066,7 +3072,7 @@ console.error(e, e.stack);
                 if (selectionType == 0){playerTargetB = players[playerViewerB].getEntitiesFromViewDirection()[0].entity}
                 if (selectionType == 1){playerTargetB = world.getDimension("overworld").getEntities().concat(world.getDimension("nether").getEntities().concat(world.getDimension("the_end").getEntities())).find((entityValue)=>(entityValue.id == entityUUID))}
                 if (selectionType == 4){playerTargetB = world.getDimension(blockLocation[0]).getEntitiesAtBlockLocation({x: Number(blockLocation[1]), y: Number(blockLocation[2]), z: Number(blockLocation[3])})[Number(blockLocationIndex)]}
-                let distance = Vector.distance(players[playerViewerB].location, playerTargetB.location)
+                let distance = mcMath.Vector3Utils.distance(players[playerViewerB].location, playerTargetB.location)
                 try {entityViewedEntityType = playerTargetB.getEntitiesFromViewDirection()[0].entity.typeId} catch(e){entityViewedEntityType = "§4None§a"}
                 try {entityViewedEntityName = playerTargetB.getEntitiesFromViewDirection()[0].entity.typeId} catch(e){entityViewedEntityName = "§4None§a"}
                 try {entityViewedEntityDistance = playerTargetB.getEntitiesFromViewDirection()[0].distance;} catch(e){entityViewedEntityDistance = "§4None§a"}
@@ -5095,7 +5101,7 @@ forceShow(form, (sourceEntity as Player)).then(ro => {
             }*//*
             console.warn(targetList);*//*
         }*/
-        try { form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + Vector.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId) } catch(e){console.error(e, e.stack); form.textField("setType\nERROR: NO BLOCK SELECTED", "Block Type", "minecraft:air");}/*Error: Failed To resolve block "minecraft:bedrock" with properties */
+        try { form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId) } catch(e){console.error(e, e.stack); form.textField("setType\nERROR: NO BLOCK SELECTED", "Block Type", "minecraft:air");}/*Error: Failed To resolve block "minecraft:bedrock" with properties */
         form.toggle("setType Enabled", false)
         try {form.textField("List Of Block Properties: " + blockStatesFullList/*(BlockPermutation.resolve("minecraft:bedrock", block.block.permutation.getAllStates()))*/ + "\nBlock Property Identifier", "bool_state, num_state, str_state") } catch(e){console.error(e, e.type/*e.stack*/); console.warn("test: " + String(e).slice(67)/*e.stack*/); form.textField("Block Property Identifier", "bool_state, num_state, str_state");}
         form.textField("Block Property Value", "true, 1, \"North\"")
@@ -5748,7 +5754,7 @@ forceShow(form, (sourceEntity as Player)).then(ro => {
             }*//*
             console.warn(targetList);*//*
         }*/
-        try { form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + Vector.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId) } catch(e){console.error(e, e.stack); form.textField("setType\nERROR: NO BLOCK SELECTED", "Block Type", "minecraft:air");}/*Error: Failed To resolve block "minecraft:bedrock" with properties */
+        try { form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId) } catch(e){console.error(e, e.stack); form.textField("setType\nERROR: NO BLOCK SELECTED", "Block Type", "minecraft:air");}/*Error: Failed To resolve block "minecraft:bedrock" with properties */
         form.toggle("setType Enabled", false)
         try {form.textField("List Of Block Properties: " + blockStatesFullList/*(BlockPermutation.resolve("minecraft:bedrock", block.block.permutation.getAllStates()))*/ + "\nBlock Property Identifier", "bool_state, num_state, str_state") } catch(e){console.error(e, e.type/*e.stack*/); console.warn("test: " + String(e).slice(67)/*e.stack*/); form.textField("Block Property Identifier", "bool_state, num_state, str_state");}
         form.textField("Block Property Value", "true, 1, \"North\"")

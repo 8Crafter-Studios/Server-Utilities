@@ -1,13 +1,13 @@
 {
-  "name": "summon-anything-lite",
-  "version": "1.0.0",
+  "name": "debug-sticks",
+  "version": "1.12.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "8Crafter",
   "license": "ISC",
   "dependencies": {
     "@minecraft/common": "^1.1.0",

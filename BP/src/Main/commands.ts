@@ -1,5 +1,5 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, Vector, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject,format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG } from "../Main";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions } from "@minecraft/server";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
@@ -19,7 +19,9 @@ import *  as bans from "./ban";
 import *  as uis from "./ui";
 import *  as playersave from "./player_save";
 import *  as spawnprot from "./spawn_protection";
+import mcMath from "@minecraft/math.js";
 export const cmdsmetaimport = import.meta
+export const format_version = "1.12.3";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -34,6 +36,7 @@ bans
 uis
 playersave
 spawnprot
+mcMath
 
 export const commands_format_version = "8.1.0-rc.99";
     // @ts-expect-error
@@ -926,100 +929,100 @@ export class executeCommandPlayer{
     rotation?: Vector2
 
     constructor(player: Player){this.player=player; this.modifiedlocation=player.location; this.modifieddimension=player.dimension; this.rotation=player.getRotation()}
-    get dimension(){return this.modifieddimension??this.player.dimension}
-    get location(){return this.modifiedlocation??this.player.location}
-    get camera(){return this.player.camera}
-    get isEmoting(){return this.player.isEmoting}
-    get isFlying(){return this.player.isFlying}
-    get isGliding(){return this.player.isGliding}
-    get isJumping(){return this.player.isJumping}
-    get isClimbing(){return this.player.isClimbing}
-    get isFalling(){return this.player.isFalling}
-    get isInWater(){return this.player.isInWater}
-    get isOnGround(){return this.player.isOnGround}
-    get isSleeping(){return this.player.isSleeping}
-    get isSprinting(){return this.player.isSprinting}
-    get isSwimming(){return this.player.isSwimming}
-    get fallDistance(){return this.player.fallDistance}
-    get scoreboardIdentity(){return this.player.scoreboardIdentity}
-    get lifetimeState(){return this.player.lifetimeState}
-    get level(){return this.player.level}
-    get name(){return this.player.name}
-    get onScreenDisplay(){return this.player.onScreenDisplay}
-    get selectedSlot(){return this.player.selectedSlot}
+    get dimension(){return this.modifieddimension??this.player?.dimension}
+    get location(){return this.modifiedlocation??this.player?.location}
+    get camera(){return this.player?.camera}
+    get isEmoting(){return this.player?.isEmoting}
+    get isFlying(){return this.player?.isFlying}
+    get isGliding(){return this.player?.isGliding}
+    get isJumping(){return this.player?.isJumping}
+    get isClimbing(){return this.player?.isClimbing}
+    get isFalling(){return this.player?.isFalling}
+    get isInWater(){return this.player?.isInWater}
+    get isOnGround(){return this.player?.isOnGround}
+    get isSleeping(){return this.player?.isSleeping}
+    get isSprinting(){return this.player?.isSprinting}
+    get isSwimming(){return this.player?.isSwimming}
+    get fallDistance(){return this.player?.fallDistance}
+    get scoreboardIdentity(){return this.player?.scoreboardIdentity}
+    get lifetimeState(){return this.player?.lifetimeState}
+    get level(){return this.player?.level}
+    get name(){return this.player?.name}
+    get onScreenDisplay(){return this.player?.onScreenDisplay}
+    get selectedSlot(){return this.player?.selectedSlot}
     set selectedSlot(slotNumber: number){this.player.selectedSlot = slotNumber}
-    get totalXpNeededForNextLevel(){return this.player.totalXpNeededForNextLevel}
-    get xpEarnedAtCurrentLevel(){return this.player.xpEarnedAtCurrentLevel}
-    get isSneaking(){return this.player.isSneaking}
+    get totalXpNeededForNextLevel(){return this.player?.totalXpNeededForNextLevel}
+    get xpEarnedAtCurrentLevel(){return this.player?.xpEarnedAtCurrentLevel}
+    get isSneaking(){return this.player?.isSneaking}
     set isSneaking(isSneaking: boolean){this.player.isSneaking=isSneaking}
-    get id(){return this.player.id}
-    get typeId(){return this.player.typeId}
-    get nameTag(){return this.player.nameTag}
+    get id(){return this.player?.id}
+    get typeId(){return this.player?.typeId}
+    get nameTag(){return this.player?.nameTag}
     set nameTag(nameTag: string|undefined|null){this.player.nameTag=nameTag}
-    addEffect(effectType: string | mcServer.EffectType, duration: number, options?: mcServer.EntityEffectOptions){return this.player.addEffect(effectType, duration, options)}
-    addExperience(amount: number){return this.player.addExperience(amount)}
-    getRotation(){return this.rotation??this.player.getRotation()}
-    getViewDirection(){return !!this.rotation?anglesToDirectionVectorDeg(this.rotation.x, this.rotation.y):this.player.getViewDirection()}
-    addLevels(amount: number){return this.player.addLevels(amount)}
-    eatItem(itemStack: ItemStack){return this.player.eatItem(itemStack)}
-    getGameMode(){return this.player.getGameMode()}
-    getItemCooldown(itemCategory: string){return this.player.getItemCooldown(itemCategory)}
-    getSpawnPoint(){return this.player.getSpawnPoint()}
-    getTotalXp(){return this.player.getTotalXp()}
-    isOp(){return this.player.isOp()}
-    playMusic(trackId: string, musicOptions?: MusicOptions){return this.player.playMusic(trackId, musicOptions)}
-    playSound(soundId: string, soundOptions?: PlayerSoundOptions){return this.player.playSound(soundId, soundOptions)}
-    postClientMessage(id: string, value: string){return this.player.postClientMessage(id, value)}
-    queueMusic(trackId: string, musicOptions?: MusicOptions){return this.player.queueMusic(trackId, musicOptions)}
-    resetLevel(){return this.player.resetLevel()}
-    sendMessage(message: string | RawMessage | (string | RawMessage)[]){return this.player.sendMessage(message)}
-    setGameMode(gameMode?: GameMode){return this.player.setGameMode(gameMode)}
-    setOp(isOp: boolean){return this.player.setOp(isOp)}
-    setSpawnPoint(spawnPoint?: DimensionLocation){return this.player.setSpawnPoint(spawnPoint)}
-    spawnParticle(effectName: string, location: Vector3, molangVariables?: MolangVariableMap){return this.player.spawnParticle(effectName, location, molangVariables)}
-    startItemCooldown(itemCategory: string, tickDuration: number){return this.player.startItemCooldown(itemCategory, tickDuration)}
-    stopMusic(){return this.player.stopMusic()}
-    addTag(tag: string){return this.player.addTag(tag)}
-    applyDamage(amount: number, options?: EntityApplyDamageByProjectileOptions | EntityApplyDamageOptions){return this.player.applyDamage(amount, options)}
-    applyImpulse(vector: Vector3){return this.player.applyImpulse(vector)}
-    applyKnockback(directionX: number, directionZ: number, horizontalStrength: number, verticalStrength: number){return this.player.applyKnockback(directionX, directionZ, horizontalStrength, verticalStrength)}
-    clearDynamicProperties(){return this.player.clearDynamicProperties()}
-    clearVelocity(){return this.player.clearVelocity()}
-    extinguishFire(useEffects?: boolean){return this.player.extinguishFire(useEffects)}
-    getBlockFromViewDirection(options?: BlockRaycastOptions){return this.player.getBlockFromViewDirection(options)}
-    getComponent<T extends keyof EntityComponentTypeMap>(componentId: keyof EntityComponentTypeMap): EntityComponentTypeMap[T] | undefined{return this.player.getComponent(componentId) as EntityComponentTypeMap[T]}
-    getComponents(){return this.player.getComponents()}
-    getDynamicProperty(identifier: string){return this.player.getDynamicProperty(identifier)}
-    getDynamicPropertyIds(){return this.player.getDynamicPropertyIds()}
-    getDynamicPropertyTotalByteCount(){return this.player.getDynamicPropertyTotalByteCount()}
-    getEffect(effectType: string | EffectType){return this.player.getEffect(effectType)}
-    getEffects(){return this.player.getEffects()}
-    getEntitiesFromViewDirection(options?: EntityRaycastOptions){return this.player.getEntitiesFromViewDirection(options)}
-    getHeadLocation(){return this.player.getHeadLocation()}
-    getProperty(identifier: string){return this.player.getProperty(identifier)}
-    getTags(){return this.player.getTags()}
-    getVelocity(){return this.player.getVelocity()}
-    hasComponent(componentId: string){return this.player.hasComponent(componentId)}
-    hasTag(tag: string){return this.player.hasTag(tag)}
-    isValid(){return this.player.isValid()}
-    kill(){return this.player.kill()}
-    matches(options: EntityQueryOptions){return this.player.matches(options)}
-    playAnimation(animationName: string, options?: PlayAnimationOptions){return this.player.playAnimation(animationName, options)}
-    remove(){return this.player.remove()}
-    removeEffect(effectType: string | EffectType){return this.player.removeEffect(effectType)}
-    removeTag(tag: string){return this.player.removeTag(tag)}
-    resetProperty(identifier: string){return this.player.resetProperty(identifier)}
-    runCommand(commandString: string){return this.player.runCommand(commandString)}
-    runCommandAsync(commandString: string){return this.player.runCommandAsync(commandString)}
-    setDynamicProperty(identifier: string, value?: string | number | boolean | Vector3){return this.player.setDynamicProperty(identifier, value)}
-    setOnFire(seconds: number, useEffects?: boolean){return this.player.setOnFire(seconds, useEffects)}
-    setProperty(identifier: string, value: string | number | boolean){return this.player.setProperty(identifier, value)}
-    setRotation(rotation: Vector2){return this.player.setRotation(rotation)}
-    teleport(location: Vector3, teleportOptions?: TeleportOptions){return this.player.teleport(location, teleportOptions)}
-    triggerEvent(eventName: string){return this.player.triggerEvent(eventName)}
-    tryTeleport(location: Vector3, teleportOptions?: TeleportOptions){return this.player.tryTeleport(location, teleportOptions)}
+    addEffect(effectType: string | mcServer.EffectType, duration: number, options?: mcServer.EntityEffectOptions){return this.player?.addEffect(effectType, duration, options)}
+    addExperience(amount: number){return this.player?.addExperience(amount)}
+    getRotation(){return this.rotation??this.player?.getRotation()}
+    getViewDirection(){return !!this.rotation?anglesToDirectionVectorDeg(this.rotation.x, this.rotation.y):this.player?.getViewDirection()}
+    addLevels(amount: number){return this.player?.addLevels(amount)}
+    eatItem(itemStack: ItemStack){return this.player?.eatItem(itemStack)}
+    getGameMode(){return this.player?.getGameMode()}
+    getItemCooldown(itemCategory: string){return this.player?.getItemCooldown(itemCategory)}
+    getSpawnPoint(){return this.player?.getSpawnPoint()}
+    getTotalXp(){return this.player?.getTotalXp()}
+    isOp(){return this.player?.isOp()}
+    playMusic(trackId: string, musicOptions?: MusicOptions){return this.player?.playMusic(trackId, musicOptions)}
+    playSound(soundId: string, soundOptions?: PlayerSoundOptions){return this.player?.playSound(soundId, soundOptions)}
+    postClientMessage(id: string, value: string){return this.player?.postClientMessage(id, value)}
+    queueMusic(trackId: string, musicOptions?: MusicOptions){return this.player?.queueMusic(trackId, musicOptions)}
+    resetLevel(){return this.player?.resetLevel()}
+    sendMessage(message: string | RawMessage | (string | RawMessage)[]){return this.player?.sendMessage(message)}
+    setGameMode(gameMode?: GameMode){return this.player?.setGameMode(gameMode)}
+    setOp(isOp: boolean){return this.player?.setOp(isOp)}
+    setSpawnPoint(spawnPoint?: DimensionLocation){return this.player?.setSpawnPoint(spawnPoint)}
+    spawnParticle(effectName: string, location: Vector3, molangVariables?: MolangVariableMap){return this.player?.spawnParticle(effectName, location, molangVariables)}
+    startItemCooldown(itemCategory: string, tickDuration: number){return this.player?.startItemCooldown(itemCategory, tickDuration)}
+    stopMusic(){return this.player?.stopMusic()}
+    addTag(tag: string){return this.player?.addTag(tag)}
+    applyDamage(amount: number, options?: EntityApplyDamageByProjectileOptions | EntityApplyDamageOptions){return this.player?.applyDamage(amount, options)}
+    applyImpulse(vector: Vector3){return this.player?.applyImpulse(vector)}
+    applyKnockback(directionX: number, directionZ: number, horizontalStrength: number, verticalStrength: number){return this.player?.applyKnockback(directionX, directionZ, horizontalStrength, verticalStrength)}
+    clearDynamicProperties(){return this.player?.clearDynamicProperties()}
+    clearVelocity(){return this.player?.clearVelocity()}
+    extinguishFire(useEffects?: boolean){return this.player?.extinguishFire(useEffects)}
+    getBlockFromViewDirection(options?: BlockRaycastOptions){return this.player?.getBlockFromViewDirection(options)}
+    getComponent<T extends keyof EntityComponentTypeMap>(componentId: keyof EntityComponentTypeMap): EntityComponentTypeMap[T] | undefined{return this.player?.getComponent(componentId) as EntityComponentTypeMap[T]}
+    getComponents(){return this.player?.getComponents()}
+    getDynamicProperty(identifier: string){return this.player?.getDynamicProperty(identifier)}
+    getDynamicPropertyIds(){return this.player?.getDynamicPropertyIds()}
+    getDynamicPropertyTotalByteCount(){return this.player?.getDynamicPropertyTotalByteCount()}
+    getEffect(effectType: string | EffectType){return this.player?.getEffect(effectType)}
+    getEffects(){return this.player?.getEffects()}
+    getEntitiesFromViewDirection(options?: EntityRaycastOptions){return this.player?.getEntitiesFromViewDirection(options)}
+    getHeadLocation(){return this.player?.getHeadLocation()}
+    getProperty(identifier: string){return this.player?.getProperty(identifier)}
+    getTags(){return this.player?.getTags()}
+    getVelocity(){return this.player?.getVelocity()}
+    hasComponent(componentId: string){return this.player?.hasComponent(componentId)}
+    hasTag(tag: string){return this.player?.hasTag(tag)}
+    isValid(){return this.player?.isValid()}
+    kill(){return this.player?.kill()}
+    matches(options: EntityQueryOptions){return this.player?.matches(options)}
+    playAnimation(animationName: string, options?: PlayAnimationOptions){return this.player?.playAnimation(animationName, options)}
+    remove(){return this.player?.remove()}
+    removeEffect(effectType: string | EffectType){return this.player?.removeEffect(effectType)}
+    removeTag(tag: string){return this.player?.removeTag(tag)}
+    resetProperty(identifier: string){return this.player?.resetProperty(identifier)}
+    runCommand(commandString: string){return this.player?.runCommand(commandString)}
+    runCommandAsync(commandString: string){return this.player?.runCommandAsync(commandString)}
+    setDynamicProperty(identifier: string, value?: string | number | boolean | Vector3){return this.player?.setDynamicProperty(identifier, value)}
+    setOnFire(seconds: number, useEffects?: boolean){return this.player?.setOnFire(seconds, useEffects)}
+    setProperty(identifier: string, value: string | number | boolean){return this.player?.setProperty(identifier, value)}
+    setRotation(rotation: Vector2){return this.player?.setRotation(rotation)}
+    teleport(location: Vector3, teleportOptions?: TeleportOptions){return this.player?.teleport(location, teleportOptions)}
+    triggerEvent(eventName: string){return this.player?.triggerEvent(eventName)}
+    tryTeleport(location: Vector3, teleportOptions?: TeleportOptions){return this.player?.tryTeleport(location, teleportOptions)}
 }
-((a: Player)=>{})(new executeCommandPlayer(getPlayer("Andexter8")))
+//((a: Player)=>{})(new executeCommandPlayer(getPlayer("Andexter8")))
 export function send(message: string){world.sendMessage(message)}; 
 export function chatMessage(eventData: ChatSendBeforeEvent){
     let runreturn: boolean; runreturn = false; 
@@ -1070,11 +1073,11 @@ export function shuffle<a>(array: a[]) {
     return array as a[]
 }
 
-export function vTV3(vector: Vector){return {x: vector.x, y: vector.y, z: vector.z} as Vector3}
+export function vTV3(vector: Vector3){return {x: vector.x, y: vector.y, z: vector.z} as Vector3}
 
 export function sOSATSA(stringOrStringArray: string|string[]): string[]{return typeof stringOrStringArray == "string"?[stringOrStringArray]:stringOrStringArray}
 
-export function vTStr(vector: Vector|Vector2|Vector3){return !!(vector as Vector3).z?`${vector.x} ${vector.y} ${(vector as Vector3).z}`:`${vector.x} ${vector.y}`}
+export function vTStr(vector: Vector2|Vector3){return !!(vector as Vector3).z?`${vector.x} ${vector.y} ${(vector as Vector3).z}`:`${vector.x} ${vector.y}`}
 
 export function getPlayer(playerName: string){return world.getAllPlayers().find(p=>p.name==playerName)}; 
 export function getAllEntities(){return [...world.getDimension("overworld").getEntities(), ...world.getDimension("nether").getEntities(), ...world.getDimension("the_end").getEntities()]}; 
@@ -4524,10 +4527,10 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "hollowovoid": 
-                system.run(()=>{try{fillBlocksHHOG(center, vTV3(Vector.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{try{fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "ovoid": 
-                system.run(()=>{try{fillBlocksHOG(center, vTV3(Vector.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{try{fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hollowsphere": 
                 system.run(()=>{try{fillBlocksHHSG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -4846,10 +4849,10 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "hollowovoid": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHHOG(center, vTV3(Vector.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "ovoid": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHOG(center, vTV3(Vector.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hollowsphere": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHHSG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -5173,10 +5176,10 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "hollowovoid": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHOG(center, vTV3(Vector.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, hointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, hointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "ovoid": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHOG(center, vTV3(Vector.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, ointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, ointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hollowsphere": 
                 system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHSG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -6065,9 +6068,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
         case !!switchTest.match(/^extinguish$/)||!!switchTest.match(/^ext$/)||!!switchTest.match(/^remfire$/): {
             eventData.cancel = true;
             let radius = Number(String(switchTestB.split(" ")[1]??"").trim()==""?10:String(switchTestB.split(" ")[1]??"").trim())
-            let froma = Vector.subtract(player.location, {x: radius, y: radius, z: radius})
+            let froma = mcMath.Vector3Utils.subtract(player.location, {x: radius, y: radius, z: radius})
             let from = {x: froma.x, y: froma.y, z: froma.z}
-            let toa = Vector.add(player.location, {x: radius, y: radius, z: radius})
+            let toa = mcMath.Vector3Utils.add(player.location, {x: radius, y: radius, z: radius})
             let to = {x: toa.x, y: toa.y, z: toa.z}
             try{system.run(()=>{let a = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "fire"}); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "soul_fire"}); player.sendMessage(`${a+b==0?"§c":""}${a+b} blocks extinguished in radius of ${radius}`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
@@ -6075,9 +6078,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
         case !!switchTest.match(/^remexp$/): {
             eventData.cancel = true;
             let radius = Number(String(switchTestB.split(" ")[1]??"").trim()==""?10:String(switchTestB.split(" ")[1]??"").trim())
-            let froma = Vector.subtract(player.location, {x: radius, y: radius, z: radius})
+            let froma = mcMath.Vector3Utils.subtract(player.location, {x: radius, y: radius, z: radius})
             let from = {x: froma.x, y: froma.y, z: froma.z}
-            let toa = Vector.add(player.location, {x: radius, y: radius, z: radius})
+            let toa = mcMath.Vector3Utils.add(player.location, {x: radius, y: radius, z: radius})
             let to = {x: toa.x, y: toa.y, z: toa.z}
             switch(player.dimension.id){
                 case "minecraft:overworld": 
@@ -6097,9 +6100,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
         case !!switchTest.match(/^drain$/): {
             eventData.cancel = true;
             let radius = Number(String(switchTestB.split(" ")[1]??"").trim()==""?10:String(switchTestB.split(" ")[1]??"").trim())
-            let froma = Vector.subtract(player.location, {x: radius, y: radius, z: radius})
+            let froma = mcMath.Vector3Utils.subtract(player.location, {x: radius, y: radius, z: radius})
             let from = {x: froma.x, y: froma.y, z: froma.z}
-            let toa = Vector.add(player.location, {x: radius, y: radius, z: radius})
+            let toa = mcMath.Vector3Utils.add(player.location, {x: radius, y: radius, z: radius})
             let to = {x: toa.x, y: toa.y, z: toa.z}
             try{system.run(()=>{let a = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "water"}); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "lava"}); let c = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_water"}); let d = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_lava"}); player.sendMessage(`${a+b+c+d==0?"§c":""}${a+b+c+d} liquids removed in radius of ${radius}`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }

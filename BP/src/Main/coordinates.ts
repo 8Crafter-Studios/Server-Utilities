@@ -1,4 +1,4 @@
-import { Block, Dimension, type DimensionLocation, DimensionType, Player, Vector, type Vector2, type Vector3, world, Entity, system, BlockVolume, CompoundBlockVolume } from "@minecraft/server";
+import { Block, Dimension, type DimensionLocation, DimensionType, Player, type Vector2, type Vector3, world, Entity, system, BlockVolume, CompoundBlockVolume } from "@minecraft/server";
 import { targetSelectorAllListC, targetSelectorAllListE } from "../Main";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -14,6 +14,8 @@ import *  as bans from "Main/ban";
 import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
+import mcMath from "@minecraft/math.js";
+export const format_version = "1.12.3";
 import { shuffle, vTStr } from "Main/commands";
 mcServer
 mcServerUi/*
@@ -29,6 +31,7 @@ bans
 uis
 playersave
 spawnprot
+mcMath
 
 export const coordinates_format_version = "6.0.1";
 // LocalTeleport (Caret Notation ^^^)
@@ -137,7 +140,7 @@ export class WorldPosition {
         return this as WorldPosition; 
     }
     offset(offset: Vector3) {
-        this.location = Vector.add(this.location, offset); 
+        this.location = mcMath.Vector3Utils.add(this.location, offset); 
         return this as WorldPosition; 
     }
     static fromentity(entity: Entity|Player) {
