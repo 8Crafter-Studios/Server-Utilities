@@ -82,6 +82,9 @@
          "path" : "dialogue/scene.json"
       },
       {
+         "path" : "entities/tickingarea.json"
+      },
+      {
          "path" : "items/player_debug_stick.json"
       },
       {
@@ -164,9 +167,6 @@
       },
       {
          "path" : "structures/RaycastingTests/get_block_from_vector.mcstructure"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server-admin/.eslintrc.json"
       },
       {
          "path" : "items/inventory_controller.json"
@@ -383,6 +383,9 @@
       },
       {
          "path" : "node_modules/@minecraft/server-net/tests.ts"
+      },
+      {
+         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server-admin/.eslintrc.json"
       },
       {
          "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server-admin/index.d.ts"
