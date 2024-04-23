@@ -1,7 +1,7 @@
-import { system, world, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, EquipmentSlot, ItemLockMode } from "@minecraft/server";
-import { ModalFormData, ActionFormData, MessageFormData, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, format_version, getUICustomForm, targetSelectorAllListC } from "Main";
-import { editAreasMainMenu } from "./spawn_protection";
+import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot } from "@minecraft/server";
+import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
+import { JSONParse, JSONStringify, arrayModifier, format_version, getUICustomForm, targetSelectorAllListC } from "Main";
+import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
 import * as GameTest from "@minecraft/server-gametest";

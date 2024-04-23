@@ -1,4 +1,4 @@
-import { EquipmentSlot, world, system } from "@minecraft/server";
+import { EquipmentSlot, Dimension, GameMode, world, Player, system } from "@minecraft/server";
 import { format_version } from "Main";
 import { ban } from "./ban";
 import * as GameTest from "@minecraft/server-gametest";

@@ -1,4 +1,4 @@
-import { world, system, BlockVolume } from "@minecraft/server";
+import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume } from "@minecraft/server";
 import { targetSelectorAllListC, targetSelectorAllListE } from "../Main";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";

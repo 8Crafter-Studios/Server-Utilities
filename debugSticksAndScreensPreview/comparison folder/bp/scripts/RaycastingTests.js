@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
 import * as GameTest from "@minecraft/server-gametest";
-import { BlockLocationIterator, MinecraftBlockTypes, Location, Vector } from "@minecraft/server";
+import { BlockLocationIterator, MinecraftBlockTypes, Location } from "@minecraft/server";
 
 const replacementBlock = MinecraftBlockTypes.redGlazedTerracotta;
 
@@ -111,7 +111,7 @@ GameTest.register("RaycastingTests", "get_block_from_vector", (test) => {
 
   const bars = dimension.getBlockFromRay(
     test.worldLocation(new Location(0.5, 2, 1.5)),
-    new Vector(1, 0, 0),
+    {x: 1, y: 0, z: 0},
     blockVectorOptions
   );
   test.assert(
@@ -122,7 +122,7 @@ GameTest.register("RaycastingTests", "get_block_from_vector", (test) => {
   blockVectorOptions.includePassableBlocks = true;
   const banner = dimension.getBlockFromRay(
     test.worldLocation(new Location(0.5, 2, 1.5)),
-    new Vector(1, 0, 0),
+    {x: 1, y: 0, z: 0},
     blockVectorOptions
   );
   test.assert(banner.type == MinecraftBlockTypes.standingBanner, "Expected to see through the water to the iron bars");
@@ -130,7 +130,7 @@ GameTest.register("RaycastingTests", "get_block_from_vector", (test) => {
   blockVectorOptions.includeLiquidBlocks = true;
   const water = dimension.getBlockFromRay(
     test.worldLocation(new Location(0.5, 2, 1.5)),
-    new Vector(1, 0, 0),
+    {x: 1, y: 0, z: 0},
     blockVectorOptions
   );
   test.assert(water.type == MinecraftBlockTypes.water, "Expected to see the water");
@@ -147,7 +147,7 @@ GameTest.register("RaycastingTests", "get_entity_from_vector", (test) => {
   test.spawnWithoutBehaviors("creeper", new BlockLocationIterator(2, 2, 1));
 
   // test both creepers are found
-  const creepers = dimension.getEntitiesFromRay(test.worldLocation(new Location(0.5, 3.5, 1.5)), new Vector(1, 0, 0));
+  const creepers = dimension.getEntitiesFromRay(test.worldLocation(new Location(0.5, 3.5, 1.5)), {x: 1, y: 0, z: 0});
   test.assert(creepers.length == 2, "Expected to find 2 creepers");
   test.assertEntityInstancePresent(creepers[0], new BlockLocationIterator(2, 2, 1));
   test.assertEntityInstancePresent(creepers[1], new BlockLocationIterator(3, 2, 1));
@@ -155,7 +155,7 @@ GameTest.register("RaycastingTests", "get_entity_from_vector", (test) => {
   // check the entities are sorted by distance
   const creepersReversed = dimension.getEntitiesFromRay(
     test.worldLocation(new Location(5.5, 2.5, 1.5)),
-    new Vector(-1, 0, 0)
+    {x: -1, y: 0, z: 0}
   );
   test.assert(creepersReversed.length == 2, "Expected to find 2 creepers");
   test.assertEntityInstancePresent(creepersReversed[0], new BlockLocationIterator(3, 2, 1));
@@ -164,7 +164,7 @@ GameTest.register("RaycastingTests", "get_entity_from_vector", (test) => {
   // test blocks stop the entity raycast
   const blockedCreepers = dimension.getEntitiesFromRay(
     test.worldLocation(new Location(5.5, 3.5, 1.5)),
-    new Vector(-1, 0, 0)
+    {x: -1, y: 0, z: 0}
   );
   test.assert(blockedCreepers.length == 0, "Expected the block to stop the raycast");
 

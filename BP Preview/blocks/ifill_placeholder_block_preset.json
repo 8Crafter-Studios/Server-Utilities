@@ -1,0 +1,30 @@
+{
+  "format_version": "1.19.80",
+  "minecraft:block": {
+    "description": {
+      "identifier": "andexdb:ifill_command_placeholder_block"/*,
+      "properties": {
+        "andexdb:placeholder][[]\"\"\"\"_tick_number_id": {"values":{"min":0,"max":15}}
+      }*/
+    },
+    "components": {
+      "minecraft:light_dampening": 0,
+      "minecraft:geometry": { 
+        "identifier": "geometry.no_bones", 
+        "bone_visibility": { 
+          "missing_bone": false
+        } 
+      },
+      "minecraft:material_instances": {
+        "*": {
+            "texture":"gray_outline_block_texture",
+            "ambient_occlusion": false,
+            "face_dimming": false,
+            "render_method": "opaque"
+        }
+    },
+      "minecraft:collision_box": false,
+      "minecraft:selection_box": false
+    }
+  }
+}

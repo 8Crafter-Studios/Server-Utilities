@@ -6,7 +6,10 @@
       "allowSyntheticDefaultImports": true,
       "baseUrl": "./src",
       "rootDir": "./src",
-      "outDir": "./scripts",/*
+      "outDir": "./scripts",
+      "paths": {
+        "@minecraft/math.js": ["../node_modules/@minecraft/math"]
+      },/*
       "allowJs": true,*//*
       "declaration": true,*/
       "verbatimModuleSyntax": true/*, 

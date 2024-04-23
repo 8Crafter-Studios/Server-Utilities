@@ -19,6 +19,7 @@ import * as bans from "./ban";
 import * as uis from "./ui";
 import * as playersave from "./player_save";
 import * as spawnprot from "./spawn_protection";
+import mcMath from "@minecraft/math.js";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -33,6 +34,7 @@ bans;
 uis;
 playersave;
 spawnprot;
+mcMath;
 export const ban_format_version = "1.2.0";
 export class ban {
     constructor(ban) {
