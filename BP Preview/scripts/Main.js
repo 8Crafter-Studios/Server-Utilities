@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.5.0";
+export const format_version = "1.12.0";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -46,11 +46,13 @@ import "Main/ban.js";
 import "Main/ui.js";
 import "Main/player_save.js";
 import "Main/spawn_protection.js";
-import { BlockPermutation, ItemLockMode, ItemStack, ScriptEventSource, WeatherType, system, world, EquipmentSlot, Vector, BlockTypes, MolangVariableMap, DimensionTypes, EnchantmentTypes, BlockStates, SignSide, DyeColor } from "@minecraft/server";
+import "@minecraft/math.js";
+export const mainmetaimport = import.meta;
+import { BlockPermutation, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, ItemLockMode, ItemStack, ScriptEventSource, WeatherType, system, world, EquipmentSlot, BlockTypes, MolangVariableMap, DimensionTypes, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, SignSide, DyeColor } from "@minecraft/server";
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
-import { coordinates, evaluateCoordinates } from "Main/coordinates";
-import { chatMessage } from "Main/commands";
+import { coordinates, evaluateCoordinates, caretNotationC, drawMinecraftCircle, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidCG, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG } from "Main/coordinates";
+import { chatMessage, clearContainer } from "Main/commands";
 import { ban } from "Main/ban";
 import { savedPlayer } from "Main/player_save.js";
 import { noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges } from "Main/spawn_protection.js";
@@ -58,24 +60,27 @@ import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, fo
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
-import * as mcServerAdmin from "@minecraft/server-admin";*/
-import * as mcDebugUtilities from "@minecraft/debug-utilities"; /*
+import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import * as main from "Main";
 import * as coords from "Main/coordinates";
 import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
-import { disableWatchdog } from "@minecraft/debug-utilities";
+import mcMath from "@minecraft/math.js"; /*
+import { disableWatchdog } from "@minecraft/debug-utilities";*/
 mcServer;
 mcServerUi; /*
-mcServerAdmin*/
-mcDebugUtilities; /*
+mcServerAdmin*/ /*
+mcDebugUtilities*/ /*
 mcCommon*/
 GameTest; /*
 mcVanillaData*/
+main;
 coords;
 cmds;
 bans;
@@ -84,10 +89,11 @@ playersave;
 spawnprot;
 SimulatedPlayer;
 Test;
+mcMath;
 let crashEnabled = false;
 let tempSavedVariables = [];
-export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]];
-disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog") ?? (!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") ?? false)) ?? false) ?? true) ?? true);
+export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]; /*
+disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
 system.beforeEvents.watchdogTerminate.subscribe(e => {
     try {
         if (crashEnabled == true) { }
@@ -105,6 +111,16 @@ system.beforeEvents.watchdogTerminate.subscribe(e => {
     }
 });
 world.setDynamicProperty("format_version", format_version);
+try {
+    eval(String(world.getDynamicProperty("evalEvents:scriptInitialize")));
+}
+catch (e) {
+    console.error(e, e.stack);
+}
+const srununbound = system.run;
+export const srun = srununbound.bind(system);
+globalThis.srun = srun;
+export const gt = globalThis;
 export class worldPlayers {
     static get savedPlayers() {
         return savedPlayer.getSavedPlayers();
@@ -227,7 +243,25 @@ export function roundPlaceNumberObject(object, place = Number(world.getDynamicPr
     return Object.fromEntries(newObject);
 } /*
 /execute as @e [type=andexsa:custom_arrow] at @s run /scriptevent andexdb:scriptEval let sl = sourceEntity.location; let ol = sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2", "npc", "armor_stand"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location; let d = {x: ol.x-sl.x, y: ol.y-sl.y, z: ol.z-sl.z}; eval("if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.x)*Number(d.x!=0)*d.x, y: Math.abs(1/d.x)*Number(d.y!=0)*d.y, z: Math.abs(1/d.x)*Number(d.z!=0)*d.z})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.y)*Number(d.x!=0)*d.x, y: Math.abs(1/d.y)*Number(d.y!=0)*d.y, z: Math.abs(1/d.y)*Number(d.z!=0)*d.z})}else{sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.z)*Number(d.x!=0)*d.x, y: Math.abs(1/d.z)*Number(d.y!=0)*d.y, z: Math.abs(1/d.z)*Number(d.z!=0)*d.z})}}}; ");*/
-export function arrayModifier(array, callbackfn) { array.forEach((v, i, a) => { array[i] = callbackfn(v, i, a); }); return array; }
+export function arrayModifierOld(array, callbackfn) { array.forEach((v, i, a) => { array[i] = callbackfn(v, i, a); }); return array; }
+export function arrayModifier(sourcearray, callbackfn, overwrite = false) {
+    if (overwrite) {
+        sourcearray.forEach((v, i, a) => {
+            sourcearray[i] = callbackfn(v, i, a);
+        });
+        return sourcearray;
+    }
+    else {
+        let newarray;
+        newarray = [];
+        sourcearray.forEach((v, i, a) => {
+            newarray[i] = callbackfn(v, i, a);
+        });
+        return newarray;
+    }
+}
+; /*
+import("Main").then(a=>{Object.entries(a)})*/
 export function getArrayElementProperty(array, property) { array.forEach((v, i, a) => { array[i] = eval(`v.${property}`); }); return array; }
 export function combineObjects(obj1, obj2) { return Object.fromEntries(Object.entries(obj1).concat(Object.entries(obj2))); }
 export function generateCUID(classid) { let CUID = Number(world.getDynamicProperty("cuidCounter:" + (classid ?? "default")) ?? 0) + 1; world.setDynamicProperty("cuidCounter:" + (classid ?? "default"), CUID); return CUID; }
@@ -284,7 +318,7 @@ export function fromBaseToBase(num, base = 10, radix = 10, keysa = radix > 62 ? 
  * @param {boolean} keepUndefined Whether or not to include undefined variables when parsing, defaults to true.
  * @returns {any} The parsed JSON data.
  */
-export function JSONParse(text, keepUndefined = true) {
+export function JSONParseOld(text, keepUndefined = true) {
     let g = [];
     let h = [];
     let a = JSON.parse(text.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"'), function (k, v) {
@@ -322,7 +356,7 @@ export function JSONParse(text, keepUndefined = true) {
  * @param {string|number} space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
  * @returns {any} The JSON string.
  */
-export function JSONStringify(value, keepUndefined = false, space) {
+export function JSONStringifyOld(value, keepUndefined = false, space) {
     return JSON.stringify(value, function (k, v) {
         if (v === Infinity)
             return "{{Infinity}}";
@@ -336,8 +370,2036 @@ export function JSONStringify(value, keepUndefined = false, space) {
             v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}');
         }
         return v;
-    }, space).replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '$1').replace(/(?<="(?:\s*):(?:\s*))"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"');
+    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
 }
+export function JSONParse(JSONString, keepUndefined = true) {
+    let g = [];
+    let h = [];
+    if (JSONString == undefined) {
+        let nothing;
+        return nothing;
+    }
+    if (JSONString == "undefined") {
+        return undefined;
+    }
+    if (JSONString == "Infinity") {
+        return Infinity;
+    }
+    if (JSONString == "-Infinity") {
+        return -Infinity;
+    }
+    if (JSONString == "NaN") {
+        return NaN;
+    }
+    if (JSONString == "null") {
+        return null;
+    }
+    let a = JSON.parse(JSONString.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"').replace(/(?<=(?:[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\[)[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*),(?:\s*)|[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*)\[(?:\s*)))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,\]](?:\s*))/g, '"{{$1}}"').replace(/^(Infinity|NaN|-Infinity|undefined)$/g, '"{{$1}}"'), function (k, v) {
+        if (v === '{{Infinity}}')
+            return Infinity;
+        else if (v === '{{-Infinity}}')
+            return -Infinity;
+        else if (v === '{{NaN}}')
+            return NaN;
+        else if (v === '{{undefined}}') {
+            g.push(k);
+            if (keepUndefined) {
+                return v;
+            }
+            else {
+                undefined;
+            }
+        }
+        ;
+        h.push(k);
+        return v;
+    });
+    function recursiveFind(a) {
+        if (a instanceof Array) {
+            let b = a;
+            b.forEach((v, i) => {
+                if (v instanceof Array || v instanceof Object) {
+                    b[i] = recursiveFind(v);
+                    return;
+                }
+                ;
+                if (String(v) == "{{undefined}}") {
+                    b[i] = undefined;
+                    return;
+                }
+                ;
+            });
+            a = b;
+            {
+                let b = a;
+                !!b.forEach((va, i) => {
+                    if (String(va).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)) {
+                        b[i] = va.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}');
+                    }
+                    a = b;
+                });
+            }
+            ;
+        }
+        else if (a instanceof Object) {
+            let b = Object.entries(a);
+            b.forEach((v, i) => {
+                if (v[1] instanceof Object || v[1] instanceof Array) {
+                    b[i] = [v[0], recursiveFind(v[1])];
+                    return;
+                }
+                ;
+                if (String(v[1]) == "{{undefined}}") {
+                    b[i] = [v[0], undefined];
+                    return;
+                }
+                ;
+            });
+            a = Object.fromEntries(b);
+            {
+                let b = Object.entries(a);
+                b.filter(b => !!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)).forEach((v, i) => {
+                    b[b.findIndex(b => b[0] == v[0])] = [v[0], v[1].replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}')];
+                    a = Object.fromEntries(b);
+                });
+            }
+            ;
+        }
+        else if (typeof a === "string") {
+            if (a == "{{undefined}}") {
+                a = undefined;
+            }
+            else {
+                if (a.match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)) {
+                    a = a.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}');
+                }
+            }
+        }
+        ;
+        return a;
+    }
+    a = recursiveFind(a);
+    return a;
+}
+;
+export function objectify(object) { let entries = Object.entries(object); entries.forEach((v, i) => { if (v[1] instanceof Array) {
+    entries[i][1] = objectify(v[1]);
+}
+else if (v[1] instanceof Object) {
+    entries[i][1] = objectify(v[1]);
+} }); return Object.fromEntries(entries); }
+;
+export function arrayify(object) { let entries = Object.entries(object); entries.forEach((v, i) => { if (v[1] instanceof Array) {
+    entries[i][1] = arrayify(v[1]);
+}
+else if (v[1] instanceof Object) {
+    entries[i][1] = arrayify(v[1]);
+} }); return entries; }
+;
+export function stringify(object, entriesmode = 0, escapedarrayorobjecttag = 0, objectifyinfinity = 0, objectifynan = 0, objectifyundefined = 0, objectifynull = 0, recursivemode = 0) { let entries = Object.entries(object); entries.forEach((v, i) => { if (v[1] instanceof Array) {
+    entries[i][1] = stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1);
+}
+else if (v[1] instanceof Object) {
+    entries[i][1] = stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1);
+}
+else if (v[1] instanceof Function) {
+    entries[i][1] = { escval: v[1].toString() };
+}
+else if (v[1] == Infinity && Boolean(objectifyinfinity)) {
+    entries[i][1] = { escval: "Infinity" };
+}
+else if (v[1] == -Infinity && Boolean(objectifyinfinity)) {
+    entries[i][1] = { escval: "-Infinity" };
+}
+else if (Number.isNaN(v[1]) && Boolean(objectifynan)) {
+    entries[i][1] = { escval: "NaN" };
+}
+else if (v[1] == undefined && Boolean(objectifyundefined)) {
+    entries[i][1] = { escval: "undefined" };
+}
+else if (v[1] == null && Boolean(objectifynull)) {
+    entries[i][1] = { escval: "null" };
+} }); return recursivemode ? ((Boolean(escapedarrayorobjecttag) && (((object instanceof Array) && !Boolean(entriesmode)) || ((object instanceof Object) && Boolean(entriesmode)))) ? (Boolean(entriesmode) ? { escobj: entries } : { escarray: Object.fromEntries(entries) }) : (Boolean(entriesmode) ? entries : Object.fromEntries(entries))) : JSONStringify(Boolean(entriesmode) ? entries : Object.fromEntries(entries), true); }
+;
+export function mainEval(x) { return eval(x); }
+export function indirectMainEval(x) { return eval?.(x); }
+export function mainRun(x, ...args) { return x(...args); }
+export function JSONStringify(JSONObject, keepUndefined = false, space) {
+    if (JSONObject == undefined) {
+        return keepUndefined ? "undefined" : "";
+    }
+    return JSON.stringify(JSONObject, function (k, v) {
+        if (v === Infinity)
+            return "{{Infinity}}";
+        else if (v === -Infinity)
+            return "{{-Infinity}}";
+        else if (Number.isNaN(v))
+            return "{{NaN}}";
+        else if (v === undefined && keepUndefined)
+            return "{{undefined}}";
+        if (String(v).match(/^{{(Infinity|NaN|-Infinity|undefined)}}$/)) {
+            v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}');
+        }
+        return v;
+    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
+}
+;
+export function getParametersFromString(string) {
+    function arrayModifier(sourcearray, callbackfn, overwrite = false) {
+        if (overwrite) {
+            sourcearray.forEach((v, i, a) => {
+                sourcearray[i] = callbackfn(v, i, a);
+            });
+            return sourcearray;
+        }
+        else {
+            let newarray;
+            newarray = [];
+            sourcearray.forEach((v, i, a) => {
+                newarray[i] = callbackfn(v, i, a);
+            });
+            return newarray;
+        }
+    }
+    ;
+    const getStringsFromString = (ce) => {
+        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/gis));
+        cd.forEach((v, i) => cd[i].indices = [[v?.index, v?.index + v[0]?.length]]);
+        let cc = [];
+        cc.push({ t: "non-json", v: ce.substring(0, cd[0]?.indices[0][0]) });
+        cd.forEach((v, i) => {
+            cc.push({ t: "json", v: v[0] });
+            cc.push({ t: "non-json", v: ce.substring(v?.indices[0][1], cd[i + 1]?.indices[0][0] ?? ce.length) });
+        });
+        return cc;
+    };
+    let rawdata = extractJSONStrings(string);
+    let a = rawdata;
+    let b = string;
+    let c = [];
+    c.push(...getStringsFromString(b.substring(0, a[0]?.indices[0][0])));
+    a.forEach((v, i) => {
+        c.push({ t: "json", v: v[0] });
+        c.push(...getStringsFromString(b.substring(v?.indices[0][1], a[i + 1]?.indices[0][0] ?? b.length)));
+    });
+    let e = [];
+    let d = arrayModifier(c, (cb, i) => arrayModifier((cb.t == "json" ? [cb.v] : String(cb.v).trimStart().trimEnd().split(/\x20+?/g)), v => {
+        if (v instanceof Function) {
+            return { s: v, v: v.toString() };
+        }
+        else {
+            try {
+                return { s: v, v: JSONParse(String(v)) };
+            }
+            catch (f) {
+                e.push({ i: i, v: f });
+                return { s: v, v: String(v) };
+            }
+        }
+    }), false);
+    let f = [];
+    arrayModifier(d, d => arrayModifier(d, d => d.v)).forEach(d => f.push(...d));
+    let h = [];
+    d.forEach(d => h.push(...d));
+    return {
+        rawdata: a,
+        input: b,
+        resultAndTypeList: c,
+        separatedResultList: arrayModifier(d, d => arrayModifier(d, d => d.v)),
+        errors: e,
+        unfilteredresults: f,
+        results: f.filter(f => f != ""),
+        unfilteredresultsincludingunmodified: h,
+        resultsincludingunmodified: h.filter(h => h.v != "")
+    };
+}
+export function getParametersFromExtractedJSON(rawdata) {
+    function arrayModifier(sourcearray, callbackfn, overwrite = false) {
+        if (overwrite) {
+            sourcearray.forEach((v, i, a) => {
+                sourcearray[i] = callbackfn(v, i, a);
+            });
+            return sourcearray;
+        }
+        else {
+            let newarray;
+            newarray = [];
+            newarray.forEach((v, i, a) => {
+                newarray[i] = callbackfn(v, i, a);
+            });
+            return newarray;
+        }
+    }
+    ;
+    const getStringsFromString = (ce) => {
+        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/gis));
+        cd.forEach((v, i) => cd[i] = Object.assign(cd[i], { indices: [[v?.index, v?.index + v[0]?.length]] }));
+        let cc = [];
+        cc.push({
+            t: "non-json",
+            v: ce.substring(0, cd[0]?.indices[0][0])
+        });
+        cd.forEach((v, i) => {
+            cc.push({
+                t: "json",
+                v: v[0]
+            });
+            cc.push({
+                t: "non-json",
+                v: ce.substring(v?.indices[0][1], cd[0][i + 1]?.indices[0][0] ?? ce.length)
+            });
+        });
+        return cc;
+    };
+    let a = rawdata;
+    let b = rawdata[0].input;
+    let c = [];
+    c.push(...getStringsFromString(b.substring(0, a[0]?.indices[0][0])));
+    a.forEach((v, i) => {
+        c.push({ t: "json", v: v[0] });
+        c.push(...getStringsFromString(b.substring(v?.indices[0][1], a[i + 1]?.indices[0][0] ?? b.length)));
+    });
+    c;
+    let e = [];
+    let d = arrayModifier(c, (cb, i) => arrayModifier((cb.t == "json" ? [cb.v] : String(cb.v).trimStart().trimEnd().split(/\x20+?/g)), v => {
+        if (v instanceof Function) {
+            return { s: v, v: v.toString() };
+        }
+        else {
+            try {
+                return { s: v, v: JSONParse(String(v)) };
+            }
+            catch (f) {
+                e.push({ i: i, v: f });
+                return { s: v, v: String(v) };
+            }
+        }
+    }), false);
+    let f = [];
+    arrayModifier(d, d => arrayModifier(d, d => d.v)).forEach(d => f.push(...d));
+    let h = [];
+    d.forEach(d => h.push(...d));
+    return {
+        input: a,
+        originalinput: b,
+        resultAndTypeList: c,
+        separatedResultList: d,
+        errors: e,
+        unfilteredresults: f,
+        results: f.filter(f => f != ""),
+        unfilteredresultsincludingunmodified: h,
+        resultsincludingunmodified: h.filter(f => f.v != "")
+    };
+}
+export function extractJSONStrings(inputString, includeOtherResultData = true) {
+    const jsonStringArray = [];
+    let currentIndex = 0;
+    let inquotes = false;
+    while (currentIndex < inputString.length) {
+        let currentChar = inputString[currentIndex];
+        if (inputString[currentIndex] == "\"" && !!inputString.slice(0, currentIndex + 1).match(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))"$/g)) {
+            inquotes = !inquotes;
+        }
+        // Find potential start of JSON string
+        if ((currentChar === '{' || currentChar === '[') && !inquotes) {
+            let jsonString = '';
+            let openBrackets = 0;
+            let closeBrackets = 0;
+            // Iterate until balanced brackets are found
+            for (let i = currentIndex; i < inputString.length; i++) {
+                jsonString += inputString[i];
+                if ((inputString[i] === '{' || inputString[i] === '[') && !inquotes) {
+                    openBrackets++;
+                }
+                else if ((inputString[i] === '}' || inputString[i] === ']') && !inquotes) {
+                    closeBrackets++;
+                }
+                if (inputString[i] == "\"" && !!inputString.slice(0, i + 1).match(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))"$/g)) {
+                    inquotes = !inquotes;
+                }
+                // If brackets are balanced, attempt to parse JSON
+                if (openBrackets === closeBrackets) {
+                    try {
+                        JSONParse(jsonString); // Attempt to parse JSON
+                        jsonStringArray.push(includeOtherResultData ? (() => {
+                            let atest = Array.from((" ".repeat(currentIndex) + inputString.slice(currentIndex))?.matchAll(new RegExp("")?.compile("" + escapeRegExp(jsonString) + "", `g`)))[0];
+                            atest.indices = [[atest?.index, atest?.index + atest[0]?.length]];
+                            try {
+                                atest.value = JSONParse(atest[0]);
+                            }
+                            catch (e) {
+                                atest.value = atest[0];
+                            }
+                            ;
+                            try {
+                                atest.modifiedinput = structuredClone(atest.input);
+                            }
+                            catch (e) {
+                                atest.modifiedinput = atest.input;
+                            }
+                            ;
+                            atest.input = inputString;
+                            atest.evaluationindex = currentIndex;
+                            return atest;
+                        })() : jsonString); // Convert string into RegExp match data, then push valid JSON string to array. 
+                        currentIndex = i;
+                        break;
+                    }
+                    catch (error) {
+                        // Invalid JSON, continue searching
+                    }
+                }
+            }
+        }
+        currentIndex++;
+    }
+    return jsonStringArray;
+}
+export function customModulo(dividend, min, max, inclusive = false) {
+    inclusive = Number(inclusive);
+    max += inclusive;
+    if (min >= max) {
+        throw new Error('Invalid range: min value must be less than max value');
+    }
+    if (!Number.isFinite(dividend)) {
+        return dividend;
+    }
+    if (dividend < min) {
+        const range = max - min;
+        return customModulo(dividend + range, min, max);
+    }
+    if (dividend >= max) {
+        const range = max - min;
+        return customModulo(dividend - range, min, max);
+    }
+    return dividend;
+}
+export function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+;
+export function jsonFromString(str, useBetterJSONParse = true) {
+    const regex = /([{\["]{1}([,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]|".*?")+[}\]"]{1}|["]{1}(([^(")]|\\")*)+(?<!\\)["]){1}/gis;
+    const matches = str.match(regex);
+    if (useBetterJSONParse)
+        return matches.map((m) => JSONParse(m));
+    else
+        return matches.map((m) => JSON.parse(m));
+}
+export function cinfo(...data) { console.info(data); }
+;
+export function clog(...data) { console.log(data); }
+;
+export function cwarn(...data) { console.warn(data); }
+;
+export function cerror(...data) { console.error(data); }
+;
+export function asend(value) { world.sendMessage(String(value)); }
+;
+export function bsend(value) { world.sendMessage(JSONStringify(value, true)); }
+;
+export function csend(value) { world.sendMessage(JSON.stringify(value)); }
+;
+export function psend(player, value) { world.sendMessage(value); }
+;
+export function pasend(player, value) { world.sendMessage(String(value)); }
+;
+export function pbsend(player, value) { world.sendMessage(JSONStringify(value, true)); }
+;
+export function pcsend(player, value) { world.sendMessage(JSON.stringify(value)); }
+;
+export function splitTextByMaxProperyLength(string) { let length = string.length / 32767; let substringlist; substringlist = []; for (let i = 0; i < Math.ceil(length); i++) {
+    substringlist.push(string.slice((i - 1) * 32767, i == Math.ceil(length) ? string.length : i * 32767));
+} ; return substringlist; }
+;
+export function fillBlocks(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, to).getBlockLocationIterator()).forEach(v => { if (subArray.length <= new BlockVolume(from, to).getSpan().x) {
+    subArray.push(v);
+}
+else {
+    mainArray.push(new BlockVolume({ x: subArray.sort((a, b) => a.x - b.x)[0].x, y: subArray.sort((a, b) => a.y - b.y)[0].y, z: subArray.sort((a, b) => a.z - b.z)[0].z }, { x: subArray.sort((a, b) => b.x - a.x)[0].x, y: subArray.sort((a, b) => b.y - a.y)[0].y, z: subArray.sort((a, b) => b.z - a.z)[0].z }));
+} }); let counter = 0; mainArray.forEach(v => counter += dimension.fillBlocks(v.from, v.to, block, options)); return counter; }
+;
+export function fillBlocksB(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += dimension.fillBlocks(v.from, v.to, block, options)); return counter; }
+;
+export function fillBlocksF(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block instanceof BlockPermutation ? block.type.id : block instanceof BlockType ? block.id : block} ${block instanceof BlockPermutation ? "[" + Object.entries(block.getAllStates()).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""} ${!!options?.matchingBlock ? options?.matchingBlock instanceof BlockPermutation ? "replace " + options?.matchingBlock?.type?.id ?? "" : "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlock ? options?.matchingBlock instanceof BlockPermutation ? "[" + Object.entries(options?.matchingBlock.getAllStates()).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : "" : ""}`).successCount); return counter; }
+;
+export function fillBlocksH(from, to, dimension, block, blockStates, options, placeholderid) {
+    let mainArray = [];
+    let subArray = [];
+    Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => {
+        subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z }));
+    });
+    subArray.forEach(v => {
+        Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z })));
+    });
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    if (!!!options?.matchingBlock) {
+        mainArray.forEach(v => {
+            counter += fillBlocksB(v.from, v.to, dimension, blockb);
+        });
+    }
+    else {
+        let placeholderblockb = BlockPermutation.resolve(placeholderid ?? "andexdb:ifill_command_placeholder_block");
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        mainArray.forEach(v => {
+            try {
+                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
+            }
+            catch {
+                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { matchingBlock: matchingblockb });
+            }
+            ;
+            fillBlocksB(v.from, v.to, dimension, blockb, { matchingBlock: placeholderblockb });
+        });
+    }
+    return counter;
+}
+;
+export function fillBlocksHB(from, to, dimension, block, blockStates, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => { counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block} ${!!blockStates ? "[" + Object.entries(blockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}  ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount; }); return counter; }
+;
+export function fillBlocksHW(from, to, dimension, block, blockStates, options, placeholderid, replacemode = false) {
+    let mainArray = [];
+    let subArray = [];
+    let CBVA = new CompoundBlockVolume();
+    CBVA.pushVolume({ volume: new BlockVolume(from, { x: to.x, y: from.y, z: to.z }), action: 0 });
+    if (new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getSpan().x > 2 && new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getSpan().z > 2) {
+        CBVA.pushVolume({ volume: new BlockVolume({ x: from.x + (from.x > to.x ? -1 : 1), y: from.y, z: from.z + (from.z > to.z ? -1 : 1) }, { x: to.x + (from.x < to.x ? -1 : 1), y: from.y, z: to.z + (from.z < to.z ? -1 : 1) }), action: 1 });
+    }
+    ;
+    Array.from(CBVA.getBlockLocationIterator()).forEach(va => {
+        mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }));
+    });
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    if (replacemode) {
+        mainArray.forEach(v => {
+            clearAllContainerBlocks(scanForContainerBlocks(v.from, v.to, dimension, "Block"));
+        });
+    }
+    ;
+    if (!!!options?.matchingBlock) { /*
+        console.warn("a")*/
+        mainArray.forEach(v => {
+            counter += fillBlocksB(v.from, v.to, dimension, blockb);
+        });
+    }
+    else {
+        let placeholderblockb = BlockPermutation.resolve(placeholderid ?? "andexdb:ifill_command_placeholder_block");
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        mainArray.forEach(v => {
+            try {
+                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
+            }
+            catch {
+                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { matchingBlock: matchingblockb });
+            }
+            ;
+            fillBlocksB(v.from, v.to, dimension, blockb, { matchingBlock: placeholderblockb });
+        });
+    }
+    return counter;
+}
+;
+export function fillBlocksHH(from, to, dimension, block, blockStates, options, placeholderid, replacemode = false) {
+    let mainArray = [];
+    let mainArrayB = [];
+    let subArray = [];
+    let CBVA = new CompoundBlockVolume();
+    CBVA.pushVolume({ volume: new BlockVolume(from, { x: to.x, y: from.y, z: to.z }), action: 0 });
+    if (new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getSpan().x > 2 && new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getSpan().z > 2) {
+        CBVA.pushVolume({ volume: new BlockVolume({ x: from.x + (from.x > to.x ? -1 : 1), y: from.y, z: from.z + (from.z > to.z ? -1 : 1) }, { x: to.x + (from.x < to.x ? -1 : 1), y: from.y, z: to.z + (from.z < to.z ? -1 : 1) }), action: 1 });
+    }
+    ;
+    Array.from(CBVA.getBlockLocationIterator()).forEach(va => {
+        mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }));
+    });
+    let CBVAB = new CompoundBlockVolume();
+    CBVAB.pushVolume({ volume: new BlockVolume({ x: from.x + (from.x > to.x ? -1 : 1), y: from.y, z: from.z + (from.z > to.z ? -1 : 1) }, { x: from.x + (from.x > to.x ? -1 : 1), y: from.y, z: to.z + (from.z < to.z ? -1 : 1) }), action: 0 });
+    CBVAB.pushVolume({ volume: new BlockVolume({ x: from.x + (from.x > to.x ? -1 : 1), y: to.y, z: from.z + (from.z > to.z ? -1 : 1) }, { x: from.x + (from.x > to.x ? -1 : 1), y: to.y, z: to.z + (from.z < to.z ? -1 : 1) }), action: 0 });
+    Array.from(CBVAB.getBlockLocationIterator()).forEach(va => {
+        mainArray.push(new BlockVolume(va, { x: to.x + (from.x < to.x ? -1 : 1), y: va.y, z: va.z }));
+    });
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    if (replacemode) {
+        mainArray.forEach(v => {
+            clearAllContainerBlocks(scanForContainerBlocks(v.from, v.to, dimension, "Block"));
+        });
+    }
+    ;
+    if (!!!options?.matchingBlock) {
+        mainArray.forEach(v => {
+            counter += fillBlocksB(v.from, v.to, dimension, blockb);
+        });
+    }
+    else {
+        let placeholderblockb = BlockPermutation.resolve(placeholderid ?? "andexdb:ifill_command_placeholder_block");
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        mainArray.forEach(v => {
+            try {
+                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
+            }
+            catch {
+                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { matchingBlock: matchingblockb });
+            }
+            ;
+            fillBlocksB(v.from, v.to, dimension, blockb, { matchingBlock: placeholderblockb });
+        });
+    }
+    return counter;
+}
+;
+export function fillBlocksHO(from, to, dimension, block, blockStates, options, placeholderid, replacemode = false) {
+    let mainArray = [];
+    let mainArrayB = [];
+    let subArray = [];
+    //full distance
+    mainArray.push(new BlockVolume(from, { x: from.x, y: to.y, z: from.z }));
+    mainArray.push(new BlockVolume({ x: to.x, y: from.y, z: from.z }, { x: to.x, y: to.y, z: from.z }));
+    mainArray.push(new BlockVolume({ x: to.x, y: from.y, z: to.z }, to));
+    mainArray.push(new BlockVolume({ x: from.x, y: from.y, z: to.z }, { x: from.x, y: to.y, z: to.z }));
+    //1 less than full distance
+    mainArray.push(new BlockVolume({ x: to.x + (to.x > from.x ? -1 : 1), y: from.y, z: from.z }, { x: from.x + (from.x > to.x ? -1 : 1), y: from.y, z: from.z }));
+    mainArray.push(new BlockVolume({ x: to.x + (to.x > from.x ? -1 : 1), y: to.y, z: from.z }, { x: from.x + (from.x > to.x ? -1 : 1), y: to.y, z: from.z }));
+    mainArray.push(new BlockVolume({ x: to.x + (to.x > from.x ? -1 : 1), y: from.y, z: to.z }, { x: from.x + (from.x > to.x ? -1 : 1), y: from.y, z: to.z }));
+    mainArray.push(new BlockVolume({ x: to.x + (to.x > from.x ? -1 : 1), y: to.y, z: to.z }, { x: from.x + (from.x > to.x ? -1 : 1), y: to.y, z: to.z }));
+    mainArray.push(new BlockVolume({ x: to.x, y: from.y, z: to.z + (to.z > from.z ? -1 : 1) }, { x: to.x, y: from.y, z: from.z + (from.z > to.z ? -1 : 1) }));
+    mainArray.push(new BlockVolume({ x: to.x, y: to.y, z: to.z + (to.z > from.z ? -1 : 1) }, { x: to.x, y: to.y, z: from.z + (from.z > to.z ? -1 : 1) }));
+    mainArray.push(new BlockVolume({ x: from.x, y: from.y, z: to.z + (to.z > from.z ? -1 : 1) }, { x: from.x, y: from.y, z: from.z + (from.z > to.z ? -1 : 1) }));
+    mainArray.push(new BlockVolume({ x: from.x, y: to.y, z: to.z + (to.z > from.z ? -1 : 1) }, { x: from.x, y: to.y, z: from.z + (from.z > to.z ? -1 : 1) }));
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    if (replacemode) {
+        mainArray.forEach(v => {
+            clearAllContainerBlocks(scanForContainerBlocks(v.from, v.to, dimension, "Block"));
+        });
+    }
+    ;
+    if (!!!options?.matchingBlock) {
+        mainArray.forEach(v => {
+            counter += fillBlocksB(v.from, v.to, dimension, blockb);
+        });
+    }
+    else {
+        let placeholderblockb = BlockPermutation.resolve(placeholderid ?? "andexdb:ifill_command_placeholder_block");
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        mainArray.forEach(v => {
+            try {
+                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
+            }
+            catch {
+                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { matchingBlock: matchingblockb });
+            }
+            ;
+            fillBlocksB(v.from, v.to, dimension, blockb, { matchingBlock: placeholderblockb });
+        });
+    }
+    return counter;
+}
+;
+export function fillBlocksHP(from, to, dimension, block, blockStates, options, placeholderid, replacemode = false) {
+    let mainArray = [];
+    let mainArrayB = [];
+    let subArray = [];
+    mainArray.push(new BlockVolume(from, { x: from.x, y: to.y, z: from.z }));
+    mainArray.push(new BlockVolume({ x: to.x, y: from.y, z: from.z }, { x: to.x, y: to.y, z: from.z }));
+    mainArray.push(new BlockVolume({ x: to.x, y: from.y, z: to.z }, to));
+    mainArray.push(new BlockVolume({ x: from.x, y: from.y, z: to.z }, { x: from.x, y: to.y, z: to.z }));
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    if (replacemode) {
+        mainArray.forEach(v => {
+            clearAllContainerBlocks(scanForContainerBlocks(v.from, v.to, dimension, "Block"));
+        });
+    }
+    ;
+    if (!!!options?.matchingBlock) {
+        mainArray.forEach(v => {
+            counter += fillBlocksB(v.from, v.to, dimension, blockb);
+        });
+    }
+    else {
+        let placeholderblockb = BlockPermutation.resolve(placeholderid ?? "andexdb:ifill_command_placeholder_block");
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        mainArray.forEach(v => {
+            try {
+                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
+            }
+            catch {
+                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { matchingBlock: matchingblockb });
+            }
+            ;
+            fillBlocksB(v.from, v.to, dimension, blockb, { matchingBlock: placeholderblockb });
+        });
+    }
+    return counter;
+}
+;
+export function fillBlocksHC(center, radius, dimension, axis /*"x"|"y"|"z"|"ns"|"sn"|"ew"|"we"|"ud"|"du"|"X"|"Y"|"Z"|"NS"|"SN"|"EW"|"WE"|"UD"|"DU"*/, block, blockStates, options, placeholderid, replacemode = false) {
+    let mainArray = drawMinecraftCircle(center, radius, axis).map(v => dimension.getBlock(v));
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    if (replacemode) {
+        mainArray.filter(v => !!v.getComponent("inventory")).forEach(v => {
+            clearContainer(v.getComponent("inventory").container);
+        });
+    }
+    ; /*
+    console.warn(JSONStringify(mainArray))*/
+    if (!!!options?.matchingBlock) {
+        mainArray.forEach(v => {
+            v.setPermutation(blockb);
+            counter++;
+        });
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        mainArray.forEach(v => {
+            if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.type)) {
+                v.setPermutation(blockb);
+                counter++;
+            }
+        });
+    }
+    return counter;
+}
+;
+export function fillBlocksHS(center, radius, dimension, block, blockStates, options, placeholderid, replacemode = false) {
+    /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            generateMinecraftSphereB(center, radius, dimension, (v) => {
+                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                }
+                v.dimension.getBlock(v).setPermutation(blockb);
+                counter++;
+            });
+        }
+        else {
+            generateMinecraftSphereB(center, radius, dimension, (v) => {
+                v.dimension.getBlock(v).setPermutation(blockb);
+                counter++;
+            });
+        }
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        if (replacemode) {
+            generateMinecraftSphereB(center, radius, dimension, (v) => {
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+            });
+        }
+        else {
+            generateMinecraftSphereB(center, radius, dimension, (v) => {
+                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                }
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+            });
+        }
+    }
+    return counter;
+}
+;
+export async function fillBlocksHSG(center, radius, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
+    /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    const id = generateMinecraftSphereBGIdGenerator();
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        if (replacemode) {
+            system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                try {
+                    if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if ((generateMinecraftSphereBGProgress[id]?.done) !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generateMinecraftSphereBGProgress[id];
+                delete generateMinecraftSphereBGProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+export async function fillBlocksHSSG(center, radius, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
+    /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    const id = generateMinecraftSphereBGIdGenerator();
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateMinecraftSemiSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateMinecraftSemiSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        if (replacemode) {
+            system.runJob(generateMinecraftSemiSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                try {
+                    if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateMinecraftSemiSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generateMinecraftSphereBGProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generateMinecraftSphereBGProgress[id];
+                delete generateMinecraftSphereBGProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+export function fillBlocksHHS(center, radius, thickness, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
+    /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
+    let mainArray = generateHollowSphere(center, radius, thickness).map(v => dimension.getBlock(v));
+    if (integrity != 100) {
+        mainArray = degradeArray(mainArray, integrity);
+    }
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    if (replacemode) {
+        mainArray.filter(v => !!v.getComponent("inventory")).forEach(v => {
+            clearContainer(v.getComponent("inventory").container);
+        });
+    }
+    ; /*
+    console.warn(JSONStringify(mainArray))*/
+    if (!!!options?.matchingBlock) {
+        mainArray.forEach(v => {
+            v.setPermutation(blockb);
+            counter++;
+        });
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        mainArray.forEach(v => {
+            if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.type)) {
+                v.setPermutation(blockb);
+                counter++;
+            }
+        });
+    }
+    return counter;
+}
+;
+export async function fillBlocksHHSG(center, radius, thickness, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    const id = generatorProgressIdGenerator();
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        if (replacemode) {
+            system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                }
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+export async function fillBlocksHDG(center, radius, thickness, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    const id = generatorProgressIdGenerator();
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        if (replacemode) {
+            system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                }
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+export async function fillBlocksHHOG(center, radius, offset, thickness, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    const id = generatorProgressIdGenerator();
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateMinecraftOvoidCG(center, radius, offset, thickness, id, dimension, (v) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+        else {
+            system.runJob(generateMinecraftOvoidCG(center, radius, offset, thickness, id, dimension, (v) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        if (replacemode) {
+            system.runJob(generateMinecraftOvoidCG(center, radius, offset, thickness, id, dimension, (v) => {
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+        else {
+            system.runJob(generateMinecraftOvoidCG(center, radius, offset, thickness, id, dimension, (v) => {
+                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                }
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+export async function fillBlocksHOG(center, radius, offset, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    const id = generatorProgressIdGenerator();
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateSolidOvoidBG(center, radius, offset, id, dimension, (v) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+        else {
+            system.runJob(generateSolidOvoidBG(center, radius, offset, id, dimension, (v) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        if (replacemode) {
+            system.runJob(generateSolidOvoidBG(center, radius, offset, id, dimension, (v) => {
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+        else {
+            system.runJob(generateSolidOvoidBG(center, radius, offset, id, dimension, (v) => {
+                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                }
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+export async function fillBlocksHSGG(from, to, skygridSize, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    const id = generatorProgressIdGenerator();
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateSkygridBG(from, to, skygridSize, id, dimension, (v) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+        else {
+            system.runJob(generateSkygridBG(from, to, skygridSize, id, dimension, (v) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        if (replacemode) {
+            system.runJob(generateSkygridBG(from, to, skygridSize, id, dimension, (v) => {
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+        else {
+            system.runJob(generateSkygridBG(from, to, skygridSize, id, dimension, (v) => {
+                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                }
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+export async function fillBlocksHISGG(from, to, skygridSize, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    const id = generatorProgressIdGenerator();
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateInverseSkygridBG(from, to, skygridSize, id, dimension, (v) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+        else {
+            system.runJob(generateInverseSkygridBG(from, to, skygridSize, id, dimension, (v) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(blockb);
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        if (replacemode) {
+            system.runJob(generateInverseSkygridBG(from, to, skygridSize, id, dimension, (v) => {
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+        else {
+            system.runJob(generateInverseSkygridBG(from, to, skygridSize, id, dimension, (v) => {
+                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                }
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+export function fillBlocksHT(center, radius, length, axis, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
+    /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
+    let mainArray = [...new Set(generateMinecraftTunnel(center, radius, length, axis).map(v => dimension.getBlock(v)))];
+    if (integrity != 100) {
+        mainArray = degradeArray(mainArray, integrity);
+    }
+    let counter = 0;
+    let blockb = BlockPermutation.resolve(block, blockStates);
+    if (replacemode) {
+        mainArray.filter(v => !!v.getComponent("inventory")).forEach(v => {
+            clearContainer(v.getComponent("inventory").container);
+        });
+    }
+    ; /*
+    console.warn(JSONStringify(mainArray))*/
+    if (!!!options?.matchingBlock) {
+        mainArray.forEach(v => {
+            try {
+                v.setPermutation(blockb);
+                counter++;
+            }
+            catch { }
+        });
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        mainArray.forEach(v => {
+            if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.type)) {
+                v.setPermutation(blockb);
+                counter++;
+            }
+        });
+    }
+    return counter;
+}
+;
+export function scanForBlockType(from, to, dimension, block, returnMode) { let blockType = BlockTypes.get(block).id; if ((returnMode ?? "") == "" || (returnMode ?? "") == "Vector3") {
+    return Array.from(new BlockVolume({ x: from.x, y: from.y, z: from.z }, { x: to.x, y: from.y, z: to.z }).getBlockLocationIterator()).filter(v => dimension.getBlock(v).typeId == blockType);
+}
+else {
+    return Array.from(new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getBlockLocationIterator()).map(v => dimension.getBlock(v)).filter(v => v.typeId == blockType);
+} }
+;
+export function scanForContainerBlocks(from, to, dimension, returnMode) { if ((returnMode ?? "") == "" || (returnMode ?? "") == "Vector3") {
+    return Array.from(new BlockVolume({ x: from.x, y: from.y, z: from.z }, { x: to.x, y: from.y, z: to.z }).getBlockLocationIterator()).filter(v => !!dimension.getBlock(v).getComponent("inventory"));
+}
+else {
+    return Array.from(new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getBlockLocationIterator()).map(v => dimension.getBlock(v)).filter(v => !!v.getComponent("inventory"));
+} }
+;
+export function clearAllContainerBlocks(blocks) { blocks.forEach(v => cmds.clearContainer(v.getComponent("inventory").container)); return blocks; }
+;
+export function fillBlocksC(begin, end, dimension, blocktype = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) {
+    let mainArray = Array.from(new BlockVolume(begin, end).getBlockLocationIterator());
+    let counter = 0;
+    let block = BlockTypes.get(matchingBlock).id;
+    let blockmatching = BlockTypes.get(matchingBlock).id;
+    if (overrideAllBlockStates) {
+        if (!!matchingBlock) { //console.warn("3"); 
+            if (!!matchingBlockStates) { //console.warn("4"); 
+                if (!!blockStates) { //console.warn("10b"); 
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, blockStates)) { //console.warn("2"); 
+                                if (blockmatching == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+                else {
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, blockStates)) { //console.warn("2"); 
+                                if (blockmatching == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+            }
+            else { //console.warn("7"); 
+                if (!!blockStates) { //console.warn("10c"); 
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, blockStates)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+                else {
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+            }
+        }
+        else { //console.warn("9"); 
+            if (!!blockStates) { //console.warn("10"); 
+                mainArray.forEach(v => {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(v)?.typeId != block) { //console.warn("2"); 
+                            dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                            counter++; //; console.warn("11"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                });
+            }
+            else { //console.warn("12"); 
+                mainArray.forEach(v => {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(v)?.typeId != block) { //console.warn("2"); 
+                            dimension.getBlock(v).setType(blocktype);
+                            counter++; //; console.warn("13"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                });
+            }
+        }
+    }
+    else {
+        if (!!matchingBlock) { //console.warn("3"); 
+            if (!!matchingBlockStates) { //console.warn("4"); 
+                if (!!blockStates) { //console.warn("10b"); 
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                                if (BlockTypes.get(matchingBlock).id == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+                else {
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                                if (BlockTypes.get(matchingBlock).id == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+            }
+            else { //console.warn("7"); 
+                if (!!blockStates) { //console.warn("10c"); 
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && block == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+                else {
+                    mainArray.forEach(v => {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && block == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : undefined)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(v)?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(v)?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : undefined));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                    });
+                }
+            }
+        }
+        else { //console.warn("9"); 
+            if (!!blockStates) { //console.warn("10"); 
+                mainArray.forEach(v => {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(v)?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                            dimension.getBlock(v).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(v)?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                            counter++; //; console.warn("11"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                });
+            }
+            else { //console.warn("12"); 
+                mainArray.forEach(v => {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(v)?.typeId != block) { //console.warn("2"); 
+                            dimension.getBlock(v).setType(blocktype);
+                            counter++; //; console.warn("13"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                });
+            }
+        }
+    }
+    return counter;
+}
+;
+export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false, onComplete = () => { }, onCompleteArgsObject, ...onCompleteArgs) {
+    var timea = Date.now();
+    var mainArray = Array.from(new BlockVolume(begin, end).getBlockLocationIterator());
+    var counter = 0;
+    var block = BlockTypes.get(matchingBlock).id;
+    var blockmatching = BlockTypes.get(matchingBlock).id;
+    if (overrideAllBlockStates) {
+        if (!!matchingBlock) { //console.warn("3"); 
+            if (!!matchingBlockStates) { //console.warn("4"); 
+                if (!!blockStates) { //console.warn("10b"); 
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, blockStates)) { //console.warn("2"); 
+                                if (blockmatching == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+                else {
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, blockStates)) { //console.warn("2"); 
+                                if (blockmatching == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+            }
+            else { //console.warn("7"); 
+                if (!!blockStates) { //console.warn("10c"); 
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, blockStates)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+                else {
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+            }
+        }
+        else { //console.warn("9"); 
+            if (!!blockStates) { //console.warn("10"); 
+                for (let i = 0; i < mainArray.length; i++) {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(mainArray[i])?.typeId != block) { //console.warn("2"); 
+                            dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                            counter++; //; console.warn("11"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    yield;
+                }
+                ;
+            }
+            else { //console.warn("12"); 
+                for (let i = 0; i < mainArray.length; i++) {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(mainArray[i])?.typeId != block) { //console.warn("2"); 
+                            dimension.getBlock(mainArray[i]).setType(blocktype);
+                            counter++; //; console.warn("13"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    yield;
+                }
+                ;
+            }
+        }
+    }
+    else {
+        if (!!matchingBlock) { //console.warn("3"); 
+            if (!!matchingBlockStates) { //console.warn("4"); 
+                if (!!blockStates) { //console.warn("10b"); 
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(mainArray[i])?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                                if (BlockTypes.get(matchingBlock).id == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(mainArray[i])?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+                else {
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                                if (BlockTypes.get(matchingBlock).id == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    if (Object.entries(matchingBlockStates).every(p => Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).includes(p))) { //console.warn("5"); 
+                                        dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                                        counter++; //; console.warn("6"); 
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+            }
+            else { //console.warn("7"); 
+                if (!!blockStates) { //console.warn("10c"); 
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && block == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(mainArray[i])?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(mainArray[i])?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+                else {
+                    for (let i = 0; i < mainArray.length; i++) {
+                        try { //console.warn("1"); 
+                            if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && block == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : undefined)) { //console.warn("2"); 
+                                if (block == dimension.getBlock(mainArray[i])?.typeId) { //console.warn("14"); 
+                                    dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(dimension.getBlock(mainArray[i])?.permutation?.getAllStates()).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : undefined));
+                                    counter++; //; console.warn("8"); 
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e, e.stack);
+                        }
+                        yield;
+                    }
+                    ;
+                }
+            }
+        }
+        else { //console.warn("9"); 
+            if (!!blockStates) { //console.warn("10"); 
+                for (let i = 0; i < mainArray.length; i++) {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(mainArray[i])?.permutation != BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(mainArray[i])?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates)) { //console.warn("2"); 
+                            dimension.getBlock(mainArray[i]).setPermutation(BlockPermutation.resolve(blocktype, (!overrideAllBlockStates && BlockTypes.get(blocktype).id == dimension.getBlock(mainArray[i])?.typeId) ? Object.fromEntries(Object.entries(Object.assign(dimension.getBlock(mainArray[i])?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find(s => v[0] == s[0])))) : blockStates));
+                            counter++; //; console.warn("11"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    yield;
+                }
+                ;
+            }
+            else { //console.warn("12"); 
+                for (let i = 0; i < mainArray.length; i++) {
+                    try { //console.warn("1"); 
+                        if (dimension.getBlock(mainArray[i])?.typeId != block) { //console.warn("2"); 
+                            dimension.getBlock(mainArray[i]).setType(blocktype);
+                            counter++; //; console.warn("13"); 
+                        }
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    yield;
+                }
+                ;
+            }
+        }
+    }
+    var timeb = Date.now(); /*
+    world.sendMessage(String(counter))*/
+    onComplete(counter, timea, timeb, timeb - timea, onCompleteArgsObject, ...onCompleteArgs);
+}
+;
+export function v3Multiply(a, b) { return typeof b == "object" ? { x: a.x * b.x, y: a.y * b.y, z: a.z * b.z } : { x: a.x * b, y: a.y * b, z: a.z * b }; }
+export function fillBlocksD(from, to, dimension, block = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += fillBlocksC(v.from, v.to, dimension, block, blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates)); return counter; }
+;
+export async function fillBlocksE(from, to, dimension, block = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => system.run(() => counter += fillBlocksC(v.from, v.to, dimension, block, blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates))); return counter; }
+;
+export function catchtry(trycallbackfn, catchcallbackfn = (e) => console.error(e, e.stack), finallycallbackfn = (v) => { return v; }) { let v; v = undefined; try {
+    v = trycallbackfn();
+}
+catch (e) {
+    v = catchcallbackfn(e) ?? v;
+}
+finally {
+    return finallycallbackfn(v) ?? v;
+} }
+;
+export function gwdp(propertyId) { return world.getDynamicProperty(propertyId); }
+;
+export function swdp(propertyId, newValue) { return world.setDynamicProperty(propertyId, newValue); }
+;
+export function gedp(entity, propertyId) { return entity.getDynamicProperty(propertyId); }
+;
+export function sedp(entity, propertyId, newValue) { return entity.setDynamicProperty(propertyId, newValue); }
+;
+export function gidp(item, propertyId) { return item.getDynamicProperty(propertyId); }
+;
+export function sidp(item, entity, propertyId, newValue) { return item.setDynamicProperty(propertyId, newValue); }
+;
+export function shootProjectile(entityType, location, velocity, shootOptions = {}, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try {
+    setProjectileComponentPropertiesCallbackFn(entityProjectileComponent);
+}
+catch (e) {
+    console.error(e, e.stack);
+} ; entityProjectileComponent?.shoot(velocity, shootOptions); }
+;
+export function shootEntity(entityType, location, velocity, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entity = location.dimension.spawnEntity(String(entityType), location); try {
+    setProjectileComponentPropertiesCallbackFn(entity);
+}
+catch (e) {
+    console.error(e, e.stack);
+} ; entity.applyImpulse(velocity); }
+;
+export function shootProjectileB(entityType, location, rotation, power, shootOptions = {}, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try {
+    setProjectileComponentPropertiesCallbackFn(entityProjectileComponent);
+}
+catch (e) {
+    console.error(e, e.stack);
+} ; entityProjectileComponent?.shoot(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation), shootOptions); }
+;
+export function shootEntityB(entityType, location, rotation, power, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entity = location.dimension.spawnEntity(String(entityType), location); try {
+    setProjectileComponentPropertiesCallbackFn(entity);
+}
+catch (e) {
+    console.error(e, e.stack);
+} ; entity.applyImpulse(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation)); }
+;
 export function targetSelector(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return Number((selectedEntityUUIDValue)); }
 export function targetSelectorB(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return world.getDimension(DimensionTypes.getAll().find((dimension) => (world.getDimension(dimension.typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)))).typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)); } /*
 let a = world.getDimension("the_end").getBlock({x: 0, y: 0, z: 0}).permutation
@@ -414,7 +2476,7 @@ export function targetSelectorAllListE(selector, position) { let scoreboardUUID 
     }
     catch (e) { }
 } ; DimensionTypes.getAll().forEach((dt) => { let dimension = world.getDimension(dt.typeId); dimension.runCommand("/execute as " + selector + " at @s run /scoreboard players set @s andexdbDebug 0"); }); return selectedEntity; }
-export function debugAction(block, player, mode, direction) {
+export function debugActionb(block, player, mode, direction) {
     if (player.getDynamicProperty("debugStickSelectedBlock") != block.typeId) {
         player.setDynamicProperty("debugStickSelectedBlock", block.typeId);
         if (((Object.entries(block.permutation.getAllStates()).findIndex((entry) => (entry[0] == player.getDynamicProperty("debugStickPropertyIndexName"))) == -1) && ((player.getDynamicProperty("debugStickPropertyIndexName") != "waterlogged") || !block.type.canBeWaterlogged))) {
@@ -431,7 +2493,7 @@ export function debugAction(block, player, mode, direction) {
         if ((Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)) != 0) {
             if (mode == 1) {
                 if (direction == 1) {
-                    player.setDynamicProperty("debugStickPropertyIndex", Number((Number(player.getDynamicProperty("debugStickPropertyIndex")) - 1) % (Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged))));
+                    player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo((Number(player.getDynamicProperty("debugStickPropertyIndex")) - 1), 0, (Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)))));
                     if (player.getDynamicProperty("debugStickPropertyIndex") == Object.entries(block.permutation.getAllStates()).length) {
                         player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged");
                     }
@@ -440,7 +2502,7 @@ export function debugAction(block, player, mode, direction) {
                     }
                 }
                 else {
-                    player.setDynamicProperty("debugStickPropertyIndex", Number((Number(player.getDynamicProperty("debugStickPropertyIndex")) + 1) % (Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged))));
+                    player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo((Number(player.getDynamicProperty("debugStickPropertyIndex")) + 1), 0, (Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)))));
                     if (player.getDynamicProperty("debugStickPropertyIndex") == Object.entries(block.permutation.getAllStates()).length) {
                         player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged");
                     }
@@ -456,15 +2518,10 @@ export function debugAction(block, player, mode, direction) {
                     }
                     else {
                         if (direction == 1) {
-                            if (Number(player.getDynamicProperty("debugStickPropertyIndexIndex")) > 0) {
-                                player.setDynamicProperty("debugStickPropertyIndexIndex", ((((BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value) => (value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) - 1) % BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length))));
-                            }
-                            else {
-                                player.setDynamicProperty("debugStickPropertyIndexIndex", (BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length - 1));
-                            }
+                            player.setDynamicProperty("debugStickPropertyIndexIndex", (((customModulo((BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value) => (value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) - 1), 0, BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)))));
                         }
                         else {
-                            player.setDynamicProperty("debugStickPropertyIndexIndex", ((BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value) => (value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) + 1) % BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length));
+                            player.setDynamicProperty("debugStickPropertyIndexIndex", (customModulo((BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value) => (value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) + 1), 0, BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)));
                         }
                     }
                 }
@@ -483,6 +2540,96 @@ export function debugAction(block, player, mode, direction) {
                 system.run(() => {
                     player.onScreenDisplay.setActionBar(`"${Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]}" to ${permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1]}`);
                     block.setPermutation(BlockPermutation.resolve(block.typeId, Object.fromEntries(permutation)));
+                });
+            }
+        }
+        else {
+            if (mode == 1) {
+                let permutation = Object.entries(block.permutation.getAllStates());
+                if (true /*typeof Object.values(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))] == typeof String*/) {
+                    if (player.getDynamicProperty("debugStickPropertyIndexName") == "waterlogged") {
+                        system.run(() => { player.onScreenDisplay.setActionBar(`selected "waterlogged" (${block.isWaterlogged})`); });
+                    }
+                    else {
+                        system.run(() => { player.onScreenDisplay.setActionBar(`selected "${permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0]}" (${Object.values(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]})`); });
+                    }
+                }
+                else {
+                    system.run(() => { player.onScreenDisplay.setActionBar(`selected "${permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0]}" ${Object.values(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]}`); });
+                }
+            }
+        }
+    }
+    ;
+    if ((Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)) == 0) {
+        system.run(() => { player.onScreenDisplay.setActionBar(`${block.typeId} has no properties`); });
+    }
+    ; /*
+    console.warn(Object.entries(block.permutation.getAllStates()))*/
+}
+export function debugAction(block, player, mode, direction) {
+    player.setDynamicProperty("debugStickBlockLocation", block.location);
+    if (player.getDynamicProperty("debugStickSelectedBlock") != block.typeId) {
+        player.setDynamicProperty("debugStickSelectedBlock", block.typeId);
+        if (((Object.entries(block.permutation.getAllStates()).findIndex((entry) => (entry[0] == player.getDynamicProperty("debugStickPropertyIndexName"))) == -1) && ((player.getDynamicProperty("debugStickPropertyIndexName") != "waterlogged") || !block.type.canBeWaterlogged))) {
+            player.setDynamicProperty("debugStickPropertyIndex", 0);
+            player.setDynamicProperty("debugStickPropertyIndexName", "");
+        }
+        else {
+            player.setDynamicProperty("debugStickPropertyIndex", Object.entries(block.permutation.getAllStates()).findIndex((entry) => (entry[0] == player.getDynamicProperty("debugStickPropertyIndexName"))));
+        }
+        ;
+    }
+    else {
+        if ((Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)) != 0) {
+            if (mode == 1) {
+                if (direction == 1) {
+                    player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo((Number(player.getDynamicProperty("debugStickPropertyIndex")) - 1), 0, (Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)))));
+                    if (player.getDynamicProperty("debugStickPropertyIndex") == Object.entries(block.permutation.getAllStates()).length) {
+                        player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged");
+                    }
+                    else {
+                        player.setDynamicProperty("debugStickPropertyIndexName", Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0]);
+                    }
+                }
+                else {
+                    player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo((Number(player.getDynamicProperty("debugStickPropertyIndex")) + 1), 0, (Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)))));
+                    if (player.getDynamicProperty("debugStickPropertyIndex") == Object.entries(block.permutation.getAllStates()).length) {
+                        player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged");
+                    }
+                    else {
+                        player.setDynamicProperty("debugStickPropertyIndexName", Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][0]);
+                    }
+                }
+            }
+            else {
+                if (mode == 0) { /*
+                    if (player.getDynamicProperty("debugStickPropertyIndexName") == "waterlogged") {
+                        player.setDynamicProperty("debugStickPropertyIndexIndex", (1-Number(block.isWaterlogged)));
+                    }else{
+                        if(direction == 1){
+                            player.setDynamicProperty("debugStickPropertyIndexIndex", (((customModulo((BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value)=>(value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) - 1), 0, BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)))))
+                        }else{
+                            player.setDynamicProperty("debugStickPropertyIndexIndex", (customModulo((BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex((value)=>(value == Object.entries(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1])) + 1), 0, BlockStates.getAll().find((state)=>(state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)))
+                        }
+                    }*/
+                }
+            }
+        }
+    }
+    ; /*BlockStates.getAll().forEach((stateb)=>{player.sendMessage(stateb.id + ": " + stateb.validValues)}); */ /*let test = Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]; console.warn(Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))] + "\n" + String(Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]) + "\n" + test + "\n" + BlockStates.getAll()[BlockStates.getAll().length-2].id + BlockStates.getAll().findIndex((statec)=>{console.warn("\"" + String(statec.id) + "\", \"" + String(Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]) + "\""); statec.id == test})); */
+    if ((Object.entries(block.permutation.getAllStates()).length + Number(block.type.canBeWaterlogged)) != 0) {
+        if (mode == 0) {
+            if (player.getDynamicProperty("debugStickPropertyIndexName") == "waterlogged" || (block.type.canBeWaterlogged && (Object.entries(block.permutation.getAllStates()).length == 0))) {
+                system.run(() => { block.setWaterlogged(Boolean(1 - Number(block.isWaterlogged))); player.onScreenDisplay.setActionBar(`"waterlogged" to ${block.isWaterlogged}`); });
+            }
+            else {
+                let permutation = Object.entries(block.permutation.getAllStates());
+                let permindex = BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.findIndex(v => (v == permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1]));
+                permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1] = BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues[customModulo(permindex + 1 + (-2 * (direction)), 0, BlockStates.getAll().find((state) => (state.id == Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))])).validValues.length)];
+                system.run(() => {
+                    block.setPermutation(BlockPermutation.resolve(block.typeId, Object.fromEntries(permutation)));
+                    player.onScreenDisplay.setActionBar(`"${Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]}" to ${permutation[Number(player.getDynamicProperty("debugStickPropertyIndex"))][1]}`);
                 });
             }
         }
@@ -783,34 +2930,33 @@ world.afterEvents.entitySpawn.subscribe((event) => {
     try{if (world.scoreboard.getObjective("andexdbDebug") == undefined){world.scoreboard.addObjective("andexdbDebug", "andexdbScriptDebuggingService")}}catch(e){}
     try{event.entity.runCommand("/scoreboard players @s set andexdbDebug 0")}catch(e){}
   });*/
+/*
 world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:dataDrivenEntityTriggerEvent")));
     }
     catch (e) {
         console.error(e, e.stack);
-        world.getAllPlayers().forEach((currentplayer) => {
-            if (currentplayer.hasTag("dataDrivenEntityTriggerEventBeforeEventDebugErrors")) {
-                currentplayer.sendMessage(e + e.stack);
-            }
-        });
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("dataDrivenEntityTriggerEventBeforeEventDebugErrors")) {
+            currentplayer.sendMessage(e + e.stack);
+        } });
     }
     ;
     try {
         world.getAllPlayers().filter((player) => { player.hasTag("getEntityTriggerEventNotifications"); }).forEach((currentPlayer) => { currentPlayer.sendMessage("id: " + event.id + ", getComponentGroupsToAdd: " + event.getModifiers()[0].addedComponentGroups + ", getComponentGroupsToRemove: " + event.getModifiers()[0].removedComponentGroups + ", getTriggers: " + event.getModifiers()[0].triggers); });
         if (event.id == "andexsa:friction_modifier_0.9") {
-            let componentGroups = event.getModifiers()[0]; /*
-            console.warn(event.id)
-            console.warn(componentGroups.getComponentGroupsToAdd())*/
-            componentGroups.addedComponentGroups = ["andexsa:player_is_baby"]; /*
-            console.warn(componentGroups.getComponentGroupsToAdd())*/
-            event.setModifiers([componentGroups]);
-            console.warn(event.getModifiers()[0].addedComponentGroups);
-        }
-    }
-    catch { }
-});
-; /*
+            let componentGroups = event.getModifiers()[0]; */ /*
+console.warn(event.id)
+console.warn(componentGroups.getComponentGroupsToAdd())*/ /*
+componentGroups.addedComponentGroups = ["andexsa:player_is_baby"]; */ /*
+console.warn(componentGroups.getComponentGroupsToAdd())*/ /*
+event.setModifiers([componentGroups]);
+console.warn(event.getModifiers()[0].addedComponentGroups);
+}
+}
+catch { }
+}); ;*/ //removed in minecraft 1.20.80 >:(
+/*
   world.beforeEvents.pistonActivate.subscribe(event => {
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:pistonActivate")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pistonActivateBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
       world.getAllPlayers().filter((player) => ( player.hasTag("getEntityTriggerEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("id: " + event.block.typeId + ", getComponentGroupsToAdd: " + event.piston.getAttachedBlocks()[0].x + ", getComponentGroupsToRemove: " + event.isExpanding) + ", getTriggers: " + event.dimension; });
@@ -870,6 +3016,17 @@ world.beforeEvents.itemDefinitionEvent.subscribe(event => {
   try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });*/ //removed in 1.20.70.21
 world.beforeEvents.playerInteractWithEntity.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemPlayerInteractWithEntityCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithEntity")));
     }
@@ -1407,7 +3564,7 @@ world.beforeEvents.explosion.subscribe(event => {
     } /*
     eval(String(world.getDynamicProperty("scriptEvalBeforeEventsExplosion")))*/
     world.getAllPlayers().filter((player) => (player.hasTag("getExplosionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("Location: [ " + event.source.location.x + ", " + event.source.location.y + ", " + event.source.location.z + " ], Dimension: " + event.dimension.id); });
-    if ((((testIsWithinRanges(noExplosionAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(noExplosionAreas.negative, event.source.location) ?? false) == false)) || (((testIsWithinRanges(protectedAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative, event.source.location) ?? false) == false))) {
+    if (!!!event.source?.location ? false : (((testIsWithinRanges(noExplosionAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(noExplosionAreas.negative, event.source.location) ?? false) == false)) || (((testIsWithinRanges(protectedAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative, event.source.location) ?? false) == false))) {
         event.cancel = true; /*
           console.warn(event.isExpanding);
           console.warn(event.block.x, event.block.y, event.block.z);
@@ -1419,6 +3576,17 @@ world.beforeEvents.explosion.subscribe(event => {
     }
 });
 world.afterEvents.itemReleaseUse.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("itemReleaseUseCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("itemReleaseUseCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemReleaseUseCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")));
     }
@@ -1434,6 +3602,17 @@ world.afterEvents.itemReleaseUse.subscribe(event => {
     ;
 });
 world.beforeEvents.playerInteractWithBlock.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemPlayerInteractWithBlockCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithBlock")));
     }
@@ -1459,7 +3638,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
             interactable_block.push({ id: event.player.id, delay: 0 });
         }
         ;
-        if ((interactable_block.find((playerId) => (playerId.id == event.player.id)).delay == 0) || ((event.player.getDynamicProperty("debugStickSelectedBlock") != event.block.typeId))) {
+        if ((interactable_block.find((playerId) => (playerId.id == event.player.id)).delay == 0) || (String(Object.values(event.player.getDynamicProperty("debugStickBlockLocation"))) != String(Object.values(event.block.location)))) {
             interactable_block.find((playerId) => (playerId.id == event.player.id)).delay = delay;
             interactable_block.find((playerId) => (playerId.id == event.player.id)).holdDuration = holdDuration;
             debugAction(event.block, event.player, 0, Number(event.player.isSneaking));
@@ -1472,6 +3651,17 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     }
 });
 world.beforeEvents.itemUseOn.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("itemUseOnCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("itemUseOnCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemUseOnCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:itemUseOn")));
     }
@@ -1492,6 +3682,17 @@ world.beforeEvents.itemUseOn.subscribe(event => {
     }
 });
 world.beforeEvents.playerBreakBlock.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("playerBreakBlockCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("playerBreakBlockCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemPlayerBreakBlockCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerBreakBlock")));
     }
@@ -1568,7 +3769,17 @@ system.runInterval(() => { try {
 }
 catch { } ; }, 1); //fixed and this one is also nows new
 world.beforeEvents.itemUse.subscribe(event => {
-    event.source.teleport;
+    if (!!event?.itemStack?.getDynamicProperty("code")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("code")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:itemUse")));
     }
@@ -2108,7 +4319,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
         inventory.container.setItem(0, diamondAwesomeSword);
         let item = inventory.container.getItem(0);
         let enchants = item.getComponent("enchantable");
-        let knockbackEnchant = { type: "knockback", level: 2 };
+        let knockbackEnchant = { type: EnchantmentTypes.get("knockback"), level: 2 };
         enchants.addEnchantment(knockbackEnchant);
         inventory.container.setItem(0, item);
         const ironFireSword = new ItemStack("minecraft:iron_sword", 1); /*
@@ -2136,7 +4347,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
         inventory.container.setItem(0, item);
         let itema = inventory2.container.getItem(0);
         let enchants3 = itema.getComponent("enchantable");
-        let knockbackEnchant2 = { type: "knockback", level: 1 };
+        let knockbackEnchant2 = { type: EnchantmentTypes.get("knockback"), level: 1 };
         enchants3.addEnchantment(knockbackEnchant2); /*
         inventory2.container.setItem(0, itema);*/
     }
@@ -2221,7 +4432,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
                     blockProperties = "§4None§a";
                 } /*
                 let effectsList = [players[playerTargetB].getComponents[0]]*/
-                let distance = Vector.distance(players[playerViewerB].location, players[playerTargetB].location);
+                let distance = mcMath.Vector3Utils.distance(players[playerViewerB].location, players[playerTargetB].location);
                 try {
                     entityViewedEntityType = players[playerTargetB].getEntitiesFromViewDirection()[0].entity.typeId;
                 }
@@ -2351,12 +4562,12 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
                     playerTargetB = players[playerViewerB].getEntitiesFromViewDirection()[0].entity;
                 }
                 if (selectionType == 1) {
-                    playerTargetB = world.getDimension("overworld").getEntities().concat(world.getDimension("overworld").getEntities().concat(world.getDimension("overworld").getEntities())).find((entityValue) => (entityValue.id == entityUUID));
+                    playerTargetB = world.getDimension("overworld").getEntities().concat(world.getDimension("nether").getEntities().concat(world.getDimension("the_end").getEntities())).find((entityValue) => (entityValue.id == entityUUID));
                 }
                 if (selectionType == 4) {
                     playerTargetB = world.getDimension(blockLocation[0]).getEntitiesAtBlockLocation({ x: Number(blockLocation[1]), y: Number(blockLocation[2]), z: Number(blockLocation[3]) })[Number(blockLocationIndex)];
                 }
-                let distance = Vector.distance(players[playerViewerB].location, playerTargetB.location);
+                let distance = mcMath.Vector3Utils.distance(players[playerViewerB].location, playerTargetB.location);
                 try {
                     entityViewedEntityType = playerTargetB.getEntitiesFromViewDirection()[0].entity.typeId;
                 }
@@ -2470,7 +4681,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
     form.button("Mange Restricted Areas", "textures/ui/xyz_axis.png");
     form.button("Manage Custom UIs", "textures/ui/feedIcon");
     form.button("Settings", "textures/ui/settings_glyph_color_2x");
-    forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {let r = (ra as ActionFormResponse);
+    forceShow(form, players[players.findIndex((x) => x == sourceEntity)] as any).then(ra => {let r = (ra as ActionFormResponse);
         // This will stop the code when the player closes the form
         if (r.canceled) return;
     
@@ -3343,7 +5554,7 @@ console.error(e, e.stack);
                                 form3.button("Use Coordinates And Dimension Instead", "textures/items/stick");
                                 form3.button("Preset 1", "textures/items/stick");
                                 form3.button("Edit Presets", "textures/items/stick");
-                                form3.show(players[players.findIndex((x) => x == sourceEntity)]).then(s => {
+                                form3.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(s => {
                                 // This will stop the code when the player closes the form
                                     if (s.canceled) return;
                         
@@ -3542,7 +5753,7 @@ console.error(e, e.stack);
                                 form3.button("Use Coordinates And Dimension Instead", "textures/items/stick");
                                 form3.button("Preset 1", "textures/items/stick");
                                 form3.button("Edit Presets", "textures/items/stick");
-                                form3.show(players[players.findIndex((x) => x == sourceEntity)]).then(s => {
+                                form3.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(s => {
                                 // This will stop the code when the player closes the form
                                     if (s.canceled) return;
                         
@@ -5414,7 +7625,7 @@ console.error(e, e.stack);
         console.warn(targetList);*/ /*
     }*/
         try {
-            form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + Vector.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
+            form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
         }
         catch (e) {
             console.error(e, e.stack);
@@ -5905,7 +8116,7 @@ console.error(e, e.stack);
         form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
         form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
         form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
-        forceShow(form2, (event.sourceEntity as Player)).then(to => {
+        forceShow(form2, (event.sourceEntity as any)).then(to => {
             let t = (to as ModalFormResponse)
             if (t.canceled) return;*/ /*
     GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
@@ -5955,7 +8166,7 @@ console.error(e, e.stack);
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));*/ /*
-    forceShow(form2, (event.sourceEntity as Player)).then(to => {
+    forceShow(form2, (event.sourceEntity as any)).then(to => {
         let t = (to as ModalFormResponse)
         if (t.canceled) return;*/ /*
     GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
@@ -6269,7 +8480,7 @@ console.error(e, e.stack);
         console.warn(targetList);*/ /*
     }*/
         try {
-            form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + Vector.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
+            form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
         }
         catch (e) {
             console.error(e, e.stack);
@@ -6982,7 +9193,7 @@ console.error(e, e.stack);
         form.toggle("Debug", false)
     
     
-    form.show(players[players.findIndex((x) => x == sourceEntity)]).then(r => {
+    form.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(r => {
         if (r.canceled) return;
     
         let [ nameTag, triggerEvent, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, removeEffect, effectToRemove, removeTag, tagToRemove, setRot, rotX, rotY, teleport, teleportX, teleportY, teleportZ, tryTeleport, tryTeleportX, tryTeleportY, tryTeleportZ, openTheItemModificationFormAfterwards, debug ] = r.formValues;
@@ -7012,10 +9223,10 @@ console.error(e, e.stack);
             try {entity[0].entity.triggerEvent(String(triggerEvent));} catch(e){console.error(e, e.stack);}
         }
     
-    if (players[players.findIndex((x) => x == sourceEntity)].hasTag("showDebug")) {
+    if (players[players.findIndex((x) => x == sourceEntity)] as any.hasTag("showDebug")) {
       system.runInterval( () => {
       players[0].onScreenDisplay.setActionBar("dimension: " + entity[0].entity.dimension + "\nfallDistance: " + entity[0].entity.fallDistance + "\nid: entity[0].entity.id: " + entity[0].entity.id + "\nisClimbing: " + entity[0].entity.isClimbing + "\nisFalling: " + entity[0].entity.isFalling + "\nisInWater: " + entity[0].entity.isInWater + "\nisOnGround: " + entity[0].entity.isOnGround + "\nisSleeping: " + entity[0].entity.isSleeping + "\nisSneaking: " + entity[0].entity.isSneaking + "\nisSprinting: " + entity[0].entity.isSprinting + "\nisSwimming: " + entity[0].entity.isSwimming + "\nlifetimeState: " + entity[0].entity.lifetimeState + "\nlocation: " + entity[0].entity.location + "\nnameTag: " + entity[0].entity.nameTag + "\nscoreboardIdentity(or_the_actor_id_very_long_complicated_number): " + entity[0].entity.scoreboardIdentity + "\ntarget: " + entity[0].entity.target + "\ntypeId: " + entity[0].entity.typeId + "\ngetBlockFromViewDirection(): " + entity[0].entity.getBlockFromViewDirection() + "\ngetComponents(): " + entity[0].entity.getComponents() + "\ngetEffects(): " + entity[0].entity.getEffects() + "\ngetEntitiesFromViewDirection(): " + entity[0].entity.getEntitiesFromViewDirection() + "\ngetHeadLocation(): " + entity[0].entity.getHeadLocation() + "\ngetRotation(): " + entity[0].entity.getRotation() + "\ngetTags(): " + entity[0].entity.getTags() + "\ngetVelocity(): " + entity[0].entity.getVelocity() + "\ngetViewDirection(): " + entity[0].entity.getViewDirection + "\nisValid(): " + entity[0].entity.isValid());
-      if (players[players.findIndex((x) => x == sourceEntity)].hasTag("showDebug") == false) {
+      if (players[players.findIndex((x) => x == sourceEntity)] as any.hasTag("showDebug") == false) {
       return
       }
       }, 2)

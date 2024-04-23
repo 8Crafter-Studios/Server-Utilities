@@ -15,9 +15,9 @@ import {
   MinecraftItemTypes,
   ItemStack,
   Location,
-  Vector,
   world,
 } from "@minecraft/server";
+import mcMath from "@minecraft/math.js";
 
 GameTest.register("APITests", "on_entity_created", (test) => {
   const entitySpawnCallback = world.events.entitySpawn.subscribe((entity) => {
@@ -1027,7 +1027,7 @@ function isNear(a, b, epsilon = 0.001) {
 }
 
 function isNearVec(a, b, epsilon = 0.001) {
-  return Vector.distance(a, b) < epsilon;
+  return mcMath.Vector3Utils.distance(a, b) < epsilon;
 }
 
 GameTest.register("APITests", "cauldron", (test) => {
@@ -1409,7 +1409,7 @@ GameTest.register("APITests", "set_velocity", (test) => {
   test
     .startSequence()
     .thenExecuteFor(30, () => {
-      zombie.setVelocity(new Vector(0, 0.1, 0));
+      zombie.setVelocity({x: 0, y: 0.1, z: 0});
     })
     .thenExecute(() => {
       const zombieLoc = test.relativeLocation(zombie.location);
@@ -1791,7 +1791,7 @@ GameTest.registerAsync("APITests", "projectile_hit_event_block", async (test) =>
         );
         test.assert(e.source?.id === "minecraft:player", "Expected source to be player, but got " + e.source?.id);
         test.assert(
-          isNearVec(e.hitVector, test.rotateVector(Vector.forward), 0.1),
+          isNearVec(e.hitVector, test.rotateVector(mcMath.VECTOR3_FORWARD), 0.1),
           `Expected e.hitVector to be forward, but got [${e.hitVector.x}, ${e.hitVector.y}, ${e.hitVector.z}]`
         );
         test.assert(
@@ -1840,7 +1840,7 @@ GameTest.registerAsync("APITests", "projectile_hit_event_entity", async (test) =
       );
       test.assert(e.source?.id === "minecraft:player", "Expected source to be player, but got " + e.source?.id);
       test.assert(
-        isNearVec(e.hitVector, test.rotateVector(Vector.forward)),
+        isNearVec(e.hitVector, test.rotateVector(mcMath.VECTOR3_FORWARD)),
         `Expected e.hitVector to be forward, but got [${e.hitVector.x}, ${e.hitVector.y}, ${e.hitVector.z}]`
       );
       test.assert(
@@ -1893,7 +1893,7 @@ GameTest.registerAsync("APITests", "rotate_entity", async (test) => {
 GameTest.register("APITests", "teleport_keep_velocity", (test) => {
   const arrow = test.spawn("arrow", new BlockLocationIterator(2, 4, 1));
   // The arrow should fall 1 block before hitting the target
-  arrow.setVelocity(test.rotateVector(new Vector(0, 0, 1.2)));
+  arrow.setVelocity(test.rotateVector({x: 0, y: 0, z: 1.2}));
   let relativeLoc = test.relativeLocation(arrow.location);
   relativeLoc.x -= 1;
   let teleportLoc = test.worldLocation(relativeLoc);
@@ -1912,7 +1912,7 @@ GameTest.registerAsync(`APITests`, `teleport_keep_velocity_mob`, async (test) =>
   let simPlayer2 = test.spawnSimulatedPlayer(new BlockLocationIterator(2, 10, 2));
 
   await test.idle(2);
-  const velocity = new Vector(0, 5, 0);
+  const velocity = {x: 0, y: 5, z: 0};
   pig1.setVelocity(velocity);
   pig2.setVelocity(velocity);
   simPlayer1.setVelocity(velocity);

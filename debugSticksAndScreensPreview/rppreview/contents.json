@@ -25,10 +25,19 @@
          "path" : "animations/animation.none.none.none.animation.json"
       },
       {
-         "path" : "font/glyph_E1.png"
+         "path" : "contents.json"
       },
       {
-         "path" : "contents.json"
+         "path" : "textures/ui/8Crafter.png"
+      },
+      {
+         "path" : "particles/custom_item_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "models/blocks/no_bones.geo.json"
+      },
+      {
+         "path" : "blocks.json"
       },
       {
          "path" : "font/glyph_E0 old 3.png"
@@ -41,6 +50,12 @@
       },
       {
          "path" : "font/glyph_E0.png"
+      },
+      {
+         "path" : "textures/terrain_texture.json"
+      },
+      {
+         "path" : "font/glyph_E1.png"
       },
       {
          "path" : "font/glyph_E2.png"
@@ -76,12 +91,6 @@
          "path" : "particles/custom_item_texture_billboard.particle.json"
       },
       {
-         "path" : "textures/ui/8Crafter.png"
-      },
-      {
-         "path" : "particles/custom_item_texture_billboard_2.particle.json"
-      },
-      {
          "path" : "textures/items/diamond_green_down_arrow_transform_template.png"
       },
       {
@@ -97,13 +106,22 @@
          "path" : "texts/en_US.lang"
       },
       {
+         "path" : "textures/items/diamond_green_left_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/blocks/friction_block.png"
+      },
+      {
+         "path" : "textures/blocks/friction_block_2.png"
+      },
+      {
+         "path" : "textures/blocks/gray_outline_block_texture.png"
+      },
+      {
          "path" : "textures/items/diamond_blue_up_arrow_transform_template.png"
       },
       {
          "path" : "textures/items/diamond_downgrade_transform_template.png"
-      },
-      {
-         "path" : "textures/items/diamond_green_left_arrow_transform_template.png"
       },
       {
          "path" : "textures/items/diamond_green_right_arrow_transform_template.png"

@@ -1,7 +1,37 @@
 import { system, world } from "@minecraft/server";
-import { format_version } from "Main";
-import { savedPlayer } from "./player_save";
-export const ban_format_version = "1.0.0-rc.2";
+import { format_version } from "../Main";
+import { savedPlayer } from "./player_save.js";
+import * as GameTest from "@minecraft/server-gametest";
+import * as mcServer from "@minecraft/server";
+import * as mcServerUi from "@minecraft/server-ui"; /*
+import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
+import * as mcCommon from "@minecraft/common";*/ /*
+import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import * as main from "Main";
+import * as coords from "./coordinates";
+import * as cmds from "./commands";
+import * as bans from "./ban";
+import * as uis from "./ui";
+import * as playersave from "./player_save";
+import * as spawnprot from "./spawn_protection";
+import mcMath from "@minecraft/math.js";
+mcServer;
+mcServerUi; /*
+mcServerAdmin*/ /*
+mcDebugUtilities*/ /*
+mcCommon*/
+GameTest; /*
+mcVanillaData*/
+main;
+coords;
+cmds;
+bans;
+uis;
+playersave;
+spawnprot;
+mcMath;
+export const ban_format_version = "1.2.0";
 export class ban {
     constructor(ban) {
         this.format_version = format_version;
@@ -54,7 +84,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
     }
     catch (e) {
         console.error(e, e.stack);
-    } }); return { idBans: bans.filter((b) => (b.type == "id")), nameBans: bans.filter((b) => (b.type == "name")), allBans: bans }; }
+    } }); return { idBans: bans.filter((b) => (b?.type == "id")), nameBans: bans.filter((b) => (b?.type == "name")), allBans: bans }; }
     static getValidBans() { let bans; bans = []; ban.getValidBanIds().forEach((b) => { try {
         bans.push(ban.getBan(b));
     }

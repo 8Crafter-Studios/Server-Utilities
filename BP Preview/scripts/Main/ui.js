@@ -1,14 +1,14 @@
-import { system, world, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Vector, EquipmentSlot, ItemLockMode } from "@minecraft/server";
+import { system, world, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, EquipmentSlot, ItemLockMode } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, FormCancelationReason } from "@minecraft/server-ui";
-import { format_version, getUICustomForm } from "Main";
+import { JSONParse, JSONStringify, format_version, getUICustomForm, targetSelectorAllListC } from "Main";
 import { editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
-import * as mcServerAdmin from "@minecraft/server-admin";*/
-import * as mcDebugUtilities from "@minecraft/debug-utilities"; /*
+import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
@@ -18,10 +18,12 @@ import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
+import mcMath from "@minecraft/math.js";
+import { command, commandSettings, command_settings_format_version, commands, commands_format_version } from "Main/commands";
 mcServer;
 mcServerUi; /*
-mcServerAdmin*/
-mcDebugUtilities; /*
+mcServerAdmin*/ /*
+mcDebugUtilities*/ /*
 mcCommon*/
 GameTest; /*
 mcVanillaData*/
@@ -32,7 +34,8 @@ bans;
 uis;
 playersave;
 spawnprot;
-export const ui_format_version = "1.0.1";
+mcMath;
+export const ui_format_version = "1.7.0";
 //${se}console.warn(JSON.stringify(evaluateParameters(["presetText", "string", "json", "number", "boolean", "string", "presetText", "presetText"], "test test [{\"test\": \"test\"}, [\"test\", \"test\"] , \"test\", \"test\"] 1 true \"test \\\"test\" test test"))); 
 /**
  * Returns the sum of a and b
@@ -316,7 +319,7 @@ export function mainMenu(sourceEntity) {
     form.button("Entity Controller", "textures/ui/controller_glyph_color_switch");
     form.button("World Options§b", "textures/ui/settings_glyph_color_2x");
     form.button("§4Dimension Options§f(§cComing Soon!§f)§b", "textures/ui/icon_setting");
-    form.button("§4Create Explosion(§cComing Soon!§f)§b", "textures/blocks/tnt_side");
+    form.button("§eCreate Explosion §f[§cAlpha§f]", "textures/blocks/tnt_side");
     form.button("§4Fill Blocks(§cComing Soon!§f)§b", "textures/blocks/stone");
     form.button("§4World Debug§f(§cComing Soon!§f)§b", "textures/ui/xyz_axis.png");
     form.button("§4Dimension Debug§f(§cComing Soon!§f)§b", "textures/ui/NetherPortal");
@@ -327,6 +330,8 @@ export function mainMenu(sourceEntity) {
     form.button("Manage Custom UIs", "textures/ui/feedIcon");
     form.button("Settings", "textures/ui/settings_glyph_color_2x");
     form.button("Manage Players", "textures/ui/user_icon_white");
+    form.button("§eManage Commands §f[§6Beta§f]", "textures/ui/chat_keyboard_hover");
+    form.button("§eItem Editor §f[§cAlpha§f]", "textures/ui/chat_keyboard_hover");
     forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {
         let r = ra;
         // This will stop the code when the player closes the form
@@ -457,15 +462,7 @@ export function mainMenu(sourceEntity) {
                 // Do something when button 2 is pressed
                 break;
             case 11:
-                try {
-                    (sourceEntity).runCommand(String("/scriptevent andexdb:createExplosion saqw"));
-                }
-                // Do something
-                catch (e) {
-                    console.error(e, e.stack);
-                }
-                ;
-                // Do something when button 2 is pressed
+                createExplosion(sourceEntity);
                 break;
             case 12:
                 try {
@@ -490,6 +487,7 @@ export function mainMenu(sourceEntity) {
                 // Do something when button 2 is pressed
                 break;
             case 16:
+                terminal(sourceEntity);
                 break;
             case 17:
                 scriptEvalRunWindow(sourceEntity);
@@ -505,6 +503,17 @@ export function mainMenu(sourceEntity) {
                 break;
             case 21:
                 managePlayers(sourceEntity);
+                break;
+            case 22:
+                manageCommands(sourceEntity);
+                break;
+            case 23:
+                try {
+                    uis.itemSelector(sourceEntity, sourceEntity).then(a => { if (!!a) {
+                        uis.itemEditorTypeSelection(sourceEntity, sourceEntity, a);
+                    } });
+                }
+                catch { }
                 break;
             default:
         }
@@ -567,6 +576,7 @@ export function globalSettings(sourceEntity) {
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
+    form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
         if (t.canceled)
@@ -611,7 +621,9 @@ export function personalSettings(sourceEntity) {
     form2.textField("§l§frankDisplaySuffix§r§f\nSuffix that appears after your chat ranks in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ?? "§r§f]"));
     form2.textField("§l§fnameDisplayPrefix§r§f\nPrefix that appears before your names in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? "<"));
     form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after your names in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? "§r§f>"));
-    form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:andexdbPersonalSettings") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? " ")); /*
+    form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? " "));
+    form2.textField("§l§fdebugStickUseCooldown§r§f\nCooldown between changing the block state of a block with a debug stick after you have just changed that state on the same block, default is 4", "number; default: 4", !!!sourceEntity.getDynamicProperty("debugStickUseCooldown") ? undefined : String(sourceEntity.getDynamicProperty("debugStickUseCooldown") ?? 4));
+    form2.textField("§l§fdebugStickHoldDuration§r§f\nTime after the actionbar for changing a block state with the debug stick appears before the actionbar can be changed again, default is 10", "number; default: 10", !!!sourceEntity.getDynamicProperty("debugStickHoldDuration") ? undefined : String(sourceEntity.getDynamicProperty("debugStickHoldDuration") ?? 10)); /*
     form2.textField("§l§fvalidChatCommandPrefixes§r§f\nList of valid prefixes for chat commands, use this if you have other add-ons with chat commands in them active, messages that start with any of these will not be sent and will not be modified by this add-on so it will work for you other packs, default is blank", "Comma-Separated List of Strings", String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? ""));
     form2.textField("§l§fchatRankPrefix§r§f\nPrefix for chat ranks, default is rank:", "string", String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"));
     form2.textField("§l§fchatSudoPrefix§r§f\nPrefix for custom chat names, default is sudo:", "string", String(world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:"));
@@ -624,13 +636,14 @@ export function personalSettings(sourceEntity) {
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));*/
+    form2.submitButton("SaVE");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
         if (t.canceled)
             return; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator] = t.formValues;
+        let [timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, debugStickUseCooldown, debugStickHoldDuration] = t.formValues;
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:timeZone", timeZone == "" ? undefined : timeZone);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatRankPrefix", chatRankPrefix == "" ? undefined : chatRankPrefix);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatSudoPrefix", chatSudoPrefix == "" ? undefined : chatSudoPrefix);
@@ -638,7 +651,9 @@ export function personalSettings(sourceEntity) {
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix", rankDisplaySuffix == "" ? undefined : rankDisplaySuffix);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix", nameDisplayPrefix == "" ? undefined : nameDisplayPrefix);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix", nameDisplaySuffix == "" ? undefined : nameDisplaySuffix);
-        sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator == "" ? undefined : chatNameAndMessageSeparator); /*
+        sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator == "" ? undefined : chatNameAndMessageSeparator);
+        sourceEntity.setDynamicProperty("debugStickUseCooldown", debugStickUseCooldown == "" ? undefined : debugStickUseCooldown);
+        sourceEntity.setDynamicProperty("debugStickHoldDuration", debugStickHoldDuration == "" ? undefined : debugStickHoldDuration); /*
         world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", validChatCommandPrefixes)
         world.setDynamicProperty("andexdbSettings:chatRankPrefix", chatRankPrefix)
         world.setDynamicProperty("andexdbSettings:chatSudoPrefix", chatSudoPrefix)
@@ -723,6 +738,7 @@ export function scriptEvalRunWindow(sourceEntity) {
     form.textField("Script", "JavaScript");
     form.textField("Script", "JavaScript");
     form.textField("Script", "JavaScript");
+    form.submitButton("Run");
     forceShow(form, sourceEntity).then(ro => {
         let r = ro;
         if (r.canceled)
@@ -765,6 +781,7 @@ export function terminal(sourceEntity) {
         form.textField("Run Command", "Run Command");
         form.textField("Run Delay", "Run Delay");
         form.toggle("Debug", false);
+        form.submitButton("Run");
         form.show(sourceEntity).then(r => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -773,7 +790,7 @@ export function terminal(sourceEntity) {
             let [commandId, commandDelay, debug] = r.formValues; /*
             console.warn(r.formValues);*/
             system.runTimeout(() => {
-                console.warn((sourceEntity).runCommand(String(commandId)).successCount);
+                sourceEntity.sendMessage(String((sourceEntity).runCommand(String(commandId)).successCount));
             }, Number(commandDelay));
             // Do something
         }).catch(e => {
@@ -1815,7 +1832,7 @@ export function editorStick(sourceEntity, message = "") {
     console.warn(targetList);*/ /*
 }*/
     try {
-        form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + Vector.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
+        form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
     }
     catch (e) {
         console.error(e, e.stack);
@@ -2218,7 +2235,7 @@ export function editorStickB(sourceEntity, dimensionLocation) {
     console.warn(targetList);*/ /*
 }*/
     try {
-        form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + Vector.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nsetType", "Block Type", block2.typeId);
+        form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nsetType", "Block Type", block2.typeId);
     }
     catch (e) {
         console.error(e, e.stack);
@@ -2782,6 +2799,620 @@ export function managePlayers(sourceEntity) {
                     }
                     ;
                 }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+        }
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export function getAllBuiltInCommandsCategories() { let set = new Set(); commands.map(v => v.category).forEach(v => typeof v == "string" ? set.add(v) : v.forEach(v => set.add(v))); return [...set]; }
+export const commandCategories = ["items", "misc", "invsee", "players", "containers/inventories", "entities", "warps", "world", "uis", "dangerous", "Entity Scale Add-On", "built-in", "custom", "all"];
+export const commandCategoriesDisplay = [{ name: "Items", icon: "" }, { name: "Misc" }, { name: "Invsee" }, { name: "Players" }, { name: "Containers/Inventories" }, { name: "Entities" }, { name: "Warps" }, { name: "World" }, { name: "UIs" }, { name: "§4Dangerous" }, { name: "§6Entity Scale Add-On" }, { name: "All Built-In" }, { name: "Custom" }, { name: "All" }];
+export function manageCommands(sourceEntity) {
+    let form = new ActionFormData;
+    form.title("Manage Commands");
+    let defaultCommands = command.getDefaultCommands();
+    //defaultCommands.forEach((p)=>{form.button(`${p.formatting_code+p.commandName}\n${p.type+": "+(p.settings.enabled?"enabled":"disabled")+"; "+p.command_version}`/*, "textures/ui/online"*/)}); 
+    let customCommands = command.getCustomCommands();
+    //customCommands.forEach((p)=>{form.button(`${p.formatting_code+p.commandName}\n${p.type+": "+(p.settings.enabled?"enabled":"disabled")+"; "+p.command_version}`/*, "textures/ui/online"*/)}); 
+    let commandsList = defaultCommands.concat(customCommands);
+    //form.button("Add Custom Command"); 
+    commandCategoriesDisplay.forEach((p) => { form.button(p.name, p.icon); });
+    form.button("Back");
+    forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        if (r.canceled) {
+            return;
+        }
+        ;
+        switch (r.selection) {
+            case commandCategories.length:
+                mainMenu(sourceEntity);
+                break;
+            default:
+                let category = commandCategories[r.selection];
+                let categoryDisplay = commandCategories[r.selection];
+                let commandsListB = category == "all" ? commandsList : category == "built-in" ? defaultCommands : category == "custom" ? customCommands : command.getDefaultCommandsOfCategory(category);
+                let formB = new ActionFormData;
+                form.title(`Manage ${categoryDisplay}§r Commands`);
+                commandsListB.forEach((p) => { formB.button(`${p.formatting_code + p.commandName}\n${p.type + ": " + (p.settings.enabled ? "enabled" : "disabled") + "; " + p.command_version}` /*, "textures/ui/online"*/); });
+                if (category == "custom" || category == "all") {
+                    formB.button("Add Custom Command");
+                }
+                formB.button("Back");
+                forceShow(formB, sourceEntity).then(ra => {
+                    let r = ra;
+                    if (r.canceled) {
+                        return;
+                    }
+                    ;
+                    switch (r.selection) {
+                        case commandsListB.length + (+(category != "custom" && category != "all")):
+                            let form5 = new ModalFormData;
+                            form5.title(`Add Custom Command`);
+                            form5.textField("Command Name§c*", "mycommand");
+                            form5.dropdown("Command Code Type (commands means the command just runs a list of minecraft commands, and javascript means that the command runs a list of javascript scripts/code)", ["commands", "javascript"]);
+                            form5.textField("Command Version§c*", "SemVer String; ex. 1.7.0-beta.1.2.a.b.c.d", "1.0.0");
+                            form5.textField("Formatting Code§c*", "required: string", "§r§f");
+                            form5.textField("Description", "string");
+                            form5.textField("Formats", "JSON", "[\"myCommand\", \"myCommand <string: string> [integer: int]\"]");
+                            form5.textField("Command Prefix (leave blank to use default)", "default");
+                            form5.toggle("Enable Automatic Parameter Evaluation", true);
+                            form5.submitButton("Create Command");
+                            forceShow(form5, sourceEntity).then(ha => {
+                                let h = ha;
+                                if (h.canceled) {
+                                    return;
+                                }
+                                ;
+                                if (!!!h.formValues[0]) {
+                                    let formErrora = new MessageFormData;
+                                    formErrora.body(`Required parameter 'Command Name' was left blank`);
+                                    formErrora.title("Error");
+                                    formErrora.button1("Back");
+                                    formErrora.button2("Cancel");
+                                    forceShow(formErrora, sourceEntity).then(() => { manageCommands(sourceEntity); return; });
+                                    return;
+                                }
+                                if (!!command.getCustomCommands().find(v => v.commandName == String(h.formValues[0]))) {
+                                    let formError = new MessageFormData;
+                                    formError.body(`There is already a custom command with the name '${String(h.formValues[0]).replaceAll("'", "\\'")}`);
+                                    formError.title("Error");
+                                    formError.button1("Done");
+                                    forceShow(formError, sourceEntity).then(() => { return; });
+                                    manageCommands(sourceEntity);
+                                    return;
+                                }
+                                ;
+                                new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[2]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], description: String(h.formValues[4]), type: "custom", formatting_code: String(h.formValues[3]), formats: JSONParse(h.formValues[5] == "" ? "undefined" : String(h.formValues[5] ?? "undefined")), customCommandPrefix: String(h.formValues[6]), customCommandParametersEnabled: Boolean(h.formValues[7]), customCommandId: "customCommand:" + String(h.formValues[0]), format_version: format_version }).save();
+                                manageCommands(sourceEntity);
+                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                            break;
+                        case commandsListB.length + 1 - +(category != "custom" && category != "all"):
+                            manageCommands(sourceEntity);
+                            break;
+                        default:
+                            let commandsItem = commandsListB[r.selection];
+                            let form2 = new ActionFormData;
+                            form2.title(commandsItem.commandName);
+                            form2.body(`Command Name: ${commandsItem.commandName}\nType: ${commandsItem.type}\nCommand Version: ${commandsItem.command_version}\nCustom Command Id: ${commandsItem.customCommandId}\nCommand Settings Id: ${commandsItem.commandSettingsId}\nCategor${typeof commandsItem.category == "string" ? "y" : "ies"}: ${JSONStringify(commandsItem.category)}\n\nDescription: ${commandsItem.description}\nFormats: ${JSONStringify(commandsItem.formats)}`);
+                            if (commandsItem.type == "custom") {
+                                form2.button("Delete Command");
+                            }
+                            ;
+                            if (commandsItem.type == "custom") {
+                                form2.button("Edit Command");
+                            }
+                            ;
+                            if (commandsItem.type == "custom") {
+                                form2.button("Edit Code");
+                            }
+                            ;
+                            form2.button("Show Info");
+                            form2.button("Settings");
+                            form2.button("Back");
+                            forceShow(form2, sourceEntity).then(ga => {
+                                let g = ga;
+                                if (g.canceled) {
+                                    return;
+                                }
+                                ;
+                                switch (g.selection + (Number(commandsItem.type != "custom") * 3)) {
+                                    case 0:
+                                        let form3 = new MessageFormData;
+                                        form3.title("Confirm Deletion of Command");
+                                        form3.body(`Are you sure you want to delete the custom ${commandsItem.commandName} command?\nThis action cannot be undone.`);
+                                        form3.button2("Delete Command");
+                                        form3.button1("Cancel");
+                                        forceShow(form3, sourceEntity).then(ha => {
+                                            let h = ha;
+                                            if (h.canceled) {
+                                                return;
+                                            }
+                                            ;
+                                            if (h.selection == 0) {
+                                                manageCommands(sourceEntity);
+                                            }
+                                            ;
+                                            if (h.selection == 1) {
+                                                commandsItem.remove();
+                                                manageCommands(sourceEntity);
+                                            }
+                                            ;
+                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                                        break;
+                                    case 1:
+                                        let form5 = new ModalFormData;
+                                        form5.title(`Edit Custom Command`);
+                                        form5.textField("Command Name§c*", "mycommand", commandsItem.commandName);
+                                        form5.dropdown("Command Code Type (commands means the command just runs a list of minecraft commands, and javascript means that the command runs a list of javascript scripts/code)", ["commands", "javascript"], ["commands", "javascript"].findIndex(v => v == commandsItem.customCommandType));
+                                        form5.slider("Number of Code Lines", 1, 100, 1, Number(commandsItem.customCommandCodeLines ?? 1));
+                                        form5.textField("Command Version§c*", "SemVer String; ex. 1.7.0-beta.1.2.a.b.c.d", String(commandsItem.command_version));
+                                        form5.textField("Formatting Code§c*", "required: string", commandsItem.formatting_code);
+                                        form5.textField("Description", "string", commandsItem.description);
+                                        form5.textField("Formats", "JSON", JSONStringify(commandsItem.formats));
+                                        form5.textField("Command Prefix (leave blank to use default)", "default", commandsItem.customCommandPrefix);
+                                        form5.toggle("Enable Automatic Parameter Evaluation", commandsItem.customCommandParametersEnabled);
+                                        form5.textField("Parameters for Automatic Parameter Evaluation (requires enable automatic parameter evaluation to be enabled)\nThis is a list of strings stating the parameter types, valid values are \"presetText\", \"number\", \"boolean\", \"string\", and\"json\". \npresetText matches a string of text with no quotation marks or spaces in it\nnumber matches a number, boolean matches a boolean\nstring matches either a string of text with no quotation marks or spaces, or a string of text inside of quotation marks that may include spaces and also escape characters\njson matches a JSON array, object, or string\nthis list should always start with presetText to match the command name\nfor example: if you have the command 'say hi \"test stuff\" 9768 true 8 {\"some\": \"thing\", \"a\": [1, 2, 3, 4, 5]} [1, 2, 3, 4, \"5\"]' and you set this value to [\"presetText\", \"presetText\", \"string\", \"number\", \"boolean\", \"string\", \"json\", \"json\"] then it would return [\"say\", \"hi\", \"test stuff\", 9768, true, \"8\", {\"some\": \"thing\", \"a\": [1, 2, 3, 4, 5]}, [1, 2, 3, 4, \"5\"]]", "JSON", JSONStringify(commandsItem.customCommandParametersList ?? ["presetText"]));
+                                        form5.submitButton("Save");
+                                        forceShow(form5, sourceEntity).then(ha => {
+                                            let h = ha;
+                                            if (h.canceled) {
+                                                return;
+                                            }
+                                            ;
+                                            if (!!!h.formValues[0]) {
+                                                let formErrora = new MessageFormData;
+                                                formErrora.body(`Required parameter 'Command Name' was left blank`);
+                                                formErrora.title("Error");
+                                                formErrora.button1("Back");
+                                                forceShow(formErrora, sourceEntity).then(() => { manageCommands(sourceEntity); return; });
+                                                return;
+                                            }
+                                            if ((!!command.getCustomCommands().find(v => v.commandName == String(h.formValues[0]))) && (String(h.formValues[0]) != commandsItem.commandName)) {
+                                                let formError = new MessageFormData;
+                                                formError.body(`There is already a custom command with the name '${String(h.formValues[0]).replaceAll("'", "\\'")}, saving this will overwrite it, are you sure you want to do this?\nThis action cannot be undone.`);
+                                                formError.title("Error");
+                                                formError.button2("Confirm");
+                                                formError.button1("Cancel");
+                                                forceShow(formError, sourceEntity).then(sa => {
+                                                    console.warn(sa.selection);
+                                                    if (sa.selection == 0) {
+                                                        manageCommands(sourceEntity);
+                                                        return;
+                                                    }
+                                                    else {
+                                                        if (String(h.formValues[0]) != commandsItem.commandName) {
+                                                            JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9]));
+                                                            JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined"));
+                                                            commandsItem.remove();
+                                                            commandsItem.settings.remove();
+                                                            new commandSettings("customCommandSettings:" + String(h.formValues[0])).save(commandsItem.settings.toJSON());
+                                                            commandsItem = new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[3]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], customCommandCodeLines: Number(h.formValues[2]), description: String(h.formValues[5]), type: "custom", formatting_code: String(h.formValues[4]), formats: JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined")), customCommandPrefix: String(h.formValues[7]), customCommandParametersEnabled: Boolean(h.formValues[8]), customCommandId: "customCommand:" + String(h.formValues[0]), commandSettingsId: "customCommandSettings:" + String(h.formValues[0]), customCommandParametersList: JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9])), format_version: format_version });
+                                                            commandsItem.save();
+                                                        }
+                                                        ;
+                                                    }
+                                                });
+                                                manageCommands(sourceEntity);
+                                            }
+                                            else {
+                                                if (String(h.formValues[0]) != commandsItem.commandName) {
+                                                    JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9]));
+                                                    JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined"));
+                                                    commandsItem.remove();
+                                                    commandsItem.settings.remove();
+                                                    new commandSettings("customCommandSettings:" + String(h.formValues[0])).save(commandsItem.settings.toJSON());
+                                                    commandsItem = new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[3]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], customCommandCodeLines: Number(h.formValues[2]), description: String(h.formValues[5]), type: "custom", formatting_code: String(h.formValues[4]), formats: JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined")), customCommandPrefix: String(h.formValues[7]), customCommandParametersEnabled: Boolean(h.formValues[8]), customCommandId: "customCommand:" + String(h.formValues[0]), commandSettingsId: "customCommandSettings:" + String(h.formValues[0]), customCommandParametersList: JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9])), format_version: format_version });
+                                                    commandsItem.save();
+                                                }
+                                                else {
+                                                    JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9]));
+                                                    JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined"));
+                                                    new command({ commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[3]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])], customCommandCodeLines: Number(h.formValues[2]), description: String(h.formValues[5]), type: "custom", formatting_code: String(h.formValues[4]), formats: JSONParse(h.formValues[6] == "" ? "undefined" : String(h.formValues[6] ?? "undefined")), customCommandPrefix: String(h.formValues[7]), customCommandParametersEnabled: Boolean(h.formValues[8]), customCommandId: "customCommand:" + String(h.formValues[0]), commandSettingsId: "customCommandSettings:" + String(h.formValues[0]), customCommandParametersList: JSONParse(h.formValues[9] == "" ? "[]" : String(h.formValues[9])), format_version: format_version }).save();
+                                                }
+                                                manageCommands(sourceEntity);
+                                            }
+                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                                        break;
+                                    case 2:
+                                        let form7 = new ModalFormData;
+                                        form7.title(`Editing Code for ${commandsItem.commandName}`);
+                                        if (commandsItem.customCommandCodeLines == 1 || commandsItem.customCommandCodeLines == 0 || !!!commandsItem.customCommandCodeLines) {
+                                            form7.textField("Line " + 0 + "\nUse ${params[index]} to acess the value of a parameter or to access a javascript variable use ${javascript code}.", commandsItem.customCommandType == "commands" ? "Minecraft Command" : "JavaScript Code", commandsItem.code[0]);
+                                        }
+                                        else {
+                                            for (let i = 0; i < commandsItem.customCommandCodeLines; i++) {
+                                                form7.textField("Line " + i + (i == 0 ? "\nUse ${params[index]} to acess the value of a parameter or to access a javascript variable use ${javascript code}." : ""), commandsItem.customCommandType == "commands" ? "Minecraft Command" : "JavaScript Code", commandsItem.code[i]);
+                                            }
+                                        }
+                                        form7.submitButton("Save");
+                                        forceShow(form7, sourceEntity).then(ha => {
+                                            let h = ha;
+                                            if (h.canceled) {
+                                                return;
+                                            }
+                                            ;
+                                            h.formValues.forEach((v, i) => { world.setDynamicProperty("customCommandCode:" + commandsItem.commandName + ":" + i, v); });
+                                            world.getDynamicPropertyIds().filter(v => ((v.startsWith("customCommandCode:" + commandsItem.commandName + ":")) && (Number(v.slice(("customCommandCode:" + commandsItem.commandName + ":").length)) >= commandsItem.customCommandCodeLines))).forEach(v => world.setDynamicProperty(v));
+                                            manageCommands(sourceEntity);
+                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                                        break;
+                                    case 3:
+                                        let form4 = new ActionFormData;
+                                        form4.title(`${commandsItem.commandName} Command Info`);
+                                        form4.body(`§r§f${ /*arrayModifier(*/JSON.stringify(commandsItem).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"") /*.split(""), (v, i)=>(Number(String((i/30).toFixed(4)))==Math.round(i/30)?"\n"+v:v))*/}`);
+                                        form4.button("Done");
+                                        forceShow(form4, sourceEntity).then(ha => {
+                                            let h = ha;
+                                            if (h.canceled) {
+                                                return;
+                                            }
+                                            ;
+                                            manageCommands(sourceEntity);
+                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                                        break;
+                                    case 4:
+                                        let form6 = new ModalFormData;
+                                        form6.title(`Command Settings for ${commandsItem.type} ${commandsItem.commandName}`);
+                                        form6.textField("Required Tags", "JSON", JSONStringify(commandsItem.settings.requiredTags ?? ["canUseChatCommands"]));
+                                        form6.slider("Required Permission Level", 0, 15, 1, Number(commandsItem.settings.requiredPermissionLevel ?? 0));
+                                        form6.toggle("Requires OP", commandsItem.settings.requiresOp);
+                                        form6.toggle("Enabled", commandsItem.settings.enabled);
+                                        form6.submitButton("Save");
+                                        forceShow(form6, sourceEntity).then(ha => {
+                                            let h = ha;
+                                            if (h.canceled) {
+                                                return;
+                                            }
+                                            ;
+                                            commandsItem.settings.save({ requiredTags: h.formValues[0] == "" ? [] : JSONParse(String(h.formValues[0])), requiredPermissionLevel: Number(h.formValues[1]), requiresOp: Boolean(h.formValues[2]), enabled: Boolean(h.formValues[3]), settings_version: command_settings_format_version, format_version: format_version });
+                                            manageCommands(sourceEntity);
+                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                                        break;
+                                    case 5:
+                                        manageCommands(sourceEntity);
+                                        break;
+                                    default:
+                                }
+                                ;
+                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                    }
+                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+        }
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+//1320
+//2013
+export async function onlinePlayerSelector(sourceEntity, backFunction = mainMenu, ...functionargs) {
+    let form = new ActionFormData;
+    form.title("Select Player");
+    let playerslist = world.getAllPlayers();
+    playerslist.forEach((p) => { form.button(`${p.name}\n${p.id}` /*, "textures/ui/online"*/); });
+    form.button("Back");
+    return forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        if (r.canceled) {
+            return;
+        }
+        ;
+        switch (r.selection) {
+            case playerslist.length:
+                return backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
+                break;
+            default:
+                return playerslist[r.selection];
+        }
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export async function itemSelector(sourceEntity, targetPlayer, backFunction = mainMenu, ...functionargs) {
+    let form = new ActionFormData;
+    form.title("Select Item");
+    let itemsList = [];
+    for (let i = 0; i < targetPlayer.getComponent("inventory").inventorySize; i++) {
+        itemsList.push({ slot: i, item: targetPlayer.getComponent("inventory").container.getSlot(i) });
+    }
+    ;
+    let equipmentList = [];
+    for (let i = 0; i < 6; i++) {
+        equipmentList.push({ slot: [EquipmentSlot.Mainhand, EquipmentSlot.Offhand, EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet][i], item: targetPlayer.getComponent("equippable").getEquipmentSlot([EquipmentSlot.Mainhand, EquipmentSlot.Offhand, EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet][i]) });
+    }
+    ;
+    let slotsList = equipmentList.concat(itemsList);
+    slotsList.forEach((p) => { if (p.item.hasItem()) {
+        form.button(`${p?.slot}: ${p?.item?.typeId}\n${p?.item?.amount}; ${p?.item?.nameTag}` /*, "textures/ui/online"*/);
+    }
+    else {
+        form.button(`${p?.slot}: empty\n0; ` /*, "textures/ui/online"*/);
+    } });
+    form.button("Back");
+    return forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        if (r.canceled) {
+            return;
+        }
+        ;
+        switch (r.selection) {
+            case slotsList.length:
+                return backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
+                break;
+            default:
+                return slotsList[r.selection];
+        }
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export async function itemEditorTypeSelection(sourceEntity, targetPlayer, item, selectionItems, backFunction = mainMenu, ...functionargs) {
+    let form = new ActionFormData;
+    form.title("§eItem Editor §f[§cAlpha§f]");
+    form.button((!item.item.hasItem() ? "§c" : "") + "Edit Item" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() || item.item?.isStackable ? "§c" : "") + "Edit Code" + (item.item?.isStackable ? "\n(Item Must Be Non-Stackable)" : "") /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() || item.item?.isStackable ? "§c" : "§e") + "Edit Dynamic Properties" + (item.item?.isStackable ? "\n(Item Must Be Non-Stackable)" : "") /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "§c") + "Edit Enchantments" /*, "textures/ui/online"*/);
+    form.button("New Item" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "§c") + "Transfer Item" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "§c") + "Clone Item" /*, "textures/ui/online"*/);
+    form.button((!item.item.hasItem() ? "§c" : "§c") + "Delete Item" /*, "textures/ui/online"*/);
+    //    form.button("Ban Item"/*, "textures/ui/online"*/); 
+    form.button("Back");
+    let result;
+    result = undefined;
+    return forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        if (r.canceled) {
+            return;
+        }
+        ;
+        switch (r.selection) {
+            case 0:
+                if (item.item?.hasItem()) {
+                    result = !!selectionItems?.edit?.f ? selectionItems?.edit?.f(...selectionItems?.edit?.a ?? [sourceEntity, sourceEntity]) : itemEditor(sourceEntity, targetPlayer, item.item);
+                }
+                else {
+                    backFunction(...functionargs ?? sourceEntity);
+                }
+                break;
+            case 1:
+                if (item.item?.hasItem() && (!item.item?.isStackable)) {
+                    result = !!selectionItems?.editCode?.f ? selectionItems?.editCode?.f(...selectionItems?.editCode?.a ?? [sourceEntity, sourceEntity]) : itemCodePropertyEditor(sourceEntity, item.item);
+                }
+                else {
+                    backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
+                }
+                break;
+            case 2:
+                if (item.item?.hasItem() && (!item.item?.isStackable)) {
+                    result = !!selectionItems?.editDynamicProperties?.f ? selectionItems?.editDynamicProperties?.f(...selectionItems?.editDynamicProperties?.a ?? [sourceEntity, sourceEntity]) : itemDynamicPropertyEditor(sourceEntity, item.item);
+                }
+                else {
+                    backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
+                }
+                break;
+            case 4:
+                result = !!selectionItems?.editCode?.f ? selectionItems?.editCode?.f(...selectionItems?.editCode?.a ?? [sourceEntity, sourceEntity]) : newItemInSlot(sourceEntity, item.item);
+                break;
+            case 5:
+                result = backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
+                break;
+            default:
+                result = backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
+        }
+        return result;
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export async function itemEditor(sourceEntity, targetPlayer, item) {
+    let form = new ModalFormData;
+    form.title("Edit Item");
+    form.textField("Item Name (escape characters such as \\n are allowed)", "string", !!!item.nameTag ? undefined : item.nameTag);
+    form.textField("Item Lore (escape characters such as \\n are allowed)(set to [] to clear)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getLore()));
+    form.slider("Amount", 0, 127, 1, item.amount);
+    form.textField("Can Destroy (escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getCanDestroy()));
+    form.textField("Can Place On (escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getCanPlaceOn()));
+    form.dropdown("Item Lock Mode", [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory], [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory][item.lockMode]);
+    form.toggle("Keep On Death", item.keepOnDeath);
+    form.textField((!!!item.getItem().getComponent("cooldown") ? "§c(UNAVAILABLE)§f " : "") + "Set Cooldown (In Ticks)", "ticks");
+    form.textField((!!!item.getItem().getComponent("durability") ? "§c(UNAVAILABLE)§f " : "") + "Set Damage", "int", String(item.getItem().getComponent("durability")?.damage));
+    form.submitButton("Done");
+    let result;
+    result = undefined;
+    return forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        if (r.canceled) {
+            return;
+        }
+        ;
+        let [name, lore, count, canDestroy, canPlaceOn, lockMode, keepOnDeath, cooldown, durability] = r.formValues;
+        try {
+            if (String(name) != item.nameTag) {
+                item.nameTag = String(name);
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if (JSONParse((String(lore) == "" ? "[]" : String(lore))) != item.getLore()) {
+                item.setLore(JSONParse(String(lore)));
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if (Number(count) != item.amount) {
+                item.amount = Number(count);
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if (JSONParse((String(canDestroy) == "" ? "[]" : String(canDestroy))) != item.getCanDestroy()) {
+                item.setCanDestroy(JSONParse(String(canDestroy)));
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if (JSONParse((String(canPlaceOn) == "" ? "[]" : String(canPlaceOn))) != item.getCanPlaceOn()) {
+                item.setCanPlaceOn(JSONParse(String(canPlaceOn)));
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if ([ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory][Number(lockMode)] != item.lockMode) {
+                item.lockMode = [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory][Number(lockMode)];
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if (Boolean(keepOnDeath) != item.keepOnDeath) {
+                item.keepOnDeath = Boolean(keepOnDeath);
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        if (!!item.getItem().getComponent("cooldown")) {
+            try {
+                if (String(cooldown) != "") {
+                    targetPlayer.startItemCooldown(item.getItem().getComponent("cooldown").cooldownCategory, Number(cooldown));
+                }
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+        }
+        if (!!item.getItem().getComponent("durability")) {
+            try {
+                if (Number(durability) != item.getItem().getComponent("durability").damage) {
+                    const a = item.getItem();
+                    a.getComponent("durability").damage = Number(durability);
+                    item.setItem(a);
+                }
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+        }
+        return result;
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export function itemDynamicPropertyEditor(sourceEntity, item) {
+    let formb = new ActionFormData;
+    formb.title("Item Dynamic Property Editor");
+    formb.button("Add Property");
+    formb.button("§cEdit Property");
+    formb.button("§cRemove Property");
+    formb.button("Back");
+    forceShow(formb, sourceEntity).then(ba => {
+        let b = ba;
+        if (b.canceled) {
+            return;
+        }
+        ;
+        let form = new ModalFormData;
+        form.title("Item Dynamic Property Editor");
+        let properties = item.getDynamicPropertyIds();
+        switch (b.selection) {
+            case 0:
+                form.textField("Property Name", "string");
+                form.textField("Property Value", "string|number|boolean|vector3json");
+                form.dropdown("Property Type", ["String", "Number", "Boolean", "Vector3"]);
+                forceShow(form, sourceEntity).then(ra => {
+                    let r = ra;
+                    if (r.canceled) {
+                        return;
+                    }
+                    ;
+                    let [name, value, type] = r.formValues;
+                    try {
+                        item.setDynamicProperty(String(name), Number(type) == 0 ? String(value) : Number(type) == 1 ? Number(value) : Number(type) == 2 ? Boolean(value) : JSONParse(String(value)));
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+        }
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export function itemCodePropertyEditor(sourceEntity, item) {
+    let form = new ModalFormData;
+    form.title("Code Editor");
+    form.textField("Item Use Code", "JavaScript", String(item.getDynamicProperty("code")));
+    form.textField("Item Use On Code", "JavaScript", !!item.getDynamicProperty("itemUseOnCode") ? String(item.getDynamicProperty("itemUseOnCode")) : undefined);
+    form.submitButton("Done");
+    forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        if (r.canceled) {
+            return;
+        }
+        ;
+        let [code, itemUseOnCode] = r.formValues;
+        try {
+            if (String(code) != String(item.getDynamicProperty("code"))) {
+                item.setDynamicProperty("code", String(code));
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        try {
+            if (itemUseOnCode == "" ? undefined : String(itemUseOnCode) != String(item.getDynamicProperty("itemUseOnCode"))) {
+                item.setDynamicProperty("itemUseOnCode", itemUseOnCode == "" ? undefined : String(itemUseOnCode));
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export function newItemInSlot(sourceEntity, item) {
+    let form = new ModalFormData;
+    form.title("New Item");
+    form.textField("Item Type", "Item Id", "minecraft:grass_block");
+    form.textField("Count", "int", "1");
+    forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        if (r.canceled) {
+            return;
+        }
+        ;
+        let [type, count] = r.formValues;
+        try {
+            item.setItem(new ItemStack(String(type), Number(count)));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
+export function createExplosion(sourceEntity, parameterDefaults) {
+    let form = new ModalFormData;
+    form.title("Create Explosion");
+    form.textField("x", "number", String(parameterDefaults?.x ?? sourceEntity.location.x));
+    form.textField("y", "number", String(parameterDefaults?.y ?? sourceEntity.location.y));
+    form.textField("z", "number", String(parameterDefaults?.z ?? sourceEntity.location.z));
+    form.textField("dimension", "dimensionId", String(parameterDefaults?.dimension?.id ?? sourceEntity.dimension.id));
+    form.textField("radius", "number", String(parameterDefaults?.radius ?? 1));
+    form.textField("source", "targetSelector", parameterDefaults?.source);
+    form.toggle("allowUnderwater", parameterDefaults?.explosionOptions?.allowUnderwater ?? false);
+    form.toggle("breaksBlocks", parameterDefaults?.explosionOptions?.breaksBlocks ?? true);
+    form.toggle("causesFire", parameterDefaults?.explosionOptions?.causesFire ?? false);
+    form.submitButton("Create");
+    forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        if (r.canceled) {
+            return;
+        }
+        ;
+        let [x, y, z, dimension, radius, source, allowUnderwater, breaksBlocks, causesFire] = r.formValues;
+        try {
+            world.getDimension(String(dimension)).createExplosion({ x: Number(x), y: Number(y), z: Number(z) }, Number(radius), { allowUnderwater: Boolean(allowUnderwater), breaksBlocks: Boolean(breaksBlocks), causesFire: Boolean(causesFire), source: source == "" ? undefined : targetSelectorAllListC(String(source), "", `${sourceEntity.location.x} ${sourceEntity.location.y} ${sourceEntity.location.z}`, sourceEntity)[0] });
+        }
+        catch (e) {
+            console.error(e, e.stack);
         }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }

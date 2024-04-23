@@ -1,8 +1,8 @@
 {
     "format_version": 2,
     "header": {
-        "description": "v.1.5.1 8Crafter's Debug Sticks BP by 8Crafter (for 1.20.7x). ",
-        "name": "v.1.5.1 8Crafter's Debug Sticks BP by 8Crafter (for 1.20.7x). ",
+        "description": "v.1.5.1 8Crafter's Debug Sticks BP by 8Crafter (for 1.20.8x). ",
+        "name": "v.1.5.1 8Crafter's Debug Sticks BP by 8Crafter (for 1.20.8x). ",
         "uuid": "53170125-3e79-4659-9bba-e49eb90b6ded",
         "version": [ 1, 5, 1 ],
         "min_engine_version": [ 1, 20, 40 ]
@@ -10,7 +10,7 @@
     "capabilities": [ "script_eval" ],
     "modules": [
         {
-            "description": "v.1.5.1 8Crafter's Debug Sticks BP by 8Crafter (for 1.20.7x). ",
+            "description": "v.1.5.1 8Crafter's Debug Sticks BP by 8Crafter (for 1.20.8x). ",
             "type": "data",
             "uuid": "715e0f88-d0a1-4304-8c96-49bbd2b98257",
             "version": [ 1, 5, 1 ]
@@ -31,7 +31,7 @@
         },
         {
           "module_name": "@minecraft/server",
-          "version": "1.10.0-beta"
+          "version": "1.11.0-beta"
         },
         {
           "module_name": "@minecraft/server-gametest",

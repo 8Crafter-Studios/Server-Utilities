@@ -5,7 +5,7 @@ import GameTestExtensions from "./GameTestExtensions.js";
 import {/*
   BlockLocationIterator,*/
   Direction,
-  ItemStack,Vector,/*
+  ItemStack,/*
   Location,*//*
   MinecraftBlockTypes,*//*
   MinecraftItemTypes,*/

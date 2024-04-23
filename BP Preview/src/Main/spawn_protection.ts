@@ -1,11 +1,11 @@
-import { BlockVolume, CompoundBlockVolume, Player, Vector3, system, world, Entity } from "@minecraft/server";
+import { BlockVolume, CompoundBlockVolume, Player, type Vector3, system, world, Entity } from "@minecraft/server";
 import { ActionFormData, ModalFormData, ActionFormResponse, ModalFormResponse } from "@minecraft/server-ui";
 import { forceShow, mainMenu } from "./ui";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
-import * as mcServerAdmin from "@minecraft/server-admin";*/
-import * as mcDebugUtilities from "@minecraft/debug-utilities";/*
+import * as mcServerAdmin from "@minecraft/server-admin";*//*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import *  as main from "Main";
@@ -15,10 +15,11 @@ import *  as bans from "Main/ban";
 import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
+import mcMath from "@minecraft/math.js";
 mcServer
 mcServerUi/*
-mcServerAdmin*/
-mcDebugUtilities/*
+mcServerAdmin*//*
+mcDebugUtilities*//*
 mcCommon*/
 GameTest/*
 mcVanillaData*/
@@ -29,22 +30,23 @@ bans
 uis
 playersave
 spawnprot
+mcMath
 
 export const spawn_protection_format_version = "1.0.1";
 export const spawnProtectionTypeList = [/*"noPistonExtensionArea:", */"noExplosionArea:", "noInteractArea:", "noBlockInteractArea:", "noBlockBreakArea:", "protectedArea:", "noBlockPlaceArea:"]
-export let noPistonExtensionAreas: {positive: BlockVolume[], negative: BlockVolume[]}
+export let noPistonExtensionAreas: {positive: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[], negative: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[]}
 noPistonExtensionAreas = undefined
-export let noExplosionAreas: {positive: BlockVolume[], negative: BlockVolume[]}
+export let noExplosionAreas: {positive: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[], negative: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[]}
 noExplosionAreas = undefined
-export let noBlockInteractAreas: {positive: BlockVolume[], negative: BlockVolume[]}
+export let noBlockInteractAreas: {positive: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[], negative: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[]}
 noBlockInteractAreas = undefined
-export let noInteractAreas: {positive: BlockVolume[], negative: BlockVolume[]}
+export let noInteractAreas: {positive: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[], negative: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[]}
 noInteractAreas = undefined
-export let protectedAreas: {positive: BlockVolume[], negative: BlockVolume[]}
+export let protectedAreas: {positive: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[], negative: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[]}
 protectedAreas = undefined
-export let noBlockBreakAreas: {positive: BlockVolume[], negative: BlockVolume[]}
+export let noBlockBreakAreas: {positive: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[], negative: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[]}
 noBlockBreakAreas = undefined
-export let noBlockPlaceAreas: {positive: BlockVolume[], negative: BlockVolume[]}
+export let noBlockPlaceAreas: {positive: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[], negative: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[]}
 noBlockPlaceAreas = undefined
 
 try{system.runInterval( () => {
@@ -115,5 +117,5 @@ spawnProtectionTypeList.forEach((s)=>{form.button(s, "textures/ui/xyz_axis");})
 forceShow(form, (sourceEntity as Player)).then(la => {let l = (la as ActionFormResponse); 
     try {editAreas((sourceEntity as Player), spawnProtectionTypeList[l.selection]); }catch(e){console.error(e, e.stack);};
 })} 
-export function convertToCompoundBlockVolume(selection: String){let compoundFullBlockVolumes = new CompoundBlockVolume({x: 0, y: 0, z: 0}); let blockVolumeAllLists: BlockVolume[]; blockVolumeAllLists = []; selection.split("|").forEach((selectionSection)=>{blockVolumeAllLists.push({from: {x: Number(selectionSection.split(", ")[0]), y: Number(selectionSection.split(", ")[1]), z: Number(selectionSection.split(", ")[2])}, to: {x: Number(selectionSection.split(", ")[3]), y: Number(selectionSection.split(", ")[4]), z: Number(selectionSection.split(", ")[5])}})}); return blockVolumeAllLists}
-export function testIsWithinRanges(blockvolumes: BlockVolume[], location: Vector3){let withinRange = false; blockvolumes.forEach((blockvolume)=>{if((((blockvolume.from.x>=location.x&&location.x>=blockvolume.to.x)||(blockvolume.to.x>=location.x&&location.x>=blockvolume.from.x))&&((blockvolume.from.y>=location.y&&location.y>=blockvolume.to.y)||(blockvolume.to.y>=location.y&&location.y>=blockvolume.from.y))&&((blockvolume.from.z>=location.z&&location.z>=blockvolume.to.z)||(blockvolume.to.z>=location.z&&location.z>=blockvolume.from.z)))){withinRange = true}}); return withinRange}
+export function convertToCompoundBlockVolume(selection: String){let compoundFullBlockVolumes = new CompoundBlockVolume({x: 0, y: 0, z: 0}); let blockVolumeAllLists: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[]; blockVolumeAllLists = []; selection.split("|").forEach((selectionSection)=>{blockVolumeAllLists.push({from: {x: Number(selectionSection.split(", ")[0]), y: Number(selectionSection.split(", ")[1]), z: Number(selectionSection.split(", ")[2])}, to: {x: Number(selectionSection.split(", ")[3]), y: Number(selectionSection.split(", ")[4]), z: Number(selectionSection.split(", ")[5])}})}); return blockVolumeAllLists}
+export function testIsWithinRanges(blockvolumes: {from: {x: number, y: number, z: number}, to: {x: number, y: number, z: number}}[], location: Vector3){let withinRange = false; blockvolumes.forEach((blockvolume)=>{if((((blockvolume.from.x>=location.x&&location.x>=blockvolume.to.x)||(blockvolume.to.x>=location.x&&location.x>=blockvolume.from.x))&&((blockvolume.from.y>=location.y&&location.y>=blockvolume.to.y)||(blockvolume.to.y>=location.y&&location.y>=blockvolume.from.y))&&((blockvolume.from.z>=location.z&&location.z>=blockvolume.to.z)||(blockvolume.to.z>=location.z&&location.z>=blockvolume.from.z)))){withinRange = true}}); return withinRange}

@@ -4,8 +4,8 @@ import { ban } from "./ban";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
-import * as mcServerAdmin from "@minecraft/server-admin";*//*
-import * as mcDebugUtilities from "@minecraft/debug-utilities"; *//*
+import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
@@ -15,10 +15,11 @@ import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
+import mcMath from "@minecraft/math.js";
 mcServer;
 mcServerUi; /*
-mcServerAdmin*//*
-mcDebugUtilities; *//*
+mcServerAdmin*/ /*
+mcDebugUtilities*/ /*
 mcCommon*/
 GameTest; /*
 mcVanillaData*/
@@ -29,7 +30,8 @@ bans;
 uis;
 playersave;
 spawnprot;
-export const player_save_format_version = "1.0.1";
+mcMath;
+export const player_save_format_version = "1.2.0";
 export class savedPlayer {
     constructor(data) {
         this.format_version = format_version;
@@ -63,10 +65,10 @@ export class savedPlayer {
     get idBans() { let bans = ban.getBans().idBans.filter((b) => b.playerId == this.id); return { all: bans, valid: bans.filter((b) => b.isValid), expired: bans.filter((b) => b.isExpired) }; }
     static getSavedPlayerIds() { return world.getDynamicPropertyIds().filter((s) => (s.startsWith("player:"))); } /*
 saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playerName}`, `${Number(ban.removeAfterBanExpires)}||${ban.unbanDate.valueOf()}||${ban.banDate.valueOf()}||${ban.originalPlayerId}||${ban.bannedById}||${ban.bannedByName.replaceAll("|", "\\|")}||${ban.reason}`)}else{if(ban.type=="id"){world.setDynamicProperty(`idBan:${ban.playerId}`, `${Number(ban.removeAfterBanExpires)}||${ban.unbanDate.valueOf()}||${ban.banDate.valueOf()}||${ban.originalPlayerName.replaceAll("|", "\\|")}||${ban.bannedById}||${ban.bannedByName.replaceAll("|", "\\|")}||${ban.reason}`)}else{}}}*/
-    static savePlayerData(savedPlayerData) { savedPlayerData.saveId = savedPlayerData.saveId ?? "player:" + savedPlayerData.id; savedPlayerData.format_version = savedPlayerData.format_version ?? format_version; world.setDynamicProperty(savedPlayerData.saveId ?? `player:${savedPlayerData.id}`, JSON.stringify(savedPlayerData)); return savedPlayerData.saveId ?? `player:${savedPlayerData.id}`; }
+    static savePlayerData(savedPlayerData) { savedPlayerData.saveId = savedPlayerData.saveId ?? "player:" + savedPlayerData.id; savedPlayerData.format_version = savedPlayerData.format_version ?? format_version; savedPlayerData.player_save_format_version = savedPlayerData.player_save_format_version ?? format_version; world.setDynamicProperty(savedPlayerData.saveId ?? `player:${savedPlayerData.id}`, JSON.stringify(savedPlayerData)); return savedPlayerData.saveId ?? `player:${savedPlayerData.id}`; }
     static savePlayer(player) {
         let savedPlayerData;
-        savedPlayerData = { name: player.name, nameTag: player.nameTag, id: player.id, isOp: player.isOp(), tags: player.getTags(), items: { inventory: [], equipment: [], ender_chest: [] }, selectedSlot: player.selectedSlot, format_version: format_version, lastOnline: Date.now(), location: player.location, dimension: player.dimension, rotation: player.getRotation() };
+        savedPlayerData = { name: player.name, nameTag: player.nameTag, id: player.id, isOp: player.isOp(), tags: player.getTags(), items: { inventory: [], equipment: [], ender_chest: [] }, selectedSlot: player.selectedSlot, format_version: format_version, player_save_format_version: player_save_format_version, lastOnline: Date.now(), location: player.location, dimension: player.dimension, rotation: player.getRotation(), gameMode: player.getGameMode(), spawnPoint: player.getSpawnPoint() };
         savedPlayerData.saveId = savedPlayerData.saveId ?? "player:" + savedPlayerData.id;
         savedPlayerData.format_version = savedPlayerData.format_version ?? format_version;
         for (let i = 0; i < player.getComponent("inventory").inventorySize; i++) {

@@ -4,8 +4,8 @@ import { forceShow } from "./ui";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
-import * as mcServerAdmin from "@minecraft/server-admin";*/
-import * as mcDebugUtilities from "@minecraft/debug-utilities"; /*
+import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
@@ -15,10 +15,11 @@ import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
+import mcMath from "@minecraft/math.js";
 mcServer;
 mcServerUi; /*
-mcServerAdmin*/
-mcDebugUtilities; /*
+mcServerAdmin*/ /*
+mcDebugUtilities*/ /*
 mcCommon*/
 GameTest; /*
 mcVanillaData*/
@@ -29,6 +30,7 @@ bans;
 uis;
 playersave;
 spawnprot;
+mcMath;
 export const spawn_protection_format_version = "1.0.1";
 export const spawnProtectionTypeList = [/*"noPistonExtensionArea:", */ "noExplosionArea:", "noInteractArea:", "noBlockInteractArea:", "noBlockBreakArea:", "protectedArea:", "noBlockPlaceArea:"];
 export let noPistonExtensionAreas;
@@ -126,6 +128,7 @@ export function editAreas(player, prefix) {
             case (t.selection == a.length + 1): /*
             editPistonExtensionAreas(player)*/ /*
             screenForm123(); */
+                editAreasMainMenu(player);
                 break;
             default:
                 form1234567.button("Edit", "textures/ui/book_edit_default");
