@@ -5,14 +5,14 @@
     "modifications": [
       {
         "array_name": "controls",
-        "operation": "insert_after",/*
-        "control_name": "how_to_play_button@general_section.how_to_play_button",*/
+        "operation": "insert_front",/*
+        "control_name": "how_to_play_button@general_section.how_to_play_button",*//*
         "where": {
           "how_to_play_button@general_section.how_to_play_button": {
             "ignored": "$ignore_how_to_play_section",
             "$toggle_group_forced_index": "$how_to_play_index"
           }
-        },
+        },*/
         "value": [
           {
             "debug_sticks_guide_button@settings.debug_sticks_guide_button": {
