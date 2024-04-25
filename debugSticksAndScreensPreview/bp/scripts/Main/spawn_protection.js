@@ -1,5 +1,6 @@
 import { BlockVolume, CompoundBlockVolume, Player, system, world, Entity } from "@minecraft/server";
 import { ActionFormData, ModalFormData, ActionFormResponse, ModalFormResponse } from "@minecraft/server-ui";
+import { format_version } from "Main";
 import { forceShow, mainMenu } from "./ui";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -16,7 +17,6 @@ import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-export const format_version = "1.12.3";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -123,6 +123,7 @@ export function editAreas(player, prefix) {
             case (t.selection == a.length):
                 form12345.textField("Identifier Name", "myArea");
                 form12345.textField("Area Value(type of 0 = normal, type of 1 = negative)", "x1, y1, z1, x2, y2, z2, type, icon_path?(optional)");
+                form12345.submitButton("Add");
                 forceShow(form12345, player).then((q) => { if (q.canceled)
                     return; const [id, value] = q.formValues; world.setDynamicProperty(prefix + id, String(value)); });
                 break;
@@ -141,6 +142,7 @@ export function editAreas(player, prefix) {
                     switch (w.selection) {
                         case 0:
                             form123456.textField("Area Value(type of 0 = normal, type of 1 = negative)", "x1, y1, z1, x2, y2, z2, type, icon_path?(optional)", String(world.getDynamicProperty(String(a[Number(t.selection)]))));
+                            form123456.submitButton("Save");
                             forceShow(form123456, player).then((q) => { if (q.canceled)
                                 return; const [value] = q.formValues; world.setDynamicProperty(a[t.selection], String(value)); });
                             break;

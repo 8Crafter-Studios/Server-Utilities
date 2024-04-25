@@ -1,5 +1,5 @@
 import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume } from "@minecraft/server";
-import { targetSelectorAllListC, targetSelectorAllListE } from "../Main";
+import { targetSelectorAllListC, targetSelectorAllListE, format_version } from "../Main";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
@@ -15,7 +15,6 @@ import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-export const format_version = "1.12.3";
 import { shuffle, vTStr } from "Main/commands";
 mcServer;
 mcServerUi; /*

@@ -1,6 +1,6 @@
-import { Player, system, world, Entity, type DimensionLocation, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, type ExplosionOptions } from "@minecraft/server";
+import { Player, system, world, Entity, type DimensionLocation, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, type ExplosionOptions, GameRules, GameRule } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC } from "Main";
+import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -19,7 +19,6 @@ import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-export const format_version = "1.12.3";
 import { command, commandSettings, command_settings_format_version, commands, commands_format_version } from "Main/commands";
 mcServer
 mcServerUi/*
@@ -55,8 +54,8 @@ export async function forceShow(form: ModalFormData|ActionFormData|MessageFormDa
 }
 export const customFormDataTypes = [ModalFormData, ActionFormData, MessageFormData]
 export const customFormDataTypeIds = ["ModalFormData", "ActionFormData", "MessageFormData"]
-export const customElementTypes = [ModalFormData.prototype.title, ModalFormData.prototype.textField, ModalFormData.prototype.dropdown, ModalFormData.prototype.toggle, ModalFormData.prototype.slider, ActionFormData.prototype.body, ActionFormData.prototype.button, MessageFormData.prototype.button1, MessageFormData.prototype.button2]
-export const customElementTypeIds = ["title", "textField", "dropdown", "toggle", "slider", "body", "button", "button1", "button2"]
+export const customElementTypes = [ModalFormData.prototype.title, ModalFormData.prototype.textField, ModalFormData.prototype.dropdown, ModalFormData.prototype.toggle, ModalFormData.prototype.slider, ActionFormData.prototype.body, ActionFormData.prototype.button, MessageFormData.prototype.button1, MessageFormData.prototype.button2, ModalFormData.prototype.submitButton]
+export const customElementTypeIds = ["title", "textField", "dropdown", "toggle", "slider", "body", "button", "button1", "button2", "submitButton"]
 export function editCustomFormUI(UIId: String|string){
     let customUI = getUICustomForm("customUIElement:" + UIId, "customUICode:" + UIId); 
     let variableList = "formType, formTitle"; 
@@ -87,8 +86,10 @@ export function editCustomFormUI(UIId: String|string){
     }); 
     form1234.toggle("New Code Line"); 
     form1234.textField("New Code Line Index", "Number", String(((indexListB[indexListB.length-1] ?? 0)+1))); 
+    form1234.submitButton("Save")
     form12.toggle("New Element"); 
     form12.textField("New Element Index", "Number", String(((indexList[indexList.length-1] ?? 0)+1))); 
+    form12.submitButton("Save")
     return {form: form12, variableList: variableList, indexList: indexList, formB: form1234, indexListB: indexListB}; 
 }
 export function showCustomFormUI(UIId: String, player: Player){
@@ -155,11 +156,13 @@ export function customFormUIEditorCode(UIId: string, player: Player, goBackToMen
 export function addNewCustomFormUI(player: Player, goBackToMenu: boolean = false){
     let form12345 = new ModalFormData(); 
     form12345.textField("Name", "myForm"); 
+    form12345.submitButton("Create Form")
     forceShow(form12345, player).then((t)=>{if (t.canceled) return; let ta = t as ModalFormResponse; 
         try{world.setDynamicProperty(`customUI:${String(ta.formValues[0]).replaceAll("|", "\\vls")}`, "0|\"My Form\"")}catch(e){console.error(e, e.stack)}; 
         if(goBackToMenu == true){customFormListSelectionMenu(player); }
     }); 
 }; 
+//salo
 export function customFormListSelectionMenu(player: Player){let a = world.getDynamicPropertyIds().filter((dpi)=>(dpi.startsWith("customUI:")))
     let b: string[]; 
     b = []; 
@@ -426,7 +429,8 @@ form.title("Settings");
 form.body("Choose menu to open. ");
 form.button("Global Settings", "textures/ui/settings_glyph_color_2x");
 form.button("Eval Auto Execute Settings", "textures/ui/settings_glyph_color_2x");
-form.button("Personal Settings", "textures/ui/settings_glyph_color_2x");/*
+form.button("Personal Settings", "textures/ui/settings_glyph_color_2x");
+form.button("Notifications Settings", "textures/ui/");/*
 form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
 forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormResponse); 
     // This will stop the code when the player closes the form
@@ -531,7 +535,7 @@ export function personalSettings(sourceEntity: Entity|Player){
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));*/
-    form2.submitButton("SaVE")
+    form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
         if (t.canceled) return;/*
@@ -595,6 +599,7 @@ export function evalAutoScriptSettings(sourceEntity: Entity|Player){
     form2.dropdown("Player Target", String(targetList).split(","), 0)
     form2.dropdown("Player Viewer", String(targetList).split(","), 0)
     form2.toggle("Debug2", false);*/
+    form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
         if (t.canceled) return;
@@ -617,6 +622,24 @@ export function evalAutoScriptSettings(sourceEntity: Entity|Player){
         world.setDynamicProperty("evalAfterEvents:blockExplode", aebe)
         world.setDynamicProperty("evalAfterEvents:playerLeave", aepl)
         world.setDynamicProperty("evalAfterEvents:entityDie", aeed)
+}).catch(e => {
+    console.error(e, e.stack);
+});}
+export function manageGameRulesUI(sourceEntity: Entity|Player){
+    let form2 = new ModalFormData();
+    const ruleNames = Object.getOwnPropertyNames(mcServer.GameRules.prototype).filter(r=>r!="constructor").sort((a, b) => -+(typeof world.gameRules[a] != typeof world.gameRules[b])*((2*+(typeof world.gameRules[a] == "number"))-1))
+    const ruleValues = world.gameRules
+    form2.title("Manage Game Rules")
+    ruleNames.forEach(r=>{if(typeof ruleValues[r] == "number"){form2.textField(r, "number", String(ruleValues[r]))}else{form2.toggle(r, Boolean(ruleValues[r]));}})
+    form2.submitButton("Save")
+    forceShow(form2, (sourceEntity as Player)).then(to => {
+        let t = (to as ModalFormResponse)
+        if (t.canceled) return;
+        try{t.formValues.forEach((v, i)=>{
+            if(ruleValues[ruleNames[i]]!=v){
+                ruleValues[ruleNames[i]]=typeof ruleValues[ruleNames[i]] == "number"?Number(v):v
+            }
+        })}catch(e){(sourceEntity as Player).sendMessage("§c"+e+" "+e.stack)}
 }).catch(e => {
     console.error(e, e.stack);
 });}
@@ -1207,6 +1230,7 @@ export function editorStick(sourceEntity: Entity|Player, message: string = ""){
     let allCoordinates = []
     if (message.startsWith("coordinates:") && message.includes("|") && message.slice(12).split("|").length == 4) { allCoordinates = message.slice(12).split("|");  block2 = world.getDimension(allCoordinates[0]).getBlock({x: allCoordinates[1], y: allCoordinates[2], z: allCoordinates[3]})}
     form.title("Editor Stick");
+    form.submitButton("Save")
     let blockStatesFullList: any/*
     try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]); } catch(e){console.error(e, e.stack);}
     try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]).split(","); } catch(e){console.error(e, e.stack);}*/
@@ -1415,6 +1439,7 @@ export function editorStickMenuB(sourceEntity: Entity|Player){
     form.textField("Block X", "Block X", String(sourceEntity.location.x))
     form.textField("Block Y", "Block Y", String(sourceEntity.location.y))
     form.textField("Block Z", "Block Z", String(sourceEntity.location.z))
+    form.submitButton("Edit")
 
 form.show(sourceEntity as any).then(r => {
     if (r.canceled) return;
@@ -1434,6 +1459,7 @@ export function editorStickB(sourceEntity: Entity|Player, dimensionLocation: Dim
     let block2: Block/* = block.block*/
     block2 = dimensionLocation.dimension.getBlock(dimensionLocation)
     form.title("Editor Stick B");
+    form.submitButton("Save")
     let blockStatesFullList: any/*
     try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]); } catch(e){console.error(e, e.stack);}
     try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]).split(","); } catch(e){console.error(e, e.stack);}*/
@@ -1597,6 +1623,7 @@ export function managePlayers(sourceEntity: Entity|Player){
                     switch(g.selection){
                         case banList.length: 
                         let form5 = new ModalFormData; form5.title(`Add ID Ban`); form5.textField("Player UUID\nThis is the uuid of the player. ", "Integer"); form5.textField("Ban Time (In Minutes)", "Decimal"); form5.textField("Reason", "JavaScript Object ex. `\nDate: ${new Date(D\nate\n.now()).toLo\ncaleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
+                        form5.submitButton("Ban")
                         forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                             if(h.canceled){return};
                             ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: String(h.formValues[0]), originalPlayerName: undefined, type: "id", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "banId:"+Date.now()+":"+String(h.formValues[0]), unbanDate: Number(h.formValues[1])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[2])})
@@ -1605,6 +1632,7 @@ export function managePlayers(sourceEntity: Entity|Player){
                         break
                         case banList.length+1: 
                         let form6 = new ModalFormData; form6.title(`Add Name Ban`); form6.textField("Player Name\nThis is the name of the player. ", "String"); form6.textField("Ban Time (In Minutes)", "Decimal"); form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
+                        form6.submitButton("Ban")
                         forceShow(form6, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                             if(h.canceled){return};
                             ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: undefined, playerName: String(h.formValues[0]), type: "name", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "ban:"+Date.now()+":"+String(h.formValues[0]), unbanDate: Number(h.formValues[1])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[2])})
@@ -1686,6 +1714,7 @@ export function managePlayers(sourceEntity: Entity|Player){
                         switch(g.selection){
                             case banList.length: 
                             let form5 = new ModalFormData; form5.title(`Add ID Ban`); form5.textField("Ban Time (In Minutes)", "Decimal"); form5.textField("Reason", "Text")
+                            form5.submitButton("Ban")
                             forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                                 if(h.canceled){return};
                                 ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: player.id, originalPlayerName: player.name, type: "id", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "banId:"+Date.now()+":"+player.id, unbanDate: Number(h.formValues[0])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[1])})
@@ -1694,6 +1723,7 @@ export function managePlayers(sourceEntity: Entity|Player){
                             break
                             case banList.length+1: 
                             let form6 = new ModalFormData; form6.title(`Add Name Ban`); form6.textField("Ban Time (In Minutes)", "Decimal"); form6.textField("Reason", "Text")
+                            form6.submitButton("Ban")
                             forceShow(form6, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                                 if(h.canceled){return};
                                 ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: player.id, playerName: player.name, type: "name", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "ban:"+Date.now()+":"+player.name, unbanDate: Number(h.formValues[0])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[1])})
@@ -2010,6 +2040,7 @@ export function itemDynamicPropertyEditor(sourceEntity: Entity|Player, item: Con
             form.textField("Property Name", "string"); 
             form.textField("Property Value", "string|number|boolean|vector3json"); 
             form.dropdown("Property Type", ["String", "Number", "Boolean", "Vector3"]); 
+            form.submitButton("Add Property")
             forceShow(form, sourceEntity as Player).then(ra=>{
                 let r = (ra as ModalFormResponse); 
                 if(r.canceled){return}; 
@@ -2038,6 +2069,7 @@ export function newItemInSlot(sourceEntity: Entity|Player, item: ContainerSlot){
     form.title("New Item"); 
     form.textField("Item Type", "Item Id", "minecraft:grass_block"); 
     form.textField("Count", "int", "1"); 
+    form.submitButton("Create Item")
     forceShow(form, sourceEntity as Player).then(ra=>{
         let r = (ra as ModalFormResponse); 
         if(r.canceled){return}; 

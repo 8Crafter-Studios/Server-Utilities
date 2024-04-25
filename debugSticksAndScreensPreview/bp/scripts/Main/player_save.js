@@ -1,5 +1,5 @@
 import { EquipmentSlot, Dimension, GameMode, world, Player, system } from "@minecraft/server";
-//import { format_version } from "Main";
+import { format_version } from "Main";
 import { ban } from "./ban";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -16,7 +16,6 @@ import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-export const format_version = "1.12.3";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*

@@ -1,6 +1,6 @@
 import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC } from "Main";
+import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -19,7 +19,6 @@ import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-export const format_version = "1.12.3";
 import { command, commandSettings, command_settings_format_version, commands, commands_format_version } from "Main/commands";
 mcServer;
 mcServerUi; /*
@@ -56,8 +55,8 @@ export async function forceShow(form, player, timeout) {
 }
 export const customFormDataTypes = [ModalFormData, ActionFormData, MessageFormData];
 export const customFormDataTypeIds = ["ModalFormData", "ActionFormData", "MessageFormData"];
-export const customElementTypes = [ModalFormData.prototype.title, ModalFormData.prototype.textField, ModalFormData.prototype.dropdown, ModalFormData.prototype.toggle, ModalFormData.prototype.slider, ActionFormData.prototype.body, ActionFormData.prototype.button, MessageFormData.prototype.button1, MessageFormData.prototype.button2];
-export const customElementTypeIds = ["title", "textField", "dropdown", "toggle", "slider", "body", "button", "button1", "button2"];
+export const customElementTypes = [ModalFormData.prototype.title, ModalFormData.prototype.textField, ModalFormData.prototype.dropdown, ModalFormData.prototype.toggle, ModalFormData.prototype.slider, ActionFormData.prototype.body, ActionFormData.prototype.button, MessageFormData.prototype.button1, MessageFormData.prototype.button2, ModalFormData.prototype.submitButton];
+export const customElementTypeIds = ["title", "textField", "dropdown", "toggle", "slider", "body", "button", "button1", "button2", "submitButton"];
 export function editCustomFormUI(UIId) {
     let customUI = getUICustomForm("customUIElement:" + UIId, "customUICode:" + UIId);
     let variableList = "formType, formTitle";
@@ -92,8 +91,10 @@ export function editCustomFormUI(UIId) {
     });
     form1234.toggle("New Code Line");
     form1234.textField("New Code Line Index", "Number", String(((indexListB[indexListB.length - 1] ?? 0) + 1)));
+    form1234.submitButton("Save");
     form12.toggle("New Element");
     form12.textField("New Element Index", "Number", String(((indexList[indexList.length - 1] ?? 0) + 1)));
+    form12.submitButton("Save");
     return { form: form12, variableList: variableList, indexList: indexList, formB: form1234, indexListB: indexListB };
 }
 export function showCustomFormUI(UIId, player) {
@@ -201,6 +202,7 @@ export function customFormUIEditorCode(UIId, player, goBackToMenu = false) {
 export function addNewCustomFormUI(player, goBackToMenu = false) {
     let form12345 = new ModalFormData();
     form12345.textField("Name", "myForm");
+    form12345.submitButton("Create Form");
     forceShow(form12345, player).then((t) => {
         if (t.canceled)
             return;
@@ -218,6 +220,7 @@ export function addNewCustomFormUI(player, goBackToMenu = false) {
     });
 }
 ;
+//salo
 export function customFormListSelectionMenu(player) {
     let a = world.getDynamicPropertyIds().filter((dpi) => (dpi.startsWith("customUI:")));
     let b;
@@ -637,7 +640,7 @@ export function personalSettings(sourceEntity) {
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));*/
-    form2.submitButton("SaVE");
+    form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
         if (t.canceled)
@@ -702,6 +705,7 @@ export function evalAutoScriptSettings(sourceEntity) {
     form2.dropdown("Player Target", String(targetList).split(","), 0)
     form2.dropdown("Player Viewer", String(targetList).split(","), 0)
     form2.toggle("Debug2", false);*/
+    form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
         if (t.canceled)
@@ -1810,6 +1814,7 @@ export function editorStick(sourceEntity, message = "") {
         block2 = world.getDimension(allCoordinates[0]).getBlock({ x: allCoordinates[1], y: allCoordinates[2], z: allCoordinates[3] });
     }
     form.title("Editor Stick");
+    form.submitButton("Save");
     let blockStatesFullList; /*
     try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]); } catch(e){console.error(e, e.stack);}
     try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]).split(","); } catch(e){console.error(e, e.stack);}*/
@@ -2194,6 +2199,7 @@ export function editorStickMenuB(sourceEntity) {
     form.textField("Block X", "Block X", String(sourceEntity.location.x));
     form.textField("Block Y", "Block Y", String(sourceEntity.location.y));
     form.textField("Block Z", "Block Z", String(sourceEntity.location.z));
+    form.submitButton("Edit");
     form.show(sourceEntity).then(r => {
         if (r.canceled)
             return;
@@ -2213,6 +2219,7 @@ export function editorStickB(sourceEntity, dimensionLocation) {
     let block2; /* = block.block*/
     block2 = dimensionLocation.dimension.getBlock(dimensionLocation);
     form.title("Editor Stick B");
+    form.submitButton("Save");
     let blockStatesFullList; /*
     try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]); } catch(e){console.error(e, e.stack);}
     try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]).split(","); } catch(e){console.error(e, e.stack);}*/
@@ -2563,6 +2570,7 @@ export function managePlayers(sourceEntity) {
                             form5.textField("Player UUID\nThis is the uuid of the player. ", "Integer");
                             form5.textField("Ban Time (In Minutes)", "Decimal");
                             form5.textField("Reason", "JavaScript Object ex. `\nDate: ${new Date(D\nate\n.now()).toLo\ncaleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
+                            form5.submitButton("Ban");
                             forceShow(form5, sourceEntity).then(ha => {
                                 let h = ha;
                                 if (h.canceled) {
@@ -2579,6 +2587,7 @@ export function managePlayers(sourceEntity) {
                             form6.textField("Player Name\nThis is the name of the player. ", "String");
                             form6.textField("Ban Time (In Minutes)", "Decimal");
                             form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
+                            form6.submitButton("Ban");
                             forceShow(form6, sourceEntity).then(ha => {
                                 let h = ha;
                                 if (h.canceled) {
@@ -2731,6 +2740,7 @@ export function managePlayers(sourceEntity) {
                                         form5.title(`Add ID Ban`);
                                         form5.textField("Ban Time (In Minutes)", "Decimal");
                                         form5.textField("Reason", "Text");
+                                        form5.submitButton("Ban");
                                         forceShow(form5, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
@@ -2746,6 +2756,7 @@ export function managePlayers(sourceEntity) {
                                         form6.title(`Add Name Ban`);
                                         form6.textField("Ban Time (In Minutes)", "Decimal");
                                         form6.textField("Reason", "Text");
+                                        form6.submitButton("Ban");
                                         forceShow(form6, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
@@ -3321,6 +3332,7 @@ export function itemDynamicPropertyEditor(sourceEntity, item) {
                 form.textField("Property Name", "string");
                 form.textField("Property Value", "string|number|boolean|vector3json");
                 form.dropdown("Property Type", ["String", "Number", "Boolean", "Vector3"]);
+                form.submitButton("Add Property");
                 forceShow(form, sourceEntity).then(ra => {
                     let r = ra;
                     if (r.canceled) {
@@ -3374,6 +3386,7 @@ export function newItemInSlot(sourceEntity, item) {
     form.title("New Item");
     form.textField("Item Type", "Item Id", "minecraft:grass_block");
     form.textField("Count", "int", "1");
+    form.submitButton("Create Item");
     forceShow(form, sourceEntity).then(ra => {
         let r = ra;
         if (r.canceled) {

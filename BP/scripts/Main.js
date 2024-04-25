@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.12.3";
+export const format_version = "1.14.1";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -52,7 +52,7 @@ import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, Mine
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG } from "Main/coordinates";
-import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer } from "Main/commands";
+import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
@@ -2968,6 +2968,12 @@ catch { }
   console.warn(event.dimension);*/ /*
 }
 });*/ //removed in minecraft 1.20.60 >:(
+export const dimensionTypeDisplayFormatting = { "minecraft:overworld": "the overworld", "overworld": "the overworld", "minecraft:nether": "the nether", "nether": "the nether", "minecraft:the_end": "the end", "the_end": "the end" };
+export const dimensionTypeDisplayFormattingB = { "minecraft:overworld": "overworld", "overworld": "overworld", "minecraft:nether": "nether", "nether": "nether", "minecraft:the_end": "the end", "the_end": "the end" };
+export function tryget(callbackfn) { try {
+    return callbackfn();
+}
+catch { } }
 world.beforeEvents.effectAdd.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:effectAdd")));
@@ -3013,7 +3019,7 @@ world.beforeEvents.weatherChange.subscribe(event => {
     }
 }); /*
 world.beforeEvents.itemDefinitionEvent.subscribe(event => {
-  try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });*/ //removed in 1.20.70.21
 world.beforeEvents.playerInteractWithEntity.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")) {
@@ -3058,6 +3064,12 @@ world.afterEvents.blockExplode.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    try {
+        getPlayersWithAnyOfTags(["getBlockExplodeNotifications", "getBlockExplodeNotificationsIn:" + event.dimension, "getBlockExplodeNotificationsForExplodedBlockType:" + event.explodedBlockPermutation.type.id]).forEach(p => psend(p, `[§l§dServer§r][§eblockExplode§r] Block of type ${event.explodedBlockPermutation.type.id} in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was blown up${!!event.source ? ` by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}` : ""}. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
 });
 world.afterEvents.buttonPush.subscribe(event => {
     try {
@@ -3068,6 +3080,12 @@ world.afterEvents.buttonPush.subscribe(event => {
         world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("buttonPushAfterEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
+    }
+    try {
+        getPlayersWithAnyOfTags(["getButtonPushNotifications", "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location) + " " + event.block.dimension, "getButtonPushNotificationsForBlockAt:" + event.block.dimension + " " + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(event.block.location)]).filter(p => !p.hasTag("excludeButtonPushNotificationsIn:" + event.dimension.id)).forEach(p => psend(p, `[§l§dServer§r][§ebuttonPush§r] Button in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was pressed by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
     }
 });
 world.afterEvents.chatSend.subscribe(event => {
@@ -3110,6 +3128,12 @@ world.afterEvents.effectAdd.subscribe(event => {
         world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("effectAddAfterEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
+    }
+    try {
+        getPlayersWithAnyOfTags(["getEffectAddNotifications", "getEffectAddNotificationsForEntityType:" + event.entity.typeId, "getEntitySpawnNotificationsForEntityId:" + event.entity.id, "getEntitySpawnNotificationsWithEffectType:" + event.effect.typeId, "getEntitySpawnNotificationsWithEffectName:" + event.effect.displayName, "getEntitySpawnNotificationsWithAmplifier:" + event.effect.amplifier, "getEntitySpawnNotificationsWithEffectDuration:" + event.effect.duration]).forEach(p => psend(p, `[§l§dServer§r][§eeffectAdd§r] The effect ${event.effect.displayName} with the amplifier ${event.effect.amplifier} and the duration ${event.effect.duration} was added to ${event.entity.typeId == "minecraft:player" ? event.entity?.name : `an entity of type ${event.entity.typeId} with the id ${event.entity.id} in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location}`}. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
     }
 });
 world.afterEvents.entityDie.subscribe(event => {
@@ -3155,6 +3179,14 @@ world.afterEvents.entityHitEntity.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    try {
+        if (["minecraft:ender_crystal"].includes(event.hitEntity?.typeId)) {
+            getPlayersWithTags("getHitEntityTriggerExplosionNotifications").filter(p => !p.hasTag("excludeHitEntityTriggerExplosionNotificationsIn:" + (tryget(() => event.hitEntity?.dimension) ?? "unknown")) && ((!!event.damagingEntity && (event.damagingEntity?.isValid() ?? true)) ? !p.hasTag("excludeHitEntityTriggerExplosionNotificationsBy:" + event.damagingEntity?.name ?? event.damagingEntity?.nameTag) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsById:" + event.damagingEntity?.id) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsByType:" + event.damagingEntity?.typeId) : !p.hasTag("excludeHitEntityTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsCauseType:" + event.hitEntity?.typeId)).forEach(p => psend(p, `[§l§dServer§r][§eexplosiveEntityTriggeredByHit§r] ${!!event.damagingEntity ? `${event.damagingEntity?.name ?? event.damagingEntity?.nameTag ?? event.damagingEntity?.typeId} hit exploding entity of type "${event.hitEntity?.typeId}"` : `Exploding entity of type "${event.hitEntity?.typeId}" was hit`}${(!!tryget(() => event.hitEntity?.dimension) && (event.hitEntity?.isValid() ?? true)) ? ` in ${dimensionTypeDisplayFormatting[tryget(() => event.hitEntity?.dimension?.id)] ?? "an unknown dimension"} at ${(!!tryget(() => event.hitEntity?.location) && (event.hitEntity?.isValid() ?? true)) ? vTStr(event.hitEntity?.location) : "an unknwon location"}` : (!!event.damagingEntity.dimension && (event.damagingEntity?.isValid() ?? true)) ? `, the entity/player who hit the explosive entity is in ${dimensionTypeDisplayFormatting[tryget(() => event.damagingEntity?.dimension?.id)] ?? "an unknown dimension"} at ${(!!tryget(() => event.damagingEntity?.location) && (event.damagingEntity?.isValid() ?? true)) ? vTStr(mcMath.Vector3Utils.floor(event.damagingEntity?.location)) : "an unknwon location"}` : ""}. `));
+        }
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
 });
 world.afterEvents.entityHurt.subscribe(event => {
     try {
@@ -3165,6 +3197,12 @@ world.afterEvents.entityHurt.subscribe(event => {
         world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("entityHurtAfterEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
+    }
+    try {
+        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.hurtEntity.typeId, "getEntitySpawnNotificationsForId:" + event.hurtEntity.id, "getEntitySpawnNotificationsWithCause:" + event.damageSource.cause, "getEntitySpawnNotificationsWithDamage:" + event.damage, "getEntitySpawnNotificationsWithDamagingEntityOfType:" + event.damageSource.damagingEntity.typeId, "getEntitySpawnNotificationsWithDamagingEntityWithId:" + event.damageSource.damagingEntity.id, "getEntitySpawnNotificationsWithDamagingProjectileOfType:" + event.damageSource.damagingProjectile.typeId, "getEntitySpawnNotificationsWithDamagingProjectileWithId:" + event.damageSource.damagingProjectile.id]).forEach(p => psend(p, `[§l§dServer§r][§eentityHurt§r] Entity of type ${event.hurtEntity.typeId} with the id ${event.hurtEntity.id} took ${event.damage} damage of type "${event.damageSource.cause}" in ${tryget(() => dimensionTypeDisplayFormatting[event.hurtEntity.dimension.id]) ?? "an unknown dimension"} at ${(event.hurtEntity?.isValid() ?? false) ? vTStr(event.hurtEntity.location) : "an unknown location"}${!!event.damageSource.damagingEntity ? `, the entity was damaged by ${event.damageSource.damagingEntity.typeId == "minecraft:player" ? event.damageSource.damagingEntity?.name : `an entity of type ${event.damageSource.damagingEntity.typeId} with the ID ${event.damageSource.damagingEntity.id}${tryget(() => event.damageSource.damagingEntity.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingEntity.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingEntity.dimension.id] + " at " + vTStr(event.damageSource.damagingEntity.location))}` : ""}${!!event.damageSource.damagingProjectile ? `, the projectile that damaged the entity was ${`a projectile of type ${event.damageSource.damagingProjectile.typeId} with the ID ${event.damageSource.damagingProjectile.id}${tryget(() => event.damageSource.damagingProjectile.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingProjectile.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingProjectile.dimension.id] + " at " + vTStr(event.damageSource.damagingProjectile.location))}` : ""}. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
     }
 });
 world.afterEvents.entityLoad.subscribe(event => {
@@ -3177,6 +3215,12 @@ world.afterEvents.entityLoad.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    try {
+        getPlayersWithAnyOfTags(["getEntityLoadNotifications", "getEntityLoadNotificationsForType:" + event.entity.typeId, "getEntityLoadNotificationsForId:" + event.entity.id]).forEach(p => psend(p, `[§l§dServer§r][§eentityLoad§r] Entity of type ${event.entity.typeId} with the ID ${event.entity.id}${event.entity.nameTag != "" ? " and the name \"" + event.entity.nameTag + "\"" : ""} was loaded in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${vTStr(event.entity.location)}. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
 });
 world.afterEvents.entityRemove.subscribe(event => {
     try {
@@ -3187,6 +3231,12 @@ world.afterEvents.entityRemove.subscribe(event => {
         world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("entityRemoveAfterEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
+    }
+    try {
+        getPlayersWithAnyOfTags(["getEntityRemoveNotifications", "getEntityRemoveNotificationsForType:" + event.typeId, "getEntityRemoveNotificationsForId:" + event.removedEntityId]).forEach(p => psend(p, `[§l§dServer§r][§eentityRemove§r] Entity of type ${event.typeId} with the id ${event.removedEntityId} was removed. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
     }
 });
 world.afterEvents.entitySpawn.subscribe(event => {
@@ -3199,6 +3249,12 @@ world.afterEvents.entitySpawn.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    try {
+        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.entity.typeId, "getEntitySpawnNotificationsForId:" + event.entity.id, "getEntitySpawnNotificationsWithCause:" + event.cause]).forEach(p => psend(p, `[§l§dServer§r][§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location} with the cause "${event.cause}". `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
 });
 world.afterEvents.explosion.subscribe(event => {
     try {
@@ -3210,8 +3266,26 @@ world.afterEvents.explosion.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    try {
+        getPlayersWithAnyOfTags(["getExplosionNotifications", "getExplosionNotificationsForSourceType:" + event.source?.typeId ?? "none"]).filter(p => !p.hasTag("excludeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeExplosionNotificationsBy:" + event.source?.name ?? tryget(() => event.source?.nameTag) ?? "undefined") && !p.hasTag("excludeExplosionNotificationsById:" + event.source?.id) && !p.hasTag("excludeExplosionNotificationsType:" + event.source?.typeId) : !p.hasTag("excludeExplosionNotificationsWithNoSource"))).forEach(p => psend(p, `[§l§dServer§r][§eexplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length != 0 ? " around " : ""}${event.getImpactedBlocks().length == 0 ? "" : vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
+    //console.warn(JSONStringify(event.getImpactedBlocks(), true))
 });
 world.afterEvents.itemCompleteUse.subscribe(event => {
+    if (!!event?.itemStack?.getDynamicProperty("itemCompleteUseCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("itemCompleteUseCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemCompleteUseCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemCompleteUse")));
     }
@@ -3232,6 +3306,12 @@ world.afterEvents.gameRuleChange.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    try {
+        getPlayersWithTags("getGameRuleChangeNotifications").filter(p => !p.hasTag("excludeGameRuleChangeNotificationsFor:" + event.rule)).forEach(p => psend(p, `[§l§dServer§r][§egameRuleChange§r] "${event.rule}" was changed to ${event.value}. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
 });
 world.afterEvents.playerGameModeChange.subscribe(event => {
     try {
@@ -3242,6 +3322,12 @@ world.afterEvents.playerGameModeChange.subscribe(event => {
         world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("playerGameModeChangeAfterEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
+    }
+    try {
+        getPlayersWithTags("getGameModeChangeNotifications").filter(p => !p.hasTag("excludeGameModeChangeNotificationsFor:" + event.player.name) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.fromGameMode) && !p.hasTag("excludeGameModeChangeNotificationsTo:" + event.toGameMode)).forEach(p => psend(p, `[§l§dServer§r][§eplayerGameModeChange§r][${event.player.name}] Changed from ${event.fromGameMode} to ${event.toGameMode}. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
     }
 });
 world.afterEvents.weatherChange.subscribe(event => {
@@ -3254,9 +3340,15 @@ world.afterEvents.weatherChange.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    try {
+        getPlayersWithTags("getWeatherChangeNotifications").filter(p => !p.hasTag("excludeWeatherChangeNotificationsTo:" + event.newWeather) && !p.hasTag("excludeGameModeChangeNotificationsIn:" + event.dimension) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.previousWeather)).forEach(p => psend(p, `[§l§dServer§r][§eweatherChange§r] Weather in ${event.dimension} changed from ${event.previousWeather} to ${event.newWeather}. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
 }); /*
 world.afterEvents.itemDefinitionEvent.subscribe(event => {
-  try{eval(String(world.getDynamicProperty("evalAfterEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{eval(String(world.getDynamicProperty("evalAfterEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });*/
 world.afterEvents.itemReleaseUse.subscribe(event => {
     try {
@@ -3345,6 +3437,12 @@ world.afterEvents.leverAction.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    try {
+        getPlayersWithTags("getLeverActionNotifications").filter(p => !p.hasTag("excludeLeverActionNotificationsTo:" + event.isPowered) && !p.hasTag("excludeLeverActionNotificationsIn:" + event.dimension) && !p.hasTag("excludeLeverActionNotificationsBy:" + event.player.name) && !p.hasTag("excludeLeverActionNotificationsAt:" + Object.values(event.block.location).join(","))).forEach(p => psend(p, `[§l§dServer§r][§eleverAction§r][${event.player.name}] Lever in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} turned ${event.isPowered ? "ON" : "OFF"}. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
 });
 world.afterEvents.messageReceive.subscribe(event => {
     try {
@@ -3355,6 +3453,12 @@ world.afterEvents.messageReceive.subscribe(event => {
         world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("messageReceiveAfterEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
+    }
+    try {
+        getPlayersWithTags("getMessageReceiveNotifications").filter(p => !p.hasTag("excludeMessageReceiveNotificationsWithId:" + event.id) && !p.hasTag("excludeMessageReceiveNotificationsWithMessage:" + event.message) && !p.hasTag("excludeMessageReceiveNotificationsBy:" + event.player.name)).forEach(p => psend(p, `[§l§dServer§r][§emessageReceive§r][${event.player.name}] Message recieved with ID ${event.id} and value "${event.message}". `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
     }
 });
 world.afterEvents.pistonActivate.subscribe(event => {
@@ -3369,6 +3473,17 @@ world.afterEvents.pistonActivate.subscribe(event => {
     }
 });
 world.afterEvents.playerBreakBlock.subscribe(event => {
+    if (!!event?.itemStackBeforeBreak?.getDynamicProperty("afterPlayerBreakBlockCode")) {
+        try {
+            eval(String(event?.itemStackBeforeBreak?.getDynamicProperty("afterPlayerBreakBlockCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemAfterPlayerBreakBlockCodeDebugErrors")) {
+                currentplayer.sendMessage(e + e.stack);
+            } });
+        }
+    }
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerBreakBlock")));
     }
@@ -3400,6 +3515,14 @@ world.afterEvents.playerInteractWithBlock.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    try {
+        if ((["minecraft:respawn_anchor", "minecraft:tnt"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:overworld") || (["minecraft:bed", "minecraft:tnt"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:nether") || (["minecraft:respawn_anchor", "minecraft:tnt", "minecraft:bed"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:overworld")) {
+            getPlayersWithTags("getBlockInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsIn:" + event.block.dimension) && (!!event.player ? !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBlockType:" + event.block.typeId)).forEach(p => psend(p, `[§l§dServer§r][§eexplosiveBlockInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive block of type "${event.block.typeId}"` : `Explosive block of type "${event.block.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.block.dimension.id]} at ${vTStr(event.block.location)}${!!event.itemStack ? ` using ${event.itemStack.typeId}` : ""}. `));
+        }
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
 });
 world.afterEvents.playerInteractWithEntity.subscribe(event => {
     try {
@@ -3410,6 +3533,14 @@ world.afterEvents.playerInteractWithEntity.subscribe(event => {
         world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("playerInteractWithEntityAfterEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
+    }
+    try {
+        if (["minecraft:creeper"].includes(event.target.typeId) && !!event.itemStack) {
+            getPlayersWithTags("getEntityInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsIn:" + event.target.dimension) && (!!event.player ? !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsEntityType:" + event.target.typeId)).forEach(p => psend(p, `[§l§dServer§r][§eexplosiveEntityInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive entity of type "${event.target.typeId}"` : `Explosive entity of type "${event.target.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.target.dimension.id]} at ${vTStr(event.target.location)}${!!event.itemStack ? ` using ${event.itemStack.typeId}` : ""}. `));
+        }
+    }
+    catch (e) {
+        console.error(e, e.stack);
     }
 });
 world.afterEvents.playerJoin.subscribe(event => {
@@ -3553,6 +3684,10 @@ world.afterEvents.weatherChange.subscribe(event => {
     }
 });
 world.beforeEvents.explosion.subscribe(event => {
+    if (disconnectingPlayers.includes(event.source?.id)) {
+        event.cancel = true;
+        return;
+    }
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:explosion")));
     }
@@ -3563,17 +3698,20 @@ world.beforeEvents.explosion.subscribe(event => {
         } });
     } /*
     eval(String(world.getDynamicProperty("scriptEvalBeforeEventsExplosion")))*/
-    world.getAllPlayers().filter((player) => (player.hasTag("getExplosionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("Location: [ " + event.source.location.x + ", " + event.source.location.y + ", " + event.source.location.z + " ], Dimension: " + event.dimension.id); });
+    getPlayersWithAnyOfTags(["getBeforeExplosionNotifications", "getExplosionNotificationsForSourceType:" + event.source?.typeId ?? "none", "getExplosionNotificationsForSourceId:" + event.source?.id ?? "none"]).filter(p => !p.hasTag("excludeBeforeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeBeforeExplosionNotificationsType:" + event.source?.typeId) : true) && ((!!event.source && (event.source?.isValid() ?? true)) ? !p.hasTag("excludeBeforeExplosionNotificationsBy:" + event.source?.name ?? tryget(() => event.source?.nameTag)) && !p.hasTag("excludeBeforeExplosionNotificationsById:" + event.source?.id) : !p.hasTag("excludeBeforeExplosionNotificationsWithNoSource"))).forEach(p => psend(p, `[§l§dServer§r][§ebeforeExplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length == 0 ? "" : " around " + vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `));
+    //world.getAllPlayers().filter((player) => ( player.hasTag("getExplosionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("Location: [ " + event.source.location.x+", "+event.source.location.y+", "+event.source.location.z + " ], Dimension: " + event.dimension.id) });
     if (!!!event.source?.location ? false : (((testIsWithinRanges(noExplosionAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(noExplosionAreas.negative, event.source.location) ?? false) == false)) || (((testIsWithinRanges(protectedAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative, event.source.location) ?? false) == false))) {
         event.cancel = true; /*
-          console.warn(event.isExpanding);
-          console.warn(event.block.x, event.block.y, event.block.z);
-          console.warn(event.piston.getAttachedBlocks());
-          console.warn(event.dimension);*/
+        console.warn(event.isExpanding);
+        console.warn(event.block.x, event.block.y, event.block.z);
+        console.warn(event.piston.getAttachedBlocks());
+        console.warn(event.dimension);*/
     }
     else {
-        event.setImpactedBlocks(event.getImpactedBlocks().filter((blockselected) => ((((testIsWithinRanges(noExplosionAreas.positive, blockselected.location) ?? false) == true) && ((testIsWithinRanges(noExplosionAreas.negative, blockselected.location) ?? false) == false)) || (((testIsWithinRanges(protectedAreas.positive, blockselected.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative, blockselected.location) ?? false) == false)))));
+        //console.warn("before set: "+JSONStringify(event.getImpactedBlocks(), true))
+        event.setImpactedBlocks(event.getImpactedBlocks().filter((blockselected) => !((((testIsWithinRanges(noExplosionAreas.positive, blockselected.location) ?? false) == true) && ((testIsWithinRanges(noExplosionAreas.negative, blockselected.location) ?? false) == false)) || (((testIsWithinRanges(protectedAreas.positive, blockselected.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative, blockselected.location) ?? false) == false)))));
     }
+    //console.warn("after set: "+JSONStringify(event.getImpactedBlocks(), true))
 });
 world.afterEvents.itemReleaseUse.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("itemReleaseUseCode")) {

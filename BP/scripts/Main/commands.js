@@ -1,5 +1,5 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject /*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG } from "../Main";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType, EnchantmentTypes } from "@minecraft/server";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject /*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
@@ -21,7 +21,6 @@ import * as playersave from "./player_save";
 import * as spawnprot from "./spawn_protection";
 import mcMath from "@minecraft/math.js";
 export const cmdsmetaimport = import.meta;
-export const format_version = "1.12.3";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -37,6 +36,7 @@ uis;
 playersave;
 spawnprot;
 mcMath;
+export const disconnectingPlayers = [];
 export const commands_format_version = "8.1.0-rc.99";
 // @ts-expect-error
 [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]]((!![] + [])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + ([][[]] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+!+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+!+[]]] + (![] + [+[]] + ([] + [])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]])[!+[] + !+[] + [+[]]] + (![] + [])[!+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][(!![] + [])[!+[] + !+[] + !+[]] + ([][[]] + [])[+!+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([![]] + [][[]])[+!+[] + [+[]]] + (!![] + [])[!+[] + !+[] + !+[]] + (![] + [])[!+[] + !+[] + !+[]]]() + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (![] + [])[!+[] + !+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]]((!![] + [])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + ([][[]] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+!+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+!+[]]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]]((!![] + [])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + ([][[]] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+!+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+!+[]]] + (!![] + [])[!+[] + !+[] + !+[]] + (![] + [])[!+[] + !+[] + !+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (![] + [])[+!+[]] + (+(!+[] + !+[] + [+!+[]] + [+!+[]]))[(!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([] + [])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]][([][[]] + [])[+!+[]] + (![] + [])[+!+[]] + ((+[])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]] + [])[+!+[] + [+!+[]]] + (!![] + [])[!+[] + !+[] + !+[]]]](!+[] + !+[] + !+[] + [+!+[]])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]])()([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[(![] + [])[!+[] + !+[] + !+[]] + (![] + [])[!+[] + !+[]] + ([![]] + [][[]])[+!+[] + [+[]]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[!+[] + !+[] + !+[]]]((+((+(+!+[] + [+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + [!+[] + !+[]] + [+[]]) + [])[+!+[]] + [+[] + [+[]] + [+[]] + [+[]] + [+[]] + [+[]] + [+!+[]]]) + [])[!+[] + !+[]] + [+!+[]]) + (![] + [])[+!+[]] + (!![] + [])[+[]] + (!![] + [])[!+[] + !+[] + !+[]])()())[!+[] + !+[] + !+[] + [+[]]] + (+(+!+[] + [+[]] + [+!+[]]))[(!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([] + [])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]][([][[]] + [])[+!+[]] + (![] + [])[+!+[]] + ((+[])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]] + [])[+!+[] + [+!+[]]] + (!![] + [])[!+[] + !+[] + !+[]]]](!+[] + !+[] + [+!+[]])[+!+[]] + ([![]] + [][[]])[+!+[] + [+[]]] + (![] + [])[!+[] + !+[] + !+[]])()[(!![] + [])[+[]] + (![] + [])[+[]] + (![] + [])[!+[] + !+[] + !+[]] + (![] + [])[+!+[]]] = [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]]((![] + [])[+[]], (!![] + [])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + ([][[]] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+!+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+!+[]]] + '[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+([]+{})[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[+!+[]+[!+[]+!+[]+!+[]]]+(![]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]]+![]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]])()[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]()+[])[!+[]+!+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+","+"\\""+(+[![]]+[][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]())[+!+[]+[+!+[]]]+([][[]]+[])[+!+[]]+([][[]]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(+(+!+[]+[+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[!+[]+!+[]+!+[]+!+[]])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+"\\""+([+[]]+![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[!+[]+!+[]+[+[]]])([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(![]+[])[+[]])(f))');
@@ -751,8 +751,8 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemsshulker", escregexp: { v: "^compressitemsshulker$" }, formats: [{ format: "compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]" }], command_version: "1.0.0-rc.5", description: "Compresses your items into shulker box(es) and gives you those shulker box(es) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemsshulker" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainer", escregexp: { v: "^compressitemscontainer$" }, formats: [{ format: "compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]" }], command_version: "1.0.0-rc.5", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemscontainer" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainerb", escregexp: { v: "^compressitemscontainerb$" }, formats: [{ format: "compressitemscontainerb [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]" }], command_version: "0.0.1-alpha.76", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemscontainerb" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchest", escregexp: { v: "^scanenderchest$" }, aliases: [{ commandName: "ecinvsee", escregexp: { v: "^ecinvsee$" } }, { commandName: "sncendchest", escregexp: { v: "^scnendchest$" } }], formats: [{ format: "scanenderchest [target: string|~]" }], command_version: "0.2.0-alpha.17", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchest" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchestc", escregexp: { v: "^scanenderchestc$" }, aliases: [{ commandName: "ecinvseec", escregexp: { v: "^ecinvseec$" } }, { commandName: "sncendchestc", escregexp: { v: "^scnendchestc$" } }], formats: [{ format: "scanenderchestc [target: string|~]" }], command_version: "0.3.0-alpha.36", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchestc" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchest", escregexp: { v: "^scanenderchest$" }, aliases: [{ commandName: "ecinvsee", escregexp: { v: "^ecinvsee$" } }, { commandName: "scnendchest", escregexp: { v: "^scnendchest$" } }], formats: [{ format: "scanenderchest [targets: targetSelector|~]" }], command_version: "0.2.0-alpha.17", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchest" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchestc", escregexp: { v: "^scanenderchestc$" }, aliases: [{ commandName: "ecinvseec", escregexp: { v: "^ecinvseec$" } }, { commandName: "scnendchestc", escregexp: { v: "^scnendchestc$" } }], formats: [{ format: "scanenderchestc [target: string|~]" }], command_version: "0.3.0-alpha.36", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchestc" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "clearenderchestslot", escregexp: { v: "^clearenderchestslot$" }, formats: [{ format: "clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.2.0-alpha.37", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:clearenderchestslot" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "clearenderchest", escregexp: { v: "^clearenderchest$" }, formats: [{ format: "clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.0.0", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:clearenderchest" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "filljunk", escregexp: { v: "^filljunk$" }, aliases: [{ commandName: "invfilljunk", escregexp: { v: "^invfilljunk$" } }], formats: [{ format: "filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.9.0-alpha.21", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:filljunk" },
@@ -761,9 +761,11 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillillegal", escregexp: { v: "^fillillegal$" }, aliases: [{ commandName: "invfillillegal", escregexp: { v: "^invfillillegal$" } }], formats: [{ format: "fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.9.0-alpha.21", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillillegal" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillinventory", escregexp: { v: "^fillinventory$" }, aliases: [{ commandName: "invfill", escregexp: { v: "^invfill$" } }], formats: [{ format: "fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]" }], command_version: "1.0.0-beta.17", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillinventory" },
     { type: "built-in", requiredTags: ["canUseChatCommands", "canUseDangerousCommands"], formatting_code: "§r§4", commandName: "chunkban", escregexp: { v: "^chunkban$" }, formats: [{ format: "chunkban [slot: int|~] [loopCount: int] [target: string|~]" }], command_version: "0.0.1-beta.72", description: "", category: ["dangerous"], commandSettingsId: "built-inCommandSettings:chunkban" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "rank", escregexp: { v: "^rank$" }, formats: [{ format: "rank <players: targetSelector> <mode: add|remove> <tag: string>" }, { format: "rank <players: targetSelector> clear" }], command_version: "1.0.0-rc.1", description: "Adds, removes, or clears ranks from a player. ", category: ["players"], commandSettingsId: "built-inCommandSettings:rank" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "extinguish", escregexp: { v: "^extinguish$" }, aliases: [{ commandName: "ext", escregexp: { v: "^ext$" } }], formats: [{ format: "extinguish [radius: number]" }], command_version: "2.2.0-beta.10", description: "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:extinguish" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "remexp", escregexp: { v: "^remexp$" }, formats: [{ format: "remexp [radius: number]" }], command_version: "2.2.0-beta.5", description: "Removes explosives in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:remexp" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "drain", escregexp: { v: "^drain$" }, formats: [{ format: "drain [radius: number]" }], command_version: "2.2.0-beta.5", description: "Drains liquids in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:drain" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "disconnect", escregexp: { v: "^disconnect$" }, aliases: [{ commandName: "boot", escregexp: { v: "^boot$" } }], formats: [{ format: "disconnect <players: targetSelector>" }], command_version: "1.0.0", description: "", category: ["Entity Scale Add-On", "system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:disconnect" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: { v: "^morph$" }, formats: [{ format: "" }], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:morph" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "tint", escregexp: { v: "^tint$" }, formats: [{ format: "tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: targetSelector]" }], command_version: "1.0.4", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:tint" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "scale", escregexp: { v: "^scale$" }, formats: [{ format: "" }], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:scale" },
@@ -1260,6 +1262,28 @@ export function getAllEntities() { return [...world.getDimension("overworld").ge
 ;
 export function getEntityById(entityId) { return getAllEntities().find(v => v.id == String(entityId)); }
 ;
+export function getPlayersWithTags(tags) { return tags instanceof Array ? world.getAllPlayers().filter(p => tags.every(t => p.hasTag(t))) : world.getAllPlayers().filter(p => p.hasTag(tags)); }
+export function getPlayersWithAnyOfTags(tags) { return tags instanceof Array ? world.getAllPlayers().filter(p => tags.some(t => p.hasTag(t))) : world.getAllPlayers().filter(p => p.hasTag(tags)); }
+export function disconnectPlayers(targets, enableStrictErrorThrowing = false, disableExtraErrorReporting = false) {
+    targets.forEach(target => {
+        try {
+            disconnectingPlayers.push(target.id);
+            target.triggerEvent("andexsa:explode");
+            system.run(() => { disconnectingPlayers.splice(disconnectingPlayers.indexOf(target.id), +(disconnectingPlayers.indexOf(target.id) != -1)); });
+        }
+        catch (e) {
+            if (e.message == "The event andexsa:explode does not exist on minecraft:player") {
+                throw ({ name: "PackError", message: "Either the add-on \"8Crafter's Entity Scale, NBT, and Behavior Modifier, Bossbar, and Morph Addon\" is not on this world/server/realm or another pack is overriding the player.json file in the behavior pack, the host/owner of this world/server/realm must fix this issue before you can use this command. \nIf you are the host/owner and you don't have the add-on then you can download it from the website: §bhttps://modbay.org/mods/1218-8crafters-entity-scale-and-morph-addon.html", stack: e.stack });
+            }
+            else if (enableStrictErrorThrowing) {
+                throw (e);
+            }
+            else if (!disableExtraErrorReporting) {
+                reportError(e);
+            }
+        }
+    });
+}
 export const compareArrays = (array1, array2) => (array1.length === array2.length && array1.every((value, index) => value === array2[index]));
 export const compareArraysB = (array1, array2) => (array1.length === array2.length && array1.sort().every((value, index) => value === array2.sort()[index]));
 export const commandsyntaxes = {
@@ -1578,11 +1602,12 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
     "offlineinvsee": `${command.dp}offlineinvsee <playerName: string>`,
     "offlineuuidinvsee": `${command.dp}offlineuuidinvsee <playerUUID: int>`,
     "printlayers": `${command.dp}printlayers`,
+    "rank": `${command.dp}rank <players: targetSelector> <mode: add|remove> <tag: string>\n${command.dp}rank <players: targetSelector> clear`,
     "remexp": `${command.dp}remexp [radius: number]`,
     "run": `${command.dp}run <delayTicks: int> <command: command>`,
-    "scanenderchest": `${command.dp}scanenderchest [target: string|~]`,
+    "scanenderchest": `${command.dp}scanenderchest [targets: targetSelector|~]`,
     "scanenderchestc": `${command.dp}scanenderchestc [target: string|~]`,
-    "scnendchst": `${command.dp}scnendchst [target: string|~]`,
+    "scnendchst": `${command.dp}scnendchst [targets: targetSelector|~]`,
     "scnendchstc": `${command.dp}scnendchstc [target: string|~]`,
     "setitem": `${command.dp}setitem <item: itemType> <amount: int> <slot: int>`,
     "setitemb": `${command.dp}setitemb <itemJSON: itemJSON> <slot: int>
@@ -1668,6 +1693,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
     "wreset": `${command.dp}wreset`,
     "wset": `${command.dp}wset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
     "chunkban": `${command.dp}chunkban [slot: int|~] [loopCount: int] [target: string|~]`,
+    "disconnect": `${command.dp}disconnect <players: targetSelector>`,
     "morph": `${command.dp}morph <morphId: int>`,
     "scale": `${command.dp}scale <scale: float>`,
     "tint": `${command.dp}tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: targetSelector]`,
@@ -1677,6 +1703,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 };
 export var commanddescriptions;
 (function (commanddescriptions) {
+    //"ban" = "Bans a player. ",
     commanddescriptions["binvsee"] = "Displays the contents of the specified block's inventory. ";
     commanddescriptions["clear"] = "Clears a player's inventory. ";
     commanddescriptions["clearenderchest"] = "Clears a player's ender chest. ";
@@ -1733,15 +1760,22 @@ export var commanddescriptions;
     commanddescriptions["item"] = "Super advanced item modification command. ";
     commanddescriptions["itfill"] = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. ";
     commanddescriptions["itfillc"] = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. ";
+    //"kick" = "Kicks one or more players. ",
     commanddescriptions["mainmenu"] = "Opens up the main menu. ";
+    //"managebans" = "Opens up the manage bans menu. ",
     commanddescriptions["managecommands"] = "Opens up the commands editor menu. ";
     commanddescriptions["manageplayers"] = "Opens up the manage players menu. ";
     commanddescriptions["managescriptautoeval"] = "Opens up the Script Auto Eval settings menu. ";
+    //"money" = "Used for the money system [§r§1Indev§r]. ",
+    //"notificationsettings" = "Opens up the notifications settings menu. ",
+    //"notificationssettings" = "Opens up the notifications settings menu. ",
     commanddescriptions["offlineinfo"] = "Displays the saved player data of the specified player. ";
     commanddescriptions["offlineuuidinfo"] = "Displays the saved player data of the player with the specified UUID. ";
     commanddescriptions["offlineinvsee"] = "Displays the saved contents of the specified player's inventory. ";
     commanddescriptions["offlineuuidinvsee"] = "Displays the saved contents of the inventory of the player with the specified UUID. ";
+    //"permaban" = "Permanently bans a player. ",
     commanddescriptions["printlayers"] = "Displays a list of all the blocks at your specified x and z coordinates. ";
+    commanddescriptions["rank"] = "Manages ranks stored in players. ";
     commanddescriptions["remexp"] = "Removes explosive blocks in the specified radius. ";
     commanddescriptions["run"] = "Runs the specified command. ";
     commanddescriptions["scanenderchest"] = "Scans a player's ender chest and displays the contents of it. ";
@@ -1756,9 +1790,11 @@ export var commanddescriptions;
     commanddescriptions["swapinventoriesb"] = "Swaps the inventories of 2 players. ";
     commanddescriptions["swapitems"] = "Swaps an item in a slot of one player's inventory with another slot of another player's inventory. ";
     commanddescriptions["takeitem"] = "Steals an item from another player's inventory and puts it into yoru inventory. ";
+    //"tempban" = "Temporarily bans a player. ",
     commanddescriptions["terminal"] = "Opens up the command runner/terminal menu. ";
     commanddescriptions["transferitem"] = "Transfers the item in your hand to the specified player's inventory. ";
     commanddescriptions["top"] = "Teleports on top of the highest solid block at your x and z coordinates. ";
+    //"unban" = "Unbans a player. ",
     commanddescriptions["up"] = "Teleports up the specified number of blocks and places glass below you if placeGlass is not set to false. ";
     commanddescriptions["warp"] = "Warps to the specified global warp. ";
     commanddescriptions["warplist"] = "Lists all global warps. ";
@@ -1775,6 +1811,7 @@ export var commanddescriptions;
     commanddescriptions["wreset"] = "Removes all private warps. ";
     commanddescriptions["wset"] = "Sets a private warp. ";
     commanddescriptions["chunkban"] = "Fills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. ";
+    commanddescriptions["disconnect"] = "Disconnects a player. ";
     commanddescriptions["morph"] = "Morphs into the morph with the specified ID. ";
     commanddescriptions["scale"] = "Sets your scale value to the specified amount. ";
     commanddescriptions["tint"] = "Tints the specified player's skin the specified color, or makes it glow, and optionally adjusts the opacity of their skin. ";
@@ -2033,8 +2070,8 @@ export function itemJSONPropertiesEval(itemJSON, StartingItem, player) {
         "cooldown": (property) => { }
     };
     const itemEnchantableComponentEnum = {
-        "addEnchantment": (property) => (property[1] instanceof Array) ? item.getComponent("enchantable").addEnchantments(property[1]) : item.getComponent("enchantable").addEnchantment(property[1]),
-        "addEnchantments": (property) => item.getComponent("enchantable").addEnchantments(property[1]),
+        "addEnchantment": (property) => (property[1] instanceof Array) ? item.getComponent("enchantable").addEnchantments(property[1].map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) }))) : item.getComponent("enchantable").addEnchantment({ level: property[1].level, type: EnchantmentTypes.get(property[1].type) }),
+        "addEnchantments": (property) => item.getComponent("enchantable").addEnchantments(property[1].map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) }))),
         "removeEnchantment": (property) => (property[1] instanceof Array) ? property[1].forEach(v => item.getComponent("enchantable").removeEnchantment(v)) : item.getComponent("enchantable").removeEnchantment(property[1]),
         "removeAllEnchantments": (property) => item.getComponent("enchantable").removeAllEnchantments()
     };
@@ -2080,8 +2117,8 @@ export function itemJSONPropertiesEvalCT(itemJSON, containerSlot, player) {
         "cooldown": (property) => { }
     };
     const itemEnchantableComponentEnum = {
-        "addEnchantment": (property) => (property[1] instanceof Array) ? (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantments(property[1]); item.setItem(itemb); })() : (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantment(property[1]); item.setItem(itemb); })(),
-        "addEnchantments": (property) => (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantments(property[1]); item.setItem(itemb); })(),
+        "addEnchantment": (property) => (property[1] instanceof Array) ? (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantments(property[1].map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) }))); item.setItem(itemb); })() : (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantment({ level: property[1].level, type: EnchantmentTypes.get(property[1].type) }); item.setItem(itemb); })(),
+        "addEnchantments": (property) => (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantments(property[1].map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) }))); item.setItem(itemb); })(),
         "removeEnchantment": (property) => (property[1] instanceof Array) ? property[1].forEach(v => (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").removeEnchantment(v); item.setItem(itemb); })()) : (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").removeEnchantment(property[1]); item.setItem(itemb); })(),
         "removeAllEnchantments": (property) => (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").removeAllEnchantments(); item.setItem(itemb); })()
     };
@@ -3229,7 +3266,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         let itemd = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
                                         system.run(() => {
                                             try {
-                                                itemd.getComponent("enchantable").addEnchantment(enchantment);
+                                                itemd.getComponent("enchantable").addEnchantment({ level: enchantment.level, type: EnchantmentTypes.get(enchantment.type) });
                                                 player.getComponent("inventory").container.setItem(player.selectedSlot, itemd);
                                             }
                                             catch (e) {
@@ -3243,7 +3280,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         let itema = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
                                         system.run(() => {
                                             try {
-                                                itema.getComponent("enchantable").addEnchantments(enchantmentlist);
+                                                itema.getComponent("enchantable").addEnchantments(enchantmentlist.map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) })));
                                                 player.getComponent("inventory").container.setItem(player.selectedSlot, itema);
                                             }
                                             catch (e) {
@@ -3401,7 +3438,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 let itemd = player.getComponent("inventory").container.getItem(Number(command.split(" ")[2])).clone();
                                                 system.run(() => {
                                                     try {
-                                                        itemd.getComponent("enchantable").addEnchantment(enchantment);
+                                                        itemd.getComponent("enchantable").addEnchantment({ level: enchantment.level, type: EnchantmentTypes.get(enchantment.type) });
                                                         player.getComponent("inventory").container.setItem(Number(command.split(" ")[2]), itemd);
                                                     }
                                                     catch (e) {
@@ -3415,7 +3452,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 let itema = player.getComponent("inventory").container.getItem(Number(command.split(" ")[2])).clone();
                                                 system.run(() => {
                                                     try {
-                                                        itema.getComponent("enchantable").addEnchantments(enchantmentlist);
+                                                        itema.getComponent("enchantable").addEnchantments(enchantmentlist.map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) })));
                                                         player.getComponent("inventory").container.setItem(Number(command.split(" ")[2]), itema);
                                                     }
                                                     catch (e) {
@@ -3838,6 +3875,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .item - §oSuper advanced item modification command. §r
 .itfill - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r
 .itfillc - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r
+.disconnect - §oDisconnects one or more players. 
 .mainmenu - §oOpens up the main menu. §r
 .managecommands - §oOpens up the commands editor menu. §r
 .manageplayers - §oOpens up the manage players menu. §r
@@ -3847,6 +3885,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .offlineinvsee - §oDisplays the saved contents of the specified player's inventory. §r
 .offlineuuidinvsee - §oDisplays the saved contents of the inventory of the player with the specified UUID. §r
 .printlayers - §oDisplays a list of all the blocks at your specified x and z coordinates. §r
+.rank - §oManages ranks stored in players. §r
 .remexp - §oRemoves explosive blocks in the specified radius. §r
 .run - §oRuns the specified command. §r
 .scanenderchest - §oScans a player's ender chest and displays the contents of it. §r
@@ -3882,6 +3921,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 §cDangerous Commands: §4
 .chunkban - §oFills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. §r
 §bCommands that require "8Crafter's Entity Scale, NBT, and Behavior Modifier, Bossbar, and Morph Addon" in order to function: §6
+.disconnect - §oDisconnects one or more players. §r§6
 .morph - §oMorphs into the morph with the specified ID. §r§6
 .scale - §oSets your scale value to the specified amount. §r§6
 .tint - §oTints the specified player's skin the specified color, or makes it glow, and optionally adjusts the opacity of their skin. §r§6
@@ -5043,6 +5083,44 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
                 break;
+            case !!switchTest.match(/^disconnect$/) || !!switchTest.match(/^boot$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+                        if (switchTestB.split(/\s+/g)[1]?.trim() == "~") {
+                            args[1] = player.name;
+                        }
+                        if ((switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
+                            args[1] = player.name;
+                        }
+                        let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
+                        if (targets.length == 0) {
+                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                        }
+                        else
+                            targets.forEach(target => {
+                                try {
+                                    disconnectingPlayers.push(target.id);
+                                    target.triggerEvent("andexsa:explode");
+                                    player?.sendMessage(`${target?.name ?? target?.id} was disconnected. `);
+                                    system.run(() => { disconnectingPlayers.splice(disconnectingPlayers.indexOf(target.id), +(disconnectingPlayers.indexOf(target.id) != -1)); });
+                                    //${se}let abcd = [1, 0, 2, 3, 4, 5, 6, 7]; abcd.splice(2, 1); bsend(abcd)
+                                    //${se}let abcd = [1, 0, 2, 3, 4, 5, 6, 7]; abcd.splice(-1, 1); bsend(abcd)
+                                }
+                                catch (e) {
+                                    if (e.message == "The event andexsa:explode does not exist on minecraft:player") {
+                                        player.sendMessage("§cError: Either the add-on \"8Crafter's Entity Scale, NBT, and Behavior Modifier, Bossbar, and Morph Addon\" is not on this world/server/realm or another pack is overriding the player.json file in the behavior pack, the host/owner of this world/server/realm must fix this issue before you can use this command. \nIf you are the host/owner and you don't have the add-on then you can download it from the website: §bhttps://modbay.org/mods/1218-8crafters-entity-scale-and-morph-addon.html");
+                                        return;
+                                    }
+                                    else {
+                                        player.sendMessage("§c" + e + " " + e.stack);
+                                    }
+                                }
+                            });
+                    });
+                }
+                break;
             case !!switchTest.match(/^morph$/):
                 eventData.cancel = true;
                 try {
@@ -5184,7 +5262,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
-                break;
+                break; /*
+            case !!switchTest.match(/^notificationsettings$/)||!!switchTest.match(/^notificationssettings$/):
+                eventData.cancel = true;
+                try{system.run(()=>notificationSettings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            break; */ // coming very soon now! 
             case !!switchTest.match(/^datapickblock$/):
                 eventData.cancel = true;
                 try {
@@ -6339,7 +6421,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "hollowovoid":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
@@ -6355,7 +6437,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "ovoid":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
@@ -6371,7 +6453,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "hollowsphere":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
@@ -6387,7 +6469,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "dome":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
@@ -6403,7 +6485,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "sphere":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
@@ -6419,7 +6501,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "semisphere":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
@@ -6435,7 +6517,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circle":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, { matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1] }, undefined, creplacemode);
                                         let endTime = Date.now();
@@ -6454,7 +6536,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circlex":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6473,7 +6555,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circley":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6492,7 +6574,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circlez":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6511,7 +6593,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circlexy":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6530,7 +6612,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circleyz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6549,7 +6631,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circlexz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6568,7 +6650,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circlexyz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6587,7 +6669,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinder":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, { matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1] }, undefined, treplacemode);
                                         let endTime = Date.now();
@@ -6606,7 +6688,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinderx":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6625,7 +6707,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylindery":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6644,7 +6726,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinderz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6663,7 +6745,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinderxy":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6682,7 +6764,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinderyz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6701,7 +6783,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinderxz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6720,7 +6802,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinderxyz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -8775,7 +8857,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         if ((switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
                             args[1] = player.name;
                         }
-                        let targets = targetSelectorAllListC(args[3], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
+                        let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
                         if (targets.length == 0) {
                             player.sendMessage(`§cError: No players matching the specified target selector were found. `);
                         }
@@ -9115,6 +9197,45 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             player.sendMessage(e + " " + e.stack);
                         } });
                     }
+                }
+                break;
+            case !!switchTest.match(/^rank$/):
+                {
+                    eventData.cancel = true;
+                    let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "presetText", "string"]).args;
+                    //console.warn(args)
+                    if (args[1]?.trim() == "~") {
+                        args[1] = player.name;
+                    }
+                    if ((args[1] ?? "").trim() == "") {
+                        args[1] = player.name;
+                    }
+                    srun(() => {
+                        try {
+                            let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
+                            if (targets.length == 0) {
+                                player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                            }
+                            else {
+                                switch (args[2]) {
+                                    case "add":
+                                        targets.forEach(v => v.addTag(String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:") + args[3]));
+                                        break;
+                                    case "remove":
+                                        targets.forEach(v => v.removeTag(String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:") + args[3]));
+                                        break;
+                                    case "clear":
+                                        targets.forEach(v => v.getTags().filter(t => t.startsWith(String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"))).forEach(t => v.removeTag(t)));
+                                        break;
+                                    default:
+                                        player.sendMessage(`§cSyntax error: Unexpected "${args[2]}" at "${switchTest.slice(0, switchTest.indexOf(args[1]) + args[1].length + 1)}>>${args[2]}<<${args[3]}"`);
+                                }
+                            }
+                        }
+                        catch (e) {
+                            player.sendMessage("§c" + e + " " + e.stack);
+                        }
+                    });
                 }
                 break;
             case !!switchTest.match(/^extinguish$/) || !!switchTest.match(/^ext$/) || !!switchTest.match(/^remfire$/):
@@ -9465,6 +9586,10 @@ export function extractSelectors(str) {
                     startIndex = -1;
                 }
             }
+            else if (((str[i] !== ' ' && str[i] !== '' && str[i] !== undefined && (i - startIndex) >= 2) || (i == str.length - 1 && (i - startIndex) >= 1)) && startIndex !== -1 && stack.length === 0) {
+                selectors.push(str.substring(startIndex, i + (+(i == str.length - 1))).trim());
+                startIndex = -1;
+            }
         }
     }
     return selectors;
@@ -9486,24 +9611,24 @@ export function evaluateParameters(commandstring, parameters) {
         }
         else {
             if (p.type == "presetText") {
-                argumentsa.push(paramEval.split(" ")[0]);
-                paramEval = paramEval.split(" ").slice(1).join(" ");
+                argumentsa.push(paramEval.trimStart().split(" ")[0]);
+                paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
             }
             else {
                 if (p.type == "number") {
-                    argumentsa.push(Number(paramEval.split(" ")[0]));
-                    paramEval = paramEval.split(" ").slice(1).join(" ");
+                    argumentsa.push(Number(paramEval.trimStart().split(" ")[0]));
+                    paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                 }
                 else {
                     if (p.type == "boolean") {
-                        argumentsa.push(paramEval.split(" ")[0]?.trim?.() == "" ? undefined : Boolean(JSON.parse(paramEval.split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
-                        paramEval = paramEval.split(" ").slice(1).join(" ");
+                        argumentsa.push(paramEval.trimStart().split(" ")[0]?.trim?.() == "" ? undefined : Boolean(JSON.parse(paramEval.trimStart().split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
+                        paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                     }
                     else {
                         if (p.type == "neboolean") {
                             try {
-                                argumentsa.push(paramEval.split(" ")[0]?.trim?.() == "" ? undefined : Boolean(JSON.parse(paramEval.split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
-                                paramEval = paramEval.split(" ").slice(1).join(" ");
+                                argumentsa.push(paramEval.trimStart().split(" ")[0]?.trim?.() == "" ? undefined : Boolean(JSON.parse(paramEval.trimStart().split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
+                                paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                             }
                             catch {
                                 argumentsa.push(undefined);
@@ -9523,8 +9648,8 @@ export function evaluateParameters(commandstring, parameters) {
                                     ;
                                 }
                                 else {
-                                    argumentsa.push(paramEval.split(" ")[0]);
-                                    paramEval = paramEval.split(" ").slice(1).join(" ");
+                                    argumentsa.push(paramEval.trimStart().split(" ")[0]);
+                                    paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                                 }
                             }
                             else {
@@ -9544,14 +9669,14 @@ export function evaluateParameters(commandstring, parameters) {
                                         ;
                                     }
                                     else {
-                                        argumentsa.push(paramEval.split(" ")[0]);
-                                        paramEval = paramEval.split(" ").slice(1).join(" ");
+                                        argumentsa.push(paramEval.trimStart().split(" ")[0]);
+                                        paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                                     } //1870//7018
                                 }
                                 else {
                                     if (p.type == "json") {
-                                        let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
-                                        paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
+                                        let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                        paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
                                         try {
                                             argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
                                         }
@@ -9594,6 +9719,7 @@ export function evaluateParameters(commandstring, parameters) {
                                                     if (paramEval.trimStart().startsWith("\"")) {
                                                         let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
                                                         paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
+                                                        paramEval = paramEval.slice(+(paramEval[0] == " ")) ?? "";
                                                         try {
                                                             argumentsa.push(value?.v);
                                                         }
@@ -9609,7 +9735,7 @@ export function evaluateParameters(commandstring, parameters) {
                                                 }
                                                 else {
                                                     let value = extractSelectors(paramEval)[0];
-                                                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length + 1) ?? "";
+                                                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                     try {
                                                         argumentsa.push(value);
                                                     }
