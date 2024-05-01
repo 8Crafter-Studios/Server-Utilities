@@ -1,4 +1,4 @@
-import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume } from "@minecraft/server";
+import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume, BoundingBoxUtils } from "@minecraft/server";
 import { targetSelectorAllListC, targetSelectorAllListE, format_version } from "../Main";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -285,6 +285,18 @@ export function getDistance(point1, point2) {
     const deltaY = point2.y - point1.y;
     const deltaZ = point2.z - point1.z;
     return Math.sqrt(deltaX ** 2 + deltaY ** 2 + deltaZ ** 2);
+}
+export function getChunkIndex(location) { return { x: Math.floor(location.x / 16), y: Math.floor(location.z / 16) }; }
+export function getChunkIndexB(x, z) { return { x: Math.floor(x / 16), y: Math.floor(z / 16) }; }
+export function getChunkIndexC(location) { return { x: Math.floor(location.x / 16), y: Math.floor(location.y / 16) }; }
+export function chunkIndexToBoundingBox(chunkIndex, heightRange = [-64, 320]) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange[0], z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange[1], z: Math.round((chunkIndex.y * 16) + 15) } }; }
+export function doBoundingBoxesIntersect(box1, box2) {
+    // Check for intersection along each axis
+    const intersectX = (box1.min.x <= box2.max.x && box1.max.x >= box2.min.x);
+    const intersectY = (box1.min.y <= box2.max.y && box1.max.y >= box2.min.y);
+    const intersectZ = (box1.min.z <= box2.max.z && box1.max.z >= box2.min.z);
+    // If all axes intersect, the bounding boxes intersect
+    return intersectX && intersectY && intersectZ;
 }
 export function facingPoint(location, otherLocation) {
     const sl = location;
@@ -1510,6 +1522,218 @@ export function* generateDomeBG(center, radius, thickness, dimension, generatorP
                             msSinceLastYieldStart = Date.now();
                             yield undefined;
                         }
+                    }
+                }
+                if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                    msSinceLastYieldStart = Date.now();
+                    yield undefined;
+                }
+            }
+        }
+        onComplete();
+        generatorProgress[generatorProgressId].endTick = system.currentTick;
+        generatorProgress[generatorProgressId].endTime = Date.now();
+        generatorProgress[generatorProgressId].done = true;
+        return;
+    }
+    catch (e) {
+        generatorProgress[generatorProgressId].endTick = system.currentTick;
+        generatorProgress[generatorProgressId].endTime = Date.now();
+        generatorProgress[generatorProgressId].done = true;
+        throw (e);
+    }
+}
+export function* generateFillBG(begin, end, dimension, generatorProgressId, minMSBetweenYields = 2000, placeBlockCallback = () => { }, onComplete = () => { }, integrity = 100) {
+    try {
+        generatorProgress[generatorProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
+        var msSinceLastYieldStart = Date.now();
+        if (integrity != 100) {
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; z++) {
+                        if (Math.random() <= (integrity / 100)) {
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                        }
+                    }
+                    if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                        msSinceLastYieldStart = Date.now();
+                        yield undefined;
+                    }
+                }
+                if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                    msSinceLastYieldStart = Date.now();
+                    yield undefined;
+                }
+            }
+        }
+        else {
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; z++) {
+                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                    }
+                    if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                        msSinceLastYieldStart = Date.now();
+                        yield undefined;
+                    }
+                }
+                if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                    msSinceLastYieldStart = Date.now();
+                    yield undefined;
+                }
+            }
+        }
+        onComplete();
+        generatorProgress[generatorProgressId].endTick = system.currentTick;
+        generatorProgress[generatorProgressId].endTime = Date.now();
+        generatorProgress[generatorProgressId].done = true;
+        return;
+    }
+    catch (e) {
+        generatorProgress[generatorProgressId].endTick = system.currentTick;
+        generatorProgress[generatorProgressId].endTime = Date.now();
+        generatorProgress[generatorProgressId].done = true;
+        throw (e);
+    }
+}
+export function* generateWallsFillBG(begin, end, dimension, generatorProgressId, minMSBetweenYields = 2000, placeBlockCallback = () => { }, onComplete = () => { }, integrity = 100) {
+    try {
+        generatorProgress[generatorProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
+        var msSinceLastYieldStart = Date.now();
+        if (integrity != 100) {
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; (x == begin.x || x == end.x || z == end.z) ? z++ : z = end.z) {
+                        if (Math.random() <= (integrity / 100)) {
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                        }
+                    }
+                    if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                        msSinceLastYieldStart = Date.now();
+                        yield undefined;
+                    }
+                }
+                if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                    msSinceLastYieldStart = Date.now();
+                    yield undefined;
+                }
+            }
+        }
+        else {
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; (x == begin.x || x == end.x || z == end.z) ? z++ : z = end.z) {
+                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                    }
+                    if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                        msSinceLastYieldStart = Date.now();
+                        yield undefined;
+                    }
+                }
+                if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                    msSinceLastYieldStart = Date.now();
+                    yield undefined;
+                }
+            }
+        }
+        onComplete();
+        generatorProgress[generatorProgressId].endTick = system.currentTick;
+        generatorProgress[generatorProgressId].endTime = Date.now();
+        generatorProgress[generatorProgressId].done = true;
+        return;
+    }
+    catch (e) {
+        generatorProgress[generatorProgressId].endTick = system.currentTick;
+        generatorProgress[generatorProgressId].endTime = Date.now();
+        generatorProgress[generatorProgressId].done = true;
+        throw (e);
+    }
+}
+export function* generateHollowFillBG(begin, end, dimension, generatorProgressId, minMSBetweenYields = 2000, placeBlockCallback = () => { }, onComplete = () => { }, integrity = 100) {
+    try {
+        generatorProgress[generatorProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
+        var msSinceLastYieldStart = Date.now();
+        if (integrity != 100) {
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; (x == begin.x || x == end.x || y == begin.y || y == end.y || z == end.z) ? z++ : z = end.z) {
+                        if (Math.random() <= (integrity / 100)) {
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                        }
+                    }
+                    if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                        msSinceLastYieldStart = Date.now();
+                        yield undefined;
+                    }
+                }
+                if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                    msSinceLastYieldStart = Date.now();
+                    yield undefined;
+                }
+            }
+        }
+        else {
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; (x == begin.x || x == end.x || y == begin.y || y == end.y || z == end.z) ? z++ : z = end.z) {
+                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                    }
+                    if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                        msSinceLastYieldStart = Date.now();
+                        yield undefined;
+                    }
+                }
+                if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                    msSinceLastYieldStart = Date.now();
+                    yield undefined;
+                }
+            }
+        }
+        onComplete();
+        generatorProgress[generatorProgressId].endTick = system.currentTick;
+        generatorProgress[generatorProgressId].endTime = Date.now();
+        generatorProgress[generatorProgressId].done = true;
+        return;
+    }
+    catch (e) {
+        generatorProgress[generatorProgressId].endTick = system.currentTick;
+        generatorProgress[generatorProgressId].endTime = Date.now();
+        generatorProgress[generatorProgressId].done = true;
+        throw (e);
+    }
+}
+export function* generateOutlineFillBG(begin, end, dimension, generatorProgressId, minMSBetweenYields = 2000, placeBlockCallback = () => { }, onComplete = () => { }, integrity = 100) {
+    try {
+        generatorProgress[generatorProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
+        var msSinceLastYieldStart = Date.now();
+        if (integrity != 100) {
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; (((x == begin.x || x == end.x) && (y == begin.y || y == end.y)) || z == end.z) ? z++ : z = end.z) {
+                        if (Math.random() <= (integrity / 100)) {
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                        }
+                    }
+                    if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                        msSinceLastYieldStart = Date.now();
+                        yield undefined;
+                    }
+                }
+                if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                    msSinceLastYieldStart = Date.now();
+                    yield undefined;
+                }
+            }
+        }
+        else {
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; (x == begin.x || x == end.x || y == end.y) ? y++ : y = end.y) {
+                    for (let z = begin.z; z <= end.z; (((x == begin.x || x == end.x) && (y == begin.y || y == end.y)) || z == end.z) ? z++ : z = end.z) {
+                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                    }
+                    if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                        msSinceLastYieldStart = Date.now();
+                        yield undefined;
                     }
                 }
                 if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {

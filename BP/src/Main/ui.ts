@@ -19,7 +19,7 @@ import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-import { command, commandSettings, command_settings_format_version, commands, commands_format_version } from "Main/commands";
+import { command, commandSettings, command_settings_format_version, commands, commands_format_version, config } from "Main/commands";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -430,7 +430,9 @@ form.body("Choose menu to open. ");
 form.button("Global Settings", "textures/ui/settings_glyph_color_2x");
 form.button("Eval Auto Execute Settings", "textures/ui/settings_glyph_color_2x");
 form.button("Personal Settings", "textures/ui/settings_glyph_color_2x");
-form.button("Notifications Settings", "textures/ui/");/*
+form.button("Notifications Settings", "textures/ui/icon_bell");
+form.button("Home System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
+form.button("Back", "textures/ui/");/*
 form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
 forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormResponse); 
     // This will stop the code when the player closes the form
@@ -448,6 +450,18 @@ forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormR
 
         case 2:
             personalSettings(sourceEntity)
+            break;
+
+        case 3:
+            //personalSettings(sourceEntity)
+            break;
+
+        case 4:
+            homeSystemSettings(sourceEntity)
+            break;
+
+        case 5:
+            mainMenu(sourceEntity)
             break;
         default:
     }
@@ -504,6 +518,24 @@ export function globalSettings(sourceEntity: Entity|Player){
         world.setDynamicProperty("andexdbSettings:autoURIEscapeChatMessages", autoURIEscapeChatMessages)
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes)
         world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData)
+}).catch(e => {
+    console.error(e, e.stack);
+});}
+export function homeSystemSettings(sourceEntity: Entity|Player){
+    let form2 = new ModalFormData();
+    form2.title("Home System Settings [§cExperimental§r]")
+    form2.toggle("§l§fHome System Enabled§r§f", config.homeSystemEnabled);
+    form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.maxHomesPerPlayer));
+    form2.submitButton("Save")
+    forceShow(form2, (sourceEntity as Player)).then(to => {
+        let t = (to as ModalFormResponse)
+        if (t.canceled) return;/*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+    
+        let [ homeSystemEnabled, maxHomesPerPlayer ] = t.formValues;
+        config.homeSystemEnabled=homeSystemEnabled as boolean
+        config.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
 }).catch(e => {
     console.error(e, e.stack);
 });}
