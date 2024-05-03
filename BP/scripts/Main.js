@@ -48,6 +48,7 @@ import "Main/player_save.js";
 import "Main/spawn_protection.js";
 import "@minecraft/math.js";
 export const mainmetaimport = import.meta;
+export const subscribedEvents = {};
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
@@ -3650,7 +3651,19 @@ Object.defineProperty(String.prototype, 'escapeCharactersB', { value: function (
         //:Return modified copy:
         return ({ v: str, e: eb });
     } });
-world.afterEvents.worldInitialize.subscribe((event) => {
+subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subscribe((event) => {
+    try {
+        eval(String(world.getDynamicProperty("evalBeforeEvents:worldInitialize")));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("worldInitializeAfterEventDebugErrors")) {
+            currentplayer.sendMessage(e + e.stack);
+        } });
+    }
+    globalThis.beforeInitiallizeTick = system.currentTick;
+});
+subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe((event) => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:worldInitialize")));
     }
@@ -3758,7 +3771,7 @@ export function tryget(callbackfn) { try {
     return callbackfn();
 }
 catch { } }
-world.beforeEvents.effectAdd.subscribe(event => {
+subscribedEvents.beforeEffectAdd = world.beforeEvents.effectAdd.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:effectAdd")));
     }
@@ -3769,7 +3782,7 @@ world.beforeEvents.effectAdd.subscribe(event => {
         } });
     }
 });
-world.beforeEvents.entityRemove.subscribe(event => {
+subscribedEvents.beforeEntityRemove = world.beforeEvents.entityRemove.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:entityRemove")));
     }
@@ -3780,7 +3793,7 @@ world.beforeEvents.entityRemove.subscribe(event => {
         } });
     }
 });
-world.beforeEvents.playerGameModeChange.subscribe(event => {
+subscribedEvents.beforePlayerGameModeChange = world.beforeEvents.playerGameModeChange.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerGameModeChange")));
     }

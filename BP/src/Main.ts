@@ -48,6 +48,7 @@ import "Main/player_save.js";
 import "Main/spawn_protection.js";
 import "@minecraft/math.js";
 export const mainmetaimport = import.meta
+export const subscribedEvents = {} as {[eventName: string]: Function}
 
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
@@ -2613,7 +2614,12 @@ Object.defineProperty(String.prototype, 'escapeCharactersB', {value: function (j
     return( {v: str, e: eb} );
 }});
 
-world.afterEvents.worldInitialize.subscribe((event) => {
+subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subscribe((event) => {
+    try{eval(String(world.getDynamicProperty("evalBeforeEvents:worldInitialize")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("worldInitializeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+    globalThis.beforeInitiallizeTick=system.currentTick
+});
+
+subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe((event) => {
     try{eval(String(world.getDynamicProperty("evalAfterEvents:worldInitialize")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("worldInitializeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     try{if (world.scoreboard.getObjective("andexdbDebug") == undefined){world.scoreboard.addObjective("andexdbDebug", "andexdbScriptDebuggingService")}}catch(e){}
     globalThis.initiallizeTick=system.currentTick/*
@@ -2707,13 +2713,13 @@ world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(event => {
     export const dimensionTypeDisplayFormatting = {"minecraft:overworld": "the overworld", "overworld": "the overworld", "minecraft:nether": "the nether", "nether": "the nether", "minecraft:the_end": "the end", "the_end": "the end"}
     export const dimensionTypeDisplayFormattingB = {"minecraft:overworld": "overworld", "overworld": "overworld", "minecraft:nether": "nether", "nether": "nether", "minecraft:the_end": "the end", "the_end": "the end"}
     export function tryget<T>(callbackfn: ()=>T){try{return callbackfn() as T}catch{}}
-world.beforeEvents.effectAdd.subscribe(event => {
+subscribedEvents.beforeEffectAdd = world.beforeEvents.effectAdd.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalBeforeEvents:effectAdd")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("effectAddBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.beforeEvents.entityRemove.subscribe(event => {
+subscribedEvents.beforeEntityRemove = world.beforeEvents.entityRemove.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalBeforeEvents:entityRemove")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityRemoveBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.beforeEvents.playerGameModeChange.subscribe(event => {
+subscribedEvents.beforePlayerGameModeChange = world.beforeEvents.playerGameModeChange.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerGameModeChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerGameModeChangeBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
 world.beforeEvents.weatherChange.subscribe(event => {

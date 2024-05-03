@@ -765,7 +765,9 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "extinguish", escregexp: { v: "^extinguish$" }, aliases: [{ commandName: "ext", escregexp: { v: "^ext$" } }], formats: [{ format: "extinguish [radius: number]" }], command_version: "2.2.0-beta.10", description: "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:extinguish" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "remexp", escregexp: { v: "^remexp$" }, formats: [{ format: "remexp [radius: number]" }], command_version: "2.2.0-beta.5", description: "Removes explosives in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:remexp" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "drain", escregexp: { v: "^drain$" }, formats: [{ format: "drain [radius: number]" }], command_version: "2.2.0-beta.5", description: "Drains liquids in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:drain" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "liststructures", escregexp: { v: "^liststructures$" }, formats: [{ format: "liststructures" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "blocks"], commandSettingsId: "built-inCommandSettings:liststructures" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "liststructures", escregexp: { v: "^liststructures$" }, formats: [{ format: "liststructures" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "blocks"], commandSettingsId: "built-inCommandSettings:home" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: { v: "^home$" }, formats: [{ format: "home" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gohome", escregexp: { v: "^gohome$" }, formats: [{ format: "gohome" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "kick", escregexp: { v: "^kick$" }, formats: [{ format: "kick <players: targetSelector> [reason: string]" }], command_version: "1.0.0", description: "", category: ["system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:kick" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "disconnect", escregexp: { v: "^disconnect$" }, aliases: [{ commandName: "boot", escregexp: { v: "^boot$" } }], formats: [{ format: "disconnect <players: targetSelector>" }], command_version: "1.0.0", description: "", category: ["Entity Scale Add-On", "system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:disconnect" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: { v: "^morph$" }, formats: [{ format: "" }], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:morph" },
@@ -1121,10 +1123,10 @@ export class Home {
     get isOwnerOnline() { return !!world.getAllPlayers().find(p => p.id == this.ownerId); }
     get isSaved() { return !!world.getDynamicProperty(this.saveId); }
     toJSON() { return { location: Object.assign(this.location, { dimension: this.location.dimension.id }), name: this.name, ownerId: this.ownerId, ownerName: this.ownerName, format_version: this.format_version ?? format_version, home_format_version: this.home_format_version ?? HomeSystem.home_format_version }; }
-    save(otherDataToChange = {}, keepOldFormatVersion = false) { world.setDynamicProperty(this.saveId, Object.assign(Object.assign(Object.assign(world.getDynamicProperty(this.saveId) ?? {}, this.toJSON()), otherDataToChange), keepOldFormatVersion ? {} : { format_version, home_format_version: HomeSystem.home_format_version })); }
+    save(otherDataToChange = {}, keepOldFormatVersion = false) { world.setDynamicProperty(this.saveId, JSONStringify(Object.assign(Object.assign(Object.assign(JSONParse(String(world.getDynamicProperty(this.saveId) ?? "{}")) ?? {}, this.toJSON()), otherDataToChange), keepOldFormatVersion ? {} : { format_version, home_format_version: HomeSystem.home_format_version }))); }
     remove() { world.setDynamicProperty(this.saveId); }
     static get(homeId) {
-        return !!world.getDynamicProperty(homeId) ? new Home(Object.assign(JSONParse(String(world.getDynamicProperty(homeId))), { saveId: homeId })) : undefined;
+        return !!world.getDynamicProperty(homeId) ? new Home(Object.assign(JSONParse(String(world.getDynamicProperty(homeId))), { saveId: homeId, location: Object.assign(JSONParse(String(world.getDynamicProperty(homeId))).location, { dimension: world.getDimension(JSONParse(String(world.getDynamicProperty(homeId))).location.dimension) }) })) : undefined;
     }
     static delete(homeId) { world.setDynamicProperty(homeId); }
 }
@@ -1513,7 +1515,12 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
     "gmp": `${command.dp}gmp`,
     "gmr": `${command.dp}gmr`,
     "gms": `${command.dp}gms`,
+    "gohome": `${command.dp}gohome <homeName: text>`,
     "h#": `${command.dp}h<presetId: float> <containerRow: float>`,
+    "home": `${command.dp}home <mode: set|remove|go|warp|teleport> <homeName: text>
+${command.dp}home clear
+${command.dp}home removeall
+${command.dp}home list`,
     "hset": `${command.dp}hset <presetID: flaot> [dimensionId: string] [x: float] [y: float] [z: float]`,
     "idtfill": `${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
@@ -1875,7 +1882,9 @@ export var commanddescriptions;
     commanddescriptions["gmp"] = "Sets your gamemode to spectator. ";
     commanddescriptions["gmr"] = "Sets your gamemode to a random gamemode. ";
     commanddescriptions["gms"] = "Sets your gamemode to survival. ";
+    commanddescriptions["gohome"] = "Warps to a home. ";
     commanddescriptions["h#"] = "Swaps your hotbar with the specified hotbar preset. ";
+    commanddescriptions["home"] = "Sets/Removes/Warps to a home. ";
     commanddescriptions["hset"] = "Sets a hotbar preset. ";
     commanddescriptions["idtfill"] = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. ";
     commanddescriptions["ifill"] = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ";
@@ -4032,7 +4041,9 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .gmp - §oSets your gamemode to spectator. §r
 .gmr - §oSets your gamemode to a random gamemode. §r
 .gms - §oSets your gamemode to survival. §r
+.gohome - §oWarps to a home. §r
 .h# - §oSwaps your hotbar with the specified hotbar preset. §r
+.home - §oSets/Removes/Warps to a home. §r
 .hset - §oSets a hotbar preset. §r
 .idtfill - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. §r
 .ifill - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. §r
@@ -5262,6 +5273,15 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
                 break;
+            case !!switchTest.match(/^thru$/):
+                eventData.cancel = true;
+                try {
+                    system.run(() => { });
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
             case !!switchTest.match(/^home$/):
                 {
                     eventData.cancel = true;
@@ -5270,38 +5290,89 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         let args = argsa.args;
                         switch (String(args[1])) {
                             case "set":
-                                if (HomeSystem.testIfPlayerAtMaxHomes(player) || !!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
+                                if (!(HomeSystem.testIfPlayerAtMaxHomes(player) || !!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]))) {
                                     args.push(argsa.extra);
                                     new Home({ location: Object.assign(player.location, { dimension: player.dimension }), name: args[2], owner: player, saveId: "home:" + player.id + ":" + args[2] }).save();
+                                    player.sendMessage(`Successfully set the home "${args[2]}" to ${vTStr(player.location)} in ${main.dimensionTypeDisplayFormatting[player.dimension.id]}. `);
                                 }
                                 else {
-                                    player.sendMessage("");
+                                    player.sendMessage("§cError: Max homes reached. Please delete a home if you want to add a new one. ");
                                 }
+                                break;
                             case "remove":
                                 args.push(argsa.extra);
-                                HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).remove();
+                                if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
+                                    HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).remove();
+                                    player.sendMessage(`Successfully removed the home "${args[2]}". `);
+                                }
+                                else {
+                                    player.sendMessage(`§cError: Could not find a home with the name "${args[2]}". `);
+                                }
+                                break;
                             case "go":
                                 args.push(argsa.extra);
-                                srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location, { dimension: HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location.dimension }));
+                                if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
+                                    srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location, { dimension: HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location.dimension }));
+                                    player.sendMessage(`Successfully teleported to the home "${args[2]}". `);
+                                }
+                                else {
+                                    player.sendMessage(`§cError: Could not find a home with the name "${args[2]}". `);
+                                }
+                                break;
                             case "warp":
                                 args.push(argsa.extra);
-                                srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location, { dimension: HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location.dimension }));
+                                if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
+                                    srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location, { dimension: HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location.dimension }));
+                                    player.sendMessage(`Successfully teleported to the home "${args[2]}". `);
+                                }
+                                else {
+                                    player.sendMessage(`§cError: Could not find a home with the name "${args[2]}". `);
+                                }
+                                break;
                             case "teleport":
                                 args.push(argsa.extra);
-                                srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location, { dimension: HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location.dimension }));
+                                if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
+                                    srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location, { dimension: HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location.dimension }));
+                                    player.sendMessage(`Successfully teleported to the home "${args[2]}". `);
+                                }
+                                else {
+                                    player.sendMessage(`§cError: Could not find a home with the name "${args[2]}". `);
+                                }
+                                break;
                             case "clear":
                                 HomeSystem.getHomesForPlayer(player).forEach(h => h.remove());
+                                player.sendMessage(`Successfully cleared all of your homes. `);
+                                break;
                             case "removeall":
                                 HomeSystem.getHomesForPlayer(player).forEach(h => h.remove());
+                                player.sendMessage(`Successfully removed all of your homes. `);
+                                break;
+                            case "list":
+                                player.sendMessage(HomeSystem.getHomesForPlayer(player).map(h => h.name.replaceAll("§", "\uF019")).join("§r§f\n"));
+                                break;
                         }
+                    }
+                    else {
+                        player.sendMessage("§cError: This command cannot be used becuase the experimental home system is not enabled. It can be enabled at \"Main Menu>Settings>Home System>Enable Home System\"");
                     }
                 }
                 break;
             case !!switchTest.match(/^gohome$/):
                 {
                     eventData.cancel = true;
-                    let argsa = evaluateParameters(switchTestB, ["presetText"]);
-                    srun(() => player.teleport(Home.get("home:" + player.id + ":" + argsa.extra).location, { dimension: Home.get("home:" + player.id + ":" + argsa.extra).location.dimension }));
+                    if (config.homeSystemEnabled) {
+                        let argsa = evaluateParameters(switchTestB, ["presetText"]);
+                        if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == argsa.extra)) {
+                            srun(() => player.teleport(Home.get("home:" + player.id + ":" + argsa.extra).location, { dimension: Home.get("home:" + player.id + ":" + argsa.extra).location.dimension }));
+                            player.sendMessage(`Successfully teleported to the home "${argsa.extra}". `);
+                        }
+                        else {
+                            player.sendMessage(`§cError: Could not find a home with the name "${argsa.extra}". `);
+                        }
+                    }
+                    else {
+                        player.sendMessage("§cError: This command cannot be used becuase the experimental home system is not enabled. It can be enabled at \"Main Menu>Settings>Home System>Enable Home System\"");
+                    }
                 }
                 break;
             case !!switchTest.match(/^heal$/):
