@@ -554,7 +554,7 @@ export function settings(sourceEntity) {
                 personalSettings(sourceEntity);
                 break;
             case 3:
-                //personalSettings(sourceEntity)
+                notificationsSettings(sourceEntity);
                 break;
             case 4:
                 homeSystemSettings(sourceEntity);
@@ -639,6 +639,25 @@ export function homeSystemSettings(sourceEntity) {
         let [homeSystemEnabled, maxHomesPerPlayer] = t.formValues;
         config.homeSystemEnabled = homeSystemEnabled;
         config.maxHomesPerPlayer = String(maxHomesPerPlayer).toLowerCase() == "infinity" ? Infinity : Number(maxHomesPerPlayer);
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function notificationsSettings(sourceEntity) {
+    let form2 = new ModalFormData();
+    form2.title("Notifications Settings");
+    form2.toggle("§l§fGet notified when players run chat commands§r§f", sourceEntity.hasTag("getAllChatCommands"));
+    form2.toggle("§l§fGet notified when a game rule is changed§r§f", sourceEntity.hasTag("getGameRuleChangeNotifications"));
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(to => {
+        let t = to;
+        if (t.canceled)
+            return; /*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+        let [getAllChatCommands, getGameRuleChangeNotifications] = t.formValues;
+        Boolean(getAllChatCommands) ? sourceEntity.addTag("getAllChatCommands") : sourceEntity.removeTag("getAllChatCommands");
+        Boolean(getGameRuleChangeNotifications) ? sourceEntity.addTag("getGameRuleChangeNotifications") : sourceEntity.removeTag("getGameRuleChangeNotifications");
     }).catch(e => {
         console.error(e, e.stack);
     });
