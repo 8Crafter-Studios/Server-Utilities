@@ -19,7 +19,7 @@ import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-import { command, commandSettings, command_settings_format_version, commands, commands_format_version, config } from "Main/commands";
+import { chatCommands, chatMessage, chatSend, command, commandSettings, command_settings_format_version, commands, commands_format_version, config } from "Main/commands";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -867,7 +867,8 @@ export function terminal(sourceEntity) {
         form.textField("Run Delay", "Run Delay");
         form.toggle("Debug", false);
         form.submitButton("Run");
-        form.show(sourceEntity).then(r => {
+        forceShow(form, sourceEntity).then(ra => {
+            let r = ra;
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return;
@@ -877,6 +878,90 @@ export function terminal(sourceEntity) {
             system.runTimeout(() => {
                 sourceEntity.sendMessage(String((sourceEntity).runCommand(String(commandId)).successCount));
             }, Number(commandDelay));
+            // Do something
+        }).catch(e => {
+            console.error(e, e.stack);
+        });
+    }); /*
+try { (sourceEntity).runCommand(String("/scriptevent andexdb:commandRunner hisa")); }
+// Do something
+catch(e) {
+console.error(e, e.stack);
+};*/
+}
+export function chatMessageNoCensor(sourceEntity, bypassChatInputRequests = false) {
+    system.run(() => {
+        let form = new ModalFormData();
+        let playerList = world.getAllPlayers();
+        form.title("Chat");
+        form.textField("Chat Message / Command", "Chat Message / Command");
+        form.dropdown("As Player", playerList.map(p => p.name), playerList.indexOf(sourceEntity));
+        form.submitButton("Send");
+        forceShow(form, sourceEntity).then(ra => {
+            let r = ra;
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return;
+            // This will assign every input their own variable
+            let [message, asPlayer] = r.formValues; /*
+            console.warn(r.formValues);*/
+            chatMessage({ cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity }, bypassChatInputRequests);
+            // Do something
+        }).catch(e => {
+            console.error(e, e.stack);
+        });
+    }); /*
+try { (sourceEntity).runCommand(String("/scriptevent andexdb:commandRunner hisa")); }
+// Do something
+catch(e) {
+console.error(e, e.stack);
+};*/
+}
+export function chatSendNoCensor(sourceEntity) {
+    system.run(() => {
+        let form = new ModalFormData();
+        let playerList = world.getAllPlayers();
+        form.title("Chat");
+        form.textField("Chat Message", "Chat Message");
+        form.dropdown("As Player", playerList.map(p => p.name), playerList.indexOf(sourceEntity));
+        form.submitButton("Send");
+        forceShow(form, sourceEntity).then(ra => {
+            let r = ra;
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return;
+            // This will assign every input their own variable
+            let [message, asPlayer] = r.formValues; /*
+            console.warn(r.formValues);*/
+            chatSend({ returnBeforeChatSend: false, player: playerList[asPlayer] ?? sourceEntity, newMessage: message, event: { cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity }, eventData: { cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity } });
+            // Do something
+        }).catch(e => {
+            console.error(e, e.stack);
+        });
+    }); /*
+try { (sourceEntity).runCommand(String("/scriptevent andexdb:commandRunner hisa")); }
+// Do something
+catch(e) {
+console.error(e, e.stack);
+};*/
+}
+export function chatCommandRunner(sourceEntity) {
+    system.run(() => {
+        let form = new ModalFormData();
+        let playerList = world.getAllPlayers();
+        form.title("Chat Command Runner");
+        form.textField("Chat Command", "Chat Command");
+        form.dropdown("As Player", playerList.map(p => p.name), playerList.indexOf(sourceEntity));
+        form.submitButton("Run Chat Command");
+        forceShow(form, sourceEntity).then(ra => {
+            let r = ra;
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return;
+            // This will assign every input their own variable
+            let [message, asPlayer] = r.formValues; /*
+            console.warn(r.formValues);*/
+            chatCommands({ returnBeforeChatSend: false, player: playerList[asPlayer] ?? sourceEntity, newMessage: message, event: { cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity }, eventData: { cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity } });
             // Do something
         }).catch(e => {
             console.error(e, e.stack);

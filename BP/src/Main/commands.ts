@@ -1,10 +1,10 @@
 import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, } from "./coordinates";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun } from "../Main";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
-import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands } from "./ui.js";
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor } from "./ui.js";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
@@ -37,8 +37,15 @@ playersave
 spawnprot
 mcMath
 export const disconnectingPlayers = [] as string[]
+export const currentlyRequestedChatInput = {} as {[playerId: string]: {anyInput: {[id: string]: {time: number, request?: string|RawMessage|(string|RawMessage)[], input?: string, id?: string}}, conditionalInput: {[id: string]: {time: number, request?: string|RawMessage|(string|RawMessage)[], input?: string, id?: string, conditions: (player: Player, message: string)=>boolean}}}}
+export let idGeneratorIndex = 0
+export function idGenerator() {
+    let id = "id"+idGeneratorIndex+"Time"+Date.now()
+    idGeneratorIndex = (idGeneratorIndex+1)%32767
+    return id
+}
 
-export const commands_format_version = "8.1.0-rc.99";
+export const commands_format_version = "10.1.0-rc.99";
     // @ts-expect-error
         [][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(![]+[+[]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[+!+[]]+(+(!+[]+!+[]+[+!+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[+!+[]])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]])()([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[(![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]]((+((+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+[+[]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+!+[]]])+[])[!+[]+!+[]]+[+!+[]])+(![]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]])()())[!+[]+!+[]+!+[]+[+[]]]+(+(+!+[]+[+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+[+!+[]])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]+!+[]])()[(!![]+[])[+[]]+(![]+[])[+[]]+(![]+[])[!+[]+!+[]+!+[]]+(![]+[])[+!+[]]] = [][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+'[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+([]+{})[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[+!+[]+[!+[]+!+[]+!+[]]]+(![]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]]+![]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]])()[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]()+[])[!+[]+!+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+","+"\\""+(+[![]]+[][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]())[+!+[]+[+!+[]]]+([][[]]+[])[+!+[]]+([][[]]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(+(+!+[]+[+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[!+[]+!+[]+!+[]+!+[]])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+"\\""+([+[]]+![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[!+[]+!+[]+[+[]]])([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(![]+[])[+[]])(f))')
     // @ts-expect-error
@@ -620,13 +627,19 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "eval", escregexp: {v: "^eval$"}, formats: [{format: "eval <script: JavaScript>"}], command_version: "1.1.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:eval"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "top", escregexp: {v: "^top$"}, formats: [{format: "top"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:top"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "up", escregexp: {v: "^up$"}, formats: [{format: "up [placeGlass: boolean]"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:up"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "thru", escregexp: {v: "^thru$"}, formats: [{format: "thru"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:thru"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "vthru", escregexp: {v: "^vthru$"}, formats: [{format: "vthru"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:vthru"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "phase", escregexp: {v: "^phase$"}, formats: [{format: "phase"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:phase"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "printlayers", escregexp: {v: "^printlayers$"}, formats: [{format: "printlayers"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:printlayers"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "managescriptautoeval", escregexp: {v: "^managescriptautoeval$"}, formats: [{format: "managescriptautoeval"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:managescriptautoeval"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "mainmenu", escregexp: {v: "^mainmenu$"}, aliases: [{commandName: "menu", escregexp: {v: "^menu$"}}], formats: [{format: "mainmenu"}], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:mainmenu"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "mainmenu", escregexp: {v: "^mainmenu$"}, aliases: [{commandName: "menu", escregexp: {v: "^menu$"}}, {commandName: "mm", escregexp: {v: "^mm$"}}], formats: [{format: "mainmenu"}], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:mainmenu"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "terminal", escregexp: {v: "^terminal$"}, aliases: [{commandName: "cmdrunner", escregexp: {v: "^cmdrunner$"}}], formats: [{format: "terminal"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:terminal"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "managecommands", escregexp: {v: "^managecommands$"}, aliases: [{commandName: "mngcmds", escregexp: {v: "^mngcmds$"}}], formats: [{format: "managecommands"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:managecommands"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "manageplayers", escregexp: {v: "^manageplayers$"}, aliases: [{commandName: "mngplyrs", escregexp: {v: "^mngplyrs$"}}], formats: [{format: "manageplayers"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:manageplayers"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "settings", escregexp: {v: "^settings$"}, formats: [{format: "settings"}], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:settings"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "messageui", escregexp: {v: "^messageui$"}, aliases: [{commandName: "msgui", escregexp: {v: "^msgui$"}}], formats: [{format: "messageui"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:messageui"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "chatsendui", escregexp: {v: "^chatsendui$"}, aliases: [{commandName: "chtsndui", escregexp: {v: "^chtsndui$"}}, {commandName: "chtsendui", escregexp: {v: "^chtsendui$"}}, {commandName: "sendui", escregexp: {v: "^sendui$"}}], formats: [{format: "chatsendui"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:chatsendui"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "chatcommandui", escregexp: {v: "^chatcommandui$"}, aliases: [{commandName: "chtcmdui", escregexp: {v: "^chtcmdui$"}}, {commandName: "cmdui", escregexp: {v: "^cmdui$"}}, {commandName: "commandui", escregexp: {v: "^commandui$"}}], formats: [{format: "chatcommandui"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:chatcommandui"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "datapickblock", escregexp: {v: "^datapickblock$"}, aliases: [{commandName: "dpb", escregexp: {v: "^dpb$"}}], formats: [{format: "datapickblock"}], command_version: "1.0.0", category: ["world"], description: "", commandSettingsId: "built-inCommandSettings:datapickblock"},
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "createexplosion", escregexp: {v: "^createexplosion$"}, formats: [{format: "createexplosion <location: x y z> <dimension: string> [radius: float] [allowUnderwater: bool] [breaksBlocks: bool] [causesFire: bool] [source: targetSelector]"}], command_version: "1.0.0-rc.57", description: "Creates an explosion. ", category: ["world"], commandSettingsId: "built-inCommandSettings:createexplosion"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "fill", escregexp: {v: "^fill$"}, formats: [{format: "fill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "fill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "1.1.0-rc.9", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain. ", category: ["world"], commandSettingsId: "built-inCommandSettings:fill"}, 
@@ -783,10 +796,17 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "extinguish", escregexp: {v: "^extinguish$"}, aliases: [{commandName: "ext", escregexp: {v: "^ext$"}}], formats: [{format: "extinguish [radius: number]"}], command_version: "2.2.0-beta.10", description: "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:extinguish"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "remexp", escregexp: {v: "^remexp$"}, formats: [{format: "remexp [radius: number]"}], command_version: "2.2.0-beta.5", description: "Removes explosives in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:remexp"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "drain", escregexp: {v: "^drain$"}, formats: [{format: "drain [radius: number]"}], command_version: "2.2.0-beta.5", description: "Drains liquids in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:drain"},
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "liststructures", escregexp: {v: "^liststructures$"}, formats: [{format: "liststructures"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "blocks"], commandSettingsId: "built-inCommandSettings:home"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "summon", escregexp: {v: "^summon$"}, formats: [{format: "summon"}], command_version: "1.0.0", description: "", category: ["entities"], commandSettingsId: "built-inCommandSettings:summon"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "spawnitem", escregexp: {v: "^spawnitem$"}, formats: [{format: "spawnitem"}], command_version: "1.0.0", description: "", category: ["entities", "items"], commandSettingsId: "built-inCommandSettings:spawnitem"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "heal", escregexp: {v: "^heal$"}, formats: [{format: "heal"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:heal"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "health", escregexp: {v: "^health$"}, formats: [{format: "health"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:health"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "maxhealth", escregexp: {v: "^maxhealth$"}, formats: [{format: "maxhealth"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:maxhealth"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "minhealth", escregexp: {v: "^minhealth$"}, formats: [{format: "minhealth"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:minhealth"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "defaulthealth", escregexp: {v: "^defaulthealth$"}, aliases: [{commandName: "dfthlth", escregexp: {v: "^dfthlth$"}}, {commandName: "dflthlth", escregexp: {v: "^dflthlth$"}}, {commandName: "dfthealth", escregexp: {v: "^dfthealth$"}}, {commandName: "dflthealth", escregexp: {v: "^dfthealth$"}}], formats: [{format: "defaulthealth"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:defaulthealth"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "liststructures", escregexp: {v: "^liststructures$"}, formats: [{format: "liststructures"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "blocks"], commandSettingsId: "built-inCommandSettings:liststructures"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: {v: "^home$"}, formats: [{format: "home"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gohome", escregexp: {v: "^gohome$"}, formats: [{format: "gohome"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "kick", escregexp: {v: "^kick$"}, formats: [{format: "kick <players: targetSelector> [reason: string]"}], command_version: "1.0.0", description: "", category: ["system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:kick"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "kick", escregexp: {v: "^kick$"}, formats: [{format: "kick <players: targetSelector> [reason: string]"}], command_version: "1.0.0", description: "", category: ["system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:kick"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "disconnect", escregexp: {v: "^disconnect$"}, aliases: [{commandName: "boot", escregexp: {v: "^boot$"}}], formats: [{format: "disconnect <players: targetSelector>"}], command_version: "1.0.0", description: "", category: ["Entity Scale Add-On", "system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:disconnect"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: {v: "^morph$"}, formats: [{format: ""}], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:morph"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "tint", escregexp: {v: "^tint$"}, formats: [{format: "tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: targetSelector]"}], command_version: "1.0.4", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:tint"}, 
@@ -1166,7 +1186,19 @@ export class config{
 }
 //((a: Player)=>{})(new executeCommandPlayer(getPlayer("Andexter8")))
 export function send(message: string){world.sendMessage(message)}; 
-export function chatMessage(eventData: ChatSendBeforeEvent){
+export async function requestChatInput(player: Player, requestMessage?: string|RawMessage|(string|RawMessage)[]){
+    let id = idGenerator()
+    !!requestMessage?player.sendMessage(requestMessage):undefined
+    !!!currentlyRequestedChatInput[player.id]?currentlyRequestedChatInput[player.id]={anyInput: {[id]: {time: Date.now(), id: id, request: requestMessage}}, conditionalInput: {}}:currentlyRequestedChatInput[player.id].anyInput[id]={time: Date.now(), id: id, request: requestMessage}
+    return new Promise((resolve: (value: string) => void, reject: (error: Error) => void) => {
+        function a(){if(!player.isValid()){delete currentlyRequestedChatInput[player.id]; reject(new ReferenceError("The player that the input was requested from is no longer valid, most likely the have left the game, ")); return}; if(!!!currentlyRequestedChatInput[player.id].anyInput[id].input){system.run(() => {
+           a()
+        })}else{let input = currentlyRequestedChatInput[player.id].anyInput[id].input; delete currentlyRequestedChatInput[player.id].anyInput[id]; resolve(input)}}
+        a()
+    })
+}
+export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputRequests = false){
+    if(!bypassChatInputRequests&&Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput??{}).length!=0){currentlyRequestedChatInput[eventData.sender.id].anyInput[Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput??{}).sort((a, b) => currentlyRequestedChatInput[eventData.sender.id].anyInput[a].time - currentlyRequestedChatInput[eventData.sender.id].anyInput[b].time)[0]].input=eventData.message; eventData.cancel=true; return}
     let runreturn: boolean; runreturn = false; 
     let returnBeforeChatSend: boolean; returnBeforeChatSend = false; 
     let returnBeforeChatCommandsOrChatSend: boolean; returnBeforeChatCommandsOrChatSend = false; 
@@ -1265,10 +1297,13 @@ export const compareArraysB = (array1: any[], array2: any[])=>(array1.length ===
 
 export const commandsyntaxes = {
 "binvsee": `${command.dp}binvsee <dimension: dimension|~> <block: x y z>`,
+"chatcommandui": `${command.dp}chatcommandui`,
+"chatsendui": `${command.dp}chatsendui`,
 "clear": `§cThis command is still unfinished! `,
 "clearenderchest": `clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
 "clearenderchestslot": `clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
 "cloneitem": `${command.dp}cloneitem [toPlayer: targetSelector|~]`,
+"cmdui": `${command.dp}cmdui`,
 "compressitems": `${command.dp}compressitems [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
 "compressitemsshulker": `${command.dp}compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
 "compressitemscontainer": `${command.dp}compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
@@ -1359,6 +1394,8 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 "gms": `${command.dp}gms`,
 "gohome": `${command.dp}gohome <homeName: text>`,
 "h#": `${command.dp}h<presetId: float> <containerRow: float>`,
+"heal": `${command.dp}heal [targets: targetSelector]`,
+"health": `${command.dp}health <health: number> [targets: targetSelector]`,
 "home": `${command.dp}home <mode: set|remove|go|warp|teleport> <homeName: text>
 ${command.dp}home clear
 ${command.dp}home removeall
@@ -1583,6 +1620,14 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
 "managecommands": `${command.dp}managecommands`,
 "manageplayers": `${command.dp}manageplayers`,
 "managescriptautoeval": `${command.dp}managescriptautoeval`,
+"maxhealth": `${command.dp}maxhealth [targets: targetSelector]`,
+"menu": `${command.dp}menu`,
+"messageui": `${command.dp}messageui`,
+"minhealth": `${command.dp}minhealth [targets: targetSelector]`,
+"mngcmds": `${command.dp}mngcmds`,
+"mngplyrs": `${command.dp}mngplyrs`,
+"mm": `${command.dp}mm`,
+"msgui": `${command.dp}msgui`,
 "offlineinfo": `${command.dp}offlineinfo <playerName: string>`,
 "offlineuuidinfo": `${command.dp}offlineuuidinfo <playerUUID: int>`,
 "offlineinvsee": `${command.dp}offlineinvsee <playerName: string>`,
@@ -1595,6 +1640,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
 "scanenderchestc": `${command.dp}scanenderchestc [target: string|~]`,
 "scnendchst": `${command.dp}scnendchst [targets: targetSelector|~]`,
 "scnendchstc": `${command.dp}scnendchstc [target: string|~]`,
+"sendui": `${command.dp}sendui`,
 "setitem": `${command.dp}setitem <item: itemType> <amount: int> <slot: int>`,
 "setitemb": `${command.dp}setitemb <itemJSON: itemJSON> <slot: int>
 simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
@@ -1656,12 +1702,15 @@ sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept 
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`,
 "settings": `${command.dp}settings`,
 "shuffleinventory": `${command.dp}shuffleinventory <playerTarget: targetSelector|~>`,
+"summon": `${command.dp}summon <spawnCount: int> <entity: EntityType<[spawnEvent]>> [spawnPos: x y z] [yRot: value] [xRot: value] [persistent: bool] [nameTag: string]
+ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn"`,
 "swapinventories": `${command.dp}swapinventories [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
 "swapinventoriesb": `${command.dp}swapinventoriesb [player: playerName|~] [otherPlayer: playerName|~]`,
 "swapitems": `${command.dp}swapitems [slot: int|head|chest|legs|feet|mainhand|offhand|~] [otherSlot: int|head|chest|legs|feet|mainhand|offhand|~] [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
 "takeitem": `${command.dp}takeitem <fromSlot: int|head|chest|legs|feet|mainhand|offhand|~> <fromPlayer: targetSelector|~>`,
 "terminal": `${command.dp}terminal`,
 "transferitem": `${command.dp}transferitem <transferItemToPlayer: targetSelector>`,
+"thru": `${command.dp}thru`,
 "top": `${command.dp}top`,
 "up": `${command.dp}up [placeGlass: bool]`,
 "warp": `${command.dp}warp <name: escapableString>`,
@@ -1691,16 +1740,20 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 export enum commanddescriptions {
 //"ban" = "Bans a player. ",
 "binvsee" = "Displays the contents of the specified block's inventory. ",
+"chatcommandui" = "Opens up a menu where you can type a chat command to run without it consoring it. ",
+"chatsendui" = "Opens up a menu where you can type a chat message to send without it consoring it. ",
 "clear" = "Clears a player's inventory. ",
 "clearenderchest" = "Clears a player's ender chest. ",
 "clearenderchestslot" = "Clears a slot of a player's ender chest. ",
 "cloneitem" = "Clones the item in your hand to the specified player's inventory. ",
+"cmdui" = "Opens up a menu where you can type a chat command to run without it consoring it. ",
 "compressitems" = "Compresses your inventory into 2 chests and inserts those chests into your inventory. ",
 "compressitemsshulker" = "Compresses your inventory into 2 shulker boxes and inserts those shulker boxes into your inventory. ",
 "compressitemscontainer" = "Compresses your inventory into a specified container type and inserts those containers into your inventory. ",
 "copyitem" = "Copies the item in your hand to the specified slot of the specified player's inventory. ",
 "createexplosion" = "Creates an explosion. ",
 "datapickblock" = "Pick Blocks the block that your are looking at while copying the nbt data of the block as well, just like using the pick block button while holding CTRL on your keyboard. ",
+"defaulthealth" = "Sets the health of entities to their default health values. ",
 "drain" = "Drains liquids in the specified radius. ",
 "dupeitem" = "Duplicates teh item in your hand. ",
 "einvsee" = "Displays the contents of the specified entity's inventory. ",
@@ -1726,6 +1779,8 @@ export enum commanddescriptions {
 "gms" = "Sets your gamemode to survival. ",
 "gohome" = "Warps to a home. ",
 "h#" = "Swaps your hotbar with the specified hotbar preset. ",
+"heal" = "Heals entities. ",
+"health" = "Modifies the health of entities. ",
 "home" = "Sets/Removes/Warps to a home. ",
 "hset" = "Sets a hotbar preset. ",
 "idtfill" = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. ",
@@ -1755,6 +1810,11 @@ export enum commanddescriptions {
 "managecommands" = "Opens up the commands editor menu. ",
 "manageplayers" = "Opens up the manage players menu. ",
 "managescriptautoeval" = "Opens up the Script Auto Eval settings menu. ",
+"maxhealth" = "Heals entities. ",
+"messageui" = "Opens up a menu where you can type a chat message or command to send or run without it consoring it. ",
+"minhealth" = "Sets the health of entities to their minimum health values. ",
+"mngcmds" = "Opens up the commands editor menu. ",
+"mngplyrs" = "Opens up the manage players menu. ",
 //"money" = "Used for the money system [§r§1Indev§r]. ",
 //"notificationsettings" = "Opens up the notifications settings menu. ",
 //"notificationssettings" = "Opens up the notifications settings menu. ",
@@ -1771,6 +1831,7 @@ export enum commanddescriptions {
 "scanenderchestc" = "Scans a player's ender chest and displays the contents of it. ",
 "scnendchst" = "Scans a player's ender chest and displays the contents of it. ",
 "scnendchstc" = "Scans a player's ender chest and displays the contents of it. ",
+"sendui" = "Opens up a menu where you can type a chat message to send without it consoring it. ",
 "setitem" = "Replaces the item stack in the specified inventory slot with an item stack with a specified type and stack size. ",
 "setitemb" = "Replaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. ",
 "settings" = "Opens up the settings menu. ",
@@ -1782,6 +1843,8 @@ export enum commanddescriptions {
 //"tempban" = "Temporarily bans a player. ",
 "terminal" = "Opens up the command runner/terminal menu. ",
 "transferitem" = "Transfers the item in your hand to the specified player's inventory. ",
+"thru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at. ",
+"vthru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at, even if it would put you into the void. ",
 "top" = "Teleports on top of the highest solid block at your x and z coordinates. ",
 //"unban" = "Unbans a player. ",
 "up" = "Teleports up the specified number of blocks and places glass below you if placeGlass is not set to false. ",
@@ -3463,6 +3526,8 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
 .managecommands - §oOpens up the commands editor menu. §r
 .manageplayers - §oOpens up the manage players menu. §r
 .managescriptautoeval - §oOpens up the Script Auto Eval settings menu. §r
+.menu - §oOpens up the main menu. §r
+.mm - §oOpens up the main menu. §r
 .offlineinfo - §oDisplays the saved player data of the specified player. §r
 .offlineuuidinfo - §oDisplays the saved player data of the player with the specified UUID. §r
 .offlineinvsee - §oDisplays the saved contents of the specified player's inventory. §r
@@ -3484,7 +3549,9 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
 .swapitems - §oSwaps an item in a slot of one player's inventory with another slot of another player's inventory. §r
 .takeitem - §oSteals an item from another player's inventory and puts it into yoru inventory. §r
 .terminal - §oOpens up the command runner/terminal menu. §r
-.transferitem - §oTransfers the item in your hand to the specified player's inventory. §r
+.transferitem - §oTransfers the item in your hand to the specified player's inventory. 
+.thru - §oTeleports on top of the highest solid block at your x and z coordinates. §r
+.vthru - §oTeleports to teh other side of the wall/floor/ceilling that you are looking at. §r
 .top - §oTeleports on top of the highest solid block at your x and z coordinates. §r
 .up - §oTeleports up the specified number of blocks and places glass below you if placeGlass is not set to false. §r
 .warp - §oWarps to the specified global warp. §r
@@ -4416,9 +4483,34 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             eventData.cancel = true;
             try{system.run(()=>{let block = getTopSolidBlock(player.dimension.getBlock(player.location), player.dimension); let messageCustom = ""; let a = 0; while(a != 1){if(messageCustom.endsWith(block.typeId + "; ")){}else{messageCustom = messageCustom + block.y + ". " + block.typeId + "; "}; try{block = block.below(1)}catch{a = 1}}; player.sendMessage(messageCustom); eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage("Printed blocks at: x: " + player.location.x + ", z: " + player.location.z)}); })}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
-        case !!switchTest.match(/^thru$/): 
+        case !!switchTest.match(/^thru$/): {
             eventData.cancel = true;
-            try{system.run(()=>{})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            let la = player.getBlockFromViewDirection()
+            if(!!!la){player.sendMessage("§cError: No obstruction found to go through. ")}else{
+            let l = mcMath.Vector3Utils.add(mcMath.Vector3Utils.add(la.block, mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 0.01)), mcMath.Vector3Utils.scale(la.faceLocation, 0.98))
+            let rot = player.getRotation()
+            for(let i = 0; i < 100 && !(tryget(()=>player.dimension.getBlock(l).isAir)&&(tryget(()=>player.dimension.getBlock(l).above().isAir)||tryget(()=>player.dimension.getBlock(l).below().isAir))) && l.y>=(player.dimension.heightRange.min-1); i++){l = caretNotationC(l, mcMath.VECTOR3_FORWARD, rot)}
+            l.y<=(player.dimension.heightRange.min+2)?player.sendMessage("§cError: The other side of this obstruction is void, if you want to be able to go to the other side even if it is in the void then just use \\vthru. "):(player.dimension.getBlock(l).isAir&&player.dimension.getBlock(l).below().isAir)?tryrun(()=>{try{srun(()=>{player.teleport(roundVector3ToMiddleOfBlockFloorY(player.dimension.getBlock(l).below().location))})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}):(player.dimension.getBlock(l).isAir&&player.dimension.getBlock(l).above().isAir)?tryrun(()=>{try{srun(()=>{player.teleport(roundVector3ToMiddleOfBlock(player.dimension.getBlock(l).location))})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}):player.sendMessage("§cError: Unable to find other side of obstruction. ")}
+            
+        }
+        break; 
+        case !!switchTest.match(/^vthru$/): {
+            eventData.cancel = true;
+            let la = player.getBlockFromViewDirection()
+            if(!!!la){player.sendMessage("§cError: No obstruction found to go through. ")}else{
+            let l = mcMath.Vector3Utils.add(mcMath.Vector3Utils.add(la.block, mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 0.01)), mcMath.Vector3Utils.scale(la.faceLocation, 0.98))
+            let rot = player.getRotation()
+            for(let i = 0; i < 100 && !(tryget(()=>player.dimension.getBlock(l).isAir)&&(tryget(()=>player.dimension.getBlock(l).above().isAir)||tryget(()=>player.dimension.getBlock(l).below().isAir))) && l.y>=(player.dimension.heightRange.min-2); i++){l = caretNotationC(l, mcMath.VECTOR3_FORWARD, rot)}
+            (tryget(()=>(player.dimension.getBlock(l).isAir&&player.dimension.getBlock(l).below().isAir))??(l.y<=(player.dimension.heightRange.min+2)))?tryrun(()=>{try{srun(()=>{player.teleport(roundVector3ToMiddleOfBlockFloorY(tryget(()=>player.dimension.getBlock(l).below().location)??(l.y<=(player.dimension.heightRange.min+2)?mcMath.Vector3Utils.add(l, mcMath.VECTOR3_DOWN):undefined)))})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}):(tryget(()=>(player.dimension.getBlock(l).isAir&&player.dimension.getBlock(l).above().isAir))??(l.y<=(player.dimension.heightRange.min+2)))?tryrun(()=>{try{srun(()=>{player.teleport(roundVector3ToMiddleOfBlock(tryget(()=>player.dimension.getBlock(l).location)??(l.y<=(player.dimension.heightRange.min+2)?l:undefined)))})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}):player.sendMessage("§cError: Unable to find other side of obstruction. ")}
+            
+        }
+        break; 
+        case !!switchTest.match(/^phase$/): {
+            eventData.cancel = true;
+            let l = caretNotationC(player.location, mcMath.Vector3Utils.scale(mcMath.VECTOR3_FORWARD, 2), player.getRotation())
+            try{srun(()=>{player.teleport(l)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            
+        }
         break; 
         case !!switchTest.match(/^home$/): {
             eventData.cancel = true;
@@ -4430,36 +4522,36 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         if(!(HomeSystem.testIfPlayerAtMaxHomes(player)||!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]))){
                             args.push(argsa.extra)
                             new Home({location: Object.assign(player.location, {dimension: player.dimension}), name: args[2], owner: player, saveId: "home:"+player.id+":"+args[2]}).save()
-                            player.sendMessage(`Successfully set the home "${args[2]}" to ${vTStr(player.location)} in ${main.dimensionTypeDisplayFormatting[player.dimension.id]}. `)
+                            player.sendMessage(`Successfully set the home "${args[2]}§r§f" to ${vTStr(player.location)} in ${main.dimensionTypeDisplayFormatting[player.dimension.id]}. `)
                         }else{player.sendMessage("§cError: Max homes reached. Please delete a home if you want to add a new one. ")}
                     break; 
                     case "remove": 
                         args.push(argsa.extra)
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
                             HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).remove()
-                            player.sendMessage(`Successfully removed the home "${args[2]}". `)
-                        }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}". `)}
+                            player.sendMessage(`Successfully removed the home "${args[2]}§r§f". `)
+                        }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `)}
                     break; 
                     case "go": 
                         args.push(argsa.extra)
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
                             srun(()=>player.teleport(HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location, {dimension: HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location.dimension}))
-                            player.sendMessage(`Successfully teleported to the home "${args[2]}". `)
-                        }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}". `)}
+                            player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `)
+                        }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `)}
                     break; 
                     case "warp": 
                         args.push(argsa.extra)
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
                             srun(()=>player.teleport(HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location, {dimension: HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location.dimension}))
-                            player.sendMessage(`Successfully teleported to the home "${args[2]}". `)
-                        }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}". `)}
+                            player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `)
+                        }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `)}
                     break; 
                     case "teleport": 
                         args.push(argsa.extra)
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
                             srun(()=>player.teleport(HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location, {dimension: HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location.dimension}))
-                            player.sendMessage(`Successfully teleported to the home "${args[2]}". `)
-                        }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}". `)}
+                            player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `)
+                        }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `)}
                     break; 
                     case "clear": 
                         HomeSystem.getHomesForPlayer(player).forEach(h=>h.remove())
@@ -4484,11 +4576,20 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 let argsa = evaluateParameters(switchTestB, ["presetText"])
                 if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==argsa.extra)){
                     srun(()=>player.teleport(Home.get("home:"+player.id+":"+argsa.extra).location, {dimension: Home.get("home:"+player.id+":"+argsa.extra).location.dimension}))
-                    player.sendMessage(`Successfully teleported to the home "${argsa.extra}". `)
-                }else{player.sendMessage(`§cError: Could not find a home with the name "${argsa.extra}". `)}
+                    player.sendMessage(`Successfully teleported to the home "${argsa.extra}§r§f". `)
+                }else{player.sendMessage(`§cError: Could not find a home with the name "${argsa.extra}§r§c". `)}
             }else{
                 player.sendMessage("§cError: This command cannot be used becuase the experimental home system is not enabled. It can be enabled at \"Main Menu>Settings>Home System>Enable Home System\"")
             }
+        }
+        break; 
+        case !!switchTest.match(/^summon$/): {
+            eventData.cancel = true;
+            system.run(()=>{
+                let args = evaluateParameters(switchTestB, ["presetText", "number", "string", "Vector", "Vector", "Vector", "Vector", "Vector", "neboolean", "string"]).args
+                for(let i = 0; i < args[1]; i++){let a = player.dimension.spawnEntity(args[2], evaluateCoordinates(args[3]??"~", args[4]??"~", args[5]??"~", player.location, player.getRotation()), {initialPersistence: args[8]??false}); a.setRotation({x: Number(String(args[7]??0).replace("~", "0")), y: Number(String(args[6]??0).replace("~", "0"))}); a.nameTag=args[9]??""}
+                player?.sendMessage(`${args[1]==0?"§c":""}Summoned ${args[2]} * ${args[1]}. `)
+            })
         }
         break; 
         case !!switchTest.match(/^heal$/): {
@@ -4504,7 +4605,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     try{
                         target.getComponent("health").resetToMaxValue()
                         player.sendMessage(`Healed ${(target as Player)?.name??tryget(()=>target.nameTag==""?undefined:target.nameTag)??(target.typeId+"<"+target.id+">")}. Health is now ${target.getComponent("health").effectiveMax}. `)
-                    }catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                    }catch(e){player.sendMessage("§c"+e+" "+e.stack+"\nfor entity "+target.typeId+"<"+target.id+">")}
                 })
             })
         }
@@ -4545,7 +4646,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             })
         }
         break; 
-        case !!switchTest.match(/^defaulthealth$/): {
+        case !!switchTest.match(/^defaulthealth$/)||!!switchTest.match(/^dfthlth$/)||!!switchTest.match(/^dflthlth$/)||!!switchTest.match(/^dfthealth$/)||!!switchTest.match(/^dflthealth$/): {
             eventData.cancel = true;
             system.run(()=>{
                 let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "number"]).args
@@ -4566,16 +4667,16 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         case !!switchTest.match(/^health$/): {
             eventData.cancel = true;
             system.run(()=>{
-                let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "presetText"]).args
-                if(switchTestB.split(/\s+/g)[1]?.trim()=="~"){args[1] = player.name}
-                if((switchTestB.split(/\s+/g)[1]??"").trim()==""){args[1] = player.name}
-                let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player)
+                let args = evaluateParameters(switchTestB, ["presetText", "presetText", "targetSelector"]).args
+                if(switchTestB.split(/\s+/g)[2]?.trim()=="~"){args[2] = player.name}
+                if((switchTestB.split(/\s+/g)[2]??"").trim()==""){args[2] = player.name}
+                let targets = targetSelectorAllListC(args[2], "", vTStr(player.location), player)
                 if(targets.length==0){
                     player.sendMessage(`§cError: No players matching the specified target selector were found. `)
                 }else targets.forEach(target=>{
                     try{
-                        target.getComponent("health").setCurrentValue(Number(args[2]))
-                        player.sendMessage(`Set health of ${(target as Player)?.name??tryget(()=>target.nameTag==""?undefined:target.nameTag)??(target.typeId+"<"+target.id+">")} to ${Number(args[2])}. `)
+                        target.getComponent("health").setCurrentValue(Number(args[1]))
+                        player.sendMessage(`Set health of ${(target as Player)?.name??tryget(()=>target.nameTag==""?undefined:target.nameTag)??(target.typeId+"<"+target.id+">")} to ${Number(args[1])}. `)
                     }catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                 })
             })
@@ -4584,6 +4685,28 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         case !!switchTest.match(/^liststructures$/): {
             eventData.cancel = true;
             player.sendMessage(world.structureManager.getIds().join("§r\n"))
+        }
+        break; 
+        case !!switchTest.match(/^despawn$/): {
+            eventData.cancel = true;
+            system.run(()=>{
+                let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args
+                if(switchTestB.split(/\s+/g)[1]?.trim()=="~"){args[1] = player.name}
+                if((switchTestB.split(/\s+/g)[1]??"").trim()==""){args[1] = player.name}
+                let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player)
+                if(targets.length==0){
+                    player.sendMessage(`§cError: No players matching the specified target selector were found. `)
+                }else{
+                    let despawnCount = 0
+                    targets.forEach(target=>{
+                        try{
+                            target.remove()
+                            despawnCount++
+                        }catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                    })
+                    player?.sendMessage(`${despawnCount==0?"§c":""}${despawnCount} entities were despawned. `)
+                }
+            })
         }
         break; 
         case !!switchTest.match(/^kick$/): {
@@ -4666,19 +4789,31 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             eventData.cancel = true;
             try{system.run(()=>{if(newMessage.split(" ")[2] == undefined){player.setProperty("andexpr:entity_scale_variable_override_enabled", Boolean(newMessage.split(" ")[1].replaceAll("false", "").replaceAll("0", "").replaceAll("False", "").replaceAll("0.0", "")))}else{targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p)=>{p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))})}})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
-        case !!switchTest.match(/^mainmenu$/): 
+        case !!switchTest.match(/^mainmenu$/)||!!switchTest.match(/^mm$/)||!!switchTest.match(/^menu$/): 
             eventData.cancel = true;
             try{system.run(()=>mainMenu(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
-        case !!switchTest.match(/^terminal$/): 
+        case !!switchTest.match(/^terminal$/)||!!switchTest.match(/^cmdrunner$/): 
             eventData.cancel = true;
-            try{system.run(()=>terminal(player))}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{terminal(player)}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
-        case !!switchTest.match(/^managecommands$/): 
+        case !!switchTest.match(/^messageui$/)||!!switchTest.match(/^msgui$/): 
+            eventData.cancel = true;
+            try{chatMessageNoCensor(player)}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break; 
+        case !!switchTest.match(/^chatsendui$/)||!!switchTest.match(/^chtsendui$/)||!!switchTest.match(/^chtsndui$/)||!!switchTest.match(/^sendui$/): 
+            eventData.cancel = true;
+            try{chatSendNoCensor(player)}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break; 
+        case !!switchTest.match(/^chatcommandui$/)||!!switchTest.match(/^cmdui$/)||!!switchTest.match(/^chtcmdui$/)||!!switchTest.match(/^commandui$/): 
+            eventData.cancel = true;
+            try{chatCommandRunner(player)}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break; 
+        case !!switchTest.match(/^managecommands$/)||!!switchTest.match(/^mngcmds$/): 
             eventData.cancel = true;
             try{system.run(()=>manageCommands(player))}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
-        case !!switchTest.match(/^manageplayers$/): 
+        case !!switchTest.match(/^manageplayers$/)||!!switchTest.match(/^mngplyrs$/): 
             eventData.cancel = true;
             try{system.run(()=>managePlayers(player))}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
@@ -4690,7 +4825,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             eventData.cancel = true;
             try{system.run(()=>notificationSettings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; */ // coming very soon now! 
-        case !!switchTest.match(/^datapickblock$/): 
+        case !!switchTest.match(/^datapickblock$/)||!!switchTest.match(/^dpb$/): 
             eventData.cancel = true;
             try{let item = player.getBlockFromViewDirection({includeLiquidBlocks: true, includePassableBlocks: true}).block.getItemStack(1, true); system.run(()=>{player.getComponent("inventory").container.addItem(item); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 

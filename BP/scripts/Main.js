@@ -53,7 +53,7 @@ import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, Mine
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG } from "Main/coordinates";
-import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers } from "Main/commands";
+import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
@@ -94,7 +94,6 @@ mcMath;
 globalThis.scriptStartTick = system.currentTick;
 export let crashEnabled = false;
 export let tempSavedVariables = [];
-export const currentlyRequestedChatInput = {};
 export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]; /*
 disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
 system.beforeEvents.watchdogTerminate.subscribe(e => {
@@ -3771,6 +3770,10 @@ export function tryget(callbackfn) { try {
     return callbackfn();
 }
 catch { } }
+export function tryrun(callbackfn) { try {
+    callbackfn();
+}
+catch { } }
 subscribedEvents.beforeEffectAdd = world.beforeEvents.effectAdd.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:effectAdd")));
@@ -4301,6 +4304,12 @@ world.afterEvents.playerDimensionChange.subscribe(event => {
         world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("playerDimensionChangeAfterEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
+    }
+    try {
+        getPlayersWithAnyOfTags(["getPlayerDimensionChangeNotifications", "includePlayerDimensionChangeNotificationsBy:" + event.player.name, "includePlayerDimensionChangeNotificationsFromDimension:" + event.fromDimension, "includePlayerDimensionChangeNotificationsToDimension:" + event.toDimension, "includeBeforeChatSendNotificationsById:" + event.player.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + event.player.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + event.player.name)).forEach(p => psend(p, `[§l§dServer§r][§eplayerDimensionChange§r][${event.player.name}] Entered ${dimensionTypeDisplayFormatting[event.fromDimension.id]} at ${vTStr(event.fromLocation)} from ${dimensionTypeDisplayFormatting[event.toDimension.id]} at ${vTStr(event.toLocation)}. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
     }
 });
 world.afterEvents.playerInteractWithBlock.subscribe(event => {
@@ -5163,6 +5172,12 @@ console.error(e, e.stack);
     ;
 });
 world.beforeEvents.chatSend.subscribe((eventData) => {
+    try {
+        getPlayersWithAnyOfTags(["getBeforeChatSendNotifications", "includeBeforeChatSendNotificationsBy:" + eventData.sender.name, "includeBeforeChatSendNotificationsById:" + eventData.sender.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + eventData.sender.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + eventData.sender.name)).forEach(p => psend(p, `[§l§dServer§r][§ebeforeChatSend§r][${eventData.sender.name}] Chat message sent${!!eventData.targets ? " with targets " + eventData.targets.map(p => p.name).join() : ""} with the message ${JSONStringify(eventData.message)}. `));
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
     chatMessage(eventData);
 });
 try {
