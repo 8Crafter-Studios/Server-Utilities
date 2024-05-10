@@ -1267,57 +1267,80 @@ export function generateNBTFileB(location: DimensionLocation, nbt: {blocks: {pos
 }
 
 export function generateNBTFileC(location: DimensionLocation, nbt: {block_indices: number[], block_palette: {name: string, states?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number], nbt_type: "cmprsnbt"}){
-    nbt.block_indices.forEach((b, i)=>b!=-1?tryrun(()=>(location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:light_gray_terracotta")), (nbt.block_palette[b].name=="minecraft:coarse_dirt"||nbt.block_palette[b].name=="coarse_dirt")?location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), BlockPermutation.resolve("minecraft:dirt", {dirt_type: "coarse"})):!!nbt.block_palette[b].states?Object.entries(nbt.block_palette[b].states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined)):undefined)
+    nbt.block_indices.forEach((b, i)=>b!=-1?tryrun(()=>(location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:light_gray_terracotta")), (nbt.block_palette[b].name=="minecraft:coarse_dirt"||nbt.block_palette[b].name=="coarse_dirt")?location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), BlockPermutation.resolve("minecraft:dirt", {dirt_type: "coarse"})):!!nbt.block_palette[b].states?Object.entries(nbt.block_palette[b].states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined)):undefined)
 }
 
 export function generateNBTFileF(location: DimensionLocation, nbt: {block_indices: number[], block_palette: {name: string, states?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number], nbt_type: "cmprsnbt"}){
-    nbt.block_indices.forEach((b, i)=>b!=-1?tryrun(()=>(location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0])), i%nbt.size[2]])), nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp")), (nbt.block_palette[b].name=="minecraft:coarse_dirt"||nbt.block_palette[b].name=="coarse_dirt")?location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), BlockPermutation.resolve("minecraft:dirt", {dirt_type: "coarse"})):!!nbt.block_palette[b].states?Object.entries(nbt.block_palette[b].states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined)):undefined)
-}
+    nbt.block_indices.forEach((b, i)=>b!=-1?tryrun(()=>(location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp")), (nbt.block_palette[b].name=="minecraft:coarse_dirt"||nbt.block_palette[b].name=="coarse_dirt")?location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), BlockPermutation.resolve("minecraft:dirt", {dirt_type: "coarse"})):!!nbt.block_palette[b].states?Object.entries(nbt.block_palette[b].states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined)):undefined)
+}/*
+
+export function* generateNBTFileFBG(location: DimensionLocation, nbt: {block_indices: number[], block_palette: {name: string, states?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number], nbt_type: "cmprsnbt"}){
+    for(let i = 0; i<)
+    nbt.block_indices.forEach((b, i)=>b!=-1?tryrun(()=>(location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp")), (nbt.block_palette[b].name=="minecraft:coarse_dirt"||nbt.block_palette[b].name=="coarse_dirt")?location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), BlockPermutation.resolve("minecraft:dirt", {dirt_type: "coarse"})):!!nbt.block_palette[b].states?Object.entries(nbt.block_palette[b].states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined)):undefined)
+}*/
 
 export function generateNBTFileE(location: DimensionLocation, nbt: {block_indices: number[], block_palette: {name: string, states?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number], nbt_type: "cmprbnbt"}){
-    nbt.block_indices.forEach((b, i)=>(b??-1)!=-1?tryrun(()=>(location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), nbt.block_palette[b].name), !!nbt.block_palette[b].states?Object.entries(nbt.block_palette[b].states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined)):undefined)
+    var successCount = 0
+    nbt.block_indices.forEach((b, i)=>(b??-1)!=-1?tryrun(()=>{
+        try{
+            location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), nbt.block_palette[b].name); 
+            !!nbt.block_palette[b]?.states?Object.entries(nbt.block_palette[b]?.states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined; 
+            //{let i = 249; let nbt = {size: [5, 5, 5]}; [Math.floor(i/nbt.size[2])%nbt.size[0], Math.floor(i/(nbt.size[0]*nbt.size[2]))%nbt.size[1], i%nbt.size[2]]}
+            //{let i = 27; let nbt = {size: [5, 5, 5]}; [Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]]}
+            successCount++
+        }catch(e){console.error(e, e.stack, i, b)}
+    }):undefined)
+    return successCount
 }
 
 export function generateNBTFileD(location: DimensionLocation, nbt: any, player: Player){/*
     generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(Object.assign(location, {y: 320}), mcMath.Vector3Utils.add(location, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 320), {y: 0})))}); return a})(), player.dimension).then(tac=>{*/try{
         let id = "andexdbmapartloader:"+Date.now()
         if(location.dimension.runCommand(`/tickingarea add ${location.x} -64 ${location.z} ${location.x+136} 325 ${location.z+136} "${id}"`).successCount==0){player.sendMessage("§6Warning: Map art generation may be incomplete because max amount of tickingareas were used up so some chunks might have not been loaded. ")}
-        switch(detectNBTDataType(nbt)){
-        case "cmprsnbt": 
-        generateNBTFileF(location, nbt)
-        break
-        case "cmprbnbt": 
-        generateNBTFileE(location, nbt)
-        break; 
-        case "supercmprsnbt": 
-        generateNBTFileF(location, unsuperCompress(nbt))
-        break
-        case "supercmprbnbt": 
-        generateNBTFileE(location, unsuperCompress(nbt))
-        break; 
-        case "snbt": 
-        generateNBTFileF(location, compressJavaNBTData(nbt))
-        break; 
-        case "nbt": 
-        generateNBTFileF(location, parseJSONifiedNBTData(compressJavaNBTData(nbt)))
-        break; 
-        case "bnbt": 
-        generateNBTFileE(location, compressBedrockNBTData(nbt))
-        break; 
-        case "pnbt": 
-        generateNBTFileE(location, compressBedrockNBTData(parseJSONifiedNBTData(nbt)))
-        break; 
-        case "rawuenbt": 
-        generateNBTFileE(location, compressBedrockNBTData(parseJSONifiedNBTData(nbt)))
-        break; 
-        case "unknownt": 
-        generateNBTFile(location, nbt)
-        break; 
-        default: 
-        generateNBTFile(location, nbt)
-        break; 
-    }
-    location.dimension.runCommand(`/tickingarea remove "${id}"`)
+        system.runTimeout(()=>{try{
+                switch(detectNBTDataType(nbt)){
+                case "cmprsnbt": 
+                generateNBTFileF(location, nbt)
+                break
+                case "cmprbnbt": 
+                generateNBTFileE(location, nbt)
+                break; 
+                case "supercmprsnbt": 
+                generateNBTFileF(location, unsuperCompress(nbt))
+                break
+                case "supercmprbnbt": 
+                player.sendMessage(String(generateNBTFileE(location, unsuperCompress(nbt))))
+                break; 
+                case "ultracmprsnbt": 
+                generateNBTFileF(location, unultraCompress(nbt))
+                break
+                case "ultracmprbnbt": 
+                generateNBTFileE(location, unultraCompress(nbt))
+                break; 
+                case "snbt": 
+                generateNBTFileF(location, compressJavaNBTData(nbt))
+                break; 
+                case "nbt": 
+                generateNBTFileF(location, parseJSONifiedNBTData(compressJavaNBTData(nbt)))
+                break; 
+                case "bnbt": 
+                generateNBTFileE(location, compressBedrockNBTData(nbt))
+                break; 
+                case "pnbt": 
+                generateNBTFileE(location, compressBedrockNBTData(parseJSONifiedNBTData(nbt)))
+                break; 
+                case "rawuenbt": 
+                generateNBTFileE(location, compressBedrockNBTData(parseJSONifiedNBTData(nbt)))
+                break; 
+                case "unknownt": 
+                generateNBTFile(location, nbt)
+                break; 
+                default: 
+                generateNBTFile(location, nbt)
+                break; 
+            }
+            location.dimension.runCommand(`/tickingarea remove "${id}"`)
+        }catch(e){player.sendMessage("§c" + e + e.stack)}}, 2)
 }catch(e){player.sendMessage("§c" + e + e.stack)}/*finally{tac.forEach(tab=>tab?.remove())}}, (e)=>{player.sendMessage(e+" "+e.stack)}); */
 }
 
@@ -1398,6 +1421,9 @@ export function compressJavaNBTData(parsedNBT){
     return {block_indices: block_indices, block_palette: parsedNBT.palette.map(v=>({name: v.Name, states: v.Properties})), nbt_type: "cmprsnbt" as "cmprsnbt", size: parsedNBT.size}
 }
 export function unsuperCompress(nbt){return Object.assign(nbt, {block_indices: extractIntArray(nbt.block_indices)})}
+export function unultraCompress(nbt){return Object.assign(nbt, {block_indices: ultraExtractIntArray(nbt.block_indices)})}
+export function fltToStr(float: number, radix: number=10){return String(float).split(".").map(v=>Number(v).toString(radix)).join(".")}
+export function strToFlt(string: string, radix: number=10){return Number(string.split(".").map(v=>String(Number.parseInt(v, radix))).join("."))}
 export function superCompressBedrockNBTData(parsedNBT){
     return {block_indices: compressIntArray(parsedNBT.structure.block_indices[0]), block_palette: parsedNBT.structure.palette.default.block_palette, nbt_type: "supercmprbnbt" as "supercmprbnbt", size: parsedNBT.size}
 }
@@ -1413,13 +1439,57 @@ export function stringifyJSONCompressed(NBTData){return JSON.stringify(NBTData, 
 
 export function compressIntArrayB(s: string, replacement: string ="-1"){Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)([\s\n]*,[\s\n]*\1){2,}/g)).forEach(v=>s=s.replace(v[0], v[1]+"^"+((v[0].length+1)/(v[1].length+1)))); s=s.replaceAll(replacement, ""); return s}
 
-export function extractIntArrayB(s: string, revivement: string ="-1"){s=s.replaceAll(/,(?=[,\]$])/g, ","+revivement); Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+)/g)).forEach(v=>s=s.replace(v[0], (v[1]+",").repeat(Number(v[2])).slice(0, -1))); return s}
+export function extractIntArrayB(s: string, revivement: string ="-1"){s=s.replaceAll(/,(?=[,\]\^])/g, ","+revivement).replace(/\[(?=[,\^])/, "["+revivement); s=s.slice(0, -1)+","+"]"; Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+),/g)).forEach(v=>s=s.replace(v[0], (v[1]+",").repeat(Number(v[2])))); s=s.slice(0, -2)+"]"; return s}
+function* extractIntArrayBGenerator(s: string, revivement: string = "-1") {
+    let lastYieldTime = Date.now(); 
+    s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement);
+    s = s.slice(0, -1) + "," + "]";
+    
+    // Yield the modified string after the first replacement
+    yield s;
+
+    const matchAllIterator = s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+),/g);
+    for (const v of matchAllIterator) {
+        s = s.replace(v[0], (v[1] + ",").repeat(Number(v[2])));
+        
+        // Check if it's time to yield
+        if (Date.now() - lastYieldTime >= 7500) {
+            lastYieldTime = Date.now();
+            yield s; // Yield the modified string
+        }
+    }
+    
+    s = s.slice(0, -2) + "]";
+    yield s; // Yield the final modified string
+}
+export function iterateGenerator(extractorGenerator: Generator){
+    let lastYieldTime = Date.now(); // Initialize the last yield time
+    async function iterateGeneratorB(extractorGenerator: Generator, lastYieldTime) {
+        let finalResult;
+        while (true) {
+            const result = extractorGenerator.next();
+            if (!result.done) {
+                console.log(result.value); // Handle the yielded value
+                if (Date.now() - lastYieldTime >= 7500) {
+                    lastYieldTime = Date.now();
+                    await new Promise(resolve => setTimeout(resolve, 0)); // Asynchronously wait for next iteration
+                }
+            } else {
+                finalResult = result.value;
+                break;
+            }
+        }
+        return finalResult;
+    }
+    return iterateGeneratorB(extractorGenerator, lastYieldTime)
+}
+
 export function compressIntArray(arry: number[], replacement: string ="-1"){return compressIntArrayB(JSON.stringify(arry.map(v=>(v??-1).toString(36)), undefined, 0).replaceAll('"', ""), replacement)}
 export function extractIntArray(arry: string, revivement: string ="-1"){return extractIntArrayB(arry, revivement).replaceAll(" ", "").slice(1, -1).split(",").map(v=>Number.parseInt(v, 36))}
-
+//rangeToIntArray([0, 5000000]).forEach(v=>Number.parseInt(String(v), 36))
 export function ultraCompressIntArrayB(s: string, replacement: string ="-1"){Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)([\s\n]*,[\s\n]*\1){2,}/g)).forEach(v=>s=s.replace(v[0], v[1]+"^"+((v[0].length+1)/(v[1].length+1)).toString(36))); s=s.replaceAll(replacement, ""); return s}
 
-export function ultraExtractIntArrayB(s: string, revivement: string ="-1"){s=s.replaceAll(/,(?=[,\]^])/g, ","+revivement); Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+)/g)).forEach(v=>s=s.replace(v[0], (v[1]+",").repeat(Number.parseInt(v[2], 36)).slice(0, -1))); return s}
+export function ultraExtractIntArrayB(s: string, revivement: string ="-1"){s=s.replaceAll(/,(?=[,\]\^])/g, ","+revivement).replace(/\[(?=[,\^])/, "["+revivement); Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+)/g)).forEach(v=>s=s.replace(v[0], (v[1]+",").repeat(Number.parseInt(v[2], 36)).slice(0, -1))); return s}
 export function ultraCompressIntArray(arry: number[], replacement: string ="-1"){return ultraCompressIntArrayB(JSON.stringify(arry.map(v=>(v??-1).toString(36)), undefined, 0).replaceAll('"', ""), replacement)}
 export function ultraExtractIntArray(arry: string, revivement: string ="-1"){return ultraExtractIntArrayB(arry, revivement="-1").replaceAll(" ", "").slice(1, -1).split(",").map(v=>Number.parseInt(v, 36))}
 //${se}bsend(extractIntArrayB(compressIntArray([5, 5, 5, 5, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]))); bsend(JSONStringify([5, 5, 5, 5, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]))
