@@ -1,6 +1,6 @@
 import { Player, system, world, Entity, type DimensionLocation, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, type ExplosionOptions, GameRules, GameRule } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version } from "Main";
+import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version, srun, dimensionTypeDisplayFormatting } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -19,7 +19,7 @@ import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-import { chatCommands, chatMessage, chatSend, command, commandSettings, command_settings_format_version, commands, commands_format_version, config } from "Main/commands";
+import { chatCommands, chatMessage, chatSend, command, commandSettings, command_settings_format_version, commands, commands_format_version, config, dimensions, evaluateParameters, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -255,6 +255,8 @@ form.button("Settings", "textures/ui/settings_glyph_color_2x");
 form.button("Manage Players", "textures/ui/user_icon_white");
 form.button("§eManage Commands §f[§6Beta§f]", "textures/ui/chat_keyboard_hover");
 form.button("§eItem Editor §f[§cAlpha§f]", "textures/ui/chat_keyboard_hover");
+form.button("§eMap Art Generator §f[§cExperimental§f]", "textures/items/map_locked");
+form.button("§eJava NBT Structure Loader §f[§cExperimental§f]", "textures/ui/xyz_axis");
 forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {let r = (ra as ActionFormResponse); 
     // This will stop the code when the player closes the form
     if (r.canceled) return;
@@ -415,7 +417,15 @@ forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra =>
             break;
 
         case 23:
-            try{uis.itemSelector(sourceEntity as Player, sourceEntity as Player).then(a=>{if(!!a){uis.itemEditorTypeSelection(sourceEntity as Player, sourceEntity as Player, a)}})}catch{}
+            try{itemSelector(sourceEntity as Player, sourceEntity as Player).then(a=>{if(!!a){uis.itemEditorTypeSelection(sourceEntity as Player, sourceEntity as Player, a)}})}catch{}
+            break;
+
+        case 24:
+            mapArtGenerator(sourceEntity)
+            break;
+
+        case 25:
+            nbtStructureLoader(sourceEntity)
             break;
         default:
     }
@@ -832,6 +842,97 @@ export function chatCommandRunner(sourceEntity: Entity|Player){
             let [message, asPlayer] = r.formValues; /*
             console.warn(r.formValues);*/
             chatCommands({returnBeforeChatSend: false, player: playerList[asPlayer as number]??sourceEntity as Player, newMessage: message as string, event: {cancel: false, message: message as string, sender: playerList[asPlayer as number]??sourceEntity as Player}, eventData: {cancel: false, message: message as string, sender: playerList[asPlayer as number]??sourceEntity as Player}})
+            // Do something
+        }).catch(e => {
+            console.error(e, e.stack);
+        });})/*
+    try { (sourceEntity).runCommand(String("/scriptevent andexdb:commandRunner hisa")); }
+    // Do something
+catch(e) {
+    console.error(e, e.stack);
+};*/}
+export function mapArtGenerator(sourceEntity: Entity|Player){
+    srun(() => {
+        let form = new ModalFormData();
+        form.title("Map Art Generator [§cExperimental§r]");
+        form.textField("§fFor info on how to use this generator, go to §bhttps://sites.google.com/view/8craftermods/debug-sticks-add-on/andexdbnbtstructureloader§f\nNote: When pasting the nbt data into the text box the game might freeze for anywhere from a few seconds to half a hour depending on how much text is being pasted while it is pasting, and then it will unfreeze. \nNBT Data", "NBT Data");
+        form.textField("Chunk Index x", "integer", String(coords.getChunkIndex(sourceEntity.location).x));
+        form.textField("Chunk Index y", "integer", String(coords.getChunkIndex(sourceEntity.location).y));
+        form.textField("Offset x", "integer", "0");
+        form.textField("Offset z", "integer", "0");
+        form.dropdown("Alignment Mode", ["Chunk Grid", "Map Grid"], 0);
+        form.dropdown("Dimension", dimensions.map(d=>dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.submitButton("Generate Map Art")
+        forceShow(form, sourceEntity as any).then(ra => {let r = ra as ModalFormResponse
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return;
+            // This will assign every input their own variable
+            let [snbt, chunkx, chunky, offsetx, offsetz, alignmentmode, dimension] = r.formValues; /*
+            console.warn(r.formValues);*/
+            let newsnbta = JSON.parse((snbt as string).replace(/(?<=[,\{][\s\n]*?)(['"])?(?<vb>[a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*(?<vd>false|true|undefined|NULL|Infinity|-Infinity|[\-\+]?[0-9]+|"(?:[^"]|(?<=([^\\])(\\\\)*?\\)")*"|'(?:[^']|(?<=([^\\])(\\\\)*?\\)')*')(?=[\s\n]*?[,\}])/g, '"$<vb>":$<vd>'))
+            //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
+            //console.warn(JSONStringify(Object.assign(mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from), {dimension: dimensions[dimension as number]??sourceEntity.dimension, y: (dimensions[dimension as number]??sourceEntity.dimension).heightRange.max-((newsnbta.size[1]??1) as number)})))
+            //console.warn(JSONStringify(newsnbta))
+            generateNBTFileD(Object.assign(mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from), {dimension: dimensions[dimension as number]??sourceEntity.dimension, y: (dimensions[dimension as number]??sourceEntity.dimension).heightRange.max-((newsnbta.size[1]??1) as number)}), newsnbta, sourceEntity as Player)
+            // Do something
+        }).catch(e => {
+            console.error(e, e.stack);
+        });})/*
+    try { (sourceEntity).runCommand(String("/scriptevent andexdb:commandRunner hisa")); }
+    // Do something
+catch(e) {
+    console.error(e, e.stack);
+};*/}
+export function mapArtGeneratorB(sourceEntity: Entity|Player){
+    srun(() => {
+        let form = new ModalFormData();
+        form.title("Map Art Generator [§cExperimental§r]");
+        form.textField("To use this generator you must first use something like cubical.xyz to convert an image to a minecraft structure, then save that structure as a .nbt file, then convert that .nbt file to SNBT format, then paste the SNBT into the text box below. \nNote: When pasting into the text box the game might freeze for a few minutes until it finishes pasting, and then it will unfreeze. \nSNBT of the .nbt file", "SNBT Data");
+        form.textField("Chunk Index x", "integer", String(Math.floor(coords.getChunkIndex(sourceEntity.location).x/8)));
+        form.textField("Chunk Index y", "integer", String(Math.floor(coords.getChunkIndex(sourceEntity.location).y/8)));
+        form.dropdown("Dimension", dimensions.map(d=>dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.submitButton("Generate Map Art")
+        forceShow(form, sourceEntity as any).then(ra => {let r = ra as ModalFormResponse
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return;
+            // This will assign every input their own variable
+            let [snbt, chunkx, chunky, dimension] = r.formValues; /*
+            console.warn(r.formValues);*/
+            let newsnbta = JSON.parse((snbt as string).replace(/(['"])?([a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*([\"\'\`funIN\-0-9\{\[])/g, '"$2":$4'))
+            //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
+            generateNBTFileB(Object.assign(coords.chunkIndexToBoundingBox({x: chunkx as number, y: chunky as number}).from, {dimension: dimensions[dimension as number]??sourceEntity.dimension, y: (dimensions[dimension as number]??sourceEntity.dimension).heightRange.max-((newsnbta.size[1]??1) as number)}), newsnbta)
+            // Do something
+        }).catch(e => {
+            console.error(e, e.stack);
+        });})/*
+    try { (sourceEntity).runCommand(String("/scriptevent andexdb:commandRunner hisa")); }
+    // Do something
+catch(e) {
+    console.error(e, e.stack);
+};*/}
+//evaluateParameters("{a: \"a\", \"b\": \"b\"}", [{type: "json"}])
+export function nbtStructureLoader(sourceEntity: Entity|Player){
+    srun(() => {
+        let form = new ModalFormData();
+        form.title("Java NBT Structure Loader [§cExperimental§r]");
+        form.textField("§fFor info on how to use this loader, go to §bhttps://sites.google.com/view/8craftermods/debug-sticks-add-on/andexdbnbtstructureloader§f\nNote: When pasting the nbt data into the text box the game might freeze for anywhere from a few seconds to half a hour depending on how much text is being pasted while it is pasting, and then it will unfreeze. \nNBT Data", "NBT Data");
+        form.textField("spawn position x", "integer", String(sourceEntity.location.x));
+        form.textField("spawn position y", "integer", String(sourceEntity.location.y));
+        form.textField("spawn position z", "integer", String(sourceEntity.location.z));
+        form.dropdown("Dimension", dimensions.map(d=>dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.submitButton("Load Java NBT Structure")
+        forceShow(form, sourceEntity as any).then(ra => {let r = ra as ModalFormResponse
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return;
+            // This will assign every input their own variable
+            let [snbt, x, y, z, dimension] = r.formValues; /*
+            console.warn(r.formValues);*/
+            let newsnbta = JSON.parse((snbt as string).replace(/(?<=[,\{][\s\n]*?)(['"])?(?<vb>[a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*(?<vd>false|true|undefined|NULL|Infinity|-Infinity|[\-\+]?[0-9]+|"(?:[^"]|(?<=([^\\])(\\\\)*?\\)")*"|'(?:[^']|(?<=([^\\])(\\\\)*?\\)')*')(?=[\s\n]*?[,\}])/g, '"$<vb>":$<vd>'))
+            //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
+            generateNBTFileD({dimension: dimensions[dimension as number]??sourceEntity.dimension, x: (Number(x)??sourceEntity.location.x), y: (Number(y)??sourceEntity.location.y), z: (Number(z)??sourceEntity.location.z)}, newsnbta, sourceEntity as Player)
             // Do something
         }).catch(e => {
             console.error(e, e.stack);

@@ -1,6 +1,6 @@
 import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes } from "@minecraft/server";
 import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, } from "./coordinates";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
@@ -1235,6 +1235,10 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
 }
 export const EquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand]
 export const OtherEquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Offhand]
+export const dimensions = [world.getDimension("overworld"), world.getDimension("nether"), world.getDimension("the_end")]
+export const overworld = world.getDimension("overworld")
+export const nether = world.getDimension("nether")
+export const the_end = world.getDimension("the_end")
 
 export function shuffle<a>(array: a[]) {
     var m = array.length, t, i;
@@ -1246,6 +1250,180 @@ export function shuffle<a>(array: a[]) {
     }
     return array as a[]
 }
+
+export function arryTV3(v3Array: [x: number, y: number, z: number]){return {x: v3Array[0], y: v3Array[1], z: v3Array[2]}}
+
+export function parseNBTFile(nbt: {blocks: {pos: [x: number, y: number, z: number], state: number}[], entities?: any, palette: {Name: string, properties?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number]}){
+    let outputObject = [] as {pos: [x: number, y: number, z: number], }[]
+    return outputObject
+}
+
+export function generateNBTFile(location: DimensionLocation, nbt: {blocks: {pos: [x: number, y: number, z: number], state: number}[], entities?: any, palette: {Name: string, Properties?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number]}){
+    nbt.blocks.forEach(b=>tryrun(()=>(location.dimension.setBlockType(mcMath.Vector3Utils.add(location, {x: b.pos[0], y: b.pos[1], z: b.pos[2]}), nbt.palette[b.state].Name.replace("minecraft:active - lit_redstone_lamp", "minecraft:light_gray_terracotta")), (nbt.palette[b.state].Name=="minecraft:coarse_dirt"||nbt.palette[b.state].Name=="coarse_dirt")?location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, {x: b.pos[0], y: b.pos[1], z: b.pos[2]}), BlockPermutation.resolve("minecraft:dirt", {dirt_type: "coarse"})):!!nbt.palette[b.state].Properties?Object.entries(nbt.palette[b.state].Properties).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, {x: b.pos[0], y: b.pos[1], z: b.pos[2]}), BlockPermutation.resolve(nbt.palette[b.state].Name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, {x: b.pos[0], y: b.pos[1], z: b.pos[2]})).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined)))
+}
+
+export function generateNBTFileB(location: DimensionLocation, nbt: {blocks: {pos: [x: number, y: number, z: number], state: number}[], entities?: any, palette: {Name: string, Properties?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number]}){
+    nbt.blocks.forEach(b=>tryrun(()=>(location.dimension.setBlockType(mcMath.Vector3Utils.add(location, {x: b.pos[0], y: b.pos[1], z: b.pos[2]}), nbt.palette[b.state].Name.replace("minecraft:active - lit_redstone_lamp", "minecraft:light_gray_terracotta").replace("minecraft:coarse_dirt", "minecraft:dirt")), (nbt.palette[b.state].Name=="minecraft:coarse_dirt"||nbt.palette[b.state].Name=="coarse_dirt")?location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, {x: b.pos[0], y: b.pos[1], z: b.pos[2]}), BlockPermutation.resolve("minecraft:dirt", {dirt_type: "coarse"})):!!nbt.palette[b.state].Properties?Object.entries(nbt.palette[b.state].Properties).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, {x: b.pos[0], y: b.pos[1], z: b.pos[2]}), BlockPermutation.resolve(nbt.palette[b.state].Name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, {x: b.pos[0], y: b.pos[1], z: b.pos[2]})).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined)))
+}
+
+export function generateNBTFileC(location: DimensionLocation, nbt: {block_indices: number[], block_palette: {name: string, states?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number], nbt_type: "cmprsnbt"}){
+    nbt.block_indices.forEach((b, i)=>b!=-1?tryrun(()=>(location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:light_gray_terracotta")), (nbt.block_palette[b].name=="minecraft:coarse_dirt"||nbt.block_palette[b].name=="coarse_dirt")?location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), BlockPermutation.resolve("minecraft:dirt", {dirt_type: "coarse"})):!!nbt.block_palette[b].states?Object.entries(nbt.block_palette[b].states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined)):undefined)
+}
+
+export function generateNBTFileF(location: DimensionLocation, nbt: {block_indices: number[], block_palette: {name: string, states?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number], nbt_type: "cmprsnbt"}){
+    nbt.block_indices.forEach((b, i)=>b!=-1?tryrun(()=>(location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0])), i%nbt.size[2]])), nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp")), (nbt.block_palette[b].name=="minecraft:coarse_dirt"||nbt.block_palette[b].name=="coarse_dirt")?location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), BlockPermutation.resolve("minecraft:dirt", {dirt_type: "coarse"})):!!nbt.block_palette[b].states?Object.entries(nbt.block_palette[b].states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined)):undefined)
+}
+
+export function generateNBTFileE(location: DimensionLocation, nbt: {block_indices: number[], block_palette: {name: string, states?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number], nbt_type: "cmprbnbt"}){
+    nbt.block_indices.forEach((b, i)=>(b??-1)!=-1?tryrun(()=>(location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), nbt.block_palette[b].name), !!nbt.block_palette[b].states?Object.entries(nbt.block_palette[b].states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([i%nbt.size[2], Math.floor(i/(nbt.size[0]*nbt.size[2])), Math.floor((i%(nbt.size[0]*nbt.size[2]))/(nbt.size[0]))]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined)):undefined)
+}
+
+export function generateNBTFileD(location: DimensionLocation, nbt: any, player: Player){/*
+    generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(Object.assign(location, {y: 320}), mcMath.Vector3Utils.add(location, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 320), {y: 0})))}); return a})(), player.dimension).then(tac=>{*/try{
+        let id = "andexdbmapartloader:"+Date.now()
+        if(location.dimension.runCommand(`/tickingarea add ${location.x} -64 ${location.z} ${location.x+136} 325 ${location.z+136} "${id}"`).successCount==0){player.sendMessage("§6Warning: Map art generation may be incomplete because max amount of tickingareas were used up so some chunks might have not been loaded. ")}
+        switch(detectNBTDataType(nbt)){
+        case "cmprsnbt": 
+        generateNBTFileF(location, nbt)
+        break
+        case "cmprbnbt": 
+        generateNBTFileE(location, nbt)
+        break; 
+        case "supercmprsnbt": 
+        generateNBTFileF(location, unsuperCompress(nbt))
+        break
+        case "supercmprbnbt": 
+        generateNBTFileE(location, unsuperCompress(nbt))
+        break; 
+        case "snbt": 
+        generateNBTFileF(location, compressJavaNBTData(nbt))
+        break; 
+        case "nbt": 
+        generateNBTFileF(location, parseJSONifiedNBTData(compressJavaNBTData(nbt)))
+        break; 
+        case "bnbt": 
+        generateNBTFileE(location, compressBedrockNBTData(nbt))
+        break; 
+        case "pnbt": 
+        generateNBTFileE(location, compressBedrockNBTData(parseJSONifiedNBTData(nbt)))
+        break; 
+        case "rawuenbt": 
+        generateNBTFileE(location, compressBedrockNBTData(parseJSONifiedNBTData(nbt)))
+        break; 
+        case "unknownt": 
+        generateNBTFile(location, nbt)
+        break; 
+        default: 
+        generateNBTFile(location, nbt)
+        break; 
+    }
+    location.dimension.runCommand(`/tickingarea remove "${id}"`)
+}catch(e){player.sendMessage("§c" + e + e.stack)}/*finally{tac.forEach(tab=>tab?.remove())}}, (e)=>{player.sendMessage(e+" "+e.stack)}); */
+}
+
+export function parseJSONifiedNBTData(nbt){
+    function parseObject(object){
+        switch(object.type){
+            case "compound": 
+                return Object.fromEntries(Object.entries(object.value).map(t=>[t[0], parseObject(t[1])]))
+            break
+            case "list": 
+                return object.value instanceof Array?object.value.map(v=>parseList(v)):parseList(object.value)
+            break
+            case "int": 
+                return object.value
+            break
+            case "string": 
+                return object.value
+            break
+            case "byte": 
+                return Boolean(object.value)
+            break
+            case "end": 
+                return object.value
+            break
+            default: 
+                return object
+        }
+    }
+    function parseList(object){
+        switch(object.type){
+            case "compound": 
+                return object.value.map(t=>Object.fromEntries(Object.entries(t).map(t=>[t[0], parseObject(t[1])])))
+            break
+            case "list": 
+                return object.value.map(t=>parseList(t))
+            break
+            case "int": 
+                return object.value
+            break
+            case "string": 
+                return object.value
+            break
+            case "byte": 
+                return Boolean(object.value)
+            break
+            case "end": 
+                return object.value
+            break
+            default: 
+                let a = undefined
+                try{a = object.map(t=>parseList(t))}catch{a=object}
+                return a
+        }
+    }
+    return parseObject(nbt)
+}
+export function convertToSNBTFormat(parsedNBT){
+    //var blocks = []
+    var blocksb = []
+    parsedNBT.structure.block_indices[0].forEach((b, i)=>b!=-1?blocksb.push({pos: [i%parsedNBT.size[2], Math.floor(i/(parsedNBT.size[0]*parsedNBT.size[2])), Math.floor((i%(parsedNBT.size[0]*parsedNBT.size[2]))/(parsedNBT.size[0]))], state: b}):undefined)/*
+    var b = parsedNBT.structure.block_indices[0][0]
+    for(let y = 0; y<parsedNBT.size[0]; y++){
+        for(let z = 0; z<parsedNBT.size[0]; z++){
+            for(let x = 0; x<parsedNBT.size[0]; x++){
+                b=parsedNBT.structure.block_indices[0][(y*parsedNBT.size[0]*parsedNBT.size[2])+(z*parsedNBT.size[0])+x]
+                !!b?blocks.push({pos: [x, y, z], state: b}):undefined
+            }
+        }
+    }*/
+    return {blocks: blocksb, palette: parsedNBT.structure.palette.default.block_palette.map(v=>({Name: v.name, Properties: v.states})), nbt_type: "cnvtsnbt", size: parsedNBT.size}
+}
+export function compressBedrockNBTData(parsedNBT){
+    return {block_indices: parsedNBT.structure.block_indices[0], block_palette: parsedNBT.structure.palette.default.block_palette, nbt_type: "cmprbnbt" as "cmprbnbt", size: parsedNBT.size}
+}
+export function compressJavaNBTData(parsedNBT){
+    var block_indices = "-1,".repeat(parsedNBT.size[0]*parsedNBT.size[1]*parsedNBT.size[2]).slice(0, -1).split(",").map(v=>Number(v))
+    parsedNBT.blocks.forEach((b, i)=>b!=-1?block_indices[b.pos[0]+(b.pos[2]*parsedNBT.size[0])+(b.pos[1]*parsedNBT.size[0]*parsedNBT.size[2])]=b.state:undefined)
+    return {block_indices: block_indices, block_palette: parsedNBT.palette.map(v=>({name: v.Name, states: v.Properties})), nbt_type: "cmprsnbt" as "cmprsnbt", size: parsedNBT.size}
+}
+export function unsuperCompress(nbt){return Object.assign(nbt, {block_indices: extractIntArray(nbt.block_indices)})}
+export function superCompressBedrockNBTData(parsedNBT){
+    return {block_indices: compressIntArray(parsedNBT.structure.block_indices[0]), block_palette: parsedNBT.structure.palette.default.block_palette, nbt_type: "supercmprbnbt" as "supercmprbnbt", size: parsedNBT.size}
+}
+export function superCompressJavaNBTData(parsedNBT){
+    var block_indices = "-1,".repeat(parsedNBT.size[0]*parsedNBT.size[1]*parsedNBT.size[2]).slice(0, -1).split(",").map(v=>Number(v))
+    parsedNBT.blocks.forEach((b, i)=>b!=-1?block_indices[b.pos[0]+(b.pos[2]*parsedNBT.size[0])+(b.pos[1]*parsedNBT.size[0]*parsedNBT.size[2])]=b.state:undefined)
+    return {block_indices: compressIntArray(block_indices), block_palette: parsedNBT.palette.map(v=>({name: v.Name, states: v.Properties})), nbt_type: "supercmprsnbt" as "supercmprsnbt", size: parsedNBT.size}
+}
+export function detectNBTDataType(NBTData){return !!NBTData.nbt_type?NBTData.nbt_type:NBTData.hasOwnProperty("blocks")?"snbt":NBTData.hasOwnProperty("structure")?"bnbt":NBTData?.type=="compound"?"rawuenbt":"unknownt"}
+
+export function setNBTDataType(NBTData){return !!NBTData.nbt_type?NBTData:Object.assign(NBTData, {nbt_type: detectNBTDataType(NBTData)})}
+export function stringifyJSONCompressed(NBTData){return JSON.stringify(NBTData, undefined, "")}
+
+export function compressIntArrayB(s: string, replacement: string ="-1"){Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)([\s\n]*,[\s\n]*\1){2,}/g)).forEach(v=>s=s.replace(v[0], v[1]+"^"+((v[0].length+1)/(v[1].length+1)))); s=s.replaceAll(replacement, ""); return s}
+
+export function extractIntArrayB(s: string, revivement: string ="-1"){s=s.replaceAll(/,(?=[,\]$])/g, ","+revivement); Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+)/g)).forEach(v=>s=s.replace(v[0], (v[1]+",").repeat(Number(v[2])).slice(0, -1))); return s}
+export function compressIntArray(arry: number[], replacement: string ="-1"){return compressIntArrayB(JSON.stringify(arry.map(v=>(v??-1).toString(36)), undefined, 0).replaceAll('"', ""), replacement)}
+export function extractIntArray(arry: string, revivement: string ="-1"){return extractIntArrayB(arry, revivement).replaceAll(" ", "").slice(1, -1).split(",").map(v=>Number.parseInt(v, 36))}
+
+export function ultraCompressIntArrayB(s: string, replacement: string ="-1"){Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)([\s\n]*,[\s\n]*\1){2,}/g)).forEach(v=>s=s.replace(v[0], v[1]+"^"+((v[0].length+1)/(v[1].length+1)).toString(36))); s=s.replaceAll(replacement, ""); return s}
+
+export function ultraExtractIntArrayB(s: string, revivement: string ="-1"){s=s.replaceAll(/,(?=[,\]^])/g, ","+revivement); Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+)/g)).forEach(v=>s=s.replace(v[0], (v[1]+",").repeat(Number.parseInt(v[2], 36)).slice(0, -1))); return s}
+export function ultraCompressIntArray(arry: number[], replacement: string ="-1"){return ultraCompressIntArrayB(JSON.stringify(arry.map(v=>(v??-1).toString(36)), undefined, 0).replaceAll('"', ""), replacement)}
+export function ultraExtractIntArray(arry: string, revivement: string ="-1"){return ultraExtractIntArrayB(arry, revivement="-1").replaceAll(" ", "").slice(1, -1).split(",").map(v=>Number.parseInt(v, 36))}
+//${se}bsend(extractIntArrayB(compressIntArray([5, 5, 5, 5, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]))); bsend(JSONStringify([5, 5, 5, 5, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]))
+//${se}bsend(JSONStringify(extractIntArray(compressIntArray([5, 5, 5, 5, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5])))); bsend(JSONStringify([5, 5, 5, 5, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]))
 
 export function vTV3(vector: Vector3){return {x: vector.x, y: vector.y, z: vector.z} as Vector3}
 
@@ -1261,7 +1439,7 @@ export function getPlayersWithTags(tags: string|string[]){return tags instanceof
 export function getPlayersWithAnyOfTags(tags: string|string[]){return tags instanceof Array ? world.getAllPlayers().filter(p=>tags.some(t=>p.hasTag(t))) : world.getAllPlayers().filter(p=>p.hasTag(tags))}
 
 export function disconnectPlayers(targets: Entity[]|Player[], enableStrictErrorThrowing: boolean = false, disableExtraErrorReporting: boolean = false){
-    targets.forEach(target=>{
+    targets.filter(v=>v.typeId=="minecraft:player").forEach(target=>{
         try{
             disconnectingPlayers.push(target.id)
             target.triggerEvent("andexsa:explode")
@@ -4586,8 +4764,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         case !!switchTest.match(/^summon$/): {
             eventData.cancel = true;
             system.run(()=>{
-                let args = evaluateParameters(switchTestB, ["presetText", "number", "string", "Vector", "Vector", "Vector", "Vector", "Vector", "neboolean", "string"]).args
-                for(let i = 0; i < args[1]; i++){let a = player.dimension.spawnEntity(args[2], evaluateCoordinates(args[3]??"~", args[4]??"~", args[5]??"~", player.location, player.getRotation()), {initialPersistence: args[8]??false}); a.setRotation({x: Number(String(args[7]??0).replace("~", "0")), y: Number(String(args[6]??0).replace("~", "0"))}); a.nameTag=args[9]??""}
+                const args = evaluateParameters(switchTestB, ["presetText", "number", "string", "Vector", "Vector", "Vector", "Vector", "Vector", "neboolean", "string"]).args
+                const rotation = evaluateRotationCoordinates(String(args[7]??0), String(args[6]??0).replace("~", "0"), player.getRotation())
+                const location = evaluateCoordinates(args[3]??"~", args[4]??"~", args[5]??"~", player.location, player.getRotation())
+                for(let i = 0; i < args[1]; i++){let a = player.dimension.spawnEntity(args[2], location, {initialPersistence: args[8]??false}); a.setRotation(rotation); a.nameTag=args[9]??""}
                 player?.sendMessage(`${args[1]==0?"§c":""}Summoned ${args[2]} * ${args[1]}. `)
             })
         }
@@ -6818,6 +6998,14 @@ export function extractSelectors(str: string) {
 const str = "something @e[type='pig',family=mob,hasitem=[{item=stick,slot=0,location=\"slot.enderchest\"},{item='iron_sword',location=slot.weapon.offhand,slot=0}],name=entityname] somethingelseelse";
 const selectors = extractSelectors(str);
 console.log(selectors);*/
+
+function JSONify(obj: object){
+  var o = {};
+  for(var i in obj){
+    o['"'+i+'"'] = obj[i]; // make the quotes
+  }
+  return o;
+}
 
 export function evaluateParameters(commandstring: string, parameters: ({type: "presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates", maxLength?: number}|{type: "Vectors", vectorCount?: number, maxLength?: number}|string)[]) {
     let argumentsa = [] as any[]
