@@ -8,7 +8,9 @@
             "type": "minecraft-js",
             "request": "attach",
             "name": "Attach to Minecraft",
-            "localRoot": "${workspaceFolder}/BP",
+            "localRoot": "${workspaceFolder}/BP/src",
+            "generatedSourceRoot": "${workspaceFolder}/BP/scripts",
+            "sourceMapRoot": "${workspaceFolder}/BP/scripts",
             "host": "localhost",
             "port": 19144
         },
@@ -17,7 +19,9 @@
             "request": "attach",
             "name": "Wait for Minecraft Debug Connections",
             "mode": "listen",
-            "localRoot": "${workspaceFolder}/BP",
+            "localRoot": "${workspaceFolder}/BP/src",
+            "generatedSourceRoot": "${workspaceFolder}/BP/scripts",
+            "sourceMapRoot": "${workspaceFolder}/BP/scripts",
             "host": "localhost",
             "port": 19144
         }
