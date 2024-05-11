@@ -1,8 +1,8 @@
 {
   "name": "debug-sticks",
-  "version": "1.12.2",
+  "version": "1.14.0-beta.976",
   "description": "",
-  "main": "index.js",
+  "main": "./scripts/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
