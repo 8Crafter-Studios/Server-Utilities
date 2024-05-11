@@ -21,6 +21,7 @@ import *  as playersave from "./player_save";
 import *  as spawnprot from "./spawn_protection";
 import mcMath from "@minecraft/math.js";
 export const cmdsmetaimport = import.meta
+globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -1281,6 +1282,7 @@ export function* generateNBTFileFBG(location: DimensionLocation, nbt: {block_ind
 
 export function generateNBTFileE(location: DimensionLocation, nbt: {block_indices: number[], block_palette: {name: string, states?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number], nbt_type: "cmprbnbt"}){
     var successCount = 0
+    console.log(nbt.block_indices)
     nbt.block_indices.forEach((b, i)=>(b??-1)!=-1?tryrun(()=>{
         try{
             location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), nbt.block_palette[b].name); 
@@ -1293,11 +1295,31 @@ export function generateNBTFileE(location: DimensionLocation, nbt: {block_indice
     return successCount
 }
 
-export function generateNBTFileD(location: DimensionLocation, nbt: any, player: Player){/*
+export function* generateNBTFileEGG(location: DimensionLocation, nbt: {block_indices: number[], block_palette: {name: string, states?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number], nbt_type: "cmprbnbt"}){
+    var successCount = 0
+    var b = undefined as number; 
+    for(let i = 0; i<nbt.block_indices.length; i++){
+        b=nbt.block_indices[i]; 
+        (b??-1)!=-1?tryrun(()=>{
+            try{
+                location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), nbt.block_palette[b].name); 
+                !!nbt.block_palette[b]?.states?Object.entries(nbt.block_palette[b]?.states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined; 
+                //{let i = 249; let nbt = {size: [5, 5, 5]}; [Math.floor(i/nbt.size[2])%nbt.size[0], Math.floor(i/(nbt.size[0]*nbt.size[2]))%nbt.size[1], i%nbt.size[2]]}
+                //{let i = 27; let nbt = {size: [5, 5, 5]}; [Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]]}
+                successCount++
+            }catch(e){console.error(e, e.stack, i, b)}
+        }):undefined; 
+        yield void null
+    }
+    return successCount
+}
+
+export async function generateNBTFileD(location: DimensionLocation, nbt: any, player: Player){/*
     generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(Object.assign(location, {y: 320}), mcMath.Vector3Utils.add(location, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 320), {y: 0})))}); return a})(), player.dimension).then(tac=>{*/try{
         let id = "andexdbmapartloader:"+Date.now()
         if(location.dimension.runCommand(`/tickingarea add ${location.x} -64 ${location.z} ${location.x+136} 325 ${location.z+136} "${id}"`).successCount==0){player.sendMessage("§6Warning: Map art generation may be incomplete because max amount of tickingareas were used up so some chunks might have not been loaded. ")}
-        system.runTimeout(()=>{try{
+        await waitTicks(2)
+        try{
                 switch(detectNBTDataType(nbt)){
                 case "cmprsnbt": 
                 generateNBTFileF(location, nbt)
@@ -1306,10 +1328,10 @@ export function generateNBTFileD(location: DimensionLocation, nbt: any, player: 
                 generateNBTFileE(location, nbt)
                 break; 
                 case "supercmprsnbt": 
-                generateNBTFileF(location, unsuperCompress(nbt))
+                generateNBTFileF(location, await unsuperCompressG(nbt))
                 break
                 case "supercmprbnbt": 
-                player.sendMessage(String(generateNBTFileE(location, unsuperCompress(nbt))))
+                pasend(player, generateNBTFileE(location, await unsuperCompressG(nbt)))
                 break; 
                 case "ultracmprsnbt": 
                 generateNBTFileF(location, unultraCompress(nbt))
@@ -1340,7 +1362,7 @@ export function generateNBTFileD(location: DimensionLocation, nbt: any, player: 
                 break; 
             }
             location.dimension.runCommand(`/tickingarea remove "${id}"`)
-        }catch(e){player.sendMessage("§c" + e + e.stack)}}, 2)
+        }catch(e){player.sendMessage("§c" + e + e.stack)}
 }catch(e){player.sendMessage("§c" + e + e.stack)}/*finally{tac.forEach(tab=>tab?.remove())}}, (e)=>{player.sendMessage(e+" "+e.stack)}); */
 }
 
@@ -1421,6 +1443,7 @@ export function compressJavaNBTData(parsedNBT){
     return {block_indices: block_indices, block_palette: parsedNBT.palette.map(v=>({name: v.Name, states: v.Properties})), nbt_type: "cmprsnbt" as "cmprsnbt", size: parsedNBT.size}
 }
 export function unsuperCompress(nbt){return Object.assign(nbt, {block_indices: extractIntArray(nbt.block_indices)})}
+export async function unsuperCompressG(nbt){return Object.assign(nbt, {block_indices: await extractIntArrayG(nbt.block_indices)})}
 export function unultraCompress(nbt){return Object.assign(nbt, {block_indices: ultraExtractIntArray(nbt.block_indices)})}
 export function fltToStr(float: number, radix: number=10){return String(float).split(".").map(v=>Number(v).toString(radix)).join(".")}
 export function strToFlt(string: string, radix: number=10){return Number(string.split(".").map(v=>String(Number.parseInt(v, radix))).join("."))}
@@ -1440,7 +1463,7 @@ export function stringifyJSONCompressed(NBTData){return JSON.stringify(NBTData, 
 export function compressIntArrayB(s: string, replacement: string ="-1"){Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)([\s\n]*,[\s\n]*\1){2,}/g)).forEach(v=>s=s.replace(v[0], v[1]+"^"+((v[0].length+1)/(v[1].length+1)))); s=s.replaceAll(replacement, ""); return s}
 
 export function extractIntArrayB(s: string, revivement: string ="-1"){s=s.replaceAll(/,(?=[,\]\^])/g, ","+revivement).replace(/\[(?=[,\^])/, "["+revivement); s=s.slice(0, -1)+","+"]"; Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+),/g)).forEach(v=>s=s.replace(v[0], (v[1]+",").repeat(Number(v[2])))); s=s.slice(0, -2)+"]"; return s}
-function* extractIntArrayBGenerator(s: string, revivement: string = "-1") {
+export function* extractIntArrayBGenerator(s: string, revivement: string = "-1", maxTimePerTick=7250) {
     let lastYieldTime = Date.now(); 
     s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement);
     s = s.slice(0, -1) + "," + "]";
@@ -1450,10 +1473,11 @@ function* extractIntArrayBGenerator(s: string, revivement: string = "-1") {
 
     const matchAllIterator = s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+),/g);
     for (const v of matchAllIterator) {
+        v[0]=="32"?console.log(JSON.stringify(v), v[0], v[1], v[2]):undefined; 
         s = s.replace(v[0], (v[1] + ",").repeat(Number(v[2])));
         
         // Check if it's time to yield
-        if (Date.now() - lastYieldTime >= 7500) {
+        if (Date.now() - lastYieldTime >= maxTimePerTick) {
             lastYieldTime = Date.now();
             yield s; // Yield the modified string
         }
@@ -1461,21 +1485,22 @@ function* extractIntArrayBGenerator(s: string, revivement: string = "-1") {
     
     s = s.slice(0, -2) + "]";
     yield s; // Yield the final modified string
+    return s; 
 }
-export function iterateGenerator(extractorGenerator: Generator){
+export function iterateGenerator<TY, TR, TN>(extractorGenerator: Generator<TY, TR, TN>, maxTimePerTick=7500, whileConditions: boolean|number|string|Function=true){
     let lastYieldTime = Date.now(); // Initialize the last yield time
-    async function iterateGeneratorB(extractorGenerator: Generator, lastYieldTime) {
+    async function iterateGeneratorB<TY, TR, TN>(extractorGenerator: Generator<TY, TR, TN>, lastYieldTime) {
         let finalResult;
-        while (true) {
+        while (whileConditions) {
             const result = extractorGenerator.next();
+            finalResult = result.value;
             if (!result.done) {
                 console.log(result.value); // Handle the yielded value
-                if (Date.now() - lastYieldTime >= 7500) {
+                if (Date.now() - lastYieldTime >= maxTimePerTick) {
                     lastYieldTime = Date.now();
-                    await new Promise(resolve => setTimeout(resolve, 0)); // Asynchronously wait for next iteration
+                    await new Promise(resolve => system.run(()=>resolve(void null))); // Asynchronously wait for next iteration
                 }
             } else {
-                finalResult = result.value;
                 break;
             }
         }
@@ -1484,8 +1509,51 @@ export function iterateGenerator(extractorGenerator: Generator){
     return iterateGeneratorB(extractorGenerator, lastYieldTime)
 }
 
+export async function completeGenerator<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick=7500, whileConditions: boolean|number|string|Function=true) {
+    let lastYieldTime = Date.now(); // Initialize the last yield time
+    let finalResult: T;
+    let returnResult: TReturn;
+    while (whileConditions) {
+        const result = g.next();
+        if (!result.done) {
+            finalResult = result.value as T;
+            if (Date.now() - lastYieldTime >= maxTimePerTick) {
+                lastYieldTime = Date.now();
+                await new Promise(resolve => system.run(()=>resolve(void null)));
+            }
+        } else {
+            returnResult = result.value;
+            break;
+        }
+    }
+    return {yield: finalResult, return: returnResult};
+}
+
+export async function completeGeneratorB<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick=7500, whileConditions=true) {
+    let lastYieldTime = Date.now();
+    var yieldResults = [] as T[];
+    let returnResult: TReturn;
+    while (whileConditions) {
+        const result = g.next();
+        if (!result.done) {
+            yieldResults.push(result.value as T);
+            if (Date.now() - lastYieldTime >= maxTimePerTick) {
+                lastYieldTime = Date.now();
+                await new Promise(resolve => system.run(()=>resolve(void null)));
+            }
+        } else {
+            returnResult = result.value;
+            break;
+        }
+    }
+    return {yield: yieldResults, return: returnResult};
+}
+export async function waitTick(){return new Promise(resolve => system.run(()=>resolve(void null)))}
+export async function waitTicks(ticks: number=1){return new Promise(resolve => system.runTimeout(()=>resolve(void null), ticks))}
+
 export function compressIntArray(arry: number[], replacement: string ="-1"){return compressIntArrayB(JSON.stringify(arry.map(v=>(v??-1).toString(36)), undefined, 0).replaceAll('"', ""), replacement)}
 export function extractIntArray(arry: string, revivement: string ="-1"){return extractIntArrayB(arry, revivement).replaceAll(" ", "").slice(1, -1).split(",").map(v=>Number.parseInt(v, 36))}
+export async function extractIntArrayG(arry: string, revivement: string ="-1", maxTimePerTick: number=7500){return (await completeGenerator(extractIntArrayBGenerator(arry, revivement, maxTimePerTick), maxTimePerTick-250)).return.replaceAll(" ", "").slice(1, -1).split(",").map(v=>Number.parseInt(v, 36))}
 //rangeToIntArray([0, 5000000]).forEach(v=>Number.parseInt(String(v), 36))
 export function ultraCompressIntArrayB(s: string, replacement: string ="-1"){Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)([\s\n]*,[\s\n]*\1){2,}/g)).forEach(v=>s=s.replace(v[0], v[1]+"^"+((v[0].length+1)/(v[1].length+1)).toString(36))); s=s.replaceAll(replacement, ""); return s}
 
