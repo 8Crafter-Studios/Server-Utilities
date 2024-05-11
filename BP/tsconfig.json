@@ -9,11 +9,13 @@
       "outDir": "./scripts",
       "paths": {
         "@minecraft/math.js": ["../node_modules/@minecraft/math"]
-      },/*
-      "allowJs": true,*//*
-      "declaration": true,*/
+      },
+      "allowJs": true,/*
+      "declaration": true,
+      "declarationMap": true,*/
       "verbatimModuleSyntax": true/*, 
-      "resolveJsonModule": true*/
+      "resolveJsonModule": true*/,
+      "sourceMap": true,
     },
     "exclude": [ "node_modules" ],
     "include": [ "src" ]
