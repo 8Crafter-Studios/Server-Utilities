@@ -16,6 +16,8 @@
       "verbatimModuleSyntax": true/*, 
       "resolveJsonModule": true*/,
       "sourceMap": true,
+      "noFallthroughCasesInSwitch": true,
+      "strictBindCallApply": true
     },
     "exclude": [ "node_modules" ],
     "include": [ "src" ]
