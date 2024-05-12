@@ -287,7 +287,7 @@ if (radix == 1) return keys[0].repeat(num)
     output.unshift(keys[index]);
     num = Math.trunc(num / radix);
   } while (num != 0);
-  if (isNegative) output.unshift('-')
+  if (isNegative??false) output.unshift('-')
   return output.join("");
 } 
 export function fromBaseToBase(num, base = 10, radix = 10, keysa =  radix>62?"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/":"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/") { // only i64 numbers

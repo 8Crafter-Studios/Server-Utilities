@@ -3704,3 +3704,4 @@ export function createExplosion(sourceEntity, parameterDefaults) {
         }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
+//# sourceMappingURL=ui.js.map

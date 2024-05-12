@@ -294,7 +294,7 @@ export function toBase(num, radix = 10, keysa = radix > 62 ? "0123456789abcdefgh
         output.unshift(keys[index]);
         num = Math.trunc(num / radix);
     } while (num != 0);
-    if (isNegative)
+    if (isNegative ?? false)
         output.unshift('-');
     return output.join("");
 }
@@ -11579,3 +11579,4 @@ try {blockStatesFullList = String([String(blockStatesFullList), block.block.perm
         }
     }
 });
+//# sourceMappingURL=Main.js.map
