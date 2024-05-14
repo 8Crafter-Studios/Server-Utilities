@@ -21,7 +21,7 @@ import * as playersave from "./player_save";
 import * as spawnprot from "./spawn_protection";
 import mcMath from "@minecraft/math.js";
 export const cmdsmetaimport = import.meta;
-globalThis.modules = { main, coords, cmds, bans, uis, playersave, spawnprot, mcMath };
+//globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -789,6 +789,9 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "liststructures", escregexp: { v: "^liststructures$" }, formats: [{ format: "liststructures" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "blocks"], commandSettingsId: "built-inCommandSettings:liststructures" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: { v: "^home$" }, formats: [{ format: "home" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gohome", escregexp: { v: "^gohome$" }, formats: [{ format: "gohome" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "rtp", escregexp: { v: "^rtp$" }, formats: [{ format: "rtp <player: targetSelector|playerName>" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "tpaccept", escregexp: { v: "^tpaccept$" }, formats: [{ format: "tpaccept [player: targetSelector|playerName]" }, { format: "tpdeny all" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpaccept" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "tpdeny", escregexp: { v: "^tpdeny$" }, formats: [{ format: "tpdeny [player: targetSelector|playerName]" }, { format: "tpdeny all" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpdeny" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "kick", escregexp: { v: "^kick$" }, formats: [{ format: "kick <players: targetSelector> [reason: string]" }], command_version: "1.0.0", description: "", category: ["system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:kick" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "disconnect", escregexp: { v: "^disconnect$" }, aliases: [{ commandName: "boot", escregexp: { v: "^boot$" } }], formats: [{ format: "disconnect <players: targetSelector>" }], command_version: "1.0.0", description: "", category: ["Entity Scale Add-On", "system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:disconnect" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: { v: "^morph$" }, formats: [{ format: "" }], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:morph" },
@@ -1126,7 +1129,7 @@ export class HomeSystem {
     static getHomeIdsForPlayer(player) { return world.getDynamicPropertyIds().filter(v => v.startsWith("home:")).filter(v => tryget(() => JSONParse(String(world.getDynamicProperty(v)))?.ownerId) == (typeof player == "string" ? player : player.id)); }
     static getHomesForPlayer(player) { return this.getHomes(this.getHomeIdsForPlayer(player)); }
     static testIfPlayerAtMaxHomes(player) { return this.getHomeIdsForPlayer(player).length >= this.maxHomesPerPlayer; }
-    static get maxHomesPerPlayer() { return gwdp("homeSystemSettings:maxHomesPerPlayer") == -1 ? Infinity : Number(gwdp("homeSystemSettings:maxHomesForPlayers") ?? Infinity); }
+    static get maxHomesPerPlayer() { return gwdp("homeSystemSettings:maxHomesPerPlayer") == -1 ? Infinity : Number(gwdp("homeSystemSettings:maxHomesPerPlayer") ?? Infinity); }
     static set maxHomesPerPlayer(maxHomes) { swdp("homeSystemSettings:maxHomesPerPlayer", maxHomes == Infinity ? -1 : maxHomes); }
 }
 HomeSystem.home_format_version = "0.0.1-indev.1";
@@ -1221,6 +1224,151 @@ export class chunkLandClaim {
     }
     static delete(claimId) { world.setDynamicProperty(claimId); }
 }
+function extractCustomPatternTypes(str) {
+    const patterns = [];
+    const regex = /(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g;
+    const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
+    const matchesa = str.match(regex);
+    matchesa.forEach(m => {
+        const matches = m.match(regexb);
+        if (matches) {
+            const patternTypes = [];
+            matches.forEach(match => {
+                let type = match.trim();
+                let weight = null;
+                let states = null;
+                // Extract chance if present
+                const weightMatch = type.match(/[%*]{1,2}(\d+)(?=[\s\n]*$|\[|\{)/);
+                if (!!weightMatch) {
+                    weight = parseInt(weightMatch[1]);
+                    type = type.replace(/[%*]{1,2}(\d+)(?=[\s\n]*$|\[|\{)/, '').trim();
+                }
+                // Extract states if present
+                const statesMatch = type.match(/[\[\{]([^\]\}]*)[\]\}]/);
+                if (!!statesMatch) {
+                    const statesStr = statesMatch[1];
+                    try {
+                        states = JSON.parse(statesMatch[0].replace(/'/g, '"'));
+                    }
+                    catch (error) {
+                        // States couldn't be parsed as JSON, parse as key-value pairs
+                        states = {};
+                        const keyValuePairs = statesStr.split(',');
+                        keyValuePairs.forEach(pair => {
+                            const keyValue = pair.trim().split('=');
+                            const key = keyValue[0].trim();
+                            let value = keyValue[1].trim();
+                            // Convert value to number or boolean if possible
+                            if (!isNaN(value)) {
+                                value = parseFloat(value);
+                            }
+                            else if (value.toLowerCase() === 'true') {
+                                value = true;
+                            }
+                            else if (value.toLowerCase() === 'false') {
+                                value = false;
+                            }
+                            states[key] = value;
+                        });
+                    }
+                    // Remove states from the type
+                    type = type.replace(/[\[\{][^\]\}]*[\]\}]/, '').trim();
+                }
+                // Extract chance if present
+                const stringMatch = type.match(/^["']([^"]+)["']$/);
+                if (!!stringMatch) {
+                    type = stringMatch[1].trim() /*.escapeCharactersB()*/;
+                }
+                patternTypes.push({ type, states, weight });
+            });
+            patterns.push(patternTypes);
+        }
+    });
+    return patterns;
+}
+function extractCustomPatternType(str) {
+    const patternTypes = [];
+    const regex = /(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
+    const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
+    const matches = str.match(regex)[0].match(regexb);
+    if (matches) {
+        matches.forEach(match => {
+            let type = match.trim();
+            let weight = null;
+            let states = null;
+            // Extract chance if present
+            const weightMatch = type.match(/[%*]{1,2}(\d+)(?=[\s\n]*$|\[|\{)/);
+            if (!!weightMatch) {
+                weight = parseInt(weightMatch[1]);
+                type = type.replace(/[%*]{1,2}(\d+)(?=[\s\n]*$|\[|\{)/, '').trim();
+            }
+            // Extract states if present
+            const statesMatch = type.match(/[\[\{]([^\]\}]*)[\]\}]/);
+            if (!!statesMatch) {
+                const statesStr = statesMatch[1];
+                try {
+                    states = JSON.parse(statesMatch[0].replace(/'/g, '"'));
+                }
+                catch (error) {
+                    // States couldn't be parsed as JSON, parse as key-value pairs
+                    states = {};
+                    const keyValuePairs = statesStr.split(',');
+                    keyValuePairs.forEach(pair => {
+                        const keyValue = pair.trim().split('=');
+                        const key = keyValue[0].trim();
+                        let value = keyValue[1].trim();
+                        // Convert value to number or boolean if possible
+                        if (!isNaN(value)) {
+                            value = parseFloat(value);
+                        }
+                        else if (value.toLowerCase() === 'true') {
+                            value = true;
+                        }
+                        else if (value.toLowerCase() === 'false') {
+                            value = false;
+                        }
+                        states[key] = value;
+                    });
+                }
+                // Remove states from the type
+                type = type.replace(/[\[\{][^\]\}]*[\]\}]/, '').trim();
+            }
+            // Extract chance if present
+            const stringMatch = type.match(/^["']([^"]+)["']$/);
+            if (!!stringMatch) {
+                type = stringMatch[1].trim() /*.escapeCharactersB()*/;
+            }
+            patternTypes.push({ type, states, weight });
+        });
+    }
+    return patternTypes;
+}
+export class BlockPattern {
+    constructor(blocks = [], type = "random") {
+        this.blocks = [];
+        this.type = "random";
+        this.blocks = blocks, this.type = type;
+    }
+    generateBlock(generateIndex = 0, forceMode) { return ((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[generateIndex % this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length]; }
+    generateBlockP(generateIndex = 0, forceMode) { const p = ((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[generateIndex % this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length]; return BlockPermutation.resolve(p.type, p.states); }
+    static parse() { }
+    static extractRaw(str) { return str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]; }
+    static extract(str, mode = "random") { return new BlockPattern(extractCustomPatternType(str), mode); }
+    static extractWRaw(str, mode = "random") { return { raw: str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0], parsed: new BlockPattern(extractCustomPatternType(str), mode) }; }
+    static extractAllRaw(str) { return str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g); }
+    static extractAll(str, mode = "random") { return new BlockPattern(extractCustomPatternTypes(str), mode); }
+    static extractAllWRaw(str, mode = "random") { return { raw: str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v => new BlockPattern(v, mode)) }; }
+}
+function selectWeightedElement(items, weightProp = "weight") {
+    let total = items.reduce((acc, item) => acc + (item[weightProp] ?? 1), 0);
+    let threshold = Math.random() * total;
+    for (let item of items) {
+        threshold -= (item[weightProp] ?? 1);
+        if (threshold < 0) {
+            return item;
+        }
+    }
+}
 export class config {
     static get chatCommandsEnabled() { return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled") ?? true); }
     static set chatCommandsEnabled(enabled) { world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled ?? true); }
@@ -1228,15 +1376,29 @@ export class config {
     static set chatCommandPrefix(prefix) { world.setDynamicProperty("andexdbSettings:chatCommandPrefix", prefix ?? "\\"); }
     static get validChatCommandPrefixes() { return String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? ""); }
     static set validChatCommandPrefixes(prefixes) { world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", prefixes ?? ""); }
-    static get homeSystemEnabled() { return Boolean(world.getDynamicProperty("homeSystemSettings:homeSystemEnablled") ?? false); }
-    static set homeSystemEnabled(enabled) { world.setDynamicProperty("homeSystemSettings:homeSystemEnablled", enabled ?? false); }
+    static get homeSystemEnabled() { return Boolean(world.getDynamicProperty("homeSystemSettings:homeSystemEnabled") ?? false); }
+    static set homeSystemEnabled(enabled) { world.setDynamicProperty("homeSystemSettings:homeSystemEnabled", enabled ?? false); }
     static get maxHomesPerPlayer() { return gwdp("homeSystemSettings:maxHomesPerPlayer") == -1 ? Infinity : Number(gwdp("homeSystemSettings:maxHomesPerPlayer") ?? Infinity); }
     static set maxHomesPerPlayer(maxHomes) { swdp("homeSystemSettings:maxHomesPerPlayer", (maxHomes ?? Infinity) == Infinity ? -1 : maxHomes); }
+    static get rtpSystemEnabled() { return Boolean(world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled") ?? false); }
+    static set rtpSystemEnabled(enabled) { world.setDynamicProperty("rtpSystemSettings:rtpSystemEnabled", enabled ?? false); }
     static reset() { }
 }
 //((a: Player)=>{})(new executeCommandPlayer(getPlayer("Andexter8")))
 export function send(message) { world.sendMessage(message); }
 ;
+export class TimeoutError extends Error {
+    constructor(message) {
+        // Need to pass `options` as the second parameter to install the "cause" property.
+        super(message);
+    }
+}
+export class ExpireError extends Error {
+    constructor(message) {
+        // Need to pass `options` as the second parameter to install the "cause" property.
+        super(message);
+    }
+}
 export async function requestChatInput(player, requestMessage) {
     let id = idGenerator();
     !!requestMessage ? player.sendMessage(requestMessage) : undefined;
@@ -1245,7 +1407,7 @@ export async function requestChatInput(player, requestMessage) {
         function a() {
             if (!player.isValid()) {
                 delete currentlyRequestedChatInput[player.id];
-                reject(new ReferenceError("The player that the input was requested from is no longer valid, most likely the have left the game, "));
+                reject(new ReferenceError("The player that the input was requested from is no longer valid, most likely the have left the game."));
                 return;
             }
             ;
@@ -1263,9 +1425,52 @@ export async function requestChatInput(player, requestMessage) {
         a();
     });
 }
+export async function requestConditionalChatInput(player, conditions = () => true, options = {}) {
+    let id = idGenerator();
+    !!options.requestMessage ? player.sendMessage(options.requestMessage) : undefined;
+    !!!currentlyRequestedChatInput[player.id] ? currentlyRequestedChatInput[player.id] = { anyInput: {}, conditionalInput: { [id]: { time: Date.now(), id: id, request: options.requestMessage, conditions: conditions ?? (() => true), expireTime: Date.now() + (options.expireMs ?? Infinity), expireConditions: options.expireConditions ?? (() => false) } } } : currentlyRequestedChatInput[player.id].conditionalInput[id] = { time: Date.now(), id: id, request: options.requestMessage, conditions: conditions ?? (() => true), expireTime: Date.now() + (options.expireMs ?? Infinity), expireConditions: options.expireConditions ?? (() => false) };
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (!player.isValid()) {
+                delete currentlyRequestedChatInput[player.id];
+                reject(new ReferenceError("The player that the input was requested from is no longer valid, most likely the have left the game."));
+                return;
+            }
+            ;
+            if (!!!currentlyRequestedChatInput[player.id].conditionalInput[id].input) {
+                if (Date.now() > (currentlyRequestedChatInput[player.id].conditionalInput[id].expireTime ?? Infinity)) {
+                    delete currentlyRequestedChatInput[player.id].conditionalInput[id];
+                    reject(new TimeoutError("The request timed out."));
+                    return;
+                }
+                else if (!!options.expireConditions ? currentlyRequestedChatInput[player.id].conditionalInput[id].expireConditions(currentlyRequestedChatInput[player.id].conditionalInput[id]) ?? false : false) {
+                    delete currentlyRequestedChatInput[player.id].conditionalInput[id];
+                    reject(new ExpireError("The request expired."));
+                    return;
+                }
+                else {
+                    system.run(() => {
+                        a();
+                    });
+                }
+            }
+            else {
+                let input = currentlyRequestedChatInput[player.id].conditionalInput[id].input;
+                delete currentlyRequestedChatInput[player.id].conditionalInput[id];
+                resolve(input);
+            }
+        }
+        a();
+    });
+}
 export function chatMessage(eventData, bypassChatInputRequests = false) {
     if (!bypassChatInputRequests && Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput ?? {}).length != 0) {
         currentlyRequestedChatInput[eventData.sender.id].anyInput[Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput ?? {}).sort((a, b) => currentlyRequestedChatInput[eventData.sender.id].anyInput[a].time - currentlyRequestedChatInput[eventData.sender.id].anyInput[b].time)[0]].input = eventData.message;
+        eventData.cancel = true;
+        return;
+    }
+    if (!bypassChatInputRequests && Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.conditionalInput ?? {}).filter(r => !!currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions ? currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions(eventData.sender, eventData.message, eventData) : true).length != 0) {
+        currentlyRequestedChatInput[eventData.sender.id].conditionalInput[Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.conditionalInput ?? {}).filter(r => !!currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions ? currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions(eventData.sender, eventData.message, eventData) : true).sort((a, b) => currentlyRequestedChatInput[eventData.sender.id].conditionalInput[a].time - currentlyRequestedChatInput[eventData.sender.id].conditionalInput[b].time)[0]].input = eventData.message;
         eventData.cancel = true;
         return;
     }
@@ -2131,6 +2336,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
     "printlayers": `${command.dp}printlayers`,
     "rank": `${command.dp}rank <players: targetSelector> <mode: add|remove> <tag: string>\n${command.dp}rank <players: targetSelector> clear`,
     "remexp": `${command.dp}remexp [radius: number]`,
+    "rtp": `${command.dp}rtp <player: targetSelector|playerName|string>`,
     "run": `${command.dp}run <delayTicks: int> <command: command>`,
     "scanenderchest": `${command.dp}scanenderchest [targets: targetSelector|~]`,
     "scanenderchestc": `${command.dp}scanenderchestc [target: string|~]`,
@@ -2208,6 +2414,8 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
     "transferitem": `${command.dp}transferitem <transferItemToPlayer: targetSelector>`,
     "thru": `${command.dp}thru`,
     "top": `${command.dp}top`,
+    "tpaccept": `${command.dp}tpaccept [player: targetSelector|playerName|string]`,
+    "tpdeny": `${command.dp}tpdeny [player: targetSelector|playerName|string]`,
     "up": `${command.dp}up [placeGlass: bool]`,
     "warp": `${command.dp}warp <name: escapableString>`,
     "warplist": `${command.dp}warplist`,
@@ -2322,6 +2530,7 @@ export var commanddescriptions;
     commanddescriptions["printlayers"] = "Displays a list of all the blocks at your specified x and z coordinates. ";
     commanddescriptions["rank"] = "Manages ranks stored in players. ";
     commanddescriptions["remexp"] = "Removes explosive blocks in the specified radius. ";
+    commanddescriptions["rtp"] = "Requests to teleport to the specified player. ";
     commanddescriptions["run"] = "Runs the specified command. ";
     commanddescriptions["scanenderchest"] = "Scans a player's ender chest and displays the contents of it. ";
     commanddescriptions["scanenderchestc"] = "Scans a player's ender chest and displays the contents of it. ";
@@ -2342,6 +2551,8 @@ export var commanddescriptions;
     commanddescriptions["thru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at. ";
     commanddescriptions["vthru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at, even if it would put you into the void. ";
     commanddescriptions["top"] = "Teleports on top of the highest solid block at your x and z coordinates. ";
+    commanddescriptions["tpaccept"] = "Accepts a player's teleport request. ";
+    commanddescriptions["tpdeny"] = "Denies a player's teleport request. ";
     //"unban" = "Unbans a player. ",
     commanddescriptions["up"] = "Teleports up the specified number of blocks and places glass below you if placeGlass is not set to false. ";
     commanddescriptions["warp"] = "Warps to the specified global warp. ";
@@ -4465,7 +4676,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .item - §oSuper advanced item modification command. §r
 .itfill - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r
 .itfillc - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r
-.kick - §oKicks one or more players from the server. §r§6
+.kick - §oKicks one or more players from the server. §r
 .liststructures - §oLists all saved structures. §r
 .mainmenu - §oOpens up the main menu. §r
 .managecommands - §oOpens up the commands editor menu. §r
@@ -4480,6 +4691,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .printlayers - §oDisplays a list of all the blocks at your specified x and z coordinates. §r
 .rank - §oManages ranks stored in players. §r
 .remexp - §oRemoves explosive blocks in the specified radius. §r
+.rtp - §oRequests to teleport to the specified player. §r
 .run - §oRuns the specified command. §r
 .scanenderchest - §oScans a player's ender chest and displays the contents of it. §r
 .scanenderchestc - §oScans a player's ender chest and displays the contents of it. §r
@@ -4494,11 +4706,11 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .swapitems - §oSwaps an item in a slot of one player's inventory with another slot of another player's inventory. §r
 .takeitem - §oSteals an item from another player's inventory and puts it into yoru inventory. §r
 .terminal - §oOpens up the command runner/terminal menu. §r
-.transferitem - §oTransfers the item in your hand to the specified player's inventory. 
+.transferitem - §oTransfers the item in your hand to the specified player's inventory. §r
 .thru - §oTeleports on top of the highest solid block at your x and z coordinates. §r
-.vthru - §oTeleports to teh other side of the wall/floor/ceilling that you are looking at. §r
 .top - §oTeleports on top of the highest solid block at your x and z coordinates. §r
 .up - §oTeleports up the specified number of blocks and places glass below you if placeGlass is not set to false. §r
+.vthru - §oTeleports to teh other side of the wall/floor/ceilling that you are looking at. §r
 .warp - §oWarps to the specified global warp. §r
 .warplist - §oLists all global warps. §r
 .warplistdetails - §oLists all global warps with more details. §r
@@ -4570,7 +4782,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .datapickblock`.replaceAll("\n.", ("\n" + (world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))));
                         break;
                     case "help javascriptfunctions":
-                        eventData.sender.sendMessage(`§2List of JavaScript Functions, Constants, Variables, and Classes§f\n{main: [${Object.keys(main).join(", ")}], coords: [${Object.keys(coords).join(", ")}], cmds: [${Object.keys(cmds).join(", ")}], bans: [${Object.keys(bans).join(", ")}], uis: [${Object.keys(uis).join(", ")}], playersave: [${Object.keys(playersave).join(", ")}], spawnprot: [${Object.keys(spawnprot).join(", ")}]}`);
+                        eventData.sender.sendMessage(`§2List of JavaScript Functions, Constants, Variables, and Classes§f\n{§bmain: [§f${Object.keys(main).join("§b, §f")}§b], coords: [§f${Object.keys(coords).join("§b, §f")}§b], cmds: [§f${Object.keys(cmds).join("§b, §f")}§b], bans: [§f${Object.keys(bans).join("§b, §f")}§b], uis: [§f${Object.keys(uis).join("§b, §f")}§b], playersave: [§f${Object.keys(playersave).join("§b, §f")}§b], spawnprot: [§f${Object.keys(spawnprot).join("§b, §f")}§b]§f}`);
                         break;
                     case "help jsfunction":
                         eventData.sender.sendMessage(`§2${newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" ")} js object definition§f\n${([...Object.entries(main), ...Object.entries(coords), ...Object.entries(cmds), ...Object.entries(bans), ...Object.entries(uis), ...Object.entries(playersave), ...Object.entries(spawnprot)].find(v => v[0] == newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" ")) ?? [, "§cError: The specified javascript function/constant/variable/class does not exist, check your spelling and capitallization. "])[1].toString().replaceAll("\\n", "\n")}`);
@@ -5837,6 +6049,70 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     }
                 }
                 break;
+            case !!switchTest.match(/^rtp$/):
+                {
+                    eventData.cancel = true;
+                    // /scriptevent andexdb:spawnSimulatedPlayer t§ee§as§ft §4P§dl§layer|~~~|overworld|~~~
+                    if (config.rtpSystemEnabled) {
+                        srun(() => {
+                            let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args;
+                            args[1].trim().startsWith("@");
+                            let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player")[0];
+                            if (!!target) {
+                                //requestChatInput(player, "a").then(v=>psend(player, "as")); srun(()=>requestChatInput(player, "b").then(v=>psend(player, "bs"))); 
+                                requestConditionalChatInput(target, (player, message) => (message.toLowerCase().trim() == "y" || message.toLowerCase().trim() == "n"), { requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.` }).then(t => {
+                                    if (t.toLowerCase().trim() == "y") {
+                                        player.teleport(target.location, { dimension: target.dimension });
+                                        target.sendMessage(`§aAccepted teleport request from "${target.name}".`);
+                                        player.sendMessage(`§aSuccessfully teleported to "${target.name}".`);
+                                    }
+                                    else {
+                                        target.sendMessage(`§cDenied "${target.name}"'s teleport request.`);
+                                        player.sendMessage(`§c"${target.name}" denied your teleport request.`);
+                                    }
+                                }).catch(e => { if (e instanceof TimeoutError) {
+                                    psend(target, `§c${player.name}'s teleport request timed out.`);
+                                    psend(player, "§cTeleport request timed out.");
+                                }
+                                else if (e instanceof ExpireError) {
+                                    psend(target, `§c${player.name}'s teleport request expired.`);
+                                    psend(player, "§cTeleport request expired.");
+                                }
+                                else
+                                    psend(player, "§c" + e + " " + e.stack); });
+                            }
+                            else {
+                                player.sendMessage(`§cError: Unable to find player.`);
+                            }
+                        });
+                    }
+                    else {
+                        player.sendMessage("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>RTP System>Enable RTP System\"");
+                    }
+                }
+                break; /*
+            case !!switchTest.match(/^rtpblock$/): {
+                eventData.cancel = true;
+                if(config.rtpSystemEnabled){
+                    srun(()=>{
+                    let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args
+                    let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v=>v.typeId=="minecraft:player")[0] as Player
+                    if(!!target){
+                        requestConditionalChatInput(target, (player, message)=>(message.trim()=="y"||message.trim()=="n"), {requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.`}).then(t=>{
+                            if(t.trim()=="y"){
+                                player.teleport(target.location, {dimension: target.dimension})
+                                player.sendMessage(`Successfully teleported to "${target.name}".`)
+                            }else{
+                                player.sendMessage(`"${target.name}" denied your teleport request.`)
+                            }
+                        }).catch(e=>{if(e instanceof TimeoutError){psend(target, `§c${player.name}'s teleport request expired.`); psend(player, "§cTeleport request timed out.")}else if(e instanceof ExpireError){psend(player, "§cTeleport request expired.")}else psend(player, "§c"+e+" "+e.stack)})
+                    }else{player.sendMessage(`§cError: Unable to find player.`)}
+                    })
+                }else{
+                    player.sendMessage("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>RTP System>Enable Teleport Request System\"")
+                }
+            }
+            break; */ // COMING SOON! 
             case !!switchTest.match(/^summon$/):
                 {
                     eventData.cancel = true;
@@ -10658,7 +10934,7 @@ export function evaluateParameters(commandstring, parameters) {
                                                         paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
                                                         paramEval = paramEval.slice(+(paramEval[0] == " ")) ?? "";
                                                         try {
-                                                            argumentsa.push(value?.v);
+                                                            argumentsa.push(!!!value?.v ? undefined : ('"' + value?.v + '"'));
                                                         }
                                                         catch (e) {
                                                             ea.push([e, e.stack]);

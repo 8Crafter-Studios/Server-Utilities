@@ -7374,7 +7374,7 @@ console.error(e, e.stack);
   
     }
     if (id == "andexdbHelp:spawnSimulatedPlayer") {
-        if((initiator ?? sourceEntity) == undefined){console.warn("andexdb:spawnSimulatedPlayer /scriptevent command format: /scriptevent andexdb:spawnSimulatedPlayer [playerName: string]|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]")}else{((initiator ?? sourceEntity) as Player).sendMessage("andexdb:spawnWithNoAI /scriptevent command format: /scriptevent andexdb:spawnWithNoAI <entityType: string>|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]")}; 
+        if((initiator ?? sourceEntity) == undefined){console.warn("andexdb:spawnSimulatedPlayer /scriptevent command format: /scriptevent andexdb:spawnSimulatedPlayer [playerName: string]|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]")}else{((initiator ?? sourceEntity) as Player).sendMessage("andexdb:spawnSimulatedPlayer /scriptevent command format: /scriptevent andexdb:spawnSimulatedPlayer [playerName: string]|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]")}; 
     }
     if (id == "andexdb:scriptEvalWithGameTest") {
         let parameters = message.split("|"); /*

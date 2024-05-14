@@ -96,3 +96,4 @@ getBan(banId: string){let banString = String(world.getDynamicProperty(banId)).sp
 system.runInterval(() => { if (world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true) {
     world.getAllPlayers().forEach((p) => { savedPlayer.savePlayer(p); });
 } }, 5);
+//# sourceMappingURL=player_save.js.map

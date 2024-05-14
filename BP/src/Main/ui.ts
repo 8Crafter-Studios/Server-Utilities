@@ -442,6 +442,7 @@ form.button("Eval Auto Execute Settings", "textures/ui/settings_glyph_color_2x")
 form.button("Personal Settings", "textures/ui/settings_glyph_color_2x");
 form.button("Notifications Settings", "textures/ui/icon_bell");
 form.button("Home System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
+form.button("RTP System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
 form.button("Back", "textures/ui/");/*
 form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
 forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormResponse); 
@@ -471,6 +472,10 @@ forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormR
             break;
 
         case 5:
+            rtpSettings(sourceEntity)
+            break;
+
+        case 6:
             mainMenu(sourceEntity)
             break;
         default:
@@ -546,6 +551,24 @@ export function homeSystemSettings(sourceEntity: Entity|Player){
         let [ homeSystemEnabled, maxHomesPerPlayer ] = t.formValues;
         config.homeSystemEnabled=homeSystemEnabled as boolean
         config.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
+}).catch(e => {
+    console.error(e, e.stack);
+});}
+export function rtpSettings(sourceEntity: Entity|Player){
+    let form2 = new ModalFormData();
+    form2.title("RTP System Settings [§cExperimental§r]")
+    form2.toggle("§l§fEnable RTP System", config.rtpSystemEnabled);
+    //form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.maxHomesPerPlayer));
+    form2.submitButton("Save")
+    forceShow(form2, (sourceEntity as Player)).then(to => {
+        let t = (to as ModalFormResponse)
+        if (t.canceled) return;/*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+    
+        let [ rtpSystemEnabled ] = t.formValues;
+        config.rtpSystemEnabled=rtpSystemEnabled as boolean
+        //config.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
 }).catch(e => {
     console.error(e, e.stack);
 });}
@@ -860,7 +883,7 @@ export function mapArtGenerator(sourceEntity: Entity|Player){
         form.textField("Chunk Index y", "integer", String(coords.getChunkIndex(sourceEntity.location).y));
         form.textField("Offset x", "integer", "0");
         form.textField("Offset z", "integer", "0");
-        form.dropdown("Alignment Mode", ["Chunk Grid", "Map Grid"], 0);
+        form.dropdown("Alignment Mode", ["Chunk Grid", "Map Grid"], 1);
         form.dropdown("Dimension", dimensions.map(d=>dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
         form.submitButton("Generate Map Art")
         forceShow(form, sourceEntity as any).then(ra => {let r = ra as ModalFormResponse
@@ -874,7 +897,7 @@ export function mapArtGenerator(sourceEntity: Entity|Player){
             //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
             //console.warn(JSONStringify(Object.assign(mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from), {dimension: dimensions[dimension as number]??sourceEntity.dimension, y: (dimensions[dimension as number]??sourceEntity.dimension).heightRange.max-((newsnbta.size[1]??1) as number)})))
             //console.warn(JSONStringify(newsnbta))
-            generateNBTFileD(Object.assign(mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor((Number(chunkx) / 8)+0.5)*8+4)):Number(chunkx)), y: (alignmentmode==1?((Math.floor((Number(chunky) / 8)+0.5)*8)+4):Number(chunky))}).from), {dimension: dimensions[dimension as number]??sourceEntity.dimension, y: (dimensions[dimension as number]??sourceEntity.dimension).heightRange.max-((newsnbta.size[1]??1) as number)}), newsnbta, sourceEntity as Player)
+            generateNBTFileD(Object.assign(mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor((Number(chunkx) / 8)+0.5)*8-4)):Number(chunkx)), y: (alignmentmode==1?((Math.floor((Number(chunky) / 8)+0.5)*8)-4):Number(chunky))}).from), {dimension: dimensions[dimension as number]??sourceEntity.dimension, y: (dimensions[dimension as number]??sourceEntity.dimension).heightRange.max-((newsnbta.size[1]??1) as number)}), newsnbta, sourceEntity as Player)
             //console.warn(JSONStringify([mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from), coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from]))
             // Do something
         }).catch(e => {

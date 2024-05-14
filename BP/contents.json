@@ -208,6 +208,12 @@
          "path" : "node_modules/.bin/loose-envify"
       },
       {
+         "path" : "structures/VibrationTests/event_splash_boat_on_bubble_column.mcstructure"
+      },
+      {
+         "path" : "scripts/Main/player_save.js.map"
+      },
+      {
          "path" : "node_modules/@minecraft/math/api-report/math.api.md"
       },
       {
@@ -640,10 +646,10 @@
          "path" : "structures/MultifaceTests/spread_within_water.mcstructure"
       },
       {
-         "path" : "structures/MultifaceTests/spread_on_flat_wall.mcstructure"
+         "path" : "structures/PistonTests/block_leave.mcstructure"
       },
       {
-         "path" : "structures/PistonTests/block_leave.mcstructure"
+         "path" : "structures/MultifaceTests/spread_on_flat_wall.mcstructure"
       },
       {
          "path" : "node_modules/@minecraft/server-net/README.md"
@@ -689,9 +695,6 @@
       },
       {
          "path" : "structures/BlockTests/turtle_eggs_survive_xp.mcstructure"
-      },
-      {
-         "path" : "src/@minecraft/math.js"
       },
       {
          "path" : "structures/VibrationTests/event_projectile_land_wool.mcstructure"
@@ -743,6 +746,9 @@
       },
       {
          "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-dimension.d.ts"
+      },
+      {
+         "path" : "scripts/Main.js.map"
       },
       {
          "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-enchantment.d.ts"
@@ -1195,6 +1201,9 @@
          "path" : "recipes/smithing_table/66arrow.json"
       },
       {
+         "path" : "scripts/Main/ban.js.map"
+      },
+      {
          "path" : "structures/VibrationTests/event_flap_parrot.mcstructure"
       },
       {
@@ -1247,6 +1256,9 @@
       },
       {
          "path" : "scripts/DispenserTests.js"
+      },
+      {
+         "path" : "scripts/Main/spawn_protection.js.map"
       },
       {
          "path" : "scripts/DoorTests.js"
@@ -1321,7 +1333,13 @@
          "path" : "scripts/Main/commands.js"
       },
       {
+         "path" : "scripts/Main/commands.js.map"
+      },
+      {
          "path" : "scripts/Main/coordinates.js"
+      },
+      {
+         "path" : "scripts/Main/coordinates.js.map"
       },
       {
          "path" : "scripts/Main/spawn_protection.js"
@@ -1334,6 +1352,15 @@
       },
       {
          "path" : "structures/MobTests/mobtests.drowning_test.mcstructure"
+      },
+      {
+         "path" : "scripts/Main/ui.js.map"
+      },
+      {
+         "path" : "structures/DoorTests/door_maze_3d.mcstructure"
+      },
+      {
+         "path" : "structures/MultifaceTests/spread_on_flat_floor.mcstructure"
       },
       {
          "path" : "structures/DispenserTests/dispenser_saddle_on_pig.mcstructure"
@@ -1585,12 +1612,6 @@
          "path" : "structures/FireAvoidTests/dont_walk_into_magma_diagonal.mcstructure"
       },
       {
-         "path" : "structures/DoorTests/door_maze_3d.mcstructure"
-      },
-      {
-         "path" : "structures/MultifaceTests/spread_on_flat_floor.mcstructure"
-      },
-      {
          "path" : "structures/DoorTests/door_maze_crowded.mcstructure"
       },
       {
@@ -1693,10 +1714,10 @@
          "path" : "structures/FrogTests/warm_frog_magmacube_drop_pearlescent.mcstructure"
       },
       {
-         "path" : "structures/Generic/flat_5x5x5.mcstructure"
+         "path" : "structures/PistonTests/backside_fence.mcstructure"
       },
       {
-         "path" : "structures/PistonTests/backside_fence.mcstructure"
+         "path" : "structures/Generic/flat_5x5x5.mcstructure"
       },
       {
          "path" : "structures/MinecartTests/detector_rail_piston_bedrock.mcstructure"
@@ -1744,10 +1765,10 @@
          "path" : "structures/PathFindingTests/bottleneck.mcstructure"
       },
       {
-         "path" : "structures/PathFindingTests/doorway.mcstructure"
+         "path" : "structures/PistonTests/block_leave_bedrock.mcstructure"
       },
       {
-         "path" : "structures/PistonTests/block_leave_bedrock.mcstructure"
+         "path" : "structures/PathFindingTests/doorway.mcstructure"
       },
       {
          "path" : "structures/PathFindingTests/simple.mcstructure"
@@ -2024,9 +2045,6 @@
       },
       {
          "path" : "structures/VibrationTests/event_sculk_touch_wool.mcstructure"
-      },
-      {
-         "path" : "structures/VibrationTests/event_splash_boat_on_bubble_column.mcstructure"
       },
       {
          "path" : "structures/VibrationTests/event_swim.mcstructure"
