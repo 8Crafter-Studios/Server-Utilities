@@ -6695,6 +6695,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
         }
         break; 
         case !!switchTest.match(/^copyitem$/): {
+            //world.scoreboard.getObjective("MinsDisplay").getParticipants().filter(p=>!!!tryget(()=>p.getEntity())).forEach(p=>world.scoreboard.getObjective("balance").removeParticipant(p))
+            //if((world.scoreboard.getObjective("balance").getScore(player)??0)>JSON.parse(world.getDynamicProperty("shop:costs"))[r.selection]){world.scoreboard.getObjective("balance").addScore(player, -(JSON.parse(world.getDynamicProperty("shop:costs"))[r.selection])); player.getComponent("inventory").container.addItem(cmds.overworld.getBlock({x: 823, y: 84, z: 1037}).getComponent("inventory").container.getItem(r.selection))}
+            //${se}swdp("shop:costs", "[20, 50, 70, 80]")
             eventData.cancel = true;
             let args = evaluateParametersOld(["presetText", "presetText", "string"], switchTestB).args
             if(switchTestB.split(/\s+/g)[2].trim()=="~"){args[2] = player.name}
