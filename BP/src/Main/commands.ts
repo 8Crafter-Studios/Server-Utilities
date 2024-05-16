@@ -1530,7 +1530,7 @@ export async function generateNBTFileD(location: DimensionLocation, nbt: any, pl
                 generateNBTFileF(location, await unsuperCompressG(nbt))
                 break
                 case "supercmprbnbt": 
-                pasend(player, generateNBTFileE(location, await unsuperCompressG(nbt)))
+                pasend(player, (await completeGenerator(generateNBTFileEGG(location, await unsuperCompressG(nbt)))).return)
                 break; 
                 case "ultracmprsnbt": 
                 generateNBTFileF(location, unultraCompress(nbt))
@@ -1662,17 +1662,17 @@ export function stringifyJSONCompressed(NBTData){return JSON.stringify(NBTData, 
 export function compressIntArrayB(s: string, replacement: string ="-1"){Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)([\s\n]*,[\s\n]*\1){2,}/g)).forEach(v=>s=s.replace(v[0], v[1]+"^"+((v[0].length+1)/(v[1].length+1)))); s=s.replaceAll(replacement, ""); return s}
 
 export function extractIntArrayB(s: string, revivement: string ="-1"){s=s.replaceAll(/,(?=[,\]\^])/g, ","+revivement).replace(/\[(?=[,\^])/, "["+revivement); s=s.slice(0, -1)+","+"]"; Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+),/g)).forEach(v=>s=s.replace(v[0], (v[1]+",").repeat(Number(v[2])))); s=s.slice(0, -2)+"]"; return s}
-export function* extractIntArrayBGenerator(s: string, revivement: string = "-1", maxTimePerTick=7250) {
+export function* extractIntArrayBGenerator(s: string, revivement: string = "-1", maxTimePerTick=1250) {
     let lastYieldTime = Date.now(); 
-    s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement);
-    s = s.slice(0, -1) + "," + "]";
+    s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement).replace("]", ",]");
     
     // Yield the modified string after the first replacement
     yield s;
 
     const matchAllIterator = s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+),/g);
     for (const v of matchAllIterator) {
-        v[0]=="32"?console.log(JSON.stringify(v), v[0], v[1], v[2]):undefined; 
+        //v[0]=="32"?console.log(JSON.stringify(v), v[0], v[1], v[2]):undefined; 
+        isNaN(Number(v[2]))?console.log(v[2]):undefined; 
         s = s.replace(v[0], (v[1] + ",").repeat(Number(v[2])));
         
         // Check if it's time to yield
@@ -1682,11 +1682,10 @@ export function* extractIntArrayBGenerator(s: string, revivement: string = "-1",
         }
     }
     
-    s = s.slice(0, -2) + "]";
-    yield s; // Yield the final modified string
-    return s; 
+    yield s.replace(",]", "]"); // Yield the final modified string
+    return s.replace(",]", "]"); 
 }
-export function iterateGenerator<TY, TR, TN>(extractorGenerator: Generator<TY, TR, TN>, maxTimePerTick=7500, whileConditions: boolean|number|string|Function=true){
+export function iterateGenerator<TY, TR, TN>(extractorGenerator: Generator<TY, TR, TN>, maxTimePerTick=1500, whileConditions: boolean|number|string|Function=true){
     let lastYieldTime = Date.now(); // Initialize the last yield time
     async function iterateGeneratorB<TY, TR, TN>(extractorGenerator: Generator<TY, TR, TN>, lastYieldTime) {
         let finalResult;
@@ -1708,7 +1707,7 @@ export function iterateGenerator<TY, TR, TN>(extractorGenerator: Generator<TY, T
     return iterateGeneratorB(extractorGenerator, lastYieldTime)
 }
 
-export async function completeGenerator<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick=7500, whileConditions: boolean|number|string|Function=true) {
+export async function completeGenerator<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick=1500, whileConditions: boolean|number|string|Function=true) {
     let lastYieldTime = Date.now(); // Initialize the last yield time
     let finalResult: T;
     let returnResult: TReturn;
@@ -1728,7 +1727,7 @@ export async function completeGenerator<T, TReturn, TNext>(g: Generator<T, TRetu
     return {yield: finalResult, return: returnResult};
 }
 
-export async function completeGeneratorB<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick=7500, whileConditions=true) {
+export async function completeGeneratorB<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick=1500, whileConditions=true) {
     let lastYieldTime = Date.now();
     var yieldResults = [] as T[];
     let returnResult: TReturn;
@@ -1752,7 +1751,7 @@ export async function waitTicks(ticks: number=1){return new Promise(resolve => s
 
 export function compressIntArray(arry: number[], replacement: string ="-1"){return compressIntArrayB(JSON.stringify(arry.map(v=>(v??-1).toString(36)), undefined, 0).replaceAll('"', ""), replacement)}
 export function extractIntArray(arry: string, revivement: string ="-1"){return extractIntArrayB(arry, revivement).replaceAll(" ", "").slice(1, -1).split(",").map(v=>Number.parseInt(v, 36))}
-export async function extractIntArrayG(arry: string, revivement: string ="-1", maxTimePerTick: number=7500){return (await completeGenerator(extractIntArrayBGenerator(arry, revivement, maxTimePerTick), maxTimePerTick-250)).return.replaceAll(" ", "").slice(1, -1).split(",").map(v=>Number.parseInt(v, 36))}
+export async function extractIntArrayG(arry: string, revivement: string ="-1", maxTimePerTick: number=1500){return (await completeGenerator(extractIntArrayBGenerator(arry, revivement, maxTimePerTick), maxTimePerTick-250)).return.replaceAll(" ", "").slice(1, -1).split(",").map(v=>Number.parseInt(v, 36))}
 //rangeToIntArray([0, 5000000]).forEach(v=>Number.parseInt(String(v), 36))
 export function ultraCompressIntArrayB(s: string, replacement: string ="-1"){Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)([\s\n]*,[\s\n]*\1){2,}/g)).forEach(v=>s=s.replace(v[0], v[1]+"^"+((v[0].length+1)/(v[1].length+1)).toString(36))); s=s.replaceAll(replacement, ""); return s}
 

@@ -1,33 +1,33 @@
 {
     "format_version": 2,
     "header": {
-        "description": "v.1.14.0 8Crafter's Debug Sticks BP by 8Crafter. (for minecraft bedrock edition 1.20.8x)\nhttps://sites.google.com/view/8craftermods/home",
-        "name": "v.1.14.0 8Crafter's Debug Sticks BP by 8Crafter. (for minecraft bedrock edition 1.20.8x)",
+        "description": "v.1.14.1 8Crafter's Debug Sticks BP by 8Crafter. (for minecraft bedrock edition 1.20.8x)\nhttps://sites.google.com/view/8craftermods/home",
+        "name": "v.1.14.1 8Crafter's Debug Sticks BP by 8Crafter. (for minecraft bedrock edition 1.20.8x)",
         "uuid": "53170125-3e79-4659-9bba-e49eb90b6dea",
-        "version": [ 1, 14, 0 ],
+        "version": [ 1, 14, 1 ],
         "min_engine_version": [ 1, 20, 40 ]
     },
     "capabilities": [ "script_eval" ],
     "modules": [
         {
-            "description": "v.1.14.0 8Crafter's Debug Sticks BP by 8Crafter. (for minecraft bedrock edition 1.20.8x)\nhttps://sites.google.com/view/8craftermods/home",
+            "description": "v.1.14.1 8Crafter's Debug Sticks BP by 8Crafter. (for minecraft bedrock edition 1.20.8x)\nhttps://sites.google.com/view/8craftermods/home",
             "type": "data",
             "uuid": "715e0f88-d0a1-4304-8c96-49bbd2b9825a",
-            "version": [ 1, 14, 0 ]
+            "version": [ 1, 14, 1 ]
         },
         {
           "description": "System scripts && Vanilla gameplay tests 4 (0.4.0-alpha)\nhttps://sites.google.com/view/8craftermods/home",
           "type": "script",
           "language": "javascript",
           "uuid": "df6d1955-6175-46b0-be8b-fa11fde32b1a",
-          "version": [ 1, 14, 0 ],
+          "version": [ 1, 14, 1 ],
           "entry": "scripts/Main.js"
         }
     ],
 "dependencies": [
         {
             "uuid": "5869846f-2019-4442-8e81-d3a75c5e003a",
-            "version": [ 1, 14, 0 ]
+            "version": [ 1, 14, 1 ]
         },
         {
           "module_name": "@minecraft/server",

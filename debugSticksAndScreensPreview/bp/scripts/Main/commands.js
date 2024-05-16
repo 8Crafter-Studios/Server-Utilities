@@ -1852,7 +1852,7 @@ export function setNBTDataType(NBTData) { return !!NBTData.nbt_type ? NBTData : 
 export function stringifyJSONCompressed(NBTData) { return JSON.stringify(NBTData, undefined, ""); }
 export function compressIntArrayB(s, replacement = "-1") { Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)([\s\n]*,[\s\n]*\1){2,}/g)).forEach(v => s = s.replace(v[0], v[1] + "^" + ((v[0].length + 1) / (v[1].length + 1)))); s = s.replaceAll(replacement, ""); return s; }
 export function extractIntArrayB(s, revivement = "-1") { s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement); s = s.slice(0, -1) + "," + "]"; Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+),/g)).forEach(v => s = s.replace(v[0], (v[1] + ",").repeat(Number(v[2])))); s = s.slice(0, -2) + "]"; return s; }
-export function* extractIntArrayBGenerator(s, revivement = "-1", maxTimePerTick = 7250) {
+export function* extractIntArrayBGenerator(s, revivement = "-1", maxTimePerTick = 1250) {
     let lastYieldTime = Date.now();
     s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement);
     s = s.slice(0, -1) + "," + "]";
@@ -1872,7 +1872,7 @@ export function* extractIntArrayBGenerator(s, revivement = "-1", maxTimePerTick 
     yield s; // Yield the final modified string
     return s;
 }
-export function iterateGenerator(extractorGenerator, maxTimePerTick = 7500, whileConditions = true) {
+export function iterateGenerator(extractorGenerator, maxTimePerTick = 1500, whileConditions = true) {
     let lastYieldTime = Date.now(); // Initialize the last yield time
     async function iterateGeneratorB(extractorGenerator, lastYieldTime) {
         let finalResult;
@@ -1894,7 +1894,7 @@ export function iterateGenerator(extractorGenerator, maxTimePerTick = 7500, whil
     }
     return iterateGeneratorB(extractorGenerator, lastYieldTime);
 }
-export async function completeGenerator(g, maxTimePerTick = 7500, whileConditions = true) {
+export async function completeGenerator(g, maxTimePerTick = 1500, whileConditions = true) {
     let lastYieldTime = Date.now(); // Initialize the last yield time
     let finalResult;
     let returnResult;
@@ -1914,7 +1914,7 @@ export async function completeGenerator(g, maxTimePerTick = 7500, whileCondition
     }
     return { yield: finalResult, return: returnResult };
 }
-export async function completeGeneratorB(g, maxTimePerTick = 7500, whileConditions = true) {
+export async function completeGeneratorB(g, maxTimePerTick = 1500, whileConditions = true) {
     let lastYieldTime = Date.now();
     var yieldResults = [];
     let returnResult;
@@ -1938,7 +1938,7 @@ export async function waitTick() { return new Promise(resolve => system.run(() =
 export async function waitTicks(ticks = 1) { return new Promise(resolve => system.runTimeout(() => resolve(void null), ticks)); }
 export function compressIntArray(arry, replacement = "-1") { return compressIntArrayB(JSON.stringify(arry.map(v => (v ?? -1).toString(36)), undefined, 0).replaceAll('"', ""), replacement); }
 export function extractIntArray(arry, revivement = "-1") { return extractIntArrayB(arry, revivement).replaceAll(" ", "").slice(1, -1).split(",").map(v => Number.parseInt(v, 36)); }
-export async function extractIntArrayG(arry, revivement = "-1", maxTimePerTick = 7500) { return (await completeGenerator(extractIntArrayBGenerator(arry, revivement, maxTimePerTick), maxTimePerTick - 250)).return.replaceAll(" ", "").slice(1, -1).split(",").map(v => Number.parseInt(v, 36)); }
+export async function extractIntArrayG(arry, revivement = "-1", maxTimePerTick = 1500) { return (await completeGenerator(extractIntArrayBGenerator(arry, revivement, maxTimePerTick), maxTimePerTick - 250)).return.replaceAll(" ", "").slice(1, -1).split(",").map(v => Number.parseInt(v, 36)); }
 //rangeToIntArray([0, 5000000]).forEach(v=>Number.parseInt(String(v), 36))
 export function ultraCompressIntArrayB(s, replacement = "-1") { Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)([\s\n]*,[\s\n]*\1){2,}/g)).forEach(v => s = s.replace(v[0], v[1] + "^" + ((v[0].length + 1) / (v[1].length + 1)).toString(36))); s = s.replaceAll(replacement, ""); return s; }
 export function ultraExtractIntArrayB(s, revivement = "-1") { s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement); Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+)/g)).forEach(v => s = s.replace(v[0], (v[1] + ",").repeat(Number.parseInt(v[2], 36)).slice(0, -1))); return s; }
