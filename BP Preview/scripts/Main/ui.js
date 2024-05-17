@@ -1,6 +1,6 @@
-import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot } from "@minecraft/server";
+import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, GameRules, GameRule } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, arrayModifier, format_version, getUICustomForm, targetSelectorAllListC } from "Main";
+import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version, srun, dimensionTypeDisplayFormatting } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -19,7 +19,7 @@ import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-import { command, commandSettings, command_settings_format_version, commands, commands_format_version } from "Main/commands";
+import { chatCommands, chatMessage, chatSend, command, commandSettings, command_settings_format_version, commands, commands_format_version, config, dimensions, evaluateParameters, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -55,8 +55,8 @@ export async function forceShow(form, player, timeout) {
 }
 export const customFormDataTypes = [ModalFormData, ActionFormData, MessageFormData];
 export const customFormDataTypeIds = ["ModalFormData", "ActionFormData", "MessageFormData"];
-export const customElementTypes = [ModalFormData.prototype.title, ModalFormData.prototype.textField, ModalFormData.prototype.dropdown, ModalFormData.prototype.toggle, ModalFormData.prototype.slider, ActionFormData.prototype.body, ActionFormData.prototype.button, MessageFormData.prototype.button1, MessageFormData.prototype.button2];
-export const customElementTypeIds = ["title", "textField", "dropdown", "toggle", "slider", "body", "button", "button1", "button2"];
+export const customElementTypes = [ModalFormData.prototype.title, ModalFormData.prototype.textField, ModalFormData.prototype.dropdown, ModalFormData.prototype.toggle, ModalFormData.prototype.slider, ActionFormData.prototype.body, ActionFormData.prototype.button, MessageFormData.prototype.button1, MessageFormData.prototype.button2, ModalFormData.prototype.submitButton];
+export const customElementTypeIds = ["title", "textField", "dropdown", "toggle", "slider", "body", "button", "button1", "button2", "submitButton"];
 export function editCustomFormUI(UIId) {
     let customUI = getUICustomForm("customUIElement:" + UIId, "customUICode:" + UIId);
     let variableList = "formType, formTitle";
@@ -91,8 +91,10 @@ export function editCustomFormUI(UIId) {
     });
     form1234.toggle("New Code Line");
     form1234.textField("New Code Line Index", "Number", String(((indexListB[indexListB.length - 1] ?? 0) + 1)));
+    form1234.submitButton("Save");
     form12.toggle("New Element");
     form12.textField("New Element Index", "Number", String(((indexList[indexList.length - 1] ?? 0) + 1)));
+    form12.submitButton("Save");
     return { form: form12, variableList: variableList, indexList: indexList, formB: form1234, indexListB: indexListB };
 }
 export function showCustomFormUI(UIId, player) {
@@ -200,6 +202,7 @@ export function customFormUIEditorCode(UIId, player, goBackToMenu = false) {
 export function addNewCustomFormUI(player, goBackToMenu = false) {
     let form12345 = new ModalFormData();
     form12345.textField("Name", "myForm");
+    form12345.submitButton("Create Form");
     forceShow(form12345, player).then((t) => {
         if (t.canceled)
             return;
@@ -217,6 +220,7 @@ export function addNewCustomFormUI(player, goBackToMenu = false) {
     });
 }
 ;
+//salo
 export function customFormListSelectionMenu(player) {
     let a = world.getDynamicPropertyIds().filter((dpi) => (dpi.startsWith("customUI:")));
     let b;
@@ -332,6 +336,8 @@ export function mainMenu(sourceEntity) {
     form.button("Manage Players", "textures/ui/user_icon_white");
     form.button("§eManage Commands §f[§6Beta§f]", "textures/ui/chat_keyboard_hover");
     form.button("§eItem Editor §f[§cAlpha§f]", "textures/ui/chat_keyboard_hover");
+    form.button("§eMap Art Generator §f[§cExperimental§f]", "textures/items/map_locked");
+    form.button("§eJava NBT Structure Loader §f[§cExperimental§f]", "textures/ui/xyz_axis");
     forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {
         let r = ra;
         // This will stop the code when the player closes the form
@@ -509,11 +515,17 @@ export function mainMenu(sourceEntity) {
                 break;
             case 23:
                 try {
-                    uis.itemSelector(sourceEntity, sourceEntity).then(a => { if (!!a) {
+                    itemSelector(sourceEntity, sourceEntity).then(a => { if (!!a) {
                         uis.itemEditorTypeSelection(sourceEntity, sourceEntity, a);
                     } });
                 }
                 catch { }
+                break;
+            case 24:
+                mapArtGenerator(sourceEntity);
+                break;
+            case 25:
+                nbtStructureLoader(sourceEntity);
                 break;
             default:
         }
@@ -528,7 +540,11 @@ export function settings(sourceEntity) {
     form.body("Choose menu to open. ");
     form.button("Global Settings", "textures/ui/settings_glyph_color_2x");
     form.button("Eval Auto Execute Settings", "textures/ui/settings_glyph_color_2x");
-    form.button("Personal Settings", "textures/ui/settings_glyph_color_2x"); /*
+    form.button("Personal Settings", "textures/ui/settings_glyph_color_2x");
+    form.button("Notifications Settings", "textures/ui/icon_bell");
+    form.button("Home System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
+    form.button("RTP System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
+    form.button("Back", "textures/ui/"); /*
     form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
     forceShow(form, sourceEntity).then(ra => {
         let r = ra;
@@ -545,6 +561,18 @@ export function settings(sourceEntity) {
                 break;
             case 2:
                 personalSettings(sourceEntity);
+                break;
+            case 3:
+                notificationsSettings(sourceEntity);
+                break;
+            case 4:
+                homeSystemSettings(sourceEntity);
+                break;
+            case 5:
+                rtpSettings(sourceEntity);
+                break;
+            case 6:
+                mainMenu(sourceEntity);
                 break;
             default:
         }
@@ -608,6 +636,63 @@ export function globalSettings(sourceEntity) {
         console.error(e, e.stack);
     });
 }
+export function homeSystemSettings(sourceEntity) {
+    let form2 = new ModalFormData();
+    form2.title("Home System Settings [§cExperimental§r]");
+    form2.toggle("§l§fHome System Enabled§r§f", config.homeSystemEnabled);
+    form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.maxHomesPerPlayer));
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(to => {
+        let t = to;
+        if (t.canceled)
+            return; /*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+        let [homeSystemEnabled, maxHomesPerPlayer] = t.formValues;
+        config.homeSystemEnabled = homeSystemEnabled;
+        config.maxHomesPerPlayer = String(maxHomesPerPlayer).toLowerCase() == "infinity" ? Infinity : Number(maxHomesPerPlayer);
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function rtpSettings(sourceEntity) {
+    let form2 = new ModalFormData();
+    form2.title("RTP System Settings [§cExperimental§r]");
+    form2.toggle("§l§fEnable RTP System", config.rtpSystemEnabled);
+    //form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.maxHomesPerPlayer));
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(to => {
+        let t = to;
+        if (t.canceled)
+            return; /*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+        let [rtpSystemEnabled] = t.formValues;
+        config.rtpSystemEnabled = rtpSystemEnabled;
+        //config.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function notificationsSettings(sourceEntity) {
+    let form2 = new ModalFormData();
+    form2.title("Notifications Settings");
+    form2.toggle("§l§fGet notified when players run chat commands§r§f", sourceEntity.hasTag("getAllChatCommands"));
+    form2.toggle("§l§fGet notified when a game rule is changed§r§f", sourceEntity.hasTag("getGameRuleChangeNotifications"));
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(to => {
+        let t = to;
+        if (t.canceled)
+            return; /*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+        let [getAllChatCommands, getGameRuleChangeNotifications] = t.formValues;
+        Boolean(getAllChatCommands) ? sourceEntity.addTag("getAllChatCommands") : sourceEntity.removeTag("getAllChatCommands");
+        Boolean(getGameRuleChangeNotifications) ? sourceEntity.addTag("getGameRuleChangeNotifications") : sourceEntity.removeTag("getGameRuleChangeNotifications");
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
 export function personalSettings(sourceEntity) {
     let form2 = new ModalFormData();
     "andexdbSettings:autoEscapeChatMessages";
@@ -636,7 +721,7 @@ export function personalSettings(sourceEntity) {
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));*/
-    form2.submitButton("SaVE");
+    form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
         if (t.canceled)
@@ -701,6 +786,7 @@ export function evalAutoScriptSettings(sourceEntity) {
     form2.dropdown("Player Target", String(targetList).split(","), 0)
     form2.dropdown("Player Viewer", String(targetList).split(","), 0)
     form2.toggle("Debug2", false);*/
+    form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
         if (t.canceled)
@@ -723,6 +809,36 @@ export function evalAutoScriptSettings(sourceEntity) {
         world.setDynamicProperty("evalAfterEvents:blockExplode", aebe);
         world.setDynamicProperty("evalAfterEvents:playerLeave", aepl);
         world.setDynamicProperty("evalAfterEvents:entityDie", aeed);
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function manageGameRulesUI(sourceEntity) {
+    let form2 = new ModalFormData();
+    const ruleNames = Object.getOwnPropertyNames(mcServer.GameRules.prototype).filter(r => r != "constructor").sort((a, b) => -+(typeof world.gameRules[a] != typeof world.gameRules[b]) * ((2 * +(typeof world.gameRules[a] == "number")) - 1));
+    const ruleValues = world.gameRules;
+    form2.title("Manage Game Rules");
+    ruleNames.forEach(r => { if (typeof ruleValues[r] == "number") {
+        form2.textField(r, "number", String(ruleValues[r]));
+    }
+    else {
+        form2.toggle(r, Boolean(ruleValues[r]));
+    } });
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(to => {
+        let t = to;
+        if (t.canceled)
+            return;
+        try {
+            t.formValues.forEach((v, i) => {
+                if (ruleValues[ruleNames[i]] != v) {
+                    ruleValues[ruleNames[i]] = typeof ruleValues[ruleNames[i]] == "number" ? Number(v) : v;
+                }
+            });
+        }
+        catch (e) {
+            sourceEntity.sendMessage("§c" + e + " " + e.stack);
+        }
     }).catch(e => {
         console.error(e, e.stack);
     });
@@ -782,7 +898,8 @@ export function terminal(sourceEntity) {
         form.textField("Run Delay", "Run Delay");
         form.toggle("Debug", false);
         form.submitButton("Run");
-        form.show(sourceEntity).then(r => {
+        forceShow(form, sourceEntity).then(ra => {
+            let r = ra;
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return;
@@ -792,6 +909,191 @@ export function terminal(sourceEntity) {
             system.runTimeout(() => {
                 sourceEntity.sendMessage(String((sourceEntity).runCommand(String(commandId)).successCount));
             }, Number(commandDelay));
+            // Do something
+        }).catch(e => {
+            console.error(e, e.stack);
+        });
+    }); /*
+try { (sourceEntity).runCommand(String("/scriptevent andexdb:commandRunner hisa")); }
+// Do something
+catch(e) {
+console.error(e, e.stack);
+};*/
+}
+export function chatMessageNoCensor(sourceEntity, bypassChatInputRequests = false) {
+    system.run(() => {
+        let form = new ModalFormData();
+        let playerList = world.getAllPlayers();
+        form.title("Chat");
+        form.textField("Chat Message / Command", "Chat Message / Command");
+        form.dropdown("As Player", playerList.map(p => p.name), playerList.indexOf(sourceEntity));
+        form.submitButton("Send");
+        forceShow(form, sourceEntity).then(ra => {
+            let r = ra;
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return;
+            // This will assign every input their own variable
+            let [message, asPlayer] = r.formValues; /*
+            console.warn(r.formValues);*/
+            chatMessage({ cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity }, bypassChatInputRequests);
+            // Do something
+        }).catch(e => {
+            console.error(e, e.stack);
+        });
+    }); /*
+try { (sourceEntity).runCommand(String("/scriptevent andexdb:commandRunner hisa")); }
+// Do something
+catch(e) {
+console.error(e, e.stack);
+};*/
+}
+export function chatSendNoCensor(sourceEntity) {
+    system.run(() => {
+        let form = new ModalFormData();
+        let playerList = world.getAllPlayers();
+        form.title("Chat");
+        form.textField("Chat Message", "Chat Message");
+        form.dropdown("As Player", playerList.map(p => p.name), playerList.indexOf(sourceEntity));
+        form.submitButton("Send");
+        forceShow(form, sourceEntity).then(ra => {
+            let r = ra;
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return;
+            // This will assign every input their own variable
+            let [message, asPlayer] = r.formValues; /*
+            console.warn(r.formValues);*/
+            chatSend({ returnBeforeChatSend: false, player: playerList[asPlayer] ?? sourceEntity, newMessage: message, event: { cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity }, eventData: { cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity } });
+            // Do something
+        }).catch(e => {
+            console.error(e, e.stack);
+        });
+    }); /*
+try { (sourceEntity).runCommand(String("/scriptevent andexdb:commandRunner hisa")); }
+// Do something
+catch(e) {
+console.error(e, e.stack);
+};*/
+}
+export function chatCommandRunner(sourceEntity) {
+    system.run(() => {
+        let form = new ModalFormData();
+        let playerList = world.getAllPlayers();
+        form.title("Chat Command Runner");
+        form.textField("Chat Command", "Chat Command");
+        form.dropdown("As Player", playerList.map(p => p.name), playerList.indexOf(sourceEntity));
+        form.submitButton("Run Chat Command");
+        forceShow(form, sourceEntity).then(ra => {
+            let r = ra;
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return;
+            // This will assign every input their own variable
+            let [message, asPlayer] = r.formValues; /*
+            console.warn(r.formValues);*/
+            chatCommands({ returnBeforeChatSend: false, player: playerList[asPlayer] ?? sourceEntity, newMessage: message, event: { cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity }, eventData: { cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity } });
+            // Do something
+        }).catch(e => {
+            console.error(e, e.stack);
+        });
+    }); /*
+try { (sourceEntity).runCommand(String("/scriptevent andexdb:commandRunner hisa")); }
+// Do something
+catch(e) {
+console.error(e, e.stack);
+};*/
+}
+export function mapArtGenerator(sourceEntity) {
+    srun(() => {
+        let form = new ModalFormData();
+        form.title("Map Art Generator [§cExperimental§r]");
+        form.textField("§fFor info on how to use this generator, go to §bhttps://sites.google.com/view/8craftermods/debug-sticks-add-on/andexdbnbtstructureloader§f\nNote: When pasting the nbt data into the text box the game might freeze for anywhere from a few seconds to half a hour depending on how much text is being pasted while it is pasting, and then it will unfreeze. \nNBT Data", "NBT Data");
+        form.textField("Chunk Index x", "integer", String(coords.getChunkIndex(sourceEntity.location).x));
+        form.textField("Chunk Index y", "integer", String(coords.getChunkIndex(sourceEntity.location).y));
+        form.textField("Offset x", "integer", "0");
+        form.textField("Offset z", "integer", "0");
+        form.dropdown("Alignment Mode", ["Chunk Grid", "Map Grid"], 1);
+        form.dropdown("Dimension", dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.submitButton("Generate Map Art");
+        forceShow(form, sourceEntity).then(ra => {
+            let r = ra;
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return;
+            // This will assign every input their own variable
+            let [snbt, chunkx, chunky, offsetx, offsetz, alignmentmode, dimension] = r.formValues; /*
+            console.warn(r.formValues);*/
+            let newsnbta = JSON.parse(snbt.replace(/(?<=[,\{][\s\n]*?)(['"])?(?<vb>[a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*(?<vd>false|true|undefined|NULL|Infinity|-Infinity|[\-\+]?[0-9]+|"(?:[^"]|(?<=([^\\])(\\\\)*?\\)")*"|'(?:[^']|(?<=([^\\])(\\\\)*?\\)')*')(?=[\s\n]*?[,\}])/g, '"$<vb>":$<vd>'));
+            //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
+            //console.warn(JSONStringify(Object.assign(mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from), {dimension: dimensions[dimension as number]??sourceEntity.dimension, y: (dimensions[dimension as number]??sourceEntity.dimension).heightRange.max-((newsnbta.size[1]??1) as number)})))
+            //console.warn(JSONStringify(newsnbta))
+            generateNBTFileD(Object.assign(mcMath.Vector3Utils.add({ x: Number(offsetx), y: 0, z: Number(offsetz) }, coords.chunkIndexToBoundingBox({ x: (alignmentmode == 1 ? ((Math.floor((Number(chunkx) / 8) + 0.5) * 8 - 4)) : Number(chunkx)), y: (alignmentmode == 1 ? ((Math.floor((Number(chunky) / 8) + 0.5) * 8) - 4) : Number(chunky)) }).from), { dimension: dimensions[dimension] ?? sourceEntity.dimension, y: (dimensions[dimension] ?? sourceEntity.dimension).heightRange.max - (newsnbta.size[1] ?? 1) }), newsnbta, sourceEntity);
+            //console.warn(JSONStringify([mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from), coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from]))
+            // Do something
+        }).catch(e => {
+            console.error(e, e.stack);
+        });
+    }); /*
+try { (sourceEntity).runCommand(String("/scriptevent andexdb:commandRunner hisa")); }
+// Do something
+catch(e) {
+console.error(e, e.stack);
+};*/
+}
+export function mapArtGeneratorB(sourceEntity) {
+    srun(() => {
+        let form = new ModalFormData();
+        form.title("Map Art Generator [§cExperimental§r]");
+        form.textField("To use this generator you must first use something like cubical.xyz to convert an image to a minecraft structure, then save that structure as a .nbt file, then convert that .nbt file to SNBT format, then paste the SNBT into the text box below. \nNote: When pasting into the text box the game might freeze for a few minutes until it finishes pasting, and then it will unfreeze. \nSNBT of the .nbt file", "SNBT Data");
+        form.textField("Chunk Index x", "integer", String(Math.floor(coords.getChunkIndex(sourceEntity.location).x / 8)));
+        form.textField("Chunk Index y", "integer", String(Math.floor(coords.getChunkIndex(sourceEntity.location).y / 8)));
+        form.dropdown("Dimension", dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.submitButton("Generate Map Art");
+        forceShow(form, sourceEntity).then(ra => {
+            let r = ra;
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return;
+            // This will assign every input their own variable
+            let [snbt, chunkx, chunky, dimension] = r.formValues; /*
+            console.warn(r.formValues);*/
+            let newsnbta = JSON.parse(snbt.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*([\"\'\`funIN\-0-9\{\[])/g, '"$2":$4'));
+            //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
+            generateNBTFileB(Object.assign(coords.chunkIndexToBoundingBox({ x: chunkx, y: chunky }).from, { dimension: dimensions[dimension] ?? sourceEntity.dimension, y: (dimensions[dimension] ?? sourceEntity.dimension).heightRange.max - (newsnbta.size[1] ?? 1) }), newsnbta);
+            // Do something
+        }).catch(e => {
+            console.error(e, e.stack);
+        });
+    }); /*
+try { (sourceEntity).runCommand(String("/scriptevent andexdb:commandRunner hisa")); }
+// Do something
+catch(e) {
+console.error(e, e.stack);
+};*/
+}
+//evaluateParameters("{a: \"a\", \"b\": \"b\"}", [{type: "json"}])
+export function nbtStructureLoader(sourceEntity) {
+    srun(() => {
+        let form = new ModalFormData();
+        form.title("Java NBT Structure Loader [§cExperimental§r]");
+        form.textField("§fFor info on how to use this loader, go to §bhttps://sites.google.com/view/8craftermods/debug-sticks-add-on/andexdbnbtstructureloader§f\nNote: When pasting the nbt data into the text box the game might freeze for anywhere from a few seconds to half a hour depending on how much text is being pasted while it is pasting, and then it will unfreeze. \nNBT Data", "NBT Data");
+        form.textField("spawn position x", "integer", String(sourceEntity.location.x));
+        form.textField("spawn position y", "integer", String(sourceEntity.location.y));
+        form.textField("spawn position z", "integer", String(sourceEntity.location.z));
+        form.dropdown("Dimension", dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.submitButton("Load Java NBT Structure");
+        forceShow(form, sourceEntity).then(ra => {
+            let r = ra;
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return;
+            // This will assign every input their own variable
+            let [snbt, x, y, z, dimension] = r.formValues; /*
+            console.warn(r.formValues);*/
+            let newsnbta = JSON.parse(snbt.replace(/(?<=[,\{][\s\n]*?)(['"])?(?<vb>[a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*(?<vd>false|true|undefined|NULL|Infinity|-Infinity|[\-\+]?[0-9]+|"(?:[^"]|(?<=([^\\])(\\\\)*?\\)")*"|'(?:[^']|(?<=([^\\])(\\\\)*?\\)')*')(?=[\s\n]*?[,\}])/g, '"$<vb>":$<vd>'));
+            //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
+            generateNBTFileD({ dimension: dimensions[dimension] ?? sourceEntity.dimension, x: (Number(x) ?? sourceEntity.location.x), y: (Number(y) ?? sourceEntity.location.y), z: (Number(z) ?? sourceEntity.location.z) }, newsnbta, sourceEntity);
             // Do something
         }).catch(e => {
             console.error(e, e.stack);
@@ -1809,6 +2111,7 @@ export function editorStick(sourceEntity, message = "") {
         block2 = world.getDimension(allCoordinates[0]).getBlock({ x: allCoordinates[1], y: allCoordinates[2], z: allCoordinates[3] });
     }
     form.title("Editor Stick");
+    form.submitButton("Save");
     let blockStatesFullList; /*
     try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]); } catch(e){console.error(e, e.stack);}
     try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]).split(","); } catch(e){console.error(e, e.stack);}*/
@@ -2193,6 +2496,7 @@ export function editorStickMenuB(sourceEntity) {
     form.textField("Block X", "Block X", String(sourceEntity.location.x));
     form.textField("Block Y", "Block Y", String(sourceEntity.location.y));
     form.textField("Block Z", "Block Z", String(sourceEntity.location.z));
+    form.submitButton("Edit");
     form.show(sourceEntity).then(r => {
         if (r.canceled)
             return;
@@ -2212,6 +2516,7 @@ export function editorStickB(sourceEntity, dimensionLocation) {
     let block2; /* = block.block*/
     block2 = dimensionLocation.dimension.getBlock(dimensionLocation);
     form.title("Editor Stick B");
+    form.submitButton("Save");
     let blockStatesFullList; /*
     try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]); } catch(e){console.error(e, e.stack);}
     try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]).split(","); } catch(e){console.error(e, e.stack);}*/
@@ -2562,6 +2867,7 @@ export function managePlayers(sourceEntity) {
                             form5.textField("Player UUID\nThis is the uuid of the player. ", "Integer");
                             form5.textField("Ban Time (In Minutes)", "Decimal");
                             form5.textField("Reason", "JavaScript Object ex. `\nDate: ${new Date(D\nate\n.now()).toLo\ncaleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
+                            form5.submitButton("Ban");
                             forceShow(form5, sourceEntity).then(ha => {
                                 let h = ha;
                                 if (h.canceled) {
@@ -2578,6 +2884,7 @@ export function managePlayers(sourceEntity) {
                             form6.textField("Player Name\nThis is the name of the player. ", "String");
                             form6.textField("Ban Time (In Minutes)", "Decimal");
                             form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
+                            form6.submitButton("Ban");
                             forceShow(form6, sourceEntity).then(ha => {
                                 let h = ha;
                                 if (h.canceled) {
@@ -2730,6 +3037,7 @@ export function managePlayers(sourceEntity) {
                                         form5.title(`Add ID Ban`);
                                         form5.textField("Ban Time (In Minutes)", "Decimal");
                                         form5.textField("Reason", "Text");
+                                        form5.submitButton("Ban");
                                         forceShow(form5, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
@@ -2745,6 +3053,7 @@ export function managePlayers(sourceEntity) {
                                         form6.title(`Add Name Ban`);
                                         form6.textField("Ban Time (In Minutes)", "Decimal");
                                         form6.textField("Reason", "Text");
+                                        form6.submitButton("Ban");
                                         forceShow(form6, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
@@ -3320,6 +3629,7 @@ export function itemDynamicPropertyEditor(sourceEntity, item) {
                 form.textField("Property Name", "string");
                 form.textField("Property Value", "string|number|boolean|vector3json");
                 form.dropdown("Property Type", ["String", "Number", "Boolean", "Vector3"]);
+                form.submitButton("Add Property");
                 forceShow(form, sourceEntity).then(ra => {
                     let r = ra;
                     if (r.canceled) {
@@ -3373,6 +3683,7 @@ export function newItemInSlot(sourceEntity, item) {
     form.title("New Item");
     form.textField("Item Type", "Item Id", "minecraft:grass_block");
     form.textField("Count", "int", "1");
+    form.submitButton("Create Item");
     forceShow(form, sourceEntity).then(ra => {
         let r = ra;
         if (r.canceled) {
@@ -3416,3 +3727,4 @@ export function createExplosion(sourceEntity, parameterDefaults) {
         }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
+//# sourceMappingURL=ui.js.map

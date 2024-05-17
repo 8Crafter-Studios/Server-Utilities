@@ -7,25 +7,13 @@
          "path" : ".mcattributes"
       },
       {
-         "path" : "manifest.json"
-      },
-      {
-         "path" : "font/glyph_E6.png"
-      },
-      {
          "path" : ".zip"
       },
       {
-         "path" : "textures/item_texture.json"
-      },
-      {
-         "path" : "font/glyph_E0 old.png"
+         "path" : "manifest.json"
       },
       {
          "path" : "animations/animation.none.none.none.animation.json"
-      },
-      {
-         "path" : "contents.json"
       },
       {
          "path" : "textures/ui/8Crafter.png"
@@ -34,40 +22,16 @@
          "path" : "particles/custom_item_texture_billboard_2.particle.json"
       },
       {
-         "path" : "models/blocks/no_bones.geo.json"
-      },
-      {
          "path" : "blocks.json"
       },
       {
-         "path" : "font/glyph_E0 old 3.png"
+         "path" : "font/glyph_F0.png"
       },
       {
-         "path" : "ui/server_form.json"
+         "path" : "models/blocks/no_bones.geo.json"
       },
       {
-         "path" : "particles/custom_text_glyph_E0_texture_billboard_2.particle.json"
-      },
-      {
-         "path" : "font/glyph_E0.png"
-      },
-      {
-         "path" : "textures/terrain_texture.json"
-      },
-      {
-         "path" : "font/glyph_E1.png"
-      },
-      {
-         "path" : "font/glyph_E2.png"
-      },
-      {
-         "path" : "font/glyph_E3.png"
-      },
-      {
-         "path" : "font/glyph_E4.png"
-      },
-      {
-         "path" : "font/glyph_E5.png"
+         "path" : "contents.json"
       },
       {
          "path" : "textures/items/netherite_downgrade_smithing_template.png"
@@ -95,6 +59,12 @@
       },
       {
          "path" : "particles/custom_text_ascii_sga_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "ui/server_form.json"
+      },
+      {
+         "path" : "particles/custom_text_glyph_E0_texture_billboard_2.particle.json"
       },
       {
          "path" : "particles/custom_text_glyph_E3_texture_billboard_2.particle.json"
@@ -134,6 +104,12 @@
       },
       {
          "path" : "textures/items/giant_stick.png"
+      },
+      {
+         "path" : "textures/item_texture.json"
+      },
+      {
+         "path" : "textures/terrain_texture.json"
       },
       {
          "path" : "ui/settings_screen.json"

@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.12.0";
+export const format_version = "1.14.1";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -48,12 +48,13 @@ import "Main/player_save.js";
 import "Main/spawn_protection.js";
 import "@minecraft/math.js";
 export const mainmetaimport = import.meta
+export const subscribedEvents = {} as {[eventName: string]: Function}
 
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG } from "Main/coordinates";
-import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer } from "Main/commands";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG } from "Main/coordinates";
+import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
@@ -91,8 +92,10 @@ spawnprot
 SimulatedPlayer
 Test
 mcMath
-let crashEnabled = false
-let tempSavedVariables = []
+globalThis.scriptStartTick=system.currentTick
+export let crashEnabled = false
+export let tempSavedVariables = []
+
 export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]/*
 disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
 system.beforeEvents.watchdogTerminate.subscribe(e => {try{
@@ -226,6 +229,12 @@ targetSelectorAllListD("@e[c=2]", `${sourceEntity.location.x} ${sourceEntity.loc
 if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent("projectile").shoot({x: Number(d.x>=0), y: 0, z: 0})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent("projectile").shoot({x: 0, y: Number(d.y>=0), z: 0})}else{sourceEntity.getComponent("projectile").shoot({x: Number(d.x>=0), y: Number(d.y>=0), z: Number(d.z>=0)})}}}
 if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent("projectile").shoot({x: Number(d.x>=0)*Math.abs(1/d.x), y: Number(d.y>=0)*Math.abs(1/d.x), z: Number(d.z>=0)*Math.abs(1/d.x)})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent("projectile").shoot({x: Number(d.x>=0)*Math.abs(1/d.x), y: Number(d.y>=0)*Math.abs(1/d.x), z: Number(d.z>=0)*Math.abs(1/d.x)})}else{sourceEntity.getComponent("projectile").shoot({x: Number(d.x>=0)*Math.abs(1/d.x), y: Number(d.y>=0)*Math.abs(1/d.x), z: Number(d.z>=0)*Math.abs(1/d.x)})}}}
 sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location*/
+export function flatPath(directoryObject: {[k: string]: any}, startingPath: string[] = ["input"]){
+    function flatPathArray(a: any[], currentPath: string[] = ["input"]): {path: string[], name: string, index?: number, arrayindex?: number, objectindex?: number, [k: string]: any}[]{return [{path: currentPath, name: currentPath[currentPath.length-1]}, a.flatMap((v, i)=>v instanceof Array?flatPathArray(v, [...currentPath, String(i)]):typeof v == "object"?(v as any)?.notPathable==true?{path: [...currentPath, String(i)], name: v?.name??String(i), index: i, arrayindex: i, notPathable: true}:flatPathObject(v[1], [...currentPath, v[0]]):{path: [...currentPath, String(v??i)], name: String(v??i), index: i, arrayindex: i})] as {path: string[], name: string, index?: number, arrayindex?: number, objectindex?: number, [k: string]: any}[]}
+    function flatPathObject(o: {[k: string]: any}, currentPath: string[] = ["input"]): {path: string[], name: string, index?: number, arrayindex?: number, objectindex?: number, [k: string]: any}[]{return [{path: currentPath, name: currentPath[currentPath.length-1]}, Object.entries(o).flatMap((v, i)=>v[1] instanceof Array?flatPathArray(v[1], [...currentPath, v[0]])[0]:typeof v[1] == "object"?(v[1] as any)?.notPathable==true?{path:[...currentPath, v[0]], name: v[0], index: i, objectindex: i, notPathable: true}:flatPathObject(v[1], [...currentPath, v[0]]):{path: [...currentPath, v[0]], name: v[0], index: i, objectindex: i})] as {path: string[], name: string, index?: number, arrayindex?: number, objectindex?: number, [k: string]: any}[]}
+    return flatPathObject(directoryObject, startingPath)
+}
+export function getPathInObject(directoryObject: {[k: string]: any}|any[], path: string[] = ["input"]){let a: any; a = directoryObject; path.slice(1).forEach(v=>a = a[v]); return a}
 export function fixedPositionNumberObject(object: Object, decimals: number = Number(world.getDynamicProperty("scriptPrecision") ?? 5)) { 
     let newObject: [string, any][]
     newObject = []
@@ -278,7 +287,7 @@ if (radix == 1) return keys[0].repeat(num)
     output.unshift(keys[index]);
     num = Math.trunc(num / radix);
   } while (num != 0);
-  if (isNegative) output.unshift('-')
+  if (isNegative??false) output.unshift('-')
   return output.join("");
 } 
 export function fromBaseToBase(num, base = 10, radix = 10, keysa =  radix>62?"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/":"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/") { // only i64 numbers
@@ -748,6 +757,322 @@ export function fillBlocksHW(from: Vector3, to: Vector3, dimension: Dimension, b
     }
     return counter
 }; 
+export async function fillBlocksHWG(begin: Vector3, end: Vector3, dimension: Dimension, block: string|((location: DimensionLocation)=>BlockType), blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    let counter = 0; 
+    const id = generatorProgressIdGenerator()
+    if(typeof block == "function"){
+        if(!!!options?.matchingBlock){
+            if(replacemode){
+                system.runJob(generateWallsFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                        }
+                        v.dimension.getBlock(v).setType(block(v))
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }else{
+                system.runJob(generateWallsFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        v.dimension.getBlock(v).setType(block(v))
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }
+        }else{
+            let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+            let currentBlock = undefined as BlockType
+            if(replacemode){
+                system.runJob(generateWallsFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    currentBlock=block(v)
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(BlockPermutation.resolve(currentBlock.id).getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                            v.dimension.getBlock(v).setType(currentBlock)
+                            counter++
+                        }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }else{
+                system.runJob(generateWallsFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    currentBlock=block(v)
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(BlockPermutation.resolve(currentBlock.id).getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                            v.dimension.getBlock(v).setType(currentBlock)
+                            counter++
+                        }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }
+        }
+    }else{
+        let blockb = BlockPermutation.resolve(block, blockStates)
+        if(!!!options?.matchingBlock){
+            if(replacemode){
+                system.runJob(generateWallsFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                        }
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }else{
+                system.runJob(generateWallsFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }
+        }else{
+            let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+            if(replacemode){
+                system.runJob(generateWallsFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }else{
+                system.runJob(generateWallsFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }
+        }
+    }
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean; }}) => void, reject) => {
+        function a(){if(generatorProgress[id]?.done!==true){system.run(() => {
+           a()
+        })}else{let returns = generatorProgress[id]; delete generatorProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
+}; 
+export async function fillBlocksHHG(begin: Vector3, end: Vector3, dimension: Dimension, block: string|((location: DimensionLocation)=>BlockType), blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    let counter = 0; 
+    const id = generatorProgressIdGenerator()
+    if(typeof block == "function"){
+        if(!!!options?.matchingBlock){
+            if(replacemode){
+                system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                        }
+                        v.dimension.getBlock(v).setType(block(v))
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }else{
+                system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        v.dimension.getBlock(v).setType(block(v))
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }
+        }else{
+            let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+            let currentBlock = undefined as BlockType
+            if(replacemode){
+                system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    currentBlock=block(v)
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(BlockPermutation.resolve(currentBlock.id).getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                            v.dimension.getBlock(v).setType(currentBlock)
+                            counter++
+                        }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }else{
+                system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    currentBlock=block(v)
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(BlockPermutation.resolve(currentBlock.id).getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                            v.dimension.getBlock(v).setType(currentBlock)
+                            counter++
+                        }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }
+        }
+    }else{
+        let blockb = BlockPermutation.resolve(block, blockStates)
+        if(!!!options?.matchingBlock){
+            if(replacemode){
+                system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                        }
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }else{
+                system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }
+        }else{
+            let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+            if(replacemode){
+                system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }else{
+                system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }
+        }
+    }
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean; }}) => void, reject) => {
+        function a(){if(generatorProgress[id]?.done!==true){system.run(() => {
+           a()
+        })}else{let returns = generatorProgress[id]; delete generatorProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
+}; 
+//world.broadcastClientMessage("test", "hisa")
+export async function fillBlocksHOTG(begin: Vector3, end: Vector3, dimension: Dimension, block: string|((location: DimensionLocation)=>BlockType), blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    let counter = 0; 
+    const id = generatorProgressIdGenerator()
+    if(typeof block == "function"){
+        if(!!!options?.matchingBlock){
+            if(replacemode){
+                system.runJob(generateOutlineFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                        }
+                        v.dimension.getBlock(v).setType(block(v))
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }else{
+                system.runJob(generateOutlineFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        v.dimension.getBlock(v).setType(block(v))
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }
+        }else{
+            let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+            let currentBlock = undefined as BlockType
+            if(replacemode){
+                system.runJob(generateOutlineFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    currentBlock=block(v)
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(BlockPermutation.resolve(currentBlock.id).getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                            v.dimension.getBlock(v).setType(currentBlock)
+                            counter++
+                        }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }else{
+                system.runJob(generateOutlineFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    currentBlock=block(v)
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(BlockPermutation.resolve(currentBlock.id).getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                            v.dimension.getBlock(v).setType(currentBlock)
+                            counter++
+                        }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }
+        }
+    }else{
+        let blockb = BlockPermutation.resolve(block, blockStates)
+        if(!!!options?.matchingBlock){
+            if(replacemode){
+                system.runJob(generateOutlineFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                        }
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }else{
+                system.runJob(generateOutlineFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }
+        }else{
+            let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+            if(replacemode){
+                system.runJob(generateOutlineFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }else{
+                system.runJob(generateOutlineFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }
+        }
+    }
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean; }}) => void, reject) => {
+        function a(){if(generatorProgress[id]?.done!==true){system.run(() => {
+           a()
+        })}else{let returns = generatorProgress[id]; delete generatorProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
+}; 
 export function fillBlocksHH(from: Vector3, to: Vector3, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>}, placeholderid?: string, replacemode: boolean = false){
     let mainArray = [] as BlockVolume[]; 
     let mainArrayB = [] as BlockVolume[]; 
@@ -1097,6 +1422,7 @@ export async function fillBlocksHHSG(center: Vector3, radius: number, thickness:
             }, undefined, integrity))
         }
     }else{
+        let blockb = BlockPermutation.resolve(block, blockStates)
         let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
         if(replacemode){
             system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
@@ -1128,52 +1454,103 @@ export async function fillBlocksHHSG(center: Vector3, radius: number, thickness:
         a()
     })
 }; 
-export async function fillBlocksHDG(center: Vector3, radius: number, thickness: number, dimension: Dimension, block: string, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+export async function fillBlocksHDG(center: Vector3, radius: number, thickness: number, dimension: Dimension, block: string|Function, blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
     let counter = 0; 
-    let blockb = BlockPermutation.resolve(block, blockStates)
+    let types = BlockTypes.getAll()
     const id = generatorProgressIdGenerator()
-    if(!!!options?.matchingBlock){
-        if(replacemode){
-            system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
-                try{
+    if(typeof block == "function"){
+        if(!!!options?.matchingBlock){
+            if(replacemode){
+                system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                        }
+                        v.dimension.getBlock(v).setType(types[Math.floor(types.length*Math.random())])
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }else{
+                system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        v.dimension.getBlock(v).setType(types[Math.floor(types.length*Math.random())])
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }
+        }else{
+            let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+            let currentBlock = undefined as BlockType
+            if(replacemode){
+                system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    currentBlock=types[Math.floor(types.length*Math.random())]
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(BlockPermutation.resolve(currentBlock.id).getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                            v.dimension.getBlock(v).setType(types[Math.floor(types.length*Math.random())])
+                            counter++
+                        }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }else{
+                system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    currentBlock=types[Math.floor(types.length*Math.random())]
                     if(!!v.dimension.getBlock(v).getComponent("inventory")){
                         clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
                     }
-                    v.dimension.getBlock(v).setPermutation(blockb)
-                    counter++
-                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
-            }, undefined, integrity))
-        }else{
-            system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
-                try{
-                    v.dimension.getBlock(v).setPermutation(blockb)
-                    counter++
-                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
-            }, undefined, integrity))
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(BlockPermutation.resolve(currentBlock.id).getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                            v.dimension.getBlock(v).setType(types[Math.floor(types.length*Math.random())])
+                            counter++
+                        }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }
         }
     }else{
-        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
-        if(replacemode){
-            system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
-                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+        let blockb = BlockPermutation.resolve(block, blockStates)
+        if(!!!options?.matchingBlock){
+            if(replacemode){
+                system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
                     try{
-                    v.dimension.getBlock(v).setPermutation(blockb)
-                    counter++
-                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
-                }
-            }, undefined, integrity)); 
+                        if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                        }
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }else{
+                system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }
         }else{
-            system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
-                if(!!v.dimension.getBlock(v).getComponent("inventory")){
-                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
-                }
-                if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
-                    try{
-                    v.dimension.getBlock(v).setPermutation(blockb)
-                    counter++
-                }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
-                }
-            }, undefined, integrity)); 
+            let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+            if(replacemode){
+                system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }else{
+                system.runJob(generateDomeBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }
         }
     }
     return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean; }}) => void, reject) => {
@@ -1432,6 +1809,111 @@ export function fillBlocksHT(center: Vector3, radius: number, length: number, ax
         }); 
     }
     return counter
+}; 
+export async function fillBlocksHFG(begin: Vector3, end: Vector3, dimension: Dimension, block: string|((location: DimensionLocation)=>BlockType), blockStates?: Record<string, string | number | boolean>, options?: {matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, minMSBetweenYields?: number}, placeholderid?: string, replacemode: boolean = false, integrity: number = 100){
+    let counter = 0; 
+    const id = generatorProgressIdGenerator()
+    if(typeof block == "function"){
+        if(!!!options?.matchingBlock){
+            if(replacemode){
+                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                        }
+                        v.dimension.getBlock(v).setType(block(v))
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }else{
+                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        v.dimension.getBlock(v).setType(block(v))
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }
+        }else{
+            let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+            let currentBlock = undefined as BlockType
+            if(replacemode){
+                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    currentBlock=block(v)
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(BlockPermutation.resolve(currentBlock.id).getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                            v.dimension.getBlock(v).setType(currentBlock)
+                            counter++
+                        }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }else{
+                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    currentBlock=block(v)
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(BlockPermutation.resolve(currentBlock.id).getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                            v.dimension.getBlock(v).setType(currentBlock)
+                            counter++
+                        }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }
+        }
+    }else{
+        let blockb = BlockPermutation.resolve(block, blockStates)
+        if(!!!options?.matchingBlock){
+            if(replacemode){
+                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                        }
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }else{
+                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                }, undefined, integrity))
+            }
+        }else{
+            let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates)
+            if(replacemode){
+                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }else{
+                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+                    if(!!v.dimension.getBlock(v).getComponent("inventory")){
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container)
+                    }
+                    if((!!options?.matchingBlockStates)?((BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)&&(matchingblockb.getAllStates()==Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v=>!!(Object.entries(blockb.getAllStates()).find(s=>v[0]==s[0])))))):(BlockTypes.get(options?.matchingBlock)==v.dimension.getBlock(v).type)){
+                        try{
+                        v.dimension.getBlock(v).setPermutation(blockb)
+                        counter++
+                    }catch(e){if(e instanceof TypeError){generatorProgress[id].containsUnloadedChunks = true}}
+                    }
+                }, undefined, integrity)); 
+            }
+        }
+    }
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean; }}) => void, reject) => {
+        function a(){if(generatorProgress[id]?.done!==true){system.run(() => {
+           a()
+        })}else{let returns = generatorProgress[id]; delete generatorProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
 }; 
 export function scanForBlockType(from: Vector3, to: Vector3, dimension: Dimension, block: string, returnMode?: ""|"Vector3"|"Block"){let blockType = BlockTypes.get(block).id; if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>dimension.getBlock(v).typeId==blockType)}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>v.typeId==blockType)}}; 
 export function scanForContainerBlocks(from: Vector3, to: Vector3, dimension: Dimension, returnMode?: ""|"Vector3"|"Block"){if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>!!dimension.getBlock(v).getComponent("inventory"))}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>!!v.getComponent("inventory"))}}; 
@@ -1939,7 +2421,40 @@ export function debugAction(block: Block, player: Player, mode: number, directio
     }; /*
     console.warn(Object.entries(block.permutation.getAllStates()))*/
 }
-export function getTopSolidBlock(location: Vector3, dimension: Dimension){let block = dimension.getBlock({x: location.x, y: dimension.heightRange.max, z: location.z}); while(block.y >= dimension.heightRange.min){if(block.isAir){block = block.below(1)}else{return block}}; return undefined}
+export function getNextTopSolidBlockAbovePosition(location: Vector3, dimension: Dimension, onlySolid: boolean = false, allowLiquidAbove: boolean = true, allowNonSolidBlocksAbove: boolean = false, allowLiquidBelow: boolean = false){
+    let block = tryget(()=>dimension.getBlock(location)); 
+    let readyToSearch = !(onlySolid?!block.isSolid:(block.isLiquid&&allowLiquidAbove)||(block.isSolid&&allowNonSolidBlocksAbove)||block.isAir); while(block.y <= dimension.heightRange.max){
+        if(((block.isLiquid&&allowLiquidAbove)||(block.isSolid&&allowNonSolidBlocksAbove)||block.isAir)&&!readyToSearch){
+            block = block.above(1)
+        }else{
+            if((onlySolid?!block.isSolid:(block.isLiquid&&allowLiquidAbove)||(block.isSolid&&allowNonSolidBlocksAbove)||block.isAir)&&readyToSearch&&(onlySolid?block.below(1).isSolid:!((!allowLiquidBelow?block.below(1).isLiquid:false)||block.below(1).isAir))){
+                return block
+            }else{
+                block = block.above(1)
+            }
+        }; 
+        readyToSearch = readyToSearch?true:!(onlySolid?!block.isSolid:(block.isLiquid&&allowLiquidAbove)||(block.isSolid&&allowNonSolidBlocksAbove)||block.isAir); 
+    }; 
+    return getTopSolidBlock(location, dimension)
+}
+export function getNextTopSolidBlockBelowPosition(location: Vector3, dimension: Dimension, onlySolid: boolean = false, allowLiquidAbove: boolean = true, allowNonSolidBlocksAbove: boolean = false, allowLiquidBelow: boolean = false){
+    let block = tryget(()=>dimension.getBlock(location)); 
+    let readyToSearch = !(onlySolid?!block.isSolid:(block.isLiquid&&allowLiquidAbove)||(block.isSolid&&allowNonSolidBlocksAbove)||block.isAir); while(block.y <= dimension.heightRange.max){
+        if(((block.isLiquid&&allowLiquidAbove)||(block.isSolid&&allowNonSolidBlocksAbove)||block.isAir)&&!readyToSearch){
+            block = block.below(1)
+        }else{
+            if((onlySolid?!block.isSolid:(block.isLiquid&&allowLiquidAbove)||(block.isSolid&&allowNonSolidBlocksAbove)||block.isAir)&&readyToSearch&&(onlySolid?block.below(1).isSolid:!((!allowLiquidBelow?block.below(1).isLiquid:false)||block.below(1).isAir))){
+                return block
+            }else{
+                block = block.below(1)
+            }
+        }; 
+        readyToSearch = readyToSearch?true:!(onlySolid?!block.isSolid:(block.isLiquid&&allowLiquidAbove)||(block.isSolid&&allowNonSolidBlocksAbove)||block.isAir); 
+    }; 
+    return undefined
+}
+export function getGroundSolidBlock(location: Vector3, dimension: Dimension, onlySolid: boolean = false){let block = dimension.getBlock(location); while(block.y >= dimension.heightRange.min){if(onlySolid?!block.isSolid:block.isAir){block = block.below(1)}else{return block}}; return undefined}
+export function getTopSolidBlock(location: Vector3, dimension: Dimension, onlySolid: boolean = false){let block = dimension.getBlock({x: location.x, y: dimension.heightRange.max, z: location.z}); while(block.y >= dimension.heightRange.min){if(onlySolid?!block.isSolid:block.isAir){block = block.below(1)}else{return block}}; return undefined}
 declare global {
     interface String {
         escapeCharacters(js?: boolean, unicode?: boolean, nullchar?: number, uri?: boolean, quotes?: boolean, general?: boolean, colon?: boolean, x?: boolean, s?: boolean): string;
@@ -2098,9 +2613,15 @@ Object.defineProperty(String.prototype, 'escapeCharactersB', {value: function (j
     return( {v: str, e: eb} );
 }});
 
-world.afterEvents.worldInitialize.subscribe((event) => {
+subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subscribe((event) => {
+    try{eval(String(world.getDynamicProperty("evalBeforeEvents:worldInitialize")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("worldInitializeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+    globalThis.beforeInitiallizeTick=system.currentTick
+});
+
+subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe((event) => {
     try{eval(String(world.getDynamicProperty("evalAfterEvents:worldInitialize")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("worldInitializeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-    try{if (world.scoreboard.getObjective("andexdbDebug") == undefined){world.scoreboard.addObjective("andexdbDebug", "andexdbScriptDebuggingService")}}catch(e){}/*
+    try{if (world.scoreboard.getObjective("andexdbDebug") == undefined){world.scoreboard.addObjective("andexdbDebug", "andexdbScriptDebuggingService")}}catch(e){}
+    globalThis.initiallizeTick=system.currentTick/*
     try{DimensionTypes.getAll().forEach((dimensionType)=>{if (world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", exclude: true, minScore: -99999999, maxScore: 99999999}]}) !== undefined){world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", exclude: true, minScore: -99999999, maxScore: 99999999}]}).forEach((scoreboardEntity)=>{scoreboardEntity.runCommand("/scoreboard players @s set andexdbDebug 0")})}})}catch(e){}
     try{DimensionTypes.getAll().forEach((dimensionType)=>{world.getDimension(dimensionType.typeId).getEntities().forEach((scoreboardEntity)=>{if(world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", minScore: -99999999, maxScore: 99999999}]}).find((testEntity)=>(scoreboardEntity == testEntity)) == undefined){console.warn(scoreboardEntity.id)}})})}catch(e){}*//*
     const propertiesDefinition = new DynamicPropertiesDefinition();
@@ -2188,183 +2709,212 @@ world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(event => {
           console.warn(event.dimension);*//*
       }
   });*///removed in minecraft 1.20.60 >:(
-  world.beforeEvents.effectAdd.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalBeforeEvents:effectAdd")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("effectAddBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.beforeEvents.entityRemove.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalBeforeEvents:entityRemove")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityRemoveBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.beforeEvents.playerGameModeChange.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerGameModeChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerGameModeChangeBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.beforeEvents.weatherChange.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalBeforeEvents:weatherChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("weatherChangeBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });/*
-  world.beforeEvents.itemDefinitionEvent.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });*///removed in 1.20.70.21
-  world.beforeEvents.playerInteractWithEntity.subscribe(event => {
-    if(!!event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerInteractWithEntityCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
-    try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithEntityBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.beforeEvents.playerLeave.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerLeave")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerLeaveBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.blockExplode.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:blockExplode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("blockExplodeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.buttonPush.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:buttonPush")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("buttonPushAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.chatSend.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:chatSend")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.dataDrivenEntityTrigger.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:dataDrivenEntityTrigger")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("dataDrivenEntityTriggerAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:dataDrivenEntityTriggerEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("dataDrivenEntityTriggerEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.effectAdd.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:effectAdd")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("effectAddAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.entityDie.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:entityDie")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityDieAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.entityHealthChanged.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHealthChanged")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHealthChangedAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.entityHitBlock.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHitBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHitBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.entityHitEntity.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHitEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHitEntityAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.entityHurt.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHurt")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHurtAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.entityLoad.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:entityLoad")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityLoadAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.entityRemove.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:entityRemove")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityRemoveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.entitySpawn.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:entitySpawn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entitySpawnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.explosion.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:explosion")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("explosionAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.itemCompleteUse.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:itemCompleteUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemCompleteUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.gameRuleChange.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:gameRuleChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("gameRuleChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.playerGameModeChange.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:playerGameModeChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerGameModeChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.weatherChange.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:weatherChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("weatherChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });/*
-  world.afterEvents.itemDefinitionEvent.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });*/
-  world.afterEvents.itemReleaseUse.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemReleaseUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.itemStartUse.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:itemStartUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemStartUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.itemStartUseOn.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:itemStartUseOn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemStartUseOnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.itemStopUse.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:itemStopUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemStopUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.itemStopUseOn.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:itemStopUseOn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemStopUseOnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.itemUse.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:itemUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.itemUseOn.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:itemUseOn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseOnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.leverAction.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:leverAction")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("leverActionAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.messageReceive.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:messageReceive")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("messageReceiveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.pistonActivate.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:pistonActivate")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pistonActivateAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.playerBreakBlock.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:playerBreakBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerBreakBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.playerDimensionChange.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:playerDimensionChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerDimensionChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.playerInteractWithBlock.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:playerInteractWithBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.playerInteractWithEntity.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:playerInteractWithEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithEntityAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.playerJoin.subscribe(event => {
-    if(!!(ban?.getValidBans()?.idBans?.find(_=>_?.playerId==event?.playerId)??ban.getValidBans().nameBans.find(_=>_.playerName==event.playerName))){try{let pName = event?.playerName; let pId = event?.playerId; let b = (ban?.getValidBans()?.idBans?.sort((a: ban, b: ban)=>1-(2*Number(a?.banDate>b?.banDate)))?.find(_=>_?.playerId==event?.playerId)??ban.getValidBans().nameBans?.sort((a: ban, b: ban)=>1-(2*Number(a?.banDate>b?.banDate))).find(_=>_.playerName==event.playerName)); let reason = b?.reason; try{reason = String(eval(b?.reason)?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))?.replaceAll("{timeRemainingMinutes}", String(b?.timeRemaining.minutes))?.replaceAll("{timeRemainingSeconds}", String(b?.timeRemaining.seconds))?.replaceAll("{timeRemainingMilliseconds}", String(b?.timeRemaining.milliseconds))?.replaceAll("{bannedBy}", String(b?.bannedByName))?.replaceAll("{bannedByName}", String(b?.bannedByName))?.replaceAll("{bannedById}", String(b?.bannedById))?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toLocaleString()+" GMT"))?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toLocaleString()+" GMT"))?.replaceAll("{type}", String(b?.type))?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))??b?.reason)??b?.reason; }catch(e){reason = b?.reason?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))?.replaceAll("{timeRemainingMinutes}", String(b?.timeRemaining.minutes))?.replaceAll("{timeRemainingSeconds}", String(b?.timeRemaining.seconds))?.replaceAll("{timeRemainingMilliseconds}", String(b?.timeRemaining.milliseconds))?.replaceAll("{bannedBy}", String(b?.bannedByName))?.replaceAll("{bannedById}", String(b?.bannedById))?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toLocaleString()+" GMT"))?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toLocaleString()+" GMT"))?.replaceAll("{type}", String(b?.type))?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))?.escapeCharactersB(true)?.v??b?.reason; }; world.getDimension("overworld").runCommand(`/kick ${pName} ${reason}`); }catch(e){console.error(e, e.stack)}}
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:playerJoin")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerJoinAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.playerLeave.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:playerLeave")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerLeaveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.playerPlaceBlock.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:playerPlaceBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerPlaceBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.playerSpawn.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:playerSpawn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerSpawnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.pressurePlatePop.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:pressurePlatePop")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pressurePlatePopAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.pressurePlatePush.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:pressurePlatePush")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pressurePlatePushAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.projectileHitBlock.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:projectileHitBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("projectileHitBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.projectileHitEntity.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:projectileHitEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("projectileHitEntityAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.targetBlockHit.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:targetBlockHit")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("targetBlockHitAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.tripWireTrip.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:tripWireTrip")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("tripWireTripAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.afterEvents.weatherChange.subscribe(event => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:weatherChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("weatherChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-  });
-  world.beforeEvents.explosion.subscribe(event => {
+    export const dimensionTypeDisplayFormatting = {"minecraft:overworld": "the overworld", "overworld": "the overworld", "minecraft:nether": "the nether", "nether": "the nether", "minecraft:the_end": "the end", "the_end": "the end"}
+    export const dimensionTypeDisplayFormattingB = {"minecraft:overworld": "overworld", "overworld": "overworld", "minecraft:nether": "nether", "nether": "nether", "minecraft:the_end": "the end", "the_end": "the end"}
+    export function tryget<T>(callbackfn: ()=>T){try{return callbackfn() as T}catch{}}
+    export function tryrun(callbackfn: ()=>any){try{callbackfn()}catch{}}
+subscribedEvents.beforeEffectAdd = world.beforeEvents.effectAdd.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalBeforeEvents:effectAdd")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("effectAddBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+subscribedEvents.beforeEntityRemove = world.beforeEvents.entityRemove.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalBeforeEvents:entityRemove")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityRemoveBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+subscribedEvents.beforePlayerGameModeChange = world.beforeEvents.playerGameModeChange.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerGameModeChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerGameModeChangeBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.beforeEvents.weatherChange.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalBeforeEvents:weatherChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("weatherChangeBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});/*
+world.beforeEvents.itemDefinitionEvent.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});*///removed in 1.20.70.21
+world.beforeEvents.playerInteractWithEntity.subscribe(event => {
+if(!!event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerInteractWithEntityCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
+try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithEntityBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.beforeEvents.playerLeave.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerLeave")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerLeaveBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.blockExplode.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:blockExplode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("blockExplodeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithAnyOfTags(["getBlockExplodeNotifications", "getBlockExplodeNotificationsIn:"+event.dimension, "getBlockExplodeNotificationsForExplodedBlockType:"+event.explodedBlockPermutation.type.id]).forEach(p=>psend(p, `[§l§dServer§r][§eblockExplode§r] Block of type ${event.explodedBlockPermutation.type.id} in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was blown up${!!event.source?` by ${(event.source as Player)?.name??tryget(()=>event.source?.nameTag==""?undefined:event.source?.nameTag+"<"+event.source.id+">")??event.source?.typeId+"<"+event.source.id+">"}`:""}. `))}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.buttonPush.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:buttonPush")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("buttonPushAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithAnyOfTags(["getButtonPushNotifications", "getButtonPushNotificationsForBlockAt:"+vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:"+vTStr(event.block.location)+" "+event.block.dimension, "getButtonPushNotificationsForBlockAt:"+event.block.dimension+" "+vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:"+JSONStringify(event.block.location), "getButtonPushNotificationsForBlockAt:"+JSONStringify(Object.assign(event.block.location, {dimension: event.block.dimension})), "getButtonPushNotificationsForBlock:"+JSONStringify(Object.assign(event.block.location, {dimension: event.block.dimension})), "getButtonPushNotificationsForBlock:"+JSONStringify(event.block.location)]).filter(p=>!p.hasTag("excludeButtonPushNotificationsIn:"+event.dimension.id)).forEach(p=>psend(p, `[§l§dServer§r][§ebuttonPush§r] Button in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was pressed by ${(event.source as Player)?.name??tryget(()=>event.source?.nameTag==""?undefined:event.source?.nameTag+"<"+event.source.id+">")??event.source?.typeId+"<"+event.source.id+">"}. `))}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.chatSend.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:chatSend")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.dataDrivenEntityTrigger.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:dataDrivenEntityTrigger")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("dataDrivenEntityTriggerAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{eval(String(world.getDynamicProperty("evalAfterEvents:dataDrivenEntityTriggerEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("dataDrivenEntityTriggerEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.effectAdd.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:effectAdd")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("effectAddAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithAnyOfTags(["getEffectAddNotifications", "getEffectAddNotificationsForEntityType:"+event.entity.typeId, "getEntitySpawnNotificationsForEntityId:"+event.entity.id, "getEntitySpawnNotificationsWithEffectType:"+event.effect.typeId, "getEntitySpawnNotificationsWithEffectName:"+event.effect.displayName, "getEntitySpawnNotificationsWithAmplifier:"+event.effect.amplifier, "getEntitySpawnNotificationsWithEffectDuration:"+event.effect.duration]).forEach(p=>psend(p, `[§l§dServer§r][§eeffectAdd§r] The effect ${event.effect.displayName} with the amplifier ${event.effect.amplifier} and the duration ${event.effect.duration} was added to ${event.entity.typeId=="minecraft:player"?(event.entity as Player)?.name:`an entity of type ${event.entity.typeId} with the id ${event.entity.id} in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location}`}. `))}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.entityDie.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:entityDie")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityDieAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.entityHealthChanged.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHealthChanged")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHealthChangedAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.entityHitBlock.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHitBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHitBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.entityHitEntity.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHitEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHitEntityAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{if(["minecraft:ender_crystal"].includes(event.hitEntity?.typeId)){getPlayersWithTags("getHitEntityTriggerExplosionNotifications").filter(p=>!p.hasTag("excludeHitEntityTriggerExplosionNotificationsIn:"+(tryget(()=>event.hitEntity?.dimension)??"unknown"))&&((!!event.damagingEntity&&(event.damagingEntity?.isValid()??true))?!p.hasTag("excludeHitEntityTriggerExplosionNotificationsBy:"+(event.damagingEntity as Player)?.name??event.damagingEntity?.nameTag)&&!p.hasTag("excludeHitEntityTriggerExplosionNotificationsById:"+event.damagingEntity?.id)&&!p.hasTag("excludeHitEntityTriggerExplosionNotificationsByType:"+event.damagingEntity?.typeId):!p.hasTag("excludeHitEntityTriggerExplosionNotificationsWithNoSource"))&&!p.hasTag("excludeHitEntityTriggerExplosionNotificationsCauseType:"+event.hitEntity?.typeId)).forEach(p=>psend(p, `[§l§dServer§r][§eexplosiveEntityTriggeredByHit§r] ${!!event.damagingEntity?`${(event.damagingEntity as Player)?.name??event.damagingEntity?.nameTag??event.damagingEntity?.typeId} hit exploding entity of type "${event.hitEntity?.typeId}"`:`Exploding entity of type "${event.hitEntity?.typeId}" was hit`}${(!!tryget(()=>event.hitEntity?.dimension)&&(event.hitEntity?.isValid()??true))?` in ${dimensionTypeDisplayFormatting[tryget(()=>event.hitEntity?.dimension?.id)]??"an unknown dimension"} at ${(!!tryget(()=>event.hitEntity?.location)&&(event.hitEntity?.isValid()??true))?vTStr(event.hitEntity?.location):"an unknwon location"}`:(!!event.damagingEntity.dimension&&(event.damagingEntity?.isValid()??true))?`, the entity/player who hit the explosive entity is in ${dimensionTypeDisplayFormatting[tryget(()=>event.damagingEntity?.dimension?.id)]??"an unknown dimension"} at ${(!!tryget(()=>event.damagingEntity?.location)&&(event.damagingEntity?.isValid()??true))?vTStr(mcMath.Vector3Utils.floor(event.damagingEntity?.location)):"an unknwon location"}`:""}. `))}}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.entityHurt.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHurt")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHurtAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:"+event.hurtEntity.typeId, "getEntitySpawnNotificationsForId:"+event.hurtEntity.id, "getEntitySpawnNotificationsWithCause:"+event.damageSource.cause, "getEntitySpawnNotificationsWithDamage:"+event.damage, "getEntitySpawnNotificationsWithDamagingEntityOfType:"+event.damageSource.damagingEntity.typeId, "getEntitySpawnNotificationsWithDamagingEntityWithId:"+event.damageSource.damagingEntity.id, "getEntitySpawnNotificationsWithDamagingProjectileOfType:"+event.damageSource.damagingProjectile.typeId, "getEntitySpawnNotificationsWithDamagingProjectileWithId:"+event.damageSource.damagingProjectile.id]).forEach(p=>psend(p, `[§l§dServer§r][§eentityHurt§r] Entity of type ${event.hurtEntity.typeId} with the id ${event.hurtEntity.id} took ${event.damage} damage of type "${event.damageSource.cause}" in ${tryget(()=>dimensionTypeDisplayFormatting[event.hurtEntity.dimension.id])??"an unknown dimension"} at ${(event.hurtEntity?.isValid()??false)?vTStr(event.hurtEntity.location):"an unknown location"}${!!event.damageSource.damagingEntity?`, the entity was damaged by ${event.damageSource.damagingEntity.typeId=="minecraft:player"?(event.damageSource.damagingEntity as Player)?.name:`an entity of type ${event.damageSource.damagingEntity.typeId} with the ID ${event.damageSource.damagingEntity.id}${tryget(()=>event.damageSource.damagingEntity.nameTag!=""?" and the name tag \""+event.damageSource.damagingEntity.nameTag+"\"":"")}`}${tryget(()=>" in "+dimensionTypeDisplayFormatting[event.damageSource.damagingEntity.dimension.id]+" at "+vTStr(event.damageSource.damagingEntity.location))}`:""}${!!event.damageSource.damagingProjectile?`, the projectile that damaged the entity was ${`a projectile of type ${event.damageSource.damagingProjectile.typeId} with the ID ${event.damageSource.damagingProjectile.id}${tryget(()=>event.damageSource.damagingProjectile.nameTag!=""?" and the name tag \""+event.damageSource.damagingProjectile.nameTag+"\"":"")}`}${tryget(()=>" in "+dimensionTypeDisplayFormatting[event.damageSource.damagingProjectile.dimension.id]+" at "+vTStr(event.damageSource.damagingProjectile.location))}`:""}. `))}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.entityLoad.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:entityLoad")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityLoadAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithAnyOfTags(["getEntityLoadNotifications", "getEntityLoadNotificationsForType:"+event.entity.typeId, "getEntityLoadNotificationsForId:"+event.entity.id]).forEach(p=>psend(p, `[§l§dServer§r][§eentityLoad§r] Entity of type ${event.entity.typeId} with the ID ${event.entity.id}${event.entity.nameTag!=""?" and the name \""+event.entity.nameTag+"\"":""} was loaded in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${vTStr(event.entity.location)}. `))}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.entityRemove.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:entityRemove")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityRemoveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithAnyOfTags(["getEntityRemoveNotifications", "getEntityRemoveNotificationsForType:"+event.typeId, "getEntityRemoveNotificationsForId:"+event.removedEntityId]).forEach(p=>psend(p, `[§l§dServer§r][§eentityRemove§r] Entity of type ${event.typeId} with the id ${event.removedEntityId} was removed. `))}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.entitySpawn.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:entitySpawn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entitySpawnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:"+event.entity.typeId, "getEntitySpawnNotificationsForId:"+event.entity.id, "getEntitySpawnNotificationsWithCause:"+event.cause]).forEach(p=>psend(p, `[§l§dServer§r][§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location} with the cause "${event.cause}". `))}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.explosion.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:explosion")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("explosionAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithAnyOfTags(["getExplosionNotifications", "getExplosionNotificationsForSourceType:"+event.source?.typeId??"none"]).filter(p=>!p.hasTag("excludeExplosionNotificationsIn:"+event.dimension)&&(!!event.source?!p.hasTag("excludeExplosionNotificationsBy:"+(event.source as Player)?.name??tryget(()=>event.source?.nameTag)??"undefined")&&!p.hasTag("excludeExplosionNotificationsById:"+event.source?.id)&&!p.hasTag("excludeExplosionNotificationsType:"+event.source?.typeId):!p.hasTag("excludeExplosionNotificationsWithNoSource"))).forEach(p=>psend(p, `[§l§dServer§r][§eexplosion§r]${!!event.source?"["+((event.source as Player)?.name??tryget(()=>event.source?.nameTag)??(event.source?.typeId+"<"+event.source?.id+">"))+"]":""} ${!!event.source?"Triggered explosion":"Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length!=0?" around ":""}${event.getImpactedBlocks().length==0?"":vTStr((()=>{let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b=>{value=mcMath.Vector3Utils.add(value, b.location)}); return mcMath.Vector3Utils.scale(value, 1/event.getImpactedBlocks().length)})())}. `))}catch(e){console.error(e, e.stack)}
+//console.warn(JSONStringify(event.getImpactedBlocks(), true))
+});
+world.afterEvents.itemCompleteUse.subscribe(event => {
+    if(!!event?.itemStack?.getDynamicProperty("itemCompleteUseCode")){try{eval(String(event?.itemStack?.getDynamicProperty("itemCompleteUseCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemCompleteUseCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
+try{eval(String(world.getDynamicProperty("evalAfterEvents:itemCompleteUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemCompleteUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.gameRuleChange.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:gameRuleChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("gameRuleChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithTags("getGameRuleChangeNotifications").filter(p=>!p.hasTag("excludeGameRuleChangeNotificationsFor:"+event.rule)).forEach(p=>psend(p, `[§l§dServer§r][§egameRuleChange§r] "${event.rule}" was changed to ${event.value}. `))}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.playerGameModeChange.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:playerGameModeChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerGameModeChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithTags("getGameModeChangeNotifications").filter(p=>!p.hasTag("excludeGameModeChangeNotificationsFor:"+event.player.name)&&!p.hasTag("excludeGameModeChangeNotificationsFrom:"+event.fromGameMode)&&!p.hasTag("excludeGameModeChangeNotificationsTo:"+event.toGameMode)).forEach(p=>psend(p, `[§l§dServer§r][§eplayerGameModeChange§r][${event.player.name}] Changed from ${event.fromGameMode} to ${event.toGameMode}. `))}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.weatherChange.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:weatherChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("weatherChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithTags("getWeatherChangeNotifications").filter(p=>!p.hasTag("excludeWeatherChangeNotificationsTo:"+event.newWeather)&&!p.hasTag("excludeGameModeChangeNotificationsIn:"+event.dimension)&&!p.hasTag("excludeGameModeChangeNotificationsFrom:"+event.previousWeather)).forEach(p=>psend(p, `[§l§dServer§r][§eweatherChange§r] Weather in ${event.dimension} changed from ${event.previousWeather} to ${event.newWeather}. `))}catch(e){console.error(e, e.stack)}
+});/*
+world.afterEvents.itemDefinitionEvent.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});*/
+world.afterEvents.itemReleaseUse.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemReleaseUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.itemStartUse.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:itemStartUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemStartUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.itemStartUseOn.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:itemStartUseOn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemStartUseOnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.itemStopUse.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:itemStopUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemStopUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.itemStopUseOn.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:itemStopUseOn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemStopUseOnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.itemUse.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:itemUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.itemUseOn.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:itemUseOn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseOnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.leverAction.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:leverAction")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("leverActionAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithTags("getLeverActionNotifications").filter(p=>!p.hasTag("excludeLeverActionNotificationsTo:"+event.isPowered)&&!p.hasTag("excludeLeverActionNotificationsIn:"+event.dimension)&&!p.hasTag("excludeLeverActionNotificationsBy:"+event.player.name)&&!p.hasTag("excludeLeverActionNotificationsAt:"+Object.values(event.block.location).join(","))).forEach(p=>psend(p, `[§l§dServer§r][§eleverAction§r][${event.player.name}] Lever in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} turned ${event.isPowered?"ON":"OFF"}. `))}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.messageReceive.subscribe(event => {
+//console.warn(event.id, event.message, event.player?.name, event.player?.id)
+try{eval(String(world.getDynamicProperty("evalAfterEvents:messageReceive")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("messageReceiveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithTags("getMessageReceiveNotifications").filter(p=>!p.hasTag("excludeMessageReceiveNotificationsWithId:"+event.id)&&!p.hasTag("excludeMessageReceiveNotificationsWithMessage:"+event.message)&&!p.hasTag("excludeMessageReceiveNotificationsBy:"+event.player.name)).forEach(p=>psend(p, `[§l§dServer§r][§emessageReceive§r][${event.player.name}] Message recieved with ID ${event.id} and value "${event.message}". `))}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.pistonActivate.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:pistonActivate")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pistonActivateAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.playerBreakBlock.subscribe(event => {
+    if(!!event?.itemStackBeforeBreak?.getDynamicProperty("afterPlayerBreakBlockCode")){try{eval(String(event?.itemStackBeforeBreak?.getDynamicProperty("afterPlayerBreakBlockCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemAfterPlayerBreakBlockCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
+try{eval(String(world.getDynamicProperty("evalAfterEvents:playerBreakBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerBreakBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.playerDimensionChange.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:playerDimensionChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerDimensionChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{getPlayersWithAnyOfTags(["getPlayerDimensionChangeNotifications", "includePlayerDimensionChangeNotificationsBy:"+event.player.name, "includePlayerDimensionChangeNotificationsFromDimension:"+event.fromDimension, "includePlayerDimensionChangeNotificationsToDimension:"+event.toDimension, "includeBeforeChatSendNotificationsById:"+event.player.name]).filter(p=>!p.hasTag("excludeBeforeChatSendNotificationsById:"+event.player.id)&&!p.hasTag("excludeBeforeChatSendNotificationsBy:"+event.player.name)).forEach(p=>psend(p, `[§l§dServer§r][§eplayerDimensionChange§r][${event.player.name}] Entered ${dimensionTypeDisplayFormatting[event.fromDimension.id]} at ${vTStr(event.fromLocation)} from ${dimensionTypeDisplayFormatting[event.toDimension.id]} at ${vTStr(event.toLocation)}. `))}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.playerInteractWithBlock.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:playerInteractWithBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{if((["minecraft:respawn_anchor", "minecraft:tnt"].includes(event.block.typeId)&&event.block.dimension.id=="minecraft:overworld")||(["minecraft:bed", "minecraft:tnt"].includes(event.block.typeId)&&event.block.dimension.id=="minecraft:nether")||(["minecraft:respawn_anchor", "minecraft:tnt", "minecraft:bed"].includes(event.block.typeId)&&event.block.dimension.id=="minecraft:overworld")){getPlayersWithTags("getBlockInteractTriggerExplosionNotifications").filter(p=>!p.hasTag("excludeBlockInteractTriggerExplosionNotificationsIn:"+event.block.dimension)&&(!!event.player?!p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBy:"+event.player?.name)&&!p.hasTag("excludeBlockInteractTriggerExplosionNotificationsById:"+event.player.id):!p.hasTag("excludeBlockInteractTriggerExplosionNotificationsWithNoSource"))&&!p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBlockType:"+event.block.typeId)).forEach(p=>psend(p, `[§l§dServer§r][§eexplosiveBlockInteraction§r] ${!!event.player?`${event.player.name??event.player.nameTag} interacted with explosive block of type "${event.block.typeId}"`:`Explosive block of type "${event.block.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.block.dimension.id]} at ${vTStr(event.block.location)}${!!event.itemStack?` using ${event.itemStack.typeId}`:""}. `))}}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.playerInteractWithEntity.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:playerInteractWithEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithEntityAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+try{if(["minecraft:creeper"].includes(event.target.typeId)&&!!event.itemStack){getPlayersWithTags("getEntityInteractTriggerExplosionNotifications").filter(p=>!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsIn:"+event.target.dimension)&&(!!event.player?!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsBy:"+event.player?.name)&&!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsById:"+event.player.id):!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsWithNoSource"))&&!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsEntityType:"+event.target.typeId)).forEach(p=>psend(p, `[§l§dServer§r][§eexplosiveEntityInteraction§r] ${!!event.player?`${event.player.name??event.player.nameTag} interacted with explosive entity of type "${event.target.typeId}"`:`Explosive entity of type "${event.target.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.target.dimension.id]} at ${vTStr(event.target.location)}${!!event.itemStack?` using ${event.itemStack.typeId}`:""}. `))}}catch(e){console.error(e, e.stack)}
+});
+world.afterEvents.playerJoin.subscribe(event => {
+if(!!(ban?.getValidBans()?.idBans?.find(_=>_?.playerId==event?.playerId)??ban.getValidBans().nameBans.find(_=>_.playerName==event.playerName))){try{let pName = event?.playerName; let pId = event?.playerId; let b = (ban?.getValidBans()?.idBans?.sort((a: ban, b: ban)=>1-(2*Number(a?.banDate>b?.banDate)))?.find(_=>_?.playerId==event?.playerId)??ban.getValidBans().nameBans?.sort((a: ban, b: ban)=>1-(2*Number(a?.banDate>b?.banDate))).find(_=>_.playerName==event.playerName)); let reason = b?.reason; try{reason = String(eval(b?.reason)?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))?.replaceAll("{timeRemainingMinutes}", String(b?.timeRemaining.minutes))?.replaceAll("{timeRemainingSeconds}", String(b?.timeRemaining.seconds))?.replaceAll("{timeRemainingMilliseconds}", String(b?.timeRemaining.milliseconds))?.replaceAll("{bannedBy}", String(b?.bannedByName))?.replaceAll("{bannedByName}", String(b?.bannedByName))?.replaceAll("{bannedById}", String(b?.bannedById))?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toLocaleString()+" GMT"))?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toLocaleString()+" GMT"))?.replaceAll("{type}", String(b?.type))?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))??b?.reason)??b?.reason; }catch(e){reason = b?.reason?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))?.replaceAll("{timeRemainingMinutes}", String(b?.timeRemaining.minutes))?.replaceAll("{timeRemainingSeconds}", String(b?.timeRemaining.seconds))?.replaceAll("{timeRemainingMilliseconds}", String(b?.timeRemaining.milliseconds))?.replaceAll("{bannedBy}", String(b?.bannedByName))?.replaceAll("{bannedById}", String(b?.bannedById))?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toLocaleString()+" GMT"))?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toLocaleString()+" GMT"))?.replaceAll("{type}", String(b?.type))?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))?.escapeCharactersB(true)?.v??b?.reason; }; world.getDimension("overworld").runCommand(`/kick ${pName} ${reason}`); }catch(e){console.error(e, e.stack)}}
+try{eval(String(world.getDynamicProperty("evalAfterEvents:playerJoin")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerJoinAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.playerLeave.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:playerLeave")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerLeaveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.playerPlaceBlock.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:playerPlaceBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerPlaceBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.playerSpawn.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:playerSpawn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerSpawnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.pressurePlatePop.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:pressurePlatePop")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pressurePlatePopAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.pressurePlatePush.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:pressurePlatePush")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pressurePlatePushAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.projectileHitBlock.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:projectileHitBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("projectileHitBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.projectileHitEntity.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:projectileHitEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("projectileHitEntityAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.targetBlockHit.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:targetBlockHit")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("targetBlockHitAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.tripWireTrip.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:tripWireTrip")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("tripWireTripAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.afterEvents.weatherChange.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:weatherChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("weatherChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});
+world.beforeEvents.explosion.subscribe(event => {
+    if(disconnectingPlayers.includes(event.source?.id)){event.cancel=true; return}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:explosion")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("explosionBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}/*
     eval(String(world.getDynamicProperty("scriptEvalBeforeEventsExplosion")))*/
-      world.getAllPlayers().filter((player) => ( player.hasTag("getExplosionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("Location: [ " + event.source.location.x+", "+event.source.location.y+", "+event.source.location.z + " ], Dimension: " + event.dimension.id) });
-      if (!!!event.source?.location?false:(((testIsWithinRanges(noExplosionAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(noExplosionAreas.negative, event.source.location) ?? false) == false))||(((testIsWithinRanges(protectedAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative, event.source.location) ?? false) == false))) {
+    getPlayersWithAnyOfTags(["getBeforeExplosionNotifications", "getExplosionNotificationsForSourceType:"+event.source?.typeId??"none", "getExplosionNotificationsForSourceId:"+event.source?.id??"none"]).filter(p=>!p.hasTag("excludeBeforeExplosionNotificationsIn:"+event.dimension)&&(!!event.source?!p.hasTag("excludeBeforeExplosionNotificationsType:"+event.source?.typeId):true)&&((!!event.source&&(event.source?.isValid()??true))?!p.hasTag("excludeBeforeExplosionNotificationsBy:"+(event.source as Player)?.name??tryget(()=>event.source?.nameTag))&&!p.hasTag("excludeBeforeExplosionNotificationsById:"+event.source?.id):!p.hasTag("excludeBeforeExplosionNotificationsWithNoSource"))).forEach(p=>psend(p, `[§l§dServer§r][§ebeforeExplosion§r]${!!event.source?"["+((event.source as Player)?.name??tryget(()=>event.source?.nameTag==""?undefined:event.source?.nameTag)??(event.source?.typeId+"<"+event.source?.id+">"))+"]":""} ${!!event.source?"Triggered explosion":"Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length==0?"":" around "+vTStr((()=>{let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b=>{value=mcMath.Vector3Utils.add(value, b.location)}); return mcMath.Vector3Utils.scale(value, 1/event.getImpactedBlocks().length)})())}. `))
+    //world.getAllPlayers().filter((player) => ( player.hasTag("getExplosionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("Location: [ " + event.source.location.x+", "+event.source.location.y+", "+event.source.location.z + " ], Dimension: " + event.dimension.id) });
+    if (!!!event.source?.location?false:(((testIsWithinRanges(noExplosionAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(noExplosionAreas.negative, event.source.location) ?? false) == false))||(((testIsWithinRanges(protectedAreas.positive, event.source.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative, event.source.location) ?? false) == false))) {
         event.cancel = true/*
-          console.warn(event.isExpanding);
-          console.warn(event.block.x, event.block.y, event.block.z);
-          console.warn(event.piston.getAttachedBlocks());
-          console.warn(event.dimension);*/
-      }else{
-      event.setImpactedBlocks(event.getImpactedBlocks().filter((blockselected)=>((((testIsWithinRanges(noExplosionAreas.positive, blockselected.location) ?? false) == true) && ((testIsWithinRanges(noExplosionAreas.negative, blockselected.location) ?? false) == false))||(((testIsWithinRanges(protectedAreas.positive, blockselected.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative, blockselected.location) ?? false) == false)))))}
-  });
+        console.warn(event.isExpanding);
+        console.warn(event.block.x, event.block.y, event.block.z);
+        console.warn(event.piston.getAttachedBlocks());
+        console.warn(event.dimension);*/
+    }else{
+    //console.warn("before set: "+JSONStringify(event.getImpactedBlocks(), true))
+        event.setImpactedBlocks(event.getImpactedBlocks().filter((blockselected)=>!((((testIsWithinRanges(noExplosionAreas.positive, blockselected.location) ?? false) == true) && ((testIsWithinRanges(noExplosionAreas.negative, blockselected.location) ?? false) == false))||(((testIsWithinRanges(protectedAreas.positive, blockselected.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative, blockselected.location) ?? false) == false)))))}
+    //console.warn("after set: "+JSONStringify(event.getImpactedBlocks(), true))
+});
 
-  world.afterEvents.itemReleaseUse.subscribe(event => {
+world.afterEvents.itemReleaseUse.subscribe(event => {
     if(!!event?.itemStack?.getDynamicProperty("itemReleaseUseCode")){try{eval(String(event?.itemStack?.getDynamicProperty("itemReleaseUseCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemReleaseUseCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemReleaseUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-      if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
+    if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
         event.source.setDynamicProperty("interactable_block", 0)
-      }; 
-  }); 
+    }; 
+}); 
 
 world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     if(!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerInteractWithBlockCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
@@ -2849,6 +3399,7 @@ world.beforeEvents.itemUse.subscribe(event => {
     ;
 });
 world.beforeEvents.chatSend.subscribe((eventData) => {
+    try{getPlayersWithAnyOfTags(["getBeforeChatSendNotifications", "includeBeforeChatSendNotificationsBy:"+eventData.sender.name, "includeBeforeChatSendNotificationsById:"+eventData.sender.name]).filter(p=>!p.hasTag("excludeBeforeChatSendNotificationsById:"+eventData.sender.id)&&!p.hasTag("excludeBeforeChatSendNotificationsBy:"+eventData.sender.name)).forEach(p=>psend(p, `[§l§dServer§r][§ebeforeChatSend§r][${eventData.sender.name}] Chat message sent${!!eventData.targets?" with targets "+eventData.targets.map(p=>p.name).join():""} with the message ${JSONStringify(eventData.message)}. `))}catch(e){console.error(e, e.stack)}
     chatMessage(eventData)
 });
 try{system.runInterval( () => {try{
@@ -6823,7 +7374,7 @@ console.error(e, e.stack);
   
     }
     if (id == "andexdbHelp:spawnSimulatedPlayer") {
-        if((initiator ?? sourceEntity) == undefined){console.warn("andexdb:spawnSimulatedPlayer /scriptevent command format: /scriptevent andexdb:spawnSimulatedPlayer [playerName: string]|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]")}else{((initiator ?? sourceEntity) as Player).sendMessage("andexdb:spawnWithNoAI /scriptevent command format: /scriptevent andexdb:spawnWithNoAI <entityType: string>|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]")}; 
+        if((initiator ?? sourceEntity) == undefined){console.warn("andexdb:spawnSimulatedPlayer /scriptevent command format: /scriptevent andexdb:spawnSimulatedPlayer [playerName: string]|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]")}else{((initiator ?? sourceEntity) as Player).sendMessage("andexdb:spawnSimulatedPlayer /scriptevent command format: /scriptevent andexdb:spawnSimulatedPlayer [playerName: string]|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]")}; 
     }
     if (id == "andexdb:scriptEvalWithGameTest") {
         let parameters = message.split("|"); /*

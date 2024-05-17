@@ -1,10 +1,10 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject, format_version, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, } from "./coordinates";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType, EnchantmentTypes } from "@minecraft/server";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject /*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun } from "../Main";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
-import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands } from "./ui.js";
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor } from "./ui.js";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
@@ -21,6 +21,7 @@ import * as playersave from "./player_save";
 import * as spawnprot from "./spawn_protection";
 import mcMath from "@minecraft/math.js";
 export const cmdsmetaimport = import.meta;
+//globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -36,7 +37,15 @@ uis;
 playersave;
 spawnprot;
 mcMath;
-export const commands_format_version = "8.1.0-rc.99";
+export const disconnectingPlayers = [];
+export const currentlyRequestedChatInput = {};
+export let idGeneratorIndex = 0;
+export function idGenerator() {
+    let id = "id" + idGeneratorIndex + "Time" + Date.now();
+    idGeneratorIndex = (idGeneratorIndex + 1) % 32767;
+    return id;
+}
+export const commands_format_version = "10.1.0-rc.99";
 // @ts-expect-error
 [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]]((!![] + [])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + ([][[]] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+!+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+!+[]]] + (![] + [+[]] + ([] + [])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]])[!+[] + !+[] + [+[]]] + (![] + [])[!+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][(!![] + [])[!+[] + !+[] + !+[]] + ([][[]] + [])[+!+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([![]] + [][[]])[+!+[] + [+[]]] + (!![] + [])[!+[] + !+[] + !+[]] + (![] + [])[!+[] + !+[] + !+[]]]() + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (![] + [])[!+[] + !+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]]((!![] + [])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + ([][[]] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+!+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+!+[]]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]]((!![] + [])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + ([][[]] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+!+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+!+[]]] + (!![] + [])[!+[] + !+[] + !+[]] + (![] + [])[!+[] + !+[] + !+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (![] + [])[+!+[]] + (+(!+[] + !+[] + [+!+[]] + [+!+[]]))[(!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([] + [])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]][([][[]] + [])[+!+[]] + (![] + [])[+!+[]] + ((+[])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]] + [])[+!+[] + [+!+[]]] + (!![] + [])[!+[] + !+[] + !+[]]]](!+[] + !+[] + !+[] + [+!+[]])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]])()([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[(![] + [])[!+[] + !+[] + !+[]] + (![] + [])[!+[] + !+[]] + ([![]] + [][[]])[+!+[] + [+[]]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[!+[] + !+[] + !+[]]]((+((+(+!+[] + [+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + [!+[] + !+[]] + [+[]]) + [])[+!+[]] + [+[] + [+[]] + [+[]] + [+[]] + [+[]] + [+[]] + [+!+[]]]) + [])[!+[] + !+[]] + [+!+[]]) + (![] + [])[+!+[]] + (!![] + [])[+[]] + (!![] + [])[!+[] + !+[] + !+[]])()())[!+[] + !+[] + !+[] + [+[]]] + (+(+!+[] + [+[]] + [+!+[]]))[(!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([] + [])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]][([][[]] + [])[+!+[]] + (![] + [])[+!+[]] + ((+[])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]] + [])[+!+[] + [+!+[]]] + (!![] + [])[!+[] + !+[] + !+[]]]](!+[] + !+[] + [+!+[]])[+!+[]] + ([![]] + [][[]])[+!+[] + [+[]]] + (![] + [])[!+[] + !+[] + !+[]])()[(!![] + [])[+[]] + (![] + [])[+[]] + (![] + [])[!+[] + !+[] + !+[]] + (![] + [])[+!+[]]] = [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]]((![] + [])[+[]], (!![] + [])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + ([][[]] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+!+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+!+[]]] + '[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+([]+{})[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[+!+[]+[!+[]+!+[]+!+[]]]+(![]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]]+![]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]])()[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]()+[])[!+[]+!+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+","+"\\""+(+[![]]+[][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]())[+!+[]+[+!+[]]]+([][[]]+[])[+!+[]]+([][[]]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(+(+!+[]+[+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[!+[]+!+[]+!+[]+!+[]])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+"\\""+([+[]]+![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[!+[]+!+[]+[+[]]])([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(![]+[])[+[]])(f))');
 // @ts-expect-error
@@ -601,13 +610,19 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "eval", escregexp: { v: "^eval$" }, formats: [{ format: "eval <script: JavaScript>" }], command_version: "1.1.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:eval" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "top", escregexp: { v: "^top$" }, formats: [{ format: "top" }], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:top" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "up", escregexp: { v: "^up$" }, formats: [{ format: "up [placeGlass: boolean]" }], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:up" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "thru", escregexp: { v: "^thru$" }, formats: [{ format: "thru" }], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:thru" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "vthru", escregexp: { v: "^vthru$" }, formats: [{ format: "vthru" }], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:vthru" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "phase", escregexp: { v: "^phase$" }, formats: [{ format: "phase" }], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:phase" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "printlayers", escregexp: { v: "^printlayers$" }, formats: [{ format: "printlayers" }], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:printlayers" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "managescriptautoeval", escregexp: { v: "^managescriptautoeval$" }, formats: [{ format: "managescriptautoeval" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:managescriptautoeval" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "mainmenu", escregexp: { v: "^mainmenu$" }, aliases: [{ commandName: "menu", escregexp: { v: "^menu$" } }], formats: [{ format: "mainmenu" }], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:mainmenu" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "mainmenu", escregexp: { v: "^mainmenu$" }, aliases: [{ commandName: "menu", escregexp: { v: "^menu$" } }, { commandName: "mm", escregexp: { v: "^mm$" } }], formats: [{ format: "mainmenu" }], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:mainmenu" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "terminal", escregexp: { v: "^terminal$" }, aliases: [{ commandName: "cmdrunner", escregexp: { v: "^cmdrunner$" } }], formats: [{ format: "terminal" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:terminal" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "managecommands", escregexp: { v: "^managecommands$" }, aliases: [{ commandName: "mngcmds", escregexp: { v: "^mngcmds$" } }], formats: [{ format: "managecommands" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:managecommands" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "manageplayers", escregexp: { v: "^manageplayers$" }, aliases: [{ commandName: "mngplyrs", escregexp: { v: "^mngplyrs$" } }], formats: [{ format: "manageplayers" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:manageplayers" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "settings", escregexp: { v: "^settings$" }, formats: [{ format: "settings" }], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:settings" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "messageui", escregexp: { v: "^messageui$" }, aliases: [{ commandName: "msgui", escregexp: { v: "^msgui$" } }], formats: [{ format: "messageui" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:messageui" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "chatsendui", escregexp: { v: "^chatsendui$" }, aliases: [{ commandName: "chtsndui", escregexp: { v: "^chtsndui$" } }, { commandName: "chtsendui", escregexp: { v: "^chtsendui$" } }, { commandName: "sendui", escregexp: { v: "^sendui$" } }], formats: [{ format: "chatsendui" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:chatsendui" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "chatcommandui", escregexp: { v: "^chatcommandui$" }, aliases: [{ commandName: "chtcmdui", escregexp: { v: "^chtcmdui$" } }, { commandName: "cmdui", escregexp: { v: "^cmdui$" } }, { commandName: "commandui", escregexp: { v: "^commandui$" } }], formats: [{ format: "chatcommandui" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:chatcommandui" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "datapickblock", escregexp: { v: "^datapickblock$" }, aliases: [{ commandName: "dpb", escregexp: { v: "^dpb$" } }], formats: [{ format: "datapickblock" }], command_version: "1.0.0", category: ["world"], description: "", commandSettingsId: "built-inCommandSettings:datapickblock" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "createexplosion", escregexp: { v: "^createexplosion$" }, formats: [{ format: "createexplosion <location: x y z> <dimension: string> [radius: float] [allowUnderwater: bool] [breaksBlocks: bool] [causesFire: bool] [source: targetSelector]" }], command_version: "1.0.0-rc.57", description: "Creates an explosion. ", category: ["world"], commandSettingsId: "built-inCommandSettings:createexplosion" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "fill", escregexp: { v: "^fill$" }, formats: [{ format: "fill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]" }, { format: "fill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]" }], command_version: "1.1.0-rc.9", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain. ", category: ["world"], commandSettingsId: "built-inCommandSettings:fill" },
@@ -750,8 +765,8 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemsshulker", escregexp: { v: "^compressitemsshulker$" }, formats: [{ format: "compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]" }], command_version: "1.0.0-rc.5", description: "Compresses your items into shulker box(es) and gives you those shulker box(es) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemsshulker" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainer", escregexp: { v: "^compressitemscontainer$" }, formats: [{ format: "compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]" }], command_version: "1.0.0-rc.5", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemscontainer" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainerb", escregexp: { v: "^compressitemscontainerb$" }, formats: [{ format: "compressitemscontainerb [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]" }], command_version: "0.0.1-alpha.76", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemscontainerb" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchest", escregexp: { v: "^scanenderchest$" }, aliases: [{ commandName: "ecinvsee", escregexp: { v: "^ecinvsee$" } }, { commandName: "sncendchest", escregexp: { v: "^scnendchest$" } }], formats: [{ format: "scanenderchest [target: string|~]" }], command_version: "0.2.0-alpha.17", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchest" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchestc", escregexp: { v: "^scanenderchestc$" }, aliases: [{ commandName: "ecinvseec", escregexp: { v: "^ecinvseec$" } }, { commandName: "sncendchestc", escregexp: { v: "^scnendchestc$" } }], formats: [{ format: "scanenderchestc [target: string|~]" }], command_version: "0.3.0-alpha.36", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchestc" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchest", escregexp: { v: "^scanenderchest$" }, aliases: [{ commandName: "ecinvsee", escregexp: { v: "^ecinvsee$" } }, { commandName: "scnendchest", escregexp: { v: "^scnendchest$" } }], formats: [{ format: "scanenderchest [targets: targetSelector|~]" }], command_version: "0.2.0-alpha.17", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchest" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchestc", escregexp: { v: "^scanenderchestc$" }, aliases: [{ commandName: "ecinvseec", escregexp: { v: "^ecinvseec$" } }, { commandName: "scnendchestc", escregexp: { v: "^scnendchestc$" } }], formats: [{ format: "scanenderchestc [target: string|~]" }], command_version: "0.3.0-alpha.36", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchestc" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "clearenderchestslot", escregexp: { v: "^clearenderchestslot$" }, formats: [{ format: "clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.2.0-alpha.37", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:clearenderchestslot" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "clearenderchest", escregexp: { v: "^clearenderchest$" }, formats: [{ format: "clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.0.0", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:clearenderchest" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "filljunk", escregexp: { v: "^filljunk$" }, aliases: [{ commandName: "invfilljunk", escregexp: { v: "^invfilljunk$" } }], formats: [{ format: "filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.9.0-alpha.21", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:filljunk" },
@@ -760,9 +775,25 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillillegal", escregexp: { v: "^fillillegal$" }, aliases: [{ commandName: "invfillillegal", escregexp: { v: "^invfillillegal$" } }], formats: [{ format: "fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.9.0-alpha.21", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillillegal" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillinventory", escregexp: { v: "^fillinventory$" }, aliases: [{ commandName: "invfill", escregexp: { v: "^invfill$" } }], formats: [{ format: "fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]" }], command_version: "1.0.0-beta.17", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillinventory" },
     { type: "built-in", requiredTags: ["canUseChatCommands", "canUseDangerousCommands"], formatting_code: "§r§4", commandName: "chunkban", escregexp: { v: "^chunkban$" }, formats: [{ format: "chunkban [slot: int|~] [loopCount: int] [target: string|~]" }], command_version: "0.0.1-beta.72", description: "", category: ["dangerous"], commandSettingsId: "built-inCommandSettings:chunkban" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "rank", escregexp: { v: "^rank$" }, formats: [{ format: "rank <players: targetSelector> <mode: add|remove> <tag: string>" }, { format: "rank <players: targetSelector> clear" }], command_version: "1.0.0-rc.1", description: "Adds, removes, or clears ranks from a player. ", category: ["players"], commandSettingsId: "built-inCommandSettings:rank" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "extinguish", escregexp: { v: "^extinguish$" }, aliases: [{ commandName: "ext", escregexp: { v: "^ext$" } }], formats: [{ format: "extinguish [radius: number]" }], command_version: "2.2.0-beta.10", description: "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:extinguish" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "remexp", escregexp: { v: "^remexp$" }, formats: [{ format: "remexp [radius: number]" }], command_version: "2.2.0-beta.5", description: "Removes explosives in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:remexp" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "drain", escregexp: { v: "^drain$" }, formats: [{ format: "drain [radius: number]" }], command_version: "2.2.0-beta.5", description: "Drains liquids in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:drain" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "summon", escregexp: { v: "^summon$" }, formats: [{ format: "summon" }], command_version: "1.0.0", description: "", category: ["entities"], commandSettingsId: "built-inCommandSettings:summon" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "spawnitem", escregexp: { v: "^spawnitem$" }, formats: [{ format: "spawnitem" }], command_version: "1.0.0", description: "", category: ["entities", "items"], commandSettingsId: "built-inCommandSettings:spawnitem" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "heal", escregexp: { v: "^heal$" }, formats: [{ format: "heal" }], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:heal" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "health", escregexp: { v: "^health$" }, formats: [{ format: "health" }], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:health" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "maxhealth", escregexp: { v: "^maxhealth$" }, formats: [{ format: "maxhealth" }], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:maxhealth" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "minhealth", escregexp: { v: "^minhealth$" }, formats: [{ format: "minhealth" }], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:minhealth" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "defaulthealth", escregexp: { v: "^defaulthealth$" }, aliases: [{ commandName: "dfthlth", escregexp: { v: "^dfthlth$" } }, { commandName: "dflthlth", escregexp: { v: "^dflthlth$" } }, { commandName: "dfthealth", escregexp: { v: "^dfthealth$" } }, { commandName: "dflthealth", escregexp: { v: "^dfthealth$" } }], formats: [{ format: "defaulthealth" }], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:defaulthealth" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "liststructures", escregexp: { v: "^liststructures$" }, formats: [{ format: "liststructures" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "blocks"], commandSettingsId: "built-inCommandSettings:liststructures" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: { v: "^home$" }, formats: [{ format: "home" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gohome", escregexp: { v: "^gohome$" }, formats: [{ format: "gohome" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "rtp", escregexp: { v: "^rtp$" }, formats: [{ format: "rtp <player: targetSelector|playerName>" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "tpaccept", escregexp: { v: "^tpaccept$" }, formats: [{ format: "tpaccept [player: targetSelector|playerName]" }, { format: "tpdeny all" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpaccept" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "tpdeny", escregexp: { v: "^tpdeny$" }, formats: [{ format: "tpdeny [player: targetSelector|playerName]" }, { format: "tpdeny all" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpdeny" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "kick", escregexp: { v: "^kick$" }, formats: [{ format: "kick <players: targetSelector> [reason: string]" }], command_version: "1.0.0", description: "", category: ["system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:kick" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "disconnect", escregexp: { v: "^disconnect$" }, aliases: [{ commandName: "boot", escregexp: { v: "^boot$" } }], formats: [{ format: "disconnect <players: targetSelector>" }], command_version: "1.0.0", description: "", category: ["Entity Scale Add-On", "system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:disconnect" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: { v: "^morph$" }, formats: [{ format: "" }], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:morph" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "tint", escregexp: { v: "^tint$" }, formats: [{ format: "tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: targetSelector]" }], command_version: "1.0.4", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:tint" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "scale", escregexp: { v: "^scale$" }, formats: [{ format: "" }], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:scale" },
@@ -997,103 +1028,452 @@ export class commandSettings {
 }
 export class executeCommandPlayer {
     constructor(player) { this.player = player; this.modifiedlocation = player.location; this.modifieddimension = player.dimension; this.rotation = player.getRotation(); }
-    get dimension() { return this.modifieddimension ?? this.player.dimension; }
-    get location() { return this.modifiedlocation ?? this.player.location; }
-    get camera() { return this.player.camera; }
-    get isEmoting() { return this.player.isEmoting; }
-    get isFlying() { return this.player.isFlying; }
-    get isGliding() { return this.player.isGliding; }
-    get isJumping() { return this.player.isJumping; }
-    get isClimbing() { return this.player.isClimbing; }
-    get isFalling() { return this.player.isFalling; }
-    get isInWater() { return this.player.isInWater; }
-    get isOnGround() { return this.player.isOnGround; }
-    get isSleeping() { return this.player.isSleeping; }
-    get isSprinting() { return this.player.isSprinting; }
-    get isSwimming() { return this.player.isSwimming; }
-    get fallDistance() { return this.player.fallDistance; }
-    get scoreboardIdentity() { return this.player.scoreboardIdentity; }
-    get lifetimeState() { return this.player.lifetimeState; }
-    get level() { return this.player.level; }
-    get name() { return this.player.name; }
-    get onScreenDisplay() { return this.player.onScreenDisplay; }
-    get selectedSlot() { return this.player.selectedSlot; }
+    get dimension() { return this.modifieddimension ?? this.player?.dimension; }
+    get location() { return this.modifiedlocation ?? this.player?.location; }
+    get camera() { return this.player?.camera; }
+    get isEmoting() { return this.player?.isEmoting; }
+    get isFlying() { return this.player?.isFlying; }
+    get isGliding() { return this.player?.isGliding; }
+    get isJumping() { return this.player?.isJumping; }
+    get isClimbing() { return this.player?.isClimbing; }
+    get isFalling() { return this.player?.isFalling; }
+    get isInWater() { return this.player?.isInWater; }
+    get isOnGround() { return this.player?.isOnGround; }
+    get isSleeping() { return this.player?.isSleeping; }
+    get isSprinting() { return this.player?.isSprinting; }
+    get isSwimming() { return this.player?.isSwimming; }
+    get fallDistance() { return this.player?.fallDistance; }
+    get scoreboardIdentity() { return this.player?.scoreboardIdentity; }
+    get lifetimeState() { return this.player?.lifetimeState; }
+    get level() { return this.player?.level; }
+    get name() { return this.player?.name; }
+    get onScreenDisplay() { return this.player?.onScreenDisplay; }
+    get selectedSlot() { return this.player?.selectedSlot; }
     set selectedSlot(slotNumber) { this.player.selectedSlot = slotNumber; }
-    get totalXpNeededForNextLevel() { return this.player.totalXpNeededForNextLevel; }
-    get xpEarnedAtCurrentLevel() { return this.player.xpEarnedAtCurrentLevel; }
-    get isSneaking() { return this.player.isSneaking; }
+    get totalXpNeededForNextLevel() { return this.player?.totalXpNeededForNextLevel; }
+    get xpEarnedAtCurrentLevel() { return this.player?.xpEarnedAtCurrentLevel; }
+    get isSneaking() { return this.player?.isSneaking; }
     set isSneaking(isSneaking) { this.player.isSneaking = isSneaking; }
-    get id() { return this.player.id; }
-    get typeId() { return this.player.typeId; }
-    get nameTag() { return this.player.nameTag; }
+    get id() { return this.player?.id; }
+    get typeId() { return this.player?.typeId; }
+    get nameTag() { return this.player?.nameTag; }
     set nameTag(nameTag) { this.player.nameTag = nameTag; }
-    addEffect(effectType, duration, options) { return this.player.addEffect(effectType, duration, options); }
-    addExperience(amount) { return this.player.addExperience(amount); }
-    getRotation() { return this.rotation ?? this.player.getRotation(); }
-    getViewDirection() { return !!this.rotation ? anglesToDirectionVectorDeg(this.rotation.x, this.rotation.y) : this.player.getViewDirection(); }
-    addLevels(amount) { return this.player.addLevels(amount); }
-    eatItem(itemStack) { return this.player.eatItem(itemStack); }
-    getGameMode() { return this.player.getGameMode(); }
-    getItemCooldown(itemCategory) { return this.player.getItemCooldown(itemCategory); }
-    getSpawnPoint() { return this.player.getSpawnPoint(); }
-    getTotalXp() { return this.player.getTotalXp(); }
-    isOp() { return this.player.isOp(); }
-    playMusic(trackId, musicOptions) { return this.player.playMusic(trackId, musicOptions); }
-    playSound(soundId, soundOptions) { return this.player.playSound(soundId, soundOptions); }
-    postClientMessage(id, value) { return this.player.postClientMessage(id, value); }
-    queueMusic(trackId, musicOptions) { return this.player.queueMusic(trackId, musicOptions); }
-    resetLevel() { return this.player.resetLevel(); }
-    sendMessage(message) { return this.player.sendMessage(message); }
-    setGameMode(gameMode) { return this.player.setGameMode(gameMode); }
-    setOp(isOp) { return this.player.setOp(isOp); }
-    setSpawnPoint(spawnPoint) { return this.player.setSpawnPoint(spawnPoint); }
-    spawnParticle(effectName, location, molangVariables) { return this.player.spawnParticle(effectName, location, molangVariables); }
-    startItemCooldown(itemCategory, tickDuration) { return this.player.startItemCooldown(itemCategory, tickDuration); }
-    stopMusic() { return this.player.stopMusic(); }
-    addTag(tag) { return this.player.addTag(tag); }
-    applyDamage(amount, options) { return this.player.applyDamage(amount, options); }
-    applyImpulse(vector) { return this.player.applyImpulse(vector); }
-    applyKnockback(directionX, directionZ, horizontalStrength, verticalStrength) { return this.player.applyKnockback(directionX, directionZ, horizontalStrength, verticalStrength); }
-    clearDynamicProperties() { return this.player.clearDynamicProperties(); }
-    clearVelocity() { return this.player.clearVelocity(); }
-    extinguishFire(useEffects) { return this.player.extinguishFire(useEffects); }
-    getBlockFromViewDirection(options) { return this.player.getBlockFromViewDirection(options); }
-    getComponent(componentId) { return this.player.getComponent(componentId); }
-    getComponents() { return this.player.getComponents(); }
-    getDynamicProperty(identifier) { return this.player.getDynamicProperty(identifier); }
-    getDynamicPropertyIds() { return this.player.getDynamicPropertyIds(); }
-    getDynamicPropertyTotalByteCount() { return this.player.getDynamicPropertyTotalByteCount(); }
-    getEffect(effectType) { return this.player.getEffect(effectType); }
-    getEffects() { return this.player.getEffects(); }
-    getEntitiesFromViewDirection(options) { return this.player.getEntitiesFromViewDirection(options); }
-    getHeadLocation() { return this.player.getHeadLocation(); }
-    getProperty(identifier) { return this.player.getProperty(identifier); }
-    getTags() { return this.player.getTags(); }
-    getVelocity() { return this.player.getVelocity(); }
-    hasComponent(componentId) { return this.player.hasComponent(componentId); }
-    hasTag(tag) { return this.player.hasTag(tag); }
-    isValid() { return this.player.isValid(); }
-    kill() { return this.player.kill(); }
-    matches(options) { return this.player.matches(options); }
-    playAnimation(animationName, options) { return this.player.playAnimation(animationName, options); }
-    remove() { return this.player.remove(); }
-    removeEffect(effectType) { return this.player.removeEffect(effectType); }
-    removeTag(tag) { return this.player.removeTag(tag); }
-    resetProperty(identifier) { return this.player.resetProperty(identifier); }
-    runCommand(commandString) { return this.player.runCommand(commandString); }
-    runCommandAsync(commandString) { return this.player.runCommandAsync(commandString); }
-    setDynamicProperty(identifier, value) { return this.player.setDynamicProperty(identifier, value); }
-    setOnFire(seconds, useEffects) { return this.player.setOnFire(seconds, useEffects); }
-    setProperty(identifier, value) { return this.player.setProperty(identifier, value); }
-    setRotation(rotation) { return this.player.setRotation(rotation); }
-    teleport(location, teleportOptions) { return this.player.teleport(location, teleportOptions); }
-    triggerEvent(eventName) { return this.player.triggerEvent(eventName); }
-    tryTeleport(location, teleportOptions) { return this.player.tryTeleport(location, teleportOptions); }
+    addEffect(effectType, duration, options) { return this.player?.addEffect(effectType, duration, options); }
+    addExperience(amount) { return this.player?.addExperience(amount); }
+    getRotation() { return this.rotation ?? this.player?.getRotation(); }
+    getViewDirection() { return !!this.rotation ? anglesToDirectionVectorDeg(this.rotation.x, this.rotation.y) : this.player?.getViewDirection(); }
+    addLevels(amount) { return this.player?.addLevels(amount); }
+    eatItem(itemStack) { return this.player?.eatItem(itemStack); }
+    getGameMode() { return this.player?.getGameMode(); }
+    getItemCooldown(itemCategory) { return this.player?.getItemCooldown(itemCategory); }
+    getSpawnPoint() { return this.player?.getSpawnPoint(); }
+    getTotalXp() { return this.player?.getTotalXp(); }
+    isOp() { return this.player?.isOp(); }
+    playMusic(trackId, musicOptions) { return this.player?.playMusic(trackId, musicOptions); }
+    playSound(soundId, soundOptions) { return this.player?.playSound(soundId, soundOptions); }
+    postClientMessage(id, value) { return this.player?.postClientMessage(id, value); }
+    queueMusic(trackId, musicOptions) { return this.player?.queueMusic(trackId, musicOptions); }
+    resetLevel() { return this.player?.resetLevel(); }
+    sendMessage(message) { return this.player?.sendMessage(message); }
+    setGameMode(gameMode) { return this.player?.setGameMode(gameMode); }
+    setOp(isOp) { return this.player?.setOp(isOp); }
+    setSpawnPoint(spawnPoint) { return this.player?.setSpawnPoint(spawnPoint); }
+    spawnParticle(effectName, location, molangVariables) { return this.player?.spawnParticle(effectName, location, molangVariables); }
+    startItemCooldown(itemCategory, tickDuration) { return this.player?.startItemCooldown(itemCategory, tickDuration); }
+    stopMusic() { return this.player?.stopMusic(); }
+    addTag(tag) { return this.player?.addTag(tag); }
+    applyDamage(amount, options) { return this.player?.applyDamage(amount, options); }
+    applyImpulse(vector) { return this.player?.applyImpulse(vector); }
+    applyKnockback(directionX, directionZ, horizontalStrength, verticalStrength) { return this.player?.applyKnockback(directionX, directionZ, horizontalStrength, verticalStrength); }
+    clearDynamicProperties() { return this.player?.clearDynamicProperties(); }
+    clearVelocity() { return this.player?.clearVelocity(); }
+    extinguishFire(useEffects) { return this.player?.extinguishFire(useEffects); }
+    getBlockFromViewDirection(options) { return this.player?.getBlockFromViewDirection(options); }
+    getComponent(componentId) { return this.player?.getComponent(componentId); }
+    getComponents() { return this.player?.getComponents(); }
+    getDynamicProperty(identifier) { return this.player?.getDynamicProperty(identifier); }
+    getDynamicPropertyIds() { return this.player?.getDynamicPropertyIds(); }
+    getDynamicPropertyTotalByteCount() { return this.player?.getDynamicPropertyTotalByteCount(); }
+    getEffect(effectType) { return this.player?.getEffect(effectType); }
+    getEffects() { return this.player?.getEffects(); }
+    getEntitiesFromViewDirection(options) { return this.player?.getEntitiesFromViewDirection(options); }
+    getHeadLocation() { return this.player?.getHeadLocation(); }
+    getProperty(identifier) { return this.player?.getProperty(identifier); }
+    getTags() { return this.player?.getTags(); }
+    getVelocity() { return this.player?.getVelocity(); }
+    hasComponent(componentId) { return this.player?.hasComponent(componentId); }
+    hasTag(tag) { return this.player?.hasTag(tag); }
+    isValid() { return this.player?.isValid(); }
+    kill() { return this.player?.kill(); }
+    matches(options) { return this.player?.matches(options); }
+    playAnimation(animationName, options) { return this.player?.playAnimation(animationName, options); }
+    remove() { return this.player?.remove(); }
+    removeEffect(effectType) { return this.player?.removeEffect(effectType); }
+    removeTag(tag) { return this.player?.removeTag(tag); }
+    resetProperty(identifier) { return this.player?.resetProperty(identifier); }
+    runCommand(commandString) { return this.player?.runCommand(commandString); }
+    runCommandAsync(commandString) { return this.player?.runCommandAsync(commandString); }
+    setDynamicProperty(identifier, value) { return this.player?.setDynamicProperty(identifier, value); }
+    setOnFire(seconds, useEffects) { return this.player?.setOnFire(seconds, useEffects); }
+    setProperty(identifier, value) { return this.player?.setProperty(identifier, value); }
+    setRotation(rotation) { return this.player?.setRotation(rotation); }
+    teleport(location, teleportOptions) { return this.player?.teleport(location, teleportOptions); }
+    triggerEvent(eventName) { return this.player?.triggerEvent(eventName); }
+    tryTeleport(location, teleportOptions) { return this.player?.tryTeleport(location, teleportOptions); }
 }
-((a) => { })(new executeCommandPlayer(getPlayer("Andexter8")));
+export class HomeSystem {
+    constructor() { }
+    static getHomes(homeIds) { let homes = []; homeIds.forEach(c => homes.push(Home.get(c))); return homes; }
+    static getAllHomes() { let homes = []; this.getHomeIds().forEach(c => homes.push(Home.get(c))); return homes; }
+    static getHomeIds() { return world.getDynamicPropertyIds().filter(v => v.startsWith("home:")); }
+    static getHomeIdsForPlayer(player) { return world.getDynamicPropertyIds().filter(v => v.startsWith("home:")).filter(v => tryget(() => JSONParse(String(world.getDynamicProperty(v)))?.ownerId) == (typeof player == "string" ? player : player.id)); }
+    static getHomesForPlayer(player) { return this.getHomes(this.getHomeIdsForPlayer(player)); }
+    static testIfPlayerAtMaxHomes(player) { return this.getHomeIdsForPlayer(player).length >= this.maxHomesPerPlayer; }
+    static get maxHomesPerPlayer() { return gwdp("homeSystemSettings:maxHomesPerPlayer") == -1 ? Infinity : Number(gwdp("homeSystemSettings:maxHomesPerPlayer") ?? Infinity); }
+    static set maxHomesPerPlayer(maxHomes) { swdp("homeSystemSettings:maxHomesPerPlayer", maxHomes == Infinity ? -1 : maxHomes); }
+}
+HomeSystem.home_format_version = "0.0.1-indev.1";
+export class Home {
+    constructor(home) {
+        this.location = home.location;
+        this.name = home.name;
+        this.ownerId = home.ownerId ?? home.owner?.id;
+        this.ownerName = home.ownerName ?? home.owner?.name;
+        this.saveId = home.saveId;
+        this.format_version = home.format_version ?? format_version;
+        this.home_format_version = home.home_format_version ?? HomeSystem.home_format_version;
+    }
+    get owner() { return getPlayerById(this.ownerId); }
+    get isOwnerOnline() { return !!world.getAllPlayers().find(p => p.id == this.ownerId); }
+    get isSaved() { return !!world.getDynamicProperty(this.saveId); }
+    toJSON() { return { location: Object.assign(this.location, { dimension: this.location.dimension.id }), name: this.name, ownerId: this.ownerId, ownerName: this.ownerName, format_version: this.format_version ?? format_version, home_format_version: this.home_format_version ?? HomeSystem.home_format_version }; }
+    save(otherDataToChange = {}, keepOldFormatVersion = false) { world.setDynamicProperty(this.saveId, JSONStringify(Object.assign(Object.assign(Object.assign(JSONParse(String(world.getDynamicProperty(this.saveId) ?? "{}")) ?? {}, this.toJSON()), otherDataToChange), keepOldFormatVersion ? {} : { format_version, home_format_version: HomeSystem.home_format_version }))); }
+    remove() { world.setDynamicProperty(this.saveId); }
+    static get(homeId) {
+        return !!world.getDynamicProperty(homeId) ? new Home(Object.assign(JSONParse(String(world.getDynamicProperty(homeId))), { saveId: homeId, location: Object.assign(JSONParse(String(world.getDynamicProperty(homeId))).location, { dimension: world.getDimension(JSONParse(String(world.getDynamicProperty(homeId))).location.dimension) }) })) : undefined;
+    }
+    static delete(homeId) { world.setDynamicProperty(homeId); }
+}
+export class LandClaimSystem {
+    constructor() { }
+    get warnAboutDeniedPermissions() { return Boolean(world.getDynamicProperty("landClaimSystemSettings:warnAboutDeniedPermissions") ?? false); }
+    set warnAboutDeniedPermissions(warn) { world.setDynamicProperty("landClaimSystemSettings:warnAboutDeniedPermissions", warn); }
+    static getClaims(claimIds) { let claims = []; claimIds.forEach(c => claims.push(LandClaim.get(c))); return claims; }
+    static getAllClaims() { let claims = []; this.getClaimIds().forEach(c => claims.push(LandClaim.get(c))); return claims; }
+    static getClaimIds() { return world.getDynamicPropertyIds().filter(v => v.startsWith("landClaim:")); }
+    static getLandClaimIdsForPlayer(player) { return world.getDynamicPropertyIds().filter(v => v.startsWith("landClaim:")).filter(v => tryget(() => JSONParse(String(world.getDynamicProperty(v)))?.ownerId) == (typeof player == "string" ? player : player.id)); }
+    static getLandClaimsForPlayer(player) { return this.getClaims(this.getLandClaimIdsForPlayer(player)); }
+    static testIfPlayerCanDoActionInArea(action, player, location) { }
+    static testIfClaimAreaIsAlreadyClaimed(area) { return this.getAllClaims().map(c => tryget(() => c.area)).filter(c => !!c).every(c => !doBoundingBoxesIntersect(area, c)); }
+}
+LandClaimSystem.land_claim_format_version = "0.0.1-indev.1";
+export class LandClaim {
+    constructor(claim) {
+        this.format_version = format_version;
+        this.land_claim_format_version = LandClaimSystem.land_claim_format_version;
+        this.defaultPermissions = { breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true };
+        this.customPermissions = {};
+        this.area = claim.area;
+        this.dimension = typeof claim.dimension == "string" ? world.getDimension(claim.dimension) : claim.dimension;
+        this.name = claim.name;
+        this.ownerId = claim.ownerId;
+        this.defaultPermissions = Object.assign({ breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true }, claim.defaultPermissions ?? { breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true });
+        this.customPermissions = claim.customPermissions ?? {};
+        this.saveId = claim.saveId;
+    }
+    get owner() { return getPlayerById(this.ownerId); }
+    get isOwnerOnline() { return !!world.getAllPlayers().find(p => p.id == this.ownerId); }
+    get isSaved() { return !!world.getDynamicProperty(this.saveId); }
+    toJSON() { return { area: this.area, dimension: this.dimension.id, name: this.name, ownerId: this.ownerId, ownerName: this.ownerName, defaultPermissions: this.defaultPermissions, customPermissions: this.customPermissions, format_version: this.format_version ?? format_version, land_claim_format_version: this.land_claim_format_version ?? LandClaimSystem.land_claim_format_version }; }
+    setPermissions(permissions, playerOrPlayerId, playerName) {
+        this.customPermissions[typeof playerOrPlayerId == "string" ? playerOrPlayerId : playerOrPlayerId.id] = Object.assign(permissions, { playerName: permissions.playerName ?? (typeof playerOrPlayerId == "string" ? playerName : playerOrPlayerId.name) });
+    }
+    save(otherDataToChange, keepOldFormatVersion = false) { world.setDynamicProperty(this.saveId, Object.assign(Object.assign(Object.assign(world.getDynamicProperty(this.saveId) ?? {}, this.toJSON()), otherDataToChange), keepOldFormatVersion ? {} : { format_version, land_claim_format_version: LandClaimSystem.land_claim_format_version })); }
+    remove() { world.setDynamicProperty(this.saveId); /*; this=undefined*/ }
+    static get(claimId) {
+        return !!world.getDynamicProperty(claimId) ? new LandClaim(Object.assign(JSONParse(String(world.getDynamicProperty(claimId))), { saveId: claimId })) : undefined;
+    }
+    static delete(claimId) { world.setDynamicProperty(claimId); }
+}
+export class chunkLandClaim {
+    constructor(claim) {
+        this.format_version = format_version;
+        this.land_claim_format_version = LandClaimSystem.land_claim_format_version;
+        this.defaultPermissions = { breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true };
+        this.customPermissions = {};
+        this.chunks = claim.chunks;
+        this.dimension = typeof claim.dimension == "string" ? world.getDimension(claim.dimension) : claim.dimension;
+        this.name = claim.name;
+        this.ownerId = claim.ownerId;
+        this.defaultPermissions = Object.assign({ breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true }, claim.defaultPermissions ?? { breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true });
+        this.customPermissions = claim.customPermissions ?? {};
+        this.saveId = claim.saveId;
+    }
+    get owner() { return getPlayerById(this.ownerId); }
+    get isOwnerOnline() { return !!world.getAllPlayers().find(p => p.id == this.ownerId); }
+    get isSaved() { return !!world.getDynamicProperty(this.saveId); }
+    get areas() { return this.chunks.map(c => chunkIndexToBoundingBox(c, [this.dimension.heightRange.min, this.dimension.heightRange.max])); }
+    toJSON() { return { chunks: this.chunks, dimension: this.dimension.id, name: this.name, ownerId: this.ownerId, ownerName: this.ownerName, defaultPermissions: this.defaultPermissions, customPermissions: this.customPermissions, format_version: this.format_version ?? format_version, land_claim_format_version: this.land_claim_format_version ?? LandClaimSystem.land_claim_format_version }; }
+    setPermissions(permissions, playerOrPlayerId, playerName) {
+        this.customPermissions[typeof playerOrPlayerId == "string" ? playerOrPlayerId : playerOrPlayerId.id] = Object.assign(permissions, { playerName: permissions.playerName ?? (typeof playerOrPlayerId == "string" ? playerName : playerOrPlayerId.name) });
+    }
+    save(otherDataToChange, keepOldFormatVersion = false) { world.setDynamicProperty(this.saveId, Object.assign(Object.assign(Object.assign(world.getDynamicProperty(this.saveId) ?? {}, this.toJSON()), otherDataToChange), keepOldFormatVersion ? {} : { format_version, land_claim_format_version: LandClaimSystem.land_claim_format_version })); }
+    remove() { world.setDynamicProperty(this.saveId); /*; this=undefined*/ }
+    static get(claimId) {
+        return !!world.getDynamicProperty(claimId) ? new LandClaim(Object.assign(JSONParse(String(world.getDynamicProperty(claimId))), { saveId: claimId })) : undefined;
+    }
+    static delete(claimId) { world.setDynamicProperty(claimId); }
+}
+function extractCustomPatternTypes(str) {
+    const patterns = [];
+    const regex = /(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g;
+    const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
+    const matchesa = str.match(regex);
+    matchesa.forEach(m => {
+        const matches = m.match(regexb);
+        if (matches) {
+            const patternTypes = [];
+            matches.forEach(match => {
+                let type = match.trim();
+                let weight = null;
+                let states = null;
+                // Extract chance if present
+                const weightMatch = type.match(/[%*]{1,2}(\d+)(?=[\s\n]*$|\[|\{)/);
+                if (!!weightMatch) {
+                    weight = parseInt(weightMatch[1]);
+                    type = type.replace(/[%*]{1,2}(\d+)(?=[\s\n]*$|\[|\{)/, '').trim();
+                }
+                // Extract states if present
+                const statesMatch = type.match(/[\[\{]([^\]\}]*)[\]\}]/);
+                if (!!statesMatch) {
+                    const statesStr = statesMatch[1];
+                    try {
+                        states = JSON.parse(statesMatch[0].replace(/'/g, '"'));
+                    }
+                    catch (error) {
+                        // States couldn't be parsed as JSON, parse as key-value pairs
+                        states = {};
+                        const keyValuePairs = statesStr.split(',');
+                        keyValuePairs.forEach(pair => {
+                            const keyValue = pair.trim().split('=');
+                            const key = keyValue[0].trim();
+                            let value = keyValue[1].trim();
+                            // Convert value to number or boolean if possible
+                            if (!isNaN(value)) {
+                                value = parseFloat(value);
+                            }
+                            else if (value.toLowerCase() === 'true') {
+                                value = true;
+                            }
+                            else if (value.toLowerCase() === 'false') {
+                                value = false;
+                            }
+                            states[key] = value;
+                        });
+                    }
+                    // Remove states from the type
+                    type = type.replace(/[\[\{][^\]\}]*[\]\}]/, '').trim();
+                }
+                // Extract chance if present
+                const stringMatch = type.match(/^["']([^"]+)["']$/);
+                if (!!stringMatch) {
+                    type = stringMatch[1].trim() /*.escapeCharactersB()*/;
+                }
+                patternTypes.push({ type, states, weight });
+            });
+            patterns.push(patternTypes);
+        }
+    });
+    return patterns;
+}
+function extractCustomPatternType(str) {
+    const patternTypes = [];
+    const regex = /(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
+    const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
+    const matches = str.match(regex)[0].match(regexb);
+    if (matches) {
+        matches.forEach(match => {
+            let type = match.trim();
+            let weight = null;
+            let states = null;
+            // Extract chance if present
+            const weightMatch = type.match(/[%*]{1,2}(\d+)(?=[\s\n]*$|\[|\{)/);
+            if (!!weightMatch) {
+                weight = parseInt(weightMatch[1]);
+                type = type.replace(/[%*]{1,2}(\d+)(?=[\s\n]*$|\[|\{)/, '').trim();
+            }
+            // Extract states if present
+            const statesMatch = type.match(/[\[\{]([^\]\}]*)[\]\}]/);
+            if (!!statesMatch) {
+                const statesStr = statesMatch[1];
+                try {
+                    states = JSON.parse(statesMatch[0].replace(/'/g, '"'));
+                }
+                catch (error) {
+                    // States couldn't be parsed as JSON, parse as key-value pairs
+                    states = {};
+                    const keyValuePairs = statesStr.split(',');
+                    keyValuePairs.forEach(pair => {
+                        const keyValue = pair.trim().split('=');
+                        const key = keyValue[0].trim();
+                        let value = keyValue[1].trim();
+                        // Convert value to number or boolean if possible
+                        if (!isNaN(value)) {
+                            value = parseFloat(value);
+                        }
+                        else if (value.toLowerCase() === 'true') {
+                            value = true;
+                        }
+                        else if (value.toLowerCase() === 'false') {
+                            value = false;
+                        }
+                        states[key] = value;
+                    });
+                }
+                // Remove states from the type
+                type = type.replace(/[\[\{][^\]\}]*[\]\}]/, '').trim();
+            }
+            // Extract chance if present
+            const stringMatch = type.match(/^["']([^"]+)["']$/);
+            if (!!stringMatch) {
+                type = stringMatch[1].trim() /*.escapeCharactersB()*/;
+            }
+            patternTypes.push({ type, states, weight });
+        });
+    }
+    return patternTypes;
+}
+export class BlockPattern {
+    constructor(blocks = [], type = "random") {
+        this.blocks = [];
+        this.type = "random";
+        this.blocks = blocks, this.type = type;
+    }
+    generateBlock(generateIndex = 0, forceMode) { return ((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[generateIndex % this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length]; }
+    generateBlockP(generateIndex = 0, forceMode) { const p = ((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[generateIndex % this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length]; return BlockPermutation.resolve(p.type, p.states); }
+    static parse() { }
+    static extractRaw(str) { return str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]; }
+    static extract(str, mode = "random") { return new BlockPattern(extractCustomPatternType(str), mode); }
+    static extractWRaw(str, mode = "random") { return { raw: str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0], parsed: new BlockPattern(extractCustomPatternType(str), mode) }; }
+    static extractAllRaw(str) { return str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g); }
+    static extractAll(str, mode = "random") { return new BlockPattern(extractCustomPatternTypes(str), mode); }
+    static extractAllWRaw(str, mode = "random") { return { raw: str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v => new BlockPattern(v, mode)) }; }
+}
+function selectWeightedElement(items, weightProp = "weight") {
+    let total = items.reduce((acc, item) => acc + (item[weightProp] ?? 1), 0);
+    let threshold = Math.random() * total;
+    for (let item of items) {
+        threshold -= (item[weightProp] ?? 1);
+        if (threshold < 0) {
+            return item;
+        }
+    }
+}
+export class config {
+    static get chatCommandsEnabled() { return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled") ?? true); }
+    static set chatCommandsEnabled(enabled) { world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled ?? true); }
+    static get chatCommandPrefix() { return String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"); }
+    static set chatCommandPrefix(prefix) { world.setDynamicProperty("andexdbSettings:chatCommandPrefix", prefix ?? "\\"); }
+    static get validChatCommandPrefixes() { return String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? ""); }
+    static set validChatCommandPrefixes(prefixes) { world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", prefixes ?? ""); }
+    static get homeSystemEnabled() { return Boolean(world.getDynamicProperty("homeSystemSettings:homeSystemEnabled") ?? false); }
+    static set homeSystemEnabled(enabled) { world.setDynamicProperty("homeSystemSettings:homeSystemEnabled", enabled ?? false); }
+    static get maxHomesPerPlayer() { return gwdp("homeSystemSettings:maxHomesPerPlayer") == -1 ? Infinity : Number(gwdp("homeSystemSettings:maxHomesPerPlayer") ?? Infinity); }
+    static set maxHomesPerPlayer(maxHomes) { swdp("homeSystemSettings:maxHomesPerPlayer", (maxHomes ?? Infinity) == Infinity ? -1 : maxHomes); }
+    static get rtpSystemEnabled() { return Boolean(world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled") ?? false); }
+    static set rtpSystemEnabled(enabled) { world.setDynamicProperty("rtpSystemSettings:rtpSystemEnabled", enabled ?? false); }
+    static reset() { }
+}
+//((a: Player)=>{})(new executeCommandPlayer(getPlayer("Andexter8")))
 export function send(message) { world.sendMessage(message); }
 ;
-export function chatMessage(eventData) {
+export class TimeoutError extends Error {
+    constructor(message) {
+        // Need to pass `options` as the second parameter to install the "cause" property.
+        super(message);
+    }
+}
+export class ExpireError extends Error {
+    constructor(message) {
+        // Need to pass `options` as the second parameter to install the "cause" property.
+        super(message);
+    }
+}
+export async function requestChatInput(player, requestMessage) {
+    let id = idGenerator();
+    !!requestMessage ? player.sendMessage(requestMessage) : undefined;
+    !!!currentlyRequestedChatInput[player.id] ? currentlyRequestedChatInput[player.id] = { anyInput: { [id]: { time: Date.now(), id: id, request: requestMessage } }, conditionalInput: {} } : currentlyRequestedChatInput[player.id].anyInput[id] = { time: Date.now(), id: id, request: requestMessage };
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (!player.isValid()) {
+                delete currentlyRequestedChatInput[player.id];
+                reject(new ReferenceError("The player that the input was requested from is no longer valid, most likely the have left the game."));
+                return;
+            }
+            ;
+            if (!!!currentlyRequestedChatInput[player.id].anyInput[id].input) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let input = currentlyRequestedChatInput[player.id].anyInput[id].input;
+                delete currentlyRequestedChatInput[player.id].anyInput[id];
+                resolve(input);
+            }
+        }
+        a();
+    });
+}
+export async function requestConditionalChatInput(player, conditions = () => true, options = {}) {
+    let id = idGenerator();
+    !!options.requestMessage ? player.sendMessage(options.requestMessage) : undefined;
+    !!!currentlyRequestedChatInput[player.id] ? currentlyRequestedChatInput[player.id] = { anyInput: {}, conditionalInput: { [id]: { time: Date.now(), id: id, request: options.requestMessage, conditions: conditions ?? (() => true), expireTime: Date.now() + (options.expireMs ?? Infinity), expireConditions: options.expireConditions ?? (() => false) } } } : currentlyRequestedChatInput[player.id].conditionalInput[id] = { time: Date.now(), id: id, request: options.requestMessage, conditions: conditions ?? (() => true), expireTime: Date.now() + (options.expireMs ?? Infinity), expireConditions: options.expireConditions ?? (() => false) };
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (!player.isValid()) {
+                delete currentlyRequestedChatInput[player.id];
+                reject(new ReferenceError("The player that the input was requested from is no longer valid, most likely the have left the game."));
+                return;
+            }
+            ;
+            if (!!!currentlyRequestedChatInput[player.id].conditionalInput[id].input) {
+                if (Date.now() > (currentlyRequestedChatInput[player.id].conditionalInput[id].expireTime ?? Infinity)) {
+                    delete currentlyRequestedChatInput[player.id].conditionalInput[id];
+                    reject(new TimeoutError("The request timed out."));
+                    return;
+                }
+                else if (!!options.expireConditions ? currentlyRequestedChatInput[player.id].conditionalInput[id].expireConditions(currentlyRequestedChatInput[player.id].conditionalInput[id]) ?? false : false) {
+                    delete currentlyRequestedChatInput[player.id].conditionalInput[id];
+                    reject(new ExpireError("The request expired."));
+                    return;
+                }
+                else {
+                    system.run(() => {
+                        a();
+                    });
+                }
+            }
+            else {
+                let input = currentlyRequestedChatInput[player.id].conditionalInput[id].input;
+                delete currentlyRequestedChatInput[player.id].conditionalInput[id];
+                resolve(input);
+            }
+        }
+        a();
+    });
+}
+export function chatMessage(eventData, bypassChatInputRequests = false) {
+    if (!bypassChatInputRequests && Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput ?? {}).length != 0) {
+        currentlyRequestedChatInput[eventData.sender.id].anyInput[Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput ?? {}).sort((a, b) => currentlyRequestedChatInput[eventData.sender.id].anyInput[a].time - currentlyRequestedChatInput[eventData.sender.id].anyInput[b].time)[0]].input = eventData.message;
+        eventData.cancel = true;
+        return;
+    }
+    if (!bypassChatInputRequests && Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.conditionalInput ?? {}).filter(r => !!currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions ? currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions(eventData.sender, eventData.message, eventData) : true).length != 0) {
+        currentlyRequestedChatInput[eventData.sender.id].conditionalInput[Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.conditionalInput ?? {}).filter(r => !!currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions ? currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions(eventData.sender, eventData.message, eventData) : true).sort((a, b) => currentlyRequestedChatInput[eventData.sender.id].conditionalInput[a].time - currentlyRequestedChatInput[eventData.sender.id].conditionalInput[b].time)[0]].input = eventData.message;
+        eventData.cancel = true;
+        return;
+    }
     let runreturn;
     runreturn = false;
     let returnBeforeChatSend;
@@ -1240,6 +1620,10 @@ export function chatMessage(eventData) {
 }
 export const EquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand];
 export const OtherEquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Offhand];
+export const dimensions = [world.getDimension("overworld"), world.getDimension("nether"), world.getDimension("the_end")];
+export const overworld = world.getDimension("overworld");
+export const nether = world.getDimension("nether");
+export const the_end = world.getDimension("the_end");
 export function shuffle(array) {
     var m = array.length, t, i;
     while (m) {
@@ -1250,23 +1634,376 @@ export function shuffle(array) {
     }
     return array;
 }
+export function arryTV3(v3Array) { return { x: v3Array[0], y: v3Array[1], z: v3Array[2] }; }
+export function parseNBTFile(nbt) {
+    let outputObject = [];
+    return outputObject;
+}
+export function generateNBTFile(location, nbt) {
+    nbt.blocks.forEach(b => tryrun(() => (location.dimension.setBlockType(mcMath.Vector3Utils.add(location, { x: b.pos[0], y: b.pos[1], z: b.pos[2] }), nbt.palette[b.state].Name.replace("minecraft:active - lit_redstone_lamp", "minecraft:light_gray_terracotta")), (nbt.palette[b.state].Name == "minecraft:coarse_dirt" || nbt.palette[b.state].Name == "coarse_dirt") ? location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, { x: b.pos[0], y: b.pos[1], z: b.pos[2] }), BlockPermutation.resolve("minecraft:dirt", { dirt_type: "coarse" })) : !!nbt.palette[b.state].Properties ? Object.entries(nbt.palette[b.state].Properties).forEach(p => tryrun(() => location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, { x: b.pos[0], y: b.pos[1], z: b.pos[2] }), BlockPermutation.resolve(nbt.palette[b.state].Name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, { x: b.pos[0], y: b.pos[1], z: b.pos[2] })).permutation.getAllStates(), { [p[0]]: p[1] }))))) : undefined)));
+}
+export function generateNBTFileB(location, nbt) {
+    nbt.blocks.forEach(b => tryrun(() => (location.dimension.setBlockType(mcMath.Vector3Utils.add(location, { x: b.pos[0], y: b.pos[1], z: b.pos[2] }), nbt.palette[b.state].Name.replace("minecraft:active - lit_redstone_lamp", "minecraft:light_gray_terracotta").replace("minecraft:coarse_dirt", "minecraft:dirt")), (nbt.palette[b.state].Name == "minecraft:coarse_dirt" || nbt.palette[b.state].Name == "coarse_dirt") ? location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, { x: b.pos[0], y: b.pos[1], z: b.pos[2] }), BlockPermutation.resolve("minecraft:dirt", { dirt_type: "coarse" })) : !!nbt.palette[b.state].Properties ? Object.entries(nbt.palette[b.state].Properties).forEach(p => tryrun(() => location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, { x: b.pos[0], y: b.pos[1], z: b.pos[2] }), BlockPermutation.resolve(nbt.palette[b.state].Name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, { x: b.pos[0], y: b.pos[1], z: b.pos[2] })).permutation.getAllStates(), { [p[0]]: p[1] }))))) : undefined)));
+}
+export function generateNBTFileC(location, nbt) {
+    nbt.block_indices.forEach((b, i) => b != -1 ? tryrun(() => (location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]])), nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:light_gray_terracotta")), (nbt.block_palette[b].name == "minecraft:coarse_dirt" || nbt.block_palette[b].name == "coarse_dirt") ? location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]])), BlockPermutation.resolve("minecraft:dirt", { dirt_type: "coarse" })) : !!nbt.block_palette[b].states ? Object.entries(nbt.block_palette[b].states).forEach(p => tryrun(() => location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]]))).permutation.getAllStates(), { [p[0]]: p[1] }))))) : undefined)) : undefined);
+}
+export function generateNBTFileF(location, nbt) {
+    nbt.block_indices.forEach((b, i) => b != -1 ? tryrun(() => (location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]])), nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp")), (nbt.block_palette[b].name == "minecraft:coarse_dirt" || nbt.block_palette[b].name == "coarse_dirt") ? location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]])), BlockPermutation.resolve("minecraft:dirt", { dirt_type: "coarse" })) : !!nbt.block_palette[b].states ? Object.entries(nbt.block_palette[b].states).forEach(p => tryrun(() => location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]]))).permutation.getAllStates(), { [p[0]]: p[1] }))))) : undefined)) : undefined);
+} /*
+
+export function* generateNBTFileFBG(location: DimensionLocation, nbt: {block_indices: number[], block_palette: {name: string, states?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number], nbt_type: "cmprsnbt"}){
+    for(let i = 0; i<)
+    nbt.block_indices.forEach((b, i)=>b!=-1?tryrun(()=>(location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp")), (nbt.block_palette[b].name=="minecraft:coarse_dirt"||nbt.block_palette[b].name=="coarse_dirt")?location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), BlockPermutation.resolve("minecraft:dirt", {dirt_type: "coarse"})):!!nbt.block_palette[b].states?Object.entries(nbt.block_palette[b].states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined)):undefined)
+}*/
+export function generateNBTFileE(location, nbt) {
+    var successCount = 0;
+    console.log(nbt.block_indices);
+    nbt.block_indices.forEach((b, i) => (b ?? -1) != -1 ? tryrun(() => {
+        try {
+            location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]])), nbt.block_palette[b].name);
+            !!nbt.block_palette[b]?.states ? Object.entries(nbt.block_palette[b]?.states).forEach(p => tryrun(() => location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]]))).permutation.getAllStates(), { [p[0]]: p[1] }))))) : undefined;
+            //{let i = 249; let nbt = {size: [5, 5, 5]}; [Math.floor(i/nbt.size[2])%nbt.size[0], Math.floor(i/(nbt.size[0]*nbt.size[2]))%nbt.size[1], i%nbt.size[2]]}
+            //{let i = 27; let nbt = {size: [5, 5, 5]}; [Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]]}
+            successCount++;
+        }
+        catch (e) {
+            console.error(e, e.stack, i, b);
+        }
+    }) : undefined);
+    return successCount;
+}
+export function* generateNBTFileEGG(location, nbt) {
+    var successCount = 0;
+    var b = undefined;
+    for (let i = 0; i < nbt.block_indices.length; i++) {
+        b = nbt.block_indices[i];
+        (b ?? -1) != -1 ? tryrun(() => {
+            try {
+                location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]])), nbt.block_palette[b].name);
+                !!nbt.block_palette[b]?.states ? Object.entries(nbt.block_palette[b]?.states).forEach(p => tryrun(() => location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([Math.floor(i / (nbt.size[1] * nbt.size[2])) % nbt.size[0], Math.floor(i / nbt.size[2]) % nbt.size[1], i % nbt.size[2]]))).permutation.getAllStates(), { [p[0]]: p[1] }))))) : undefined;
+                //{let i = 249; let nbt = {size: [5, 5, 5]}; [Math.floor(i/nbt.size[2])%nbt.size[0], Math.floor(i/(nbt.size[0]*nbt.size[2]))%nbt.size[1], i%nbt.size[2]]}
+                //{let i = 27; let nbt = {size: [5, 5, 5]}; [Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]]}
+                successCount++;
+            }
+            catch (e) {
+                console.error(e, e.stack, i, b);
+            }
+        }) : undefined;
+        yield void null;
+    }
+    return successCount;
+}
+export async function generateNBTFileD(location, nbt, player) {
+    try {
+        let id = "andexdbmapartloader:" + Date.now();
+        if (location.dimension.runCommand(`/tickingarea add ${location.x} -64 ${location.z} ${location.x + 136} 325 ${location.z + 136} "${id}"`).successCount == 0) {
+            player.sendMessage("§6Warning: Map art generation may be incomplete because max amount of tickingareas were used up so some chunks might have not been loaded. ");
+        }
+        await waitTicks(2);
+        try {
+            switch (detectNBTDataType(nbt)) {
+                case "cmprsnbt":
+                    generateNBTFileF(location, nbt);
+                    break;
+                case "cmprbnbt":
+                    generateNBTFileE(location, nbt);
+                    break;
+                case "supercmprsnbt":
+                    generateNBTFileF(location, await unsuperCompressG(nbt));
+                    break;
+                case "supercmprbnbt":
+                    pasend(player, (await completeGenerator(generateNBTFileEGG(location, await unsuperCompressG(nbt)))).return);
+                    break;
+                case "ultracmprsnbt":
+                    generateNBTFileF(location, unultraCompress(nbt));
+                    break;
+                case "ultracmprbnbt":
+                    generateNBTFileE(location, unultraCompress(nbt));
+                    break;
+                case "snbt":
+                    generateNBTFileF(location, compressJavaNBTData(nbt));
+                    break;
+                case "nbt":
+                    generateNBTFileF(location, parseJSONifiedNBTData(compressJavaNBTData(nbt)));
+                    break;
+                case "bnbt":
+                    generateNBTFileE(location, compressBedrockNBTData(nbt));
+                    break;
+                case "pnbt":
+                    generateNBTFileE(location, compressBedrockNBTData(parseJSONifiedNBTData(nbt)));
+                    break;
+                case "rawuenbt":
+                    generateNBTFileE(location, compressBedrockNBTData(parseJSONifiedNBTData(nbt)));
+                    break;
+                case "unknownt":
+                    generateNBTFile(location, nbt);
+                    break;
+                default:
+                    generateNBTFile(location, nbt);
+                    break;
+            }
+            location.dimension.runCommand(`/tickingarea remove "${id}"`);
+        }
+        catch (e) {
+            player.sendMessage("§c" + e + e.stack);
+        }
+    }
+    catch (e) {
+        player.sendMessage("§c" + e + e.stack);
+    } /*finally{tac.forEach(tab=>tab?.remove())}}, (e)=>{player.sendMessage(e+" "+e.stack)}); */
+}
+export function parseJSONifiedNBTData(nbt) {
+    function parseObject(object) {
+        switch (object.type) {
+            case "compound":
+                return Object.fromEntries(Object.entries(object.value).map(t => [t[0], parseObject(t[1])]));
+                break;
+            case "list":
+                return object.value instanceof Array ? object.value.map(v => parseList(v)) : parseList(object.value);
+                break;
+            case "int":
+                return object.value;
+                break;
+            case "string":
+                return object.value;
+                break;
+            case "byte":
+                return Boolean(object.value);
+                break;
+            case "end":
+                return object.value;
+                break;
+            default:
+                return object;
+        }
+    }
+    function parseList(object) {
+        switch (object.type) {
+            case "compound":
+                return object.value.map(t => Object.fromEntries(Object.entries(t).map(t => [t[0], parseObject(t[1])])));
+                break;
+            case "list":
+                return object.value.map(t => parseList(t));
+                break;
+            case "int":
+                return object.value;
+                break;
+            case "string":
+                return object.value;
+                break;
+            case "byte":
+                return Boolean(object.value);
+                break;
+            case "end":
+                return object.value;
+                break;
+            default:
+                let a = undefined;
+                try {
+                    a = object.map(t => parseList(t));
+                }
+                catch {
+                    a = object;
+                }
+                return a;
+        }
+    }
+    return parseObject(nbt);
+}
+export function convertToSNBTFormat(parsedNBT) {
+    //var blocks = []
+    var blocksb = [];
+    parsedNBT.structure.block_indices[0].forEach((b, i) => b != -1 ? blocksb.push({ pos: [i % parsedNBT.size[2], Math.floor(i / (parsedNBT.size[0] * parsedNBT.size[2])), Math.floor((i % (parsedNBT.size[0] * parsedNBT.size[2])) / (parsedNBT.size[0]))], state: b }) : undefined); /*
+    var b = parsedNBT.structure.block_indices[0][0]
+    for(let y = 0; y<parsedNBT.size[0]; y++){
+        for(let z = 0; z<parsedNBT.size[0]; z++){
+            for(let x = 0; x<parsedNBT.size[0]; x++){
+                b=parsedNBT.structure.block_indices[0][(y*parsedNBT.size[0]*parsedNBT.size[2])+(z*parsedNBT.size[0])+x]
+                !!b?blocks.push({pos: [x, y, z], state: b}):undefined
+            }
+        }
+    }*/
+    return { blocks: blocksb, palette: parsedNBT.structure.palette.default.block_palette.map(v => ({ Name: v.name, Properties: v.states })), nbt_type: "cnvtsnbt", size: parsedNBT.size };
+}
+export function compressBedrockNBTData(parsedNBT) {
+    return { block_indices: parsedNBT.structure.block_indices[0], block_palette: parsedNBT.structure.palette.default.block_palette, nbt_type: "cmprbnbt", size: parsedNBT.size };
+}
+export function compressJavaNBTData(parsedNBT) {
+    var block_indices = "-1,".repeat(parsedNBT.size[0] * parsedNBT.size[1] * parsedNBT.size[2]).slice(0, -1).split(",").map(v => Number(v));
+    parsedNBT.blocks.forEach((b, i) => b != -1 ? block_indices[b.pos[0] + (b.pos[2] * parsedNBT.size[0]) + (b.pos[1] * parsedNBT.size[0] * parsedNBT.size[2])] = b.state : undefined);
+    return { block_indices: block_indices, block_palette: parsedNBT.palette.map(v => ({ name: v.Name, states: v.Properties })), nbt_type: "cmprsnbt", size: parsedNBT.size };
+}
+export function unsuperCompress(nbt) { return Object.assign(nbt, { block_indices: extractIntArray(nbt.block_indices) }); }
+export async function unsuperCompressG(nbt) { return Object.assign(nbt, { block_indices: await extractIntArrayG(nbt.block_indices) }); }
+export function unultraCompress(nbt) { return Object.assign(nbt, { block_indices: ultraExtractIntArray(nbt.block_indices) }); }
+export function fltToStr(float, radix = 10) { return String(float).split(".").map(v => Number(v).toString(radix)).join("."); }
+export function strToFlt(string, radix = 10) { return Number(string.split(".").map(v => String(Number.parseInt(v, radix))).join(".")); }
+export function superCompressBedrockNBTData(parsedNBT) {
+    return { block_indices: compressIntArray(parsedNBT.structure.block_indices[0]), block_palette: parsedNBT.structure.palette.default.block_palette, nbt_type: "supercmprbnbt", size: parsedNBT.size };
+}
+export function superCompressJavaNBTData(parsedNBT) {
+    var block_indices = "-1,".repeat(parsedNBT.size[0] * parsedNBT.size[1] * parsedNBT.size[2]).slice(0, -1).split(",").map(v => Number(v));
+    parsedNBT.blocks.forEach((b, i) => b != -1 ? block_indices[b.pos[0] + (b.pos[2] * parsedNBT.size[0]) + (b.pos[1] * parsedNBT.size[0] * parsedNBT.size[2])] = b.state : undefined);
+    return { block_indices: compressIntArray(block_indices), block_palette: parsedNBT.palette.map(v => ({ name: v.Name, states: v.Properties })), nbt_type: "supercmprsnbt", size: parsedNBT.size };
+}
+export function detectNBTDataType(NBTData) { return !!NBTData.nbt_type ? NBTData.nbt_type : NBTData.hasOwnProperty("blocks") ? "snbt" : NBTData.hasOwnProperty("structure") ? "bnbt" : NBTData?.type == "compound" ? "rawuenbt" : "unknownt"; }
+export function setNBTDataType(NBTData) { return !!NBTData.nbt_type ? NBTData : Object.assign(NBTData, { nbt_type: detectNBTDataType(NBTData) }); }
+export function stringifyJSONCompressed(NBTData) { return JSON.stringify(NBTData, undefined, ""); }
+export function compressIntArrayB(s, replacement = "-1") { Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)([\s\n]*,[\s\n]*\1){2,}/g)).forEach(v => s = s.replace(v[0], v[1] + "^" + ((v[0].length + 1) / (v[1].length + 1)))); s = s.replaceAll(replacement, ""); return s; }
+export function extractIntArrayB(s, revivement = "-1") { s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement); s = s.slice(0, -1) + "," + "]"; Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+),/g)).forEach(v => s = s.replace(v[0], (v[1] + ",").repeat(Number(v[2])))); s = s.slice(0, -2) + "]"; return s; }
+export function* extractIntArrayBGenerator(s, revivement = "-1", maxTimePerTick = 1250) {
+    let lastYieldTime = Date.now();
+    s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement).replace("]", ",]");
+    // Yield the modified string after the first replacement
+    yield s;
+    const matchAllIterator = s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+),/g);
+    for (const v of matchAllIterator) {
+        //v[0]=="32"?console.log(JSON.stringify(v), v[0], v[1], v[2]):undefined; 
+        isNaN(Number(v[2])) ? console.log(v[2]) : undefined;
+        s = s.replace(v[0], (v[1] + ",").repeat(Number(v[2])));
+        // Check if it's time to yield
+        if (Date.now() - lastYieldTime >= maxTimePerTick) {
+            lastYieldTime = Date.now();
+            yield s; // Yield the modified string
+        }
+    }
+    yield s.replace(",]", "]"); // Yield the final modified string
+    return s.replace(",]", "]");
+}
+export function iterateGenerator(extractorGenerator, maxTimePerTick = 1500, whileConditions = true) {
+    let lastYieldTime = Date.now(); // Initialize the last yield time
+    async function iterateGeneratorB(extractorGenerator, lastYieldTime) {
+        let finalResult;
+        while (whileConditions) {
+            const result = extractorGenerator.next();
+            finalResult = result.value;
+            if (!result.done) {
+                console.log(result.value); // Handle the yielded value
+                if (Date.now() - lastYieldTime >= maxTimePerTick) {
+                    lastYieldTime = Date.now();
+                    await new Promise(resolve => system.run(() => resolve(void null))); // Asynchronously wait for next iteration
+                }
+            }
+            else {
+                break;
+            }
+        }
+        return finalResult;
+    }
+    return iterateGeneratorB(extractorGenerator, lastYieldTime);
+}
+export async function completeGenerator(g, maxTimePerTick = 1500, whileConditions = true) {
+    let lastYieldTime = Date.now(); // Initialize the last yield time
+    let finalResult;
+    let returnResult;
+    while (whileConditions) {
+        const result = g.next();
+        if (!result.done) {
+            finalResult = result.value;
+            if (Date.now() - lastYieldTime >= maxTimePerTick) {
+                lastYieldTime = Date.now();
+                await new Promise(resolve => system.run(() => resolve(void null)));
+            }
+        }
+        else {
+            returnResult = result.value;
+            break;
+        }
+    }
+    return { yield: finalResult, return: returnResult };
+}
+export async function completeGeneratorB(g, maxTimePerTick = 1500, whileConditions = true) {
+    let lastYieldTime = Date.now();
+    var yieldResults = [];
+    let returnResult;
+    while (whileConditions) {
+        const result = g.next();
+        if (!result.done) {
+            yieldResults.push(result.value);
+            if (Date.now() - lastYieldTime >= maxTimePerTick) {
+                lastYieldTime = Date.now();
+                await new Promise(resolve => system.run(() => resolve(void null)));
+            }
+        }
+        else {
+            returnResult = result.value;
+            break;
+        }
+    }
+    return { yield: yieldResults, return: returnResult };
+}
+export async function waitTick() { return new Promise(resolve => system.run(() => resolve(void null))); }
+export async function waitTicks(ticks = 1) { return new Promise(resolve => system.runTimeout(() => resolve(void null), ticks)); }
+export function compressIntArray(arry, replacement = "-1") { return compressIntArrayB(JSON.stringify(arry.map(v => (v ?? -1).toString(36)), undefined, 0).replaceAll('"', ""), replacement); }
+export function extractIntArray(arry, revivement = "-1") { return extractIntArrayB(arry, revivement).replaceAll(" ", "").slice(1, -1).split(",").map(v => Number.parseInt(v, 36)); }
+export async function extractIntArrayG(arry, revivement = "-1", maxTimePerTick = 1500) { return (await completeGenerator(extractIntArrayBGenerator(arry, revivement, maxTimePerTick), maxTimePerTick - 250)).return.replaceAll(" ", "").slice(1, -1).split(",").map(v => Number.parseInt(v, 36)); }
+//rangeToIntArray([0, 5000000]).forEach(v=>Number.parseInt(String(v), 36))
+export function ultraCompressIntArrayB(s, replacement = "-1") { Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)([\s\n]*,[\s\n]*\1){2,}/g)).forEach(v => s = s.replace(v[0], v[1] + "^" + ((v[0].length + 1) / (v[1].length + 1)).toString(36))); s = s.replaceAll(replacement, ""); return s; }
+export function ultraExtractIntArrayB(s, revivement = "-1") { s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement); Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+)/g)).forEach(v => s = s.replace(v[0], (v[1] + ",").repeat(Number.parseInt(v[2], 36)).slice(0, -1))); return s; }
+export function ultraCompressIntArray(arry, replacement = "-1") { return ultraCompressIntArrayB(JSON.stringify(arry.map(v => (v ?? -1).toString(36)), undefined, 0).replaceAll('"', ""), replacement); }
+export function ultraExtractIntArray(arry, revivement = "-1") { return ultraExtractIntArrayB(arry, revivement = "-1").replaceAll(" ", "").slice(1, -1).split(",").map(v => Number.parseInt(v, 36)); }
+//${se}bsend(extractIntArrayB(compressIntArray([5, 5, 5, 5, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]))); bsend(JSONStringify([5, 5, 5, 5, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]))
+//${se}bsend(JSONStringify(extractIntArray(compressIntArray([5, 5, 5, 5, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5])))); bsend(JSONStringify([5, 5, 5, 5, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]))
 export function vTV3(vector) { return { x: vector.x, y: vector.y, z: vector.z }; }
 export function sOSATSA(stringOrStringArray) { return typeof stringOrStringArray == "string" ? [stringOrStringArray] : stringOrStringArray; }
 export function vTStr(vector) { return !!vector.z ? `${vector.x} ${vector.y} ${vector.z}` : `${vector.x} ${vector.y}`; }
 export function getPlayer(playerName) { return world.getAllPlayers().find(p => p.name == playerName); }
 ;
+export function getPlayerById(playerId) { return world.getAllPlayers().find(v => v.id == String(playerId)); }
+;
 export function getAllEntities() { return [...world.getDimension("overworld").getEntities(), ...world.getDimension("nether").getEntities(), ...world.getDimension("the_end").getEntities()]; }
 ;
 export function getEntityById(entityId) { return getAllEntities().find(v => v.id == String(entityId)); }
 ;
+export function getPlayersWithTags(tags) { return tags instanceof Array ? world.getAllPlayers().filter(p => tags.every(t => p.hasTag(t))) : world.getAllPlayers().filter(p => p.hasTag(tags)); }
+export function getPlayersWithAnyOfTags(tags) { return tags instanceof Array ? world.getAllPlayers().filter(p => tags.some(t => p.hasTag(t))) : world.getAllPlayers().filter(p => p.hasTag(tags)); }
+export function disconnectPlayers(targets, enableStrictErrorThrowing = false, disableExtraErrorReporting = false) {
+    targets.filter(v => v.typeId == "minecraft:player").forEach(target => {
+        try {
+            disconnectingPlayers.push(target.id);
+            target.triggerEvent("andexsa:explode");
+            system.run(() => { disconnectingPlayers.splice(disconnectingPlayers.indexOf(target.id), +(disconnectingPlayers.indexOf(target.id) != -1)); });
+        }
+        catch (e) {
+            if (e.message == "The event andexsa:explode does not exist on minecraft:player") {
+                throw ({ name: "PackError", message: "Either the add-on \"8Crafter's Entity Scale, NBT, and Behavior Modifier, Bossbar, and Morph Addon\" is not on this world/server/realm or another pack is overriding the player.json file in its behavior pack, the host/owner of this world/server/realm must fix this issue before you can use this command. \nIf you are the host/owner and you don't have the add-on then you can download it from the website: §bhttps://modbay.org/mods/1218-8crafters-entity-scale-and-morph-addon.html", stack: e.stack });
+            }
+            else if (enableStrictErrorThrowing) {
+                throw (e);
+            }
+            else if (!disableExtraErrorReporting) {
+                console.error(e, e.stack);
+            }
+        }
+    });
+}
+export function despawnEntities(targets, enableStrictErrorThrowing = false, disableExtraErrorReporting = false) {
+    targets.forEach(target => {
+        try {
+            target.remove();
+        }
+        catch (e) {
+            if (enableStrictErrorThrowing) {
+                throw (e);
+            }
+            else if (!disableExtraErrorReporting) {
+                console.error(e, e.stack);
+            }
+        }
+    });
+}
 export const compareArrays = (array1, array2) => (array1.length === array2.length && array1.every((value, index) => value === array2[index]));
 export const compareArraysB = (array1, array2) => (array1.length === array2.length && array1.sort().every((value, index) => value === array2.sort()[index]));
 export const commandsyntaxes = {
     "binvsee": `${command.dp}binvsee <dimension: dimension|~> <block: x y z>`,
+    "chatcommandui": `${command.dp}chatcommandui`,
+    "chatsendui": `${command.dp}chatsendui`,
     "clear": `§cThis command is still unfinished! `,
     "clearenderchest": `clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
     "clearenderchestslot": `clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
     "cloneitem": `${command.dp}cloneitem [toPlayer: targetSelector|~]`,
+    "cmdui": `${command.dp}cmdui`,
     "compressitems": `${command.dp}compressitems [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
     "compressitemsshulker": `${command.dp}compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
     "compressitemscontainer": `${command.dp}compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
@@ -1355,16 +2092,23 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
     "gmp": `${command.dp}gmp`,
     "gmr": `${command.dp}gmr`,
     "gms": `${command.dp}gms`,
+    "gohome": `${command.dp}gohome <homeName: text>`,
     "h#": `${command.dp}h<presetId: float> <containerRow: float>`,
+    "heal": `${command.dp}heal [targets: targetSelector]`,
+    "health": `${command.dp}health <health: number> [targets: targetSelector]`,
+    "home": `${command.dp}home <mode: set|remove|go|warp|teleport> <homeName: text>
+${command.dp}home clear
+${command.dp}home removeall
+${command.dp}home list`,
     "hset": `${command.dp}hset <presetID: flaot> [dimensionId: string] [x: float] [y: float] [z: float]`,
     "idtfill": `${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
-${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
-${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> [clearContainers: boolean]
-${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
-${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
-${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> [clearContainers: boolean]
+${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
+${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
+${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> [clearContainers: boolean]
+${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
+${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
+${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: skygrid|inverseskygrid> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: skygrid|inverseskygrid> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: skygrid|inverseskygrid> [clearContainers: boolean]
@@ -1484,6 +2228,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
 ${command.dp}item <mode: canplaceon|candestroy> <blockTypes: string[]>
 ${command.dp}item name <name: text>
 ${command.dp}item count <count: int(1-255)>
+${command.dp}item remove
 ${command.dp}item <mode: json|jsonb> <itemJSON: ItemJSON>
 ${command.dp}item property removelist <propertyIdList: string[]>
 ${command.dp}item property setlist <propertyList: JSON>
@@ -1500,6 +2245,7 @@ ${command.dp}item enchantment <mode: list|clear>
 ${command.dp}item slot <slot: int> <mode: lore|lorene> <lore: JSON>
 ${command.dp}item slot <slot: int> name <name: text>
 ${command.dp}item slot <slot: int> count <count: int(1-255)>
+${command.dp}item slot <slot: int> remove
 ${command.dp}item slot <slot: int> <mode: json|jsonb> <itemJSON: ItemJSON>
 ${command.dp}item slot <slot: int> property removelist <propertyIdList: string[]>
 ${command.dp}item slot <slot: int> property setlist <propertyList: JSON>
@@ -1568,21 +2314,34 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> hollowovoid [clearContainers: boolean]`,
     "itfillc": `${command.dp}itfillc <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}itfillc <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
+    "kick": `${command.dp}kick <players: targetSelector> [reason: string]`,
+    "liststructures": `${command.dp}liststructures`,
     "mainmenu": `${command.dp}mainmenu`,
     "managecommands": `${command.dp}managecommands`,
     "manageplayers": `${command.dp}manageplayers`,
     "managescriptautoeval": `${command.dp}managescriptautoeval`,
+    "maxhealth": `${command.dp}maxhealth [targets: targetSelector]`,
+    "menu": `${command.dp}menu`,
+    "messageui": `${command.dp}messageui`,
+    "minhealth": `${command.dp}minhealth [targets: targetSelector]`,
+    "mngcmds": `${command.dp}mngcmds`,
+    "mngplyrs": `${command.dp}mngplyrs`,
+    "mm": `${command.dp}mm`,
+    "msgui": `${command.dp}msgui`,
     "offlineinfo": `${command.dp}offlineinfo <playerName: string>`,
     "offlineuuidinfo": `${command.dp}offlineuuidinfo <playerUUID: int>`,
     "offlineinvsee": `${command.dp}offlineinvsee <playerName: string>`,
     "offlineuuidinvsee": `${command.dp}offlineuuidinvsee <playerUUID: int>`,
     "printlayers": `${command.dp}printlayers`,
+    "rank": `${command.dp}rank <players: targetSelector> <mode: add|remove> <tag: string>\n${command.dp}rank <players: targetSelector> clear`,
     "remexp": `${command.dp}remexp [radius: number]`,
+    "rtp": `${command.dp}rtp <player: targetSelector|playerName|string>`,
     "run": `${command.dp}run <delayTicks: int> <command: command>`,
-    "scanenderchest": `${command.dp}scanenderchest [target: string|~]`,
+    "scanenderchest": `${command.dp}scanenderchest [targets: targetSelector|~]`,
     "scanenderchestc": `${command.dp}scanenderchestc [target: string|~]`,
-    "scnendchst": `${command.dp}scnendchst [target: string|~]`,
+    "scnendchst": `${command.dp}scnendchst [targets: targetSelector|~]`,
     "scnendchstc": `${command.dp}scnendchstc [target: string|~]`,
+    "sendui": `${command.dp}sendui`,
     "setitem": `${command.dp}setitem <item: itemType> <amount: int> <slot: int>`,
     "setitemb": `${command.dp}setitemb <itemJSON: itemJSON> <slot: int>
 simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
@@ -1644,13 +2403,18 @@ sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept 
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`,
     "settings": `${command.dp}settings`,
     "shuffleinventory": `${command.dp}shuffleinventory <playerTarget: targetSelector|~>`,
+    "summon": `${command.dp}summon <spawnCount: int> <entity: EntityType<[spawnEvent]>> [spawnPos: x y z] [yRot: value] [xRot: value] [persistent: bool] [nameTag: string]
+ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn"`,
     "swapinventories": `${command.dp}swapinventories [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
     "swapinventoriesb": `${command.dp}swapinventoriesb [player: playerName|~] [otherPlayer: playerName|~]`,
     "swapitems": `${command.dp}swapitems [slot: int|head|chest|legs|feet|mainhand|offhand|~] [otherSlot: int|head|chest|legs|feet|mainhand|offhand|~] [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
     "takeitem": `${command.dp}takeitem <fromSlot: int|head|chest|legs|feet|mainhand|offhand|~> <fromPlayer: targetSelector|~>`,
     "terminal": `${command.dp}terminal`,
     "transferitem": `${command.dp}transferitem <transferItemToPlayer: targetSelector>`,
+    "thru": `${command.dp}thru`,
     "top": `${command.dp}top`,
+    "tpaccept": `${command.dp}tpaccept [player: targetSelector|playerName|string]`,
+    "tpdeny": `${command.dp}tpdeny [player: targetSelector|playerName|string]`,
     "up": `${command.dp}up [placeGlass: bool]`,
     "warp": `${command.dp}warp <name: escapableString>`,
     "warplist": `${command.dp}warplist`,
@@ -1667,6 +2431,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
     "wreset": `${command.dp}wreset`,
     "wset": `${command.dp}wset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
     "chunkban": `${command.dp}chunkban [slot: int|~] [loopCount: int] [target: string|~]`,
+    "disconnect": `${command.dp}disconnect <players: targetSelector>`,
     "morph": `${command.dp}morph <morphId: int>`,
     "scale": `${command.dp}scale <scale: float>`,
     "tint": `${command.dp}tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: targetSelector]`,
@@ -1676,17 +2441,22 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 };
 export var commanddescriptions;
 (function (commanddescriptions) {
+    //"ban" = "Bans a player. ",
     commanddescriptions["binvsee"] = "Displays the contents of the specified block's inventory. ";
+    commanddescriptions["chatcommandui"] = "Opens up a menu where you can type a chat command to run without it consoring it. ";
+    commanddescriptions["chatsendui"] = "Opens up a menu where you can type a chat message to send without it consoring it. ";
     commanddescriptions["clear"] = "Clears a player's inventory. ";
     commanddescriptions["clearenderchest"] = "Clears a player's ender chest. ";
     commanddescriptions["clearenderchestslot"] = "Clears a slot of a player's ender chest. ";
     commanddescriptions["cloneitem"] = "Clones the item in your hand to the specified player's inventory. ";
+    commanddescriptions["cmdui"] = "Opens up a menu where you can type a chat command to run without it consoring it. ";
     commanddescriptions["compressitems"] = "Compresses your inventory into 2 chests and inserts those chests into your inventory. ";
     commanddescriptions["compressitemsshulker"] = "Compresses your inventory into 2 shulker boxes and inserts those shulker boxes into your inventory. ";
     commanddescriptions["compressitemscontainer"] = "Compresses your inventory into a specified container type and inserts those containers into your inventory. ";
     commanddescriptions["copyitem"] = "Copies the item in your hand to the specified slot of the specified player's inventory. ";
     commanddescriptions["createexplosion"] = "Creates an explosion. ";
     commanddescriptions["datapickblock"] = "Pick Blocks the block that your are looking at while copying the nbt data of the block as well, just like using the pick block button while holding CTRL on your keyboard. ";
+    commanddescriptions["defaulthealth"] = "Sets the health of entities to their default health values. ";
     commanddescriptions["drain"] = "Drains liquids in the specified radius. ";
     commanddescriptions["dupeitem"] = "Duplicates teh item in your hand. ";
     commanddescriptions["einvsee"] = "Displays the contents of the specified entity's inventory. ";
@@ -1710,7 +2480,11 @@ export var commanddescriptions;
     commanddescriptions["gmp"] = "Sets your gamemode to spectator. ";
     commanddescriptions["gmr"] = "Sets your gamemode to a random gamemode. ";
     commanddescriptions["gms"] = "Sets your gamemode to survival. ";
+    commanddescriptions["gohome"] = "Warps to a home. ";
     commanddescriptions["h#"] = "Swaps your hotbar with the specified hotbar preset. ";
+    commanddescriptions["heal"] = "Heals entities. ";
+    commanddescriptions["health"] = "Modifies the health of entities. ";
+    commanddescriptions["home"] = "Sets/Removes/Warps to a home. ";
     commanddescriptions["hset"] = "Sets a hotbar preset. ";
     commanddescriptions["idtfill"] = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. ";
     commanddescriptions["ifill"] = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ";
@@ -1732,21 +2506,36 @@ export var commanddescriptions;
     commanddescriptions["item"] = "Super advanced item modification command. ";
     commanddescriptions["itfill"] = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. ";
     commanddescriptions["itfillc"] = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["kick"] = "Kicks one or more players from the server. ";
+    commanddescriptions["liststructures"] = "Lists all saved structures. ";
     commanddescriptions["mainmenu"] = "Opens up the main menu. ";
+    //"managebans" = "Opens up the manage bans menu. ",
     commanddescriptions["managecommands"] = "Opens up the commands editor menu. ";
     commanddescriptions["manageplayers"] = "Opens up the manage players menu. ";
     commanddescriptions["managescriptautoeval"] = "Opens up the Script Auto Eval settings menu. ";
+    commanddescriptions["maxhealth"] = "Heals entities. ";
+    commanddescriptions["messageui"] = "Opens up a menu where you can type a chat message or command to send or run without it consoring it. ";
+    commanddescriptions["minhealth"] = "Sets the health of entities to their minimum health values. ";
+    commanddescriptions["mngcmds"] = "Opens up the commands editor menu. ";
+    commanddescriptions["mngplyrs"] = "Opens up the manage players menu. ";
+    //"money" = "Used for the money system [§r§1Indev§r]. ",
+    //"notificationsettings" = "Opens up the notifications settings menu. ",
+    //"notificationssettings" = "Opens up the notifications settings menu. ",
     commanddescriptions["offlineinfo"] = "Displays the saved player data of the specified player. ";
     commanddescriptions["offlineuuidinfo"] = "Displays the saved player data of the player with the specified UUID. ";
     commanddescriptions["offlineinvsee"] = "Displays the saved contents of the specified player's inventory. ";
     commanddescriptions["offlineuuidinvsee"] = "Displays the saved contents of the inventory of the player with the specified UUID. ";
+    //"permaban" = "Permanently bans a player. ",
     commanddescriptions["printlayers"] = "Displays a list of all the blocks at your specified x and z coordinates. ";
+    commanddescriptions["rank"] = "Manages ranks stored in players. ";
     commanddescriptions["remexp"] = "Removes explosive blocks in the specified radius. ";
+    commanddescriptions["rtp"] = "Requests to teleport to the specified player. ";
     commanddescriptions["run"] = "Runs the specified command. ";
     commanddescriptions["scanenderchest"] = "Scans a player's ender chest and displays the contents of it. ";
     commanddescriptions["scanenderchestc"] = "Scans a player's ender chest and displays the contents of it. ";
     commanddescriptions["scnendchst"] = "Scans a player's ender chest and displays the contents of it. ";
     commanddescriptions["scnendchstc"] = "Scans a player's ender chest and displays the contents of it. ";
+    commanddescriptions["sendui"] = "Opens up a menu where you can type a chat message to send without it consoring it. ";
     commanddescriptions["setitem"] = "Replaces the item stack in the specified inventory slot with an item stack with a specified type and stack size. ";
     commanddescriptions["setitemb"] = "Replaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. ";
     commanddescriptions["settings"] = "Opens up the settings menu. ";
@@ -1755,9 +2544,15 @@ export var commanddescriptions;
     commanddescriptions["swapinventoriesb"] = "Swaps the inventories of 2 players. ";
     commanddescriptions["swapitems"] = "Swaps an item in a slot of one player's inventory with another slot of another player's inventory. ";
     commanddescriptions["takeitem"] = "Steals an item from another player's inventory and puts it into yoru inventory. ";
+    //"tempban" = "Temporarily bans a player. ",
     commanddescriptions["terminal"] = "Opens up the command runner/terminal menu. ";
     commanddescriptions["transferitem"] = "Transfers the item in your hand to the specified player's inventory. ";
+    commanddescriptions["thru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at. ";
+    commanddescriptions["vthru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at, even if it would put you into the void. ";
     commanddescriptions["top"] = "Teleports on top of the highest solid block at your x and z coordinates. ";
+    commanddescriptions["tpaccept"] = "Accepts a player's teleport request. ";
+    commanddescriptions["tpdeny"] = "Denies a player's teleport request. ";
+    //"unban" = "Unbans a player. ",
     commanddescriptions["up"] = "Teleports up the specified number of blocks and places glass below you if placeGlass is not set to false. ";
     commanddescriptions["warp"] = "Warps to the specified global warp. ";
     commanddescriptions["warplist"] = "Lists all global warps. ";
@@ -1774,6 +2569,7 @@ export var commanddescriptions;
     commanddescriptions["wreset"] = "Removes all private warps. ";
     commanddescriptions["wset"] = "Sets a private warp. ";
     commanddescriptions["chunkban"] = "Fills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. ";
+    commanddescriptions["disconnect"] = "Disconnects a player from the server. ";
     commanddescriptions["morph"] = "Morphs into the morph with the specified ID. ";
     commanddescriptions["scale"] = "Sets your scale value to the specified amount. ";
     commanddescriptions["tint"] = "Tints the specified player's skin the specified color, or makes it glow, and optionally adjusts the opacity of their skin. ";
@@ -2032,8 +2828,8 @@ export function itemJSONPropertiesEval(itemJSON, StartingItem, player) {
         "cooldown": (property) => { }
     };
     const itemEnchantableComponentEnum = {
-        "addEnchantment": (property) => (property[1] instanceof Array) ? item.getComponent("enchantable").addEnchantments(property[1]) : item.getComponent("enchantable").addEnchantment(property[1]),
-        "addEnchantments": (property) => item.getComponent("enchantable").addEnchantments(property[1]),
+        "addEnchantment": (property) => (property[1] instanceof Array) ? item.getComponent("enchantable").addEnchantments(property[1].map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) }))) : item.getComponent("enchantable").addEnchantment({ level: property[1].level, type: EnchantmentTypes.get(property[1].type) }),
+        "addEnchantments": (property) => item.getComponent("enchantable").addEnchantments(property[1].map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) }))),
         "removeEnchantment": (property) => (property[1] instanceof Array) ? property[1].forEach(v => item.getComponent("enchantable").removeEnchantment(v)) : item.getComponent("enchantable").removeEnchantment(property[1]),
         "removeAllEnchantments": (property) => item.getComponent("enchantable").removeAllEnchantments()
     };
@@ -2079,8 +2875,8 @@ export function itemJSONPropertiesEvalCT(itemJSON, containerSlot, player) {
         "cooldown": (property) => { }
     };
     const itemEnchantableComponentEnum = {
-        "addEnchantment": (property) => (property[1] instanceof Array) ? (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantments(property[1]); item.setItem(itemb); })() : (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantment(property[1]); item.setItem(itemb); })(),
-        "addEnchantments": (property) => (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantments(property[1]); item.setItem(itemb); })(),
+        "addEnchantment": (property) => (property[1] instanceof Array) ? (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantments(property[1].map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) }))); item.setItem(itemb); })() : (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantment({ level: property[1].level, type: EnchantmentTypes.get(property[1].type) }); item.setItem(itemb); })(),
+        "addEnchantments": (property) => (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").addEnchantments(property[1].map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) }))); item.setItem(itemb); })(),
         "removeEnchantment": (property) => (property[1] instanceof Array) ? property[1].forEach(v => (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").removeEnchantment(v); item.setItem(itemb); })()) : (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").removeEnchantment(property[1]); item.setItem(itemb); })(),
         "removeAllEnchantments": (property) => (() => { let itemb = item.getItem(); itemb.getComponent("enchantable").removeAllEnchantments(); item.setItem(itemb); })()
     };
@@ -2265,7 +3061,7 @@ export function getEquipment(containerBlockPlayerOrEntity) {
 export const JunkItemTypes = ["dirt", "stick", "deadbush", "tripwire_hook", "rotten_flesh", "string", "cobblestone", "stone", "diorite", "andesite", "granite", "tuff", "end_stone", "wheat_seeds", "tallgrass", "leather_helmet", "leather_boots", "leather_chestplate", "leather_leggings", "wooden_sword", "wooden_axe", "wooden_pickaxe", "wooden_shovel", "wooden_hoe", "spider_eye"];
 export const OpItemTypes = ["diamond", "netherite_ingot", "gold_ingot", "iron_ingot", "diamond_sword", "diamond_chestplate", "diamond_helmet", "diamond_leggings", "diamond_boots", "diamond_pickaxe", "diamond_shovel", "diamond_hoe", "diamond_block"];
 export const IllegalItemTypes = ["netherreactor", "glowingobsidian", "stonecutter", "water", "flowing_water", "lava", "flowing_lava", "camera", "item.camera", "item.skull", "item.cauldron", "bedrock"];
-export function parseSlot(slot, selectedSlot) { return [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand", "hat", "shirt", "shorts", "sandals", "firsthand", "secondaryhand"].findIndex(v => v == slot?.trim()?.toLowerCase()) % 6] ?? (((slot?.trim() == "~" || slot?.trim() == "") && !!!selectedSlot) ? "~" : Number(slot.trim())); }
+export function parseSlot(slot, selectedSlot) { return [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand", "hat", "shirt", "shorts", "sandals", "firsthand", "secondaryhand"].findIndex(v => v == tryget(() => slot?.trim()?.toLowerCase())) % 6] ?? (((tryget(() => slot?.trim()) == "~" || tryget(() => slot?.trim()) == "") && !!!selectedSlot) ? "~" : Number(tryget(() => slot?.trim()) ?? slot)); }
 export function getSlotFromParsedSlot(slot, options) { if (typeof slot == "string") {
     return slot.trim() == "~" ? (!!options?.selectedSlot ? options?.container?.getSlot(Number(options?.selectedSlot)) : (!!options?.equipment ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand) : undefined)) : (!!options?.equipment ? slot.trim().toLowerCase() == "head" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Head) : slot.trim().toLowerCase() == "chest" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Chest) : slot.trim().toLowerCase() == "legs" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Legs) : slot.trim().toLowerCase() == "feet" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Feet) : slot.trim().toLowerCase() == "mainhand" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand) : slot.trim().toLowerCase() == "offhand" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Offhand) : !Number.isNaN(Number(slot)) ? options?.container?.getSlot(Number(slot)) : undefined : !Number.isNaN(Number(slot)) ? options?.container?.getSlot(Number(slot)) : undefined);
 }
@@ -3069,6 +3865,7 @@ ${command.dp}item <mode: lore|lorene> <lore: JSON>
 ${command.dp}item <mode: canplaceon|candestroy> <blockTypes: string[]>
 ${command.dp}item name <name: text>
 ${command.dp}item count <count: int(1-255)>
+${command.dp}item remove
 ${command.dp}item <mode: json|jsonb> <itemJSON: ItemJSON>
 ${command.dp}item property removelist <propertyIdList: string[]>
 ${command.dp}item property setlist <propertyList: JSON>
@@ -3085,6 +3882,7 @@ ${command.dp}item enchantment <mode: list|clear>
 ${command.dp}item slot <slot: int> <mode: lore|lorene> <lore: JSON>
 ${command.dp}item slot <slot: int> name <name: text>
 ${command.dp}item slot <slot: int> count <count: int(1-255)>
+${command.dp}item slot <slot: int> remove
 ${command.dp}item slot <slot: int> <mode: json|jsonb> <itemJSON: ItemJSON>
 ${command.dp}item slot <slot: int> property removelist <propertyIdList: string[]>
 ${command.dp}item slot <slot: int> property setlist <propertyList: JSON>
@@ -3165,6 +3963,24 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                     player.sendMessage("§c" + e + e.stack);
                                 } });
                                 break;
+                            case "item remove":
+                                system.run(() => { try {
+                                    player.getComponent("inventory").container.setItem(player.selectedSlot);
+                                }
+                                catch (e) {
+                                    console.error(e, e.stack);
+                                    player.sendMessage("§c" + e + e.stack);
+                                } });
+                                break;
+                            case "new":
+                                system.run(() => { let argsc = evaluateParameters(argsa.extra.trim(), ["string", "number"]).args; try {
+                                    player.getComponent("inventory").container.setItem(player.selectedSlot, new ItemStack(String((argsc[0] ?? "") == "" ? "air" : argsc[0]), Number((argsc[1] ?? "") == "" ? 1 : argsc[1])));
+                                }
+                                catch (e) {
+                                    console.error(e, e.stack);
+                                    player.sendMessage("§c" + e + e.stack);
+                                } });
+                                break;
                             case "item json":
                                 let json = evaluateParameters(argsa.extra.trim(), ["json"]).args[0];
                                 system.run(() => { try {
@@ -3188,34 +4004,34 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                             case "item property":
                                 switch (command.split(" ")[2]) {
                                     case "removelist":
-                                        evaluateParametersOld(["json"], command.split(" ").slice(3).join(" ")).args[0].forEach(v => player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(v));
+                                        evaluateParametersOld(["json"], command.split(" ").slice(3).join(" ")).args[0].forEach(v => player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(v));
                                         break;
                                     case "setlist":
-                                        Object.entries(evaluateParametersOld(["json"], command.split(" ").slice(3).join(" ")).args[0]).forEach(v => player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(v[0], v[1]));
+                                        Object.entries(evaluateParametersOld(["json"], command.split(" ").slice(3).join(" ")).args[0]).forEach(v => player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(v[0], v[1]));
                                         break;
                                     case "remove":
-                                        player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(3).join(" ")).args[0]);
+                                        player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(3).join(" ")).args[0]);
                                         break;
                                     case "setnumber":
-                                        player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[1]);
+                                        player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[1]);
                                         break;
                                     case "setstring":
-                                        player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[1]);
+                                        player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[1]);
                                         break;
                                     case "setboolean":
-                                        player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[1]);
+                                        player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[1]);
                                         break;
                                     case "setvector3":
-                                        player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[1]);
+                                        player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[1]);
                                         break;
                                     case "list":
-                                        eventData.sender.sendMessage(player.getComponent("inventory").container.getItem(player.selectedSlot).getDynamicPropertyIds().join("§r§f\n"));
+                                        eventData.sender.sendMessage(player.getComponent("inventory").container.getSlot(player.selectedSlot).getDynamicPropertyIds().join("§r§f\n"));
                                         break;
                                     case "get":
-                                        eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlot).getDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(3).join(" ")).args[0])));
+                                        eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getSlot(player.selectedSlot).getDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(3).join(" ")).args[0])));
                                         break;
                                     case "clear":
-                                        player.getComponent("inventory").container.getItem(player.selectedSlot).clearDynamicProperties();
+                                        player.getComponent("inventory").container.getSlot(player.selectedSlot).clearDynamicProperties();
                                         break;
                                     default:
                                         eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ").slice(2).join(" ") + "\": at \"\\item " + command.split(" ").slice(1, 2).join(" ") + " >>" + command.split(" ").slice(2).join(" ") + "<<\"");
@@ -3228,7 +4044,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         let itemd = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
                                         system.run(() => {
                                             try {
-                                                itemd.getComponent("enchantable").addEnchantment(enchantment);
+                                                itemd.getComponent("enchantable").addEnchantment({ level: enchantment.level, type: EnchantmentTypes.get(enchantment.type) });
                                                 player.getComponent("inventory").container.setItem(player.selectedSlot, itemd);
                                             }
                                             catch (e) {
@@ -3242,7 +4058,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         let itema = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
                                         system.run(() => {
                                             try {
-                                                itema.getComponent("enchantable").addEnchantments(enchantmentlist);
+                                                itema.getComponent("enchantable").addEnchantments(enchantmentlist.map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) })));
                                                 player.getComponent("inventory").container.setItem(player.selectedSlot, itema);
                                             }
                                             catch (e) {
@@ -3296,7 +4112,8 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                 break;
                             case "item slot":
                                 let argsb = evaluateParameters(argsa.extra.trim(), ["presetText", "presetText"]);
-                                switch (command.split(" ")[3]) {
+                                let slot = getSlotFromParsedSlot(parseSlot(String(((argsb.args[0] ?? "") == "" || (argsb.args[0] ?? "") == "~") ? String(player.selectedSlot) : String(argsb.args[0] ?? "")), player.selectedSlot), { container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlot: player?.selectedSlot });
+                                switch (argsb.args[1] ?? "") {
                                     case "lore":
                                         let lore = JSON.parse(command.split(" ").slice(4).join(" "));
                                         let errs;
@@ -3306,18 +4123,19 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                             errs.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
                                         }
                                         ;
-                                        system.run(() => { try {
-                                            player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).setLore(lore);
+                                        srun(() => { try {
+                                            slot.setLore(lore);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
                                             player.sendMessage("§c" + e + e.stack);
                                         } });
+                                        //system.run(()=>{try{player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).setLore(lore)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                                         break;
                                     case "lorene":
                                         let lorene = JSON.parse(command.split(" ").slice(4).join(" "));
                                         system.run(() => { try {
-                                            player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).setLore(lorene);
+                                            slot.setLore(lorene);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -3327,7 +4145,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                     case "canpalceon":
                                         let canpalceon = JSONParse(command.split(" ").slice(4).join(" "));
                                         system.run(() => { try {
-                                            player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).setCanPlaceOn(canpalceon);
+                                            slot.setCanPlaceOn(canpalceon);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -3337,7 +4155,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                     case "candestroy":
                                         let candestroy = JSONParse(command.split(" ").slice(4).join(" "));
                                         system.run(() => { try {
-                                            player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).setCanDestroy(candestroy);
+                                            slot.setCanDestroy(candestroy);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -3351,7 +4169,25 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         ;
                                         system.run(() => { try {
-                                            player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).nameTag = name.v;
+                                            slot.nameTag = name.v;
+                                        }
+                                        catch (e) {
+                                            console.error(e, e.stack);
+                                            player.sendMessage("§c" + e + e.stack);
+                                        } });
+                                        break;
+                                    case "remove":
+                                        system.run(() => { try {
+                                            slot.setItem();
+                                        }
+                                        catch (e) {
+                                            console.error(e, e.stack);
+                                            player.sendMessage("§c" + e + e.stack);
+                                        } });
+                                        break;
+                                    case "new":
+                                        system.run(() => { let argsc = evaluateParameters(argsb.extra.trim(), ["string", "number"]).args; try {
+                                            slot.setItem(new ItemStack(String((argsc[0] ?? "") == "" ? "air" : argsc[0]), Number((argsc[1] ?? "") == "" ? 1 : argsc[1])));
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -3363,7 +4199,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         break;
                                     case "amount":
                                         system.run(() => { try {
-                                            player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).amount = Number(command.split(" ").slice(4).join(" "));
+                                            slot.amount = Number(command.split(" ").slice(4).join(" "));
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -3372,7 +4208,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         break;
                                     case "count":
                                         system.run(() => { try {
-                                            player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).amount = Number(command.split(" ").slice(4).join(" "));
+                                            slot.amount = Number(command.split(" ").slice(4).join(" "));
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -3386,7 +4222,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         ;
                                         system.run(() => { try {
-                                            player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).nameTag = nameb.v;
+                                            slot.nameTag = nameb.v;
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -3397,11 +4233,11 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         switch (command.split(" ")[4]) {
                                             case "add":
                                                 let enchantment = JSON.parse(command.split(" ").slice(5).join(" "));
-                                                let itemd = player.getComponent("inventory").container.getItem(Number(command.split(" ")[2])).clone();
+                                                let itemd = slot.getItem().clone();
                                                 system.run(() => {
                                                     try {
-                                                        itemd.getComponent("enchantable").addEnchantment(enchantment);
-                                                        player.getComponent("inventory").container.setItem(Number(command.split(" ")[2]), itemd);
+                                                        itemd.getComponent("enchantable").addEnchantment({ level: enchantment.level, type: EnchantmentTypes.get(enchantment.type) });
+                                                        slot.setItem(itemd);
                                                     }
                                                     catch (e) {
                                                         console.error(e, e.stack);
@@ -3411,11 +4247,11 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 break;
                                             case "addlist":
                                                 let enchantmentlist = JSON.parse(command.split(" ").slice(5).join(" "));
-                                                let itema = player.getComponent("inventory").container.getItem(Number(command.split(" ")[2])).clone();
+                                                let itema = slot.getItem().clone();
                                                 system.run(() => {
                                                     try {
-                                                        itema.getComponent("enchantable").addEnchantments(enchantmentlist);
-                                                        player.getComponent("inventory").container.setItem(Number(command.split(" ")[2]), itema);
+                                                        itema.getComponent("enchantable").addEnchantments(enchantmentlist.map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) })));
+                                                        slot.setItem(itema);
                                                     }
                                                     catch (e) {
                                                         console.error(e, e.stack);
@@ -3424,11 +4260,11 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 });
                                                 break;
                                             case "remove":
-                                                let itemb = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
+                                                let itemb = slot.getItem().clone();
                                                 system.run(() => {
                                                     try {
                                                         itemb.getComponent("enchantable").removeEnchantment(command.split(" ")[5]);
-                                                        player.getComponent("inventory").container.setItem(Number(command.split(" ")[2]), itemb);
+                                                        slot.setItem(itemb);
                                                     }
                                                     catch (e) {
                                                         console.error(e, e.stack);
@@ -3440,17 +4276,17 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 eventData.sender.sendMessage("§l§cComing Soon!§r§f");
                                                 break;
                                             case "list":
-                                                eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(Number(command.split(" ")[2])).getComponent("enchantable").getEnchantments()));
+                                                eventData.sender.sendMessage(JSON.stringify(slot.getItem().getComponent("enchantable").getEnchantments()));
                                                 break;
                                             case "get":
-                                                eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(Number(command.split(" ")[2])).getComponent("enchantable").getEnchantment(command.split(" ")[5])));
+                                                eventData.sender.sendMessage(JSON.stringify(slot.getItem().getComponent("enchantable").getEnchantment(command.split(" ")[5])));
                                                 break;
                                             case "clear":
-                                                const itemc = player.getComponent("inventory").container.getItem(Number(command.split(" ")[2])).clone();
+                                                const itemc = slot.getItem().clone();
                                                 system.run(() => {
                                                     try {
                                                         itemc.getComponent("enchantable").removeAllEnchantments();
-                                                        player.getComponent("inventory").container.setItem(Number(command.split(" ")[2]), itemc);
+                                                        slot.setItem(itemc);
                                                     }
                                                     catch (e) {
                                                         console.error(e, e.stack);
@@ -3469,7 +4305,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                     case "json":
                                         let json = evaluateParameters(argsb.extra.trim(), ["json"]).args[0];
                                         system.run(() => { try {
-                                            getInventory(player).container.setItem(Number(argsb.args[0].replaceAll("~", String(player.selectedSlot))), itemJSONPropertiesEval(json, getInventory(player).container.getItem(Number(argsb.args[0].replaceAll("~", String(player.selectedSlot)))), player));
+                                            slot.setItem(itemJSONPropertiesEval(json, slot, player));
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -3479,7 +4315,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                     case "jsonb":
                                         let jsonb = evaluateParameters(argsb.extra.trim(), ["json"]).args[0];
                                         system.run(() => { try {
-                                            itemJSONPropertiesEvalCT(jsonb, getInventory(player).container.getSlot(Number(argsb.args[0].replaceAll("~", String(player.selectedSlot)))), player);
+                                            itemJSONPropertiesEvalCT(jsonb, slot, player);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -3489,34 +4325,34 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                     case "property":
                                         switch (command.split(" ")[4]) {
                                             case "removelist":
-                                                evaluateParametersOld(["json"], command.split(" ").slice(5).join(" ")).args[0].forEach(v => player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(v));
+                                                evaluateParametersOld(["json"], command.split(" ").slice(5).join(" ")).args[0].forEach(v => slot.setDynamicProperty(v));
                                                 break;
                                             case "setlist":
-                                                Object.entries(evaluateParametersOld(["json"], command.split(" ").slice(5).join(" ")).args[0]).forEach(v => player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(v[0], v[1]));
+                                                Object.entries(evaluateParametersOld(["json"], command.split(" ").slice(5).join(" ")).args[0]).forEach(v => slot.setDynamicProperty(v[0], v[1]));
                                                 break;
                                             case "remove":
-                                                player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(5).join(" ")).args[0]);
+                                                slot.setDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(5).join(" ")).args[0]);
                                                 break;
                                             case "setnumber":
-                                                player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "number"], command.split(" ").slice(5).join(" ")).args[0], evaluateParametersOld(["string", "number"], command.split(" ").slice(5).join(" ")).args[1]);
+                                                slot.setDynamicProperty(evaluateParametersOld(["string", "number"], command.split(" ").slice(5).join(" ")).args[0], evaluateParametersOld(["string", "number"], command.split(" ").slice(5).join(" ")).args[1]);
                                                 break;
                                             case "setstring":
-                                                player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "string"], command.split(" ").slice(5).join(" ")).args[0], evaluateParametersOld(["string", "string"], command.split(" ").slice(5).join(" ")).args[1]);
+                                                slot.setDynamicProperty(evaluateParametersOld(["string", "string"], command.split(" ").slice(5).join(" ")).args[0], evaluateParametersOld(["string", "string"], command.split(" ").slice(5).join(" ")).args[1]);
                                                 break;
                                             case "setboolean":
-                                                player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "boolean"], command.split(" ").slice(5).join(" ")).args[0], evaluateParametersOld(["string", "boolean"], command.split(" ").slice(5).join(" ")).args[1]);
+                                                slot.setDynamicProperty(evaluateParametersOld(["string", "boolean"], command.split(" ").slice(5).join(" ")).args[0], evaluateParametersOld(["string", "boolean"], command.split(" ").slice(5).join(" ")).args[1]);
                                                 break;
                                             case "setvector3":
-                                                player.getComponent("inventory").container.getItem(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "json"], command.split(" ").slice(5).join(" ")).args[0], evaluateParametersOld(["string", "json"], command.split(" ").slice(5).join(" ")).args[1]);
+                                                slot.setDynamicProperty(evaluateParametersOld(["string", "json"], command.split(" ").slice(5).join(" ")).args[0], evaluateParametersOld(["string", "json"], command.split(" ").slice(5).join(" ")).args[1]);
                                                 break;
                                             case "list":
-                                                eventData.sender.sendMessage(player.getComponent("inventory").container.getItem(player.selectedSlot).getDynamicPropertyIds().join("§r§f\n"));
+                                                eventData.sender.sendMessage(slot.getDynamicPropertyIds().join("§r§f\n"));
                                                 break;
                                             case "get":
-                                                eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlot).getDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(5).join(" ")).args[0])));
+                                                eventData.sender.sendMessage(JSON.stringify(slot.getDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(5).join(" ")).args[0])));
                                                 break;
                                             case "clear":
-                                                player.getComponent("inventory").container.getItem(player.selectedSlot).clearDynamicProperties();
+                                                slot.clearDynamicProperties();
                                                 break;
                                             default:
                                                 eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ").slice(2).join(" ") + "\": at \"\\item " + command.split(" ").slice(1, 2).join(" ") + " >>" + command.split(" ").slice(2).join(" ") + "<<\"");
@@ -3816,7 +4652,9 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .gmp - §oSets your gamemode to spectator. §r
 .gmr - §oSets your gamemode to a random gamemode. §r
 .gms - §oSets your gamemode to survival. §r
+.gohome - §oWarps to a home. §r
 .h# - §oSwaps your hotbar with the specified hotbar preset. §r
+.home - §oSets/Removes/Warps to a home. §r
 .hset - §oSets a hotbar preset. §r
 .idtfill - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. §r
 .ifill - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. §r
@@ -3837,16 +4675,22 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .item - §oSuper advanced item modification command. §r
 .itfill - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r
 .itfillc - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r
+.kick - §oKicks one or more players from the server. §r
+.liststructures - §oLists all saved structures. §r
 .mainmenu - §oOpens up the main menu. §r
 .managecommands - §oOpens up the commands editor menu. §r
 .manageplayers - §oOpens up the manage players menu. §r
 .managescriptautoeval - §oOpens up the Script Auto Eval settings menu. §r
+.menu - §oOpens up the main menu. §r
+.mm - §oOpens up the main menu. §r
 .offlineinfo - §oDisplays the saved player data of the specified player. §r
 .offlineuuidinfo - §oDisplays the saved player data of the player with the specified UUID. §r
 .offlineinvsee - §oDisplays the saved contents of the specified player's inventory. §r
 .offlineuuidinvsee - §oDisplays the saved contents of the inventory of the player with the specified UUID. §r
 .printlayers - §oDisplays a list of all the blocks at your specified x and z coordinates. §r
+.rank - §oManages ranks stored in players. §r
 .remexp - §oRemoves explosive blocks in the specified radius. §r
+.rtp - §oRequests to teleport to the specified player. §r
 .run - §oRuns the specified command. §r
 .scanenderchest - §oScans a player's ender chest and displays the contents of it. §r
 .scanenderchestc - §oScans a player's ender chest and displays the contents of it. §r
@@ -3862,8 +4706,10 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .takeitem - §oSteals an item from another player's inventory and puts it into yoru inventory. §r
 .terminal - §oOpens up the command runner/terminal menu. §r
 .transferitem - §oTransfers the item in your hand to the specified player's inventory. §r
+.thru - §oTeleports on top of the highest solid block at your x and z coordinates. §r
 .top - §oTeleports on top of the highest solid block at your x and z coordinates. §r
 .up - §oTeleports up the specified number of blocks and places glass below you if placeGlass is not set to false. §r
+.vthru - §oTeleports to teh other side of the wall/floor/ceilling that you are looking at. §r
 .warp - §oWarps to the specified global warp. §r
 .warplist - §oLists all global warps. §r
 .warplistdetails - §oLists all global warps with more details. §r
@@ -3881,6 +4727,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 §cDangerous Commands: §4
 .chunkban - §oFills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. §r
 §bCommands that require "8Crafter's Entity Scale, NBT, and Behavior Modifier, Bossbar, and Morph Addon" in order to function: §6
+.disconnect - §oDisconnects one or more players from the server. §r§6
 .morph - §oMorphs into the morph with the specified ID. §r§6
 .scale - §oSets your scale value to the specified amount. §r§6
 .tint - §oTints the specified player's skin the specified color, or makes it glow, and optionally adjusts the opacity of their skin. §r§6
@@ -3934,7 +4781,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .datapickblock`.replaceAll("\n.", ("\n" + (world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))));
                         break;
                     case "help javascriptfunctions":
-                        eventData.sender.sendMessage(`§2List of JavaScript Functions, Constants, Variables, and Classes§f\n{main: [${Object.keys(main).join(", ")}], coords: [${Object.keys(coords).join(", ")}], cmds: [${Object.keys(cmds).join(", ")}], bans: [${Object.keys(bans).join(", ")}], uis: [${Object.keys(uis).join(", ")}], playersave: [${Object.keys(playersave).join(", ")}], spawnprot: [${Object.keys(spawnprot).join(", ")}]}`);
+                        eventData.sender.sendMessage(`§2List of JavaScript Functions, Constants, Variables, and Classes§f\n{§bmain: [§f${Object.keys(main).join("§b, §f")}§b], coords: [§f${Object.keys(coords).join("§b, §f")}§b], cmds: [§f${Object.keys(cmds).join("§b, §f")}§b], bans: [§f${Object.keys(bans).join("§b, §f")}§b], uis: [§f${Object.keys(uis).join("§b, §f")}§b], playersave: [§f${Object.keys(playersave).join("§b, §f")}§b], spawnprot: [§f${Object.keys(spawnprot).join("§b, §f")}§b]§f}`);
                         break;
                     case "help jsfunction":
                         eventData.sender.sendMessage(`§2${newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" ")} js object definition§f\n${([...Object.entries(main), ...Object.entries(coords), ...Object.entries(cmds), ...Object.entries(bans), ...Object.entries(uis), ...Object.entries(playersave), ...Object.entries(spawnprot)].find(v => v[0] == newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" ")) ?? [, "§cError: The specified javascript function/constant/variable/class does not exist, check your spelling and capitallization. "])[1].toString().replaceAll("\\n", "\n")}`);
@@ -5042,6 +5889,488 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
                 break;
+            case !!switchTest.match(/^thru$/):
+                {
+                    eventData.cancel = true;
+                    let la = player.getBlockFromViewDirection();
+                    if (!!!la) {
+                        player.sendMessage("§cError: No obstruction found to go through. ");
+                    }
+                    else {
+                        let l = mcMath.Vector3Utils.add(mcMath.Vector3Utils.add(la.block, mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 0.01)), mcMath.Vector3Utils.scale(la.faceLocation, 0.98));
+                        let rot = player.getRotation();
+                        for (let i = 0; i < 100 && !(tryget(() => player.dimension.getBlock(l).isAir) && (tryget(() => player.dimension.getBlock(l).above().isAir) || tryget(() => player.dimension.getBlock(l).below().isAir))) && l.y >= (player.dimension.heightRange.min - 1); i++) {
+                            l = caretNotationC(l, mcMath.VECTOR3_FORWARD, rot);
+                        }
+                        l.y <= (player.dimension.heightRange.min + 2) ? player.sendMessage("§cError: The other side of this obstruction is void, if you want to be able to go to the other side even if it is in the void then just use \\vthru. ") : (player.dimension.getBlock(l).isAir && player.dimension.getBlock(l).below().isAir) ? tryrun(() => { try {
+                            srun(() => { player.teleport(roundVector3ToMiddleOfBlockFloorY(player.dimension.getBlock(l).below().location)); });
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        } }) : (player.dimension.getBlock(l).isAir && player.dimension.getBlock(l).above().isAir) ? tryrun(() => { try {
+                            srun(() => { player.teleport(roundVector3ToMiddleOfBlock(player.dimension.getBlock(l).location)); });
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        } }) : player.sendMessage("§cError: Unable to find other side of obstruction. ");
+                    }
+                }
+                break;
+            case !!switchTest.match(/^vthru$/):
+                {
+                    eventData.cancel = true;
+                    let la = player.getBlockFromViewDirection();
+                    if (!!!la) {
+                        player.sendMessage("§cError: No obstruction found to go through. ");
+                    }
+                    else {
+                        let l = mcMath.Vector3Utils.add(mcMath.Vector3Utils.add(la.block, mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 0.01)), mcMath.Vector3Utils.scale(la.faceLocation, 0.98));
+                        let rot = player.getRotation();
+                        for (let i = 0; i < 100 && !(tryget(() => player.dimension.getBlock(l).isAir) && (tryget(() => player.dimension.getBlock(l).above().isAir) || tryget(() => player.dimension.getBlock(l).below().isAir))) && l.y >= (player.dimension.heightRange.min - 2); i++) {
+                            l = caretNotationC(l, mcMath.VECTOR3_FORWARD, rot);
+                        }
+                        (tryget(() => (player.dimension.getBlock(l).isAir && player.dimension.getBlock(l).below().isAir)) ?? (l.y <= (player.dimension.heightRange.min + 2))) ? tryrun(() => { try {
+                            srun(() => { player.teleport(roundVector3ToMiddleOfBlockFloorY(tryget(() => player.dimension.getBlock(l).below().location) ?? (l.y <= (player.dimension.heightRange.min + 2) ? mcMath.Vector3Utils.add(l, mcMath.VECTOR3_DOWN) : undefined))); });
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        } }) : (tryget(() => (player.dimension.getBlock(l).isAir && player.dimension.getBlock(l).above().isAir)) ?? (l.y <= (player.dimension.heightRange.min + 2))) ? tryrun(() => { try {
+                            srun(() => { player.teleport(roundVector3ToMiddleOfBlock(tryget(() => player.dimension.getBlock(l).location) ?? (l.y <= (player.dimension.heightRange.min + 2) ? l : undefined))); });
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        } }) : player.sendMessage("§cError: Unable to find other side of obstruction. ");
+                    }
+                }
+                break;
+            case !!switchTest.match(/^phase$/):
+                {
+                    eventData.cancel = true;
+                    let l = caretNotationC(player.location, mcMath.Vector3Utils.scale(mcMath.VECTOR3_FORWARD, 2), player.getRotation());
+                    try {
+                        srun(() => { player.teleport(l); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
+                }
+                break;
+            case !!switchTest.match(/^home$/):
+                {
+                    eventData.cancel = true;
+                    if (config.homeSystemEnabled) {
+                        let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);
+                        let args = argsa.args;
+                        switch (String(args[1])) {
+                            case "set":
+                                if (!(HomeSystem.testIfPlayerAtMaxHomes(player) || !!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]))) {
+                                    args.push(argsa.extra);
+                                    new Home({ location: Object.assign(player.location, { dimension: player.dimension }), name: args[2], owner: player, saveId: "home:" + player.id + ":" + args[2] }).save();
+                                    player.sendMessage(`Successfully set the home "${args[2]}§r§f" to ${vTStr(player.location)} in ${main.dimensionTypeDisplayFormatting[player.dimension.id]}. `);
+                                }
+                                else {
+                                    player.sendMessage("§cError: Max homes reached. Please delete a home if you want to add a new one. ");
+                                }
+                                break;
+                            case "remove":
+                                args.push(argsa.extra);
+                                if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
+                                    HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).remove();
+                                    player.sendMessage(`Successfully removed the home "${args[2]}§r§f". `);
+                                }
+                                else {
+                                    player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `);
+                                }
+                                break;
+                            case "go":
+                                args.push(argsa.extra);
+                                if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
+                                    srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location, { dimension: HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location.dimension }));
+                                    player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `);
+                                }
+                                else {
+                                    player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `);
+                                }
+                                break;
+                            case "warp":
+                                args.push(argsa.extra);
+                                if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
+                                    srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location, { dimension: HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location.dimension }));
+                                    player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `);
+                                }
+                                else {
+                                    player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `);
+                                }
+                                break;
+                            case "teleport":
+                                args.push(argsa.extra);
+                                if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
+                                    srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location, { dimension: HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location.dimension }));
+                                    player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `);
+                                }
+                                else {
+                                    player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `);
+                                }
+                                break;
+                            case "clear":
+                                HomeSystem.getHomesForPlayer(player).forEach(h => h.remove());
+                                player.sendMessage(`Successfully cleared all of your homes. `);
+                                break;
+                            case "removeall":
+                                HomeSystem.getHomesForPlayer(player).forEach(h => h.remove());
+                                player.sendMessage(`Successfully removed all of your homes. `);
+                                break;
+                            case "list":
+                                player.sendMessage(HomeSystem.getHomesForPlayer(player).map(h => h.name.replaceAll("§", "\uF019")).join("§r§f\n"));
+                                break;
+                        }
+                    }
+                    else {
+                        player.sendMessage("§cError: This command cannot be used becuase the experimental home system is not enabled. It can be enabled at \"Main Menu>Settings>Home System>Enable Home System\"");
+                    }
+                }
+                break;
+            case !!switchTest.match(/^gohome$/):
+                {
+                    eventData.cancel = true;
+                    if (config.homeSystemEnabled) {
+                        let argsa = evaluateParameters(switchTestB, ["presetText"]);
+                        if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == argsa.extra)) {
+                            srun(() => player.teleport(Home.get("home:" + player.id + ":" + argsa.extra).location, { dimension: Home.get("home:" + player.id + ":" + argsa.extra).location.dimension }));
+                            player.sendMessage(`Successfully teleported to the home "${argsa.extra}§r§f". `);
+                        }
+                        else {
+                            player.sendMessage(`§cError: Could not find a home with the name "${argsa.extra}§r§c". `);
+                        }
+                    }
+                    else {
+                        player.sendMessage("§cError: This command cannot be used becuase the experimental home system is not enabled. It can be enabled at \"Main Menu>Settings>Home System>Enable Home System\"");
+                    }
+                }
+                break;
+            case !!switchTest.match(/^rtp$/):
+                {
+                    eventData.cancel = true;
+                    // /scriptevent andexdb:spawnSimulatedPlayer t§ee§as§ft §4P§dl§layer|~~~|overworld|~~~
+                    if (config.rtpSystemEnabled) {
+                        srun(() => {
+                            let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args;
+                            args[1].trim().startsWith("@");
+                            let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player")[0];
+                            if (!!target) {
+                                //requestChatInput(player, "a").then(v=>psend(player, "as")); srun(()=>requestChatInput(player, "b").then(v=>psend(player, "bs"))); 
+                                requestConditionalChatInput(target, (player, message) => (message.toLowerCase().trim() == "y" || message.toLowerCase().trim() == "n"), { requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.` }).then(t => {
+                                    if (t.toLowerCase().trim() == "y") {
+                                        player.teleport(target.location, { dimension: target.dimension });
+                                        target.sendMessage(`§aAccepted teleport request from "${target.name}".`);
+                                        player.sendMessage(`§aSuccessfully teleported to "${target.name}".`);
+                                    }
+                                    else {
+                                        target.sendMessage(`§cDenied "${target.name}"'s teleport request.`);
+                                        player.sendMessage(`§c"${target.name}" denied your teleport request.`);
+                                    }
+                                }).catch(e => { if (e instanceof TimeoutError) {
+                                    psend(target, `§c${player.name}'s teleport request timed out.`);
+                                    psend(player, "§cTeleport request timed out.");
+                                }
+                                else if (e instanceof ExpireError) {
+                                    psend(target, `§c${player.name}'s teleport request expired.`);
+                                    psend(player, "§cTeleport request expired.");
+                                }
+                                else
+                                    psend(player, "§c" + e + " " + e.stack); });
+                            }
+                            else {
+                                player.sendMessage(`§cError: Unable to find player.`);
+                            }
+                        });
+                    }
+                    else {
+                        player.sendMessage("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>RTP System>Enable RTP System\"");
+                    }
+                }
+                break; /*
+            case !!switchTest.match(/^rtpblock$/): {
+                eventData.cancel = true;
+                if(config.rtpSystemEnabled){
+                    srun(()=>{
+                    let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args
+                    let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v=>v.typeId=="minecraft:player")[0] as Player
+                    if(!!target){
+                        requestConditionalChatInput(target, (player, message)=>(message.trim()=="y"||message.trim()=="n"), {requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.`}).then(t=>{
+                            if(t.trim()=="y"){
+                                player.teleport(target.location, {dimension: target.dimension})
+                                player.sendMessage(`Successfully teleported to "${target.name}".`)
+                            }else{
+                                player.sendMessage(`"${target.name}" denied your teleport request.`)
+                            }
+                        }).catch(e=>{if(e instanceof TimeoutError){psend(target, `§c${player.name}'s teleport request expired.`); psend(player, "§cTeleport request timed out.")}else if(e instanceof ExpireError){psend(player, "§cTeleport request expired.")}else psend(player, "§c"+e+" "+e.stack)})
+                    }else{player.sendMessage(`§cError: Unable to find player.`)}
+                    })
+                }else{
+                    player.sendMessage("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>RTP System>Enable Teleport Request System\"")
+                }
+            }
+            break; */ // COMING SOON! 
+            case !!switchTest.match(/^summon$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        const args = evaluateParameters(switchTestB, ["presetText", "number", "string", "Vector", "Vector", "Vector", "Vector", "Vector", "neboolean", "string"]).args;
+                        const rotation = evaluateRotationCoordinates(String(args[7] ?? 0), String(args[6] ?? 0).replace("~", "0"), player.getRotation());
+                        const location = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
+                        for (let i = 0; i < args[1]; i++) {
+                            let a = player.dimension.spawnEntity(args[2], location, { initialPersistence: args[8] ?? false });
+                            a.setRotation(rotation);
+                            a.nameTag = args[9] ?? "";
+                        }
+                        player?.sendMessage(`${args[1] == 0 ? "§c" : ""}Summoned ${args[2]} * ${args[1]}. `);
+                    });
+                }
+                break;
+            case !!switchTest.match(/^heal$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+                        if (switchTestB.split(/\s+/g)[1]?.trim() == "~") {
+                            args[1] = player.name;
+                        }
+                        if ((switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
+                            args[1] = player.name;
+                        }
+                        let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
+                        if (targets.length == 0) {
+                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                        }
+                        else
+                            targets.forEach(target => {
+                                try {
+                                    target.getComponent("health").resetToMaxValue();
+                                    player.sendMessage(`Healed ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")}. Health is now ${target.getComponent("health").effectiveMax}. `);
+                                }
+                                catch (e) {
+                                    player.sendMessage("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
+                                }
+                            });
+                    });
+                }
+                break;
+            case !!switchTest.match(/^maxhealth$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+                        if (switchTestB.split(/\s+/g)[1]?.trim() == "~") {
+                            args[1] = player.name;
+                        }
+                        if ((switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
+                            args[1] = player.name;
+                        }
+                        let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
+                        if (targets.length == 0) {
+                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                        }
+                        else
+                            targets.forEach(target => {
+                                try {
+                                    target.getComponent("health").resetToMaxValue();
+                                    player.sendMessage(`Set health of ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")} to maximum: ${target.getComponent("health").effectiveMax}. `);
+                                }
+                                catch (e) {
+                                    player.sendMessage("§c" + e + " " + e.stack);
+                                }
+                            });
+                    });
+                }
+                break;
+            case !!switchTest.match(/^minhealth$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+                        if (switchTestB.split(/\s+/g)[1]?.trim() == "~") {
+                            args[1] = player.name;
+                        }
+                        if ((switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
+                            args[1] = player.name;
+                        }
+                        let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
+                        if (targets.length == 0) {
+                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                        }
+                        else
+                            targets.forEach(target => {
+                                try {
+                                    target.getComponent("health").resetToMinValue();
+                                    player.sendMessage(`Set health of ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")} to minimum: ${target.getComponent("health").effectiveMin}. `);
+                                }
+                                catch (e) {
+                                    player.sendMessage("§c" + e + " " + e.stack);
+                                }
+                            });
+                    });
+                }
+                break;
+            case !!switchTest.match(/^defaulthealth$/) || !!switchTest.match(/^dfthlth$/) || !!switchTest.match(/^dflthlth$/) || !!switchTest.match(/^dfthealth$/) || !!switchTest.match(/^dflthealth$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "number"]).args;
+                        if (switchTestB.split(/\s+/g)[1]?.trim() == "~") {
+                            args[1] = player.name;
+                        }
+                        if ((switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
+                            args[1] = player.name;
+                        }
+                        let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
+                        if (targets.length == 0) {
+                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                        }
+                        else
+                            targets.forEach(target => {
+                                try {
+                                    target.getComponent("health").resetToMaxValue();
+                                    player.sendMessage(`Set health of ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")} to default: ${target.getComponent("health").effectiveMax}. `);
+                                }
+                                catch (e) {
+                                    player.sendMessage("§c" + e + " " + e.stack);
+                                }
+                            });
+                    });
+                }
+                break;
+            case !!switchTest.match(/^health$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "presetText", "targetSelector"]).args;
+                        if (switchTestB.split(/\s+/g)[2]?.trim() == "~") {
+                            args[2] = player.name;
+                        }
+                        if ((switchTestB.split(/\s+/g)[2] ?? "").trim() == "") {
+                            args[2] = player.name;
+                        }
+                        let targets = targetSelectorAllListC(args[2], "", vTStr(player.location), player);
+                        if (targets.length == 0) {
+                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                        }
+                        else
+                            targets.forEach(target => {
+                                try {
+                                    target.getComponent("health").setCurrentValue(Number(args[1]));
+                                    player.sendMessage(`Set health of ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")} to ${Number(args[1])}. `);
+                                }
+                                catch (e) {
+                                    player.sendMessage("§c" + e + " " + e.stack);
+                                }
+                            });
+                    });
+                }
+                break;
+            case !!switchTest.match(/^liststructures$/):
+                {
+                    eventData.cancel = true;
+                    player.sendMessage(world.structureManager.getIds().join("§r\n"));
+                }
+                break;
+            case !!switchTest.match(/^despawn$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args;
+                        if (switchTestB.split(/\s+/g)[1]?.trim() == "~") {
+                            args[1] = player.name;
+                        }
+                        if ((switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
+                            args[1] = player.name;
+                        }
+                        let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
+                        if (targets.length == 0) {
+                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                        }
+                        else {
+                            let despawnCount = 0;
+                            targets.forEach(target => {
+                                try {
+                                    target.remove();
+                                    despawnCount++;
+                                }
+                                catch (e) {
+                                    player.sendMessage("§c" + e + " " + e.stack);
+                                }
+                            });
+                            player?.sendMessage(`${despawnCount == 0 ? "§c" : ""}${despawnCount} entities were despawned. `);
+                        }
+                    });
+                }
+                break;
+            case !!switchTest.match(/^kick$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args;
+                        if (switchTestB.split(/\s+/g)[1]?.trim() == "~") {
+                            args[1] = player.name;
+                        }
+                        if ((switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
+                            args[1] = player.name;
+                        }
+                        let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
+                        if (targets.length == 0) {
+                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                        }
+                        else
+                            targets.forEach(target => {
+                                try {
+                                    target.runCommand("/kick " + target.name + (!!args[2] ? " " + args[2] : ""));
+                                    player?.sendMessage(`${target?.name ?? target?.id} was kicked from the game. `);
+                                }
+                                catch (e) {
+                                    player.sendMessage("§c" + e + " " + e.stack);
+                                }
+                            });
+                    });
+                }
+                break;
+            case !!switchTest.match(/^disconnect$/) || !!switchTest.match(/^boot$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+                        if (switchTestB.split(/\s+/g)[1]?.trim() == "~") {
+                            args[1] = player.name;
+                        }
+                        if ((switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
+                            args[1] = player.name;
+                        }
+                        let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
+                        if (targets.length == 0) {
+                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                        }
+                        else
+                            targets.forEach(target => {
+                                try {
+                                    disconnectingPlayers.push(target.id);
+                                    target.triggerEvent("andexsa:explode");
+                                    player?.sendMessage(`${target?.name ?? target?.id} was disconnected. `);
+                                    system.run(() => { disconnectingPlayers.splice(disconnectingPlayers.indexOf(target.id), +(disconnectingPlayers.indexOf(target.id) != -1)); });
+                                    //${se}let abcd = [1, 0, 2, 3, 4, 5, 6, 7]; abcd.splice(2, 1); bsend(abcd)
+                                    //${se}let abcd = [1, 0, 2, 3, 4, 5, 6, 7]; abcd.splice(-1, 1); bsend(abcd)
+                                }
+                                catch (e) {
+                                    if (e.message == "The event andexsa:explode does not exist on minecraft:player") {
+                                        player.sendMessage("§cError: Either the add-on \"8Crafter's Entity Scale, NBT, and Behavior Modifier, Bossbar, and Morph Addon\" is not on this world/server/realm or another pack is overriding the player.json file in its behavior pack, the host/owner of this world/server/realm must fix this issue before you can use this command. \nIf you are the host/owner and you don't have the add-on then you can download it from the website: §bhttps://modbay.org/mods/1218-8crafters-entity-scale-and-morph-addon.html");
+                                        return;
+                                    }
+                                    else {
+                                        player.sendMessage("§c" + e + " " + e.stack);
+                                    }
+                                }
+                            });
+                    });
+                }
+                break;
             case !!switchTest.match(/^morph$/):
                 eventData.cancel = true;
                 try {
@@ -5139,7 +6468,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
                 break;
-            case !!switchTest.match(/^mainmenu$/):
+            case !!switchTest.match(/^mainmenu$/) || !!switchTest.match(/^mm$/) || !!switchTest.match(/^menu$/):
                 eventData.cancel = true;
                 try {
                     system.run(() => mainMenu(player));
@@ -5148,16 +6477,43 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
                 break;
-            case !!switchTest.match(/^terminal$/):
+            case !!switchTest.match(/^terminal$/) || !!switchTest.match(/^cmdrunner$/):
                 eventData.cancel = true;
                 try {
-                    system.run(() => terminal(player));
+                    terminal(player);
                 }
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
                 break;
-            case !!switchTest.match(/^managecommands$/):
+            case !!switchTest.match(/^messageui$/) || !!switchTest.match(/^msgui$/):
+                eventData.cancel = true;
+                try {
+                    chatMessageNoCensor(player);
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
+            case !!switchTest.match(/^chatsendui$/) || !!switchTest.match(/^chtsendui$/) || !!switchTest.match(/^chtsndui$/) || !!switchTest.match(/^sendui$/):
+                eventData.cancel = true;
+                try {
+                    chatSendNoCensor(player);
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
+            case !!switchTest.match(/^chatcommandui$/) || !!switchTest.match(/^cmdui$/) || !!switchTest.match(/^chtcmdui$/) || !!switchTest.match(/^commandui$/):
+                eventData.cancel = true;
+                try {
+                    chatCommandRunner(player);
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
+            case !!switchTest.match(/^managecommands$/) || !!switchTest.match(/^mngcmds$/):
                 eventData.cancel = true;
                 try {
                     system.run(() => manageCommands(player));
@@ -5166,7 +6522,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
                 break;
-            case !!switchTest.match(/^manageplayers$/):
+            case !!switchTest.match(/^manageplayers$/) || !!switchTest.match(/^mngplyrs$/):
                 eventData.cancel = true;
                 try {
                     system.run(() => managePlayers(player));
@@ -5183,8 +6539,12 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
-                break;
-            case !!switchTest.match(/^datapickblock$/):
+                break; /*
+            case !!switchTest.match(/^notificationsettings$/)||!!switchTest.match(/^notificationssettings$/):
+                eventData.cancel = true;
+                try{system.run(()=>notificationSettings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            break; */ // coming very soon now! 
+            case !!switchTest.match(/^datapickblock$/) || !!switchTest.match(/^dpb$/):
                 eventData.cancel = true;
                 try {
                     let item = player.getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true }).block.getItemStack(1, true);
@@ -6338,7 +7698,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "hollowovoid":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
@@ -6354,7 +7714,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "ovoid":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
@@ -6370,7 +7730,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "hollowsphere":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
@@ -6386,7 +7746,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "dome":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
@@ -6402,7 +7762,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "sphere":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
@@ -6418,7 +7778,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "semisphere":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
@@ -6434,7 +7794,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circle":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, { matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1] }, undefined, creplacemode);
                                         let endTime = Date.now();
@@ -6453,7 +7813,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circlex":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6472,7 +7832,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circley":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6491,7 +7851,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circlez":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6510,7 +7870,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circlexy":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6529,7 +7889,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circleyz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6548,7 +7908,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circlexz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6567,7 +7927,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "circlexyz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
@@ -6586,7 +7946,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinder":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, { matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1] }, undefined, treplacemode);
                                         let endTime = Date.now();
@@ -6605,7 +7965,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinderx":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6624,7 +7984,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylindery":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6643,7 +8003,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinderz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6662,7 +8022,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinderxy":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6681,7 +8041,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinderyz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6700,7 +8060,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinderxz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6719,7 +8079,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 break;
                             case "cylinderxyz":
                                 system.run(() => { let ta; try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
@@ -6973,72 +8333,45 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         let tmatchingblock = (tlastblockname ?? "") == "" ? [undefined, undefined] : (tlastblockname == "keep") ? ["air"] : [tlastblockname, tlastblockstates];
                         let omatchingblock = (olastblockname ?? "") == "" ? [undefined, undefined] : (olastblockname == "keep") ? ["air"] : [olastblockname, olastblockstates];
                         let homatchingblock = (holastblockname ?? "") == "" ? [undefined, undefined] : (holastblockname == "keep") ? ["air"] : [holastblockname, holastblockstates];
-                        let sgmatchingblock = (sglastblockname ?? "") == "" ? [undefined, undefined] : (sglastblockname == "keep") ? ["air"] : [sglastblockname, sglastblockstates]; /*
+                        let sgmatchingblock = (sglastblockname ?? "") == "" ? [undefined, undefined] : (sglastblockname == "keep") ? ["air"] : [sglastblockname, sglastblockstates];
+                        const blocktypes = BlockTypes.getAll(); /*
                         console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                         switch (fillmodetypeenum[skygridmode ? sgmode : hovoidmode ? homode : ovoidmode ? omode : tunnelmode ? tmode : hspheremode ? hsmode : circlemode ? cmode : ccirclemode ? ccmode : mode ?? ""]) {
                             case "":
                                 system.run(() => { let ta; try {
-                                    let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
-                                    player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
-                                    system.runTimeout(() => { try {
-                                        let startTime = Date.now();
-                                        if (replacemode) {
-                                            clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
-                                        }
-                                        ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
-                                        let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
                                     }
                                     finally {
-                                        ta?.remove();
-                                    } }, 2);
+                                        tac.forEach(tab => tab?.remove());
+                                    } });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
                                 } });
                                 break;
                             case "replace":
-                                system.run(() => {
-                                    let ta;
-                                    try {
-                                        let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
-                                        player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
-                                        system.runTimeout(() => {
-                                            try {
-                                                let startTime = Date.now();
-                                                if (replacemode) {
-                                                    clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
-                                                }
-                                                ;
-                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
-                                                let endTime = Date.now();
-                                                player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
-                                            }
-                                            catch (e) {
-                                                eventData.sender.sendMessage("§c" + e + e.stack);
-                                            }
-                                            finally {
-                                                ta?.remove();
-                                            }
-                                        }, 2);
+                                system.run(() => { let ta; try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[13] ?? true, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
                                     }
-                                });
+                                    finally {
+                                        tac.forEach(tab => tab?.remove());
+                                    } });
+                                }
+                                catch (e) {
+                                    eventData.sender.sendMessage("§c" + e + e.stack);
+                                } });
                                 break;
                             case "clear":
                                 system.run(() => { let ta; try {
-                                    let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
-                                    player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
-                                    system.runTimeout(() => { try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         if (replacemode) {
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
@@ -7052,8 +8385,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         eventData.sender.sendMessage("§c" + e + e.stack);
                                     }
                                     finally {
-                                        ta?.remove();
-                                    } }, 2);
+                                        tac.forEach(tab => tab?.remove());
+                                    } });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7061,10 +8394,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 break;
                             case "drain":
                                 system.run(() => { let ta; try {
-                                    let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
-                                    player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
-                                    system.runTimeout(() => { try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air", undefined, { matchingBlock: "water" });
                                         let endTime = Date.now();
@@ -7074,8 +8404,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         eventData.sender.sendMessage("§c" + e + e.stack);
                                     }
                                     finally {
-                                        ta?.remove();
-                                    } }, 2);
+                                        tac.forEach(tab => tab?.remove());
+                                    } });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7083,25 +8413,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 break;
                             case "fill":
                                 system.run(() => { let ta; try {
-                                    let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
-                                    player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
-                                    system.runTimeout(() => { try {
-                                        let startTime = Date.now();
-                                        if (replacemode) {
-                                            clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
-                                        }
-                                        ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
-                                        let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
                                     }
                                     finally {
-                                        ta?.remove();
-                                    } }, 2);
+                                        tac.forEach(tab => tab?.remove());
+                                    } });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7109,21 +8429,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 break;
                             case "keep":
                                 system.run(() => { let ta; try {
-                                    let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
-                                    player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
-                                    system.runTimeout(() => { try {
-                                        let startTime = Date.now();
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: "air" });
-                                        let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: "air", minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
                                     }
                                     finally {
-                                        ta?.remove();
-                                    } }, 2);
+                                        tac.forEach(tab => tab?.remove());
+                                    } });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7131,21 +8445,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 break;
                             case "walls":
                                 system.run(() => { let ta; try {
-                                    let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
-                                    player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
-                                    system.runTimeout(() => { try {
-                                        let startTime = Date.now();
-                                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
-                                        let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
                                     }
                                     finally {
-                                        ta?.remove();
-                                    } }, 2);
+                                        tac.forEach(tab => tab?.remove());
+                                    } });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7153,21 +8461,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 break;
                             case "hollow":
                                 system.run(() => { let ta; try {
-                                    let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
-                                    player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
-                                    system.runTimeout(() => { try {
-                                        let startTime = Date.now();
-                                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
-                                        let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
                                     }
                                     finally {
-                                        ta?.remove();
-                                    } }, 2);
+                                        tac.forEach(tab => tab?.remove());
+                                    } });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7175,21 +8477,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 break;
                             case "outline":
                                 system.run(() => { let ta; try {
-                                    let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
-                                    player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
-                                    system.runTimeout(() => { try {
-                                        let startTime = Date.now();
-                                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
-                                        let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
                                     }
                                     finally {
-                                        ta?.remove();
-                                    } }, 2);
+                                        tac.forEach(tab => tab?.remove());
+                                    } });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7197,10 +8493,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 break;
                             case "pillars":
                                 system.run(() => { let ta; try {
-                                    let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
-                                    player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
-                                    system.runTimeout(() => { try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
@@ -7210,8 +8503,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         eventData.sender.sendMessage("§c" + e + e.stack);
                                     }
                                     finally {
-                                        ta?.remove();
-                                    } }, 2);
+                                        tac.forEach(tab => tab?.remove());
+                                    } });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7219,19 +8512,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 break;
                             case "skygrid":
                                 system.run(() => { let ta; try {
-                                    let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
-                                    ;
-                                    player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
-                                    system.runTimeout(() => { try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
                                     }
                                     finally {
-                                        ta?.remove();
-                                    } }, 2);
+                                        tac.forEach(tab => tab?.remove());
+                                    } });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7239,19 +8528,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 break;
                             case "inverseskygrid":
                                 system.run(() => { let ta; try {
-                                    let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
-                                    ;
-                                    player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
-                                    system.runTimeout(() => { try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
                                     }
                                     finally {
-                                        ta?.remove();
-                                    } }, 2);
+                                        tac.forEach(tab => tab?.remove());
+                                    } });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7796,30 +9081,32 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                 }
                 break;
-            case !!switchTest.match(/^ifilld$/): {
-                eventData.cancel = true;
-                let coordinatesa = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation());
-                let coordinatesb = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation());
-                let firstblocknameindex = Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index + Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ") + 1;
-                let reststringaftercoordinates = switchTestB.split(" ").slice(1).join(" ").slice(firstblocknameindex);
-                let firstblockname = reststringaftercoordinates.split(" ")[0];
-                let firstblockstates = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? JSONParse(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0]) : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? JSONParse(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
-                let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
-                let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                let matchingblock = lastblockname == "" ? [] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
-                console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-                srun(() => { try {
-                    let startTime = Date.now();
-                    let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
-                    let endTime = Date.now();
-                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+            case !!switchTest.match(/^ifilld$/):
+                {
+                    eventData.cancel = true;
+                    let coordinatesa = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation());
+                    let coordinatesb = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation());
+                    let firstblocknameindex = Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index + Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ") + 1;
+                    let reststringaftercoordinates = switchTestB.split(" ").slice(1).join(" ").slice(firstblocknameindex);
+                    let firstblockname = reststringaftercoordinates.split(" ")[0];
+                    let firstblockstates = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? JSONParse(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0]) : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? JSONParse(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
+                    let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
+                    let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
+                    let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
+                    let matchingblock = lastblockname == "" ? [] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
+                    srun(() => { try {
+                        let startTime = Date.now();
+                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                        let endTime = Date.now();
+                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    } });
+                    //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                 }
-                catch (e) {
-                    eventData.sender.sendMessage("§c" + e + e.stack);
-                } });
-                //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
-            }
+                break;
             case !!switchTest.match(/^itfillc$/):
                 {
                     eventData.cancel = true;
@@ -8272,6 +9559,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 break;
             case !!switchTest.match(/^copyitem$/):
                 {
+                    //world.scoreboard.getObjective("MinsDisplay").getParticipants().filter(p=>!!!tryget(()=>p.getEntity())).forEach(p=>world.scoreboard.getObjective("balance").removeParticipant(p))
+                    //if((world.scoreboard.getObjective("balance").getScore(player)??0)>JSON.parse(world.getDynamicProperty("shop:costs"))[r.selection]){world.scoreboard.getObjective("balance").addScore(player, -(JSON.parse(world.getDynamicProperty("shop:costs"))[r.selection])); player.getComponent("inventory").container.addItem(cmds.overworld.getBlock({x: 823, y: 84, z: 1037}).getComponent("inventory").container.getItem(r.selection))}
+                    //${se}swdp("shop:costs", "[20, 50, 70, 80]")
                     eventData.cancel = true;
                     let args = evaluateParametersOld(["presetText", "presetText", "string"], switchTestB).args;
                     if (switchTestB.split(/\s+/g)[2].trim() == "~") {
@@ -8288,7 +9578,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         if (switchTestB.split(/\s+/g)[1].trim() == "~") {
                             args[1] = target.selectedSlot;
                         }
-                        let slot = getSlotFromParsedSlot(parseSlot(args[1]), { container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlot: target?.selectedSlot });
+                        let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), { container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlot: target?.selectedSlot });
                         system.run(() => {
                             if (String(args[1]).match(/^\d+$/)) {
                                 target.getComponent("inventory").container.setItem(Number(args[1]), player.getComponent("inventory").container.getItem(player.selectedSlot));
@@ -8305,10 +9595,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 {
                     eventData.cancel = true;
                     let args = evaluateParametersOld(["presetText", "presetText"], switchTestB).args;
-                    if (switchTestB.split(/\s+/g)[1].trim() == "~" || (switchTestB.split(/\s+/g)[1].trim() ?? "") == "") {
+                    if ((args[1] ?? "").trim() == "~" || (args[1] ?? "").trim() == "") {
                         args[1] = player.selectedSlot;
                     }
-                    let slot = getSlotFromParsedSlot(parseSlot(args[1]), { container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlot: player?.selectedSlot });
+                    //console.warn(args)
+                    let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), { container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlot: player?.selectedSlot });
                     system.run(() => {
                         if (String(args[1]).match(/^\d+$/)) {
                             player.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(Number(args[1])));
@@ -8452,7 +9743,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         if (switchTestB.split(/\s+/g)[1].trim() == "~") {
                             args[1] = target.selectedSlot;
                         }
-                        let slot = getSlotFromParsedSlot(parseSlot(args[1]), { container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlot: target?.selectedSlot });
+                        let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), { container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlot: target?.selectedSlot });
                         system.run(() => {
                             if (String(args[1]).match(/^\d+$/)) {
                                 target.getComponent("inventory").container.transferItem(Number(args[1]), player.getComponent("inventory").container);
@@ -8774,7 +10065,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         if ((switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
                             args[1] = player.name;
                         }
-                        let targets = targetSelectorAllListC(args[3], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
+                        let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
                         if (targets.length == 0) {
                             player.sendMessage(`§cError: No players matching the specified target selector were found. `);
                         }
@@ -9114,6 +10405,45 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             player.sendMessage(e + " " + e.stack);
                         } });
                     }
+                }
+                break;
+            case !!switchTest.match(/^rank$/):
+                {
+                    eventData.cancel = true;
+                    let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "presetText", "string"]).args;
+                    //console.warn(args)
+                    if (args[1]?.trim() == "~") {
+                        args[1] = player.name;
+                    }
+                    if ((args[1] ?? "").trim() == "") {
+                        args[1] = player.name;
+                    }
+                    srun(() => {
+                        try {
+                            let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
+                            if (targets.length == 0) {
+                                player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                            }
+                            else {
+                                switch (args[2]) {
+                                    case "add":
+                                        targets.forEach(v => v.addTag(String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:") + args[3]));
+                                        break;
+                                    case "remove":
+                                        targets.forEach(v => v.removeTag(String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:") + args[3]));
+                                        break;
+                                    case "clear":
+                                        targets.forEach(v => v.getTags().filter(t => t.startsWith(String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"))).forEach(t => v.removeTag(t)));
+                                        break;
+                                    default:
+                                        player.sendMessage(`§cSyntax error: Unexpected "${args[2]}" at "${switchTest.slice(0, switchTest.indexOf(args[1]) + args[1].length + 1)}>>${args[2]}<<${args[3]}"`);
+                                }
+                            }
+                        }
+                        catch (e) {
+                            player.sendMessage("§c" + e + " " + e.stack);
+                        }
+                    });
                 }
                 break;
             case !!switchTest.match(/^extinguish$/) || !!switchTest.match(/^ext$/) || !!switchTest.match(/^remfire$/):
@@ -9464,6 +10794,10 @@ export function extractSelectors(str) {
                     startIndex = -1;
                 }
             }
+            else if (((str[i] !== ' ' && str[i] !== '' && str[i] !== undefined && (i - startIndex) >= 2) || (i == str.length - 1 && (i - startIndex) >= 1)) && startIndex !== -1 && stack.length === 0) {
+                selectors.push(str.substring(startIndex, i + (+(i == str.length - 1))).trim());
+                startIndex = -1;
+            }
         }
     }
     return selectors;
@@ -9473,6 +10807,13 @@ export function extractSelectors(str) {
 const str = "something @e[type='pig',family=mob,hasitem=[{item=stick,slot=0,location=\"slot.enderchest\"},{item='iron_sword',location=slot.weapon.offhand,slot=0}],name=entityname] somethingelseelse";
 const selectors = extractSelectors(str);
 console.log(selectors);*/
+function JSONify(obj) {
+    var o = {};
+    for (var i in obj) {
+        o['"' + i + '"'] = obj[i]; // make the quotes
+    }
+    return o;
+}
 export function evaluateParameters(commandstring, parameters) {
     let argumentsa = [];
     let ea = [];
@@ -9485,24 +10826,24 @@ export function evaluateParameters(commandstring, parameters) {
         }
         else {
             if (p.type == "presetText") {
-                argumentsa.push(paramEval.split(" ")[0]);
-                paramEval = paramEval.split(" ").slice(1).join(" ");
+                argumentsa.push(paramEval.trimStart().split(" ")[0]);
+                paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
             }
             else {
                 if (p.type == "number") {
-                    argumentsa.push(Number(paramEval.split(" ")[0]));
-                    paramEval = paramEval.split(" ").slice(1).join(" ");
+                    argumentsa.push(Number(paramEval.trimStart().split(" ")[0]));
+                    paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                 }
                 else {
                     if (p.type == "boolean") {
-                        argumentsa.push(paramEval.split(" ")[0]?.trim?.() == "" ? undefined : Boolean(JSON.parse(paramEval.split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
-                        paramEval = paramEval.split(" ").slice(1).join(" ");
+                        argumentsa.push(paramEval.trimStart().split(" ")[0]?.trim?.() == "" ? undefined : Boolean(JSON.parse(paramEval.trimStart().split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
+                        paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                     }
                     else {
                         if (p.type == "neboolean") {
                             try {
-                                argumentsa.push(paramEval.split(" ")[0]?.trim?.() == "" ? undefined : Boolean(JSON.parse(paramEval.split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
-                                paramEval = paramEval.split(" ").slice(1).join(" ");
+                                argumentsa.push(paramEval.trimStart().split(" ")[0]?.trim?.() == "" ? undefined : Boolean(JSON.parse(paramEval.trimStart().split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
+                                paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                             }
                             catch {
                                 argumentsa.push(undefined);
@@ -9522,8 +10863,8 @@ export function evaluateParameters(commandstring, parameters) {
                                     ;
                                 }
                                 else {
-                                    argumentsa.push(paramEval.split(" ")[0]);
-                                    paramEval = paramEval.split(" ").slice(1).join(" ");
+                                    argumentsa.push(paramEval.trimStart().split(" ")[0]);
+                                    paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                                 }
                             }
                             else {
@@ -9543,14 +10884,14 @@ export function evaluateParameters(commandstring, parameters) {
                                         ;
                                     }
                                     else {
-                                        argumentsa.push(paramEval.split(" ")[0]);
-                                        paramEval = paramEval.split(" ").slice(1).join(" ");
+                                        argumentsa.push(paramEval.trimStart().split(" ")[0]);
+                                        paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                                     } //1870//7018
                                 }
                                 else {
                                     if (p.type == "json") {
-                                        let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
-                                        paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
+                                        let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                        paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
                                         try {
                                             argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
                                         }
@@ -9593,8 +10934,9 @@ export function evaluateParameters(commandstring, parameters) {
                                                     if (paramEval.trimStart().startsWith("\"")) {
                                                         let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
                                                         paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
+                                                        paramEval = paramEval.slice(+(paramEval[0] == " ")) ?? "";
                                                         try {
-                                                            argumentsa.push(value?.v);
+                                                            argumentsa.push(!!!value?.v ? undefined : ('"' + value?.v + '"'));
                                                         }
                                                         catch (e) {
                                                             ea.push([e, e.stack]);
@@ -9608,7 +10950,7 @@ export function evaluateParameters(commandstring, parameters) {
                                                 }
                                                 else {
                                                     let value = extractSelectors(paramEval)[0];
-                                                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length + 1) ?? "";
+                                                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                     try {
                                                         argumentsa.push(value);
                                                     }
@@ -9763,3 +11105,4 @@ export function evaluateParametersOld(parameters, paramEvalA) {
     return { er: er, erb: erb, args: args, paramEval: paramEval, paramEvalA: paramEvalA, parameters: parameters };
 }
 ;
+//# sourceMappingURL=commands.js.map

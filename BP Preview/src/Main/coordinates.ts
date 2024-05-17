@@ -1,5 +1,5 @@
-import { Block, Dimension, type DimensionLocation, DimensionType, Player, type Vector2, type Vector3, world, Entity, system, BlockVolume, CompoundBlockVolume } from "@minecraft/server";
-import { targetSelectorAllListC, targetSelectorAllListE } from "../Main";
+import { Block, Dimension, type DimensionLocation, DimensionType, Player, type Vector2, type Vector3, world, Entity, system, BlockVolume, CompoundBlockVolume, type BoundingBox, BoundingBoxUtils } from "@minecraft/server";
+import { targetSelectorAllListC, targetSelectorAllListE, format_version } from "../Main";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
@@ -211,6 +211,52 @@ export function getDistance(point1: Vector3, point2: Vector3) {
 
     return Math.sqrt(deltaX ** 2 + deltaY ** 2 + deltaZ ** 2);
 }
+export function getChunkIndex(location: Vector3){return {x: Math.floor(location.x/16), y: Math.floor(location.z/16)}}
+export function getChunkIndexB(x: number, z: number){return {x: Math.floor(x/16), y: Math.floor(z/16)}}
+export function getChunkIndexC(location: Vector2){return {x: Math.floor(location.x/16), y: Math.floor(location.y/16)}}
+export function chunkIndexToBoundingBox(chunkIndex: Vector2, heightRange: [min: number, max: number] = [-64, 320]){return {from: {x: Math.floor(chunkIndex.x*16), y: heightRange[0], z: Math.floor(chunkIndex.y*16)}, to: {x: Math.round((chunkIndex.x*16)+15), y: heightRange[1], z: Math.round((chunkIndex.y*16)+15)}}}
+export function doBoundingBoxesIntersect(box1: BoundingBox, box2: BoundingBox) {
+    // Check for intersection along each axis
+    const intersectX = (box1.min.x <= box2.max.x && box1.max.x >= box2.min.x);
+    const intersectY = (box1.min.y <= box2.max.y && box1.max.y >= box2.min.y);
+    const intersectZ = (box1.min.z <= box2.max.z && box1.max.z >= box2.min.z);
+
+    // If all axes intersect, the bounding boxes intersect
+    return intersectX && intersectY && intersectZ;
+}
+export interface DimensionVolumeArea{
+    dimension: Dimension, 
+    from: Vector3, 
+    to: Vector3
+}
+export interface Vector4{
+    w: number
+    x: number
+    y: number
+    z: number
+}
+export interface Vector5{
+    v: number
+    w: number
+    x: number
+    y: number
+    z: number
+}
+export interface RotationLocation{
+    rotX: number
+    rotY: number
+    x: number
+    y: number
+    z: number
+}
+export interface DimensionRotationLocation{
+    dimension: Dimension
+    rotX: number
+    rotY: number
+    x: number
+    y: number
+    z: number
+}
 export function facingPoint(location: Vector3, otherLocation: Vector3) { 
     const sl = location
     const ol = otherLocation
@@ -406,6 +452,13 @@ let coordinates = startingPosition;
 [x, y, z].forEach((v, i)=>{if(v.startsWith("~")){if(v.length == 1){}else{let crds = [coordinates.x, coordinates.y, coordinates.z]; crds[i] = crds[i] + Number(v.slice(1)); coordinates = {x: crds[0], y: crds[1], z: crds[2]}}}}); 
 [x, y, z].forEach((v, i)=>{if(v.startsWith("*")){if(v.length == 1){let crds = [coordinates.x, coordinates.y, coordinates.z]; let crdsb = [startingPosition.x, startingPosition.y, startingPosition.z]; crds[i] = crdsb[i]; coordinates = {x: crds[0], y: crds[1], z: crds[2]}}else{let crds = [coordinates.x, coordinates.y, coordinates.z]; let crdsb = [startingPosition.x, startingPosition.y, startingPosition.z]; crds[i] = crdsb[i] + Number(v.slice(1)); coordinates = {x: crds[0], y: crds[1], z: crds[2]}}}}); 
 [x, y, z].forEach((v, i)=>{if(v.startsWith("~")){}else{if(v.startsWith("^")){}else{if(v.startsWith("*")){}else{let crds = [coordinates.x, coordinates.y, coordinates.z]; crds[i] = Number(v.slice(0)); coordinates = {x: crds[0], y: crds[1], z: crds[2]}}}}}); 
+return coordinates
+}
+export function evaluateRotationCoordinates(x: string, y: string, rotation: Vector2){
+let coordinates = rotation; 
+[x, y].forEach((v, i)=>{if(v.startsWith("~")){if(v.length == 1){}else{let crds = [coordinates.x, coordinates.y]; crds[i] = crds[i] + Number(v.slice(1)); coordinates = {x: crds[0], y: crds[1]}}}}); 
+[x, y].forEach((v, i)=>{if(v.startsWith("*")){if(v.length == 1){let crds = [coordinates.x, coordinates.y]; let crdsb = [rotation.x, rotation.y]; crds[i] = crdsb[i]; coordinates = {x: crds[0], y: crds[1]}}else{let crds = [coordinates.x, coordinates.y]; let crdsb = [rotation.x, rotation.y]; crds[i] = crdsb[i] + Number(v.slice(1)); coordinates = {x: crds[0], y: crds[1]}}}}); 
+[x, y].forEach((v, i)=>{if(v.startsWith("~")){}else{if(v.startsWith("^")){}else{if(v.startsWith("*")){}else{let crds = [coordinates.x, coordinates.y]; crds[i] = Number(v.slice(0)); coordinates = {x: crds[0], y: crds[1]}}}}}); 
 return coordinates
 }
 export function evaluateCoordinatesB(x: string, y: string, z: string, startingPosition: Vector3, rotation: Vector3){
@@ -1222,6 +1275,134 @@ export function* generateDomeBG(center: Vector3, radius: number, thickness: numb
         return
     }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
 }
+export function* generateFillBG(begin: Vector3, end: Vector3, dimension: Dimension, generatorProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
+    try{
+        generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+        if(integrity!=100){
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; z++) {
+                            if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; z++) {
+                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        onComplete()
+        generatorProgress[generatorProgressId].endTick=system.currentTick; 
+        generatorProgress[generatorProgressId].endTime=Date.now(); 
+        generatorProgress[generatorProgressId].done=true; 
+        return
+    }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
+}
+export function* generateWallsFillBG(begin: Vector3, end: Vector3, dimension: Dimension, generatorProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
+    try{
+        generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+        if(integrity!=100){
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; (x==begin.x||x==end.x||z==end.z)?z++:z=end.z) {
+                            if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; (x==begin.x||x==end.x||z==end.z)?z++:z=end.z) {
+                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        onComplete()
+        generatorProgress[generatorProgressId].endTick=system.currentTick; 
+        generatorProgress[generatorProgressId].endTime=Date.now(); 
+        generatorProgress[generatorProgressId].done=true; 
+        return
+    }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
+}
+export function* generateHollowFillBG(begin: Vector3, end: Vector3, dimension: Dimension, generatorProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
+    try{
+        generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+        if(integrity!=100){
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; (x==begin.x||x==end.x||y==begin.y||y==end.y||z==end.z)?z++:z=end.z) {
+                            if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; (x==begin.x||x==end.x||y==begin.y||y==end.y||z==end.z)?z++:z=end.z) {
+                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        onComplete()
+        generatorProgress[generatorProgressId].endTick=system.currentTick; 
+        generatorProgress[generatorProgressId].endTime=Date.now(); 
+        generatorProgress[generatorProgressId].done=true; 
+        return
+    }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
+}
+export function* generateOutlineFillBG(begin: Vector3, end: Vector3, dimension: Dimension, generatorProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
+    try{
+        generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
+        var msSinceLastYieldStart = Date.now()
+        if(integrity!=100){
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; y++) {
+                    for (let z = begin.z; z <= end.z; (((x==begin.x||x==end.x)&&(y==begin.y||y==end.y))||z==end.z)?z++:z=end.z) {
+                            if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }else{
+            for (let x = begin.x; x <= end.x; x++) {
+                for (let y = begin.y; y <= end.y; (x==begin.x||x==end.x||y==end.y)?y++:y=end.y) {
+                    for (let z = begin.z; z <= end.z; (((x==begin.x||x==end.x)&&(y==begin.y||y==end.y))||z==end.z)?z++:z=end.z) {
+                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                    }
+                    if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+                }
+                if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
+            }
+        }
+        onComplete()
+        generatorProgress[generatorProgressId].endTick=system.currentTick; 
+        generatorProgress[generatorProgressId].endTime=Date.now(); 
+        generatorProgress[generatorProgressId].done=true; 
+        return
+    }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
+}
 
 export function generateMinecraftSphere(center: Vector3, radius: number) {
     const centerX = center.x
@@ -1397,6 +1578,9 @@ export function generateMinecraftCylinder(blockType, radius, thickness, centerX,
 }
 export function roundVector3ToMiddleOfBlock(vector: Vector3) {
     return {x: Math.floor(vector.x)+0.5, y: Math.floor(vector.y)+0.5, z: Math.floor(vector.z)+0.5};
+}
+export function roundVector3ToMiddleOfBlockFloorY(vector: Vector3) {
+    return {x: Math.floor(vector.x)+0.5, y: Math.floor(vector.y), z: Math.floor(vector.z)+0.5};
 }
 declare global {
     class Entity {

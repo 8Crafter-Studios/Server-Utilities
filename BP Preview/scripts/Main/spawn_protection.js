@@ -1,5 +1,6 @@
 import { BlockVolume, CompoundBlockVolume, Player, system, world, Entity } from "@minecraft/server";
 import { ActionFormData, ModalFormData, ActionFormResponse, ModalFormResponse } from "@minecraft/server-ui";
+import { format_version } from "Main";
 import { forceShow, mainMenu } from "./ui";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -122,6 +123,7 @@ export function editAreas(player, prefix) {
             case (t.selection == a.length):
                 form12345.textField("Identifier Name", "myArea");
                 form12345.textField("Area Value(type of 0 = normal, type of 1 = negative)", "x1, y1, z1, x2, y2, z2, type, icon_path?(optional)");
+                form12345.submitButton("Add");
                 forceShow(form12345, player).then((q) => { if (q.canceled)
                     return; const [id, value] = q.formValues; world.setDynamicProperty(prefix + id, String(value)); });
                 break;
@@ -140,6 +142,7 @@ export function editAreas(player, prefix) {
                     switch (w.selection) {
                         case 0:
                             form123456.textField("Area Value(type of 0 = normal, type of 1 = negative)", "x1, y1, z1, x2, y2, z2, type, icon_path?(optional)", String(world.getDynamicProperty(String(a[Number(t.selection)]))));
+                            form123456.submitButton("Save");
                             forceShow(form123456, player).then((q) => { if (q.canceled)
                                 return; const [value] = q.formValues; world.setDynamicProperty(a[t.selection], String(value)); });
                             break;
@@ -176,3 +179,4 @@ export function convertToCompoundBlockVolume(selection) { let compoundFullBlockV
 export function testIsWithinRanges(blockvolumes, location) { let withinRange = false; blockvolumes.forEach((blockvolume) => { if ((((blockvolume.from.x >= location.x && location.x >= blockvolume.to.x) || (blockvolume.to.x >= location.x && location.x >= blockvolume.from.x)) && ((blockvolume.from.y >= location.y && location.y >= blockvolume.to.y) || (blockvolume.to.y >= location.y && location.y >= blockvolume.from.y)) && ((blockvolume.from.z >= location.z && location.z >= blockvolume.to.z) || (blockvolume.to.z >= location.z && location.z >= blockvolume.from.z)))) {
     withinRange = true;
 } }); return withinRange; }
+//# sourceMappingURL=spawn_protection.js.map
