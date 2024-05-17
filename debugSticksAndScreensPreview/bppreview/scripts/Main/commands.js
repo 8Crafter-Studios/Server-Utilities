@@ -1713,7 +1713,7 @@ export async function generateNBTFileD(location, nbt, player) {
                     generateNBTFileF(location, await unsuperCompressG(nbt));
                     break;
                 case "supercmprbnbt":
-                    pasend(player, generateNBTFileE(location, await unsuperCompressG(nbt)));
+                    pasend(player, (await completeGenerator(generateNBTFileEGG(location, await unsuperCompressG(nbt)))).return);
                     break;
                 case "ultracmprsnbt":
                     generateNBTFileF(location, unultraCompress(nbt));
@@ -1854,13 +1854,13 @@ export function compressIntArrayB(s, replacement = "-1") { Array.from(s.matchAll
 export function extractIntArrayB(s, revivement = "-1") { s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement); s = s.slice(0, -1) + "," + "]"; Array.from(s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+),/g)).forEach(v => s = s.replace(v[0], (v[1] + ",").repeat(Number(v[2])))); s = s.slice(0, -2) + "]"; return s; }
 export function* extractIntArrayBGenerator(s, revivement = "-1", maxTimePerTick = 1250) {
     let lastYieldTime = Date.now();
-    s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement);
-    s = s.slice(0, -1) + "," + "]";
+    s = s.replaceAll(/,(?=[,\]\^])/g, "," + revivement).replace(/\[(?=[,\^])/, "[" + revivement).replace("]", ",]");
     // Yield the modified string after the first replacement
     yield s;
     const matchAllIterator = s.matchAll(/([\-\+]?[a-zA-Z0-9]+)\^([a-zA-Z0-9]+),/g);
     for (const v of matchAllIterator) {
-        v[0] == "32" ? console.log(JSON.stringify(v), v[0], v[1], v[2]) : undefined;
+        //v[0]=="32"?console.log(JSON.stringify(v), v[0], v[1], v[2]):undefined; 
+        isNaN(Number(v[2])) ? console.log(v[2]) : undefined;
         s = s.replace(v[0], (v[1] + ",").repeat(Number(v[2])));
         // Check if it's time to yield
         if (Date.now() - lastYieldTime >= maxTimePerTick) {
@@ -1868,9 +1868,8 @@ export function* extractIntArrayBGenerator(s, revivement = "-1", maxTimePerTick 
             yield s; // Yield the modified string
         }
     }
-    s = s.slice(0, -2) + "]";
-    yield s; // Yield the final modified string
-    return s;
+    yield s.replace(",]", "]"); // Yield the final modified string
+    return s.replace(",]", "]");
 }
 export function iterateGenerator(extractorGenerator, maxTimePerTick = 1500, whileConditions = true) {
     let lastYieldTime = Date.now(); // Initialize the last yield time
@@ -9560,6 +9559,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 break;
             case !!switchTest.match(/^copyitem$/):
                 {
+                    //world.scoreboard.getObjective("MinsDisplay").getParticipants().filter(p=>!!!tryget(()=>p.getEntity())).forEach(p=>world.scoreboard.getObjective("balance").removeParticipant(p))
+                    //if((world.scoreboard.getObjective("balance").getScore(player)??0)>JSON.parse(world.getDynamicProperty("shop:costs"))[r.selection]){world.scoreboard.getObjective("balance").addScore(player, -(JSON.parse(world.getDynamicProperty("shop:costs"))[r.selection])); player.getComponent("inventory").container.addItem(cmds.overworld.getBlock({x: 823, y: 84, z: 1037}).getComponent("inventory").container.getItem(r.selection))}
+                    //${se}swdp("shop:costs", "[20, 50, 70, 80]")
                     eventData.cancel = true;
                     let args = evaluateParametersOld(["presetText", "presetText", "string"], switchTestB).args;
                     if (switchTestB.split(/\s+/g)[2].trim() == "~") {
