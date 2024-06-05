@@ -1,0 +1,13 @@
+{
+    "format_version": "1.17",
+        "minecraft:recipe_smithing_transform": {
+            "description": {
+                "identifier": "andexdb:4leather_cap"
+            },
+         "tags": ["smithing_table"],
+         "template": "andexdb:enchantment_transfer_smithing_template:4",
+         "base": "andexdb:smithing_table_enchanted_book",
+            "addition": "minecraft:netherite_ingot",
+            "result": "minecraft:leather_helmet"
+        }
+    }

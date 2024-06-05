@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.14.1";
+export const format_version = "1.16.0-development.1";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -684,10 +684,10 @@ export function cerror(...data: any[]){console.error(data)};
 export function asend(value: any){world.sendMessage(String(value))}; 
 export function bsend(value: any){world.sendMessage(JSONStringify(value, true))}; 
 export function csend(value: any){world.sendMessage(JSON.stringify(value))}; 
-export function psend(player: Player, value: any){world.sendMessage(value)}; 
-export function pasend(player: Player, value: any){world.sendMessage(String(value))}; 
-export function pbsend(player: Player, value: any){world.sendMessage(JSONStringify(value, true))}; 
-export function pcsend(player: Player, value: any){world.sendMessage(JSON.stringify(value))}; 
+export function psend(player: Player, value: string){player.sendMessage(value)}; 
+export function pasend(player: Player, value: any){player.sendMessage(String(value))}; 
+export function pbsend(player: Player, value: any){player.sendMessage(JSONStringify(value, true))}; 
+export function pcsend(player: Player, value: any){player.sendMessage(JSON.stringify(value))}; 
 export function splitTextByMaxProperyLength(string: string){let length = string.length/32767; let substringlist: string[]; substringlist = []; for(let i = 0; i < Math.ceil(length); i++){substringlist.push(string.slice((i-1)*32767, i==Math.ceil(length)?string.length:i*32767))}; return substringlist}; 
 export function fillBlocks(from: Vector3, to: Vector3, dimension: Dimension, block: string | BlockPermutation | BlockType, options?: mcServer.BlockFillOptions){let mainArray = [] as BlockVolume[]; let subArray = [] as Vector3[]; Array.from(new BlockVolume(from, to).getBlockLocationIterator()).forEach(v=>{if(subArray.length<=new BlockVolume(from, to).getSpan().x){subArray.push(v)}else{mainArray.push(new BlockVolume({x: subArray.sort((a, b)=>a.x-b.x)[0].x, y: subArray.sort((a, b)=>a.y-b.y)[0].y, z: subArray.sort((a, b)=>a.z-b.z)[0].z}, {x: subArray.sort((a, b)=>b.x-a.x)[0].x, y: subArray.sort((a, b)=>b.y-a.y)[0].y, z: subArray.sort((a, b)=>b.z-a.z)[0].z}))}}); let counter = 0; mainArray.forEach(v=>counter+=dimension.fillBlocks(v.from, v.to, block, options)); return counter}; 
 export function fillBlocksB(from: Vector3, to: Vector3, dimension: Dimension, block: string | BlockPermutation | BlockType, options?: mcServer.BlockFillOptions){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))}); subArray.forEach(v=>{Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))}); let counter = 0; mainArray.forEach(v=>counter+=dimension.fillBlocks(v.from, v.to, block, options)); return counter}; 

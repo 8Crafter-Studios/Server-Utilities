@@ -1,0 +1,116 @@
+{
+   "content" : [
+      {
+         "path" : "font/glyph_E2.png"
+      },
+      {
+         "path" : "textures/items/diamond_red_up_arrow_transform_template.png"
+      },
+      {
+         "path" : ".mcattributes"
+      },
+      {
+         "path" : "textures/item_texture.json"
+      },
+      {
+         "path" : "font/glyph_E0 old.png"
+      },
+      {
+         "path" : "animations/animation.none.none.none.animation.json"
+      },
+      {
+         "path" : "font/glyph_E1.png"
+      },
+      {
+         "path" : "contents.json"
+      },
+      {
+         "path" : "font/glyph_E0 old 3.png"
+      },
+      {
+         "path" : "ui/server_form.json"
+      },
+      {
+         "path" : "particles/custom_text_glyph_E0_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "font/glyph_E0.png"
+      },
+      {
+         "path" : "font/glyph_E3.png"
+      },
+      {
+         "path" : "font/glyph_E4.png"
+      },
+      {
+         "path" : "font/glyph_E5.png"
+      },
+      {
+         "path" : "manifest.json"
+      },
+      {
+         "path" : "font/glyph_E6.png"
+      },
+      {
+         "path" : "textures/items/netherite_downgrade_smithing_template.png"
+      },
+      {
+         "path" : "particles/custom_text_glyph_E1_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "particles/custom_block_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "pack_icon.png"
+      },
+      {
+         "path" : "particles/block_destruct_2.json"
+      },
+      {
+         "path" : "particles/custom_block_texture_billboard.particle.json"
+      },
+      {
+         "path" : "particles/custom_item_texture_billboard.particle.json"
+      },
+      {
+         "path" : "particles/custom_item_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "textures/items/diamond_green_down_arrow_transform_template.png"
+      },
+      {
+         "path" : "particles/custom_text_ascii_sga_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "particles/custom_text_glyph_E3_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "particles/custom_text_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "texts/en_US.lang"
+      },
+      {
+         "path" : "textures/items/diamond_blue_up_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/items/diamond_downgrade_transform_template.png"
+      },
+      {
+         "path" : "textures/items/diamond_green_left_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/items/diamond_green_right_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/items/diamond_red_left_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/items/diamond_red_right_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/items/giant_stick.png"
+      }
+   ],
+   "version" : 1
+}

@@ -1,0 +1,41 @@
+{
+  "format_version": 1,
+  "header": {
+    "description": "v.1.0.0 8Crafter's Debug Sticks RP (for minecraft bedrock edition 1.20.5x)",
+    "name": "v.1.0.0 8Crafter's Debug Sticks RP (for minecraft bedrock edition 1.20.5x)",
+    "uuid": "5869846f-2019-4442-8e81-d3a75c5e003f",
+    "version": [ 1, 0, 0 ],
+    "min_engine_version": [ 1, 10, 0 ]
+  },
+  "modules": [
+    {
+      "description": "v.1.0.0 8Crafter's Debug Sticks RP (for minecraft bedrock edition 1.20.5x)",
+      "type": "resources",
+      "uuid": "3e4e2982-a23c-47ad-9256-ebc97345a371",
+      "version": [ 1, 0, 0 ]
+    }
+  ],
+  "dependencies": [
+          {
+              "uuid": "53170125-3e79-4659-9bba-e49eb90b6ded",
+              "version": [ 1, 0, 0 ]
+          }
+      ],/*
+  "subpacks": [
+      {
+          "folder_name": "1",
+          "name": "§cDon't Include Morph Mod§r§f",
+          "memory_tier": 1
+      },
+      {
+          "folder_name": "2",
+          "name": "§aInclude Morph Mod§r§f\n§eCapes Will Not Work. ",
+          "memory_tier": 1
+      }
+  ],*/
+  "metadata": {
+      "authors": ["Andexter8", "Andersen Zahn", "8Crafter"],
+      "url": "https://sites.google.com/view/8craftermods/home"
+  }
+}
+

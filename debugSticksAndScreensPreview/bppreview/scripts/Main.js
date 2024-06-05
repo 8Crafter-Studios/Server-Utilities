@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.15.0";
+export const format_version = "1.15.1";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -4686,11 +4686,11 @@ world.afterEvents.entityHitBlock.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
-    if (event.damagingEntity.getComponent("minecraft:inventory").container.getItem(event.damagingEntity.selectedSlot)?.typeId === "andexdb:debug_stick") {
+    if (event.damagingEntity.getComponent("minecraft:inventory").container.getItem(event.damagingEntity.selectedSlotIndex)?.typeId === "andexdb:debug_stick") {
         debugAction(event.hitBlock, event.damagingEntity, 1, Number(event.damagingEntity.isSneaking));
     }
     ;
-    if (event.damagingEntity.getComponent("minecraft:inventory").container.getItem(event.damagingEntity.selectedSlot)?.typeId === "andexdb:liquid_clipped_debug_stick") {
+    if (event.damagingEntity.getComponent("minecraft:inventory").container.getItem(event.damagingEntity.selectedSlotIndex)?.typeId === "andexdb:liquid_clipped_debug_stick") {
         debugAction(event.damagingEntity.getBlockFromViewDirection({ includeLiquidBlocks: true }).block, event.damagingEntity, 1, Number(event.damagingEntity.isSneaking));
     }
     ;
@@ -4705,7 +4705,7 @@ system.runInterval(() => {
             interactable_block.find((playerId) => (playerId.id == player.id)).delay = Math.max(0, interactable_block.find((playerId) => (playerId.id == player.id)).delay - 1);
             interactable_block.find((playerId) => (playerId.id == player.id)).holdDuration = Math.max(0, interactable_block.find((playerId) => (playerId.id == player.id)).holdDuration - 1);
         }
-        ; /*if (player.isSneaking && ((interactable_block.find((playerId)=>(playerId.id == player.id)).holdDuration == 0) || (interactable_block.find((playerId)=>(playerId.id == player.id)).holdDuration == undefined)) && ((player.getComponent("minecraft:inventory") as EntityInventoryComponent).container.getItem(player.selectedSlot).typeId === "andexdb:debug_stick")){
+        ; /*if (player.isSneaking && ((interactable_block.find((playerId)=>(playerId.id == player.id)).holdDuration == 0) || (interactable_block.find((playerId)=>(playerId.id == player.id)).holdDuration == undefined)) && ((player.getComponent("minecraft:inventory") as EntityInventoryComponent).container.getItem(player.selectedSlotIndex).typeId === "andexdb:debug_stick")){
             player.onScreenDisplay.setActionBar(`§l§eTags: §r§a${player.getBlockFromViewDirection().block.getTags().join(", ")}\n§l§eBlock States: §r§a${Object.entries(player.getBlockFromViewDirection().block.permutation.getAllStates()).join("\n")}`)}; */
     });
 }, 1);
@@ -5187,7 +5187,7 @@ try {
             try {
                 for (let index in playerList2) {
                     try {
-                        if ((playerList2[index].isSneaking && ((playerList2[index].getComponent("minecraft:inventory").container?.getItem(playerList2[index].selectedSlot))?.typeId == "andexdb:editor_stick"))) {
+                        if ((playerList2[index].isSneaking && ((playerList2[index].getComponent("minecraft:inventory").container?.getItem(playerList2[index].selectedSlotIndex))?.typeId == "andexdb:editor_stick"))) {
                             let blockStates = Object.entries(playerList2[index].getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true }).block.permutation.getAllStates());
                             let blockStatesB;
                             blockStatesB = ["none"];
@@ -5451,7 +5451,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
                     } /*
                     console.warn(targetList);*/
                 }
-                players[playerViewerB].sendMessage("§bname§a: §u" + players[playerTargetB].name + "§a, §bnameTag§a: §u" + players[playerTargetB].nameTag + "§a, §bUUID§a: §u" + players[playerTargetB].id + "§a, §bdistance§a: §u" + distance + "§a, §bLocation§a: §9{ §c" + players[playerTargetB].location.x + "§a, §c" + players[playerTargetB].location.y + "§a, §c" + players[playerTargetB].location.z + "§9 }§a, §bisSneaking§a: §g" + players[playerTargetB].isSneaking + "§a, §bscoreboardIdentity§a: §u" + scoreboardIdentity + "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName + "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType + "§a, §bgetTotalXP§a: §c" + players[playerTargetB].getTotalXp() + "§a, §bxpEarnedAtCurrentLevel§a: §c" + players[playerTargetB].xpEarnedAtCurrentLevel + "§a, §blevel§a: §c" + players[playerTargetB].level + "§a, §btotalXpNeededForNextLevel§a: §c" + players[playerTargetB].totalXpNeededForNextLevel + "§a, §bisOp§a: §g" + players[playerTargetB].isOp() + "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType + ", §bgetEntitiesFromViewDirection§a: §9{ §sEntity§a: " + entityViewedEntityType + ", §sDistance§a: " + entityViewedEntityDistance + " §9}§a, §bgetComponents§a: §n[§u" + componentList + "§n]§a, §bgetEffects§a: §n[§a" + effectsList + "§n]§a, §bgetTags§a: [" + players[playerTargetB].getTags() + "], §bgetVelocity§a: §9{ §c" + (players[playerTargetB].getVelocity().x + "§a, §c" + players[playerTargetB].getVelocity().y + "§a, §c" + players[playerTargetB].getVelocity().z) + "§9 }§a, §bgetViewDirection§a: §9{ §bx: §c" + (players[playerTargetB].getViewDirection().x + "§a, §by: §c" + players[playerTargetB].getViewDirection().y + "§a, §bz: §c" + players[playerTargetB].getViewDirection().z) + "§9 }§a, §bselectedSlot§a: " + players[playerTargetB].selectedSlot + "§a, §bspawnPoint§a: " + spawnPointAllCoordinates);
+                players[playerViewerB].sendMessage("§bname§a: §u" + players[playerTargetB].name + "§a, §bnameTag§a: §u" + players[playerTargetB].nameTag + "§a, §bUUID§a: §u" + players[playerTargetB].id + "§a, §bdistance§a: §u" + distance + "§a, §bLocation§a: §9{ §c" + players[playerTargetB].location.x + "§a, §c" + players[playerTargetB].location.y + "§a, §c" + players[playerTargetB].location.z + "§9 }§a, §bisSneaking§a: §g" + players[playerTargetB].isSneaking + "§a, §bscoreboardIdentity§a: §u" + scoreboardIdentity + "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName + "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType + "§a, §bgetTotalXP§a: §c" + players[playerTargetB].getTotalXp() + "§a, §bxpEarnedAtCurrentLevel§a: §c" + players[playerTargetB].xpEarnedAtCurrentLevel + "§a, §blevel§a: §c" + players[playerTargetB].level + "§a, §btotalXpNeededForNextLevel§a: §c" + players[playerTargetB].totalXpNeededForNextLevel + "§a, §bisOp§a: §g" + players[playerTargetB].isOp() + "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType + ", §bgetEntitiesFromViewDirection§a: §9{ §sEntity§a: " + entityViewedEntityType + ", §sDistance§a: " + entityViewedEntityDistance + " §9}§a, §bgetComponents§a: §n[§u" + componentList + "§n]§a, §bgetEffects§a: §n[§a" + effectsList + "§n]§a, §bgetTags§a: [" + players[playerTargetB].getTags() + "], §bgetVelocity§a: §9{ §c" + (players[playerTargetB].getVelocity().x + "§a, §c" + players[playerTargetB].getVelocity().y + "§a, §c" + players[playerTargetB].getVelocity().z) + "§9 }§a, §bgetViewDirection§a: §9{ §bx: §c" + (players[playerTargetB].getViewDirection().x + "§a, §by: §c" + players[playerTargetB].getViewDirection().y + "§a, §bz: §c" + players[playerTargetB].getViewDirection().z) + "§9 }§a, §bselectedSlotIndex§a: " + players[playerTargetB].selectedSlotIndex + "§a, §bspawnPoint§a: " + spawnPointAllCoordinates);
             }).catch(e => {
                 console.error(e, e.stack);
             });
@@ -5599,7 +5599,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
                     } /*
                     console.warn(targetList);*/
                 }
-                players[playerViewerB].sendMessage("§btypeId§a: §u" + playerTargetB.typeId + "§a, §bUUID§a: §u" + playerTargetB.id + "§a, §bnameTag§a: §u" + playerTargetB.nameTag + "§a, §bdistance§a: §u" + distance + "§a, §bLocation§a: §9{ §c" + playerTargetB.location.x + "§a, §c" + playerTargetB.location.y + "§a, §c" + playerTargetB.location.z + "§9 }§a, §bisSneaking§a: §g" + playerTargetB.isSneaking + "§a, §bscoreboardIdentityId§a: §u" + scoreboardIdentity + "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName + "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType + "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType + ", §bgetEntitiesFromViewDirection§a: { §sEntity§a: " + entityViewedEntityType + ", §sDistance§a: " + entityViewedEntityDistance + " }, §bgetComponents§a: §n[§u" + componentList + "§n]§a, §bgetEffects§a: §n[§a" + effectsList + "§n]§a, §bgetTags§a: [" + playerTargetB.getTags() + "], §bgetVelocity§a: §9{ §c" + (playerTargetB.getVelocity().x + "§a, §c" + playerTargetB.getVelocity().y + "§a, §c" + playerTargetB.getVelocity().z) + "§9 }§a, §bgetViewDirection§a: { " + (playerTargetB.getViewDirection().x, playerTargetB.getViewDirection().y, playerTargetB.getViewDirection().z) + ", §bselectedSlot§a: " + playerTargetB.selectedSlot + spawnPointAllCoordinates);
+                players[playerViewerB].sendMessage("§btypeId§a: §u" + playerTargetB.typeId + "§a, §bUUID§a: §u" + playerTargetB.id + "§a, §bnameTag§a: §u" + playerTargetB.nameTag + "§a, §bdistance§a: §u" + distance + "§a, §bLocation§a: §9{ §c" + playerTargetB.location.x + "§a, §c" + playerTargetB.location.y + "§a, §c" + playerTargetB.location.z + "§9 }§a, §bisSneaking§a: §g" + playerTargetB.isSneaking + "§a, §bscoreboardIdentityId§a: §u" + scoreboardIdentity + "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName + "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType + "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType + ", §bgetEntitiesFromViewDirection§a: { §sEntity§a: " + entityViewedEntityType + ", §sDistance§a: " + entityViewedEntityDistance + " }, §bgetComponents§a: §n[§u" + componentList + "§n]§a, §bgetEffects§a: §n[§a" + effectsList + "§n]§a, §bgetTags§a: [" + playerTargetB.getTags() + "], §bgetVelocity§a: §9{ §c" + (playerTargetB.getVelocity().x + "§a, §c" + playerTargetB.getVelocity().y + "§a, §c" + playerTargetB.getVelocity().z) + "§9 }§a, §bgetViewDirection§a: { " + (playerTargetB.getViewDirection().x, playerTargetB.getViewDirection().y, playerTargetB.getViewDirection().z) + ", §bselectedSlotIndex§a: " + playerTargetB.selectedSlotIndex + spawnPointAllCoordinates);
             }).catch(e => {
                 console.error(e, e.stack);
             });
@@ -7770,7 +7770,7 @@ console.error(e, e.stack);
             form.textField("Trigger Event", "Trigger Event");
             form.textField("addExperience", "Experience Amount");
             form.textField("addLevels", "Level Amount");
-            form.slider("Selected Slot", 0, 56, 1, playerList[playerTargetB].selectedSlot);
+            form.slider("Selected Slot", 0, 56, 1, playerList[playerTargetB].selectedSlotIndex);
             form.slider("§4Scale", 0, 10, 0.5);
             form.toggle("Is Sneaking", playerList[playerTargetB].isSneaking);
             form.toggle("Clear Velocity", false);
@@ -7839,7 +7839,7 @@ console.error(e, e.stack);
             form.show(playerList[playerViewerB]).then(r => {
                 if (r.canceled)
                     return;
-                let [changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug] = r.formValues;
+                let [changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlotIndex, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug] = r.formValues;
                 let newNameTag = String(nameTag);
                 if (Boolean(multilineNameTag) == true) {
                     newNameTag = String(nameTag).split("\\\\newline").join("\n");
@@ -7864,7 +7864,7 @@ console.error(e, e.stack);
                     }
                 }
                 playerList[playerTargetB].isSneaking = Boolean(isSneaking);
-                playerList[playerTargetB].selectedSlot = Number(selectedSlot);
+                playerList[playerTargetB].selectedSlotIndex = Number(selectedSlotIndex);
                 if (Boolean(addEffect) == true) {
                     try {
                         playerList[playerTargetB].addEffect(String(effectToAdd), Number(secondsOfEffect), { amplifier: Number(effectAmplifier), showParticles: Boolean(effectShowEffectParticles) });
@@ -8150,7 +8150,7 @@ console.error(e, e.stack);
             form.textField("Trigger Event", "Trigger Event");
             form.textField("addExperience", "Experience Amount");
             form.textField("addLevels", "Level Amount");
-            form.slider("Selected Slot", 0, 56, 1, playerList[playerTargetB].selectedSlot);
+            form.slider("Selected Slot", 0, 56, 1, playerList[playerTargetB].selectedSlotIndex);
             form.slider("§4Scale", 0, 10, 0.5);
             form.toggle("Is Sneaking", playerList[playerTargetB].isSneaking);
             form.toggle("Clear Velocity", false);
@@ -8219,7 +8219,7 @@ console.error(e, e.stack);
             form.show(playerList[playerViewerB]).then(r => {
                 if (r.canceled)
                     return;
-                let [changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug] = r.formValues;
+                let [changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlotIndex, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug] = r.formValues;
                 let newNameTag = String(nameTag);
                 if (Boolean(multilineNameTag) == true) {
                     newNameTag = String(nameTag).split("\\\\newline").join("\n");
@@ -8237,7 +8237,7 @@ console.error(e, e.stack);
                     }
                 }
                 playerList[playerTargetB].isSneaking = Boolean(isSneaking);
-                playerList[playerTargetB].selectedSlot = Number(selectedSlot);
+                playerList[playerTargetB].selectedSlotIndex = Number(selectedSlotIndex);
                 if (Boolean(addEffect) == true) {
                     try {
                         playerList[playerTargetB].addEffect(String(effectToAdd), Number(secondsOfEffect), { amplifier: Number(effectAmplifier), showParticles: Boolean(effectShowEffectParticles) });
@@ -8737,7 +8737,7 @@ console.error(e, e.stack);
             let r = ro;
             if (r.canceled)
                 return;
-            let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*, selectedSlot*/, isWaterlogged /*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
+            let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*, selectedSlotIndex*/, isWaterlogged /*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
             let blockPropertyValue2;
             blockPropertyValue2 = "";
             let blockPropertyValueArray;
@@ -9286,7 +9286,7 @@ console.error(e, e.stack);
     form.show(playerList[playerList.findIndex((x) => x == sourceEntity)]).then(r => {
         if (r.canceled) return;
     
-        let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled*/ /*, selectedSlot*/ /*, isWaterlogged/*, clearVelocity*/ //, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = r.formValues;
+        let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled*/ /*, selectedSlotIndex*/ /*, isWaterlogged/*, clearVelocity*/ //, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = r.formValues;
         /*let blockPropertyValue2: any
         blockPropertyValue2 = ""
         let blockPropertyValueArray: Array<any>
@@ -9535,7 +9535,7 @@ console.error(e, e.stack);
         form.show(playerList[playerList.findIndex((x) => x == sourceEntity)]).then(r => {
             if (r.canceled)
                 return;
-            let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*, selectedSlot*/, isWaterlogged /*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
+            let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*, selectedSlotIndex*/, isWaterlogged /*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
             let blockPropertyValue2;
             blockPropertyValue2 = "";
             let blockPropertyValueArray;
@@ -10147,14 +10147,14 @@ console.error(e, e.stack);
     form.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(r => {
         if (r.canceled) return;
     
-        let [ nameTag, triggerEvent, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, removeEffect, effectToRemove, removeTag, tagToRemove, setRot, rotX, rotY, teleport, teleportX, teleportY, teleportZ, tryTeleport, tryTeleportX, tryTeleportY, tryTeleportZ, openTheItemModificationFormAfterwards, debug ] = r.formValues;
+        let [ nameTag, triggerEvent, selectedSlotIndex, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, removeEffect, effectToRemove, removeTag, tagToRemove, setRot, rotX, rotY, teleport, teleportX, teleportY, teleportZ, tryTeleport, tryTeleportX, tryTeleportY, tryTeleportZ, openTheItemModificationFormAfterwards, debug ] = r.formValues;
     
         let scale = sourceEntity.getComponent("scale") as EntityScaleComponent;*/ /*
         scale.value = Number(scaleValue);*/ /*
         
         try {entity[0].entity.nameTag = String(nameTag);} catch(e){console.error(e, e.stack);}
         try {entity[0].entity.isSneaking = Boolean(isSneaking);} catch(e){console.error(e, e.stack);}
-        try {(entity[0].entity as Player).selectedSlot = Number(selectedSlot);} catch(e){console.error(e, e.stack);}
+        try {(entity[0].entity as Player).selectedSlotIndex = Number(selectedSlotIndex);} catch(e){console.error(e, e.stack);}
         if (Boolean(setRot) == true) {
             try {entity[0].entity.setRotation({ x: Number(rotX), y: Number(rotY) });} catch(e){console.error(e, e.stack);}
         }
@@ -11198,7 +11198,7 @@ console.error(e, e.stack);
                             break;
                         case "slectedSlot":
                             try {
-                                targets[l].selectedSlot = Number(playerName.slice(1)[i].split(":")[1]), Number(playerName.slice(1)[i].split(":")[1]);
+                                targets[l].selectedSlotIndex = Number(playerName.slice(1)[i].split(":")[1]), Number(playerName.slice(1)[i].split(":")[1]);
                             }
                             catch (e) {
                                 console.error(e, e.stack);

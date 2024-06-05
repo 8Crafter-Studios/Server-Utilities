@@ -1048,8 +1048,8 @@ export class executeCommandPlayer {
     get level() { return this.player?.level; }
     get name() { return this.player?.name; }
     get onScreenDisplay() { return this.player?.onScreenDisplay; }
-    get selectedSlot() { return this.player?.selectedSlot; }
-    set selectedSlot(slotNumber) { this.player.selectedSlot = slotNumber; }
+    get selectedSlotIndex() { return this.player?.selectedSlotIndex; }
+    set selectedSlotIndex(slotNumber) { this.player.selectedSlotIndex = slotNumber; }
     get totalXpNeededForNextLevel() { return this.player?.totalXpNeededForNextLevel; }
     get xpEarnedAtCurrentLevel() { return this.player?.xpEarnedAtCurrentLevel; }
     get isSneaking() { return this.player?.isSneaking; }
@@ -3049,8 +3049,8 @@ export function entityToContainerSlotArrayB(entity, getContainer = true, getEqui
     ;
     return (!!container || !!equipment) ? { inventory: itemList, equipment: itemListB } : undefined;
 }
-export function getPlayerSelectedSlot(player) {
-    return player.getComponent("inventory").container.getSlot(player.selectedSlot);
+export function getPlayerselectedSlotIndex(player) {
+    return player.getComponent("inventory").container.getSlot(player.selectedSlotIndex);
 }
 export function getInventory(containerBlockPlayerOrEntity) {
     return (containerBlockPlayerOrEntity instanceof Block ? containerBlockPlayerOrEntity.getComponent("inventory") : containerBlockPlayerOrEntity.getComponent("inventory"));
@@ -3061,9 +3061,9 @@ export function getEquipment(containerBlockPlayerOrEntity) {
 export const JunkItemTypes = ["dirt", "stick", "deadbush", "tripwire_hook", "rotten_flesh", "string", "cobblestone", "stone", "diorite", "andesite", "granite", "tuff", "end_stone", "wheat_seeds", "tallgrass", "leather_helmet", "leather_boots", "leather_chestplate", "leather_leggings", "wooden_sword", "wooden_axe", "wooden_pickaxe", "wooden_shovel", "wooden_hoe", "spider_eye"];
 export const OpItemTypes = ["diamond", "netherite_ingot", "gold_ingot", "iron_ingot", "diamond_sword", "diamond_chestplate", "diamond_helmet", "diamond_leggings", "diamond_boots", "diamond_pickaxe", "diamond_shovel", "diamond_hoe", "diamond_block"];
 export const IllegalItemTypes = ["netherreactor", "glowingobsidian", "stonecutter", "water", "flowing_water", "lava", "flowing_lava", "camera", "item.camera", "item.skull", "item.cauldron", "bedrock"];
-export function parseSlot(slot, selectedSlot) { return [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand", "hat", "shirt", "shorts", "sandals", "firsthand", "secondaryhand"].findIndex(v => v == tryget(() => slot?.trim()?.toLowerCase())) % 6] ?? (((tryget(() => slot?.trim()) == "~" || tryget(() => slot?.trim()) == "") && !!!selectedSlot) ? "~" : Number(tryget(() => slot?.trim()) ?? slot)); }
+export function parseSlot(slot, selectedSlotIndex) { return [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand", "hat", "shirt", "shorts", "sandals", "firsthand", "secondaryhand"].findIndex(v => v == tryget(() => slot?.trim()?.toLowerCase())) % 6] ?? (((tryget(() => slot?.trim()) == "~" || tryget(() => slot?.trim()) == "") && !!!selectedSlotIndex) ? "~" : Number(tryget(() => slot?.trim()) ?? slot)); }
 export function getSlotFromParsedSlot(slot, options) { if (typeof slot == "string") {
-    return slot.trim() == "~" ? (!!options?.selectedSlot ? options?.container?.getSlot(Number(options?.selectedSlot)) : (!!options?.equipment ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand) : undefined)) : (!!options?.equipment ? slot.trim().toLowerCase() == "head" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Head) : slot.trim().toLowerCase() == "chest" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Chest) : slot.trim().toLowerCase() == "legs" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Legs) : slot.trim().toLowerCase() == "feet" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Feet) : slot.trim().toLowerCase() == "mainhand" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand) : slot.trim().toLowerCase() == "offhand" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Offhand) : !Number.isNaN(Number(slot)) ? options?.container?.getSlot(Number(slot)) : undefined : !Number.isNaN(Number(slot)) ? options?.container?.getSlot(Number(slot)) : undefined);
+    return slot.trim() == "~" ? (!!options?.selectedSlotIndex ? options?.container?.getSlot(Number(options?.selectedSlotIndex)) : (!!options?.equipment ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand) : undefined)) : (!!options?.equipment ? slot.trim().toLowerCase() == "head" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Head) : slot.trim().toLowerCase() == "chest" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Chest) : slot.trim().toLowerCase() == "legs" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Legs) : slot.trim().toLowerCase() == "feet" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Feet) : slot.trim().toLowerCase() == "mainhand" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand) : slot.trim().toLowerCase() == "offhand" ? options?.equipment?.getEquipmentSlot(EquipmentSlot.Offhand) : !Number.isNaN(Number(slot)) ? options?.container?.getSlot(Number(slot)) : undefined : !Number.isNaN(Number(slot)) ? options?.container?.getSlot(Number(slot)) : undefined);
 }
 else if (typeof slot == "number") {
     return options?.container?.getSlot(Number(slot));
@@ -3826,8 +3826,8 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                             playerTotalVictimsList.push(player2.name);
                                             const inventoryc = player2.getComponent("inventory");
                                             system.run(() => { try {
-                                                inventoryc.container.setItem(((args[2] ?? "").trim() == "~" || (args[2] ?? "").trim() == "") ? player.selectedSlot : Number(args[2]), item);
-                                                eventData.sender.sendMessage(String("Set Slot " + ((args[2] ?? "").trim() == "~" || (args[2] ?? "").trim() == "") ? player.selectedSlot : args[2] + " of " + player2.name + "\'s inventory to " + item.typeId + " * " + item.amount));
+                                                inventoryc.container.setItem(((args[2] ?? "").trim() == "~" || (args[2] ?? "").trim() == "") ? player.selectedSlotIndex : Number(args[2]), item);
+                                                eventData.sender.sendMessage(String("Set Slot " + ((args[2] ?? "").trim() == "~" || (args[2] ?? "").trim() == "") ? player.selectedSlotIndex : args[2] + " of " + player2.name + "\'s inventory to " + item.typeId + " * " + item.amount));
                                             }
                                             catch (e) {
                                                 eventData.sender.sendMessage("§c" + e + e.stack);
@@ -3840,7 +3840,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                     {
                                         const inventoryc = player.getComponent("inventory");
                                         system.run(() => { try {
-                                            inventoryc.container.setItem(((args[2] ?? "").trim() == "~" || (args[2] ?? "").trim() == "") ? player.selectedSlot : Number(args[2]), item);
+                                            inventoryc.container.setItem(((args[2] ?? "").trim() == "~" || (args[2] ?? "").trim() == "") ? player.selectedSlotIndex : Number(args[2]), item);
                                             eventData.sender.sendMessage(String("Set Slot " + args[2] + " of " + player.name + "\'s inventory to " + item.typeId + " * " + item.amount));
                                             world.getAllPlayers().filter(v => v.hasTag("canSeeCustomChatCommandFeedbackFromMods")).forEach((playerb) => { playerb.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set Slot " + args[2] + " of " + player.name + "\'s inventory to " + item.typeId + " * " + item.amount)); });
                                         }
@@ -3912,7 +3912,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                 }
                                 ;
                                 system.run(() => { try {
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlot).setLore(lore);
+                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore(lore);
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -3922,7 +3922,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                             case "item lorene":
                                 let lorene = JSON.parse(command.split(" ").slice(2).join(" "));
                                 system.run(() => { try {
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlot).setLore(lorene);
+                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore(lorene);
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -3932,7 +3932,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                             case "item canpalceon":
                                 let canpalceon = JSONParse(command.split(" ").slice(2).join(" "));
                                 system.run(() => { try {
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlot).setCanPlaceOn(canpalceon);
+                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setCanPlaceOn(canpalceon);
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -3942,7 +3942,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                             case "item candestroy":
                                 let candestroy = JSONParse(command.split(" ").slice(2).join(" "));
                                 system.run(() => { try {
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlot).setCanDestroy(candestroy);
+                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setCanDestroy(candestroy);
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -3956,7 +3956,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                 }
                                 ;
                                 system.run(() => { try {
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlot).nameTag = name.v;
+                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).nameTag = name.v;
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -3965,7 +3965,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                 break;
                             case "item remove":
                                 system.run(() => { try {
-                                    player.getComponent("inventory").container.setItem(player.selectedSlot);
+                                    player.getComponent("inventory").container.setItem(player.selectedSlotIndex);
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -3974,7 +3974,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                 break;
                             case "new":
                                 system.run(() => { let argsc = evaluateParameters(argsa.extra.trim(), ["string", "number"]).args; try {
-                                    player.getComponent("inventory").container.setItem(player.selectedSlot, new ItemStack(String((argsc[0] ?? "") == "" ? "air" : argsc[0]), Number((argsc[1] ?? "") == "" ? 1 : argsc[1])));
+                                    player.getComponent("inventory").container.setItem(player.selectedSlotIndex, new ItemStack(String((argsc[0] ?? "") == "" ? "air" : argsc[0]), Number((argsc[1] ?? "") == "" ? 1 : argsc[1])));
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -3984,7 +3984,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                             case "item json":
                                 let json = evaluateParameters(argsa.extra.trim(), ["json"]).args[0];
                                 system.run(() => { try {
-                                    getPlayerSelectedSlot(player).setItem(itemJSONPropertiesEval(json, player.getComponent("inventory").container.getItem(player.selectedSlot), player));
+                                    getPlayerselectedSlotIndex(player).setItem(itemJSONPropertiesEval(json, player.getComponent("inventory").container.getItem(player.selectedSlotIndex), player));
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -3994,7 +3994,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                             case "item jsonb":
                                 let jsonb = evaluateParameters(argsa.extra.trim(), ["json"]).args[0];
                                 system.run(() => { try {
-                                    itemJSONPropertiesEvalCT(jsonb, getPlayerSelectedSlot(player), player);
+                                    itemJSONPropertiesEvalCT(jsonb, getPlayerselectedSlotIndex(player), player);
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -4004,34 +4004,34 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                             case "item property":
                                 switch (command.split(" ")[2]) {
                                     case "removelist":
-                                        evaluateParametersOld(["json"], command.split(" ").slice(3).join(" ")).args[0].forEach(v => player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(v));
+                                        evaluateParametersOld(["json"], command.split(" ").slice(3).join(" ")).args[0].forEach(v => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(v));
                                         break;
                                     case "setlist":
-                                        Object.entries(evaluateParametersOld(["json"], command.split(" ").slice(3).join(" ")).args[0]).forEach(v => player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(v[0], v[1]));
+                                        Object.entries(evaluateParametersOld(["json"], command.split(" ").slice(3).join(" ")).args[0]).forEach(v => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(v[0], v[1]));
                                         break;
                                     case "remove":
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(3).join(" ")).args[0]);
+                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(3).join(" ")).args[0]);
                                         break;
                                     case "setnumber":
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[1]);
+                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[1]);
                                         break;
                                     case "setstring":
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[1]);
+                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[1]);
                                         break;
                                     case "setboolean":
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[1]);
+                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[1]);
                                         break;
                                     case "setvector3":
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[1]);
+                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[1]);
                                         break;
                                     case "list":
-                                        eventData.sender.sendMessage(player.getComponent("inventory").container.getSlot(player.selectedSlot).getDynamicPropertyIds().join("§r§f\n"));
+                                        eventData.sender.sendMessage(player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getDynamicPropertyIds().join("§r§f\n"));
                                         break;
                                     case "get":
-                                        eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getSlot(player.selectedSlot).getDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(3).join(" ")).args[0])));
+                                        eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(3).join(" ")).args[0])));
                                         break;
                                     case "clear":
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlot).clearDynamicProperties();
+                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).clearDynamicProperties();
                                         break;
                                     default:
                                         eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ").slice(2).join(" ") + "\": at \"\\item " + command.split(" ").slice(1, 2).join(" ") + " >>" + command.split(" ").slice(2).join(" ") + "<<\"");
@@ -4041,11 +4041,11 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                 switch (command.split(" ")[2]) {
                                     case "add":
                                         let enchantment = JSON.parse(command.split(" ").slice(3).join(" "));
-                                        let itemd = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
+                                        let itemd = player.getComponent("inventory").container.getItem(player.selectedSlotIndex).clone();
                                         system.run(() => {
                                             try {
                                                 itemd.getComponent("enchantable").addEnchantment({ level: enchantment.level, type: EnchantmentTypes.get(enchantment.type) });
-                                                player.getComponent("inventory").container.setItem(player.selectedSlot, itemd);
+                                                player.getComponent("inventory").container.setItem(player.selectedSlotIndex, itemd);
                                             }
                                             catch (e) {
                                                 console.error(e, e.stack);
@@ -4055,11 +4055,11 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         break;
                                     case "addlist":
                                         let enchantmentlist = JSON.parse(command.split(" ").slice(3).join(" "));
-                                        let itema = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
+                                        let itema = player.getComponent("inventory").container.getItem(player.selectedSlotIndex).clone();
                                         system.run(() => {
                                             try {
                                                 itema.getComponent("enchantable").addEnchantments(enchantmentlist.map(v => ({ level: v.level, type: EnchantmentTypes.get(v.type) })));
-                                                player.getComponent("inventory").container.setItem(player.selectedSlot, itema);
+                                                player.getComponent("inventory").container.setItem(player.selectedSlotIndex, itema);
                                             }
                                             catch (e) {
                                                 console.error(e, e.stack);
@@ -4068,11 +4068,11 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         });
                                         break;
                                     case "remove":
-                                        let itemb = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
+                                        let itemb = player.getComponent("inventory").container.getItem(player.selectedSlotIndex).clone();
                                         system.run(() => {
                                             try {
                                                 itemb.getComponent("enchantable").removeEnchantment(command.split(" ")[3]);
-                                                player.getComponent("inventory").container.setItem(player.selectedSlot, itemb);
+                                                player.getComponent("inventory").container.setItem(player.selectedSlotIndex, itemb);
                                             }
                                             catch (e) {
                                                 console.error(e, e.stack);
@@ -4084,17 +4084,17 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         eventData.sender.sendMessage("§l§cComing Soon!§r§f");
                                         break;
                                     case "list":
-                                        eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlot).getComponent("enchantable").getEnchantments()));
+                                        eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlotIndex).getComponent("enchantable").getEnchantments()));
                                         break;
                                     case "get":
-                                        eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlot).getComponent("enchantable").getEnchantment(command.split(" ")[3])));
+                                        eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlotIndex).getComponent("enchantable").getEnchantment(command.split(" ")[3])));
                                         break;
                                     case "clear":
-                                        const itemc = player.getComponent("inventory").container.getItem(player.selectedSlot).clone();
+                                        const itemc = player.getComponent("inventory").container.getItem(player.selectedSlotIndex).clone();
                                         system.run(() => {
                                             try {
                                                 itemc.getComponent("enchantable").removeAllEnchantments();
-                                                player.getComponent("inventory").container.setItem(player.selectedSlot, itemc);
+                                                player.getComponent("inventory").container.setItem(player.selectedSlotIndex, itemc);
                                             }
                                             catch (e) {
                                                 console.error(e, e.stack);
@@ -4103,7 +4103,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         });
                                         break;
                                     case "testfor":
-                                        eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlot).getComponent("enchantable").hasEnchantment(command.split(" ")[3])));
+                                        eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlotIndex).getComponent("enchantable").hasEnchantment(command.split(" ")[3])));
                                         break;
                                     default:
                                         eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ").slice(2).join(" ") + "\": at \"\\item " + command.split(" ").slice(1, 2).join(" ") + " >>" + command.split(" ").slice(2).join(" ") + "<<\"");
@@ -4112,7 +4112,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                 break;
                             case "item slot":
                                 let argsb = evaluateParameters(argsa.extra.trim(), ["presetText", "presetText"]);
-                                let slot = getSlotFromParsedSlot(parseSlot(String(((argsb.args[0] ?? "") == "" || (argsb.args[0] ?? "") == "~") ? String(player.selectedSlot) : String(argsb.args[0] ?? "")), player.selectedSlot), { container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlot: player?.selectedSlot });
+                                let slot = getSlotFromParsedSlot(parseSlot(String(((argsb.args[0] ?? "") == "" || (argsb.args[0] ?? "") == "~") ? String(player.selectedSlotIndex) : String(argsb.args[0] ?? "")), player.selectedSlotIndex), { container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlotIndex: player?.selectedSlotIndex });
                                 switch (argsb.args[1] ?? "") {
                                     case "lore":
                                         let lore = JSON.parse(command.split(" ").slice(4).join(" "));
@@ -4369,7 +4369,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                 break;
                             case "item amount":
                                 system.run(() => { try {
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlot).amount = Number(command.split(" ").slice(2).join(" "));
+                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).amount = Number(command.split(" ").slice(2).join(" "));
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -4378,7 +4378,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                 break;
                             case "item count":
                                 system.run(() => { try {
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlot).amount = Number(command.split(" ").slice(2).join(" "));
+                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).amount = Number(command.split(" ").slice(2).join(" "));
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -4392,7 +4392,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                 }
                                 ;
                                 system.run(() => { try {
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlot).nameTag = nameb.v;
+                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).nameTag = nameb.v;
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -9552,7 +9552,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             player.sendMessage(`§cError: No player matching the specified target selector was found. `);
                         }
                         else {
-                            target.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlot)?.clone());
+                            target.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlotIndex)?.clone());
                         }
                     });
                 }
@@ -9576,15 +9576,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     else {
                         if (switchTestB.split(/\s+/g)[1].trim() == "~") {
-                            args[1] = target.selectedSlot;
+                            args[1] = target.selectedSlotIndex;
                         }
-                        let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), { container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlot: target?.selectedSlot });
+                        let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), { container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlotIndex: target?.selectedSlotIndex });
                         system.run(() => {
                             if (String(args[1]).match(/^\d+$/)) {
-                                target.getComponent("inventory").container.setItem(Number(args[1]), player.getComponent("inventory").container.getItem(player.selectedSlot));
+                                target.getComponent("inventory").container.setItem(Number(args[1]), player.getComponent("inventory").container.getItem(player.selectedSlotIndex));
                             }
                             else {
-                                slot.setItem(player.getComponent("inventory").container.getItem(player.selectedSlot));
+                                slot.setItem(player.getComponent("inventory").container.getItem(player.selectedSlotIndex));
                             }
                             player.sendMessage(`Successfully copied item to slot ${args[1]} of ${target.name}'s inventory. `);
                         });
@@ -9596,10 +9596,10 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     eventData.cancel = true;
                     let args = evaluateParametersOld(["presetText", "presetText"], switchTestB).args;
                     if ((args[1] ?? "").trim() == "~" || (args[1] ?? "").trim() == "") {
-                        args[1] = player.selectedSlot;
+                        args[1] = player.selectedSlotIndex;
                     }
                     //console.warn(args)
-                    let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), { container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlot: player?.selectedSlot });
+                    let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), { container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlotIndex: player?.selectedSlotIndex });
                     system.run(() => {
                         if (String(args[1]).match(/^\d+$/)) {
                             player.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(Number(args[1])));
@@ -9609,7 +9609,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         }
                         player.sendMessage(`Successfully duped item in slot ${String(args[1])}. `);
                     }); /*
-                    system.run(()=>{let slot = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand"].findIndex(v=>v==switchTestB.split(" ")[1]?.trim()?.toLowerCase())%6]??Number((!!!switchTestB.split(" ")[1]?.trim()?"~":switchTestB.split(" ")[1].trim()).replaceAll("~", String(player.selectedSlot))); let fromSlot = typeof slot == "string"?player.getComponent("equippable").getEquipmentSlot(slot):player.getComponent("inventory").container.getSlot(slot); player.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlot).clone())})*/
+                    system.run(()=>{let slot = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand"].findIndex(v=>v==switchTestB.split(" ")[1]?.trim()?.toLowerCase())%6]??Number((!!!switchTestB.split(" ")[1]?.trim()?"~":switchTestB.split(" ")[1].trim()).replaceAll("~", String(player.selectedSlotIndex))); let fromSlot = typeof slot == "string"?player.getComponent("equippable").getEquipmentSlot(slot):player.getComponent("inventory").container.getSlot(slot); player.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlotIndex).clone())})*/
                 }
                 break;
             case !!switchTest.match(/^transferitem$/):
@@ -9628,7 +9628,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             player.sendMessage(`§cError: No player matching the specified target selector was found. `);
                         }
                         else {
-                            player.getComponent("inventory").container.transferItem(player.selectedSlot, target.getComponent("inventory").container);
+                            player.getComponent("inventory").container.transferItem(player.selectedSlotIndex, target.getComponent("inventory").container);
                         }
                     });
                 }
@@ -9691,10 +9691,10 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).find(v => v.typeId == "minecraft:player");
                         let targetb = targetSelectorAllListC(args[1], "", vTStr(player.location), player).find(v => v.typeId == "minecraft:player");
                         if ((args[2] ?? "").trim() == "") {
-                            args[2] = targetb?.selectedSlot;
+                            args[2] = targetb?.selectedSlotIndex;
                         }
                         if ((args[1] ?? "").trim() == "") {
-                            args[1] = target?.selectedSlot;
+                            args[1] = target?.selectedSlotIndex;
                         }
                         if (!!!target) {
                             player.sendMessage(`§cError: No player matching the first specified target selector was found. `);
@@ -9703,7 +9703,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             player.sendMessage(`§cError: No player matching the second specified target selector was found. `);
                         }
                         else {
-                            system.run(() => { target.getComponent("inventory").container.swapItems(Number(args[1].replace(/^~$/, String(target.selectedSlot))), Number(args[2].replace(/^~$/, String(targetb.selectedSlot))), targetb.getComponent("inventory").container); });
+                            system.run(() => { target.getComponent("inventory").container.swapItems(Number(args[1].replace(/^~$/, String(target.selectedSlotIndex))), Number(args[2].replace(/^~$/, String(targetb.selectedSlotIndex))), targetb.getComponent("inventory").container); });
                             player.sendMessage(`Successfully swapped slot ${args[1]} of ${target.name}'s inventory with slot ${args[2]} of ${targetb.name}'s inventory. `);
                         }
                     });
@@ -9741,9 +9741,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     else {
                         if (switchTestB.split(/\s+/g)[1].trim() == "~") {
-                            args[1] = target.selectedSlot;
+                            args[1] = target.selectedSlotIndex;
                         }
-                        let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), { container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlot: target?.selectedSlot });
+                        let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), { container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlotIndex: target?.selectedSlotIndex });
                         system.run(() => {
                             if (String(args[1]).match(/^\d+$/)) {
                                 target.getComponent("inventory").container.transferItem(Number(args[1]), player.getComponent("inventory").container);
@@ -10380,7 +10380,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     else {
                         if (switchTestB.split(/\s+/g)[1]?.trim() == "~" || (switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
-                            args[1] = target.selectedSlot;
+                            args[1] = target.selectedSlotIndex;
                         }
                         if (switchTestB.split(/\s+/g)[2]?.trim() == "~" || (switchTestB.split(/\s+/g)[2] ?? "").trim() == "") {
                             args[2] = 1;
