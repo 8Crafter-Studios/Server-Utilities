@@ -2731,6 +2731,54 @@ try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")
 world.beforeEvents.playerInteractWithEntity.subscribe(event => {
 if(!!event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerInteractWithEntityCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
 try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithEntityBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+if(event.itemStack?.typeId=="andexdb:entity_debug_stick"){
+    event.cancel=true
+    const playerTargetB = event.target
+    let entityViewedEntityType: any
+    let entityViewedEntityName: any
+    let entityViewedEntityDistance: any
+    let blockViewedBlockType: any
+    let spawnPointAllCoordinates: any
+    entityViewedEntityType = "None"
+    entityViewedEntityName = "None"
+    entityViewedEntityDistance = "None"
+    blockViewedBlockType = "None"
+    spawnPointAllCoordinates = "None"
+    let scoreboardIdentity = undefined
+    let scoreboardIdentityDisplayName = undefined
+    let scoreboardIdentityType = undefined
+    let distance = mcMath.Vector3Utils.distance(event.player.location, playerTargetB.location)
+                try {entityViewedEntityType = playerTargetB.getEntitiesFromViewDirection()[0].entity.typeId} catch(e){entityViewedEntityType = "§4None§a"}
+                try {entityViewedEntityName = playerTargetB.getEntitiesFromViewDirection()[0].entity.typeId} catch(e){entityViewedEntityName = "§4None§a"}
+                try {entityViewedEntityDistance = playerTargetB.getEntitiesFromViewDirection()[0].distance;} catch(e){entityViewedEntityDistance = "§4None§a"}
+                let componentList: any
+                componentList = []
+                try {componentList = [playerTargetB.getComponents()[0].typeId]} catch(e){console.error(e, e.stack); componentList = "§4None§a";}
+                let effectsList = []
+                try {effectsList = [("§9{ §stypeId§a: §u" + playerTargetB.getEffects()[0].typeId + "§a, §sdisplayName§a: §u" + playerTargetB.getEffects()[0].displayName + "§a, §sduration§a: §c" + playerTargetB.getEffects()[0].duration + "§a, §samplifier§a: §c" + playerTargetB.getEffects()[0].amplifier + "§9 }§a")]} catch(e){console.error(e, e.stack);}
+                let blockProperties = []
+                try {blockProperties = [playerTargetB.getBlockFromViewDirection().block.permutation.getAllStates()[0]]} catch(e){console.error(e, e.stack);}/*
+                let effectsList = [players[playerTargetB].getComponents[0]]*/
+                try {scoreboardIdentity = playerTargetB.scoreboardIdentity.id;} catch(e){scoreboardIdentity = "§4None§a"}
+                try {scoreboardIdentityDisplayName = playerTargetB.scoreboardIdentity.displayName;} catch(e){scoreboardIdentityDisplayName = "§4None§a"}
+                try {scoreboardIdentityType = playerTargetB.scoreboardIdentity.type;} catch(e){scoreboardIdentityType = "§4None§a"}
+                try {blockViewedBlockType = "§9{ §btypeId§a: §u" + playerTargetB.getBlockFromViewDirection().block.typeId + "§a, §bcanBeWaterlogged§a: §u" + playerTargetB.getBlockFromViewDirection().block.type.canBeWaterlogged + "§9 }§a";} catch(e){blockViewedBlockType = "§4None§a"}
+                for (const index in playerTargetB.getComponents()) {/*
+                    console.warn(index);*/
+                    if (Number(index) != 0) {
+                    componentList = String([String(componentList), playerTargetB.getComponents()[index].typeId]).split(",");
+                    }/*
+                    console.warn(targetList);*/
+                }
+                for (const index in playerTargetB.getEffects()) {/*
+                    console.warn(index);*/
+                    if (Number(index) != 0) {
+                    effectsList = String([String(effectsList), ("§9{ §stypeId§a: §u" + playerTargetB.getEffects()[index].typeId + "§a, §sdisplayName§a: §u" + playerTargetB.getEffects()[index].displayName + ", §sduration§a: §c" + playerTargetB.getEffects()[index].duration + "§a, §samplifier§a: §c" + playerTargetB.getEffects()[index].amplifier + "§9 }§a")]).split(",");
+                    }/*
+                    console.warn(targetList);*/
+                }
+                event.player.sendMessage("§btypeId§a: §u" + playerTargetB.typeId + "§a, §bUUID§a: §u" + playerTargetB.id + "§a, §bnameTag§a: §u" + playerTargetB.nameTag + "§a, §bdistance§a: §u" + distance + "§a, §bLocation§a: §9{ §c" + playerTargetB.location.x + "§a, §c" + playerTargetB.location.y + "§a, §c" + playerTargetB.location.z + "§9 }§a, §bisSneaking§a: §g" + playerTargetB.isSneaking + "§a, §bscoreboardIdentityId§a: §u" + scoreboardIdentity + "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName + "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType + "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType + ", §bgetEntitiesFromViewDirection§a: { §sEntity§a: " + entityViewedEntityType + ", §sDistance§a: " + entityViewedEntityDistance + " }, §bgetComponents§a: §n[§u" + componentList + "§n]§a, §bgetEffects§a: §n[§a" + effectsList + "§n]§a, §bgetTags§a: [" + playerTargetB.getTags() + "], §bgetVelocity§a: §9{ §c" + (playerTargetB.getVelocity().x + "§a, §c" + playerTargetB.getVelocity().y + "§a, §c" + playerTargetB.getVelocity().z) + "§9 }§a, §bgetViewDirection§a: { " + (playerTargetB.getViewDirection().x, playerTargetB.getViewDirection().y, playerTargetB.getViewDirection().z) + ", §bselectedSlot§a: " + (playerTargetB as Player).selectedSlot + spawnPointAllCoordinates)
+}
 });
 world.beforeEvents.playerLeave.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerLeave")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerLeaveBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
@@ -2993,7 +3041,7 @@ system.runInterval(() => {try{eval(String(world.getDynamicProperty("autoEval:eve
 world.beforeEvents.itemUse.subscribe(event => {
     if(!!event?.itemStack?.getDynamicProperty("code")){try{eval(String(event?.itemStack?.getDynamicProperty("code")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-    world.getAllPlayers().filter((player) => ( player.hasTag("getPlayerItemUseEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.itemUseOn]Location: [ " + event.source.location.x+", "+event.source.location.y+", "+event.source.location.z + " ], Dimension: " + event.source.dimension.id + ", Item Type: " + (event.itemStack?.typeId ?? "")+ ", Player: " + event.source.name) });/*
+    world.getAllPlayers().filter((player) => ( player.hasTag("getPlayerItemUseEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.itemUse]Location: [ " + event.source.location.x+", "+event.source.location.y+", "+event.source.location.z + " ], Dimension: " + event.source.dimension.id + ", Item Type: " + (event.itemStack?.typeId ?? "")+ ", Player: " + event.source.name) });/*
     if (event.itemStack.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){*//*
     if (interactable_block == true){interactable_block = false}else{*//*
         interactable_block.find((playerId)=>(playerId.id == event.source.id)).delay = 0; *//*

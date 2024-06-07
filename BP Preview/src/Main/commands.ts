@@ -804,7 +804,12 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "maxhealth", escregexp: {v: "^maxhealth$"}, formats: [{format: "maxhealth"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:maxhealth"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "minhealth", escregexp: {v: "^minhealth$"}, formats: [{format: "minhealth"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:minhealth"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "defaulthealth", escregexp: {v: "^defaulthealth$"}, aliases: [{commandName: "dfthlth", escregexp: {v: "^dfthlth$"}}, {commandName: "dflthlth", escregexp: {v: "^dflthlth$"}}, {commandName: "dfthealth", escregexp: {v: "^dfthealth$"}}, {commandName: "dflthealth", escregexp: {v: "^dfthealth$"}}], formats: [{format: "defaulthealth"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:defaulthealth"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "liststructures", escregexp: {v: "^liststructures$"}, formats: [{format: "liststructures"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "blocks"], commandSettingsId: "built-inCommandSettings:liststructures"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "liststructures", escregexp: {v: "^liststructures$"}, aliases: [{commandName: "getstructures", escregexp: {v: "^getstructures$"}}], formats: [{format: "liststructures"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "blocks"], commandSettingsId: "built-inCommandSettings:liststructures"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "structure", escregexp: {v: "^structure$"}, formats: [{format: "structure"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "blocks"], commandSettingsId: "built-inCommandSettings:structure"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "version", escregexp: {v: "^version$"}, aliases: [{commandName: "ver", escregexp: {v: "^ver$"}}], formats: [{format: "version"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:version"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listbans", escregexp: {v: "^listbans$"}, aliases: [{commandName: "getbans", escregexp: {v: "^getbans$"}}], formats: [{format: "listbans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listbans"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listidbans", escregexp: {v: "^listidbans$"}, aliases: [{commandName: "getidbans", escregexp: {v: "^getidbans$"}}], formats: [{format: "listidbans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listidbans"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listnamebans", escregexp: {v: "^listnamebans$"}, aliases: [{commandName: "getnamebans", escregexp: {v: "^getnamebans$"}}], formats: [{format: "listnamebans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listnamebans"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: {v: "^home$"}, formats: [{format: "home"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gohome", escregexp: {v: "^gohome$"}, formats: [{format: "gohome"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "rtp", escregexp: {v: "^rtp$"}, formats: [{format: "rtp <player: targetSelector|playerName>"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp"}, 
@@ -952,7 +957,7 @@ export class commandSettings{
     }|Object){world.setDynamicProperty(this.commandSettingsId, JSONStringify(Object.assign(this.defaultSettings??{type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version}, settings??{})))}
     remove(){world.setDynamicProperty(this.commandSettingsId)}
 }
-export class executeCommandPlayer{
+export class executeCommandPlayerW{
     player?: Player
     modifiedlocation?: Vector3
     modifieddimension?: Dimension
@@ -977,7 +982,6 @@ export class executeCommandPlayer{
     get scoreboardIdentity(){return this.player?.scoreboardIdentity}
     get lifetimeState(){return this.player?.lifetimeState}
     get level(){return this.player?.level}
-    get name(){return this.player?.name}
     get onScreenDisplay(){return this.player?.onScreenDisplay}
     get selectedSlot(){return this.player?.selectedSlot}
     set selectedSlot(slotNumber: number){this.player.selectedSlot = slotNumber}
@@ -985,7 +989,6 @@ export class executeCommandPlayer{
     get xpEarnedAtCurrentLevel(){return this.player?.xpEarnedAtCurrentLevel}
     get isSneaking(){return this.player?.isSneaking}
     set isSneaking(isSneaking: boolean){this.player.isSneaking=isSneaking}
-    get id(){return this.player?.id}
     get typeId(){return this.player?.typeId}
     get nameTag(){return this.player?.nameTag}
     set nameTag(nameTag: string|undefined|null){this.player.nameTag=nameTag}
@@ -1051,6 +1054,10 @@ export class executeCommandPlayer{
     teleport(location: Vector3, teleportOptions?: TeleportOptions){return this.player?.teleport(location, teleportOptions)}
     triggerEvent(eventName: string){return this.player?.triggerEvent(eventName)}
     tryTeleport(location: Vector3, teleportOptions?: TeleportOptions){return this.player?.tryTeleport(location, teleportOptions)}
+}
+export class executeCommandPlayer extends executeCommandPlayerW {
+    get id(){return this.player?.id}
+    get name(){return this.player?.name}
 }
 export class HomeSystem{
     constructor(){}
@@ -1407,6 +1414,8 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
 	const player = eventData.sender
     let sendToPlayers = eventData.targets
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:chatSend")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendBeforeEventDebugErrors")){currentplayer.sendMessage((e + " " + e.stack))}})}
+    ///scriptevent andexdb:scriptEval world.setDynamicProperty("evalBeforeEvents:chatSend", `if(!(event.message.includes("${se}")&&player.hasTag("canUseScriptEval"))&&!player.hasTag("canBypassAntiSpam")){if(!!globalThis["lastChatMessage"+player.id]){if(globalThis["lastChatMessage"+player.id]==event.message&&((Date.now()-(globalThis["lastChatTime"+player.id]??0))<10000)){globalThis["msgAmountOfSpam"+player.id]=(globalThis["msgAmountOfSpam"+player.id]??0)+1; if(globalThis["msgAmountOfSpam"+player.id]\>\=4){returnBeforeChatCommandsOrChatSend=true; returnBeforeChatSend=true; runreturn=true; event.cancel=true; player.sendMessage("§cStop Spamming")}}else{globalThis["lastChatMessage"+player.id]=event.message; globalThis["msgAmountOfSpam"+player.id]=0}}else{globalThis["lastChatMessage"+player.id]=event.message}; globalThis["lastChatTime"+player.id]=Date.now(); }`)
+    ///scriptevent andexdb:scriptEval world.setDynamicProperty("evalBeforeEvents:chatSend", `if(!player.hasTag("canBypassAntiSpam")){if(!!globalThis["lastChatMessage"+player.id]){if(globalThis["lastChatMessage"+player.id]==event.message&&((Date.now()-(globalThis["lastChatTime"+player.id]??0))<10000)){globalThis["msgAmountOfSpam"+player.id]=(globalThis["msgAmountOfSpam"+player.id]??0)+1; if(globalThis["msgAmountOfSpam"+player.id]\>\=4){returnBeforeChatCommandsOrChatSend=true; returnBeforeChatSend=true; runreturn=true; event.cancel=true; player.sendMessage("§cStop Spamming")}}else{globalThis["lastChatMessage"+player.id]=event.message; globalThis["msgAmountOfSpam"+player.id]=0}}else{globalThis["lastChatMessage"+player.id]=event.message}; globalThis["lastChatTime"+player.id]=Date.now(); }`)
     let newMessage = eventData.message
     let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0]
     let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
@@ -1496,6 +1505,31 @@ export function generateNBTFileE(location: DimensionLocation, nbt: {block_indice
 }
 
 export function* generateNBTFileEGG(location: DimensionLocation, nbt: {block_indices: number[], block_palette: {name: string, states?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number], nbt_type: "cmprbnbt"}){
+    var successCount = 0
+    var b = undefined as number; 
+    var i = 0
+    for(let x = 0; x<nbt.size[0]; x++){
+        for(let y = 0; y<nbt.size[1]; y++){
+            for(let z = 0; z<nbt.size[2]; z++){
+                i=z+(y*nbt.size[2])+(x*nbt.size[2]*nbt.size[1])
+                b=nbt.block_indices[i]??-1; 
+                (b??-1)!=-1?tryrun(()=>{
+                    try{
+                        location.dimension.setBlockType(mcMath.Vector3Utils.add(location, arryTV3([x, y, z])), nbt.block_palette[b].name); 
+                        !!nbt.block_palette[b]?.states?Object.entries(nbt.block_palette[b]?.states).forEach(p=>tryrun(()=>location.dimension.setBlockPermutation(mcMath.Vector3Utils.add(location, arryTV3([x, y, z])), BlockPermutation.resolve(nbt.block_palette[b].name.replace("minecraft:active - lit_redstone_lamp", "minecraft:lit_redstone_lamp"), Object.assign(location.dimension.getBlock(mcMath.Vector3Utils.add(location, arryTV3([x, y, z]))).permutation.getAllStates(), {[p[0]]: p[1]}))))):undefined; 
+                        //{let i = 249; let nbt = {size: [5, 5, 5]}; [Math.floor(i/nbt.size[2])%nbt.size[0], Math.floor(i/(nbt.size[0]*nbt.size[2]))%nbt.size[1], i%nbt.size[2]]}
+                        //{let i = 27; let nbt = {size: [5, 5, 5]}; [Math.floor(i/(nbt.size[1]*nbt.size[2]))%nbt.size[0], Math.floor(i/nbt.size[2])%nbt.size[1], i%nbt.size[2]]}
+                        successCount++
+                    }catch(e){console.error(e, e.stack, i, b)}
+                }):undefined; 
+                yield void null
+            }
+        }
+    }
+    return successCount
+}
+
+export function* generateNBTFileEGGB(location: DimensionLocation, nbt: {block_indices: number[], block_palette: {name: string, states?: {[stateName: string]: string|number|boolean}}[], size: [x: number, y: number, z: number], nbt_type: "cmprbnbt"}){
     var successCount = 0
     var b = undefined as number; 
     for(let i = 0; i<nbt.block_indices.length; i++){
@@ -1900,6 +1934,9 @@ examples:
 stack of 255 sharpness 1 wooden swords: {"minecraft:components": {"enchantable": {"add": {"level": 1, "type": "sharpness"}}}, "id": "wooden_sword", "count": 255}
 sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept on death with the name "§4Storage Hog Axe§r" and the lore "§eTakes\\nUp\\nYour\\nInventory§r" (with the \\n as line break characters) that says lol in the chat and damages the user when used: {"minecraft:components": {"enchantable": {"add": [{"level": 1, "type": "sharpness"}, {"type": "fortune", "level": 3}, {"type": "efficiency", "level": 5}]}}, "id": "iron_axe", "count": 72, "keepondeath": true, "lockMode": "inventory", "name": "§r§4Storage Hog Axe§r§f", "lore": ["§r§eTakes\\nUp§r§f","§r§eYour\\nInventory§r§f"], "dynamicProperties": {"code": "world.sendMessage('lol'); event.source.runCommandAsync(\\"/damage @s 1 thorns entity @s\\")"}}
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`,
+"getbans": `${command.dp}getbans`,
+"getidbans": `${command.dp}getidbans`,
+"getnamebans": `${command.dp}getnamebans`,
 "getuuid": `${command.dp}getuuid <target: target>`,
 "gma": `${command.dp}gma`,
 "gmc": `${command.dp}gmc`,
@@ -2131,6 +2168,9 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
 "itfillc": `${command.dp}itfillc <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}itfillc <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
 "kick": `${command.dp}kick <players: targetSelector> [reason: string]`,
 "liststructures": `${command.dp}liststructures`,
+"listbans": `${command.dp}listbans`,
+"listidbans": `${command.dp}listidbans`,
+"listnamebans": `${command.dp}listnamebans`,
 "mainmenu": `${command.dp}mainmenu`,
 "managecommands": `${command.dp}managecommands`,
 "manageplayers": `${command.dp}manageplayers`,
@@ -2218,6 +2258,13 @@ sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept 
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`,
 "settings": `${command.dp}settings`,
 "shuffleinventory": `${command.dp}shuffleinventory <playerTarget: targetSelector|~>`,
+"structure": `${command.dp}structure createempty <structureName: string> <sizeX: float> <sizeY: float> <sizeZ: float> [saveMode: memory|disk]
+${command.dp}structure delete <structureName: string>
+${command.dp}structure copy <copyFromStructureName: string> <copyToStructureName: string>
+${command.dp}structure savetodisk <structureName: string>
+${command.dp}structure movetomemory <structureName: string>
+${command.dp}structure removeall
+${command.dp}structure list`,
 "summon": `${command.dp}summon <spawnCount: int> <entity: EntityType<[spawnEvent]>> [spawnPos: x y z] [yRot: value] [xRot: value] [persistent: bool] [nameTag: string]
 ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn"`,
 "swapinventories": `${command.dp}swapinventories [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
@@ -2231,6 +2278,8 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
 "tpaccept": `${command.dp}tpaccept [player: targetSelector|playerName|string]`,
 "tpdeny": `${command.dp}tpdeny [player: targetSelector|playerName|string]`,
 "up": `${command.dp}up [placeGlass: bool]`,
+"ver": `${command.dp}ver`,
+"version": `${command.dp}version`,
 "warp": `${command.dp}warp <name: escapableString>`,
 "warplist": `${command.dp}warplist`,
 "warplistdetails": `${command.dp}warplistdetails`,
@@ -2322,6 +2371,9 @@ export enum commanddescriptions {
 "itfill" = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. ",
 "itfillc" = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. ",
 "kick" = "Kicks one or more players from the server. ",
+"listbans" = "Lists all bans. ",
+"listidbans" = "Lists all id bans. ",
+"listnamebans" = "Lists all name bans. ",
 "liststructures" = "Lists all saved structures. ",
 "mainmenu" = "Opens up the main menu. ",
 //"managebans" = "Opens up the manage bans menu. ",
@@ -2355,6 +2407,8 @@ export enum commanddescriptions {
 "setitemb" = "Replaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. ",
 "settings" = "Opens up the settings menu. ",
 "shuffleinventory" = "Shuffles the inventory of the specified player. ",
+"structure" = "Manages structures. ",
+"summon" = "Summons entities. ",
 "swapinventories" = "Swaps the inventories of 2 players. ",
 "swapinventoriesb" = "Swaps the inventories of 2 players. ",
 "swapitems" = "Swaps an item in a slot of one player's inventory with another slot of another player's inventory. ",
@@ -2369,6 +2423,7 @@ export enum commanddescriptions {
 "tpdeny" = "Denies a player's teleport request. ",
 //"unban" = "Unbans a player. ",
 "up" = "Teleports up the specified number of blocks and places glass below you if placeGlass is not set to false. ",
+"version" = "Displays the format version of the add-on. ",
 "warp" = "Warps to the specified global warp. ",
 "warplist" = "Lists all global warps. ",
 "warplistdetails" = "Lists all global warps with more details. ",
@@ -2393,7 +2448,7 @@ export enum commanddescriptions {
 "visualscaleenabled" = "Enables or diables your visual scaling. "
 }
 
-export function getCommandHelpPage(commandName: string){let cmd = command.get(commandName, "built-in"); return `§e${cmd.commandName}${(cmd.aliases?.length??0)!=0?`(also ${cmd.aliases.map(v=>v.commandName).join(", ")})`:""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${commandsyntaxes[cmd.currentCommandName].split("\n").join("§r\n- ")}`}
+export function getCommandHelpPage(commandName: string){let cmd = command.get(commandName, "built-in"); return !!commanddescriptions[cmd.commandName]?`§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`:`§e${cmd.commandName}${(cmd.aliases?.length??0)!=0?`(also ${cmd.aliases.map(v=>v.commandName).join(", ")})`:""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName]??"missing").split("\n").join("§r\n- ")}`}
 
 export enum fillmodetypeenum {
     "" = "",
@@ -3082,14 +3137,12 @@ export const OpItemTypes = ["diamond", "netherite_ingot", "gold_ingot", "iron_in
 export const IllegalItemTypes = ["netherreactor", "glowingobsidian", "stonecutter", "water", "flowing_water", "lava", "flowing_lava", "camera", "item.camera", "item.skull", "item.cauldron", "bedrock"]
 export function parseSlot(slot: string, selectedSlot?: number){return [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand", "hat", "shirt", "shorts", "sandals", "firsthand", "secondaryhand"].findIndex(v=>v==tryget(()=>slot?.trim()?.toLowerCase()))%6]??(((tryget(()=>slot?.trim())=="~"||tryget(()=>slot?.trim())=="")&&!!!selectedSlot)?"~":Number(tryget(()=>slot?.trim())??slot)); }
 export function getSlotFromParsedSlot(slot: "~"|EquipmentSlot|number, options?: {container?: Container, equipment?: EntityEquippableComponent, selectedSlot?: number}){if(typeof slot == "string"){return slot.trim()=="~"?(!!options?.selectedSlot?options?.container?.getSlot(Number(options?.selectedSlot)):(!!options?.equipment?options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand):undefined)):(!!options?.equipment?slot.trim().toLowerCase()=="head"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Head):slot.trim().toLowerCase()=="chest"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Chest):slot.trim().toLowerCase()=="legs"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Legs):slot.trim().toLowerCase()=="feet"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Feet):slot.trim().toLowerCase()=="mainhand"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand):slot.trim().toLowerCase()=="offhand"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Offhand):!Number.isNaN(Number(slot))?options?.container?.getSlot(Number(slot)):undefined:!Number.isNaN(Number(slot))?options?.container?.getSlot(Number(slot)):undefined)}else if(typeof slot == "number"){return options?.container?.getSlot(Number(slot)); }else return options?.container?.getSlot(Number(slot))}
-export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, player: Player|executeCommandPlayer|undefined, eventData: ChatSendBeforeEvent, event: ChatSendBeforeEvent|undefined, newMessage: string|undefined}){
+export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, player: Player|executeCommandPlayerW|undefined, eventData: ChatSendBeforeEvent, event: ChatSendBeforeEvent|undefined, newMessage: string|undefined}){
     let returnBeforeChatSend = params.returnBeforeChatSend??false
     let playera = params.player??params.eventData?.sender??params.event?.sender
-	let player = Object.assign((!!(playera as executeCommandPlayer).player?playera as executeCommandPlayer:new executeCommandPlayer(playera)).player, !!(playera as executeCommandPlayer).player?playera as executeCommandPlayer:new executeCommandPlayer(playera));
-    !!params.eventData?params.eventData=Object.assign(params.eventData, {sender: player}):undefined
-    !!params.event?params.event=Object.assign(params.event, {sender: player}):undefined
-    let eventData = params.eventData??params.event
-    let event = params.event??params.eventData
+	let player = Object.assign(((playera instanceof executeCommandPlayer)?playera:(playera instanceof executeCommandPlayerW)?playera:new executeCommandPlayer(playera)).player, (playera instanceof executeCommandPlayer)?Object.setPrototypeOf(playera, executeCommandPlayerW.prototype):(playera instanceof executeCommandPlayerW)?playera:new executeCommandPlayerW(playera));
+    let eventData = !!params.eventData?{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}:{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}
+    let event = !!params.event?{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}:{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}
     let newMessage = params.newMessage??params.eventData?.message??params.event?.message
     try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatCommands"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f][" + player.name + "]: " + newMessage); }catch{}})}catch{}
     function hotbarSwap(row: number, preset: number){
@@ -3626,6 +3679,9 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                 case "item jsonb":
                     let jsonb = evaluateParameters(argsa.extra.trim(), ["json"]).args[0];
                     system.run(()=>{try{itemJSONPropertiesEvalCT(jsonb, getPlayerSelectedSlot(player), player)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                break;
+                case "item listtags":
+                    player.sendMessage(player.getComponent("inventory").container.getSlot(player.selectedSlot).getTags().join("§r,"))
                 break;
                 case "item property":
                     switch (command.split(" ")[2]) {
@@ -5354,27 +5410,27 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             })
         }
         break; 
-        case !!switchTest.match(/^liststructures$/): {
+        case !!switchTest.match(/^liststructures$/)||!!switchTest.match(/^getstructures$/): {
             eventData.cancel = true;
             player.sendMessage(world.structureManager.getIds().join("§r\n"))
         }
         break; 
         case !!switchTest.match(/^listbans$/)||!!switchTest.match(/^getbans$/): {
             eventData.cancel = true;
-            player.sendMessage(ban.getBans().allBans.map(b=>`${b.type=="id"?"ID Ban: ":"Name Ban: "}${b.type=="id"?b.playerId:b.playerName}, ${new Date(Number(b.banDate)+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`))
+            player.sendMessage(ban.getBans().allBans.map(b=>`${b.type=="id"?"ID Ban: ":"Name Ban: "}${b.type=="id"?b.playerId:b.playerName}, ${new Date(Number(b.banDate)+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"))
         }
         break; 
         case !!switchTest.match(/^listidbans$/)||!!switchTest.match(/^getidbans$/): {
             eventData.cancel = true;
-            player.sendMessage(ban.getBans().idBans.map(b=>`${b.playerId}, Banned On: ${new Date(Number(b.banDate)+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`))
+            player.sendMessage(ban.getBans().idBans.map(b=>`${b.playerId}, Banned On: ${new Date(Number(b.banDate)+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"))
         }
         break; 
         case !!switchTest.match(/^listnamebans$/)||!!switchTest.match(/^getnamebans$/): {
             eventData.cancel = true;
-            player.sendMessage(ban.getBans().nameBans.map(b=>`${b.playerName}, Banned On: ${new Date(Number(b.banDate)+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`))
+            player.sendMessage(ban.getBans().nameBans.map(b=>`${b.playerName}, Banned On: ${new Date(Number(b.banDate)+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"))
         }
         break; 
-        case !!switchTest.match(/^version$/): {
+        case !!switchTest.match(/^version$/)||!!switchTest.match(/^ver$/): {
             eventData.cancel = true;
             player.sendMessage(format_version)
         }
