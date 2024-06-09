@@ -736,6 +736,7 @@ export function globalSettings(sourceEntity) {
     form2.toggle("§l§fautoEscapeChatMessages§r§f\nEvaluates escape codes in the chat automatically, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") ?? false));
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
+    form2.toggle("§l§fchatDisplayTimeStamp§r§f\nSets whether or not to put a timestamp before every chat message, default is false", config.chatDisplayTimeStamp);
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
@@ -744,7 +745,7 @@ export function globalSettings(sourceEntity) {
             return; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, gametestStructureDefaultSpawnLocation, invalidChatCommandAction, chatCommandsEnbaled, disableCustomChatMessages, allowCustomChatMessagesMuting, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes, autoSavePlayerData, bepl, beppb, aebe, aepl] = t.formValues;
+        let [chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, gametestStructureDefaultSpawnLocation, invalidChatCommandAction, chatCommandsEnbaled, disableCustomChatMessages, allowCustomChatMessagesMuting, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes, chatDisplayTimeStamp, autoSavePlayerData, bepl, beppb, aebe, aepl] = t.formValues;
         world.setDynamicProperty("andexdbSettings:chatCommandPrefix", chatCommandPrefix);
         world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", validChatCommandPrefixes);
         world.setDynamicProperty("andexdbSettings:chatRankPrefix", chatRankPrefix);
@@ -765,6 +766,7 @@ export function globalSettings(sourceEntity) {
         world.setDynamicProperty("andexdbSettings:autoEscapeChatMessages", autoEscapeChatMessages);
         world.setDynamicProperty("andexdbSettings:autoURIEscapeChatMessages", autoURIEscapeChatMessages);
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes);
+        world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStamp);
         world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData);
     }).catch(e => {
         console.error(e, e.stack);

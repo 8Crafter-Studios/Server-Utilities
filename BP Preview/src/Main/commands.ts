@@ -810,6 +810,7 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listbans", escregexp: {v: "^listbans$"}, aliases: [{commandName: "getbans", escregexp: {v: "^getbans$"}}], formats: [{format: "listbans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listbans"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listidbans", escregexp: {v: "^listidbans$"}, aliases: [{commandName: "getidbans", escregexp: {v: "^getidbans$"}}], formats: [{format: "listidbans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listidbans"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listnamebans", escregexp: {v: "^listnamebans$"}, aliases: [{commandName: "getnamebans", escregexp: {v: "^getnamebans$"}}], formats: [{format: "listnamebans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listnamebans"}, 
+    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "timezone", escregexp: {v: "^timezone$"}, aliases: [{commandName: "tz", escregexp: {v: "^tz$"}}], formats: [{format: "timezone [UTCOffsetInHours: float]"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:timezone"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: {v: "^home$"}, formats: [{format: "home"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gohome", escregexp: {v: "^gohome$"}, formats: [{format: "gohome"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "rtp", escregexp: {v: "^rtp$"}, formats: [{format: "rtp <player: targetSelector|playerName>"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp"}, 
@@ -1353,6 +1354,8 @@ export class config{
     static set timeZone(timeZone: number|undefined){swdp("andexdbSettings:timeZone", timeZone??0)}
     static get invalidChatCommandAction(){return isNaN(Number(gwdp("andexdbSettings:invalidChatCommandAction")))?0:Number(gwdp("andexdbSettings:invalidChatCommandAction") ?? 0)}
     static set invalidChatCommandAction(invalidChatCommandAction: number|undefined){swdp("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction??0)}
+    static get chatDisplayTimeStamp(){return Boolean(gwdp("andexdbSettings:chatDisplayTimeStamp") ?? false)}
+    static set chatDisplayTimeStamp(chatDisplayTimeStampEnabled: boolean|undefined){swdp("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled??false)}
     static reset(){}
 }
 //((a: Player)=>{})(new executeCommandPlayer(getPlayer("Andexter8")))
@@ -1450,7 +1453,7 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
     /*${scripteval}world.getAllPlayers().forEach((t)=>{t.setDynamicProperty("canUseScriptEval", true)}); */
 	if ((player.hasTag('noCustomChatMessages') && !player.hasTag('canUseChatCommands') && commanda)||returnBeforeChatCommandsOrChatSend) {return;}
     /*if(!((eventData.message.includes("${scripteval}") && (player.getDynamicProperty("canUseScriptEval") == true))||(eventData.message.includes("${run}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true)))||(eventData.message.startsWith("\\")))){world.getDimension("overworld").runCommand("/playsound note.harp.ui @a ~~~ 1 0.75 1"); }*/if(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != undefined && world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != ""){String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? "").split(", ").forEach((prefix)=>{if(newMessage.startsWith(prefix))runreturn = true})}; if (Boolean(runreturn) == true){return; }
-    if (((world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false && newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))/* && player.hasTag('canUseChatCommands')*/||!!commanda))/* && (eventData.message.startsWith(".give") || eventData.message.startsWith(".giveb") || eventData.message.startsWith(".h1") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".playersettings") || eventData.message.startsWith(".run") || eventData.message.startsWith(".setitem") || eventData.message.startsWith(".invsee") || eventData.message.startsWith(".settings") || eventData.message.startsWith(".help") || eventData.message.startsWith(".h1 ") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".h4") || eventData.message.startsWith(".h5") || eventData.message.startsWith(".w1") || eventData.message.startsWith(".w2") || eventData.message.startsWith(".debugstick") || eventData.message.startsWith(".playercontroller") || eventData.message.startsWith(".setslot") || eventData.message.startsWith(".worlddebug") || eventData.message.startsWith(".gmc") || eventData.message.startsWith(".gms") || eventData.message.startsWith(".gma") || eventData.message.startsWith(".gmd") || eventData.message.startsWith(".gmp") || eventData.message.startsWith(".spawn") || eventData.message.startsWith(".warp") || eventData.message.startsWith(".home") || eventData.message.startsWith(".all") || eventData.message.startsWith(".getEntityUUIDSelector"))*/){!!!commanda?config.invalidChatCommandAction==2?event.cancel=true:config.invalidChatCommandAction==3?player.sendMessage(`§r§cUnknown command: ${switchTest}§r§c. Please check that the command exists and that you have permission to use it.`):config.invalidChatCommandAction==1?chatSend({returnBeforeChatSend, player, eventData, event, newMessage}):undefined:chatCommands({returnBeforeChatSend, player, eventData, event, newMessage})
+    if (((world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false && newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))/* && player.hasTag('canUseChatCommands')*/||!!commanda))/* && (eventData.message.startsWith(".give") || eventData.message.startsWith(".giveb") || eventData.message.startsWith(".h1") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".playersettings") || eventData.message.startsWith(".run") || eventData.message.startsWith(".setitem") || eventData.message.startsWith(".invsee") || eventData.message.startsWith(".settings") || eventData.message.startsWith(".help") || eventData.message.startsWith(".h1 ") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".h4") || eventData.message.startsWith(".h5") || eventData.message.startsWith(".w1") || eventData.message.startsWith(".w2") || eventData.message.startsWith(".debugstick") || eventData.message.startsWith(".playercontroller") || eventData.message.startsWith(".setslot") || eventData.message.startsWith(".worlddebug") || eventData.message.startsWith(".gmc") || eventData.message.startsWith(".gms") || eventData.message.startsWith(".gma") || eventData.message.startsWith(".gmd") || eventData.message.startsWith(".gmp") || eventData.message.startsWith(".spawn") || eventData.message.startsWith(".warp") || eventData.message.startsWith(".home") || eventData.message.startsWith(".all") || eventData.message.startsWith(".getEntityUUIDSelector"))*/){!!!commanda?config.invalidChatCommandAction==2?event.cancel=true:config.invalidChatCommandAction==3?(event.cancel=true, player.sendMessage(`§r§cUnknown command: ${switchTest}§r§c. Please check that the command exists and that you have permission to use it.`)):config.invalidChatCommandAction==1?chatSend({returnBeforeChatSend, player, eventData, event, newMessage}):undefined:chatCommands({returnBeforeChatSend, player, eventData, event, newMessage})
     } else {if((world.getDynamicProperty("andexdbSettings:disableCustomChatMessages") ?? false) != true){if((world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false && newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && player.hasTag('canUseChatCommands') && ((world.getDynamicProperty("andexdbSettings:sendMessageOnInvalidChatCommand") ?? false) == false))){}else{chatSend({returnBeforeChatSend, player, eventData, event, newMessage})}}}
 }
 export const EquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand]
@@ -2284,9 +2287,11 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
 "terminal": `${command.dp}terminal`,
 "transferitem": `${command.dp}transferitem <transferItemToPlayer: targetSelector>`,
 "thru": `${command.dp}thru`,
+"timezone": `${command.dp}timezone [UTCOffsetInHours: float]`,
 "top": `${command.dp}top`,
 "tpaccept": `${command.dp}tpaccept [player: targetSelector|playerName|string]`,
 "tpdeny": `${command.dp}tpdeny [player: targetSelector|playerName|string]`,
+"tz": `${command.dp}tz [UTCOffsetInHours: float]`,
 "up": `${command.dp}up [placeGlass: bool]`,
 "ver": `${command.dp}ver`,
 "version": `${command.dp}version`,
@@ -2425,12 +2430,14 @@ export enum commanddescriptions {
 "takeitem" = "Steals an item from another player's inventory and puts it into yoru inventory. ",
 //"tempban" = "Temporarily bans a player. ",
 "terminal" = "Opens up the command runner/terminal menu. ",
-"transferitem" = "Transfers the item in your hand to the specified player's inventory. ",
+"timezone" = "Sets your timezone to the specific UTC offset in hours. ",
 "thru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at. ",
 "vthru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at, even if it would put you into the void. ",
 "top" = "Teleports on top of the highest solid block at your x and z coordinates. ",
 "tpaccept" = "Accepts a player's teleport request. ",
 "tpdeny" = "Denies a player's teleport request. ",
+"transferitem" = "Transfers the item in your hand to the specified player's inventory. ",
+"tz" = "Sets your timezone to the specific UTC offset in hours. ",
 //"unban" = "Unbans a player. ",
 "up" = "Teleports up the specified number of blocks and places glass below you if placeGlass is not set to false. ",
 "version" = "Displays the format version of the add-on. ",
@@ -3150,7 +3157,7 @@ export function getSlotFromParsedSlot(slot: "~"|EquipmentSlot|number, options?: 
 export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, player: Player|executeCommandPlayerW|undefined, eventData: ChatSendBeforeEvent, event: ChatSendBeforeEvent|undefined, newMessage: string|undefined}){
     let returnBeforeChatSend = params.returnBeforeChatSend??false
     let playera = params.player??params.eventData?.sender??params.event?.sender
-	let player = Object.assign(((playera instanceof executeCommandPlayer)?playera:(playera instanceof executeCommandPlayerW)?playera:new executeCommandPlayer(playera)).player, (playera instanceof executeCommandPlayer)?Object.setPrototypeOf(playera, executeCommandPlayerW.prototype):(playera instanceof executeCommandPlayerW)?playera:new executeCommandPlayerW(playera));
+	let player = Object.assign(((playera instanceof executeCommandPlayer)?playera:(playera instanceof executeCommandPlayerW)?playera:new executeCommandPlayer(playera)).player, (playera instanceof executeCommandPlayer)?Object.setPrototypeOf(playera, executeCommandPlayerW.prototype) as executeCommandPlayerW:(playera instanceof executeCommandPlayerW)?playera:new executeCommandPlayerW(playera));
     let eventData = !!params.eventData?{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}:{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}
     let event = !!params.event?{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}:{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}
     let newMessage = params.newMessage??params.eventData?.message??params.event?.message
@@ -7426,6 +7433,13 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             }catch(e){player.sendMessage("§c"+e+" "+e.stack)}})
         }
         break; 
+        case !!switchTest.match(/^timezone$/): {
+            eventData.cancel = true;
+            let args = evaluateParameters(switchTestB, ["presetText", "number"]).args
+            player.setDynamicProperty("andexdbPersonalSettings:timeZone", args[1])
+            player.sendMessage(`Seccessfully set your timezone to ${args[1]}.`)
+        }
+        break; 
         case !!switchTest.match(/^extinguish$/)||!!switchTest.match(/^ext$/)||!!switchTest.match(/^remfire$/): {
             eventData.cancel = true;
             let radius = Number(String(switchTestB.split(" ")[1]??"").trim()==""?10:String(switchTestB.split(" ")[1]??"").trim())
@@ -7548,15 +7562,15 @@ export function chatSend(params: {returnBeforeChatSend: boolean|undefined, playe
         if (player.hasTag("doNotSendChatMessages")) { return; } else {
             if(world.getDynamicProperty("allowCustomChatMessagesMuting") != true){
                 if(world.getDynamicProperty("allowCustomChatMessagesEscapeCharacters") != true){
-                    world.getAllPlayers().forEach(p=>p.sendMessage(new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString() + rank + name + messageFormatting + newMessage)); 
+                    world.getAllPlayers().forEach(p=>p.sendMessage("["+new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString()+"]" + rank + name + messageFormatting + newMessage)); 
                 }else{
-                    world.getAllPlayers().forEach(p=>world.sendMessage({rawtext: [{text: String(new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString() + rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})); 
+                    world.getAllPlayers().forEach(p=>world.sendMessage({rawtext: [{text: String("["+new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString()+"]" + rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})); 
                 }
             }else{
                 if(world.getDynamicProperty("allowCustomChatMessagesEscapeCharacters") != true){
-                    world.getAllPlayers().forEach(p=>p.runCommandAsync(`/tellraw @s ${JSON.stringify({"rawtext":[{"text":String(new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString() + rank + name + messageFormatting + newMessage)}]})}`)); 
+                    world.getAllPlayers().forEach(p=>p.runCommandAsync(`/tellraw @s ${JSON.stringify({"rawtext":[{"text":String("["+new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString()+"]" + rank + name + messageFormatting + newMessage)}]})}`)); 
                 }else{
-                    world.getAllPlayers().forEach(p=>p.runCommandAsync(`/tellraw @s ${JSON.stringify({"rawtext":[{"text":String(new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString() + rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})}`)); 
+                    world.getAllPlayers().forEach(p=>p.runCommandAsync(`/tellraw @s ${JSON.stringify({"rawtext":[{"text":String("["+new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString()+"]" + rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})}`)); 
                 }
             }
         }
