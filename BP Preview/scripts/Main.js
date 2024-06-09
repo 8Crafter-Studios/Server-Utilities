@@ -5402,6 +5402,18 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
         inventory2.container.setItem(0, itema);*/
     }
     ;
+    if (id == "andexdb:chatMessage") {
+        chatMessage({ cancel: false, message: message.replaceAll("\\@\\", "@"), sender: sourceEntity }, false);
+    }
+    if (id == "andexdb:chatMessageB") {
+        chatMessage({ cancel: false, message: message.replaceAll("\\@\\", "@"), sender: sourceEntity }, true);
+    }
+    if (id == "andexdb:chatSend") {
+        chatSend({ returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@"), sender: sourceEntity }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@"), sender: sourceEntity }, newMessage: message.replaceAll("\\@\\", "@"), player: sourceEntity });
+    }
+    if (id == "andexdb:chatCommands") {
+        chatCommands({ returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@"), sender: sourceEntity }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@"), sender: sourceEntity }, newMessage: message.replaceAll("\\@\\", "@"), player: sourceEntity });
+    }
     if (id == "andexdb:blockExplosion") {
         const overworld = world.getDimension(String(message.split("|")[0]));
         let explosionOptions = message.split("|");
@@ -10467,7 +10479,7 @@ console.error(e, e.stack);
         catch (e) {
             console.error(e, e.stack);
         }
-        console.log(eval('2 + 2'));
+        //console.log(eval('2 + 2'))
     }
     if (id == "andexdb:indirectScriptEval") {
         let dynamicProperty = message;
@@ -10477,7 +10489,97 @@ console.error(e, e.stack);
         catch (e) {
             console.error(e, e.stack);
         }
-        console.log(eval?.('2 + 2'));
+        //console.log(eval?.('2 + 2'))
+    }
+    if (id == "andexdb:scripteval") {
+        let dynamicProperty = message;
+        try {
+            eval(dynamicProperty);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    if (id == "andexdb:indirectscripteval") {
+        let dynamicProperty = message;
+        try {
+            eval?.(dynamicProperty);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    if (id == "s:e") {
+        let player = sourceEntity;
+        try {
+            eval(message);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    if (id == "is:e") {
+        let player = sourceEntity;
+        try {
+            eval?.(message);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    if (id == "s:elc") {
+        let player = sourceEntity;
+        try {
+            eval(message);
+        }
+        catch (e) {
+            psend(player, e + " " + e.stack);
+        }
+    }
+    if (id == "is:elc") {
+        let player = sourceEntity;
+        try {
+            eval?.(message);
+        }
+        catch (e) {
+            psend(player, e + " " + e.stack);
+        }
+    }
+    if (id == "andexdb:se") {
+        let dynamicProperty = message;
+        try {
+            eval(dynamicProperty);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    if (id == "andexdb:ise") {
+        let dynamicProperty = message;
+        try {
+            eval?.(dynamicProperty);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    if (id == "andexdb:selc") {
+        let player = sourceEntity;
+        try {
+            eval(message);
+        }
+        catch (e) {
+            psend(player, e + " " + e.stack);
+        }
+    }
+    if (id == "andexdb:iselc") {
+        let player = sourceEntity;
+        try {
+            eval?.(message);
+        }
+        catch (e) {
+            psend(player, e + " " + e.stack);
+        }
     }
     if (id == "andexdb:sendGlobalWorldMessage") {
         let dynamicProperty = message;

@@ -332,12 +332,13 @@ export function mainMenu(sourceEntity) {
     form.button("Script Eval", "textures/ui/RepeatSquare.png");
     form.button("Mange Restricted Areas", "textures/ui/xyz_axis.png");
     form.button("Manage Custom UIs", "textures/ui/feedIcon");
+    form.button("Moderation §f[§cAlpha§f]", "textures/ui/hammer_l");
     form.button("Settings", "textures/ui/settings_glyph_color_2x");
     form.button("Manage Players", "textures/ui/user_icon_white");
     form.button("§eManage Commands §f[§6Beta§f]", "textures/ui/chat_keyboard_hover");
-    form.button("§eItem Editor §f[§cAlpha§f]", "textures/ui/chat_keyboard_hover");
-    form.button("§eMap Art Generator §f[§cExperimental§f]", "textures/items/map_locked");
-    form.button("§eJava NBT Structure Loader §f[§cExperimental§f]", "textures/ui/xyz_axis");
+    form.button("§eItem Editor §f[§cAlpha§f]", "textures/ui/icon_recipe_item");
+    form.button("§eMap Art Generator §f[§cAlpha§f]", "textures/items/map_locked");
+    form.button("§eJava NBT Structure Loader §f[§cAlpha§f]", "textures/ui/xyz_axis");
     forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {
         let r = ra;
         // This will stop the code when the player closes the form
@@ -505,15 +506,18 @@ export function mainMenu(sourceEntity) {
                 customFormListSelectionMenu(sourceEntity);
                 break;
             case 20:
-                settings(sourceEntity);
+                moderationSettings(sourceEntity);
                 break;
             case 21:
-                managePlayers(sourceEntity);
+                settings(sourceEntity);
                 break;
             case 22:
-                manageCommands(sourceEntity);
+                managePlayers(sourceEntity);
                 break;
             case 23:
+                manageCommands(sourceEntity);
+                break;
+            case 24:
                 try {
                     itemSelector(sourceEntity, sourceEntity).then(a => { if (!!a) {
                         uis.itemEditorTypeSelection(sourceEntity, sourceEntity, a);
@@ -521,10 +525,10 @@ export function mainMenu(sourceEntity) {
                 }
                 catch { }
                 break;
-            case 24:
+            case 25:
                 mapArtGenerator(sourceEntity);
                 break;
-            case 25:
+            case 26:
                 nbtStructureLoader(sourceEntity);
                 break;
             default:
@@ -543,8 +547,8 @@ export function settings(sourceEntity) {
     form.button("Personal Settings", "textures/ui/settings_glyph_color_2x");
     form.button("Notifications Settings", "textures/ui/icon_bell");
     form.button("Home System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
-    form.button("RTP System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
-    form.button("Back", "textures/ui/"); /*
+    form.button("RTP System Settings [§cExperimental§r]", "textures/items/ender_pearl");
+    form.button("Back", "textures/ui/arrow_left"); /*
     form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
     forceShow(form, sourceEntity).then(ra => {
         let r = ra;
@@ -580,6 +584,134 @@ export function settings(sourceEntity) {
         console.error(e, e.stack);
     });
 }
+export function moderationSettings(sourceEntity) {
+    let form = new ActionFormData();
+    let players = world.getPlayers();
+    form.title("Moderation");
+    form.body("Choose menu to open. ");
+    form.button("§4Banned Items§f(§cComing Soon!§f)", "textures/ui/icon_blackfriday");
+    form.button("Manage Bans", "textures/ui/friend_glyph_desaturated");
+    form.button("Anti-Spam", "textures/ui/mute_on");
+    form.button("§4Anti-Cheat§f(§cComing Soon!§f)", "textures/ui/friend_glyph_desaturated");
+    form.button("Back", "textures/ui/arrow_left"); /*
+    form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
+    forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        // This will stop the code when the player closes the form
+        if (r.canceled)
+            return;
+        let response = r.selection;
+        switch (response) {
+            case 0:
+                //manageBannedItems(sourceEntity)
+                break;
+            case 1:
+                manageBans(sourceEntity, moderationSettings);
+                break;
+            case 2:
+                antispamSettings(sourceEntity);
+                break;
+            case 3:
+                //anticheatSettings(sourceEntity)
+                break;
+            case 4:
+                mainMenu(sourceEntity);
+                break;
+            default:
+        }
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function manageBans(sourceEntity, backMenuFunction = mainMenu) {
+    let form6 = new ActionFormData;
+    form6.title("Manage Bans");
+    ban.getValidBans().idBans.forEach((p) => { form6.button(`${p.playerId}\nValid`, "textures/ui/online"); });
+    ban.getExpiredBans().idBans.forEach((p) => { form6.button(`${p.playerId}\nExpired`, "textures/ui/Ping_Offline_Red"); });
+    ban.getValidBans().nameBans.forEach((p) => { form6.button(`${p.playerName}\nValid`, "textures/ui/online"); });
+    ban.getExpiredBans().nameBans.forEach((p) => { form6.button(`${p.playerName}\nExpired`, "textures/ui/Ping_Offline_Red"); });
+    let banList = ban.getValidBans().idBans.concat(ban.getExpiredBans().idBans).concat(ban.getValidBans().nameBans).concat(ban.getExpiredBans().nameBans);
+    form6.button("Add ID Ban");
+    form6.button("Add Name Ban");
+    form6.button("Back");
+    forceShow(form6, sourceEntity).then(ga => {
+        let g = ga;
+        if (g.canceled) {
+            return;
+        }
+        ;
+        switch (g.selection) {
+            case banList.length:
+                let form5 = new ModalFormData;
+                form5.title(`Add ID Ban`);
+                form5.textField("Player UUID\nThis is the uuid of the player. ", "Integer");
+                form5.textField("Ban Time (In Minutes)", "Decimal");
+                form5.textField("Reason", "JavaScript Object ex. `\nDate: ${new Date(D\nate\n.now()).toLo\ncaleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
+                form5.submitButton("Ban");
+                forceShow(form5, sourceEntity).then(ha => {
+                    let h = ha;
+                    if (h.canceled) {
+                        return;
+                    }
+                    ;
+                    ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: String(h.formValues[0]), originalPlayerName: undefined, type: "id", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "banId:" + Date.now() + ":" + String(h.formValues[0]), unbanDate: Number(h.formValues[1]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[2]) });
+                    backMenuFunction(sourceEntity);
+                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                break;
+            case banList.length + 1:
+                let form6 = new ModalFormData;
+                form6.title(`Add Name Ban`);
+                form6.textField("Player Name\nThis is the name of the player. ", "String");
+                form6.textField("Ban Time (In Minutes)", "Decimal");
+                form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
+                form6.submitButton("Ban");
+                forceShow(form6, sourceEntity).then(ha => {
+                    let h = ha;
+                    if (h.canceled) {
+                        return;
+                    }
+                    ;
+                    ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: undefined, playerName: String(h.formValues[0]), type: "name", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "ban:" + Date.now() + ":" + String(h.formValues[0]), unbanDate: Number(h.formValues[1]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[2]) });
+                    backMenuFunction(sourceEntity);
+                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                break;
+            case banList.length + 2:
+                backMenuFunction(sourceEntity);
+                break; /*
+                case banList.length+3:
+                backMenuFunction(sourceEntity)
+                break
+                case banList.length+4:
+                backMenuFunction(sourceEntity)*/
+                break;
+            default:
+                let form4 = new ActionFormData;
+                form4.title(`Manage Ban`);
+                let ba = banList[g.selection];
+                let timeRemaining = ba.timeRemaining;
+                form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type == "id" ? "playerId" : "originalPlayerId"}: §6${ba.type == "id" ? ba.playerId : ba.originalPlayerId}\n§r§b${ba.type == "id" ? "originalPlayerName" : "playerName"}: §6${ba.type == "id" ? ba.originalPlayerName : ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${ /*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`);
+                form4.button("Unban");
+                form4.button("Back");
+                forceShow(form4, sourceEntity).then(ha => {
+                    let h = ha;
+                    if (h.canceled) {
+                        return;
+                    }
+                    ;
+                    if (h.selection == 0) {
+                        banList[g.selection].remove();
+                        backMenuFunction(sourceEntity);
+                    }
+                    ;
+                    if (h.selection == 1) {
+                        backMenuFunction(sourceEntity);
+                    }
+                    ;
+                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+        }
+        ;
+    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+}
 export function globalSettings(sourceEntity) {
     let form2 = new ModalFormData();
     "andexdbSettings:autoEscapeChatMessages";
@@ -591,14 +723,15 @@ export function globalSettings(sourceEntity) {
     form2.textField("§l§fchatRankPrefix§r§f\nPrefix for chat ranks, default is rank:", "string", String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"));
     form2.textField("§l§fchatSudoPrefix§r§f\nPrefix for custom chat names, default is sudo:", "string", String(world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:"));
     form2.textField("§l§frankDisplayPrefix§r§f\nPrefix that appears before chat ranks in chat messages, default is \"[\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "["));
-    form2.textField("§l§frankDisplaySuffix§r§f\nSuffix that appears after chat ranks in chat messages, default is \"§§r§§f]\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "§r§f]"));
+    form2.textField("§l§frankDisplaySuffix§r§f\nSuffix that appears after chat ranks in chat messages, default is \"\uF019r\uF019f]\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "§r§f]"));
+    form2.textField("§l§frankDisplaySeparator§r§f\nSeparator that appears between ranks, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "));
     form2.textField("§l§fnameDisplayPrefix§r§f\nPrefix that appears before player's names in chat messages, default is \"<\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<"));
-    form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after player's names in chat messages, default is \"§§r§§f>\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"));
+    form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after player's names in chat messages, default is \"\uF019r\uF019f>\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"));
     form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
     form2.textField("§l§fgametestStructureDefaultSpawnLocation§r§f\nThe default spawn locations for the gametest structure, this is used when spawning in no ai entities or spawning in simulated player", "x, y, z", Object.values(world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {}).join(", "));
+    form2.dropdown("§l§finvalidChatCommandAction§r§f\nWhat to do when a chat command is typed that does not exist, or that the player does not have permission to use. ", ["Do Nothing", "Send Message", "Cancel Message", "Warn Player"], Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 0));
     form2.toggle("§l§fchatCommandsEnbaled§r§f\nSets whether or not to enable the chat commands, default is true", Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") ?? true));
     form2.toggle("§l§fdisableCustomChatMessages§r§f\nDisables the chat ranks and custom chat names, default is false", Boolean(world.getDynamicProperty("andexdbSettings:disableCustomChatMessages") ?? false));
-    form2.toggle("§l§fsendMessageOnInvalidChatCommand§r§f\nMakes the chat command still send as a chat message if that specific chat command does not exist, default is false", Boolean(world.getDynamicProperty("andexdbSettings:sendMessageOnInvalidChatCommand") ?? false));
     form2.toggle("§l§fallowCustomChatMessagesMuting§r§f\nAllows the chat mute button to work on the custom chat messages by using the /tellraw command instead of the world.sendMessage() function, a side-effect of this is that it will cause a 1 tick delay in chat messages, default is false", Boolean(world.getDynamicProperty("andexdbSettings:allowCustomChatMessagesMuting") ?? false));
     form2.toggle("§l§fautoEscapeChatMessages§r§f\nEvaluates escape codes in the chat automatically, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") ?? false));
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
@@ -611,13 +744,14 @@ export function globalSettings(sourceEntity) {
             return; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, gametestStructureDefaultSpawnLocation, chatCommandsEnbaled, disableCustomChatMessages, sendMessageOnInvalidChatCommand, allowCustomChatMessagesMuting, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes, autoSavePlayerData, bepl, beppb, aebe, aepl] = t.formValues;
+        let [chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, gametestStructureDefaultSpawnLocation, invalidChatCommandAction, chatCommandsEnbaled, disableCustomChatMessages, allowCustomChatMessagesMuting, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes, autoSavePlayerData, bepl, beppb, aebe, aepl] = t.formValues;
         world.setDynamicProperty("andexdbSettings:chatCommandPrefix", chatCommandPrefix);
         world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", validChatCommandPrefixes);
         world.setDynamicProperty("andexdbSettings:chatRankPrefix", chatRankPrefix);
         world.setDynamicProperty("andexdbSettings:chatSudoPrefix", chatSudoPrefix);
         world.setDynamicProperty("andexdbSettings:rankDisplayPrefix", rankDisplayPrefix);
         world.setDynamicProperty("andexdbSettings:rankDisplaySuffix", rankDisplaySuffix);
+        world.setDynamicProperty("andexdbSettings:rankDisplaySeparator", rankDisplaySeparator);
         world.setDynamicProperty("andexdbSettings:nameDisplayPrefix", nameDisplayPrefix);
         world.setDynamicProperty("andexdbSettings:nameDisplaySuffix", nameDisplaySuffix);
         world.setDynamicProperty("andexdbSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator);
@@ -626,7 +760,7 @@ export function globalSettings(sourceEntity) {
         }
         world.setDynamicProperty("andexdbSettings:chatCommandsEnbaled", chatCommandsEnbaled);
         world.setDynamicProperty("andexdbSettings:disableCustomChatMessages", disableCustomChatMessages);
-        world.setDynamicProperty("andexdbSettings:sendMessageOnInvalidChatCommand", sendMessageOnInvalidChatCommand);
+        world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction);
         world.setDynamicProperty("andexdbSettings:allowCustomChatMessagesMuting", allowCustomChatMessagesMuting);
         world.setDynamicProperty("andexdbSettings:autoEscapeChatMessages", autoEscapeChatMessages);
         world.setDynamicProperty("andexdbSettings:autoURIEscapeChatMessages", autoURIEscapeChatMessages);
@@ -693,6 +827,27 @@ export function notificationsSettings(sourceEntity) {
         console.error(e, e.stack);
     });
 }
+export function antispamSettings(sourceEntity) {
+    let form2 = new ModalFormData();
+    form2.title("Anti-Spam Settings [§cExperimental§r]");
+    form2.toggle("§l§fAnti-Spam Enabled§r§f", config.antispamEnabled);
+    form2.textField("§l§fWait time before player can send the spammed message again in seconds§r§f", "60", String(config.waitTimeAfterAntispamActivation));
+    form2.slider("§l§fMessage count to trigger anti-spam, defaults to 4§r§f", 1, 100, 1, config.antispamTriggerMessageCount);
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(to => {
+        let t = to;
+        if (t.canceled)
+            return; /*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+        let [antispamEnabled, waitTimeAfterAntispamActivation, antispamTriggerMessageCount] = t.formValues;
+        config.antispamEnabled = antispamEnabled;
+        config.waitTimeAfterAntispamActivation = isNaN(Number(waitTimeAfterAntispamActivation)) ? 60 : Number(waitTimeAfterAntispamActivation);
+        config.antispamTriggerMessageCount = Number(antispamTriggerMessageCount);
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
 export function personalSettings(sourceEntity) {
     let form2 = new ModalFormData();
     "andexdbSettings:autoEscapeChatMessages";
@@ -704,9 +859,10 @@ export function personalSettings(sourceEntity) {
     form2.textField("§l§fchatSudoPrefix§r§f\nPrefix for your custom chat names, default is undefined:", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? "sudo:"));
     form2.textField("§l§frankDisplayPrefix§r§f\nPrefix that appears before your chat ranks in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix") ?? "["));
     form2.textField("§l§frankDisplaySuffix§r§f\nSuffix that appears after your chat ranks in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ?? "§r§f]"));
+    form2.textField("§l§frankDisplaySeparator§r§f\nSeparator that appears between your ranks, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? " "));
     form2.textField("§l§fnameDisplayPrefix§r§f\nPrefix that appears before your names in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? "<"));
     form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after your names in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? "§r§f>"));
-    form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? " "));
+    form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between your name and and your chat message, default is \" \"", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? " "));
     form2.textField("§l§fdebugStickUseCooldown§r§f\nCooldown between changing the block state of a block with a debug stick after you have just changed that state on the same block, default is 4", "number; default: 4", !!!sourceEntity.getDynamicProperty("debugStickUseCooldown") ? undefined : String(sourceEntity.getDynamicProperty("debugStickUseCooldown") ?? 4));
     form2.textField("§l§fdebugStickHoldDuration§r§f\nTime after the actionbar for changing a block state with the debug stick appears before the actionbar can be changed again, default is 10", "number; default: 10", !!!sourceEntity.getDynamicProperty("debugStickHoldDuration") ? undefined : String(sourceEntity.getDynamicProperty("debugStickHoldDuration") ?? 10)); /*
     form2.textField("§l§fvalidChatCommandPrefixes§r§f\nList of valid prefixes for chat commands, use this if you have other add-ons with chat commands in them active, messages that start with any of these will not be sent and will not be modified by this add-on so it will work for you other packs, default is blank", "Comma-Separated List of Strings", String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? ""));
@@ -728,12 +884,13 @@ export function personalSettings(sourceEntity) {
             return; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, debugStickUseCooldown, debugStickHoldDuration] = t.formValues;
+        let [timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, debugStickUseCooldown, debugStickHoldDuration] = t.formValues;
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:timeZone", timeZone == "" ? undefined : timeZone);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatRankPrefix", chatRankPrefix == "" ? undefined : chatRankPrefix);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatSudoPrefix", chatSudoPrefix == "" ? undefined : chatSudoPrefix);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix", rankDisplayPrefix == "" ? undefined : rankDisplayPrefix);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix", rankDisplaySuffix == "" ? undefined : rankDisplaySuffix);
+        sourceEntity.setDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator", rankDisplaySeparator == "" ? undefined : rankDisplaySeparator);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix", nameDisplayPrefix == "" ? undefined : nameDisplayPrefix);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix", nameDisplaySuffix == "" ? undefined : nameDisplaySuffix);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator == "" ? undefined : chatNameAndMessageSeparator);
@@ -2944,6 +3101,10 @@ export function managePlayers(sourceEntity) {
                 form2.button("Show Data");
                 form2.button("Check Inventory");
                 form2.button("Manage Bans");
+                form2.button("§4Manage Permissions§f(§cCOMING SOON!§f)");
+                form2.button("§4Manage Hotbar Presets§f(§cCOMING SOON!§f)");
+                form2.button("§4Manage Private Warps§f(§cCOMING SOON!§f)");
+                form2.button("§4Manage Homes§f(§cCOMING SOON!§f)");
                 form2.button("Back");
                 forceShow(form2, sourceEntity).then(ga => {
                     let g = ga;
@@ -3075,7 +3236,7 @@ export function managePlayers(sourceEntity) {
                                         break;
                                     default:
                                         let form4 = new ActionFormData;
-                                        form4.title(`Manage Ban`);
+                                        form4.title(`Manage Bans`);
                                         let ba = banList[g.selection];
                                         let timeRemaining = ba.timeRemaining;
                                         form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type == "id" ? "playerId" : "originalPlayerId"}: §6${ba.type == "id" ? ba.playerId : ba.originalPlayerId}\n§r§b${ba.type == "id" ? "originalPlayerName" : "playerName"}: §6${ba.type == "id" ? ba.originalPlayerName : ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${ /*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`);
@@ -3101,7 +3262,7 @@ export function managePlayers(sourceEntity) {
                                 ;
                             }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                             break;
-                        case 4:
+                        case 8:
                             managePlayers(sourceEntity);
                             break;
                         default:

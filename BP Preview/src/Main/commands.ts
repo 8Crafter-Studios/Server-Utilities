@@ -1343,6 +1343,16 @@ export class config{
     static set maxHomesPerPlayer(maxHomes: number|undefined){swdp("homeSystemSettings:maxHomesPerPlayer", (maxHomes??Infinity)==Infinity?-1:maxHomes)}
     static get rtpSystemEnabled(){return Boolean(world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled")??false)}
     static set rtpSystemEnabled(enabled: boolean|undefined){world.setDynamicProperty("rtpSystemSettings:rtpSystemEnabled", enabled??false)}
+    static get antispamEnabled(){return Boolean(world.getDynamicProperty("antispamSettings:antispamEnabled")??false)}
+    static set antispamEnabled(enabled: boolean|undefined){world.setDynamicProperty("antispamSettings:antispamEnabled", enabled??false)}
+    static get waitTimeAfterAntispamActivation(){return isNaN(Number(gwdp("antispamSettings:waitTimeAfterAntispamActivation")))?60:Number(gwdp("antispamSettings:waitTimeAfterAntispamActivation") ?? 60)}
+    static set waitTimeAfterAntispamActivation(waitTimeInSeconds: number|undefined){swdp("antispamSettings:waitTimeAfterAntispamActivation", waitTimeInSeconds??60)}
+    static get antispamTriggerMessageCount(){return isNaN(Number(gwdp("antispamSettings:antispamTriggerMessageCount")))?4:Number(gwdp("antispamSettings:antispamTriggerMessageCount") ?? 4)}
+    static set antispamTriggerMessageCount(messageCount: number|undefined){swdp("antispamSettings:antispamTriggerMessageCount", messageCount??4)}
+    static get timeZone(){return isNaN(Number(gwdp("andexdbSettings:timeZone")))?0:Number(gwdp("andexdbSettings:timeZone") ?? 0)}
+    static set timeZone(timeZone: number|undefined){swdp("andexdbSettings:timeZone", timeZone??0)}
+    static get invalidChatCommandAction(){return isNaN(Number(gwdp("andexdbSettings:invalidChatCommandAction")))?0:Number(gwdp("andexdbSettings:invalidChatCommandAction") ?? 0)}
+    static set invalidChatCommandAction(invalidChatCommandAction: number|undefined){swdp("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction??0)}
     static reset(){}
 }
 //((a: Player)=>{})(new executeCommandPlayer(getPlayer("Andexter8")))
@@ -1438,9 +1448,9 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
     if(newMessage.includes("${se}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){newMessage = newMessage.replace("${se}", ""); try{eval(newMessage)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; eventData.cancel = true; return; }else{if(newMessage.includes("${r}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true))){newMessage = newMessage.replace("${r}", ""); eventData.cancel = true; player.runCommandAsync(newMessage); return; }}
     if(newMessage.includes("${scripteval}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){newMessage = newMessage.replace("${scripteval}", ""); try{eval(newMessage)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; eventData.cancel = true; return; }else{if(newMessage.includes("${run}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true))){newMessage = newMessage.replace("${run}", ""); eventData.cancel = true; player.runCommandAsync(newMessage); return; }}
     /*${scripteval}world.getAllPlayers().forEach((t)=>{t.setDynamicProperty("canUseScriptEval", true)}); */
-	if ((player.hasTag('noCustomChatMessages') && !player.hasTag('canUseChatCommands'))||returnBeforeChatCommandsOrChatSend) {return;}
+	if ((player.hasTag('noCustomChatMessages') && !player.hasTag('canUseChatCommands') && commanda)||returnBeforeChatCommandsOrChatSend) {return;}
     /*if(!((eventData.message.includes("${scripteval}") && (player.getDynamicProperty("canUseScriptEval") == true))||(eventData.message.includes("${run}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true)))||(eventData.message.startsWith("\\")))){world.getDimension("overworld").runCommand("/playsound note.harp.ui @a ~~~ 1 0.75 1"); }*/if(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != undefined && world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != ""){String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? "").split(", ").forEach((prefix)=>{if(newMessage.startsWith(prefix))runreturn = true})}; if (Boolean(runreturn) == true){return; }
-    if (((world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false && newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && player.hasTag('canUseChatCommands')||!!commanda))/* && (eventData.message.startsWith(".give") || eventData.message.startsWith(".giveb") || eventData.message.startsWith(".h1") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".playersettings") || eventData.message.startsWith(".run") || eventData.message.startsWith(".setitem") || eventData.message.startsWith(".invsee") || eventData.message.startsWith(".settings") || eventData.message.startsWith(".help") || eventData.message.startsWith(".h1 ") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".h4") || eventData.message.startsWith(".h5") || eventData.message.startsWith(".w1") || eventData.message.startsWith(".w2") || eventData.message.startsWith(".debugstick") || eventData.message.startsWith(".playercontroller") || eventData.message.startsWith(".setslot") || eventData.message.startsWith(".worlddebug") || eventData.message.startsWith(".gmc") || eventData.message.startsWith(".gms") || eventData.message.startsWith(".gma") || eventData.message.startsWith(".gmd") || eventData.message.startsWith(".gmp") || eventData.message.startsWith(".spawn") || eventData.message.startsWith(".warp") || eventData.message.startsWith(".home") || eventData.message.startsWith(".all") || eventData.message.startsWith(".getEntityUUIDSelector"))*/){chatCommands({returnBeforeChatSend, player, eventData, event, newMessage})
+    if (((world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false && newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))/* && player.hasTag('canUseChatCommands')*/||!!commanda))/* && (eventData.message.startsWith(".give") || eventData.message.startsWith(".giveb") || eventData.message.startsWith(".h1") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".playersettings") || eventData.message.startsWith(".run") || eventData.message.startsWith(".setitem") || eventData.message.startsWith(".invsee") || eventData.message.startsWith(".settings") || eventData.message.startsWith(".help") || eventData.message.startsWith(".h1 ") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".h4") || eventData.message.startsWith(".h5") || eventData.message.startsWith(".w1") || eventData.message.startsWith(".w2") || eventData.message.startsWith(".debugstick") || eventData.message.startsWith(".playercontroller") || eventData.message.startsWith(".setslot") || eventData.message.startsWith(".worlddebug") || eventData.message.startsWith(".gmc") || eventData.message.startsWith(".gms") || eventData.message.startsWith(".gma") || eventData.message.startsWith(".gmd") || eventData.message.startsWith(".gmp") || eventData.message.startsWith(".spawn") || eventData.message.startsWith(".warp") || eventData.message.startsWith(".home") || eventData.message.startsWith(".all") || eventData.message.startsWith(".getEntityUUIDSelector"))*/){!!!commanda?config.invalidChatCommandAction==2?event.cancel=true:config.invalidChatCommandAction==3?player.sendMessage(`§r§cUnknown command: ${switchTest}§r§c. Please check that the command exists and that you have permission to use it.`):config.invalidChatCommandAction==1?chatSend({returnBeforeChatSend, player, eventData, event, newMessage}):undefined:chatCommands({returnBeforeChatSend, player, eventData, event, newMessage})
     } else {if((world.getDynamicProperty("andexdbSettings:disableCustomChatMessages") ?? false) != true){if((world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false && newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && player.hasTag('canUseChatCommands') && ((world.getDynamicProperty("andexdbSettings:sendMessageOnInvalidChatCommand") ?? false) == false))){}else{chatSend({returnBeforeChatSend, player, eventData, event, newMessage})}}}
 }
 export const EquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand]
@@ -3683,34 +3693,37 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                 case "item listtags":
                     player.sendMessage(player.getComponent("inventory").container.getSlot(player.selectedSlot).getTags().join("§r,"))
                 break;
+                case "item gettags":
+                    player.sendMessage(player.getComponent("inventory").container.getSlot(player.selectedSlot).getTags().join("§r,"))
+                break;
                 case "item property":
                     switch (command.split(" ")[2]) {
                         case "removelist":
-                            (evaluateParametersOld(["json"], command.split(" ").slice(3).join(" ")).args[0] as string[]).forEach(v=>player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(v))
+                            (evaluateParameters(command.split(" ").slice(3).join(" "), ["json"]).args[0] as string[]).forEach(v=>player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(v))
                         break;
                         case "setlist":
-                            Object.entries(evaluateParametersOld(["json"], command.split(" ").slice(3).join(" ")).args[0] as Object).forEach(v=>player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(v[0], v[1]))
+                            Object.entries(evaluateParameters(command.split(" ").slice(3).join(" "), ["json"]).args[0] as Object).forEach(v=>player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(v[0], v[1]),)
                         break;
                         case "remove":
                             player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(3).join(" ")).args[0])
                         break;
                         case "setnumber":
-                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[1])
+                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[0], evaluateParameters(command.split(" ").slice(3).join(" "), ["string", "number"]).args[1])
                         break;
                         case "setstring":
-                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[1])
+                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[0], evaluateParameters(command.split(" ").slice(3).join(" "), ["string", "string"]).args[1])
                         break;
                         case "setboolean":
-                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[1])
+                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[0], evaluateParameters(command.split(" ").slice(3).join(" "), ["string", "boolean"]).args[1])
                         break;
                         case "setvector3":
-                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[0], evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[1])
+                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[0], evaluateParameters(command.split(" ").slice(3).join(" "), ["string", "json"]).args[1])
                         break;
                         case "list":
                             eventData.sender.sendMessage(player.getComponent("inventory").container.getSlot(player.selectedSlot).getDynamicPropertyIds().join("§r§f\n"));
                         break;
                         case "get":
-                            eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getSlot(player.selectedSlot).getDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(3).join(" ")).args[0])));
+                            eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getSlot(player.selectedSlot).getDynamicProperty(evaluateParameters(command.split(" ").slice(3).join(" "), ["string"]).args[0])));
                         break;
                         case "clear":
                             player.getComponent("inventory").container.getSlot(player.selectedSlot).clearDynamicProperties()
@@ -7396,12 +7409,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     switch(args[2]){
                         case "add": 
                         targets.forEach(v=>v.addTag(String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")+args[3]))
+                        psend(player, `Successfully added the rank "${args[3]}§r" to ${targets.map(t=>t.name).join()}. `) 
                         break; 
                         case "remove": 
                         targets.forEach(v=>v.removeTag(String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")+args[3]))
+                        psend(player, `Successfully removed the rank "${args[3]}§r" from ${targets.map(t=>t.name).join()}. `) 
                         break; 
                         case "clear": 
                         targets.forEach(v=>v.getTags().filter(t=>t.startsWith(String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"))).forEach(t=>v.removeTag(t)))
+                        psend(player, `Successfully cleared all ranks from ${targets.map(t=>t.name).join()}. `) 
                         break; 
                         default: 
                         player.sendMessage(`§cSyntax error: Unexpected "${args[2]}" at "${switchTest.slice(0, switchTest.indexOf(args[1])+args[1].length+1)}>>${args[2]}<<${args[3]}"`)
@@ -7452,6 +7468,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             try{system.run(()=>{let a = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "water"}); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "lava"}); let c = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_water"}); let d = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_lava"}); player.sendMessage(`${a+b+c+d==0?"§c":""}${a+b+c+d} liquids removed in radius of ${radius}`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
+        default: 
+        //if(){}
     }}else{if(commanda?.type=="custom"){eventData.cancel = true; if((commanda as command).customCommandType=="commands"){system.run(()=>(commanda as command).run(newMessage.slice((commanda as command).customCommandPrefix.length), player, player, event))}else{(commanda as command).run(newMessage.slice((commanda as command).customCommandPrefix.length), player, player, event)}}else{}}}
 export function chatSend(params: {returnBeforeChatSend: boolean|undefined, player: Player|undefined, eventData: ChatSendBeforeEvent|undefined, event: ChatSendBeforeEvent|undefined, newMessage: string|undefined}){
     let returnBeforeChatSend = params.returnBeforeChatSend
@@ -7459,63 +7477,104 @@ export function chatSend(params: {returnBeforeChatSend: boolean|undefined, playe
     let eventData = params.eventData
     let event = params.event
     let newMessage = params.newMessage
+    if(config.antispamEnabled){if(!player.hasTag("canBypassAntiSpam")){if(!!globalThis["lastChatMessage"+player.id]){if(globalThis["lastChatMessage"+player.id]==event.message&&((Date.now()-(globalThis["lastChatTime"+player.id]??0))<(config.waitTimeAfterAntispamActivation*1000))){globalThis["msgAmountOfSpam"+player.id]=(globalThis["msgAmountOfSpam"+player.id]??0)+1; if(globalThis["msgAmountOfSpam"+player.id]>=config.antispamTriggerMessageCount){returnBeforeChatSend=true; event.cancel=true; player.sendMessage("§cStop Spamming")}}else{globalThis["lastChatMessage"+player.id]=event.message; globalThis["msgAmountOfSpam"+player.id]=0}}else{globalThis["lastChatMessage"+player.id]=event.message}; globalThis["lastChatTime"+player.id]=Date.now(); }}
     
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendComplete")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendBeforeEventDebugErrors")){currentplayer.sendMessage((e + " " + e.stack))}})}
     if(returnBeforeChatSend)return
-    let messageFormattingItalic = ""
-    let messageFormattingBold = ""
-    let messageFormattingObfuscated = ""
-    let messageFormattingColor = ""
-if (player.hasTag('messageFormatting:o')) { messageFormattingItalic = "§o"};
-if (player.hasTag('messageFormatting:l')) { messageFormattingBold = "§l"};
-if (player.hasTag('messageFormatting:k')) { messageFormattingObfuscated = "§k"};
-if (player.hasTag('messageColor:0')) { messageFormattingColor = "§0"} else {
-if (player.hasTag('messageColor:1')) { messageFormattingColor = "§1"} else {
-if (player.hasTag('messageColor:2')) { messageFormattingColor = "§2"} else {
-if (player.hasTag('messageColor:3')) { messageFormattingColor = "§3"} else {
-if (player.hasTag('messageColor:4')) { messageFormattingColor = "§4"} else {
-if (player.hasTag('messageColor:5')) { messageFormattingColor = "§5"} else {
-if (player.hasTag('messageColor:6')) { messageFormattingColor = "§6"} else {
-if (player.hasTag('messageColor:7')) { messageFormattingColor = "§7"} else {
-if (player.hasTag('messageColor:8')) { messageFormattingColor = "§8"} else {
-if (player.hasTag('messageColor:9')) { messageFormattingColor = "§9"} else {
-if (player.hasTag('messageColor:a')) { messageFormattingColor = "§a"} else {
-if (player.hasTag('messageColor:b')) { messageFormattingColor = "§b"} else {
-if (player.hasTag('messageColor:c')) { messageFormattingColor = "§c"} else {
-if (player.hasTag('messageColor:d')) { messageFormattingColor = "§d"} else {
-if (player.hasTag('messageColor:e')) { messageFormattingColor = "§e"} else {
-if (player.hasTag('messageColor:f')) { messageFormattingColor = "§f"} else {
-if (player.hasTag('messageColor:g')) { messageFormattingColor = "§g"} else {
-if (player.hasTag('messageColor:h')) { messageFormattingColor = "§h"} else {
-if (player.hasTag('messageColor:i')) { messageFormattingColor = "§i"} else {
-if (player.hasTag('messageColor:j')) { messageFormattingColor = "§j"} else {
-if (player.hasTag('messageColor:m')) { messageFormattingColor = "§m"} else {
-if (player.hasTag('messageColor:n')) { messageFormattingColor = "§n"} else {
-if (player.hasTag('messageColor:p')) { messageFormattingColor = "§p"} else {
-if (player.hasTag('messageColor:q')) { messageFormattingColor = "§q"} else {
-if (player.hasTag('messageColor:s')) { messageFormattingColor = "§s"} else {
-if (player.hasTag('messageColor:t')) { messageFormattingColor = "§t"} else {
-if (player.hasTag('messageColor:u')) { messageFormattingColor = "§u"};}}}}}}}}}}}}}}}}}}}}}}}}}}
-let rank = ""
-let name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + player.name + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " ")
-let rankMode = 0
+    let messageFormatting = ""
+    if (player.hasTag('messageFormatting:o')) { messageFormatting+="§o"};
+    if (player.hasTag('messageFormatting:l')) { messageFormatting+="§l"};
+    if (player.hasTag('messageFormatting:k')) { messageFormatting+="§k"};
+    if (player.hasTag('messageFormatting:r')) { messageFormatting+="§r"};
+    if (player.hasTag('messageColor:0')) { messageFormatting+="§0"} else {
+    if (player.hasTag('messageColor:1')) { messageFormatting+="§1"} else {
+    if (player.hasTag('messageColor:2')) { messageFormatting+="§2"} else {
+    if (player.hasTag('messageColor:3')) { messageFormatting+="§3"} else {
+    if (player.hasTag('messageColor:4')) { messageFormatting+="§4"} else {
+    if (player.hasTag('messageColor:5')) { messageFormatting+="§5"} else {
+    if (player.hasTag('messageColor:6')) { messageFormatting+="§6"} else {
+    if (player.hasTag('messageColor:7')) { messageFormatting+="§7"} else {
+    if (player.hasTag('messageColor:8')) { messageFormatting+="§8"} else {
+    if (player.hasTag('messageColor:9')) { messageFormatting+="§9"} else {
+    if (player.hasTag('messageColor:a')) { messageFormatting+="§a"} else {
+    if (player.hasTag('messageColor:b')) { messageFormatting+="§b"} else {
+    if (player.hasTag('messageColor:c')) { messageFormatting+="§c"} else {
+    if (player.hasTag('messageColor:d')) { messageFormatting+="§d"} else {
+    if (player.hasTag('messageColor:e')) { messageFormatting+="§e"} else {
+    if (player.hasTag('messageColor:f')) { messageFormatting+="§f"} else {
+    if (player.hasTag('messageColor:g')) { messageFormatting+="§g"} else {
+    if (player.hasTag('messageColor:h')) { messageFormatting+="§h"} else {
+    if (player.hasTag('messageColor:i')) { messageFormatting+="§i"} else {
+    if (player.hasTag('messageColor:j')) { messageFormatting+="§j"} else {
+    if (player.hasTag('messageColor:m')) { messageFormatting+="§m"} else {
+    if (player.hasTag('messageColor:n')) { messageFormatting+="§n"} else {
+    if (player.hasTag('messageColor:p')) { messageFormatting+="§p"} else {
+    if (player.hasTag('messageColor:q')) { messageFormatting+="§q"} else {
+    if (player.hasTag('messageColor:s')) { messageFormatting+="§s"} else {
+    if (player.hasTag('messageColor:t')) { messageFormatting+="§t"} else {
+    if (player.hasTag('messageColor:u')) { messageFormatting+="§u"};}}}}}}}}}}}}}}}}}}}}}}}}}}
+    let rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
+        .map(t=>String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "[")+
+        t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + 
+        String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "]"))
+        .join(String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "));
+    let messageTimeStampEnabled = (player.hasTag("chatDisplayTimeStamp")||((world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false)&&!player.hasTag("hideChatDisplayTimeStamp")))
+    let name = !!player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))?
+        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + 
+        player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+        .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length) + 
+        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + 
+        String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "):
+        player.hasTag("chatHideNameTag")?"":
+        player.hasTag("chatUseNameTag")?String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + 
+        player.nameTag + 
+        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + 
+        String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "):
+        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + 
+        player.name + 
+        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + 
+        String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " ")
+    name.length!=0?name+=String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "):undefined/*
+    let rankMode = 0
     for (let index in player.getTags()) {
             if (player.getTags()[Number(index)].startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"))) { rank = (rank + String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "[") + player.getTags()[Number(index)].slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "]")) }
             if (player.getTags()[Number(index)] == ("chatHideNameTag")) { name = ""; rankMode = 1 } else {
             if (player.getTags()[Number(index)].startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")) && rankMode !== 1) { name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + player.getTags()[Number(index)].slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length) + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "); rankMode = 2 } else {
             if (player.getTags()[Number(index)] == ("chatUseNameTag") && rankMode !== 1 && rankMode !== 2) { name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<") + player.nameTag + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? ">") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "); rankMode = 3 } } }
-    }
+    }*/
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendBeforeModifiedMessageSend")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendBeforeEventDebugErrors")){currentplayer.sendMessage((e + " " + e.stack))}})}
     eventData.cancel = true;
-    if (player.hasTag("doNotSendChatMessages")) { return; } else {
-        if(world.getDynamicProperty("allowCustomChatMessagesMuting") != true){
-            if(world.getDynamicProperty("allowCustomChatMessagesEscapeCharacters") != true){
-                world.sendMessage(rank + name + messageFormattingItalic + messageFormattingBold + messageFormattingObfuscated + messageFormattingColor + newMessage); 
+    if(messageTimeStampEnabled){
+        if (player.hasTag("doNotSendChatMessages")) { return; } else {
+            if(world.getDynamicProperty("allowCustomChatMessagesMuting") != true){
+                if(world.getDynamicProperty("allowCustomChatMessagesEscapeCharacters") != true){
+                    world.getAllPlayers().forEach(p=>p.sendMessage(new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString() + rank + name + messageFormatting + newMessage)); 
+                }else{
+                    world.getAllPlayers().forEach(p=>world.sendMessage({rawtext: [{text: String(new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString() + rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})); 
+                }
             }else{
-                world.sendMessage({rawtext: [{text: String(rank + name + messageFormattingItalic + messageFormattingBold + messageFormattingObfuscated + messageFormattingColor + newMessage)}]}); 
+                if(world.getDynamicProperty("allowCustomChatMessagesEscapeCharacters") != true){
+                    world.getAllPlayers().forEach(p=>p.runCommandAsync(`/tellraw @s ${JSON.stringify({"rawtext":[{"text":String(new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString() + rank + name + messageFormatting + newMessage)}]})}`)); 
+                }else{
+                    world.getAllPlayers().forEach(p=>p.runCommandAsync(`/tellraw @s ${JSON.stringify({"rawtext":[{"text":String(new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString() + rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})}`)); 
+                }
             }
-        }else{
-            world.getDimension("overworld").runCommandAsync(`/tellraw @a {"rawtext":[{"text":"${String(rank + name + messageFormattingItalic + messageFormattingBold + messageFormattingObfuscated + messageFormattingColor + newMessage).replaceAll("\"", "\\\"")}"}]}`); 
+        }
+    }else{
+        if (player.hasTag("doNotSendChatMessages")) { return; } else {
+            if(world.getDynamicProperty("allowCustomChatMessagesMuting") != true){
+                if(world.getDynamicProperty("allowCustomChatMessagesEscapeCharacters") != true){
+                    world.sendMessage(rank + name + messageFormatting + newMessage); 
+                }else{
+                    world.sendMessage({rawtext: [{text: String(rank + name + messageFormatting + newMessage)}]}); 
+                }
+            }else{
+                if(world.getDynamicProperty("allowCustomChatMessagesEscapeCharacters") != true){
+                    world.getDimension("overworld").runCommandAsync(`/tellraw @a ${JSON.stringify({"rawtext":[{"text":String(rank + name + messageFormatting + newMessage)}]})}`); 
+                }else{
+                    world.getDimension("overworld").runCommandAsync(`/tellraw @a ${JSON.stringify({"rawtext":[{"text":String(rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})}`); 
+                }
+            }
         }
     }
 }
