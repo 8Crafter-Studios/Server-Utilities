@@ -1629,9 +1629,9 @@ export function* generateFillBG(begin, end, dimension, generatorProgressId, minM
         var msSinceLastYieldStart = Date.now();
         var index = 0n;
         if (integrity != 100) {
-            for (let x = begin.x; x <= end.x; x++) {
-                for (let y = begin.y; y <= end.y; y++) {
-                    for (let z = begin.z; z <= end.z; z++) {
+            for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                    for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
                         if (Math.random() <= (integrity / 100)) {
                             placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                         }
@@ -1649,9 +1649,9 @@ export function* generateFillBG(begin, end, dimension, generatorProgressId, minM
             }
         }
         else {
-            for (let x = begin.x; x <= end.x; x++) {
-                for (let y = begin.y; y <= end.y; y++) {
-                    for (let z = begin.z; z <= end.z; z++) {
+            for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                    for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
                         placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                         index++;
                     }

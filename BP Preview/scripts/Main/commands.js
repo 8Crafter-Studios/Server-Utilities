@@ -793,12 +793,13 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listidbans", escregexp: { v: "^listidbans$" }, aliases: [{ commandName: "getidbans", escregexp: { v: "^getidbans$" } }], formats: [{ format: "listidbans" }], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listidbans" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listnamebans", escregexp: { v: "^listnamebans$" }, aliases: [{ commandName: "getnamebans", escregexp: { v: "^getnamebans$" } }], formats: [{ format: "listnamebans" }], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listnamebans" },
     { type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "timezone", escregexp: { v: "^timezone$" }, aliases: [{ commandName: "tz", escregexp: { v: "^tz$" } }], formats: [{ format: "timezone [UTCOffsetInHours: float]" }], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:timezone" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\replace", escregexp: { v: "^\\replace$" }, formats: [{ format: "\\replace" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\replace" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\pos1", escregexp: { v: "^\\pos1$" }, formats: [{ format: "\\pos1" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\pos1" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\pos2", escregexp: { v: "^\\pos2$" }, formats: [{ format: "\\pos2" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\pos2" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\hpos1", escregexp: { v: "^\\hpos1$" }, formats: [{ format: "\\hpos1" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hpos1" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\hpos2", escregexp: { v: "^\\hpos2$" }, formats: [{ format: "\\hpos2" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hpos2" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\chunk", escregexp: { v: "^\\chunk$" }, formats: [{ format: "\\chunk" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\chunk" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\replace", escregexp: { v: "^\\\\replace$" }, formats: [{ format: "\\replace" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\replace" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\pos1", escregexp: { v: "^\\\\pos1$" }, formats: [{ format: "\\\\pos1" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\pos1" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\pos2", escregexp: { v: "^\\\\pos2$" }, formats: [{ format: "\\\\pos2" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\pos2" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\hpos1", escregexp: { v: "^\\\\hpos1$" }, formats: [{ format: "\\\\hpos1" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hpos1" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\hpos2", escregexp: { v: "^\\\\hpos2$" }, formats: [{ format: "\\\\hpos2" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hpos2" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\chunk", escregexp: { v: "^\\\\chunk$" }, formats: [{ format: "\\\\chunk" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\chunk" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\selectmode", escregexp: { v: "^\\\\selectmode$" }, formats: [{ format: "\\\\selectmode [default|noliquid|nopassable|noliquidnopassable]" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\selectmode" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "replacenear", escregexp: { v: "^replacenear$" }, formats: [{ format: "replacenear" }], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:replacenear" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "jumpto", escregexp: { v: "^jumpto$" }, formats: [{ format: "jumpto" }], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:jumpto" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: { v: "^home$" }, formats: [{ format: "home" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home" },
@@ -1242,7 +1243,7 @@ export class chunkLandClaim {
 }
 function extractCustomPatternTypes(str) {
     const patterns = [];
-    const regex = /(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g;
+    const regex = /(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g;
     const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
     const matchesa = str.match(regex);
     matchesa.forEach(m => {
@@ -1304,7 +1305,7 @@ function extractCustomPatternTypes(str) {
 }
 function extractCustomPatternType(str) {
     const patternTypes = [];
-    const regex = /(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
+    const regex = /(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
     const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
     const matches = str.match(regex)[0].match(regexb);
     if (matches) {
@@ -1368,12 +1369,12 @@ export class BlockPattern {
     generateBlock(generateIndex = 0, forceMode) { return (((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[Number(BigInt(generateIndex) % BigInt(this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length))]); }
     generateBlockP(generateIndex = 0, forceMode) { const p = ((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[Number(BigInt(generateIndex) % BigInt(this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length))]; return BlockPermutation.resolve(p.type, p.states); }
     static parse() { }
-    static extractRaw(str) { return str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]; }
+    static extractRaw(str) { return str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]; }
     static extract(str, mode = "random") { return new BlockPattern(extractCustomPatternType(str), mode); }
-    static extractWRaw(str, mode = "random") { return { raw: str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0], parsed: new BlockPattern(extractCustomPatternType(str), mode) }; }
-    static extractAllRaw(str) { return str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g); }
+    static extractWRaw(str, mode = "random") { return { raw: str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0], parsed: new BlockPattern(extractCustomPatternType(str), mode) }; }
+    static extractAllRaw(str) { return str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g); }
     static extractAll(str, mode = "random") { return new BlockPattern(extractCustomPatternTypes(str), mode); }
-    static extractAllWRaw(str, mode = "random") { return { raw: str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v => new BlockPattern(v, mode)) }; }
+    static extractAllWRaw(str, mode = "random") { return { raw: str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v => new BlockPattern(v, mode)) }; }
 }
 function selectWeightedElement(items, weightProp = "weight") {
     let total = items.reduce((acc, item) => acc + (item[weightProp] ?? 1), 0);
@@ -1637,7 +1638,7 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
         return;
     }
     if (((world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false && newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) /* && player.hasTag('canUseChatCommands')*/ || !!commanda)) /* && (eventData.message.startsWith(".give") || eventData.message.startsWith(".giveb") || eventData.message.startsWith(".h1") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".playersettings") || eventData.message.startsWith(".run") || eventData.message.startsWith(".setitem") || eventData.message.startsWith(".invsee") || eventData.message.startsWith(".settings") || eventData.message.startsWith(".help") || eventData.message.startsWith(".h1 ") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".h4") || eventData.message.startsWith(".h5") || eventData.message.startsWith(".w1") || eventData.message.startsWith(".w2") || eventData.message.startsWith(".debugstick") || eventData.message.startsWith(".playercontroller") || eventData.message.startsWith(".setslot") || eventData.message.startsWith(".worlddebug") || eventData.message.startsWith(".gmc") || eventData.message.startsWith(".gms") || eventData.message.startsWith(".gma") || eventData.message.startsWith(".gmd") || eventData.message.startsWith(".gmp") || eventData.message.startsWith(".spawn") || eventData.message.startsWith(".warp") || eventData.message.startsWith(".home") || eventData.message.startsWith(".all") || eventData.message.startsWith(".getEntityUUIDSelector"))*/) {
-        !!!commanda ? config.invalidChatCommandAction == 2 ? event.cancel = true : config.invalidChatCommandAction == 3 ? (event.cancel = true, player.sendMessage(`§r§cUnknown command: ${switchTest}§r§c. Please check that the command exists and that you have permission to use it.`)) : config.invalidChatCommandAction == 1 ? chatSend({ returnBeforeChatSend, player, eventData, event, newMessage }) : undefined : chatCommands({ returnBeforeChatSend, player, eventData, event, newMessage });
+        !!!commanda ? config.invalidChatCommandAction == 2 ? event.cancel = true : config.invalidChatCommandAction == 3 ? (event.cancel = true, player.sendMessage(`§r§cUnknown command: ${switchTest.startsWith("\\") ? "\\" + switchTest : switchTest}§r§c. Please check that the command exists and that you have permission to use it.`)) : config.invalidChatCommandAction == 1 ? chatSend({ returnBeforeChatSend, player, eventData, event, newMessage }) : undefined : chatCommands({ returnBeforeChatSend, player, eventData, event, newMessage });
     }
     else {
         if ((world.getDynamicProperty("andexdbSettings:disableCustomChatMessages") ?? false) != true) {
@@ -2398,6 +2399,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
     "printlayers": `${command.dp}printlayers`,
     "rank": `${command.dp}rank <players: targetSelector> <mode: add|remove> <tag: string>\n${command.dp}rank <players: targetSelector> clear`,
     "remexp": `${command.dp}remexp [radius: number]`,
+    "replacenear": `${command.dp}repalcenear <radius: number> <replaceTileName: Block> <replaceBlockStates: block states> <tileName: Block> <blockStates: block states>`,
     "rtp": `${command.dp}rtp <player: targetSelector|playerName|string>`,
     "run": `${command.dp}run <delayTicks: int> <command: command>`,
     "scanenderchest": `${command.dp}scanenderchest [targets: targetSelector|~]`,
@@ -2505,6 +2507,13 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
     "wreset": `${command.dp}wreset`,
     "wset": `${command.dp}wset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
     "chunkban": `${command.dp}chunkban [slot: int|~] [loopCount: int] [target: string|~]`,
+    "\\pos1": `${command.dp}\\pos1 [location: x y z]`,
+    "\\pos2": `${command.dp}\\pos2 [location: x y z]`,
+    "\\hpos1": `${command.dp}\\hpos1`,
+    "\\hpos2": `${command.dp}\\hpos2`,
+    "\\chunk": `${command.dp}\\chunk`,
+    "\\selectmode": `${command.dp}\\selectmode [default|noliquid|nopassable|noliquidnopassable]`,
+    "\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [replaceTileName: Block] [replaceBlockStates: block states]`,
     "disconnect": `${command.dp}disconnect <players: targetSelector>`,
     "morph": `${command.dp}morph <morphId: int>`,
     "scale": `${command.dp}scale <scale: float>`,
@@ -2606,6 +2615,7 @@ export var commanddescriptions;
     commanddescriptions["printlayers"] = "Displays a list of all the blocks at your specified x and z coordinates. ";
     commanddescriptions["rank"] = "Manages ranks stored in players. ";
     commanddescriptions["remexp"] = "Removes explosive blocks in the specified radius. ";
+    commanddescriptions["replacenear"] = "Replaces blocks of the specified type with another specified block type in the specified radius. ";
     commanddescriptions["rtp"] = "Requests to teleport to the specified player. ";
     commanddescriptions["run"] = "Runs the specified command. ";
     commanddescriptions["scanenderchest"] = "Scans a player's ender chest and displays the contents of it. ";
@@ -2651,6 +2661,11 @@ export var commanddescriptions;
     commanddescriptions["wreset"] = "Removes all private warps. ";
     commanddescriptions["wset"] = "Sets a private warp. ";
     commanddescriptions["chunkban"] = "Fills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. ";
+    commanddescriptions["\\pos1"] = "Sets the pos1 location for use in other worldedit commands. ";
+    commanddescriptions["\\pos2"] = "Sets the pos2 location for use in other worldedit commands. ";
+    commanddescriptions["\\hpos1"] = "Sets the pos1 location to the block that you are looking at for use in other worldedit commands. ";
+    commanddescriptions["\\hpos2"] = "Sets the pos2 location to the block that you are looking at for use in other worldedit commands. ";
+    commanddescriptions["\\chunk"] = "Sets the pos1 and pos2 locations to contain the entire chunk that you are currently in for use in other worldedit commands. ";
     commanddescriptions["disconnect"] = "Disconnects a player from the server. ";
     commanddescriptions["morph"] = "Morphs into the morph with the specified ID. ";
     commanddescriptions["scale"] = "Sets your scale value to the specified amount. ";
@@ -10678,18 +10693,18 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 {
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector"]).args;
-                    const pos1 = mcMath.Vector3Utils.floor(args[1] == "" ? player.location : evaluateCoordinates(args[1], args[2], args[3], player.location, player.getRotation()));
+                    const pos1 = mcMath.Vector3Utils.floor((args[1] ?? "") == "" ? player.location : evaluateCoordinates(args[1], args[2], args[3], player.location, player.getRotation()));
                     player.setDynamicProperty("pos1", pos1);
-                    player.sendMessage(`Seccessfully set pos1 to ${pos1}.`);
+                    player.sendMessage(`Seccessfully set pos1 to ${vTStr(pos1)}.`);
                 }
                 break;
             case !!switchTest.match(/^\\pos2$/):
                 {
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector"]).args;
-                    const pos2 = mcMath.Vector3Utils.floor(args[1] == "" ? player.location : evaluateCoordinates(args[1], args[2], args[3], player.location, player.getRotation()));
+                    const pos2 = mcMath.Vector3Utils.floor((args[1] ?? "") == "" ? player.location : evaluateCoordinates(args[1], args[2], args[3], player.location, player.getRotation()));
                     player.setDynamicProperty("pos2", pos2);
-                    player.sendMessage(`Seccessfully set pos2 to ${pos2}.`);
+                    player.sendMessage(`Seccessfully set pos2 to ${vTStr(pos2)}.`);
                 }
                 break;
             case !!switchTest.match(/^\\hpos1$/):
@@ -10702,7 +10717,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     else {
                         const pos1 = mcMath.Vector3Utils.floor(loc);
                         player.setDynamicProperty("pos1", pos1);
-                        player.sendMessage(`Seccessfully set pos1 to ${pos1}.`);
+                        player.sendMessage(`Seccessfully set pos1 to ${vTStr(pos1)}.`);
                     }
                 }
                 break;
@@ -10716,7 +10731,20 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     else {
                         const pos2 = mcMath.Vector3Utils.floor(loc);
                         player.setDynamicProperty("pos2", pos2);
-                        player.sendMessage(`Seccessfully set pos2 to ${pos2}.`);
+                        player.sendMessage(`Seccessfully set pos2 to ${vTStr(pos2)}.`);
+                    }
+                }
+                break;
+            case !!switchTest.match(/^\\selectmode$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, ["presetText", "string"]).args;
+                    if (player.getComponent("inventory").container.getItem(player.selectedSlot).typeId != "andexdb:selection_tool") {
+                        player.sendMessage("§cError: The held item is not a Selection Tool.");
+                    }
+                    else {
+                        player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty("selectmode", args[1]);
+                        player.sendMessage(`Seccessfully set selectmode of the held item to ${args[1]}.`);
                     }
                 }
                 break;
@@ -10734,28 +10762,36 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, ["presetText", "blockPattern", "string", "blockStates"]).args;
                     const firstblockpattern = args[1];
-                    const lastblockname = args[3];
-                    const lastblockstates = args[4];
+                    const lastblockname = args[2];
+                    const lastblockstates = args[3];
                     const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]);
                     const coordinatesa = player.getDynamicProperty("pos1");
                     const coordinatesb = player.getDynamicProperty("pos2");
-                    !!coordinatesa ? player.sendMessage("§cError: pos1 is not set.") : undefined;
-                    !!coordinatesb ? player.sendMessage("§cError: pos2 is not set.") : undefined;
-                    const blocktypes = BlockTypes.getAll();
-                    system.run(() => { let ta; try {
-                        generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                            fillBlocksHFGB(coordinatesa, coordinatesb, player.dimension, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, undefined, args[13] ?? true, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
-                        }
-                        catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
-                        }
-                        finally {
-                            tac.forEach(tab => tab?.remove());
-                        } });
+                    if (!!!coordinatesa) {
+                        player.sendMessage("§cError: pos1 is not set.");
                     }
-                    catch (e) {
-                        eventData.sender.sendMessage("§c" + e + e.stack);
-                    } });
+                    else {
+                        if (!!!coordinatesb) {
+                            player.sendMessage("§cError: pos2 is not set.");
+                        }
+                        else {
+                            const blocktypes = BlockTypes.getAll();
+                            system.run(() => { let ta; try {
+                                generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                                    fillBlocksHFGB(coordinatesa, coordinatesb, player.dimension, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, undefined, args[13] ?? true, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                }
+                                catch (e) {
+                                    eventData.sender.sendMessage("§c" + e + e.stack);
+                                }
+                                finally {
+                                    tac.forEach(tab => tab?.remove());
+                                } });
+                            }
+                            catch (e) {
+                                eventData.sender.sendMessage("§c" + e + e.stack);
+                            } });
+                        }
+                    }
                 }
                 break;
             case !!switchTest.match(/^replacenear$/):

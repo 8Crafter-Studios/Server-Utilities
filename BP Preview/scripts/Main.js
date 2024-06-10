@@ -5397,7 +5397,7 @@ console.error(e, e.stack);
         event.cancel = true;
         try {
             const mode = Boolean(event.source.getDynamicProperty("posM") ?? false);
-            const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true })?.block?.location;
+            const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
             if (!!!loc) {
                 event.source.sendMessage("§cError: You must be facing a block.");
             }
