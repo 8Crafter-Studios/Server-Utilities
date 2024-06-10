@@ -32,6 +32,48 @@ playersave;
 spawnprot;
 mcMath;
 export const coordinates_format_version = "6.0.1";
+export class Vector extends mcMath.Vector3Builder {
+    constructor() {
+        super(...arguments);
+        this.zero = mcMath.VECTOR3_ZERO;
+        this.one = mcMath.VECTOR3_ONE;
+        this.up = mcMath.VECTOR3_UP;
+        this.down = mcMath.VECTOR3_DOWN;
+        this.north = mcMath.VECTOR3_NORTH;
+        this.south = mcMath.VECTOR3_SOUTH;
+        this.east = mcMath.VECTOR3_EAST;
+        this.west = mcMath.VECTOR3_WEST;
+        this.right = mcMath.VECTOR3_RIGHT;
+        this.left = mcMath.VECTOR3_LEFT;
+        this.back = mcMath.VECTOR3_BACK;
+        this.forward = mcMath.VECTOR3_FORWARD;
+    }
+}
+Vector.zero = mcMath.VECTOR3_ZERO;
+Vector.one = mcMath.VECTOR3_ONE;
+Vector.up = mcMath.VECTOR3_UP;
+Vector.down = mcMath.VECTOR3_DOWN;
+Vector.north = mcMath.VECTOR3_NORTH;
+Vector.south = mcMath.VECTOR3_SOUTH;
+Vector.east = mcMath.VECTOR3_EAST;
+Vector.west = mcMath.VECTOR3_WEST;
+Vector.right = mcMath.VECTOR3_RIGHT;
+Vector.left = mcMath.VECTOR3_LEFT;
+Vector.back = mcMath.VECTOR3_BACK;
+Vector.forward = mcMath.VECTOR3_FORWARD;
+Vector.add = mcMath.Vector3Utils.add;
+Vector.clamp = mcMath.Vector3Utils.clamp;
+Vector.cross = mcMath.Vector3Utils.cross;
+Vector.distance = mcMath.Vector3Utils.distance;
+Vector.dot = mcMath.Vector3Utils.dot;
+Vector.equals = mcMath.Vector3Utils.equals;
+Vector.floor = mcMath.Vector3Utils.floor;
+Vector.lerp = mcMath.Vector3Utils.lerp;
+Vector.magnitude = mcMath.Vector3Utils.magnitude;
+Vector.normalize = mcMath.Vector3Utils.normalize;
+Vector.scale = mcMath.Vector3Utils.scale;
+Vector.slerp = mcMath.Vector3Utils.slerp;
+Vector.subtract = mcMath.Vector3Utils.subtract;
 export class WorldPosition {
     constructor(location, rotation, dimension, entity, block) {
         this.location = location;
@@ -1585,13 +1627,15 @@ export function* generateFillBG(begin, end, dimension, generatorProgressId, minM
     try {
         generatorProgress[generatorProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
         var msSinceLastYieldStart = Date.now();
+        var index = 0n;
         if (integrity != 100) {
             for (let x = begin.x; x <= end.x; x++) {
                 for (let y = begin.y; y <= end.y; y++) {
                     for (let z = begin.z; z <= end.z; z++) {
                         if (Math.random() <= (integrity / 100)) {
-                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                         }
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
                         msSinceLastYieldStart = Date.now();
@@ -1608,7 +1652,8 @@ export function* generateFillBG(begin, end, dimension, generatorProgressId, minM
             for (let x = begin.x; x <= end.x; x++) {
                 for (let y = begin.y; y <= end.y; y++) {
                     for (let z = begin.z; z <= end.z; z++) {
-                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
                         msSinceLastYieldStart = Date.now();

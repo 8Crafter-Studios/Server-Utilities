@@ -33,6 +33,45 @@ spawnprot
 mcMath
 
 export const coordinates_format_version = "6.0.1";
+export class Vector extends mcMath.Vector3Builder implements mcMath.Vector3Utils {
+    zero = mcMath.VECTOR3_ZERO
+    one = mcMath.VECTOR3_ONE
+    up = mcMath.VECTOR3_UP
+    down = mcMath.VECTOR3_DOWN
+    north = mcMath.VECTOR3_NORTH
+    south = mcMath.VECTOR3_SOUTH
+    east = mcMath.VECTOR3_EAST
+    west = mcMath.VECTOR3_WEST
+    right = mcMath.VECTOR3_RIGHT
+    left = mcMath.VECTOR3_LEFT
+    back = mcMath.VECTOR3_BACK
+    forward = mcMath.VECTOR3_FORWARD
+    static zero = mcMath.VECTOR3_ZERO
+    static one = mcMath.VECTOR3_ONE
+    static up = mcMath.VECTOR3_UP
+    static down = mcMath.VECTOR3_DOWN
+    static north = mcMath.VECTOR3_NORTH
+    static south = mcMath.VECTOR3_SOUTH
+    static east = mcMath.VECTOR3_EAST
+    static west = mcMath.VECTOR3_WEST
+    static right = mcMath.VECTOR3_RIGHT
+    static left = mcMath.VECTOR3_LEFT
+    static back = mcMath.VECTOR3_BACK
+    static forward = mcMath.VECTOR3_FORWARD
+    static add = mcMath.Vector3Utils.add
+    static clamp = mcMath.Vector3Utils.clamp
+    static cross = mcMath.Vector3Utils.cross
+    static distance = mcMath.Vector3Utils.distance
+    static dot = mcMath.Vector3Utils.dot
+    static equals = mcMath.Vector3Utils.equals
+    static floor = mcMath.Vector3Utils.floor
+    static lerp = mcMath.Vector3Utils.lerp
+    static magnitude = mcMath.Vector3Utils.magnitude
+    static normalize = mcMath.Vector3Utils.normalize
+    static scale = mcMath.Vector3Utils.scale
+    static slerp = mcMath.Vector3Utils.slerp
+    static subtract = mcMath.Vector3Utils.subtract
+}
 // LocalTeleport (Caret Notation ^^^)
 export interface ILocalTeleport { 
     sway_1: number 
@@ -1275,15 +1314,17 @@ export function* generateDomeBG(center: Vector3, radius: number, thickness: numb
         return
     }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
 }
-export function* generateFillBG(begin: Vector3, end: Vector3, dimension: Dimension, generatorProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
+export function* generateFillBG(begin: Vector3, end: Vector3, dimension: Dimension, generatorProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation, index: bigint)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
     try{
         generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
         var msSinceLastYieldStart = Date.now()
+        var index = 0n
         if(integrity!=100){
             for (let x = begin.x; x <= end.x; x++) {
                 for (let y = begin.y; y <= end.y; y++) {
                     for (let z = begin.z; z <= end.z; z++) {
-                            if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                            if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension}, index);}
+                            index++
                     }
                     if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
                 }
@@ -1293,7 +1334,8 @@ export function* generateFillBG(begin: Vector3, end: Vector3, dimension: Dimensi
             for (let x = begin.x; x <= end.x; x++) {
                 for (let y = begin.y; y <= end.y; y++) {
                     for (let z = begin.z; z <= end.z; z++) {
-                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension}, index);
+                            index++
                     }
                     if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
                 }

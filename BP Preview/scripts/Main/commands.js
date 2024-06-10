@@ -1,6 +1,6 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType, EnchantmentTypes, StructureSaveMode } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject /*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, } from "./coordinates";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType, EnchantmentTypes, StructureSaveMode, EntityTypes } from "@minecraft/server";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject /*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB } from "../Main";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
@@ -776,7 +776,7 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillinventory", escregexp: { v: "^fillinventory$" }, aliases: [{ commandName: "invfill", escregexp: { v: "^invfill$" } }], formats: [{ format: "fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]" }], command_version: "1.0.0-beta.17", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillinventory" },
     { type: "built-in", requiredTags: ["canUseChatCommands", "canUseDangerousCommands"], formatting_code: "§r§4", commandName: "chunkban", escregexp: { v: "^chunkban$" }, formats: [{ format: "chunkban [slot: int|~] [loopCount: int] [target: string|~]" }], command_version: "0.0.1-beta.72", description: "", category: ["dangerous"], commandSettingsId: "built-inCommandSettings:chunkban" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "rank", escregexp: { v: "^rank$" }, formats: [{ format: "rank <players: targetSelector> <mode: add|remove> <tag: string>" }, { format: "rank <players: targetSelector> clear" }], command_version: "1.0.0-rc.1", description: "Adds, removes, or clears ranks from a player. ", category: ["players"], commandSettingsId: "built-inCommandSettings:rank" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "extinguish", escregexp: { v: "^extinguish$" }, aliases: [{ commandName: "ext", escregexp: { v: "^ext$" } }], formats: [{ format: "extinguish [radius: number]" }], command_version: "2.2.0-beta.10", description: "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:extinguish" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "extinguish", escregexp: { v: "^extinguish$" }, aliases: [{ commandName: "ext", escregexp: { v: "^ext$" } }, { commandName: "ex", escregexp: { v: "^ex$" } }, { commandName: "remfire", escregexp: { v: "^remfire$" } }], formats: [{ format: "extinguish [radius: number]" }], command_version: "2.2.0-beta.10", description: "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:extinguish" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "remexp", escregexp: { v: "^remexp$" }, formats: [{ format: "remexp [radius: number]" }], command_version: "2.2.0-beta.5", description: "Removes explosives in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:remexp" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "drain", escregexp: { v: "^drain$" }, formats: [{ format: "drain [radius: number]" }], command_version: "2.2.0-beta.5", description: "Drains liquids in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:drain" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "summon", escregexp: { v: "^summon$" }, formats: [{ format: "summon" }], command_version: "1.0.0", description: "", category: ["entities"], commandSettingsId: "built-inCommandSettings:summon" },
@@ -793,6 +793,14 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listidbans", escregexp: { v: "^listidbans$" }, aliases: [{ commandName: "getidbans", escregexp: { v: "^getidbans$" } }], formats: [{ format: "listidbans" }], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listidbans" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listnamebans", escregexp: { v: "^listnamebans$" }, aliases: [{ commandName: "getnamebans", escregexp: { v: "^getnamebans$" } }], formats: [{ format: "listnamebans" }], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listnamebans" },
     { type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "timezone", escregexp: { v: "^timezone$" }, aliases: [{ commandName: "tz", escregexp: { v: "^tz$" } }], formats: [{ format: "timezone [UTCOffsetInHours: float]" }], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:timezone" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\replace", escregexp: { v: "^\\replace$" }, formats: [{ format: "\\replace" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\replace" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\pos1", escregexp: { v: "^\\pos1$" }, formats: [{ format: "\\pos1" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\pos1" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\pos2", escregexp: { v: "^\\pos2$" }, formats: [{ format: "\\pos2" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\pos2" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\hpos1", escregexp: { v: "^\\hpos1$" }, formats: [{ format: "\\hpos1" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hpos1" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\hpos2", escregexp: { v: "^\\hpos2$" }, formats: [{ format: "\\hpos2" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hpos2" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\chunk", escregexp: { v: "^\\chunk$" }, formats: [{ format: "\\chunk" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\chunk" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "replacenear", escregexp: { v: "^replacenear$" }, formats: [{ format: "replacenear" }], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:replacenear" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "jumpto", escregexp: { v: "^jumpto$" }, formats: [{ format: "jumpto" }], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:jumpto" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: { v: "^home$" }, formats: [{ format: "home" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gohome", escregexp: { v: "^gohome$" }, formats: [{ format: "gohome" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "rtp", escregexp: { v: "^rtp$" }, formats: [{ format: "rtp <player: targetSelector|playerName>" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp" },
@@ -1357,8 +1365,8 @@ export class BlockPattern {
         this.type = "random";
         this.blocks = blocks, this.type = type;
     }
-    generateBlock(generateIndex = 0, forceMode) { return ((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[generateIndex % this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length]; }
-    generateBlockP(generateIndex = 0, forceMode) { const p = ((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[generateIndex % this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length]; return BlockPermutation.resolve(p.type, p.states); }
+    generateBlock(generateIndex = 0, forceMode) { return (((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[Number(BigInt(generateIndex) % BigInt(this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length))]); }
+    generateBlockP(generateIndex = 0, forceMode) { const p = ((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[Number(BigInt(generateIndex) % BigInt(this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length))]; return BlockPermutation.resolve(p.type, p.states); }
     static parse() { }
     static extractRaw(str) { return str.match(/(?<=\s|$)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]; }
     static extract(str, mode = "random") { return new BlockPattern(extractCustomPatternType(str), mode); }
@@ -10661,12 +10669,132 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             case !!switchTest.match(/^timezone$/):
                 {
                     eventData.cancel = true;
-                    let args = evaluateParameters(switchTestB, ["presetText", "number"]).args;
+                    const args = evaluateParameters(switchTestB, ["presetText", "number"]).args;
                     player.setDynamicProperty("andexdbPersonalSettings:timeZone", args[1]);
                     player.sendMessage(`Seccessfully set your timezone to ${args[1]}.`);
                 }
                 break;
-            case !!switchTest.match(/^extinguish$/) || !!switchTest.match(/^ext$/) || !!switchTest.match(/^remfire$/):
+            case !!switchTest.match(/^\\pos1$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector"]).args;
+                    const pos1 = mcMath.Vector3Utils.floor(args[1] == "" ? player.location : evaluateCoordinates(args[1], args[2], args[3], player.location, player.getRotation()));
+                    player.setDynamicProperty("pos1", pos1);
+                    player.sendMessage(`Seccessfully set pos1 to ${pos1}.`);
+                }
+                break;
+            case !!switchTest.match(/^\\pos2$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector"]).args;
+                    const pos2 = mcMath.Vector3Utils.floor(args[1] == "" ? player.location : evaluateCoordinates(args[1], args[2], args[3], player.location, player.getRotation()));
+                    player.setDynamicProperty("pos2", pos2);
+                    player.sendMessage(`Seccessfully set pos2 to ${pos2}.`);
+                }
+                break;
+            case !!switchTest.match(/^\\hpos1$/):
+                {
+                    eventData.cancel = true;
+                    const loc = player.getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true })?.block?.location;
+                    if (!!!loc) {
+                        player.sendMessage("§cError: You must be facing a block to use this command.");
+                    }
+                    else {
+                        const pos1 = mcMath.Vector3Utils.floor(loc);
+                        player.setDynamicProperty("pos1", pos1);
+                        player.sendMessage(`Seccessfully set pos1 to ${pos1}.`);
+                    }
+                }
+                break;
+            case !!switchTest.match(/^\\hpos2$/):
+                {
+                    eventData.cancel = true;
+                    const loc = player.getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true })?.block?.location;
+                    if (!!!loc) {
+                        player.sendMessage("§cError: You must be facing a block to use this command.");
+                    }
+                    else {
+                        const pos2 = mcMath.Vector3Utils.floor(loc);
+                        player.setDynamicProperty("pos2", pos2);
+                        player.sendMessage(`Seccessfully set pos2 to ${pos2}.`);
+                    }
+                }
+                break;
+            case !!switchTest.match(/^\\chunk$/):
+                {
+                    eventData.cancel = true;
+                    const chunk = chunkIndexToBoundingBox(getChunkIndex(player.location));
+                    player.setDynamicProperty("pos1", chunk.from);
+                    player.setDynamicProperty("pos2", chunk.to);
+                    player.sendMessage(`Seccessfully set selection to the current chunk (${vTStr(chunk.from)} to ${vTStr(chunk.to)}).`);
+                }
+                break;
+            case !!switchTest.match(/^\\replace$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, ["presetText", "blockPattern", "string", "blockStates"]).args;
+                    const firstblockpattern = args[1];
+                    const lastblockname = args[3];
+                    const lastblockstates = args[4];
+                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]);
+                    const coordinatesa = player.getDynamicProperty("pos1");
+                    const coordinatesb = player.getDynamicProperty("pos2");
+                    !!coordinatesa ? player.sendMessage("§cError: pos1 is not set.") : undefined;
+                    !!coordinatesb ? player.sendMessage("§cError: pos2 is not set.") : undefined;
+                    const blocktypes = BlockTypes.getAll();
+                    system.run(() => { let ta; try {
+                        generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                            fillBlocksHFGB(coordinatesa, coordinatesb, player.dimension, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, undefined, args[13] ?? true, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        }
+                        finally {
+                            tac.forEach(tab => tab?.remove());
+                        } });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    } });
+                }
+                break;
+            case !!switchTest.match(/^replacenear$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, ["presetText", "number", "string", "blockStates", "string", "blockStates"]).args;
+                    const firstblockname = args[2];
+                    const firstblockstates = args[3];
+                    const lastblockname = args[4];
+                    const lastblockstates = args[5];
+                    const matchingblock = (lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates];
+                    const coordinatesa = mcMath.Vector3Utils.add(player.location, { x: -args[1], y: -args[1], z: -args[1] });
+                    const coordinatesb = mcMath.Vector3Utils.add(player.location, { x: args[1], y: args[1], z: args[1] });
+                    const blocktypes = BlockTypes.getAll();
+                    system.run(() => { let ta; try {
+                        generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
+                            fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, matchingblock[0] == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : matchingblock[0], matchingblock[1], { matchingBlock: firstblockname, matchingBlockStates: firstblockstates, minMSBetweenYields: 2500 }, undefined, args[13] ?? true, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        }
+                        finally {
+                            tac.forEach(tab => tab?.remove());
+                        } });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    } });
+                }
+                break;
+            case !!switchTest.match(/^jumpto$/) || !!switchTest.match(/^j$/):
+                {
+                    eventData.cancel = true;
+                    let blockHit = player.getBlockFromViewDirection({ includeLiquidBlocks: false, includePassableBlocks: false });
+                    let dir = blockHit.face == "Down" ? mcMath.VECTOR3_DOWN : blockHit.face == "Up" ? mcMath.VECTOR3_UP : blockHit.face == "North" ? mcMath.VECTOR3_NORTH : blockHit.face == "South" ? mcMath.VECTOR3_SOUTH : blockHit.face == "East" ? mcMath.VECTOR3_EAST : mcMath.VECTOR3_WEST;
+                    player.teleport(mcMath.Vector3Utils.add(blockHit.block.location, dir));
+                }
+                break;
+            case !!switchTest.match(/^extinguish$/) || !!switchTest.match(/^ext$/) || !!switchTest.match(/^remfire$/) || !!switchTest.match(/^ex$/):
                 {
                     eventData.cancel = true;
                     let radius = Number(String(switchTestB.split(" ")[1] ?? "").trim() == "" ? 10 : String(switchTestB.split(" ")[1] ?? "").trim());
@@ -11210,55 +11338,52 @@ export function evaluateParameters(commandstring, parameters) {
                                             }
                                         }
                                         else {
-                                            if (p.type == "targetSelector") {
-                                                if (!paramEval.trimStart().startsWith("@")) {
-                                                    if (paramEval.trimStart().startsWith("\"")) {
-                                                        let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
-                                                        paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
-                                                        paramEval = paramEval.slice(+(paramEval[0] == " ")) ?? "";
+                                            if (p.type == "blockPattern") {
+                                                const ep = BlockPattern.extractWRaw(paramEval.trimStart());
+                                                paramEval = paramEval.slice(paramEval.indexOf(ep.raw) + ep.raw.length) ?? "";
+                                                try {
+                                                    argumentsa.push(ep.parsed);
+                                                }
+                                                catch (e) {
+                                                    ea.push([e, e.stack]);
+                                                }
+                                                ;
+                                            }
+                                            else {
+                                                if (p.type == "targetSelector") {
+                                                    if (!paramEval.trimStart().startsWith("@")) {
+                                                        if (paramEval.trimStart().startsWith("\"")) {
+                                                            let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                                            paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
+                                                            paramEval = paramEval.slice(+(paramEval[0] == " ")) ?? "";
+                                                            try {
+                                                                argumentsa.push(!!!value?.v ? undefined : ('"' + value?.v + '"'));
+                                                            }
+                                                            catch (e) {
+                                                                ea.push([e, e.stack]);
+                                                            }
+                                                            ;
+                                                        }
+                                                        else {
+                                                            argumentsa.push(paramEval.split(" ")[0]);
+                                                            return paramEval.split(" ").slice(1).join(" ");
+                                                        }
+                                                    }
+                                                    else {
+                                                        let value = extractSelectors(paramEval)[0];
+                                                        paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                         try {
-                                                            argumentsa.push(!!!value?.v ? undefined : ('"' + value?.v + '"'));
+                                                            argumentsa.push(value);
                                                         }
                                                         catch (e) {
                                                             ea.push([e, e.stack]);
                                                         }
                                                         ;
                                                     }
-                                                    else {
-                                                        argumentsa.push(paramEval.split(" ")[0]);
-                                                        return paramEval.split(" ").slice(1).join(" ");
-                                                    }
                                                 }
                                                 else {
-                                                    let value = extractSelectors(paramEval)[0];
-                                                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
-                                                    try {
-                                                        argumentsa.push(value);
-                                                    }
-                                                    catch (e) {
-                                                        ea.push([e, e.stack]);
-                                                    }
-                                                    ;
-                                                }
-                                            }
-                                            else {
-                                                if (p.type == "Vector" || (p?.type ?? p) == "Vector1") {
-                                                    let value = paramEval.match(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*]([\-\+]?\d+(\.\d+)?)?|((?<=\s)|^)[\-\+]?\d+(\.\d+)?)(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g)?.[0];
-                                                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
-                                                    if (paramEval.startsWith(" ")) {
-                                                        paramEval = paramEval.slice(1) ?? "";
-                                                    }
-                                                    try {
-                                                        argumentsa.push(value);
-                                                    }
-                                                    catch (e) {
-                                                        ea.push([e, e.stack]);
-                                                    }
-                                                    ;
-                                                }
-                                                else {
-                                                    if (!!p.type.match(/^Vector[2-8]$/)) {
-                                                        let value = paramEval.match(new RegExp(String.raw `(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.type.slice(6)}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                    if (p.type == "Vector" || (p?.type ?? p) == "Vector1") {
+                                                        let value = paramEval.match(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*]([\-\+]?\d+(\.\d+)?)?|((?<=\s)|^)[\-\+]?\d+(\.\d+)?)(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g)?.[0];
                                                         paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                         if (paramEval.startsWith(" ")) {
                                                             paramEval = paramEval.slice(1) ?? "";
@@ -11272,8 +11397,8 @@ export function evaluateParameters(commandstring, parameters) {
                                                         ;
                                                     }
                                                     else {
-                                                        if (p.type == "Vectors") {
-                                                            let value = paramEval.match(new RegExp(String.raw `(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.vectorCount ?? 3}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                        if (!!p.type.match(/^Vector[2-8]$/)) {
+                                                            let value = paramEval.match(new RegExp(String.raw `(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.type.slice(6)}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
                                                             paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                             if (paramEval.startsWith(" ")) {
                                                                 paramEval = paramEval.slice(1) ?? "";
@@ -11286,7 +11411,23 @@ export function evaluateParameters(commandstring, parameters) {
                                                             }
                                                             ;
                                                         }
-                                                        else { }
+                                                        else {
+                                                            if (p.type == "Vectors") {
+                                                                let value = paramEval.match(new RegExp(String.raw `(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.vectorCount ?? 3}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                                paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
+                                                                if (paramEval.startsWith(" ")) {
+                                                                    paramEval = paramEval.slice(1) ?? "";
+                                                                }
+                                                                try {
+                                                                    argumentsa.push(value);
+                                                                }
+                                                                catch (e) {
+                                                                    ea.push([e, e.stack]);
+                                                                }
+                                                                ;
+                                                            }
+                                                            else { }
+                                                        }
                                                     }
                                                 }
                                             }

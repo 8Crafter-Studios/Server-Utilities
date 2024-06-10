@@ -2463,12 +2463,12 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
     if (typeof block == "function") {
         if (!!!options?.matchingBlock) {
             if (replacemode) {
-                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
                     try {
                         if (!!v.dimension.getBlock(v).getComponent("inventory")) {
                             clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
                         }
-                        v.dimension.getBlock(v).setType(block(v));
+                        v.dimension.getBlock(v).setType(block(v, index));
                         counter++;
                     }
                     catch (e) {
@@ -2479,9 +2479,9 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
                 }, undefined, integrity));
             }
             else {
-                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
                     try {
-                        v.dimension.getBlock(v).setType(block(v));
+                        v.dimension.getBlock(v).setType(block(v, index));
                         counter++;
                     }
                     catch (e) {
@@ -2496,8 +2496,8 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
             let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
             let currentBlock = undefined;
             if (replacemode) {
-                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
-                    currentBlock = block(v);
+                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    currentBlock = block(v, index);
                     if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(BlockPermutation.resolve(currentBlock.id).getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
                         try {
                             v.dimension.getBlock(v).setType(currentBlock);
@@ -2512,8 +2512,8 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
                 }, undefined, integrity));
             }
             else {
-                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
-                    currentBlock = block(v);
+                system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    currentBlock = block(v, index);
                     if (!!v.dimension.getBlock(v).getComponent("inventory")) {
                         clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
                     }
@@ -2600,6 +2600,96 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
                     }
                 }, undefined, integrity));
             }
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+export async function fillBlocksHFGB(begin, end, dimension, block, options, placeholderid, replacemode = false, integrity = 100) {
+    let counter = 0;
+    const id = generatorProgressIdGenerator();
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        let currentBlock = undefined;
+        if (replacemode) {
+            system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                currentBlock = block(v, index);
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), currentBlock.getAllStates())).filter(v => !!(Object.entries(BlockPermutation.resolve(currentBlock.type.id).getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(currentBlock);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                currentBlock = block(v, index);
+                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                }
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), currentBlock.getAllStates())).filter(v => !!(Object.entries(BlockPermutation.resolve(currentBlock.type.id).getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(currentBlock);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, undefined, integrity));
         }
     }
     return new Promise((resolve, reject) => {
@@ -4688,7 +4778,17 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
             debugAction(event.block, event.player, 0, Number(event.player.isSneaking));
         }
     }
-    ;
+    ; /*
+    if (event.itemStack.typeId === "andexdb:selection_tool") {
+        event.cancel = true
+        try {
+            const mode = Boolean(event.player.getDynamicProperty("posM")??false)
+            const posV = mcMath.Vector3Utils.floor(event.block.location)
+            event.player.setDynamicProperty(mode?"pos2":"pos1", posV)
+            event.player.sendMessage(`Set ${mode?"pos2":"pos1"} to ${vTStr(posV)}.`)
+            event.player.setDynamicProperty("posM", !mode)
+        }catch(e){console.error(e, e.stack)}
+    };*/
     world.getAllPlayers().filter((player) => (player.hasTag("getPlayerBlockInteractionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.playerInteractWithBlock]Location: [ " + event.block.location.x + ", " + event.block.location.y + ", " + event.block.location.z + " ], Dimension: " + event.block.dimension.id + ", Block Type: " + (event.block?.typeId ?? "") + ", Item Type: " + (event.itemStack?.typeId ?? "") + ", Player: " + event.player.name); });
     if ((event.player.getDynamicProperty("canBypassProtectedAreas") != true && event.player.hasTag("canBypassProtectedAreas") != true) && ((((testIsWithinRanges(noBlockInteractAreas.positive, event.block.location) ?? false) == true) && ((testIsWithinRanges(noBlockInteractAreas.negative, event.block.location) ?? false) == false)) || (((testIsWithinRanges(noInteractAreas.positive, event.block.location) ?? false) == true) && ((testIsWithinRanges(noInteractAreas.negative, event.block.location) ?? false) == false)))) {
         event.cancel = true;
@@ -4719,7 +4819,17 @@ world.beforeEvents.itemUseOn.subscribe(event => {
         event.cancel = true; /*
     debugAction(event.source.getBlockFromViewDirection().block, event.source, 0)*/
     }
-    ;
+    ; /*
+    if (event.itemStack.typeId === "andexdb:selection_tool") {
+        event.cancel = true
+        try {
+            const mode = Boolean(event.source.getDynamicProperty("posM")??false)
+            const posV = mcMath.Vector3Utils.floor(event.block.location)
+            event.source.setDynamicProperty(mode?"pos2":"pos1", posV)
+            event.source.sendMessage(`Set ${mode?"pos2":"pos1"} to ${vTStr(posV)}.`)
+            event.source.setDynamicProperty("posM", !mode)
+        }catch(e){console.error(e, e.stack)}
+    };*/
     world.getAllPlayers().filter((player) => (player.hasTag("getPlayerItemUseOnEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.itemUseOn]Location: [ " + event.block.location.x + ", " + event.block.location.y + ", " + event.block.location.z + " ], Dimension: " + event.block.dimension.id + ", Block Type: " + (event.block?.typeId ?? "") + ", Item Type: " + (event.itemStack?.typeId ?? "") + ", Player: " + event.source.name); });
     if ((event.source.getDynamicProperty("canBypassProtectedAreas") != true && event.source.hasTag("canBypassProtectedAreas") != true) && ((((testIsWithinRanges(noBlockInteractAreas.positive, event.block.location) ?? false) == true) && ((testIsWithinRanges(noBlockInteractAreas.negative, event.block.location) ?? false) == false)) || (((testIsWithinRanges(noInteractAreas.positive, event.block.location) ?? false) == true) && ((testIsWithinRanges(noInteractAreas.negative, event.block.location) ?? false) == false)))) {
         event.cancel = true;
@@ -5255,10 +5365,10 @@ console.error(e, e.stack);
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:selection_menu") {
+    if (event.itemStack.typeId === "andexdb:main_menu") {
         event.cancel = true;
         try {
-            (event.source).runCommandAsync(String("/scriptevent andexdb:editorMenusAndLists hisa"));
+            srun(() => mainMenu(event.source));
         }
         // Do something
         catch (e) {
@@ -5267,6 +5377,40 @@ console.error(e, e.stack);
         ;
         // ...
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
+    }
+    ;
+    if (event.itemStack.typeId === "andexdb:selection_menu") {
+        event.cancel = true;
+        try {
+            srun(() => mainMenu(event.source));
+        }
+        // Do something
+        catch (e) {
+            console.error(e, e.stack);
+        }
+        ;
+        // ...
+        // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
+    }
+    ;
+    if (event.itemStack.typeId === "andexdb:selection_tool") {
+        event.cancel = true;
+        try {
+            const mode = Boolean(event.source.getDynamicProperty("posM") ?? false);
+            const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true })?.block?.location;
+            if (!!!loc) {
+                event.source.sendMessage("§cError: You must be facing a block.");
+            }
+            else {
+                const posV = mcMath.Vector3Utils.floor(loc);
+                event.source.setDynamicProperty(mode ? "pos2" : "pos1", posV);
+                event.source.sendMessage(`Set ${mode ? "pos2" : "pos1"} to ${vTStr(posV)}.`);
+                event.source.setDynamicProperty("posM", !mode);
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
     }
     ;
 });
