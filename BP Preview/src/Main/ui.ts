@@ -2107,7 +2107,7 @@ export function managePlayers(sourceEntity: Entity|Player, pagen: number=0){
                         if(g.canceled){return}; 
                         switch(g.selection){
                             case banList.length: 
-                            let form5 = new ModalFormData; form5.title(`Add ID Ban`); form5.textField("Ban Time (In Minutes)", "Decimal"); form5.textField("Reason", "Text")
+                            let form5 = new ModalFormData; form5.title(`Add ID Ban`); form5.textField("Ban Time (In Minutes)", "Decimal"); form5.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
                             form5.submitButton("Ban")
                             forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                                 if(h.canceled){return};
@@ -2116,7 +2116,7 @@ export function managePlayers(sourceEntity: Entity|Player, pagen: number=0){
                             }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                             break
                             case banList.length+1: 
-                            let form6 = new ModalFormData; form6.title(`Add Name Ban`); form6.textField("Ban Time (In Minutes)", "Decimal"); form6.textField("Reason", "Text")
+                            let form6 = new ModalFormData; form6.title(`Add Name Ban`); form6.textField("Ban Time (In Minutes)", "Decimal"); form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
                             form6.submitButton("Ban")
                             forceShow(form6, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                                 if(h.canceled){return};
