@@ -1220,6 +1220,9 @@ export function mapArtGeneratorB(sourceEntity) {
             // This will assign every input their own variable
             let [snbt, chunkx, chunky, dimension] = r.formValues; /*
             console.warn(r.formValues);*/
+            if (String(snbt).includes("#")) {
+                sourceEntity.sendMessage("§6Warning: The snbt was censored! ");
+            }
             let newsnbta = JSON.parse(snbt.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*([\"\'\`funIN\-0-9\{\[])/g, '"$2":$4'));
             //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
             generateNBTFileB(Object.assign(coords.chunkIndexToBoundingBox({ x: chunkx, y: chunky }).from, { dimension: dimensions[dimension] ?? sourceEntity.dimension, y: (dimensions[dimension] ?? sourceEntity.dimension).heightRange.max - (newsnbta.size[1] ?? 1) }), newsnbta);
@@ -1253,6 +1256,9 @@ export function nbtStructureLoader(sourceEntity) {
             // This will assign every input their own variable
             let [snbt, x, y, z, dimension] = r.formValues; /*
             console.warn(r.formValues);*/
+            if (String(snbt).includes("#")) {
+                sourceEntity.sendMessage("§6Warning: The snbt was censored! ");
+            }
             let newsnbta = JSON.parse(snbt.replace(/(?<=[,\{][\s\n]*?)(['"])?(?<vb>[a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*(?<vd>false|true|undefined|NULL|Infinity|-Infinity|[\-\+]?[0-9]+|"(?:[^"]|(?<=([^\\])(\\\\)*?\\)")*"|'(?:[^']|(?<=([^\\])(\\\\)*?\\)')*')(?=[\s\n]*?[,\}])/g, '"$<vb>":$<vd>'));
             //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
             generateNBTFileD({ dimension: dimensions[dimension] ?? sourceEntity.dimension, x: (Number(x) ?? sourceEntity.location.x), y: (Number(y) ?? sourceEntity.location.y), z: (Number(z) ?? sourceEntity.location.z) }, newsnbta, sourceEntity);
