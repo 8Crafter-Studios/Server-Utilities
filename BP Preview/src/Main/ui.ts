@@ -1981,7 +1981,7 @@ export function managePlayers(sourceEntity: Entity|Player, pagen: number=0){
     form.button((page<(numpages-1))?"§7":""+"Next Page"); 
     let onlinePlayers = savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_=>_.isOnline).slice(page*50, (page+1)*50); 
     onlinePlayers.forEach((p)=>{form.button(`${p.name}\n${ban.testForBannedPlayer(p)?"Banned":"Online"}`, "textures/ui/online")}); 
-    let offlinePlayers = savedPlayer.getSavedPlayers().filter(_=>!_.isOnline).sort((a: savedPlayer, b: savedPlayer)=>1-(2*Number(a.lastOnline<b.lastOnline))).sort((a: savedPlayer, b: savedPlayer)=>1-(2*Number(Number(a.isBanned)>Number(b.isBanned)))).slice((page*50)+Math.min(50, Math.max(0, numonlinesavedplayers-(page*50))), (page+1)*50); 
+    let offlinePlayers = savedPlayer.getSavedPlayers().filter(_=>!_.isOnline).sort((a: savedPlayer, b: savedPlayer)=>b.lastOnline-a.lastOnline)).sort((a: savedPlayer, b: savedPlayer)=>1-(2*Number(Number(a.isBanned)>Number(b.isBanned)))).slice((page*50)+Math.min(50, Math.max(0, numonlinesavedplayers-(page*50))), (page+1)*50); 
     offlinePlayers.forEach((p)=>{form.button(`${p.name}\n${ban.testForBannedPlayer(p)?"Banned":"Online: "+new Date(Number(p.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()}`, p.isBanned?"textures/ui/Ping_Offline_Red_Dark":"textures/ui/offline")}); 
     const numplayersonpage = onlinePlayers.length+offlinePlayers.length
     let players = onlinePlayers.concat(offlinePlayers); 
