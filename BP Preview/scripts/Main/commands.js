@@ -10879,7 +10879,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const coordinatesb = player.getDynamicProperty("pos2");
                     const ca = { x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z) };
                     const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
-                    const height = Math.abs(coordinatesa.y - coordinatesb.y);
+                    const height = Math.abs(coordinatesa.y - coordinatesb.y) + 1;
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
                         player.sendMessage("§cError: pos1 is not set.");
@@ -10893,11 +10893,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             system.run(() => {
                                 let ta;
                                 try {
-                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(ca, cb) }); return a; })(), player.dimension).then(tac => {
                                         ta = tac;
                                         try {
                                             for (let i = 0; i < args[1]; i++) {
-                                                dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${Object.assign(ca, { y: ca.y + (height * i) })}`);
+                                                dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr(Object.assign(ca, { y: ca.y + (height * i) }))}`);
                                             }
                                         }
                                         catch (e) {
