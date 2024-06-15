@@ -7606,7 +7606,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const blocktypes = BlockTypes.getAll()
                     system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{
                         for(let i = 0; i<args[1]; i++){
-                            dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${Object.assign(ca, {y: ca.y+(height*i)})}`)
+                            dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr(Object.assign(ca, {y: ca.y+(height*i)}))}`)
                         }
                     }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 }
