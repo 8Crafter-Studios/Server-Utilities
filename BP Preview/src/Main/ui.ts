@@ -541,7 +541,7 @@ export function manageBans(sourceEntity: Entity|Player, backMenuFunction: (sourc
     form6.button("Add Name Ban"); 
     form6.button("Back"); 
     forceShow(form6, sourceEntity as Player).then(ga=>{let g = (ga as ActionFormResponse); 
-        if(g.canceled){return}; 
+        if(g.canceled){backMenuFunction(sourceEntity); return}; 
         switch(g.selection){
             case banList.length: 
             let form5 = new ModalFormData; form5.title(`Add ID Ban`); form5.textField("Player UUID\nThis is the uuid of the player. ", "Integer"); form5.textField("Ban Time (In Minutes)", "Decimal"); form5.textField("Reason", "JavaScript Object ex. `\nDate: ${new Date(D\nate\n.now()).toLo\ncaleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
@@ -700,7 +700,7 @@ export function antispamSettings(sourceEntity: Entity|Player){
     form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
-        if (t.canceled) return;/*
+        if (t.canceled) {moderationSettings(sourceEntity); return};/*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
@@ -708,6 +708,7 @@ export function antispamSettings(sourceEntity: Entity|Player){
         config.antispamEnabled=antispamEnabled as boolean
         config.waitTimeAfterAntispamActivation=isNaN(Number(waitTimeAfterAntispamActivation))?60:Number(waitTimeAfterAntispamActivation)
         config.antispamTriggerMessageCount=Number(antispamTriggerMessageCount)
+        moderationSettings(sourceEntity)
 }).catch(e => {
     console.error(e, e.stack);
 });}
@@ -1973,15 +1974,15 @@ export function managePlayers(sourceEntity: Entity|Player, pagen: number=0){
     let form = new ActionFormData; 
     const page = Math.max(0, pagen)
     const numsavedplayers = savedPlayer.getSavedPlayers().length
-    const numonlinesavedplayers = savedPlayer.getSavedPlayers.filter(_=>_.isOnline).length
+    const numonlinesavedplayers = savedPlayer.getSavedPlayers().filter(_=>_.isOnline).length
     const numofflinesavedplayers = savedPlayer.getSavedPlayers().filter(_=>!_.isOnline).length
-    form.title(`Manage Players ${Math.min(numsavedplayers, page*50)}-${Math.min(numsavedplayers, (page+1)*50)} of ${numsavedplayers}`); 
+    form.title(`Manage Players ${Math.min(numsavedplayers, (page*50)+1)}-${Math.min(numsavedplayers, (page+1)*50)} of ${numsavedplayers}`); 
     const numpages = Math.ceil(numsavedplayers/50)
-    form.button((page!=0)?"§7":""+"Previous Page"); 
-    form.button((page<(numpages-1))?"§7":""+"Next Page"); 
+    form.button((page!=0)?"§7":""+"Previous Page", "textures/ui/arrow_left"); 
+    form.button((page<(numpages-1))?"§7":""+"Next Page", "textures/ui/arrow_right"); 
     let onlinePlayers = savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_=>_.isOnline).slice(page*50, (page+1)*50); 
     onlinePlayers.forEach((p)=>{form.button(`${p.name}\n${ban.testForBannedPlayer(p)?"Banned":"Online"}`, "textures/ui/online")}); 
-    let offlinePlayers = savedPlayer.getSavedPlayers().filter(_=>!_.isOnline).sort((a: savedPlayer, b: savedPlayer)=>b.lastOnline-a.lastOnline)).sort((a: savedPlayer, b: savedPlayer)=>1-(2*Number(Number(a.isBanned)>Number(b.isBanned)))).slice((page*50)+Math.min(50, Math.max(0, numonlinesavedplayers-(page*50))), (page+1)*50); 
+    let offlinePlayers = savedPlayer.getSavedPlayers().filter(_=>!_.isOnline).sort((a: savedPlayer, b: savedPlayer)=>(b.lastOnline-a.lastOnline)).sort((a: savedPlayer, b: savedPlayer)=>1-(2*Number(Number(a.isBanned)>Number(b.isBanned)))).slice((page*50)+Math.min(50, Math.max(0, numonlinesavedplayers-(page*50))), (page+1)*50); 
     offlinePlayers.forEach((p)=>{form.button(`${p.name}\n${ban.testForBannedPlayer(p)?"Banned":"Online: "+new Date(Number(p.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()}`, p.isBanned?"textures/ui/Ping_Offline_Red_Dark":"textures/ui/offline")}); 
     const numplayersonpage = onlinePlayers.length+offlinePlayers.length
     let players = onlinePlayers.concat(offlinePlayers); 
@@ -1991,10 +1992,10 @@ export function managePlayers(sourceEntity: Entity|Player, pagen: number=0){
         let r = (ra as ActionFormResponse); 
         if(r.canceled){return}; 
         switch(r.selection){
-            case numplayersonpage: 
+            case 0: 
             managePlayers(sourceEntity, Math.max(0, page-1))
             break; 
-            case numplayersonpage+1: 
+            case 1: 
             managePlayers(sourceEntity, Math.min(numpages-1, page+1))
             break; 
             case numplayersonpage+2: 
@@ -2052,7 +2053,7 @@ export function managePlayers(sourceEntity: Entity|Player, pagen: number=0){
             mainMenu(sourceEntity)
             break; 
             default: 
-            let player = players[r.selection+2]; 
+            let player = players[r.selection-2]; 
             let form2 = new ActionFormData; 
             form2.title(player.name); 
             form2.body(`UUID: ${player.id}\n${player.isOnline?"Online":"Last Online: "+new Date(Number(player.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player)?"ID BANNED":ban.testForIdBannedPlayer(player)?"NAME BANNED":""}`)

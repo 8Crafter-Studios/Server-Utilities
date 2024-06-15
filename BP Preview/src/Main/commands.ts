@@ -1,6 +1,6 @@
 import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit } from "@minecraft/server";
 import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, } from "./coordinates";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
@@ -7539,6 +7539,73 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 }else{
                     const blocktypes = BlockTypes.getAll()
                     system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFGB(coordinatesa, coordinatesb, player.dimension, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, undefined, args[13]??true, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\generate$/): {
+            eventData.cancel = true;
+            const argsa = evaluateParameters(switchTestB, ["presetText", "blockPattern"])
+            const args = [...argsa.args, argsa.extra]
+            const firstblockpattern = args[1] as BlockPattern
+            const expression = parseExpression(args[2] as string)
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    const blocktypes = BlockTypes.getAll()
+                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{completeGeneratorB(generateMathExpression(expression as ()=>boolean, (l)=>{const b = firstblockpattern.generateBlock(l.count); const t = b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t)}, coordinatesa, coordinatesb, coordinatesa, coordinatesb), 2500).then(a=>{player.sendMessage(`${a.return==0n?"§c":""}${a.return} blocks replaced`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\generates$/): {
+            eventData.cancel = true;
+            const argsa = evaluateParameters(switchTestB, ["presetText", "number", "blockPattern"])
+            const args = [...argsa.args, argsa.extra]
+            const firstblockpattern = args[2] as BlockPattern
+            const expression = parseExpression(args[3] as string)
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    const blocktypes = BlockTypes.getAll()
+                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{completeGeneratorB(generateMathExpression(expression as ()=>boolean, (l)=>{const b = firstblockpattern.generateBlock(l.count); const t = b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t)}, coordinatesa, coordinatesb, coordinatesa, coordinatesb, args[1] as number), 2500).then(a=>{player.sendMessage(`${a.return==0n?"§c":""}${a.return} blocks replaced`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\stack$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "number"]).args
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const height = Math.abs(coordinatesa.y-coordinatesb.y)
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    const blocktypes = BlockTypes.getAll()
+                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{
+                        for(let i = 0; i<args[1]; i++){
+                            dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${Object.assign(ca, {y: ca.y+(height*i)})}`)
+                        }
+                    }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 }
             }
         }

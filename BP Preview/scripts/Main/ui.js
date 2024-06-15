@@ -637,6 +637,7 @@ export function manageBans(sourceEntity, backMenuFunction = mainMenu) {
     forceShow(form6, sourceEntity).then(ga => {
         let g = ga;
         if (g.canceled) {
+            backMenuFunction(sourceEntity);
             return;
         }
         ;
@@ -838,14 +839,18 @@ export function antispamSettings(sourceEntity) {
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
-            return; /*
+        if (t.canceled) {
+            moderationSettings(sourceEntity);
+            return;
+        }
+        ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [antispamEnabled, waitTimeAfterAntispamActivation, antispamTriggerMessageCount] = t.formValues;
         config.antispamEnabled = antispamEnabled;
         config.waitTimeAfterAntispamActivation = isNaN(Number(waitTimeAfterAntispamActivation)) ? 60 : Number(waitTimeAfterAntispamActivation);
         config.antispamTriggerMessageCount = Number(antispamTriggerMessageCount);
+        moderationSettings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
@@ -2994,13 +2999,21 @@ export function editorStickB(sourceEntity, dimensionLocation) {
 }
 export function editorStickC(sourceEntity) { } /*
 export function evalAutoScriptSettings(sourceEntity: Entity|Player){}*/
-export function managePlayers(sourceEntity) {
+export function managePlayers(sourceEntity, pagen = 0) {
     let form = new ActionFormData;
-    form.title("Manage Players");
-    let onlinePlayers = savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_ => _.isOnline);
+    const page = Math.max(0, pagen);
+    const numsavedplayers = savedPlayer.getSavedPlayers().length;
+    const numonlinesavedplayers = savedPlayer.getSavedPlayers().filter(_ => _.isOnline).length;
+    const numofflinesavedplayers = savedPlayer.getSavedPlayers().filter(_ => !_.isOnline).length;
+    form.title(`Manage Players ${Math.min(numsavedplayers, (page * 50) + 1)}-${Math.min(numsavedplayers, (page + 1) * 50)} of ${numsavedplayers}`);
+    const numpages = Math.ceil(numsavedplayers / 50);
+    form.button((page != 0) ? "§7" : "" + "Previous Page", "textures/ui/arrow_left");
+    form.button((page < (numpages - 1)) ? "§7" : "" + "Next Page", "textures/ui/arrow_right");
+    let onlinePlayers = savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_ => _.isOnline).slice(page * 50, (page + 1) * 50);
     onlinePlayers.forEach((p) => { form.button(`${p.name}\n${ban.testForBannedPlayer(p) ? "Banned" : "Online"}`, "textures/ui/online"); });
-    let offlinePlayers = savedPlayer.getSavedPlayers().filter(_ => !_.isOnline).sort((a, b) => 1 - (2 * Number(a.lastOnline < b.lastOnline))).sort((a, b) => 1 - (2 * Number(Number(a.isBanned) > Number(b.isBanned))));
+    let offlinePlayers = savedPlayer.getSavedPlayers().filter(_ => !_.isOnline).sort((a, b) => (b.lastOnline - a.lastOnline)).sort((a, b) => 1 - (2 * Number(Number(a.isBanned) > Number(b.isBanned)))).slice((page * 50) + Math.min(50, Math.max(0, numonlinesavedplayers - (page * 50))), (page + 1) * 50);
     offlinePlayers.forEach((p) => { form.button(`${p.name}\n${ban.testForBannedPlayer(p) ? "Banned" : "Online: " + new Date(Number(p.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString()}`, p.isBanned ? "textures/ui/Ping_Offline_Red_Dark" : "textures/ui/offline"); });
+    const numplayersonpage = onlinePlayers.length + offlinePlayers.length;
     let players = onlinePlayers.concat(offlinePlayers);
     form.button("Manage Bans");
     form.button("Back");
@@ -3011,7 +3024,13 @@ export function managePlayers(sourceEntity) {
         }
         ;
         switch (r.selection) {
-            case players.length:
+            case 0:
+                managePlayers(sourceEntity, Math.max(0, page - 1));
+                break;
+            case 1:
+                managePlayers(sourceEntity, Math.min(numpages - 1, page + 1));
+                break;
+            case numplayersonpage + 2:
                 let form6 = new ActionFormData;
                 form6.title("Manage Bans");
                 ban.getValidBans().idBans.forEach((p) => { form6.button(`${p.playerId}\nValid`, "textures/ui/online"); });
@@ -3043,7 +3062,7 @@ export function managePlayers(sourceEntity) {
                                 }
                                 ;
                                 ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: String(h.formValues[0]), originalPlayerName: undefined, type: "id", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "banId:" + Date.now() + ":" + String(h.formValues[0]), unbanDate: Number(h.formValues[1]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[2]) });
-                                managePlayers(sourceEntity);
+                                managePlayers(sourceEntity, page);
                             }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                             break;
                         case banList.length + 1:
@@ -3060,17 +3079,17 @@ export function managePlayers(sourceEntity) {
                                 }
                                 ;
                                 ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: undefined, playerName: String(h.formValues[0]), type: "name", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "ban:" + Date.now() + ":" + String(h.formValues[0]), unbanDate: Number(h.formValues[1]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[2]) });
-                                managePlayers(sourceEntity);
+                                managePlayers(sourceEntity, page);
                             }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                             break;
                         case banList.length + 2:
-                            managePlayers(sourceEntity);
+                            managePlayers(sourceEntity, page);
                             break; /*
                             case banList.length+3:
-                            managePlayers(sourceEntity)
+                            managePlayers(sourceEntity, page)
                             break
                             case banList.length+4:
-                            managePlayers(sourceEntity)*/
+                            managePlayers(sourceEntity, page)*/
                             break;
                         default:
                             let form4 = new ActionFormData;
@@ -3088,11 +3107,11 @@ export function managePlayers(sourceEntity) {
                                 ;
                                 if (h.selection == 0) {
                                     banList[g.selection].remove();
-                                    managePlayers(sourceEntity);
+                                    managePlayers(sourceEntity, page);
                                 }
                                 ;
                                 if (h.selection == 1) {
-                                    managePlayers(sourceEntity);
+                                    managePlayers(sourceEntity, page);
                                 }
                                 ;
                             }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
@@ -3100,11 +3119,11 @@ export function managePlayers(sourceEntity) {
                     ;
                 }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                 break;
-            case players.length + 1:
+            case numplayersonpage + 3:
                 mainMenu(sourceEntity);
                 break;
             default:
-                let player = players[r.selection];
+                let player = players[r.selection - 2];
                 let form2 = new ActionFormData;
                 form2.title(player.name);
                 form2.body(`UUID: ${player.id}\n${player.isOnline ? "Online" : "Last Online: " + new Date(Number(player.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player) ? "ID BANNED" : ban.testForIdBannedPlayer(player) ? "NAME BANNED" : ""}`);
@@ -3137,12 +3156,12 @@ export function managePlayers(sourceEntity) {
                                 }
                                 ;
                                 if (h.selection == 0) {
-                                    managePlayers(sourceEntity);
+                                    managePlayers(sourceEntity, page);
                                 }
                                 ;
                                 if (h.selection == 1) {
                                     player.remove();
-                                    managePlayers(sourceEntity);
+                                    managePlayers(sourceEntity, page);
                                 }
                                 ;
                             }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
@@ -3158,7 +3177,7 @@ export function managePlayers(sourceEntity) {
                                     return;
                                 }
                                 ;
-                                managePlayers(sourceEntity);
+                                managePlayers(sourceEntity, page);
                             }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                             break;
                         case 2:
@@ -3182,7 +3201,7 @@ export function managePlayers(sourceEntity) {
                                     return;
                                 }
                                 ;
-                                managePlayers(sourceEntity);
+                                managePlayers(sourceEntity, page);
                             }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                             break;
                         case 3:
@@ -3208,7 +3227,7 @@ export function managePlayers(sourceEntity) {
                                         let form5 = new ModalFormData;
                                         form5.title(`Add ID Ban`);
                                         form5.textField("Ban Time (In Minutes)", "Decimal");
-                                        form5.textField("Reason", "Text");
+                                        form5.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
                                         form5.submitButton("Ban");
                                         forceShow(form5, sourceEntity).then(ha => {
                                             let h = ha;
@@ -3217,14 +3236,14 @@ export function managePlayers(sourceEntity) {
                                             }
                                             ;
                                             ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: player.id, originalPlayerName: player.name, type: "id", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "banId:" + Date.now() + ":" + player.id, unbanDate: Number(h.formValues[0]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[1]) });
-                                            managePlayers(sourceEntity);
+                                            managePlayers(sourceEntity, page);
                                         }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                                         break;
                                     case banList.length + 1:
                                         let form6 = new ModalFormData;
                                         form6.title(`Add Name Ban`);
                                         form6.textField("Ban Time (In Minutes)", "Decimal");
-                                        form6.textField("Reason", "Text");
+                                        form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
                                         form6.submitButton("Ban");
                                         forceShow(form6, sourceEntity).then(ha => {
                                             let h = ha;
@@ -3233,7 +3252,7 @@ export function managePlayers(sourceEntity) {
                                             }
                                             ;
                                             ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: player.id, playerName: player.name, type: "name", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "ban:" + Date.now() + ":" + player.name, unbanDate: Number(h.formValues[0]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[1]) });
-                                            managePlayers(sourceEntity);
+                                            managePlayers(sourceEntity, page);
                                         }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                                         break;
                                     case banList.length + 2:
@@ -3261,11 +3280,11 @@ export function managePlayers(sourceEntity) {
                                             ;
                                             if (h.selection == 0) {
                                                 banList[g.selection].remove();
-                                                managePlayers(sourceEntity);
+                                                managePlayers(sourceEntity, page);
                                             }
                                             ;
                                             if (h.selection == 1) {
-                                                managePlayers(sourceEntity);
+                                                managePlayers(sourceEntity, page);
                                             }
                                             ;
                                         }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
@@ -3274,7 +3293,7 @@ export function managePlayers(sourceEntity) {
                             }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                             break;
                         case 8:
-                            managePlayers(sourceEntity);
+                            managePlayers(sourceEntity, page);
                             break;
                         default:
                     }

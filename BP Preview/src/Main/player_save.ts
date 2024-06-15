@@ -49,7 +49,7 @@ export interface savedPlayerData {
     tags?: string[]
     items?: {inventory: savedItem[]|undefined, equipment: savedItem[]|undefined, ender_chest: savedItem[]|undefined}
     properties?: [id: string|undefined, value: string|number|Boolean|Vector3|undefined][]
-    lastOnline: Date|number
+    lastOnline: number
     location?: Vector3
     dimension?: Dimension|string
     rotation?: Vector2
@@ -69,7 +69,7 @@ export class savedPlayer {
     tags?: string[]
     items?: {inventory: savedItem[]|undefined, equipment: savedItem[]|undefined, ender_chest: savedItem[]|undefined}
     properties?: [id: string|undefined, value: string|number|Boolean|Vector3|undefined][]
-    lastOnline: Date|number
+    lastOnline: number
     location?: Vector3
     dimension?: Dimension|string
     rotation?: Vector2
