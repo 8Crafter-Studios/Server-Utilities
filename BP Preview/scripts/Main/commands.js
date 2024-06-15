@@ -10897,7 +10897,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         ta = tac;
                                         try {
                                             for (let i = 0; i < args[1]; i++) {
-                                                dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr(Object.assign(ca, { y: ca.y + (height * i) }))}`);
+                                                dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr(Object.assign(ca, { y: ca.y + (height * (i + 1)) }))}`);
                                             }
                                         }
                                         catch (e) {
