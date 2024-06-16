@@ -10880,6 +10880,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const ca = { x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z) };
                     const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                     const height = Math.abs(coordinatesa.y - coordinatesb.y) + 1;
+                    console.warn(vTStr(ca), vTStr(cb));
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
                         player.sendMessage("§cError: pos1 is not set.");
@@ -10897,7 +10898,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         ta = tac;
                                         try {
                                             for (let i = 0; i < args[1]; i++) {
-                                                dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr(Object.assign(ca, { y: ca.y + (height * (i + 1)) }))}`);
+                                                console.warn(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({ x: ca.x, y: ca.y + (height * (i + 1)), z: ca.z })}`);
+                                                dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({ x: ca.x, y: ca.y + (height * (i + 1)), z: ca.z })}`);
                                             }
                                         }
                                         catch (e) {

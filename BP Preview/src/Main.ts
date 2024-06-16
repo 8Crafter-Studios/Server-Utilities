@@ -3042,6 +3042,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
             const mode = Boolean(event.player.getDynamicProperty("posM")??false)
             const posV = mcMath.Vector3Utils.floor(event.block.location)
             event.player.setDynamicProperty(mode?"pos2":"pos1", posV)
+            event.source.setDynamicProperty("posD", event.source.dimension.id)
             event.player.sendMessage(`Set ${mode?"pos2":"pos1"} to ${vTStr(posV)}.`)
             event.player.setDynamicProperty("posM", !mode)
         }catch(e){console.error(e, e.stack)}
@@ -3065,6 +3066,7 @@ world.beforeEvents.itemUseOn.subscribe(event => {
             const mode = Boolean(event.source.getDynamicProperty("posM")??false)
             const posV = mcMath.Vector3Utils.floor(event.block.location)
             event.source.setDynamicProperty(mode?"pos2":"pos1", posV)
+            event.source.setDynamicProperty("posD", event.source.dimension.id)
             event.source.sendMessage(`Set ${mode?"pos2":"pos1"} to ${vTStr(posV)}.`)
             event.source.setDynamicProperty("posM", !mode)
         }catch(e){console.error(e, e.stack)}
@@ -3543,6 +3545,7 @@ world.beforeEvents.itemUse.subscribe(event => {
             }else{
                 const posV = mcMath.Vector3Utils.floor(loc)
                 event.source.setDynamicProperty(mode?"pos2":"pos1", posV)
+                event.source.setDynamicProperty("posD", event.source.dimension.id)
                 event.source.sendMessage(`Set ${mode?"pos2":"pos1"} to ${vTStr(posV)}.`)
                 event.source.setDynamicProperty("posM", !mode)
             } 

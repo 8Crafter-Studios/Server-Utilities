@@ -7471,6 +7471,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const args = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector"]).args
             const pos1 = mcMath.Vector3Utils.floor((args[1]??"")==""?player.location:evaluateCoordinates(args[1], args[2], args[3], player.location, player.getRotation()))
             player.setDynamicProperty("pos1", pos1)
+            player.setDynamicProperty("posD", player.dimension.id)
             player.sendMessage(`Seccessfully set pos1 to ${vTStr(pos1)}.`)
         }
         break; 
@@ -7479,6 +7480,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const args = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector"]).args
             const pos2 = mcMath.Vector3Utils.floor((args[1]??"")==""?player.location:evaluateCoordinates(args[1], args[2], args[3], player.location, player.getRotation()))
             player.setDynamicProperty("pos2", pos2)
+            player.setDynamicProperty("posD", player.dimension.id)
             player.sendMessage(`Seccessfully set pos2 to ${vTStr(pos2)}.`)
         }
         break; 
@@ -7490,6 +7492,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             }else{
                 const pos1 = mcMath.Vector3Utils.floor(loc)
                 player.setDynamicProperty("pos1", pos1)
+                player.setDynamicProperty("posD", player.dimension.id)
                 player.sendMessage(`Seccessfully set pos1 to ${vTStr(pos1)}.`)
             }
         }
@@ -7502,6 +7505,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             }else{
                 const pos2 = mcMath.Vector3Utils.floor(loc)
                 player.setDynamicProperty("pos2", pos2)
+                player.setDynamicProperty("posD", player.dimension.id)
                 player.sendMessage(`Seccessfully set pos2 to ${vTStr(pos2)}.`)
             }
         }
@@ -7522,6 +7526,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const chunk = chunkIndexToBoundingBox(getChunkIndex(player.location))
             player.setDynamicProperty("pos1", chunk.from)
             player.setDynamicProperty("pos2", chunk.to)
+            player.setDynamicProperty("posD", player.dimension.id)
             player.sendMessage(`Seccessfully set selection to the current chunk (${vTStr(chunk.from)} to ${vTStr(chunk.to)}).`)
         }
         break; 
@@ -7596,6 +7601,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
             const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
             const height = Math.abs(coordinatesa.y-coordinatesb.y)+1
+            console.warn(vTStr(ca), vTStr(cb))
             const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
             if(!!!coordinatesa){
                 player.sendMessage("§cError: pos1 is not set.")
@@ -7603,13 +7609,33 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 if(!!!coordinatesb){
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
-                    const blocktypes = BlockTypes.getAll()
                     system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{
                         for(let i = 0; i<args[1]; i++){
-                            dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr(Object.assign(ca, {y: ca.y+(height*(i+1))}))}`)
+                            console.warn(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
+                            dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
                         }
                     }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^brush$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtw", "number"]).args
+            args[1]??=""
+            const types = (args[1]==""?["minecraft:item", "minecraft:experience_orb"]:[]) as string[]
+            if((args[1] as string).includes("a")){types.push("minecraft:bat", "minecraft:sheep", "minecraft:cow", "minecraft:pig", "minecraft:horse", "minecraft:bee", "minecraft:sniffer", "minecraft:chicken", "minecraft:duck")}
+            player.dimension.getEntities({maxDistance: args[2]??10, location: player.location})
+        }
+        break; 
+        case !!switchTest.match(/^butcher$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "string"]).args
+            if(player.getComponent("inventory").container.getItem(player.selectedSlot).typeId!="andexdb:selection_tool"){
+                player.sendMessage("§cError: The held item is not a Selection Tool.")
+            }else{
+                player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty("selectmode", args[1])
+                player.sendMessage(`Seccessfully set selectmode of the held item to ${args[1]}.`)
             }
         }
         break; 
@@ -7846,7 +7872,7 @@ function JSONify(obj: object){
   return o;
 }
 
-export function evaluateParameters(commandstring: string, parameters: ({type: "presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates"|"blockPattern", maxLength?: number}|{type: "Vectors", vectorCount?: number, maxLength?: number}|string)[]) {
+export function evaluateParameters(commandstring: string, parameters: ({type: "presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates"|"blockPattern", maxLength?: number}|{type: "Vectors", vectorCount?: number, maxLength?: number}|string|"string"|"presetText")[]) {
     let argumentsa = [] as any[]
     let ea = [] as [Error, any][]
     let paramEval = commandstring/*
@@ -7899,82 +7925,89 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
                                     paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                                 }//1870//7018
                             } else {
-                                if (p.type == "json") {
-                                    let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
-                                    paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
-                                    try {
-                                        argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
-                                    } catch (e) {
-                                        ea.push([e, e.stack])
-                                    };
-                                } else {
-                                    if (p.type == "blockStates") {
-                                        if(paramEval.indexOf("[")==-1&&paramEval.indexOf("{")==-1){
-                                            argumentsa.push(undefined);
-                                        }else if((paramEval.indexOf("[")==-1?Infinity:paramEval.indexOf("["))<(paramEval.indexOf("{")==-1?Infinity:paramEval.indexOf("{"))){
-                                            let value = getParametersFromString(paramEval.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}")).resultsincludingunmodified[0];
-                                            paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
-                                            try {
-                                                argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
-                                            } catch (e) {
-                                                ea.push([e, e.stack])
-                                            };
-                                        }else{
-                                            let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
-                                            paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
-                                            try {
-                                                argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
-                                            } catch (e) {
-                                                ea.push([e, e.stack])
-                                            };
+                                if (!!p.type.match(/^-[a-zA-Z0-9]+$/)) {
+                                    if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${p.type.slice(1).split("").join("|")})+(?=$|\\s)`))) {
+                                        let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${p.type.slice(1).split("").join("|")})+(?=$|\\s)`))[0]
+                                        paramEval = paramEval.trimStart().slice(paramEval.trimStart().indexOf(value)+value.length) ?? "";
+                                        try {
+                                            argumentsa.push(value);
                                         }
+                                        catch (e) {
+                                            ea.push([e, e.stack]);
+                                        }
+                                        ;
+                                    }
+                                    else {
+                                        argumentsa.push("");
+                                    }
+                                }
+                                else {
+                                    if (p.type == "json") {
+                                        let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                        paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
+                                        try {
+                                            argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
+                                        } catch (e) {
+                                            ea.push([e, e.stack])
+                                        };
                                     } else {
-                                        if (p.type == "blockPattern") {
-                                            const ep = BlockPattern.extractWRaw(paramEval.trimStart());
-                                            paramEval = paramEval.slice(paramEval.indexOf(ep.raw)+ep.raw.length) ?? "";
-                                            try {
-                                                argumentsa.push(ep.parsed);
-                                            } catch (e) {
-                                                ea.push([e, e.stack])
-                                            };
+                                        if (p.type == "blockStates") {
+                                            if(paramEval.indexOf("[")==-1&&paramEval.indexOf("{")==-1){
+                                                argumentsa.push(undefined);
+                                            }else if((paramEval.indexOf("[")==-1?Infinity:paramEval.indexOf("["))<(paramEval.indexOf("{")==-1?Infinity:paramEval.indexOf("{"))){
+                                                let value = getParametersFromString(paramEval.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}")).resultsincludingunmodified[0];
+                                                paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
+                                                try {
+                                                    argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
+                                                } catch (e) {
+                                                    ea.push([e, e.stack])
+                                                };
+                                            }else{
+                                                let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
+                                                paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
+                                                try {
+                                                    argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
+                                                } catch (e) {
+                                                    ea.push([e, e.stack])
+                                                };
+                                            }
                                         } else {
-                                            if (p.type == "targetSelector") {
-                                                if(!paramEval.trimStart().startsWith("@")){
-                                                    if (paramEval.trimStart().startsWith("\"")) {
-                                                        let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
-                                                        paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
-                                                        paramEval = paramEval.slice(+(paramEval[0]==" ")) ?? "";
+                                            if (p.type == "blockPattern") {
+                                                const ep = BlockPattern.extractWRaw(paramEval.trimStart());
+                                                paramEval = paramEval.slice(paramEval.indexOf(ep.raw)+ep.raw.length) ?? "";
+                                                try {
+                                                    argumentsa.push(ep.parsed);
+                                                } catch (e) {
+                                                    ea.push([e, e.stack])
+                                                };
+                                            } else {
+                                                if (p.type == "targetSelector") {
+                                                    if(!paramEval.trimStart().startsWith("@")){
+                                                        if (paramEval.trimStart().startsWith("\"")) {
+                                                            let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                                            paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
+                                                            paramEval = paramEval.slice(+(paramEval[0]==" ")) ?? "";
+                                                            try {
+                                                                argumentsa.push(!!!value?.v?undefined:('"'+value?.v+'"'));
+                                                            } catch (e) {
+                                                                ea.push([e, e.stack])
+                                                            };
+                                                        } else {
+                                                            argumentsa.push(paramEval.split(" ")[0]);
+                                                            return paramEval.split(" ").slice(1).join(" ");
+                                                        }
+                                                    }else{
+                                                        let value = extractSelectors(paramEval)[0];
+                                                        paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                         try {
-                                                            argumentsa.push(!!!value?.v?undefined:('"'+value?.v+'"'));
+                                                            argumentsa.push(value);
                                                         } catch (e) {
                                                             ea.push([e, e.stack])
                                                         };
-                                                    } else {
-                                                        argumentsa.push(paramEval.split(" ")[0]);
-                                                        return paramEval.split(" ").slice(1).join(" ");
                                                     }
-                                                }else{
-                                                    let value = extractSelectors(paramEval)[0];
-                                                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
-                                                    try {
-                                                        argumentsa.push(value);
-                                                    } catch (e) {
-                                                        ea.push([e, e.stack])
-                                                    };
-                                                }
-                                            } else {
-                                                if (p.type == "Vector"||(p?.type ?? p) == "Vector1") {
-                                                    let value = paramEval.match(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*]([\-\+]?\d+(\.\d+)?)?|((?<=\s)|^)[\-\+]?\d+(\.\d+)?)(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g)?.[0];
-                                                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
-                                                    if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
-                                                    try {
-                                                        argumentsa.push(value);
-                                                    } catch (e) {
-                                                        ea.push([e, e.stack])
-                                                    };
                                                 } else {
-                                                    if (!!p.type.match(/^Vector[2-8]$/)) {
-                                                        let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.type.slice(6)}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                    if (p.type == "Vector"||(p?.type ?? p) == "Vector1") {
+                                                        let value = paramEval.match(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*]([\-\+]?\d+(\.\d+)?)?|((?<=\s)|^)[\-\+]?\d+(\.\d+)?)(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g)?.[0];
                                                         paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                         if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
                                                         try {
@@ -7983,8 +8016,8 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
                                                             ea.push([e, e.stack])
                                                         };
                                                     } else {
-                                                        if (p.type == "Vectors") {
-                                                            let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.vectorCount??3}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                        if (!!p.type.match(/^Vector[2-8]$/)) {
+                                                            let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.type.slice(6)}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
                                                             paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                             if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
                                                             try {
@@ -7992,7 +8025,18 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
                                                             } catch (e) {
                                                                 ea.push([e, e.stack])
                                                             };
-                                                        } else {}
+                                                        } else {
+                                                            if (p.type == "Vectors") {
+                                                                let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.vectorCount??3}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                                paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
+                                                                if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
+                                                                try {
+                                                                    argumentsa.push(value);
+                                                                } catch (e) {
+                                                                    ea.push([e, e.stack])
+                                                                };
+                                                            } else {}
+                                                        }
                                                     }
                                                 }
                                             }
