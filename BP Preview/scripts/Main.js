@@ -53,7 +53,7 @@ import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, Mine
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG } from "Main/coordinates";
-import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput } from "Main/commands";
+import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput, BlockPattern } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
@@ -825,9 +825,9 @@ export function fillBlocks(from, to, dimension, block, options) { let mainArray 
 }
 else {
     mainArray.push(new BlockVolume({ x: subArray.sort((a, b) => a.x - b.x)[0].x, y: subArray.sort((a, b) => a.y - b.y)[0].y, z: subArray.sort((a, b) => a.z - b.z)[0].z }, { x: subArray.sort((a, b) => b.x - a.x)[0].x, y: subArray.sort((a, b) => b.y - a.y)[0].y, z: subArray.sort((a, b) => b.z - a.z)[0].z }));
-} }); let counter = 0; mainArray.forEach(v => counter += dimension.fillBlocks(v.from, v.to, block, options)); return counter; }
+} }); let counter = 0; mainArray.forEach(v => counter += dimension.fillBlocks(new BlockVolume(v.from, v.to), block, options).getCapacity()); return counter; }
 ;
-export function fillBlocksB(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += dimension.fillBlocks(v.from, v.to, block, options)); return counter; }
+export function fillBlocksB(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += dimension.fillBlocks(new BlockVolume(v.from, v.to), block, options).getCapacity()); return counter; }
 ;
 export function fillBlocksF(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block instanceof BlockPermutation ? block.type.id : block instanceof BlockType ? block.id : block} ${block instanceof BlockPermutation ? "[" + Object.entries(block.getAllStates()).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""} ${!!options?.matchingBlock ? options?.matchingBlock instanceof BlockPermutation ? "replace " + options?.matchingBlock?.type?.id ?? "" : "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlock ? options?.matchingBlock instanceof BlockPermutation ? "[" + Object.entries(options?.matchingBlock.getAllStates()).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : "" : ""}`).successCount); return counter; }
 ;
@@ -855,10 +855,10 @@ export function fillBlocksH(from, to, dimension, block, blockStates, options, pl
                 counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
             }
             catch {
-                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { matchingBlock: matchingblockb });
+                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { blockFilter: { includePermutations: [matchingblockb] } });
             }
             ;
-            fillBlocksB(v.from, v.to, dimension, blockb, { matchingBlock: placeholderblockb });
+            fillBlocksB(v.from, v.to, dimension, blockb, { blockFilter: { includePermutations: [placeholderblockb] } });
         });
     }
     return counter;
@@ -900,10 +900,10 @@ export function fillBlocksHW(from, to, dimension, block, blockStates, options, p
                 counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
             }
             catch {
-                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { matchingBlock: matchingblockb });
+                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { blockFilter: { includePermutations: [matchingblockb] } });
             }
             ;
-            fillBlocksB(v.from, v.to, dimension, blockb, { matchingBlock: placeholderblockb });
+            fillBlocksB(v.from, v.to, dimension, blockb, { blockFilter: { includePermutations: [placeholderblockb] } });
         });
     }
     return counter;
@@ -1436,10 +1436,10 @@ export function fillBlocksHH(from, to, dimension, block, blockStates, options, p
                 counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
             }
             catch {
-                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { matchingBlock: matchingblockb });
+                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { blockFilter: { includePermutations: [matchingblockb] } });
             }
             ;
-            fillBlocksB(v.from, v.to, dimension, blockb, { matchingBlock: placeholderblockb });
+            fillBlocksB(v.from, v.to, dimension, blockb, { blockFilter: { includePermutations: [placeholderblockb] } });
         });
     }
     return counter;
@@ -1484,10 +1484,10 @@ export function fillBlocksHO(from, to, dimension, block, blockStates, options, p
                 counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
             }
             catch {
-                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { matchingBlock: matchingblockb });
+                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { blockFilter: { includePermutations: [matchingblockb] } });
             }
             ;
-            fillBlocksB(v.from, v.to, dimension, blockb, { matchingBlock: placeholderblockb });
+            fillBlocksB(v.from, v.to, dimension, blockb, { blockFilter: { includePermutations: [placeholderblockb] } });
         });
     }
     return counter;
@@ -1522,10 +1522,10 @@ export function fillBlocksHP(from, to, dimension, block, blockStates, options, p
                 counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
             }
             catch {
-                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { matchingBlock: matchingblockb });
+                counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { blockFilter: { includePermutations: [matchingblockb] } });
             }
             ;
-            fillBlocksB(v.from, v.to, dimension, blockb, { matchingBlock: placeholderblockb });
+            fillBlocksB(v.from, v.to, dimension, blockb, { blockFilter: { includePermutations: [placeholderblockb] } });
         });
     }
     return counter;
@@ -2674,6 +2674,96 @@ export async function fillBlocksHFGB(begin, end, dimension, block, options, plac
         }
         else {
             system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                currentBlock = block(v, index);
+                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                }
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), currentBlock.getAllStates())).filter(v => !!(Object.entries(BlockPermutation.resolve(currentBlock.type.id).getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(currentBlock);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+export async function fillBlocksSHFGB(begin, radius, dimension, block, options, placeholderid, replacemode = false, integrity = 100) {
+    let counter = 0;
+    const id = generatorProgressIdGenerator();
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateMinecraftSphereBG(begin, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateMinecraftSphereBG(begin, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        let currentBlock = undefined;
+        if (replacemode) {
+            system.runJob(generateMinecraftSphereBG(begin, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                currentBlock = block(v, index);
+                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), currentBlock.getAllStates())).filter(v => !!(Object.entries(BlockPermutation.resolve(currentBlock.type.id).getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(currentBlock);
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateMinecraftSphereBG(begin, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
                 currentBlock = block(v, index);
                 if (!!v.dimension.getBlock(v).getComponent("inventory")) {
                     clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
@@ -4029,7 +4119,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe(event => {
             } /*
             console.warn(targetList);*/
         }
-        event.player.sendMessage("§btypeId§a: §u" + playerTargetB.typeId + "§a, §bUUID§a: §u" + playerTargetB.id + "§a, §bnameTag§a: §u" + playerTargetB.nameTag + "§a, §bdistance§a: §u" + distance + "§a, §bLocation§a: §9{ §c" + playerTargetB.location.x + "§a, §c" + playerTargetB.location.y + "§a, §c" + playerTargetB.location.z + "§9 }§a, §bisSneaking§a: §g" + playerTargetB.isSneaking + "§a, §bscoreboardIdentityId§a: §u" + scoreboardIdentity + "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName + "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType + "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType + ", §bgetEntitiesFromViewDirection§a: { §sEntity§a: " + entityViewedEntityType + ", §sDistance§a: " + entityViewedEntityDistance + " }, §bgetComponents§a: §n[§u" + componentList + "§n]§a, §bgetEffects§a: §n[§a" + effectsList + "§n]§a, §bgetTags§a: [" + playerTargetB.getTags() + "], §bgetVelocity§a: §9{ §c" + (playerTargetB.getVelocity().x + "§a, §c" + playerTargetB.getVelocity().y + "§a, §c" + playerTargetB.getVelocity().z) + "§9 }§a, §bgetViewDirection§a: { " + (playerTargetB.getViewDirection().x, playerTargetB.getViewDirection().y, playerTargetB.getViewDirection().z) + ", §bselectedSlot§a: " + playerTargetB.selectedSlot + spawnPointAllCoordinates);
+        event.player.sendMessage("§btypeId§a: §u" + playerTargetB.typeId + "§a, §bUUID§a: §u" + playerTargetB.id + "§a, §bnameTag§a: §u" + playerTargetB.nameTag + "§a, §bdistance§a: §u" + distance + "§a, §bLocation§a: §9{ §c" + playerTargetB.location.x + "§a, §c" + playerTargetB.location.y + "§a, §c" + playerTargetB.location.z + "§9 }§a, §bisSneaking§a: §g" + playerTargetB.isSneaking + "§a, §bscoreboardIdentityId§a: §u" + scoreboardIdentity + "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName + "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType + "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType + ", §bgetEntitiesFromViewDirection§a: { §sEntity§a: " + entityViewedEntityType + ", §sDistance§a: " + entityViewedEntityDistance + " }, §bgetComponents§a: §n[§u" + componentList + "§n]§a, §bgetEffects§a: §n[§a" + effectsList + "§n]§a, §bgetTags§a: [" + playerTargetB.getTags() + "], §bgetVelocity§a: §9{ §c" + (playerTargetB.getVelocity().x + "§a, §c" + playerTargetB.getVelocity().y + "§a, §c" + playerTargetB.getVelocity().z) + "§9 }§a, §bgetViewDirection§a: { " + (playerTargetB.getViewDirection().x, playerTargetB.getViewDirection().y, playerTargetB.getViewDirection().z) + ", §bselectedSlotIndex§a: " + playerTargetB.selectedSlotIndex + spawnPointAllCoordinates);
     }
 });
 world.beforeEvents.playerLeave.subscribe(event => {
@@ -4897,11 +4987,11 @@ world.afterEvents.entityHitBlock.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
-    if (event.damagingEntity.getComponent("minecraft:inventory").container.getItem(event.damagingEntity.selectedSlot)?.typeId === "andexdb:debug_stick") {
+    if (event.damagingEntity.getComponent("minecraft:inventory").container.getItem(event.damagingEntity.selectedSlotIndex)?.typeId === "andexdb:debug_stick") {
         debugAction(event.hitBlock, event.damagingEntity, 1, Number(event.damagingEntity.isSneaking));
     }
     ;
-    if (event.damagingEntity.getComponent("minecraft:inventory").container.getItem(event.damagingEntity.selectedSlot)?.typeId === "andexdb:liquid_clipped_debug_stick") {
+    if (event.damagingEntity.getComponent("minecraft:inventory").container.getItem(event.damagingEntity.selectedSlotIndex)?.typeId === "andexdb:liquid_clipped_debug_stick") {
         debugAction(event.damagingEntity.getBlockFromViewDirection({ includeLiquidBlocks: true }).block, event.damagingEntity, 1, Number(event.damagingEntity.isSneaking));
     }
     ;
@@ -4916,7 +5006,7 @@ system.runInterval(() => {
             interactable_block.find((playerId) => (playerId.id == player.id)).delay = Math.max(0, interactable_block.find((playerId) => (playerId.id == player.id)).delay - 1);
             interactable_block.find((playerId) => (playerId.id == player.id)).holdDuration = Math.max(0, interactable_block.find((playerId) => (playerId.id == player.id)).holdDuration - 1);
         }
-        ; /*if (player.isSneaking && ((interactable_block.find((playerId)=>(playerId.id == player.id)).holdDuration == 0) || (interactable_block.find((playerId)=>(playerId.id == player.id)).holdDuration == undefined)) && ((player.getComponent("minecraft:inventory") as EntityInventoryComponent).container.getItem(player.selectedSlot).typeId === "andexdb:debug_stick")){
+        ; /*if (player.isSneaking && ((interactable_block.find((playerId)=>(playerId.id == player.id)).holdDuration == 0) || (interactable_block.find((playerId)=>(playerId.id == player.id)).holdDuration == undefined)) && ((player.getComponent("minecraft:inventory") as EntityInventoryComponent).container.getItem(player.selectedSlotIndex).typeId === "andexdb:debug_stick")){
             player.onScreenDisplay.setActionBar(`§l§eTags: §r§a${player.getBlockFromViewDirection().block.getTags().join(", ")}\n§l§eBlock States: §r§a${Object.entries(player.getBlockFromViewDirection().block.permutation.getAllStates()).join("\n")}`)}; */
     });
 }, 1);
@@ -5395,7 +5485,116 @@ console.error(e, e.stack);
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:selection_tool") {
+    if (!!event.itemStack.getDynamicProperty("brushtype")) {
+        try {
+            console.warn("b");
+            switch (String(event.itemStack.getDynamicProperty("brushtype")).toLowerCase()) {
+                case "sphere":
+                    {
+                        const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
+                        const radius = isNaN(Number(event.source.getDynamicProperty("radius") ?? 3)) ? 3 : Number(event.source.getDynamicProperty("radius") ?? 3);
+                        const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                        if (!!!loc) {
+                            event.source.sendMessage("§cError: You must be facing a block.");
+                        }
+                        else if (!!!event.itemStack.getDynamicProperty("pattern")) {
+                            event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
+                        }
+                        else {
+                            const pos = coords.roundVector3ToMiddleOfBlock(loc);
+                            const blocktypes = BlockTypes.getAll();
+                            console.warn("a");
+                            try {
+                                fillBlocksSHFGB(pos, radius, event.source.dimension, (l, i) => { const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
+                            }
+                            catch (e) {
+                                event.source.sendMessage("§c" + e + e.stack);
+                            }
+                        }
+                    }
+                    break;
+                case "extinguish":
+                    {
+                        const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
+                        const radius = isNaN(Number(event.source.getDynamicProperty("radius") ?? 10)) ? 10 : Number(event.source.getDynamicProperty("radius") ?? 10);
+                        if (!!!loc) {
+                            event.source.sendMessage("§cError: You must be facing a block.");
+                        }
+                        else {
+                            const pos = coords.roundVector3ToMiddleOfBlock(loc);
+                            let froma = mcMath.Vector3Utils.subtract(pos, { x: radius, y: radius, z: radius });
+                            let from = { x: froma.x, y: froma.y, z: froma.z };
+                            let toa = mcMath.Vector3Utils.add(pos, { x: radius, y: radius, z: radius });
+                            let to = { x: toa.x, y: toa.y, z: toa.z };
+                            try {
+                                system.run(() => { fillBlocksHB(from, to, event.source.dimension, "air", undefined, { matchingBlock: "fire" }); fillBlocksHB(from, to, event.source.dimension, "air", undefined, { matchingBlock: "soul_fire" }); });
+                            }
+                            catch (e) {
+                                event.source.sendMessage("§c" + e + e.stack);
+                            }
+                        }
+                    }
+                    break;
+                case "remexp":
+                    {
+                        console.warn("d");
+                        const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
+                        const radius = isNaN(Number(event.source.getDynamicProperty("radius") ?? 10)) ? 10 : Number(event.source.getDynamicProperty("radius") ?? 10);
+                        if (!!!loc) {
+                            event.source.sendMessage("§cError: You must be facing a block.");
+                        }
+                        else {
+                            const pos = coords.roundVector3ToMiddleOfBlock(loc);
+                            let froma = mcMath.Vector3Utils.subtract(pos, { x: radius, y: radius, z: radius });
+                            let from = { x: froma.x, y: froma.y, z: froma.z };
+                            let toa = mcMath.Vector3Utils.add(pos, { x: radius, y: radius, z: radius });
+                            let to = { x: toa.x, y: toa.y, z: toa.z };
+                            switch (event.source.dimension.id) {
+                                case "minecraft:overworld":
+                                    try {
+                                        system.run(() => { fillBlocksHB(from, to, event.source.dimension, "air", undefined, { matchingBlock: "tnt" }); fillBlocksHB(from, to, event.source.dimension, "air", undefined, { matchingBlock: "respawn_anchor" }); });
+                                    }
+                                    catch (e) {
+                                        event.source.sendMessage("§c" + e + e.stack);
+                                    }
+                                    break;
+                                case "minecraft:nether":
+                                    try {
+                                        system.run(() => { fillBlocksHB(from, to, event.source.dimension, "air", undefined, { matchingBlock: "tnt" }); fillBlocksHB(from, to, event.source.dimension, "air", undefined, { matchingBlock: "bed" }); });
+                                    }
+                                    catch (e) {
+                                        event.source.sendMessage("§c" + e + e.stack);
+                                    }
+                                    break;
+                                case "minecraft:the_end":
+                                    try {
+                                        system.run(() => { fillBlocksHB(from, to, event.source.dimension, "air", undefined, { matchingBlock: "tnt" }); fillBlocksHB(from, to, event.source.dimension, "air", undefined, { matchingBlock: "respawn_anchor" }); fillBlocksHB(from, to, event.source.dimension, "air", undefined, { matchingBlock: "bed" }); });
+                                    }
+                                    catch (e) {
+                                        event.source.sendMessage("§c" + e + e.stack);
+                                    }
+                                    break;
+                                default:
+                                    try {
+                                        system.run(() => { fillBlocksHB(from, to, event.source.dimension, "air", undefined, { matchingBlock: "tnt" }); });
+                                    }
+                                    catch (e) {
+                                        event.source.sendMessage("§c" + e + e.stack);
+                                    }
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    console.warn("c");
+                    break;
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    else if (event.itemStack.typeId === "andexdb:selection_tool") {
         event.cancel = true;
         try {
             const mode = Boolean(event.source.getDynamicProperty("posM") ?? false);
@@ -5433,7 +5632,7 @@ try {
             try {
                 for (let index in playerList2) {
                     try {
-                        if ((playerList2[index].isSneaking && ((playerList2[index].getComponent("minecraft:inventory").container?.getItem(playerList2[index].selectedSlot))?.typeId == "andexdb:editor_stick"))) {
+                        if ((playerList2[index].isSneaking && ((playerList2[index].getComponent("minecraft:inventory").container?.getItem(playerList2[index].selectedSlotIndex))?.typeId == "andexdb:editor_stick"))) {
                             let blockStates = Object.entries(playerList2[index].getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true }).block.permutation.getAllStates());
                             let blockStatesB;
                             blockStatesB = ["none"];
@@ -5709,7 +5908,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
                     } /*
                     console.warn(targetList);*/
                 }
-                players[playerViewerB].sendMessage("§bname§a: §u" + players[playerTargetB].name + "§a, §bnameTag§a: §u" + players[playerTargetB].nameTag + "§a, §bUUID§a: §u" + players[playerTargetB].id + "§a, §bdistance§a: §u" + distance + "§a, §bLocation§a: §9{ §c" + players[playerTargetB].location.x + "§a, §c" + players[playerTargetB].location.y + "§a, §c" + players[playerTargetB].location.z + "§9 }§a, §bisSneaking§a: §g" + players[playerTargetB].isSneaking + "§a, §bscoreboardIdentity§a: §u" + scoreboardIdentity + "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName + "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType + "§a, §bgetTotalXP§a: §c" + players[playerTargetB].getTotalXp() + "§a, §bxpEarnedAtCurrentLevel§a: §c" + players[playerTargetB].xpEarnedAtCurrentLevel + "§a, §blevel§a: §c" + players[playerTargetB].level + "§a, §btotalXpNeededForNextLevel§a: §c" + players[playerTargetB].totalXpNeededForNextLevel + "§a, §bisOp§a: §g" + players[playerTargetB].isOp() + "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType + ", §bgetEntitiesFromViewDirection§a: §9{ §sEntity§a: " + entityViewedEntityType + ", §sDistance§a: " + entityViewedEntityDistance + " §9}§a, §bgetComponents§a: §n[§u" + componentList + "§n]§a, §bgetEffects§a: §n[§a" + effectsList + "§n]§a, §bgetTags§a: [" + players[playerTargetB].getTags() + "], §bgetVelocity§a: §9{ §c" + (players[playerTargetB].getVelocity().x + "§a, §c" + players[playerTargetB].getVelocity().y + "§a, §c" + players[playerTargetB].getVelocity().z) + "§9 }§a, §bgetViewDirection§a: §9{ §bx: §c" + (players[playerTargetB].getViewDirection().x + "§a, §by: §c" + players[playerTargetB].getViewDirection().y + "§a, §bz: §c" + players[playerTargetB].getViewDirection().z) + "§9 }§a, §bselectedSlot§a: " + players[playerTargetB].selectedSlot + "§a, §bspawnPoint§a: " + spawnPointAllCoordinates);
+                players[playerViewerB].sendMessage("§bname§a: §u" + players[playerTargetB].name + "§a, §bnameTag§a: §u" + players[playerTargetB].nameTag + "§a, §bUUID§a: §u" + players[playerTargetB].id + "§a, §bdistance§a: §u" + distance + "§a, §bLocation§a: §9{ §c" + players[playerTargetB].location.x + "§a, §c" + players[playerTargetB].location.y + "§a, §c" + players[playerTargetB].location.z + "§9 }§a, §bisSneaking§a: §g" + players[playerTargetB].isSneaking + "§a, §bscoreboardIdentity§a: §u" + scoreboardIdentity + "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName + "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType + "§a, §bgetTotalXP§a: §c" + players[playerTargetB].getTotalXp() + "§a, §bxpEarnedAtCurrentLevel§a: §c" + players[playerTargetB].xpEarnedAtCurrentLevel + "§a, §blevel§a: §c" + players[playerTargetB].level + "§a, §btotalXpNeededForNextLevel§a: §c" + players[playerTargetB].totalXpNeededForNextLevel + "§a, §bisOp§a: §g" + players[playerTargetB].isOp() + "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType + ", §bgetEntitiesFromViewDirection§a: §9{ §sEntity§a: " + entityViewedEntityType + ", §sDistance§a: " + entityViewedEntityDistance + " §9}§a, §bgetComponents§a: §n[§u" + componentList + "§n]§a, §bgetEffects§a: §n[§a" + effectsList + "§n]§a, §bgetTags§a: [" + players[playerTargetB].getTags() + "], §bgetVelocity§a: §9{ §c" + (players[playerTargetB].getVelocity().x + "§a, §c" + players[playerTargetB].getVelocity().y + "§a, §c" + players[playerTargetB].getVelocity().z) + "§9 }§a, §bgetViewDirection§a: §9{ §bx: §c" + (players[playerTargetB].getViewDirection().x + "§a, §by: §c" + players[playerTargetB].getViewDirection().y + "§a, §bz: §c" + players[playerTargetB].getViewDirection().z) + "§9 }§a, §bselectedSlotIndex§a: " + players[playerTargetB].selectedSlotIndex + "§a, §bspawnPoint§a: " + spawnPointAllCoordinates);
             }).catch(e => {
                 console.error(e, e.stack);
             });
@@ -5857,7 +6056,7 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
                     } /*
                     console.warn(targetList);*/
                 }
-                players[playerViewerB].sendMessage("§btypeId§a: §u" + playerTargetB.typeId + "§a, §bUUID§a: §u" + playerTargetB.id + "§a, §bnameTag§a: §u" + playerTargetB.nameTag + "§a, §bdistance§a: §u" + distance + "§a, §bLocation§a: §9{ §c" + playerTargetB.location.x + "§a, §c" + playerTargetB.location.y + "§a, §c" + playerTargetB.location.z + "§9 }§a, §bisSneaking§a: §g" + playerTargetB.isSneaking + "§a, §bscoreboardIdentityId§a: §u" + scoreboardIdentity + "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName + "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType + "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType + ", §bgetEntitiesFromViewDirection§a: { §sEntity§a: " + entityViewedEntityType + ", §sDistance§a: " + entityViewedEntityDistance + " }, §bgetComponents§a: §n[§u" + componentList + "§n]§a, §bgetEffects§a: §n[§a" + effectsList + "§n]§a, §bgetTags§a: [" + playerTargetB.getTags() + "], §bgetVelocity§a: §9{ §c" + (playerTargetB.getVelocity().x + "§a, §c" + playerTargetB.getVelocity().y + "§a, §c" + playerTargetB.getVelocity().z) + "§9 }§a, §bgetViewDirection§a: { " + (playerTargetB.getViewDirection().x, playerTargetB.getViewDirection().y, playerTargetB.getViewDirection().z) + ", §bselectedSlot§a: " + playerTargetB.selectedSlot + spawnPointAllCoordinates);
+                players[playerViewerB].sendMessage("§btypeId§a: §u" + playerTargetB.typeId + "§a, §bUUID§a: §u" + playerTargetB.id + "§a, §bnameTag§a: §u" + playerTargetB.nameTag + "§a, §bdistance§a: §u" + distance + "§a, §bLocation§a: §9{ §c" + playerTargetB.location.x + "§a, §c" + playerTargetB.location.y + "§a, §c" + playerTargetB.location.z + "§9 }§a, §bisSneaking§a: §g" + playerTargetB.isSneaking + "§a, §bscoreboardIdentityId§a: §u" + scoreboardIdentity + "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName + "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType + "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType + ", §bgetEntitiesFromViewDirection§a: { §sEntity§a: " + entityViewedEntityType + ", §sDistance§a: " + entityViewedEntityDistance + " }, §bgetComponents§a: §n[§u" + componentList + "§n]§a, §bgetEffects§a: §n[§a" + effectsList + "§n]§a, §bgetTags§a: [" + playerTargetB.getTags() + "], §bgetVelocity§a: §9{ §c" + (playerTargetB.getVelocity().x + "§a, §c" + playerTargetB.getVelocity().y + "§a, §c" + playerTargetB.getVelocity().z) + "§9 }§a, §bgetViewDirection§a: { " + (playerTargetB.getViewDirection().x, playerTargetB.getViewDirection().y, playerTargetB.getViewDirection().z) + ", §bselectedSlotIndex§a: " + playerTargetB.selectedSlotIndex + spawnPointAllCoordinates);
             }).catch(e => {
                 console.error(e, e.stack);
             });
@@ -8028,7 +8227,7 @@ console.error(e, e.stack);
             form.textField("Trigger Event", "Trigger Event");
             form.textField("addExperience", "Experience Amount");
             form.textField("addLevels", "Level Amount");
-            form.slider("Selected Slot", 0, 56, 1, playerList[playerTargetB].selectedSlot);
+            form.slider("Selected Slot", 0, 56, 1, playerList[playerTargetB].selectedSlotIndex);
             form.slider("§4Scale", 0, 10, 0.5);
             form.toggle("Is Sneaking", playerList[playerTargetB].isSneaking);
             form.toggle("Clear Velocity", false);
@@ -8097,7 +8296,7 @@ console.error(e, e.stack);
             form.show(playerList[playerViewerB]).then(r => {
                 if (r.canceled)
                     return;
-                let [changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug] = r.formValues;
+                let [changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlotIndex, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug] = r.formValues;
                 let newNameTag = String(nameTag);
                 if (Boolean(multilineNameTag) == true) {
                     newNameTag = String(nameTag).split("\\\\newline").join("\n");
@@ -8122,7 +8321,7 @@ console.error(e, e.stack);
                     }
                 }
                 playerList[playerTargetB].isSneaking = Boolean(isSneaking);
-                playerList[playerTargetB].selectedSlot = Number(selectedSlot);
+                playerList[playerTargetB].selectedSlotIndex = Number(selectedSlotIndex);
                 if (Boolean(addEffect) == true) {
                     try {
                         playerList[playerTargetB].addEffect(String(effectToAdd), Number(secondsOfEffect), { amplifier: Number(effectAmplifier), showParticles: Boolean(effectShowEffectParticles) });
@@ -8408,7 +8607,7 @@ console.error(e, e.stack);
             form.textField("Trigger Event", "Trigger Event");
             form.textField("addExperience", "Experience Amount");
             form.textField("addLevels", "Level Amount");
-            form.slider("Selected Slot", 0, 56, 1, playerList[playerTargetB].selectedSlot);
+            form.slider("Selected Slot", 0, 56, 1, playerList[playerTargetB].selectedSlotIndex);
             form.slider("§4Scale", 0, 10, 0.5);
             form.toggle("Is Sneaking", playerList[playerTargetB].isSneaking);
             form.toggle("Clear Velocity", false);
@@ -8477,7 +8676,7 @@ console.error(e, e.stack);
             form.show(playerList[playerViewerB]).then(r => {
                 if (r.canceled)
                     return;
-                let [changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug] = r.formValues;
+                let [changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlotIndex, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug] = r.formValues;
                 let newNameTag = String(nameTag);
                 if (Boolean(multilineNameTag) == true) {
                     newNameTag = String(nameTag).split("\\\\newline").join("\n");
@@ -8495,7 +8694,7 @@ console.error(e, e.stack);
                     }
                 }
                 playerList[playerTargetB].isSneaking = Boolean(isSneaking);
-                playerList[playerTargetB].selectedSlot = Number(selectedSlot);
+                playerList[playerTargetB].selectedSlotIndex = Number(selectedSlotIndex);
                 if (Boolean(addEffect) == true) {
                     try {
                         playerList[playerTargetB].addEffect(String(effectToAdd), Number(secondsOfEffect), { amplifier: Number(effectAmplifier), showParticles: Boolean(effectShowEffectParticles) });
@@ -8995,7 +9194,7 @@ console.error(e, e.stack);
             let r = ro;
             if (r.canceled)
                 return;
-            let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*, selectedSlot*/, isWaterlogged /*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
+            let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*, selectedSlotIndex*/, isWaterlogged /*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
             let blockPropertyValue2;
             blockPropertyValue2 = "";
             let blockPropertyValueArray;
@@ -9544,7 +9743,7 @@ console.error(e, e.stack);
     form.show(playerList[playerList.findIndex((x) => x == sourceEntity)]).then(r => {
         if (r.canceled) return;
     
-        let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled*/ /*, selectedSlot*/ /*, isWaterlogged/*, clearVelocity*/ //, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = r.formValues;
+        let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled*/ /*, selectedSlotIndex*/ /*, isWaterlogged/*, clearVelocity*/ //, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = r.formValues;
         /*let blockPropertyValue2: any
         blockPropertyValue2 = ""
         let blockPropertyValueArray: Array<any>
@@ -9793,7 +9992,7 @@ console.error(e, e.stack);
         form.show(playerList[playerList.findIndex((x) => x == sourceEntity)]).then(r => {
             if (r.canceled)
                 return;
-            let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*, selectedSlot*/, isWaterlogged /*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
+            let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*, selectedSlotIndex*/, isWaterlogged /*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
             let blockPropertyValue2;
             blockPropertyValue2 = "";
             let blockPropertyValueArray;
@@ -10405,14 +10604,14 @@ console.error(e, e.stack);
     form.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(r => {
         if (r.canceled) return;
     
-        let [ nameTag, triggerEvent, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, removeEffect, effectToRemove, removeTag, tagToRemove, setRot, rotX, rotY, teleport, teleportX, teleportY, teleportZ, tryTeleport, tryTeleportX, tryTeleportY, tryTeleportZ, openTheItemModificationFormAfterwards, debug ] = r.formValues;
+        let [ nameTag, triggerEvent, selectedSlotIndex, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, removeEffect, effectToRemove, removeTag, tagToRemove, setRot, rotX, rotY, teleport, teleportX, teleportY, teleportZ, tryTeleport, tryTeleportX, tryTeleportY, tryTeleportZ, openTheItemModificationFormAfterwards, debug ] = r.formValues;
     
         let scale = sourceEntity.getComponent("scale") as EntityScaleComponent;*/ /*
         scale.value = Number(scaleValue);*/ /*
         
         try {entity[0].entity.nameTag = String(nameTag);} catch(e){console.error(e, e.stack);}
         try {entity[0].entity.isSneaking = Boolean(isSneaking);} catch(e){console.error(e, e.stack);}
-        try {(entity[0].entity as Player).selectedSlot = Number(selectedSlot);} catch(e){console.error(e, e.stack);}
+        try {(entity[0].entity as Player).selectedSlotIndex = Number(selectedSlotIndex);} catch(e){console.error(e, e.stack);}
         if (Boolean(setRot) == true) {
             try {entity[0].entity.setRotation({ x: Number(rotX), y: Number(rotY) });} catch(e){console.error(e, e.stack);}
         }
@@ -10899,7 +11098,7 @@ console.error(e, e.stack);
                             break;
                         case "setTame":
                             try {
-                                targets[l].getComponent("minecraft:tameable").tame();
+                                targets[l].getComponent("minecraft:tameable").tame(sourceEntity);
                             }
                             catch (e) {
                                 console.error(e, e.stack);
@@ -11546,7 +11745,7 @@ console.error(e, e.stack);
                             break;
                         case "slectedSlot":
                             try {
-                                targets[l].selectedSlot = Number(playerName.slice(1)[i].split(":")[1]), Number(playerName.slice(1)[i].split(":")[1]);
+                                targets[l].selectedSlotIndex = Number(playerName.slice(1)[i].split(":")[1]), Number(playerName.slice(1)[i].split(":")[1]);
                             }
                             catch (e) {
                                 console.error(e, e.stack);

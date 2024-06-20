@@ -1,6 +1,6 @@
 import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit } from "@minecraft/server";
 import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, } from "./coordinates";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
@@ -833,6 +833,7 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "chunkinfo", escregexp: {v: "^chunkinfo$"}, formats: [{format: "chunkinfo"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:chunkinfo"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "replacenear", escregexp: {v: "^replacenear$"}, formats: [{format: "replacenear"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:replacenear"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "jumpto", escregexp: {v: "^jumpto$"}, aliases: [{commandName: "j", escregexp: {v: "^j$"}}], formats: [{format: "jumpto"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:jumpto"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "align", escregexp: {v: "^align$"}, formats: [{format: "align"}], command_version: "1.0.0", description: "", category: ["world", "players"], commandSettingsId: "built-inCommandSettings:align"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: {v: "^home$"}, formats: [{format: "home"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gohome", escregexp: {v: "^gohome$"}, formats: [{format: "gohome"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "rtp", escregexp: {v: "^rtp$"}, formats: [{format: "rtp <player: targetSelector|playerName>"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp"}, 
@@ -1006,8 +1007,8 @@ export class executeCommandPlayerW{
     get lifetimeState(){return this.player?.lifetimeState}
     get level(){return this.player?.level}
     get onScreenDisplay(){return this.player?.onScreenDisplay}
-    get selectedSlot(){return this.player?.selectedSlot}
-    set selectedSlot(slotNumber: number){this.player.selectedSlot = slotNumber}
+    get selectedSlotIndex(){return this.player?.selectedSlotIndex}
+    set selectedSlotIndex(slotNumber: number){this.player.selectedSlotIndex = slotNumber}
     get totalXpNeededForNextLevel(){return this.player?.totalXpNeededForNextLevel}
     get xpEarnedAtCurrentLevel(){return this.player?.xpEarnedAtCurrentLevel}
     get isSneaking(){return this.player?.isSneaking}
@@ -3176,8 +3177,8 @@ export function blockToContainerSlotListObject(block: Block){
 export function entityToContainerSlotArrayB(entity: Entity, getContainer: boolean = true, getEquipment: boolean = true){
     let itemList = [] as ContainerSlot[]; let itemListB = [] as ContainerSlot[]; let container = entity.getComponent("inventory")?.container; let equipment = entity.getComponent("equippable"); for(let i = 0; (i < container?.size??0)&&getContainer; i++){itemList.push(container.getSlot(i))}; for(let i = 0; (i < 5)&&getEquipment&&(!!equipment); i++){itemListB.push(equipment?.getEquipmentSlot(OtherEquipmentSlots[i]))}; return (!!container||!!equipment)?{inventory: itemList, equipment: itemListB}:undefined
 }
-export function getPlayerSelectedSlot(player: Player){
-    return player.getComponent("inventory").container.getSlot(player.selectedSlot)
+export function getPlayerselectedSlotIndex(player: Player){
+    return player.getComponent("inventory").container.getSlot(player.selectedSlotIndex)
 }
 export function getInventory(containerBlockPlayerOrEntity: Block|Entity|Player){
     return (containerBlockPlayerOrEntity instanceof Block?containerBlockPlayerOrEntity.getComponent("inventory"):(containerBlockPlayerOrEntity as Entity|Player).getComponent("inventory"))
@@ -3188,8 +3189,8 @@ export function getEquipment(containerBlockPlayerOrEntity: Entity|Player){
 export const JunkItemTypes = ["dirt", "stick", "deadbush", "tripwire_hook", "rotten_flesh", "string", "cobblestone", "stone", "diorite", "andesite", "granite", "tuff", "end_stone", "wheat_seeds", "tallgrass", "leather_helmet", "leather_boots", "leather_chestplate", "leather_leggings", "wooden_sword", "wooden_axe", "wooden_pickaxe", "wooden_shovel", "wooden_hoe", "spider_eye"]
 export const OpItemTypes = ["diamond", "netherite_ingot", "gold_ingot", "iron_ingot", "diamond_sword", "diamond_chestplate", "diamond_helmet", "diamond_leggings", "diamond_boots", "diamond_pickaxe", "diamond_shovel", "diamond_hoe", "diamond_block"]
 export const IllegalItemTypes = ["netherreactor", "glowingobsidian", "stonecutter", "water", "flowing_water", "lava", "flowing_lava", "camera", "item.camera", "item.skull", "item.cauldron", "bedrock"]
-export function parseSlot(slot: string, selectedSlot?: number){return [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand", "hat", "shirt", "shorts", "sandals", "firsthand", "secondaryhand"].findIndex(v=>v==tryget(()=>slot?.trim()?.toLowerCase()))%6]??(((tryget(()=>slot?.trim())=="~"||tryget(()=>slot?.trim())=="")&&!!!selectedSlot)?"~":Number(tryget(()=>slot?.trim())??slot)); }
-export function getSlotFromParsedSlot(slot: "~"|EquipmentSlot|number, options?: {container?: Container, equipment?: EntityEquippableComponent, selectedSlot?: number}){if(typeof slot == "string"){return slot.trim()=="~"?(!!options?.selectedSlot?options?.container?.getSlot(Number(options?.selectedSlot)):(!!options?.equipment?options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand):undefined)):(!!options?.equipment?slot.trim().toLowerCase()=="head"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Head):slot.trim().toLowerCase()=="chest"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Chest):slot.trim().toLowerCase()=="legs"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Legs):slot.trim().toLowerCase()=="feet"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Feet):slot.trim().toLowerCase()=="mainhand"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand):slot.trim().toLowerCase()=="offhand"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Offhand):!Number.isNaN(Number(slot))?options?.container?.getSlot(Number(slot)):undefined:!Number.isNaN(Number(slot))?options?.container?.getSlot(Number(slot)):undefined)}else if(typeof slot == "number"){return options?.container?.getSlot(Number(slot)); }else return options?.container?.getSlot(Number(slot))}
+export function parseSlot(slot: string, selectedSlotIndex?: number){return [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand", "hat", "shirt", "shorts", "sandals", "firsthand", "secondaryhand"].findIndex(v=>v==tryget(()=>slot?.trim()?.toLowerCase()))%6]??(((tryget(()=>slot?.trim())=="~"||tryget(()=>slot?.trim())=="")&&!!!selectedSlotIndex)?"~":Number(tryget(()=>slot?.trim())??slot)); }
+export function getSlotFromParsedSlot(slot: "~"|EquipmentSlot|number, options?: {container?: Container, equipment?: EntityEquippableComponent, selectedSlotIndex?: number}){if(typeof slot == "string"){return slot.trim()=="~"?(!!options?.selectedSlotIndex?options?.container?.getSlot(Number(options?.selectedSlotIndex)):(!!options?.equipment?options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand):undefined)):(!!options?.equipment?slot.trim().toLowerCase()=="head"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Head):slot.trim().toLowerCase()=="chest"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Chest):slot.trim().toLowerCase()=="legs"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Legs):slot.trim().toLowerCase()=="feet"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Feet):slot.trim().toLowerCase()=="mainhand"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand):slot.trim().toLowerCase()=="offhand"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Offhand):!Number.isNaN(Number(slot))?options?.container?.getSlot(Number(slot)):undefined:!Number.isNaN(Number(slot))?options?.container?.getSlot(Number(slot)):undefined)}else if(typeof slot == "number"){return options?.container?.getSlot(Number(slot)); }else return options?.container?.getSlot(Number(slot))}
 export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, player: Player|executeCommandPlayerW|undefined, eventData: ChatSendBeforeEvent, event: ChatSendBeforeEvent|undefined, newMessage: string|undefined}){
     let returnBeforeChatSend = params.returnBeforeChatSend??false
     let playera = params.player??params.eventData?.sender??params.event?.sender
@@ -3632,7 +3633,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 (targetSelectorAllListB(argsa.extra, "", Number(player.id)) as Player[]).forEach((player2)=>{
                                     playerTotalVictimsList.push(player2.name)
                                 const inventoryc = player2.getComponent("inventory") as EntityInventoryComponent
-                                system.run(()=>{try{inventoryc.container.setItem(((args[2]??"").trim()=="~"||(args[2]??"").trim()=="")?player.selectedSlot:Number(args[2]), item); eventData.sender.sendMessage(String("Set Slot " + ((args[2]??"").trim()=="~"||(args[2]??"").trim()=="")?player.selectedSlot:args[2] + " of " + player2.name + "\'s inventory to " + item.typeId + " * " + item.amount))}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+                                system.run(()=>{try{inventoryc.container.setItem(((args[2]??"").trim()=="~"||(args[2]??"").trim()=="")?player.selectedSlotIndex:Number(args[2]), item); eventData.sender.sendMessage(String("Set Slot " + ((args[2]??"").trim()=="~"||(args[2]??"").trim()=="")?player.selectedSlotIndex:args[2] + " of " + player2.name + "\'s inventory to " + item.typeId + " * " + item.amount))}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
                                 })
                                 ; system.run(()=>{targetSelectorAllListC("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", "", "~~~", player).forEach((entity)=>{(entity as Player).sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set Slot §c" + args[2] + "§r§f of §n[§f" + playerTotalVictimsList + "§r§u]§f inventories to §u" + item.typeId + "§r§f * §c" + item.amount))})})
                             }
@@ -3641,7 +3642,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             case (argsa.extra.trim()==""): 
                             {
                                 const inventoryc = player.getComponent("inventory") as EntityInventoryComponent
-                                system.run(()=>{try{inventoryc.container.setItem(((args[2]??"").trim()=="~"||(args[2]??"").trim()=="")?player.selectedSlot:Number(args[2]), item); eventData.sender.sendMessage(String("Set Slot " + args[2] + " of " + player.name + "\'s inventory to " + item.typeId + " * " + item.amount)); world.getAllPlayers().filter(v=>v.hasTag("canSeeCustomChatCommandFeedbackFromMods")).forEach((playerb)=>{playerb.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set Slot " + args[2] + " of " + player.name + "\'s inventory to " + item.typeId + " * " + item.amount))})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+                                system.run(()=>{try{inventoryc.container.setItem(((args[2]??"").trim()=="~"||(args[2]??"").trim()=="")?player.selectedSlotIndex:Number(args[2]), item); eventData.sender.sendMessage(String("Set Slot " + args[2] + " of " + player.name + "\'s inventory to " + item.typeId + " * " + item.amount)); world.getAllPlayers().filter(v=>v.hasTag("canSeeCustomChatCommandFeedbackFromMods")).forEach((playerb)=>{playerb.sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Set Slot " + args[2] + " of " + player.name + "\'s inventory to " + item.typeId + " * " + item.amount))})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
                             }
                             break; 
                         }
@@ -3657,6 +3658,7 @@ ${command.dp}item <mode: canplaceon|candestroy> <blockTypes: string[]>
 ${command.dp}item name <name: text>
 ${command.dp}item count <count: int(1-255)>
 ${command.dp}item remove
+${command.dp}item gettags
 ${command.dp}item <mode: json|jsonb> <itemJSON: ItemJSON>
 ${command.dp}item property removelist <propertyIdList: string[]>
 ${command.dp}item property setlist <propertyList: JSON>
@@ -3682,7 +3684,7 @@ ${command.dp}item slot <slot: int> property setnumber <propertyId: string> <prop
 ${command.dp}item slot <slot: int> property setstring <propertyId: string> <propertyValue: string>
 ${command.dp}item slot <slot: int> property setboolean <propertyId: string> <propertyValue: boolean>
 ${command.dp}item slot <slot: int> property setvector3 <propertyId: string> <propertyValue: Vector3>
-${command.dp}item slot <slot: int> property <mode: list|clear>
+${command.dp}item slot <slot: int> property <mode: list|listdetails|clear>
 ${command.dp}item slot <slot: int> enchantment add <enchantment: {"level": number, "type": string}>
 ${command.dp}item slot <slot: int> enchantment addlist <enchantment: {"level": number, "type": string}[]>
 ${command.dp}item slot <slot: int> enchantment <mode: remove|get|testfor> <enchantmentId: string>
@@ -3698,78 +3700,81 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                     if (errs != undefined) {
                         errs.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
                     };
-                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlot).setLore(lore)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore(lore)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                 break;
                 case "item lorene":
                     let lorene = JSON.parse(command.split(" ").slice(2).join(" "))
-                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlot).setLore(lorene)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore(lorene)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                 break;
                 case "item canpalceon":
                     let canpalceon = JSONParse(command.split(" ").slice(2).join(" ")) as string[]
-                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlot).setCanPlaceOn(canpalceon)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setCanPlaceOn(canpalceon)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                 break;
                 case "item candestroy":
                     let candestroy = JSONParse(command.split(" ").slice(2).join(" ")) as string[]
-                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlot).setCanDestroy(candestroy)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setCanDestroy(candestroy)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                 break;
                 case "item name":
                     let name = argsa.extra.escapeCharactersB(true);
                     if (name.e != undefined) {
                         name.e.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
                     };
-                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlot).nameTag = name.v}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).nameTag = name.v}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                 break;
                 case "item remove":
-                    system.run(()=>{try{player.getComponent("inventory").container.setItem(player.selectedSlot)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    system.run(()=>{try{player.getComponent("inventory").container.setItem(player.selectedSlotIndex)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                 break;
                 case "new":
-                    system.run(()=>{let argsc = evaluateParameters(argsa.extra.trim(), ["string", "number"]).args; try{player.getComponent("inventory").container.setItem(player.selectedSlot, new ItemStack(String((argsc[0]??"")==""?"air":argsc[0]), Number((argsc[1]??"")==""?1:argsc[1])))}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    system.run(()=>{let argsc = evaluateParameters(argsa.extra.trim(), ["string", "number"]).args; try{player.getComponent("inventory").container.setItem(player.selectedSlotIndex, new ItemStack(String((argsc[0]??"")==""?"air":argsc[0]), Number((argsc[1]??"")==""?1:argsc[1])))}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                 break;
                 case "item json":
                     let json = evaluateParameters(argsa.extra.trim(), ["json"]).args[0];
-                    system.run(()=>{try{getPlayerSelectedSlot(player).setItem(itemJSONPropertiesEval(json, player.getComponent("inventory").container.getItem(player.selectedSlot), player))}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    system.run(()=>{try{getPlayerselectedSlotIndex(player).setItem(itemJSONPropertiesEval(json, player.getComponent("inventory").container.getItem(player.selectedSlotIndex), player))}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                 break;
                 case "item jsonb":
                     let jsonb = evaluateParameters(argsa.extra.trim(), ["json"]).args[0];
-                    system.run(()=>{try{itemJSONPropertiesEvalCT(jsonb, getPlayerSelectedSlot(player), player)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    system.run(()=>{try{itemJSONPropertiesEvalCT(jsonb, getPlayerselectedSlotIndex(player), player)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                 break;
                 case "item listtags":
-                    player.sendMessage(player.getComponent("inventory").container.getSlot(player.selectedSlot).getTags().join("§r,"))
+                    player.sendMessage('"'+player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getTags().join("§r,")+'"')
                 break;
                 case "item gettags":
-                    player.sendMessage(player.getComponent("inventory").container.getSlot(player.selectedSlot).getTags().join("§r,"))
+                    player.sendMessage('"'+player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getTags().join("§r,")+'"')
                 break;
                 case "item property":
                     switch (command.split(" ")[2]) {
                         case "removelist":
-                            (evaluateParameters(command.split(" ").slice(3).join(" "), ["json"]).args[0] as string[]).forEach(v=>player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(v))
+                            (evaluateParameters(command.split(" ").slice(3).join(" "), ["json"]).args[0] as string[]).forEach(v=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(v))
                         break;
                         case "setlist":
-                            Object.entries(evaluateParameters(command.split(" ").slice(3).join(" "), ["json"]).args[0] as Object).forEach(v=>player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(v[0], v[1]),)
+                            Object.entries(evaluateParameters(command.split(" ").slice(3).join(" "), ["json"]).args[0] as Object).forEach(v=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(v[0], v[1]),)
                         break;
                         case "remove":
-                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(3).join(" ")).args[0])
+                            player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(evaluateParametersOld(["string"], command.split(" ").slice(3).join(" ")).args[0])
                         break;
                         case "setnumber":
-                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[0], evaluateParameters(command.split(" ").slice(3).join(" "), ["string", "number"]).args[1])
+                            player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(evaluateParametersOld(["string", "number"], command.split(" ").slice(3).join(" ")).args[0], evaluateParameters(command.split(" ").slice(3).join(" "), ["string", "number"]).args[1])
                         break;
                         case "setstring":
-                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[0], evaluateParameters(command.split(" ").slice(3).join(" "), ["string", "string"]).args[1])
+                            player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(evaluateParametersOld(["string", "string"], command.split(" ").slice(3).join(" ")).args[0], evaluateParameters(command.split(" ").slice(3).join(" "), ["string", "string"]).args[1])
                         break;
                         case "setboolean":
-                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[0], evaluateParameters(command.split(" ").slice(3).join(" "), ["string", "boolean"]).args[1])
+                            player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(evaluateParametersOld(["string", "boolean"], command.split(" ").slice(3).join(" ")).args[0], evaluateParameters(command.split(" ").slice(3).join(" "), ["string", "boolean"]).args[1])
                         break;
                         case "setvector3":
-                            player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty(evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[0], evaluateParameters(command.split(" ").slice(3).join(" "), ["string", "json"]).args[1])
+                            player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty(evaluateParametersOld(["string", "json"], command.split(" ").slice(3).join(" ")).args[0], evaluateParameters(command.split(" ").slice(3).join(" "), ["string", "json"]).args[1])
                         break;
                         case "list":
-                            eventData.sender.sendMessage(player.getComponent("inventory").container.getSlot(player.selectedSlot).getDynamicPropertyIds().join("§r§f\n"));
+                            eventData.sender.sendMessage(player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getDynamicPropertyIds().join("§r§f\n"));
+                        break;
+                        case "listdetails":
+                            eventData.sender.sendMessage("Total Byte Count: "+player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getDynamicPropertyTotalByteCount()+"\n"+player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getDynamicPropertyIds().map(v=>v+": "+JSON.stringify(player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getDynamicProperty(v))).join("§r§f\n"));
                         break;
                         case "get":
-                            eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getSlot(player.selectedSlot).getDynamicProperty(evaluateParameters(command.split(" ").slice(3).join(" "), ["string"]).args[0])));
+                            eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getDynamicProperty(evaluateParameters(command.split(" ").slice(3).join(" "), ["string"]).args[0])));
                         break;
                         case "clear":
-                            player.getComponent("inventory").container.getSlot(player.selectedSlot).clearDynamicProperties()
+                            player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).clearDynamicProperties()
                         break;
                         default:
                             eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ").slice(2).join(" ") + "\": at \"\\item " + command.split(" ").slice(1, 2).join(" ") + " >>" + command.split(" ").slice(2).join(" ") + "<<\"");
@@ -3779,37 +3784,37 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                     switch (command.split(" ")[2]) {
                         case "add":
                             let enchantment = JSON.parse(command.split(" ").slice(3).join(" "))
-                            let itemd = player.getComponent("inventory").container.getItem(player.selectedSlot).clone()
+                            let itemd = player.getComponent("inventory").container.getItem(player.selectedSlotIndex).clone()
                             system.run(()=>{try{itemd.getComponent("enchantable").addEnchantment({level: enchantment.level, type: EnchantmentTypes.get(enchantment.type)})
-                            player.getComponent("inventory").container.setItem(player.selectedSlot, itemd)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                            player.getComponent("inventory").container.setItem(player.selectedSlotIndex, itemd)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                             break;
                         case "addlist":
                             let enchantmentlist = JSON.parse(command.split(" ").slice(3).join(" "))
-                            let itema = player.getComponent("inventory").container.getItem(player.selectedSlot).clone()
+                            let itema = player.getComponent("inventory").container.getItem(player.selectedSlotIndex).clone()
                             system.run(()=>{try{itema.getComponent("enchantable").addEnchantments(enchantmentlist.map(v=>({level: v.level, type: EnchantmentTypes.get(v.type)})))
-                            player.getComponent("inventory").container.setItem(player.selectedSlot, itema)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                            player.getComponent("inventory").container.setItem(player.selectedSlotIndex, itema)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                             break;
                         case "remove":
-                            let itemb = player.getComponent("inventory").container.getItem(player.selectedSlot).clone()
+                            let itemb = player.getComponent("inventory").container.getItem(player.selectedSlotIndex).clone()
                             system.run(()=>{try{itemb.getComponent("enchantable").removeEnchantment(command.split(" ")[3])
-                            player.getComponent("inventory").container.setItem(player.selectedSlot, itemb)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                            player.getComponent("inventory").container.setItem(player.selectedSlotIndex, itemb)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                             break;
                         case "set":
                             eventData.sender.sendMessage("§l§cComing Soon!§r§f");
                             break;
                         case "list":
-                            eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlot).getComponent("enchantable").getEnchantments()));
+                            eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlotIndex).getComponent("enchantable").getEnchantments()));
                             break;
                         case "get":
-                            eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlot).getComponent("enchantable").getEnchantment(command.split(" ")[3])));
+                            eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlotIndex).getComponent("enchantable").getEnchantment(command.split(" ")[3])));
                             break;
                         case "clear":
-                            const itemc = player.getComponent("inventory").container.getItem(player.selectedSlot).clone()
+                            const itemc = player.getComponent("inventory").container.getItem(player.selectedSlotIndex).clone()
                             system.run(()=>{try{itemc.getComponent("enchantable").removeAllEnchantments()
-                            player.getComponent("inventory").container.setItem(player.selectedSlot, itemc)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                            player.getComponent("inventory").container.setItem(player.selectedSlotIndex, itemc)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                             break;
                         case "testfor":
-                            eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlot).getComponent("enchantable").hasEnchantment(command.split(" ")[3])));
+                            eventData.sender.sendMessage(JSON.stringify(player.getComponent("inventory").container.getItem(player.selectedSlotIndex).getComponent("enchantable").hasEnchantment(command.split(" ")[3])));
                             break;
                         default:
                             eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ").slice(2).join(" ") + "\": at \"\\item " + command.split(" ").slice(1, 2).join(" ") + " >>" + command.split(" ").slice(2).join(" ") + "<<\"");
@@ -3818,7 +3823,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                 break;
                 case "item slot":
                     let argsb = evaluateParameters(argsa.extra.trim(), ["presetText", "presetText"]);
-                    let slot = getSlotFromParsedSlot(parseSlot(String(((argsb.args[0]??"")==""||(argsb.args[0]??"")=="~")?String(player.selectedSlot):String(argsb.args[0]??"")), player.selectedSlot), {container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlot: player?.selectedSlot})
+                    let slot = getSlotFromParsedSlot(parseSlot(String(((argsb.args[0]??"")==""||(argsb.args[0]??"")=="~")?String(player.selectedSlotIndex):String(argsb.args[0]??"")), player.selectedSlotIndex), {container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlotIndex: player?.selectedSlotIndex})
                     switch (argsb.args[1]??"") {
                         case "lore":
                             let lore = JSON.parse(command.split(" ").slice(4).join(" ")) as string[]
@@ -3873,6 +3878,12 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                             }
                             ;
                             system.run(()=>{try{slot.nameTag = nameb.v}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                        break;
+                        case "item listtags":
+                            player.sendMessage('"'+slot.getTags().join("§r,")+'"')
+                        break;
+                        case "item gettags":
+                            player.sendMessage('"'+slot.getTags().join("§r,")+'"')
                         break;
                         case "enchantment":
                             switch (command.split(" ")[4]) {
@@ -3969,10 +3980,10 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                     eventData.sender.sendMessage("§l§cComing Soon!§r§f");
                     break;
                 case "item amount":
-                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlot).amount = Number(command.split(" ").slice(2).join(" "))}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).amount = Number(command.split(" ").slice(2).join(" "))}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                     break;
                 case "item count":
-                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlot).amount = Number(command.split(" ").slice(2).join(" "))}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).amount = Number(command.split(" ").slice(2).join(" "))}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                     break;
                 case "item nameTag":
                     let nameb = command.split(" ").slice(2).join(" ").escapeCharactersB(true);
@@ -3980,7 +3991,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                         nameb.e.forEach((e) => { player.sendMessage(String(e + e.stack)); });
                     }
                     ;
-                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlot).nameTag = nameb.v}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).nameTag = nameb.v}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                     break;
                 default:
                     eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ").slice(1).join(" ") + "\": at \"\\item >>" + command.split(" ").slice(1).join(" ") + "<<\"");
@@ -5468,7 +5479,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^liststructures$/)||!!switchTest.match(/^getstructures$/): {
             eventData.cancel = true;
-            player.sendMessage(world.structureManager.getIds().join("§r\n"))
+            player.sendMessage(world.structureManager.getWorldStructureIds().join("§r\n"))
         }
         break; 
         case !!switchTest.match(/^listbans$/)||!!switchTest.match(/^getbans$/): {
@@ -5661,7 +5672,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
             let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?BlockPermutation.resolve("air"):BlockPermutation.resolve(lastblockname, lastblockstates)/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-            try{srun(()=>{let a = player.dimension.fillBlocks(coordinatesa, coordinatesb, BlockPermutation.resolve(firstblockname, firstblockstates), {matchingBlock: matchingblock}); player.sendMessage(`${a==0?"§c":""}${a} blocks filled`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{srun(()=>{let a = player.dimension.fillBlocks(new BlockVolume(coordinatesa, coordinatesb), BlockPermutation.resolve(firstblockname, firstblockstates), {blockFilter: {includePermutations: [matchingblock]}}); player.sendMessage(`${a.getCapacity()==0?"§c":""}${a} blocks filled`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -6906,7 +6917,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
             let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?BlockPermutation.resolve("air"):BlockPermutation.resolve(lastblockname, lastblockstates)/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-            try{system.run(()=>{let a = fillBlocksB(coordinatesa, coordinatesb, player.dimension, BlockPermutation.resolve(firstblockname, firstblockstates), {matchingBlock: matchingblock}); player.sendMessage(`${a==0?"§c":""}${a} blocks filled`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>{let a = fillBlocksB(coordinatesa, coordinatesb, player.dimension, BlockPermutation.resolve(firstblockname, firstblockstates), {blockFilter: {includePermutations: [matchingblock]}}); player.sendMessage(`${a==0?"§c":""}${a} blocks filled`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -6920,7 +6931,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 if(!!!target){
                     player.sendMessage(`§cError: No player matching the specified target selector was found. `)
                 }else{
-                    target.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlot)?.clone())
+                    target.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlotIndex)?.clone())
                 }
             })
         }
@@ -6937,13 +6948,13 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             if(!!!target){
                 player.sendMessage(`§cError: Unable to find player with the name ${args[2]}. `)
             }else{
-                if(switchTestB.split(/\s+/g)[1].trim()=="~"){args[1] = target.selectedSlot}
-                let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), {container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlot: target?.selectedSlot})
+                if(switchTestB.split(/\s+/g)[1].trim()=="~"){args[1] = target.selectedSlotIndex}
+                let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), {container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlotIndex: target?.selectedSlotIndex})
                 system.run(()=>{
                     if(String(args[1]).match(/^\d+$/)){
-                        target.getComponent("inventory").container.setItem(Number(args[1]), player.getComponent("inventory").container.getItem(player.selectedSlot))
+                        target.getComponent("inventory").container.setItem(Number(args[1]), player.getComponent("inventory").container.getItem(player.selectedSlotIndex))
                     }else{
-                        slot.setItem(player.getComponent("inventory").container.getItem(player.selectedSlot))
+                        slot.setItem(player.getComponent("inventory").container.getItem(player.selectedSlotIndex))
                     }
                     player.sendMessage(`Successfully copied item to slot ${args[1]} of ${target.name}'s inventory. `)
                 })
@@ -6953,9 +6964,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
         case !!switchTest.match(/^dupeitem$/): {
             eventData.cancel = true;
             let args = evaluateParametersOld(["presetText", "presetText"], switchTestB).args
-            if((args[1]??"").trim()=="~"||(args[1]??"").trim()==""){args[1] = player.selectedSlot}
+            if((args[1]??"").trim()=="~"||(args[1]??"").trim()==""){args[1] = player.selectedSlotIndex}
             //console.warn(args)
-            let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), {container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlot: player?.selectedSlot})
+            let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), {container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlotIndex: player?.selectedSlotIndex})
             system.run(()=>{
                 if(String(args[1]).match(/^\d+$/)){
                     player.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(Number(args[1])))
@@ -6964,7 +6975,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 }
                 player.sendMessage(`Successfully duped item in slot ${String(args[1])}. `)
             })/*
-            system.run(()=>{let slot = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand"].findIndex(v=>v==switchTestB.split(" ")[1]?.trim()?.toLowerCase())%6]??Number((!!!switchTestB.split(" ")[1]?.trim()?"~":switchTestB.split(" ")[1].trim()).replaceAll("~", String(player.selectedSlot))); let fromSlot = typeof slot == "string"?player.getComponent("equippable").getEquipmentSlot(slot):player.getComponent("inventory").container.getSlot(slot); player.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlot).clone())})*/
+            system.run(()=>{let slot = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand"].findIndex(v=>v==switchTestB.split(" ")[1]?.trim()?.toLowerCase())%6]??Number((!!!switchTestB.split(" ")[1]?.trim()?"~":switchTestB.split(" ")[1].trim()).replaceAll("~", String(player.selectedSlotIndex))); let fromSlot = typeof slot == "string"?player.getComponent("equippable").getEquipmentSlot(slot):player.getComponent("inventory").container.getSlot(slot); player.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlotIndex).clone())})*/
         }
         break; 
         case !!switchTest.match(/^transferitem$/): {
@@ -6977,7 +6988,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 if(!!!target){
                     player.sendMessage(`§cError: No player matching the specified target selector was found. `)
                 }else{
-                    player.getComponent("inventory").container.transferItem(player.selectedSlot, target.getComponent("inventory").container)
+                    player.getComponent("inventory").container.transferItem(player.selectedSlotIndex, target.getComponent("inventory").container)
                 }
             })
         }
@@ -7018,14 +7029,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 if((args[3]??"").trim()=="~"){args[3] = player.name}}
                 let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).find(v=>v.typeId=="minecraft:player") as Player
                 let targetb = targetSelectorAllListC(args[1], "", vTStr(player.location), player).find(v=>v.typeId=="minecraft:player") as Player
-                if((args[2]??"").trim()==""){args[2] = targetb?.selectedSlot}
-                if((args[1]??"").trim()==""){args[1] = target?.selectedSlot}
+                if((args[2]??"").trim()==""){args[2] = targetb?.selectedSlotIndex}
+                if((args[1]??"").trim()==""){args[1] = target?.selectedSlotIndex}
                 if(!!!target){
                     player.sendMessage(`§cError: No player matching the first specified target selector was found. `)
                 }else if(!!!targetb){
                     player.sendMessage(`§cError: No player matching the second specified target selector was found. `)
                 }else{
-                    system.run(()=>{target.getComponent("inventory").container.swapItems(Number(args[1].replace(/^~$/, String(target.selectedSlot))), Number(args[2].replace(/^~$/, String(targetb.selectedSlot))), targetb.getComponent("inventory").container)})
+                    system.run(()=>{target.getComponent("inventory").container.swapItems(Number(args[1].replace(/^~$/, String(target.selectedSlotIndex))), Number(args[2].replace(/^~$/, String(targetb.selectedSlotIndex))), targetb.getComponent("inventory").container)})
                     player.sendMessage(`Successfully swapped slot ${args[1]} of ${target.name}'s inventory with slot ${args[2]} of ${targetb.name}'s inventory. `)
                 }
             })
@@ -7055,8 +7066,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             if(!!!target){
                 player.sendMessage(`§cError: Unable to find player with the name ${args[2]}. `)
             }else{
-                if(switchTestB.split(/\s+/g)[1].trim()=="~"){args[1] = target.selectedSlot}
-                let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), {container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlot: target?.selectedSlot})
+                if(switchTestB.split(/\s+/g)[1].trim()=="~"){args[1] = target.selectedSlotIndex}
+                let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), {container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlotIndex: target?.selectedSlotIndex})
                 system.run(()=>{
                     if(String(args[1]).match(/^\d+$/)){
                         target.getComponent("inventory").container.transferItem(Number(args[1]), player.getComponent("inventory").container)
@@ -7430,7 +7441,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             if(!!!target){
                 player.sendMessage(`§cError: Unable to find player with the name ${args[3]}. `)
             }else{
-                if(switchTestB.split(/\s+/g)[1]?.trim()=="~"||(switchTestB.split(/\s+/g)[1]??"").trim()==""){args[1] = target.selectedSlot}
+                if(switchTestB.split(/\s+/g)[1]?.trim()=="~"||(switchTestB.split(/\s+/g)[1]??"").trim()==""){args[1] = target.selectedSlotIndex}
                 if(switchTestB.split(/\s+/g)[2]?.trim()=="~"||(switchTestB.split(/\s+/g)[2]??"").trim()==""){args[2] = 1}
                 let slot = Number(args[1])
                 let loopCount = Number(args[2])
@@ -7523,10 +7534,10 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
         case !!switchTest.match(/^\\selectmode$/): {
             eventData.cancel = true;
             const args = evaluateParameters(switchTestB, ["presetText", "string"]).args
-            if(player.getComponent("inventory").container.getItem(player.selectedSlot).typeId!="andexdb:selection_tool"){
-                player.sendMessage("§cError: The held item is not a Selection Tool.")
+            if(player.getComponent("inventory").container.getItem(player.selectedSlotIndex).isStackable){
+                player.sendMessage("§cError: The held item is a stackable item.")
             }else{
-                player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty("selectmode", args[1])
+                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("selectmode", args[1])
                 player.sendMessage(`Seccessfully set selectmode of the held item to ${args[1]}.`)
             }
         }
@@ -7566,7 +7577,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const argsa = evaluateParameters(switchTestB, ["presetText", "-sr", "blockPattern"])
             const args = [...argsa.args, argsa.extra]
             const firstblockpattern = args[1] as BlockPattern
-            const expression = ((args[1] as string).includes("s")?parseExpressionKE:parseExpression)(args[2] as string)
+            const expression = ((args[1] as string).includes("r")?parseExpressionR:(args[1] as string).includes("s")?parseExpressionKE:parseExpression)(args[2] as string)
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
             const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
             const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
@@ -7631,12 +7642,45 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
         break; 
         case !!switchTest.match(/^brush$/): {
             eventData.cancel = true;
-            const args = evaluateParameters(switchTestB, ["presetText", "string"]).args
-            if(player.getComponent("inventory").container.getItem(player.selectedSlot).isStackable){
+            let args = evaluateParameters(switchTestB, ["presetText", "-h", "string"]).args
+            if(player.getComponent("inventory").container.getItem(player.selectedSlotIndex).isStackable){
                 player.sendMessage("§cError: The held item is a stackable item.")
             }else{
-                player.getComponent("inventory").container.getSlot(player.selectedSlot).setDynamicProperty("brushtype", args[1])
-                player.sendMessage(`Seccessfully set brush type of the held item to ${args[1]}.`)
+                switch(args[2].toLowerCase()){
+                    case "none":
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "none")
+                        player.sendMessage(`Seccessfully unbound the brush from the currently held item.`)
+                    break;
+                    case "extinguish":
+                        args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "extinguish")
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[2])))?10:args[2])
+                        player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[2])))?10:args[2]}.`)
+                    break;
+                    case "ex":
+                        args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "extinguish")
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[2])))?10:args[2])
+                        player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[2])))?10:args[2]}.`)
+                    break;
+                    case "remexp":
+                        args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "remexp")
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[2])))?10:args[2])
+                        player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[2])))?10:args[2]}.`)
+                    break;
+                    case "sphere":
+                        args = evaluateParameters(switchTestB, ["presetText", "-h", "string", "blockPattern", "number"]).args
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "sphere")
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
+                        player.sendMessage(`Seccessfully set brush type of the held item to sphere with a radius of ${(isNaN(Number(args[4])))?3:args[4]}.`)
+                    break;
+                    default:
+                        player.sendMessage(`§cError: Unknown brush type "${args[2].toLowerCase()}".`)
+                    break;
+                }
             }
         }
         break; 
@@ -7701,6 +7745,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let blockHit = player.getBlockFromViewDirection({includeLiquidBlocks: false, includePassableBlocks: false})
             let dir = blockHit.face=="Down"?mcMath.VECTOR3_DOWN:blockHit.face=="Up"?mcMath.VECTOR3_UP:blockHit.face=="North"?mcMath.VECTOR3_NORTH:blockHit.face=="South"?mcMath.VECTOR3_SOUTH:blockHit.face=="East"?mcMath.VECTOR3_EAST:mcMath.VECTOR3_WEST
             srun(()=>player.teleport(mcMath.Vector3Utils.add(blockHit.block.location, dir)))
+        }
+        break; 
+        case !!switchTest.match(/^align$/): {
+            eventData.cancel = true;
+            srun(()=>player.teleport(roundVector3ToMiddleOfBlockFloorY(player.location)))
         }
         break; 
         case !!switchTest.match(/^extinguish$/)||!!switchTest.match(/^ext$/)||!!switchTest.match(/^remfire$/)||!!switchTest.match(/^ex$/): {

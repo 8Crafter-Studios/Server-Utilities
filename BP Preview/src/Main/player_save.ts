@@ -56,7 +56,7 @@ export interface savedPlayerData {
     isOp?: boolean
     spawnPoint?: DimensionLocation
     gameMode?: GameMode|string
-    selectedSlot?: number
+    selectedSlotIndex?: number
     format_version?: string|number
     player_save_format_version?: string|number
     saveId?: string
@@ -76,7 +76,7 @@ export class savedPlayer {
     isOp?: boolean
     spawnPoint?: DimensionLocation
     gameMode?: GameMode|string
-    selectedSlot?: number
+    selectedSlotIndex?: number
     scoreboardIdentity?: number
     format_version: string|number = format_version
     player_save_format_version: string|number = player_save_format_version
@@ -97,7 +97,7 @@ export class savedPlayer {
         this.location = data.location; 
         this.dimension = data.dimension; 
         this.rotation = data.rotation; 
-        this.selectedSlot = data.selectedSlot; 
+        this.selectedSlotIndex = data.selectedSlotIndex; 
         this.saveId = data.saveId??"player:"+this.id; 
     }
     save(){world.setDynamicProperty(this.saveId, JSON.stringify(this))}
@@ -112,7 +112,7 @@ export class savedPlayer {
     static getSavedPlayerIds(){return world.getDynamicPropertyIds().filter((s)=>(s.startsWith("player:")))}/*
 saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playerName}`, `${Number(ban.removeAfterBanExpires)}||${ban.unbanDate.valueOf()}||${ban.banDate.valueOf()}||${ban.originalPlayerId}||${ban.bannedById}||${ban.bannedByName.replaceAll("|", "\\|")}||${ban.reason}`)}else{if(ban.type=="id"){world.setDynamicProperty(`idBan:${ban.playerId}`, `${Number(ban.removeAfterBanExpires)}||${ban.unbanDate.valueOf()}||${ban.banDate.valueOf()}||${ban.originalPlayerName.replaceAll("|", "\\|")}||${ban.bannedById}||${ban.bannedByName.replaceAll("|", "\\|")}||${ban.reason}`)}else{}}}*/
 static savePlayerData(savedPlayerData: savedPlayerData){savedPlayerData.saveId = savedPlayerData.saveId??"player:"+savedPlayerData.id; savedPlayerData.format_version = savedPlayerData.format_version ?? format_version; savedPlayerData.player_save_format_version = savedPlayerData.player_save_format_version ?? format_version; world.setDynamicProperty(savedPlayerData.saveId??`player:${savedPlayerData.id}`, JSON.stringify(savedPlayerData)); return savedPlayerData.saveId??`player:${savedPlayerData.id}`}
-static savePlayer(player: Player){let savedPlayerData: savedPlayerData; savedPlayerData = {name: player.name, nameTag: player.nameTag, id: player.id, isOp: player.isOp(), tags: player.getTags(), items: {inventory: [], equipment: [], ender_chest: []}, selectedSlot: player.selectedSlot, format_version: format_version, player_save_format_version: player_save_format_version, lastOnline: Date.now(), location: player.location, dimension: player.dimension, rotation: player.getRotation(), gameMode: player.getGameMode(), spawnPoint: player.getSpawnPoint()}; savedPlayerData.saveId = savedPlayerData.saveId??"player:"+savedPlayerData.id; savedPlayerData.format_version = savedPlayerData.format_version ?? format_version; 
+static savePlayer(player: Player){let savedPlayerData: savedPlayerData; savedPlayerData = {name: player.name, nameTag: player.nameTag, id: player.id, isOp: player.isOp(), tags: player.getTags(), items: {inventory: [], equipment: [], ender_chest: []}, selectedSlotIndex: player.selectedSlotIndex, format_version: format_version, player_save_format_version: player_save_format_version, lastOnline: Date.now(), location: player.location, dimension: player.dimension, rotation: player.getRotation(), gameMode: player.getGameMode(), spawnPoint: player.getSpawnPoint()}; savedPlayerData.saveId = savedPlayerData.saveId??"player:"+savedPlayerData.id; savedPlayerData.format_version = savedPlayerData.format_version ?? format_version; 
 for(let i = 0; i < player.getComponent("inventory").inventorySize; i++){if (player.getComponent("inventory").container.getItem(Number(i)) !== undefined) {
     savedPlayerData.items.inventory.push({id: player.getComponent("inventory").container.getItem(Number(i)).typeId, slot: i, enchants: ((player.getComponent("inventory").container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments().length!=0)?player.getComponent("inventory").container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments():undefined), name: player.getComponent("inventory").container.getItem(Number(i))?.nameTag, count: player.getComponent("inventory").container.getItem(Number(i)).amount})}else{savedPlayerData.items.inventory.push({id: "", slot: i, count: 0})}}; 
     savedPlayerData.items.inventory.push({id: player.getComponent("equippable").getEquipment(EquipmentSlot.Head)?.typeId ?? "", slot: "Head", enchants: ((player.getComponent("equippable").getEquipment(EquipmentSlot.Head)?.getComponent("enchantable")?.getEnchantments().length!=0)?player.getComponent("equippable").getEquipment(EquipmentSlot.Head)?.getComponent("enchantable")?.getEnchantments():undefined), name: player.getComponent("equippable").getEquipment(EquipmentSlot.Head)?.nameTag, count: player.getComponent("equippable").getEquipment(EquipmentSlot.Head)?.amount ?? 0}); 

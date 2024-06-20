@@ -5,6 +5,18 @@
 		"giant_stick": {
 			"textures": [ "textures/items/giant_stick.png" ]
 		},
+		"blue_brush": {
+			"textures": [ "textures/items/blue_brush.png" ]
+		},
+		"wide_brush": {
+			"textures": [ "textures/items/wide_brush.png" ]
+		},
+		"invisible": {
+			"textures": [ "textures/blocks/friction_block.png" ]
+		},
+		"gray_outline": {
+			"textures": [ "textures/blocks/gray_outline_block_texture.png" ]
+		},
 		"diamond_blue_up_arrow_transform_template": {
 			"textures": [ "textures/items/diamond_blue_up_arrow_transform_template.png" ]
 		},

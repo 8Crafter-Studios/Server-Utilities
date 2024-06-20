@@ -33,7 +33,7 @@
             "generatedSourceRoot": "${workspaceFolder}/BP Preview/scripts",
             "sourceMapRoot": "${workspaceFolder}/BP Preview/scripts",
             "host": "localhost",
-            "port": 19143
+            "port": 19144
         },
         {
             "type": "minecraft-js",
@@ -41,10 +41,10 @@
             "name": "Wait for MCPV Debug Connections",
             "mode": "listen",
             "localRoot": "${workspaceFolder}/BP Preview/src",
-            "generatedSourceRoot": "${workspaceFolder}/BP Preview /scripts",
+            "generatedSourceRoot": "${workspaceFolder}/BP Preview/scripts",
             "sourceMapRoot": "${workspaceFolder}/BP Preview/scripts",
             "host": "localhost",
-            "port": 19143
+            "port": 19144
         }
     ]
 }

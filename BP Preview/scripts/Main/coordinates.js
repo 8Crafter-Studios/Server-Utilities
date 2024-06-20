@@ -1915,16 +1915,18 @@ export function* generateMinecraftSphereBG(center, radius, dimension, generateMi
         const centerX = center.x;
         const centerY = center.y;
         const centerZ = center.z;
+        var index = 0n;
         generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
         var msSinceLastYieldStart = Date.now();
         if (integrity != 100) {
             for (let x = centerX - radius; x <= centerX + radius; x++) {
                 for (let y = centerY - radius; y <= centerY + radius; y++) {
                     for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                        index++;
                         const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
                         if (distanceSquared <= Math.pow(radius, 2)) {
                             if (Math.random() <= (integrity / 100)) {
-                                placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                                placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                             }
                         }
                     }
@@ -1943,9 +1945,12 @@ export function* generateMinecraftSphereBG(center, radius, dimension, generateMi
             for (let x = centerX - radius; x <= centerX + radius; x++) {
                 for (let y = centerY - radius; y <= centerY + radius; y++) {
                     for (let z = centerZ - radius; z <= centerZ + radius; z++) {
-                        const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
-                        if (distanceSquared <= Math.pow(radius, 2)) {
-                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                        for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                            index++;
+                            const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                            if (distanceSquared <= Math.pow(radius, 2)) {
+                                placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
+                            }
                         }
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {

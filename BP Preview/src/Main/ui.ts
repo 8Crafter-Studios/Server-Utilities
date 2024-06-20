@@ -1129,7 +1129,7 @@ export function playerController(sourceEntity: Entity|Player, message: string = 
         form.textField("Trigger Event", "Trigger Event")
         form.textField("addExperience", "Experience Amount")
         form.textField("addLevels", "Level Amount")
-        form.slider("Selected Slot", 0, 56, 1, playerList[playerTargetB].selectedSlot)
+        form.slider("Selected Slot", 0, 56, 1, playerList[playerTargetB].selectedSlotIndex)
         form.slider("§4Scale", 0, 10, 0.5)
         form.toggle("Is Sneaking", playerList[playerTargetB].isSneaking)
         form.toggle("Clear Velocity", false)
@@ -1199,7 +1199,7 @@ export function playerController(sourceEntity: Entity|Player, message: string = 
         forceShow(form, playerList[playerViewerB]).then(r => {
             if (r.canceled) return;
 
-            let [ changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug ] = (r as ModalFormResponse).formValues;
+            let [ changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlotIndex, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug ] = (r as ModalFormResponse).formValues;
             let newNameTag = String(nameTag)
             if (Boolean(multilineNameTag) == true) {newNameTag = String(nameTag).split("\\\\newline").join("\n");}
 /*      
@@ -1212,7 +1212,7 @@ export function playerController(sourceEntity: Entity|Player, message: string = 
                 try {playerList[playerTargetB].nameTag = String(newNameTag);} catch(e){console.error(e, e.stack);}
             }
             playerList[playerTargetB].isSneaking = Boolean(isSneaking);
-            playerList[playerTargetB].selectedSlot = Number(selectedSlot);
+            playerList[playerTargetB].selectedSlotIndex = Number(selectedSlotIndex);
             if (Boolean(addEffect) == true) {
                 try {playerList[playerTargetB].addEffect(String(effectToAdd), Number(secondsOfEffect), {amplifier: Number(effectAmplifier), showParticles: Boolean(effectShowEffectParticles)});} catch(e){console.error(e, e.stack);}
             }
@@ -1715,7 +1715,7 @@ forceShow(form, playerList[playerList.findIndex((x) => x == sourceEntity)]).then
     let r = (ro as ModalFormResponse)
     if (r.canceled) return;
 
-    let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled/*, selectedSlot*/, isWaterlogged/*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = r.formValues;
+    let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled/*, selectedSlotIndex*/, isWaterlogged/*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = r.formValues;
     let blockPropertyValue2: any
     blockPropertyValue2 = ""
     let blockPropertyValueArray: Array<any>
@@ -1887,7 +1887,7 @@ export function editorStickB(sourceEntity: Entity|Player, dimensionLocation: Dim
 forceShow(form, sourceEntity as Player).then(r => {
     if (r.canceled) return;
 
-    let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled/*, selectedSlot*/, isWaterlogged/*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = (r as ModalFormResponse).formValues;
+    let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled/*, selectedSlotIndex*/, isWaterlogged/*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = (r as ModalFormResponse).formValues;
     let blockPropertyValue2: any
     blockPropertyValue2 = ""
     let blockPropertyValueArray: Array<any>
