@@ -53,7 +53,7 @@ export const subscribedEvents = {} as {[eventName: string]: Function}
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector } from "Main/coordinates";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector, dirmap, diroffsetmap, diroffsetothersmap } from "Main/coordinates";
 import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput, BlockPattern } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "Main/player_save.js";
@@ -3615,6 +3615,40 @@ world.beforeEvents.itemUse.subscribe(event => {
                 }
             }
             break;
+            case "cube": {
+                const loc = event.source.getBlockFromViewDirection({includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable")})?.block?.location
+                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius")??3))?3:Number(event.itemStack.getDynamicProperty("radius")??3)
+                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype")??"random") as "random"|"sequence")
+                if(!!!loc){
+                    event.source.sendMessage("§cError: You must be facing a block.")
+                }else if(!!!event.itemStack.getDynamicProperty("pattern")){
+                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.")
+                }else{
+                    const pos = coords.roundVector3ToMiddleOfBlock(loc)
+                    const blocktypes = BlockTypes.getAll()
+                    //console.warn("a")
+                    try{fillBlocksHFGB({x: pos.x-radius, y: pos.y-radius, z: pos.z-radius}, {x: pos.x+radius, y: pos.y+radius, z: pos.z+radius}, event.source.dimension, (l, i)=>{const b = blockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {minMSBetweenYields: 2500}, undefined, true, 100)}catch(e){event.source.sendMessage("§c" + e + e.stack)}
+                }
+            }
+            break;
+            case "square": {
+                const loca = event.source.getBlockFromViewDirection({includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable")})
+                const locb = dirmap(loca.face)
+                const loc = loca?.block?.location
+                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius")??3))?3:Number(event.itemStack.getDynamicProperty("radius")??3)
+                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype")??"random") as "random"|"sequence")
+                if(!!!loc){
+                    event.source.sendMessage("§cError: You must be facing a block.")
+                }else if(!!!event.itemStack.getDynamicProperty("pattern")){
+                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.")
+                }else{
+                    const pos = coords.roundVector3ToMiddleOfBlock(loc)
+                    const blocktypes = BlockTypes.getAll()
+                    //console.warn("a")
+                    try{fillBlocksHFGB(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i)=>{const b = blockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {minMSBetweenYields: 2500}, undefined, true, 100)}catch(e){event.source.sendMessage("§c" + e + e.stack)}
+                }
+            }
+            break;
             case "splatter": {
                 const loc = event.source.getBlockFromViewDirection({includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable")})?.block?.location
                 const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius")??3))?3:Number(event.itemStack.getDynamicProperty("radius")??3)
@@ -3629,6 +3663,101 @@ world.beforeEvents.itemUse.subscribe(event => {
                     const blocktypes = BlockTypes.getAll()
                     //console.warn("a")
                     try{fillBlocksSHFGB(pos, radius, event.source.dimension, (l, i)=>{if(((Math.max(0.0001, Math.random()))<((Vector.distance(pos, l)/radius)*(decay/10)))||(tryget(()=>l.dimension.getBlock(l).isAir)??true)){return null}; const b = blockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {minMSBetweenYields: 2500}, undefined, true, 100)}catch(e){event.source.sendMessage("§c" + e + e.stack)}
+                }
+            }
+            break;
+            case "splattercube": {
+                const loc = event.source.getBlockFromViewDirection({includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable")})?.block?.location
+                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius")??3))?3:Number(event.itemStack.getDynamicProperty("radius")??3)
+                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay")??0))?0:Number(event.itemStack.getDynamicProperty("decay")??0)
+                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype")??"random") as "random"|"sequence")
+                if(!!!loc){
+                    event.source.sendMessage("§cError: You must be facing a block.")
+                }else if(!!!event.itemStack.getDynamicProperty("pattern")){
+                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.")
+                }else{
+                    const pos = coords.roundVector3ToMiddleOfBlock(loc)
+                    const blocktypes = BlockTypes.getAll()
+                    //console.warn("a")
+                    try{fillBlocksHFGB({x: pos.x-radius, y: pos.y-radius, z: pos.z-radius}, {x: pos.x+radius, y: pos.y+radius, z: pos.z+radius}, event.source.dimension, (l, i)=>{if(((Math.max(0.0001, Math.random()))<((Vector.distance(pos, l)/radius)*(decay/10)))||(tryget(()=>l.dimension.getBlock(l).isAir)??true)){return null}; const b = blockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {minMSBetweenYields: 2500}, undefined, true, 100)}catch(e){event.source.sendMessage("§c" + e + e.stack)}
+                }
+            }
+            break;
+            case "splattersquare": {
+                const loca = event.source.getBlockFromViewDirection({includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable")})
+                const locb = dirmap(loca.face)
+                const loc = loca?.block?.location
+                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius")??3))?3:Number(event.itemStack.getDynamicProperty("radius")??3)
+                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay")??0))?0:Number(event.itemStack.getDynamicProperty("decay")??0)
+                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype")??"random") as "random"|"sequence")
+                if(!!!loc){
+                    event.source.sendMessage("§cError: You must be facing a block.")
+                }else if(!!!event.itemStack.getDynamicProperty("pattern")){
+                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.")
+                }else{
+                    const pos = coords.roundVector3ToMiddleOfBlock(loc)
+                    const blocktypes = BlockTypes.getAll()
+                    //console.warn("a")
+                    try{fillBlocksHFGB(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i)=>{if(((Math.max(0.0001, Math.random()))<((Vector.distance(pos, l)/radius)*(decay/10)))||(tryget(()=>l.dimension.getBlock(l).isAir)??true)){return null}; const b = blockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {minMSBetweenYields: 2500}, undefined, true, 100)}catch(e){event.source.sendMessage("§c" + e + e.stack)}
+                }
+            }
+            break;
+            case "splattersurface": {
+                const loca = event.source.getBlockFromViewDirection({includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable")})
+                const locb = dirmap(loca.face)
+                const loc = loca?.block?.location
+                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius")??3))?3:Number(event.itemStack.getDynamicProperty("radius")??3)
+                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay")??0))?0:Number(event.itemStack.getDynamicProperty("decay")??0)
+                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype")??"random") as "random"|"sequence")
+                if(!!!loc){
+                    event.source.sendMessage("§cError: You must be facing a block.")
+                }else if(!!!event.itemStack.getDynamicProperty("pattern")){
+                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.")
+                }else{
+                    const pos = coords.roundVector3ToMiddleOfBlock(loc)
+                    const blocktypes = BlockTypes.getAll()
+                    //console.warn("a")
+                    try{fillBlocksSHFGB(pos, radius, event.source.dimension, (l, i)=>{if(((Math.max(0.0001, Math.random()))<((Vector.distance(pos, l)/radius)*(decay/10)))||(tryget(()=>l.dimension.getBlock(l).isAir)??true)||((tryget(()=>l.dimension.getBlock(l)[locb]().isAir)??true))){return null}; const b = blockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {minMSBetweenYields: 2500}, undefined, true, 100)}catch(e){event.source.sendMessage("§c" + e + e.stack)}
+                }
+            }
+            break;
+            case "splattercubesurface": {
+                const loca = event.source.getBlockFromViewDirection({includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable")})
+                const locb = dirmap(loca.face)
+                const loc = loca?.block?.location
+                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius")??3))?3:Number(event.itemStack.getDynamicProperty("radius")??3)
+                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay")??0))?0:Number(event.itemStack.getDynamicProperty("decay")??0)
+                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype")??"random") as "random"|"sequence")
+                if(!!!loc){
+                    event.source.sendMessage("§cError: You must be facing a block.")
+                }else if(!!!event.itemStack.getDynamicProperty("pattern")){
+                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.")
+                }else{
+                    const pos = coords.roundVector3ToMiddleOfBlock(loc)
+                    //const cornerradius = Vector.distance(pos, {x: pos.x-radius, y: pos.y-radius, z: pos.z-radius})
+                    const blocktypes = BlockTypes.getAll()
+                    //console.warn("a")
+                    try{fillBlocksHFGB({x: pos.x-radius, y: pos.y-radius, z: pos.z-radius}, {x: pos.x+radius, y: pos.y+radius, z: pos.z+radius}, event.source.dimension, (l, i)=>{if(((Math.max(0.0001, Math.random()))<((Math.min(radius, Vector.distance(pos, l))/radius)*(decay/10)))||(tryget(()=>l.dimension.getBlock(l).isAir)??true)||((tryget(()=>l.dimension.getBlock(l)[locb]().isAir)??true))){return null}; const b = blockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {minMSBetweenYields: 2500}, undefined, true, 100)}catch(e){event.source.sendMessage("§c" + e + e.stack)}
+                }
+            }
+            break;
+            case "splattersquaresurface": {
+                const loca = event.source.getBlockFromViewDirection({includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable")})
+                const locb = dirmap(loca.face)
+                const loc = loca?.block?.location
+                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius")??3))?3:Number(event.itemStack.getDynamicProperty("radius")??3)
+                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay")??0))?0:Number(event.itemStack.getDynamicProperty("decay")??0)
+                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype")??"random") as "random"|"sequence")
+                if(!!!loc){
+                    event.source.sendMessage("§cError: You must be facing a block.")
+                }else if(!!!event.itemStack.getDynamicProperty("pattern")){
+                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.")
+                }else{
+                    const pos = coords.roundVector3ToMiddleOfBlock(loc)
+                    //const cornerradius = Vector.distance(pos, {x: pos.x-radius, y: pos.y-radius, z: pos.z-radius})
+                    const blocktypes = BlockTypes.getAll()
+                    //console.warn("a")
+                    try{fillBlocksHFGB(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i)=>{if(((Math.max(0.0001, Math.random()))<((Math.min(radius, Vector.distance(pos, l))/radius)*(decay/10)))||(tryget(()=>l.dimension.getBlock(l).isAir)??true)||((tryget(()=>l.dimension.getBlock(l)[locb]().isAir)??true))){return null}; const b = blockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {minMSBetweenYields: 2500}, undefined, true, 100)}catch(e){event.source.sendMessage("§c" + e + e.stack)}
                 }
             }
             break;
@@ -3648,6 +3777,43 @@ world.beforeEvents.itemUse.subscribe(event => {
             }
             break;
             case "remexp": {
+                //console.warn("d")
+                const loc = event.source.getBlockFromViewDirection({includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable")})?.block?.location
+                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius")??10))?10:Number(event.itemStack.getDynamicProperty("radius")??10)
+                if(!!!loc){
+                    event.source.sendMessage("§cError: You must be facing a block.")
+                }else{
+                    const pos = coords.roundVector3ToMiddleOfBlock(loc)
+                    let froma = mcMath.Vector3Utils.subtract(pos, {x: radius, y: radius, z: radius})
+                    let from = {x: froma.x, y: froma.y, z: froma.z}
+                    let toa = mcMath.Vector3Utils.add(pos, {x: radius, y: radius, z: radius})
+                    let to = {x: toa.x, y: toa.y, z: toa.z}
+                    switch(event.source.dimension.id){
+                        case "minecraft:overworld": 
+                            try{system.run(()=>{fillBlocksHB(from, to, event.source.dimension, "air", undefined, {matchingBlock: "tnt"}); fillBlocksHB(from, to, event.source.dimension, "air", undefined, {matchingBlock: "respawn_anchor"})}); }catch(e){event.source.sendMessage("§c" + e + e.stack)}
+                        break; 
+                        case "minecraft:nether": 
+                            try{system.run(()=>{fillBlocksHB(from, to, event.source.dimension, "air", undefined, {matchingBlock: "tnt"}); fillBlocksHB(from, to, event.source.dimension, "air", undefined, {matchingBlock: "bed"})}); }catch(e){event.source.sendMessage("§c" + e + e.stack)}
+                        break; 
+                        case "minecraft:the_end": 
+                            try{system.run(()=>{fillBlocksHB(from, to, event.source.dimension, "air", undefined, {matchingBlock: "tnt"}); fillBlocksHB(from, to, event.source.dimension, "air", undefined, {matchingBlock: "respawn_anchor"}); fillBlocksHB(from, to, event.source.dimension, "air", undefined, {matchingBlock: "bed"})}); }catch(e){event.source.sendMessage("§c" + e + e.stack)}
+                        break; 
+                        default: 
+                            try{system.run(()=>{fillBlocksHB(from, to, event.source.dimension, "air", undefined, {matchingBlock: "tnt"})}); }catch(e){event.source.sendMessage("§c" + e + e.stack)}
+                    }
+                    [
+                        ...event.source.dimension.getEntities({location: pos, type: "minecraft:tnt", maxDistance: radius}), 
+                        ...event.source.dimension.getEntities({location: pos, type: "minecraft:tnt_minecart", maxDistance: radius}), 
+                        ...event.source.dimension.getEntities({location: pos, type: "projectile:tnt", maxDistance: radius}), 
+                        ...event.source.dimension.getEntities({location: pos, type: "andexsa:fire_tnt_arrow", maxDistance: radius}), 
+                        ...event.source.dimension.getEntities({location: pos, type: "andexsa:normal_fire_tnt_arrow", maxDistance: radius}), 
+                        ...event.source.dimension.getEntities({location: pos, type: "andexsa:normal_tnt_arrow", maxDistance: radius}), 
+                        ...event.source.dimension.getEntities({location: pos, type: "andexsa:tnt_arrow", maxDistance: radius})
+                    ].forEach(v=>v.remove())
+                }
+            }
+            break;
+            case "remexpne": {
                 //console.warn("d")
                 const loc = event.source.getBlockFromViewDirection({includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable")})?.block?.location
                 const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius")??10))?10:Number(event.itemStack.getDynamicProperty("radius")??10)

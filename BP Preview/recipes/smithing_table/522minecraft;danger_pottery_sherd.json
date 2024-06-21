@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 522},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:danger_pottery_sherd"
+        "result": {"item": "minecraft:danger_pottery_sherd"}
     }
 }

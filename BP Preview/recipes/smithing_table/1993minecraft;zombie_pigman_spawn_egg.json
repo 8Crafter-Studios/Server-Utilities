@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 1993},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:zombie_pigman_spawn_egg"
+        "result": {"item": "minecraft:zombie_pigman_spawn_egg"}
     }
 }

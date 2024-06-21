@@ -1,4 +1,4 @@
-import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume, BoundingBoxUtils } from "@minecraft/server";
+import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume, BoundingBoxUtils, Direction } from "@minecraft/server";
 import { targetSelectorAllListC, targetSelectorAllListE, format_version } from "../Main";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
@@ -366,6 +366,9 @@ export function* generateMathExpression(expression, generateCallback, from, to, 
     }
     return count;
 }
+export function dirmap(direction) { return { Up: "above", Down: "below", East: "east", West: "west", North: "north", South: "south" }[direction]; }
+export function diroffsetmap(direction) { return { Up: Vector.up, Down: Vector.down, East: Vector.east, West: Vector.west, North: Vector.north, South: Vector.south }[direction]; }
+export function diroffsetothersmap(direction) { return { Up: { x: 1, y: 0, z: 1 }, Down: { x: 1, y: 0, z: 1 }, East: { x: 0, y: 1, z: 1 }, West: { x: 0, y: 1, z: 1 }, North: { x: 1, y: 1, z: 0 }, South: { x: 1, y: 1, z: 0 } }[direction]; }
 export function facingPoint(location, otherLocation) {
     const sl = location;
     const ol = otherLocation;

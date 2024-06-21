@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 1272},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:muddy_mangrove_roots"
+        "result": {"item": "minecraft:muddy_mangrove_roots"}
     }
 }

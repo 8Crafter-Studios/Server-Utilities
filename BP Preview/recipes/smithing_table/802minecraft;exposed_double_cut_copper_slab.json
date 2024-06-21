@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 802},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:exposed_double_cut_copper_slab"
+        "result": {"item": "minecraft:exposed_double_cut_copper_slab"}
     }
 }

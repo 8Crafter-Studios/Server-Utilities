@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 961},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:hard_yellow_stained_glass"
+        "result": {"item": "minecraft:hard_yellow_stained_glass"}
     }
 }

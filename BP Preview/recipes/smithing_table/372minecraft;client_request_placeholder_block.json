@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 372},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:client_request_placeholder_block"
+        "result": {"item": "minecraft:client_request_placeholder_block"}
     }
 }

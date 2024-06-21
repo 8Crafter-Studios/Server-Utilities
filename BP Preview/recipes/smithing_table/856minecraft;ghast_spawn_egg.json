@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 856},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:ghast_spawn_egg"
+        "result": {"item": "minecraft:ghast_spawn_egg"}
     }
 }
