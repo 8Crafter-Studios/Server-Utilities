@@ -52,7 +52,7 @@ export const subscribedEvents = {};
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG } from "Main/coordinates";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector } from "Main/coordinates";
 import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput, BlockPattern } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer } from "Main/player_save.js";
@@ -66,6 +66,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
+import * as transformrecipes from "transformrecipes";
 import * as coords from "Main/coordinates";
 import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
@@ -74,6 +75,7 @@ import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js"; /*
 import { disableWatchdog } from "@minecraft/debug-utilities";*/
+import { listoftransformrecipes } from "transformrecipes";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -82,6 +84,7 @@ mcCommon*/
 GameTest; /*
 mcVanillaData*/
 main;
+transformrecipes;
 coords;
 cmds;
 bans;
@@ -2719,8 +2722,10 @@ export async function fillBlocksSHFGB(begin, radius, dimension, block, options, 
                     if (!!v.dimension.getBlock(v).getComponent("inventory")) {
                         clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
                     }
-                    v.dimension.getBlock(v).setPermutation(block(v, index));
-                    counter++;
+                    if (!!block(v, index)) {
+                        v.dimension.getBlock(v).setPermutation(block(v, index));
+                        counter++;
+                    }
                 }
                 catch (e) {
                     if (e instanceof TypeError) {
@@ -2732,8 +2737,10 @@ export async function fillBlocksSHFGB(begin, radius, dimension, block, options, 
         else {
             system.runJob(generateMinecraftSphereBG(begin, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
                 try {
-                    v.dimension.getBlock(v).setPermutation(block(v, index));
-                    counter++;
+                    if (!!block(v, index)) {
+                        v.dimension.getBlock(v).setPermutation(block(v, index));
+                        counter++;
+                    }
                 }
                 catch (e) {
                     if (e instanceof TypeError) {
@@ -2751,8 +2758,10 @@ export async function fillBlocksSHFGB(begin, radius, dimension, block, options, 
                 currentBlock = block(v, index);
                 if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), currentBlock.getAllStates())).filter(v => !!(Object.entries(BlockPermutation.resolve(currentBlock.type.id).getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
                     try {
-                        v.dimension.getBlock(v).setPermutation(currentBlock);
-                        counter++;
+                        if (!!block(v, index)) {
+                            v.dimension.getBlock(v).setPermutation(currentBlock);
+                            counter++;
+                        }
                     }
                     catch (e) {
                         if (e instanceof TypeError) {
@@ -2770,8 +2779,10 @@ export async function fillBlocksSHFGB(begin, radius, dimension, block, options, 
                 }
                 if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), currentBlock.getAllStates())).filter(v => !!(Object.entries(BlockPermutation.resolve(currentBlock.type.id).getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
                     try {
-                        v.dimension.getBlock(v).setPermutation(currentBlock);
-                        counter++;
+                        if (!!block(v, index)) {
+                            v.dimension.getBlock(v).setPermutation(currentBlock);
+                            counter++;
+                        }
                     }
                     catch (e) {
                         if (e instanceof TypeError) {
@@ -5487,12 +5498,12 @@ console.error(e, e.stack);
     ;
     if (!!event.itemStack.getDynamicProperty("brushtype")) {
         try {
-            console.warn("b");
+            //console.warn("b")
             switch (String(event.itemStack.getDynamicProperty("brushtype")).toLowerCase()) {
                 case "sphere":
                     {
                         const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
-                        const radius = isNaN(Number(event.source.getDynamicProperty("radius") ?? 3)) ? 3 : Number(event.source.getDynamicProperty("radius") ?? 3);
+                        const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3)) ? 3 : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
                         const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
                         if (!!!loc) {
                             event.source.sendMessage("§cError: You must be facing a block.");
@@ -5503,9 +5514,36 @@ console.error(e, e.stack);
                         else {
                             const pos = coords.roundVector3ToMiddleOfBlock(loc);
                             const blocktypes = BlockTypes.getAll();
-                            console.warn("a");
+                            //console.warn("a")
                             try {
                                 fillBlocksSHFGB(pos, radius, event.source.dimension, (l, i) => { const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
+                            }
+                            catch (e) {
+                                event.source.sendMessage("§c" + e + e.stack);
+                            }
+                        }
+                    }
+                    break;
+                case "splatter":
+                    {
+                        const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
+                        const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3)) ? 3 : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                        const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0)) ? 0 : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                        const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                        if (!!!loc) {
+                            event.source.sendMessage("§cError: You must be facing a block.");
+                        }
+                        else if (!!!event.itemStack.getDynamicProperty("pattern")) {
+                            event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
+                        }
+                        else {
+                            const pos = coords.roundVector3ToMiddleOfBlock(loc);
+                            const blocktypes = BlockTypes.getAll();
+                            //console.warn("a")
+                            try {
+                                fillBlocksSHFGB(pos, radius, event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Vector.distance(pos, l) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true)) {
+                                    return null;
+                                } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
                             }
                             catch (e) {
                                 event.source.sendMessage("§c" + e + e.stack);
@@ -5516,7 +5554,7 @@ console.error(e, e.stack);
                 case "extinguish":
                     {
                         const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
-                        const radius = isNaN(Number(event.source.getDynamicProperty("radius") ?? 10)) ? 10 : Number(event.source.getDynamicProperty("radius") ?? 10);
+                        const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 10)) ? 10 : Number(event.itemStack.getDynamicProperty("radius") ?? 10);
                         if (!!!loc) {
                             event.source.sendMessage("§cError: You must be facing a block.");
                         }
@@ -5537,9 +5575,9 @@ console.error(e, e.stack);
                     break;
                 case "remexp":
                     {
-                        console.warn("d");
+                        //console.warn("d")
                         const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
-                        const radius = isNaN(Number(event.source.getDynamicProperty("radius") ?? 10)) ? 10 : Number(event.source.getDynamicProperty("radius") ?? 10);
+                        const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 10)) ? 10 : Number(event.itemStack.getDynamicProperty("radius") ?? 10);
                         if (!!!loc) {
                             event.source.sendMessage("§cError: You must be facing a block.");
                         }
@@ -5586,7 +5624,7 @@ console.error(e, e.stack);
                     }
                     break;
                 default:
-                    console.warn("c");
+                    //console.warn("c")
                     break;
             }
         }

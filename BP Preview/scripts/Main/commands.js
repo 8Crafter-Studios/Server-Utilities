@@ -5,6 +5,7 @@ import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor } from "./ui.js";
+import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
@@ -13,6 +14,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "../Main";
+import * as transformrecipes from "transformrecipes";
 import * as coords from "./coordinates";
 import * as cmds from "./commands";
 import * as bans from "./ban";
@@ -762,23 +764,24 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventories", escregexp: { v: "^swapinventories$" }, aliases: [{ commandName: "invswap", escregexp: { v: "^invswap$" } }], formats: [{ format: "swapinventories <player1: string|~> <player2: string|~>" }], command_version: "0.2.1-beta.1", description: "Swaps the inventory, offhand, hotbar, and armor of two specified players. ", category: ["players"], commandSettingsId: "built-inCommandSettings:swapinventories" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventoriesb", escregexp: { v: "^swapinventoriesb$" }, aliases: [{ commandName: "invswapb", escregexp: { v: "^invswapb$" } }], formats: [{ format: "swapinventoriesb <player1: string|~> <player2: string|~>" }], command_version: "0.2.1-beta.1", description: "Swaps the inventory and hotbar of two specified players. ", category: ["players"], commandSettingsId: "built-inCommandSettings:swapinventoriesb" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitems", escregexp: { v: "^compressitems$" }, formats: [{ format: "compressitems [mode: inventory|hotbar|armor|equipment|all] [target: string|~]" }], command_version: "1.0.0-rc.5", description: "Compresses your items into chest(s) and gives you those chest(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitems" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemsshulker", escregexp: { v: "^compressitemsshulker$" }, formats: [{ format: "compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]" }], command_version: "1.0.0-rc.5", description: "Compresses your items into shulker box(es) and gives you those shulker box(es) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemsshulker" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainer", escregexp: { v: "^compressitemscontainer$" }, formats: [{ format: "compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]" }], command_version: "1.0.0-rc.5", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemscontainer" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemsshulker", escregexp: { v: "^compressitemsshulker$" }, formats: [{ format: "compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]" }], command_version: "1.0.0", description: "Compresses your items into shulker box(es) and gives you those shulker box(es) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemsshulker" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainer", escregexp: { v: "^compressitemscontainer$" }, formats: [{ format: "compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]" }], command_version: "1.0.0", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemscontainer" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainerb", escregexp: { v: "^compressitemscontainerb$" }, formats: [{ format: "compressitemscontainerb [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]" }], command_version: "0.0.1-alpha.76", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemscontainerb" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchest", escregexp: { v: "^scanenderchest$" }, aliases: [{ commandName: "ecinvsee", escregexp: { v: "^ecinvsee$" } }, { commandName: "scnendchest", escregexp: { v: "^scnendchest$" } }], formats: [{ format: "scanenderchest [targets: targetSelector|~]" }], command_version: "0.2.0-alpha.17", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchest" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "scanenderchestc", escregexp: { v: "^scanenderchestc$" }, aliases: [{ commandName: "ecinvseec", escregexp: { v: "^ecinvseec$" } }, { commandName: "scnendchestc", escregexp: { v: "^scnendchestc$" } }], formats: [{ format: "scanenderchestc [target: string|~]" }], command_version: "0.3.0-alpha.36", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchestc" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "clearenderchestslot", escregexp: { v: "^clearenderchestslot$" }, formats: [{ format: "clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.2.0-alpha.37", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:clearenderchestslot" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "clearenderchest", escregexp: { v: "^clearenderchest$" }, formats: [{ format: "clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.0.0", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:clearenderchest" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "scanenderchest", escregexp: { v: "^scanenderchest$" }, aliases: [{ commandName: "ecinvsee", escregexp: { v: "^ecinvsee$" } }, { commandName: "scnendchest", escregexp: { v: "^scnendchest$" } }], formats: [{ format: "scanenderchest [targets: targetSelector|~]" }], command_version: "0.2.0-beta.17", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchest" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "scanenderchestc", escregexp: { v: "^scanenderchestc$" }, aliases: [{ commandName: "ecinvseec", escregexp: { v: "^ecinvseec$" } }, { commandName: "scnendchestc", escregexp: { v: "^scnendchestc$" } }], formats: [{ format: "scanenderchestc [target: string|~]" }], command_version: "0.3.0-beta.36", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchestc" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "clearenderchestslot", escregexp: { v: "^clearenderchestslot$" }, formats: [{ format: "clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.2.0-beta.37", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:clearenderchestslot" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "clearenderchest", escregexp: { v: "^clearenderchest$" }, formats: [{ format: "clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.1.0-beta.1", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:clearenderchest" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "filljunk", escregexp: { v: "^filljunk$" }, aliases: [{ commandName: "invfilljunk", escregexp: { v: "^invfilljunk$" } }], formats: [{ format: "filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.9.0-alpha.21", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:filljunk" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "fillrandom", escregexp: { v: "^fillrandom$" }, aliases: [{ commandName: "invfillrandom", escregexp: { v: "^invfillrandom$" } }], formats: [{ format: "fillrandom [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "1.0.0-rc.77", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillrandom" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillop", escregexp: { v: "^fillop$" }, aliases: [{ commandName: "invfillop", escregexp: { v: "^invfillop$" } }], formats: [{ format: "fillop [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.9.0-alpha.21", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillop" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillillegal", escregexp: { v: "^fillillegal$" }, aliases: [{ commandName: "invfillillegal", escregexp: { v: "^invfillillegal$" } }], formats: [{ format: "fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]" }], command_version: "0.9.0-alpha.21", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillillegal" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillinventory", escregexp: { v: "^fillinventory$" }, aliases: [{ commandName: "invfill", escregexp: { v: "^invfill$" } }], formats: [{ format: "fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]" }], command_version: "1.0.0-beta.17", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillinventory" },
     { type: "built-in", requiredTags: ["canUseChatCommands", "canUseDangerousCommands"], formatting_code: "§r§4", commandName: "chunkban", escregexp: { v: "^chunkban$" }, formats: [{ format: "chunkban [slot: int|~] [loopCount: int] [target: string|~]" }], command_version: "0.0.1-beta.72", description: "", category: ["dangerous"], commandSettingsId: "built-inCommandSettings:chunkban" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "rank", escregexp: { v: "^rank$" }, formats: [{ format: "rank <players: targetSelector> <mode: add|remove> <tag: string>" }, { format: "rank <players: targetSelector> clear" }], command_version: "1.0.0-rc.1", description: "Adds, removes, or clears ranks from a player. ", category: ["players"], commandSettingsId: "built-inCommandSettings:rank" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "extinguish", escregexp: { v: "^extinguish$" }, aliases: [{ commandName: "ext", escregexp: { v: "^ext$" } }, { commandName: "ex", escregexp: { v: "^ex$" } }, { commandName: "remfire", escregexp: { v: "^remfire$" } }], formats: [{ format: "extinguish [radius: number]" }], command_version: "2.2.0-beta.10", description: "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:extinguish" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "remexp", escregexp: { v: "^remexp$" }, formats: [{ format: "remexp [radius: number]" }], command_version: "2.2.0-beta.5", description: "Removes explosives in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:remexp" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "drain", escregexp: { v: "^drain$" }, formats: [{ format: "drain [radius: number]" }], command_version: "2.2.0-beta.5", description: "Drains liquids in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:drain" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "rank", escregexp: { v: "^rank$" }, formats: [{ format: "rank <players: targetSelector> <mode: add|remove> <tag: string>" }, { format: "rank <players: targetSelector> clear" }], command_version: "1.0.0", description: "Adds, removes, or clears ranks from a player. ", category: ["players"], commandSettingsId: "built-inCommandSettings:rank" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "ignite", escregexp: { v: "^ignite$" }, formats: [{ format: "ignite [radius: number]" }], command_version: "2.3.0-beta.17", description: "Ignites air blocks in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:ignite" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "extinguish", escregexp: { v: "^extinguish$" }, aliases: [{ commandName: "ext", escregexp: { v: "^ext$" } }, { commandName: "ex", escregexp: { v: "^ex$" } }, { commandName: "remfire", escregexp: { v: "^remfire$" } }], formats: [{ format: "extinguish [radius: number]" }], command_version: "2.2.0-beta.10", description: "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:extinguish" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "remexp", escregexp: { v: "^remexp$" }, formats: [{ format: "remexp [radius: number]" }], command_version: "2.3.0", description: "Removes explosives in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:remexp" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "drain", escregexp: { v: "^drain$" }, formats: [{ format: "drain [radius: number]" }], command_version: "2.3.0", description: "Drains liquids in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:drain" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "summon", escregexp: { v: "^summon$" }, formats: [{ format: "summon" }], command_version: "1.0.0", description: "", category: ["entities"], commandSettingsId: "built-inCommandSettings:summon" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "spawnitem", escregexp: { v: "^spawnitem$" }, formats: [{ format: "spawnitem" }], command_version: "1.0.0", description: "", category: ["entities", "items"], commandSettingsId: "built-inCommandSettings:spawnitem" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "heal", escregexp: { v: "^heal$" }, formats: [{ format: "heal" }], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:heal" },
@@ -816,6 +819,7 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "replacenear", escregexp: { v: "^replacenear$" }, formats: [{ format: "replacenear" }], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:replacenear" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "jumpto", escregexp: { v: "^jumpto$" }, aliases: [{ commandName: "j", escregexp: { v: "^j$" } }], formats: [{ format: "jumpto" }], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:jumpto" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "align", escregexp: { v: "^align$" }, formats: [{ format: "align" }], command_version: "1.0.0", description: "", category: ["world", "players"], commandSettingsId: "built-inCommandSettings:align" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "findtransformdvindex", escregexp: { v: "^findtransformdvindex$" }, formats: [{ format: "findtransformdvindex" }], command_version: "1.0.0", description: "", category: ["server"], commandSettingsId: "built-inCommandSettings:findtransformdvindex" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: { v: "^home$" }, formats: [{ format: "home" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gohome", escregexp: { v: "^gohome$" }, formats: [{ format: "gohome" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "rtp", escregexp: { v: "^rtp$" }, formats: [{ format: "rtp <player: targetSelector|playerName>" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp" },
@@ -3218,7 +3222,7 @@ export function chatCommands(params) {
                 eventData.cancel = true;
                 const inventory = player.getComponent("inventory");
                 system.run(() => { try {
-                    inventory.container.addItem(new ItemStack(newMessage.slice(6).split(" ")[0], Number(newMessage.slice(6).split(" ")[1])));
+                    inventory.container.addItem(new ItemStack(newMessage.slice(6).split(" ")[0], Number(newMessage.slice(6).split(" ")[1] ?? "1")));
                 }
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + " " + e.stack);
@@ -3238,7 +3242,7 @@ export function chatCommands(params) {
                         }
                     }
                     ;
-                    inventoryb.container.setItem(slotsArray.findIndex((itemName) => (itemName == "undefined")), new ItemStack(newMessage.slice(7).split(" ")[0], Number(newMessage.slice(7).split(" ")[1]))); /*; eventData.sender.sendMessage(String("l" + slotsArray))*/
+                    inventoryb.container.setItem(slotsArray.findIndex((itemName) => (itemName == "undefined")), new ItemStack(newMessage.slice(7).split(" ")[0], Number(newMessage.slice(7).split(" ")[1] ?? 1))); /*; eventData.sender.sendMessage(String("l" + slotsArray))*/
                 }
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10946,12 +10950,12 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             case !!switchTest.match(/^brush$/):
                 {
                     eventData.cancel = true;
-                    let args = evaluateParameters(switchTestB, ["presetText", "-h", "string"]).args;
+                    let args = evaluateParameters(switchTestB, ["presetText", "string"]).args;
                     if (player.getComponent("inventory").container.getItem(player.selectedSlotIndex).isStackable) {
                         player.sendMessage("§cError: The held item is a stackable item.");
                     }
                     else {
-                        switch (args[2].toLowerCase()) {
+                        switch (args[1].toLowerCase()) {
                             case "none":
                                 player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "none");
                                 player.sendMessage(`Seccessfully unbound the brush from the currently held item.`);
@@ -10975,15 +10979,41 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[2]))) ? 10 : args[2]}.`);
                                 break;
                             case "sphere":
-                                args = evaluateParameters(switchTestB, ["presetText", "-h", "string", "blockPattern", "number"]).args;
+                                args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number"]).args;
                                 player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "sphere");
                                 player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify(args[3].blocks));
                                 player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", args[3].type);
                                 player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4]))) ? 3 : args[4]);
                                 player.sendMessage(`Seccessfully set brush type of the held item to sphere with a radius of ${(isNaN(Number(args[4]))) ? 3 : args[4]}.`);
                                 break;
+                            case "cube":
+                                args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number"]).args;
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "cube");
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify(args[3].blocks));
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", args[3].type);
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4]))) ? 3 : args[4]);
+                                player.sendMessage(`Seccessfully set brush type of the held item to cube with a radius of ${(isNaN(Number(args[4]))) ? 3 : args[4]}.`);
+                                break;
+                            case "splatter":
+                                args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args;
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splatter");
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify(args[3].blocks));
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", args[3].type);
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5]))) ? 0 : args[5]);
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4]))) ? 3 : args[4]);
+                                player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[4]))) ? 3 : args[4]} and a decay level of ${(isNaN(Number(args[5]))) ? 0 : args[5]}.`);
+                                break;
+                            case "splattersurface":
+                                args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args;
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splattersurface");
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify(args[3].blocks));
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", args[3].type);
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5]))) ? 0 : args[5]);
+                                player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4]))) ? 3 : args[4]);
+                                player.sendMessage(`Seccessfully set brush type of the held item to splatter surface with a radius of ${(isNaN(Number(args[4]))) ? 3 : args[4]} and a decay level of ${(isNaN(Number(args[5]))) ? 0 : args[5]}.`);
+                                break;
                             default:
-                                player.sendMessage(`§cError: Unknown brush type "${args[2].toLowerCase()}".`);
+                                player.sendMessage(`§cError: Unknown brush type "${args[1].toLowerCase()}".`);
                                 break;
                         }
                     }
@@ -11109,6 +11139,30 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 {
                     eventData.cancel = true;
                     srun(() => player.teleport(roundVector3ToMiddleOfBlockFloorY(player.location)));
+                }
+                break;
+            case !!switchTest.match(/^findtransformdvindex$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args;
+                    !args[1].includes(":") ? args[1] = "minecraft:" + args[1] : undefined;
+                    player.sendMessage(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `Data value for enchantment transfer smithing template is ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}.`);
+                }
+                break;
+            case !!switchTest.match(/^ignite$/):
+                {
+                    eventData.cancel = true;
+                    let radius = Number(String(switchTestB.split(" ")[1] ?? "").trim() == "" ? 10 : String(switchTestB.split(" ")[1] ?? "").trim());
+                    let froma = mcMath.Vector3Utils.subtract(player.location, { x: radius, y: radius, z: radius });
+                    let from = { x: froma.x, y: froma.y, z: froma.z };
+                    let toa = mcMath.Vector3Utils.add(player.location, { x: radius, y: radius, z: radius });
+                    let to = { x: toa.x, y: toa.y, z: toa.z };
+                    try {
+                        system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "fire", undefined, { matchingBlock: "air" }); player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks ignited in radius of ${radius}`); });
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + e.stack);
+                    }
                 }
                 break;
             case !!switchTest.match(/^extinguish$/) || !!switchTest.match(/^ext$/) || !!switchTest.match(/^remfire$/) || !!switchTest.match(/^ex$/):
