@@ -820,6 +820,7 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "jumpto", escregexp: { v: "^jumpto$" }, aliases: [{ commandName: "j", escregexp: { v: "^j$" } }], formats: [{ format: "jumpto" }], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:jumpto" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "align", escregexp: { v: "^align$" }, formats: [{ format: "align" }], command_version: "1.0.0", description: "", category: ["world", "players"], commandSettingsId: "built-inCommandSettings:align" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "findtransformdvindex", escregexp: { v: "^findtransformdvindex$" }, formats: [{ format: "findtransformdvindex" }], command_version: "1.0.0", description: "", category: ["server"], commandSettingsId: "built-inCommandSettings:findtransformdvindex" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "transformresultatdvindex", escregexp: { v: "^transformresultatdvindex$" }, formats: [{ format: "transformresultatdvindex" }], command_version: "1.0.0", description: "", category: ["server"], commandSettingsId: "built-inCommandSettings:transformresultatdvindex" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: { v: "^home$" }, formats: [{ format: "home" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gohome", escregexp: { v: "^gohome$" }, formats: [{ format: "gohome" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "rtp", escregexp: { v: "^rtp$" }, formats: [{ format: "rtp <player: targetSelector|playerName>" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp" },
@@ -2291,6 +2292,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
     "ifillb": `${command.dp}ifillb <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}ifillb <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
     "ifillc": `${command.dp}ifillc <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}ifillc <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
     "igfill": `${command.dp}igfill <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}igfill <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
+    "ignite": `${command.dp}ignite [radius: number]`,
     "invfillillegal": `${command.dp}fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
     "invfill": `${command.dp}fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]`,
     "invfilljunk": `${command.dp}filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
@@ -2308,6 +2310,7 @@ ${command.dp}item <mode: canplaceon|candestroy> <blockTypes: string[]>
 ${command.dp}item name <name: text>
 ${command.dp}item count <count: int(1-255)>
 ${command.dp}item remove
+${command.dp}item gettags
 ${command.dp}item <mode: json|jsonb> <itemJSON: ItemJSON>
 ${command.dp}item property removelist <propertyIdList: string[]>
 ${command.dp}item property setlist <propertyList: JSON>
@@ -2325,6 +2328,7 @@ ${command.dp}item slot <slot: int> <mode: lore|lorene> <lore: JSON>
 ${command.dp}item slot <slot: int> name <name: text>
 ${command.dp}item slot <slot: int> count <count: int(1-255)>
 ${command.dp}item slot <slot: int> remove
+${command.dp}item slot <slot: int> gettags
 ${command.dp}item slot <slot: int> <mode: json|jsonb> <itemJSON: ItemJSON>
 ${command.dp}item slot <slot: int> property removelist <propertyIdList: string[]>
 ${command.dp}item slot <slot: int> property setlist <propertyList: JSON>
@@ -2393,6 +2397,8 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> hollowovoid [clearContainers: boolean]`,
     "itfillc": `${command.dp}itfillc <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}itfillc <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
+    "j": `${command.dp}j`,
+    "jumpto": `${command.dp}jumpto`,
     "kick": `${command.dp}kick <players: targetSelector> [reason: string]`,
     "liststructures": `${command.dp}liststructures`,
     "listbans": `${command.dp}listbans`,
@@ -2524,14 +2530,26 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
     "wremove": `${command.dp}wremove <name: escapableString>`,
     "wreset": `${command.dp}wreset`,
     "wset": `${command.dp}wset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
-    "chunkban": `${command.dp}chunkban [slot: int|~] [loopCount: int] [target: string|~]`,
-    "\\pos1": `${command.dp}\\pos1 [location: x y z]`,
-    "\\pos2": `${command.dp}\\pos2 [location: x y z]`,
-    "\\hpos1": `${command.dp}\\hpos1`,
-    "\\hpos2": `${command.dp}\\hpos2`,
-    "\\chunk": `${command.dp}\\chunk`,
-    "\\selectmode": `${command.dp}\\selectmode [default|noliquid|nopassable|noliquidnopassable]`,
-    "\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [replaceTileName: Block] [replaceBlockStates: block states]`,
+    "transformresultatdvindex": `${command.dp}transformresultatdvindex [data: int]`,
+    "findtransformdvindex": `${command.dp}findtransformdvindex [itemName: string] [data: int]`,
+    "brush": `${command.dp}brush none
+${command.dp}brush <brushType: sphere|cube|splatter|splattercube|splattersurface|splattercubesurface> [-h] [radius: float]
+${command.dp}brush <brushType: extinguish|ex|remexp> [radius: float]`,
+    "butcher": `${command.dp}butcher [-abfgnprtwipceh] [radius: float]`,
+    "butcherdespawn": `${command.dp}butcherdespawn [-abfgnprtwipceh] [radius: float]`,
+    "chunkinfo": `${command.dp}chunkinfo`,
+    "\\\\pos1": `${command.dp}\\pos1 [location: x y z]`,
+    "\\\\pos2": `${command.dp}\\pos2 [location: x y z]`,
+    "\\\\hpos1": `${command.dp}\\hpos1`,
+    "\\\\hpos2": `${command.dp}\\hpos2`,
+    "\\\\chunk": `${command.dp}\\chunk`,
+    "\\\\generate": `${command.dp}\\generate [-sr] <expression: 3DGeometricMathEquation>`,
+    "\\\\generates": `${command.dp}\\generates <expression: 3DGeometricMathEquation> <integrity: float>`,
+    "\\\\generate2d": `${command.dp}\\generate2d [-sr] <expression: 2DGeometricMathEquation>`,
+    "\\\\generates2d": `${command.dp}\\generates2d <expression: 2DGeometricMathEquation> <integrity: float>`,
+    "\\\\stack": `${command.dp}\\stack [stackCount: int]`,
+    "\\\\selectmode": `${command.dp}\\selectmode [default|noliquid|nopassable|noliquidnopassable]`,
+    "\\\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [replaceTileName: Block] [replaceBlockStates: block states]`,
     "disconnect": `${command.dp}disconnect <players: targetSelector>`,
     "morph": `${command.dp}morph <morphId: int>`,
     "scale": `${command.dp}scale <scale: float>`,
@@ -2593,6 +2611,7 @@ export var commanddescriptions;
     commanddescriptions["ifillc"] = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ";
     commanddescriptions["ifilld"] = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ";
     commanddescriptions["igfill"] = "Fills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["ignite"] = "Ignites blocks in the specified radius. ";
     commanddescriptions["invfillillegal"] = "Fills a player's inventory with illegal items. ";
     commanddescriptions["invfill"] = "Fills a player's inventory with items based on the provided itemJSON. ";
     commanddescriptions["invfilljunk"] = "Fills a player's inventory with junk items. ";
@@ -2679,11 +2698,21 @@ export var commanddescriptions;
     commanddescriptions["wreset"] = "Removes all private warps. ";
     commanddescriptions["wset"] = "Sets a private warp. ";
     commanddescriptions["chunkban"] = "Fills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. ";
-    commanddescriptions["\\pos1"] = "Sets the pos1 location for use in other worldedit commands. ";
-    commanddescriptions["\\pos2"] = "Sets the pos2 location for use in other worldedit commands. ";
-    commanddescriptions["\\hpos1"] = "Sets the pos1 location to the block that you are looking at for use in other worldedit commands. ";
-    commanddescriptions["\\hpos2"] = "Sets the pos2 location to the block that you are looking at for use in other worldedit commands. ";
-    commanddescriptions["\\chunk"] = "Sets the pos1 and pos2 locations to contain the entire chunk that you are currently in for use in other worldedit commands. ";
+    commanddescriptions["butcher"] = "Kill all or nearby mobs. ";
+    commanddescriptions["butcherdespawn"] = "Despawn all or nearby mobs. ";
+    commanddescriptions["brush"] = "Sets the held item as the specified brush type or unbinds the brush from the held item. ";
+    commanddescriptions["\\\\pos1"] = "Sets the pos1 location of the selected area for use in other worldedit commands. ";
+    commanddescriptions["\\\\pos2"] = "Sets the pos2 location of the selected area for use in other worldedit commands. ";
+    commanddescriptions["\\\\hpos1"] = "Sets the pos1 location of the selected area to the block that you are looking at for use in other worldedit commands. ";
+    commanddescriptions["\\\\hpos2"] = "Sets the pos2 location of the selected area to the block that you are looking at for use in other worldedit commands. ";
+    commanddescriptions["\\\\chunk"] = "Sets the pos1 and pos2 locations of the selected area to contain the entire chunk that you are currently in for use in other worldedit commands. ";
+    commanddescriptions["\\\\generate"] = "Generates a 3d shape according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ";
+    commanddescriptions["\\\\generates"] = "Generates a 3d shape with the specified integrity according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ";
+    commanddescriptions["\\\\generate2d"] = "Generates a 2d shape according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ";
+    commanddescriptions["\\\\generates2d"] = "Generates a 2d shape with the specified integrity according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ";
+    commanddescriptions["\\\\stack"] = "Stacks the specified number of copies of the selected area on top of the selected area. ";
+    commanddescriptions["\\\\selectmode"] = "Sets the selection mode for the item your are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. ";
+    commanddescriptions["\\\\replace"] = "Replaces the blocks between the selected area with the selected block type. ";
     commanddescriptions["disconnect"] = "Disconnects a player from the server. ";
     commanddescriptions["morph"] = "Morphs into the morph with the specified ID. ";
     commanddescriptions["scale"] = "Sets your scale value to the specified amount. ";
@@ -2692,7 +2721,7 @@ export var commanddescriptions;
     commanddescriptions["visualscale"] = "Sets your visual scale (the one that does not actually change your hitbox size) to the specified amount. ";
     commanddescriptions["visualscaleenabled"] = "Enables or diables your visual scaling. ";
 })(commanddescriptions || (commanddescriptions = {}));
-export function getCommandHelpPage(commandName) { let cmd = command.get(commandName, "built-in"); return !!commanddescriptions[cmd.commandName] ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.` : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map(v => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing").split("\n").join("§r\n- ")}`; }
+export function getCommandHelpPage(commandName) { let cmd = command.get(commandName, "built-in"); return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.` : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map(v => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing").split("\n").join("§r\n- ")}`; }
 export var fillmodetypeenum;
 (function (fillmodetypeenum) {
     fillmodetypeenum[""] = "";
@@ -11147,6 +11176,13 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args;
                     !args[1].includes(":") ? args[1] = "minecraft:" + args[1] : undefined;
                     player.sendMessage(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `Data value for enchantment transfer smithing template is ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}.`);
+                }
+                break;
+            case !!switchTest.match(/^transformresultatdvindex$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, ["presetText", "number"]).args;
+                    player.sendMessage(`Enchantment transfer smithing template result at data value ${args[1]} is ${JSON.stringify(listoftransformrecipes[args[1]])}.`);
                 }
                 break;
             case !!switchTest.match(/^ignite$/):
