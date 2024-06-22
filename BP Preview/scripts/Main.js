@@ -3957,6 +3957,8 @@ catch { }
 });*/ //removed in minecraft 1.20.60 >:(
 export const dimensionTypeDisplayFormatting = { "minecraft:overworld": "the overworld", "overworld": "the overworld", "minecraft:nether": "the nether", "nether": "the nether", "minecraft:the_end": "the end", "the_end": "the end" };
 export const dimensionTypeDisplayFormattingB = { "minecraft:overworld": "overworld", "overworld": "overworld", "minecraft:nether": "nether", "nether": "nether", "minecraft:the_end": "the end", "the_end": "the end" };
+export const dimensionTypeDisplayFormattingC = { "minecraft:overworld": "The Overworld", "overworld": "The Overworld", "minecraft:nether": "The Nether", "nether": "The Nether", "minecraft:the_end": "The End", "the_end": "The End" };
+export const dimensionTypeDisplayFormattingD = { "minecraft:overworld": "Overworld", "overworld": "Overworld", "minecraft:nether": "Nether", "nether": "Nether", "minecraft:the_end": "The End", "the_end": "The End" };
 export function tryget(callbackfn) { try {
     return callbackfn();
 }
@@ -5676,7 +5678,7 @@ console.error(e, e.stack);
                             const blocktypes = BlockTypes.getAll();
                             //console.warn("a")
                             try {
-                                fillBlocksSHFGB(pos, radius, event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Vector.distance(pos, l) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true) || ((tryget(() => l.dimension.getBlock(l)[locb]().isAir) ?? true))) {
+                                fillBlocksSHFGB(pos, radius, event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Vector.distance(pos, l) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true) || (!(tryget(() => l.dimension.getBlock(l)[locb]().isAir) ?? true))) {
                                     return null;
                                 } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
                             }
@@ -5706,7 +5708,7 @@ console.error(e, e.stack);
                             const blocktypes = BlockTypes.getAll();
                             //console.warn("a")
                             try {
-                                fillBlocksHFGB({ x: pos.x - radius, y: pos.y - radius, z: pos.z - radius }, { x: pos.x + radius, y: pos.y + radius, z: pos.z + radius }, event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Math.min(radius, Vector.distance(pos, l)) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true) || ((tryget(() => l.dimension.getBlock(l)[locb]().isAir) ?? true))) {
+                                fillBlocksHFGB({ x: pos.x - radius, y: pos.y - radius, z: pos.z - radius }, { x: pos.x + radius, y: pos.y + radius, z: pos.z + radius }, event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Math.min(radius, Vector.distance(pos, l)) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true) || (!(tryget(() => l.dimension.getBlock(l)[locb]().isAir) ?? true))) {
                                     return null;
                                 } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
                             }
@@ -5736,9 +5738,9 @@ console.error(e, e.stack);
                             const blocktypes = BlockTypes.getAll();
                             //console.warn("a")
                             try {
-                                fillBlocksHFGB(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Math.min(radius, Vector.distance(pos, l)) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true) || ((tryget(() => l.dimension.getBlock(l)[locb]().isAir) ?? true))) {
+                                fillBlocksHFGB(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Math.min(radius, Vector.distance(pos, l)) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true) || (!(tryget(() => l.dimension.getBlock(l)[locb]().isAir) ?? true))) {
                                     return null;
-                                } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
+                                } ; const b = blockpattern.generateBlock(i); return b.type == "null" ? null : b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
                             }
                             catch (e) {
                                 event.source.sendMessage("§c" + e + e.stack);

@@ -1,6 +1,6 @@
 import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, } from "./coordinates";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD } from "../Main";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
@@ -2350,11 +2350,15 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
 "transformresultatdvindex": `${command.dp}transformresultatdvindex [data: int]`,
 "findtransformdvindex": `${command.dp}findtransformdvindex [itemName: string] [data: int]`,
 "brush": `${command.dp}brush none
-${command.dp}brush <brushType: sphere|cube|splatter|splattercube|splattersurface|splattercubesurface> [-h] [radius: float]
+${command.dp}brush <brushType: sphere|cube|square|splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface> [-h] [radius: float]
+${command.dp}brush <brushType: raise|lower> <shape: sphere|cube§c|squarex|squarey|squarez§r> [radius: float]
 ${command.dp}brush <brushType: extinguish|ex|remexp> [radius: float]`,
 "butcher": `${command.dp}butcher [-abfgnprtwipceh] [radius: float]`,
 "butcherdespawn": `${command.dp}butcherdespawn [-abfgnprtwipceh] [radius: float]`,
 "chunkinfo": `${command.dp}chunkinfo`,
+"selectioninfo": `${command.dp}selectioninfo`,
+"selinfo": `${command.dp}selinfo`,
+"seli": `${command.dp}seli`,
 "\\\\pos1": `${command.dp}\\pos1 [location: x y z]`,
 "\\\\pos2": `${command.dp}\\pos2 [location: x y z]`,
 "\\\\hpos1": `${command.dp}\\hpos1`,
@@ -2489,6 +2493,7 @@ export enum commanddescriptions {
 "binvsee" = "Displays the contents of the specified block's inventory. ",
 "chatcommandui" = "Opens up a menu where you can type a chat command to run with no character limits. ",
 "chatsendui" = "Opens up a menu where you can type a chat message to send with no character limits. ",
+"chunkinfo" = "Displays info about the current chunk. ",
 "clear" = "Clears a player's inventory. ",
 "clearenderchest" = "Clears a player's ender chest. ",
 "clearenderchestslot" = "Clears a slot of a player's ender chest. ",
@@ -2586,6 +2591,9 @@ export enum commanddescriptions {
 "scanenderchestc" = "Scans a player's ender chest and displays the contents of it. ",
 "scnendchst" = "Scans a player's ender chest and displays the contents of it. ",
 "scnendchstc" = "Scans a player's ender chest and displays the contents of it. ",
+"selectioninfo" = "Displays info about the current selection. ",
+"selinfo" = "Displays info about the current selection. ",
+"seli" = "Displays info about the current selection. ",
 "sendui" = "Opens up a menu where you can type a chat message to send with no character limits. ",
 "setitem" = "Replaces the item stack in the specified inventory slot with an item stack with a specified type and stack size. ",
 "setitemb" = "Replaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. ",
@@ -4264,6 +4272,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
 .butcherdespawn - §oDespawn all or nearby mobs. §r
 .chatcommandui - §oOpens up a menu where you can type a chat command to run with no character limits. §r
 .chatsendui - §oOpens up a menu where you can type a chat message to send with no character limits. §r
+.chunkinfo - §oDisplays info about the current chunk. §r
 .clear - §oClears a player's inventory. §r
 .clearenderchest - §oClears a player's ender chest. §r
 .clearenderchestslot - §oClears a slot of a player's ender chest. §r
@@ -4394,6 +4403,9 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
 .chunkban - §oFills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. §r
 §aWorldEdit Commands: §r
 .brush - §oSets the held item as the specified brush type or unbinds the brush from the held item. §r
+.selectioninfo - §oDisplays info about the current selection. §r
+.selinfo - §oDisplays info about the current selection. §r
+.seli - §oDisplays info about the current selection. §r
 .\\pos1 - §oSets the pos1 location of the selected area for use in other worldedit commands. §r
 .\\pos2 - §oSets the pos2 location of the selected area for use in other worldedit commands. §r
 .\\hpos1 - §oSets the pos1 location of the selected area to the block that you are looking at for use in other worldedit commands. §r
@@ -7467,7 +7479,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage(`§cError: No players matching the specified target selector were found. `)
                 }else targets.forEach(target=>{
                     let slots = [] as string[]
-                    for(let i = 0; i < 27; i++){slots.push(`slot: ${i}, item: ${ItemTypes.getAll().find(v=>target.runCommand(`testfor @s[hasitem={location=slot.enderchest,item=${v.id},slot=${i}}]`).successCount!=0)?.id??"minecraft:air"}`)}; 
+                    for(let i = 0; i < 27; i++){slots.push(`slot: ${i}, item: ${ItemTypes.getAll().find(v=>(tryget(()=>target.runCommand(`testfor @s[hasitem={location=slot.enderchest,item=${v.id},slot=${i}}]`).successCount)??0)!=0)?.id??"minecraft:air"}`)}; 
                     player.sendMessage(`${target.name}'s Ender Chest Contents: \n${slots.join("§r§f\n")}`)
                 })
             })
@@ -7482,7 +7494,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             if(!!!target){
                 player.sendMessage(`§cError: Unable to find player with the name ${args[1]}. `)
             }else system.run(()=>{let slots = [] as string[]
-                for(let i = 0; i < 27; i++){slots.push(`slot: ${i}, item: ${ItemTypes.getAll().find(v=>target.runCommand(`testfor @s[hasitem={location=slot.enderchest,item=${v.id},slot=${i}}]`).successCount!=0)?.id??"minecraft:air"}, amount: ${rangeToIntArray([0, 255]).reverse().find(v=>target.runCommand(`testfor @s[hasitem={location=slot.enderchest,count=${v},slot=${i}}]`).successCount!=0)}`)}; 
+                for(let i = 0; i < 27; i++){slots.push(`slot: ${i}, item: ${ItemTypes.getAll().find(v=>(tryget(()=>target.runCommand(`testfor @s[hasitem={location=slot.enderchest,item=${v.id},slot=${i}}]`).successCount)??0)!=0)?.id??"minecraft:air"}, amount: ${rangeToIntArray([0, 255]).reverse().find(v=>(tryget(()=>target.runCommand(`testfor @s[hasitem={location=slot.enderchest,count=${v},slot=${i}}]`).successCount)??0)!=0)}`)}; 
                 player.sendMessage(`${target.name}'s Ender Chest Contents: \n${slots.join("§r§f\n")}`)
             })
         }
@@ -8582,6 +8594,16 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
                     break;
                 }
             }
+        }
+        break; 
+        case !!switchTest.match(/^selectioninfo$/)||!!switchTest.match(/^selinfo$/)||!!switchTest.match(/^seli$/): {
+            eventData.cancel = true;
+            player.sendMessage(`Currently Selected Area Info: \npos1 x: ${player.getDynamicProperty("pos1")["x"]}\npos1 y: ${player.getDynamicProperty("pos1")["y"]}\npos1 z: ${player.getDynamicProperty("pos1")["z"]}\npos2 x: ${player.getDynamicProperty("pos2")["x"]}\npos2 y: ${player.getDynamicProperty("pos2")["y"]}\npos2 z: ${player.getDynamicProperty("pos2")["z"]}\nNext Selection Mode: ${(player.getDynamicProperty("posM")??false)?"pos2":"pos1"}`)
+        }
+        break; 
+        case !!switchTest.match(/^chunkinfo$/): {
+            eventData.cancel = true;
+            player.sendMessage(`Chunk Info: \nDimension: ${dimensionTypeDisplayFormattingD[player.dimension.id]}\nChunk Index x: ${getChunkIndex(player.location).x}\nChunk Index y: ${getChunkIndex(player.location).y}\nChunk Range: ${JSON.stringify(chunkIndexToBoundingBoxB(getChunkIndex(player.location), player.dimension.heightRange))}`)
         }
         break; 
         case !!switchTest.match(/^butcher$/): {

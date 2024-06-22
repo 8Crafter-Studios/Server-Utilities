@@ -334,6 +334,7 @@ export function getChunkIndex(location) { return { x: Math.floor(location.x / 16
 export function getChunkIndexB(x, z) { return { x: Math.floor(x / 16), y: Math.floor(z / 16) }; }
 export function getChunkIndexC(location) { return { x: Math.floor(location.x / 16), y: Math.floor(location.y / 16) }; }
 export function chunkIndexToBoundingBox(chunkIndex, heightRange = [-64, 320]) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange[0], z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange[1], z: Math.round((chunkIndex.y * 16) + 15) } }; }
+export function chunkIndexToBoundingBoxB(chunkIndex, heightRange = { min: -64, max: 320 }) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange.min, z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange.max, z: Math.round((chunkIndex.y * 16) + 15) } }; }
 export function doBoundingBoxesIntersect(box1, box2) {
     // Check for intersection along each axis
     const intersectX = (box1.min.x <= box2.max.x && box1.max.x >= box2.min.x);
