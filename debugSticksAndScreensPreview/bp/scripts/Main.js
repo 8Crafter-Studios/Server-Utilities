@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.16.1-development.976";
+export const format_version = "1.16.0";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
