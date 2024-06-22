@@ -5362,98 +5362,119 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^structure$/): {
             eventData.cancel = true;
-            if(config.homeSystemEnabled){
-                let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"])
-                let args = argsa.args
-                switch(String(args[1]).toLowerCase()){
-                    case "save": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "Vector6"}, {type: "presetText"}, {type: "neboolean"}, {type: "neboolean"}]))
-                        //name; fx,fy,fz,tx,ty,tz; savemode; includeblocks; includeentities
-                    break; 
-                    case "saveempty": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "number"}, {type: "number"}, {type: "number"}, {type: "presetText"}]))
-                        //name; sizex; sizey; sizez
-                        const sa = world.structureManager.createEmpty(args[2], {x: args[3], y: args[4], z: args[5]})
-                        args[6].toLowerCase()=="disk"?sa.saveAs(sa.id, StructureSaveMode.World):undefined
-                        psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v=>v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase()=="disk"?"the disk":"memory"}.`)
-                    break; 
-                    case "createempty": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "number"}, {type: "number"}, {type: "number"}, {type: "presetText"}]))
-                        //name; sizex; sizey; sizez
-                        const sb = world.structureManager.createEmpty(args[2], {x: args[3], y: args[4], z: args[5]})
-                        args[6].toLowerCase()=="disk"?sb.saveAs(sb.id, StructureSaveMode.World):undefined
-                        psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v=>v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase()=="disk"?"the disk":"memory"}.`)
-                    break; 
-                    case "delete": 
-                        args.push(argsa.extra)
-                        if(!!world.structureManager.get(args[2])){
-                            world.structureManager.delete(args[2])?psend(player, `§aSeccessfully deleted the structure "§r${args[2]}§a".`):psend(player, `§cError: Failed to delete the structure "§r${args[2]}§c".`)
-                        }else{
-                            psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`)
-                        }
-                    break; 
-                    case "load": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "Vector3"}, {type: "neboolean"}, {type: "neboolean"}, {type: "neboolean"}, {type: "presetText"}]))
-                        //name; x; y; z; includeblocks; includeentities; waterlogged; rotation; loadmode; animationtime
-                    break; 
-                    case "copy": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "string"}]))
-                        if(!!world.structureManager.get(args[2])){
-                            world.structureManager.get(args[2]).saveAs(args[3])
-                            psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a".`)
-                        }else{
-                            psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`)
-                        }
-                    break; 
-                    case "copytodisk": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "string"}]))
-                        if(!!world.structureManager.get(args[2])){
-                            world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.World)
-                            psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" on the disk.`)
-                        }else{
-                            psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`)
-                        }
-                    break; 
-                    case "copytomemory": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "string"}]))
-                        if(!!world.structureManager.get(args[2])){
-                            world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.Memory)
-                            psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" in memory.`)
-                        }else{
-                            psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`)
-                        }
-                    break; 
-                    case "savetodisk": 
-                        args.push(argsa.extra)
-                        if(!!world.structureManager.get(args[2])){
-                            world.structureManager.get(args[2]).saveAs(args[2], StructureSaveMode.World)
-                            psend(player, `§aSeccessfully saved the structure "§r${args[2]}§a" to the disk.`)
-                        }else{
-                            psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`)
-                        }
-                    break; 
-                    case "movetomemory": 
-                        args.push(argsa.extra)
-                        if(!!world.structureManager.get(args[2])){
-                            let s = world.structureManager.get(args[2]).saveAs("andexdb:structuremovingtomemoryplaceholderreserved5164896135268634876548961853426912579081261744790127659073267276846741241230675914307695134567412541637516742890576243098")
-                            world.structureManager.delete(args[2])
-                            s.saveAs(args[2], StructureSaveMode.Memory)
-                            world.structureManager.delete(s)
-                            psend(player, `§aSeccessfully moved the structure "§r${args[2]}§a" to memory.`)
-                        }else{
-                            psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`)
-                        }
-                    break; 
-                    case "removeall": 
-                        //  world.structureManager.getIds().forEach(v=>world.structureManager.delete(v))
-                    break; 
-                    case "list": 
-                        player.sendMessage(HomeSystem.getHomesForPlayer(player).map(h=>h.name.replaceAll("§", "\uF019")).join("§r§f\n"))
-                    break; 
+            srun(()=>{let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);
+            let args = argsa.args;
+            switch (String(args[1]).toLowerCase()) {
+                case "save":
+                    args.push(...evaluateParameters(argsa.extra, [{ type: "string" }, { type: "Vector6" }, { type: "presetText" }, { type: "neboolean" }, { type: "neboolean" }]).args);
+                    //name; fx,fy,fz,tx,ty,tz; savemode; includeblocks; includeentities
+                    break;
+                case "saveempty":
+                    args.push(...evaluateParameters(argsa.extra, [{ type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args);
+                    //name; sizex; sizey; sizez
+                    const sa = world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] });
+                    args[6].toLowerCase() == "disk" ? sa.saveAs(sa.id, StructureSaveMode.World) : undefined;
+                    psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v => v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase() == "disk" ? "the disk" : "memory"}.`);
+                    break;
+                case "createempty":
+                    args.push(...evaluateParameters(argsa.extra, [{ type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args);
+                    //name; sizex; sizey; sizez
+                    const sb = world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] });
+                    args[6].toLowerCase() == "disk" ? sb.saveAs(sb.id, StructureSaveMode.World) : undefined;
+                    psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v => v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase() == "disk" ? "the disk" : "memory"}.`);
+                    break;
+                case "delete":
+                    args.push(argsa.extra);
+                    if (!!world.structureManager.get(args[2])) {
+                        world.structureManager.delete(args[2]) ? psend(player, `§aSeccessfully deleted the structure "§r${args[2]}§a".`) : psend(player, `§cError: Failed to delete the structure "§r${args[2]}§c".`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                    break;
+                case "load":
+                    args.push(...evaluateParameters(argsa.extra, [{ type: "string" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "neboolean" }, { type: "neboolean" }, { type: "neboolean" }, { type: "presetText" }]).args);
+                    //name; x; y; z; includeblocks; includeentities; waterlogged; rotation; loadmode; animationtime
+                    if (!!world.structureManager.get(args[2])) {
+                        const location = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
+                        world.structureManager.place(args[2], player.dimension, location, {includeBlocks: args[6]??true, includeEntities: args[7]??true, waterlogged: args[8]??false});
+                        psend(player, `§aSeccessfully loaded the structure "§r${args[2]}§a".`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                    break;
+                case "copy":
+                    args.push(evaluateParameters(argsa.extra, [{ type: "string" }, { type: "string" }]));
+                    if (!!world.structureManager.get(args[2])) {
+                        world.structureManager.get(args[2]).saveAs(args[3]);
+                        psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a".`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                    break;
+                case "copytodisk":
+                    args.push(evaluateParameters(argsa.extra, [{ type: "string" }, { type: "string" }]));
+                    if (!!world.structureManager.get(args[2])) {
+                        world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.World);
+                        psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" on the disk.`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                    break;
+                case "copytomemory":
+                    args.push(evaluateParameters(argsa.extra, [{ type: "string" }, { type: "string" }]));
+                    if (!!world.structureManager.get(args[2])) {
+                        world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.Memory);
+                        psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" in memory.`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                    break;
+                case "savetodisk":
+                    args.push(argsa.extra);
+                    if (!!world.structureManager.get(args[2])) {
+                        world.structureManager.get(args[2]).saveAs(args[2], StructureSaveMode.World);
+                        psend(player, `§aSeccessfully saved the structure "§r${args[2]}§a" to the disk.`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                    break;
+                case "movetomemory":
+                    args.push(argsa.extra);
+                    if (!!world.structureManager.get(args[2])) {
+                        let s = world.structureManager.get(args[2]).saveAs("andexdb:structuremovingtomemoryplaceholderreserved5164896135268634876548961853426912579081261744790127659073267276846741241230675914307695134567412541637516742890576243098");
+                        world.structureManager.delete(args[2]);
+                        s.saveAs(args[2], StructureSaveMode.Memory);
+                        world.structureManager.delete(s);
+                        psend(player, `§aSeccessfully moved the structure "§r${args[2]}§a" to memory.`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                    break;
+                case "removeall":
+                    //  world.structureManager.getIds().forEach(v=>world.structureManager.delete(v))
+                    break;
+                case "list":
+                    player.sendMessage(world.structureManager.getWorldStructureIds().map(h => h.replaceAll("§", "\uF019")).join("§r§f\n"));
+                break;
+                case "getinfo": {
+                    args.push(argsa.extra);
+                    if (!!world.structureManager.get(args[2])) {
+                        const structure = world.structureManager.get(args[2]);
+                        psend(player, `§aID: ${structure.id}\nisValid: ${structure.isValid()}\nSize: ${JSON.stringify(structure.size)}.`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
                 }
-            }else{
-                player.sendMessage("§cError: This command cannot be used becuase the experimental home system is not enabled. It can be enabled at \"Main Menu>Settings>Home System>Enable Home System\"")
-            }
+                break;
+            }})
         }
         break; 
         case !!switchTest.match(/^home$/): {
@@ -5679,7 +5700,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^liststructures$/)||!!switchTest.match(/^getstructures$/): {
             eventData.cancel = true;
-            player.sendMessage(world.structureManager.getWorldStructureIds().join("§r\n"))
+            srun(()=>player.sendMessage(world.structureManager.getWorldStructureIds().join("§r\n")))
         }
         break; 
         case !!switchTest.match(/^listbans$/)||!!switchTest.match(/^getbans$/): {

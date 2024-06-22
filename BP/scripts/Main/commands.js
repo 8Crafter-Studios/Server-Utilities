@@ -6286,23 +6286,22 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^structure$/):
                 {
                     eventData.cancel = true;
-                    if (config.homeSystemEnabled) {
-                        let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);
+                        srun(()=>{let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);
                         let args = argsa.args;
                         switch (String(args[1]).toLowerCase()) {
                             case "save":
-                                args.push(evaluateParameters(argsa.extra, [{ type: "string" }, { type: "Vector6" }, { type: "presetText" }, { type: "neboolean" }, { type: "neboolean" }]));
+                                args.push(...evaluateParameters(argsa.extra, [{ type: "string" }, { type: "Vector6" }, { type: "presetText" }, { type: "neboolean" }, { type: "neboolean" }]).args);
                                 //name; fx,fy,fz,tx,ty,tz; savemode; includeblocks; includeentities
                                 break;
                             case "saveempty":
-                                args.push(evaluateParameters(argsa.extra, [{ type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]));
+                                args.push(...evaluateParameters(argsa.extra, [{ type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args);
                                 //name; sizex; sizey; sizez
                                 const sa = world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] });
                                 args[6].toLowerCase() == "disk" ? sa.saveAs(sa.id, StructureSaveMode.World) : undefined;
                                 psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v => v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase() == "disk" ? "the disk" : "memory"}.`);
                                 break;
                             case "createempty":
-                                args.push(evaluateParameters(argsa.extra, [{ type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]));
+                                args.push(...evaluateParameters(argsa.extra, [{ type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args);
                                 //name; sizex; sizey; sizez
                                 const sb = world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] });
                                 args[6].toLowerCase() == "disk" ? sb.saveAs(sb.id, StructureSaveMode.World) : undefined;
@@ -6318,8 +6317,16 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 }
                                 break;
                             case "load":
-                                args.push(evaluateParameters(argsa.extra, [{ type: "string" }, { type: "Vector3" }, { type: "neboolean" }, { type: "neboolean" }, { type: "neboolean" }, { type: "presetText" }]));
+                                args.push(...evaluateParameters(argsa.extra, [{ type: "string" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "neboolean" }, { type: "neboolean" }, { type: "neboolean" }, { type: "presetText" }]).args);
                                 //name; x; y; z; includeblocks; includeentities; waterlogged; rotation; loadmode; animationtime
+                                if (!!world.structureManager.get(args[2])) {
+                                    const location = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
+                                    world.structureManager.place(args[2], player.dimension, location, {includeBlocks: args[6]??true, includeEntities: args[7]??true, waterlogged: args[8]??false});
+                                    psend(player, `§aSeccessfully loaded the structure "§r${args[2]}§a".`);
+                                }
+                                else {
+                                    psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                                }
                                 break;
                             case "copy":
                                 args.push(evaluateParameters(argsa.extra, [{ type: "string" }, { type: "string" }]));
@@ -6376,15 +6383,22 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 break;
                             case "removeall":
                                 //  world.structureManager.getIds().forEach(v=>world.structureManager.delete(v))
-                                break;
+                            break;
                             case "list":
-                                player.sendMessage(HomeSystem.getHomesForPlayer(player).map(h => h.name.replaceAll("§", "\uF019")).join("§r§f\n"));
-                                break;
-                        }
-                    }
-                    else {
-                        player.sendMessage("§cError: This command cannot be used becuase the experimental home system is not enabled. It can be enabled at \"Main Menu>Settings>Home System>Enable Home System\"");
-                    }
+                                player.sendMessage(world.structureManager.getWorldStructureIds().map(h => h.replaceAll("§", "\uF019")).join("§r§f\n"));
+                            break;
+                            case "getinfo": {
+                                args.push(argsa.extra);
+                                if (!!world.structureManager.get(args[2])) {
+                                    const structure = world.structureManager.get(args[2]);
+                                    psend(player, `§aID: ${structure.id}\nisValid: ${structure.isValid()}\nSize: ${JSON.stringify(structure.size)}.`);
+                                }
+                                else {
+                                    psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                                }
+                            }
+                            break;
+                        }})
                 }
                 break;
             case !!switchTest.match(/^home$/):
@@ -6703,7 +6717,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^liststructures$/) || !!switchTest.match(/^getstructures$/):
                 {
                     eventData.cancel = true;
-                    player.sendMessage(world.structureManager.getWorldStructureIds().join("§r\n"));
+                    srun(()=>player.sendMessage(world.structureManager.getWorldStructureIds().join("§r\n")));
                 }
                 break;
             case !!switchTest.match(/^listbans$/) || !!switchTest.match(/^getbans$/):
