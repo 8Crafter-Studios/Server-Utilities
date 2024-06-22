@@ -1,5 +1,6 @@
-import { Block, Dimension, type DimensionLocation, DimensionType, Player, type Vector2, type Vector3, world, Entity, system, BlockVolume, CompoundBlockVolume, type BoundingBox, BoundingBoxUtils } from "@minecraft/server";
+import { Block, Dimension, type DimensionLocation, DimensionType, Player, type Vector2, type Vector3, world, Entity, system, BlockVolume, CompoundBlockVolume, type BoundingBox, BoundingBoxUtils, Direction } from "@minecraft/server";
 import { targetSelectorAllListC, targetSelectorAllListE, format_version } from "../Main";
+import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
@@ -8,6 +9,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import *  as main from "../Main";
+import *  as transformrecipes from "transformrecipes";
 import *  as coords from "Main/coordinates";
 import *  as cmds from "Main/commands";
 import *  as bans from "Main/ban";
@@ -33,6 +35,45 @@ spawnprot
 mcMath
 
 export const coordinates_format_version = "6.0.1";
+export class Vector extends mcMath.Vector3Builder implements mcMath.Vector3Utils {
+    zero = mcMath.VECTOR3_ZERO
+    one = mcMath.VECTOR3_ONE
+    up = mcMath.VECTOR3_UP
+    down = mcMath.VECTOR3_DOWN
+    north = mcMath.VECTOR3_NORTH
+    south = mcMath.VECTOR3_SOUTH
+    east = mcMath.VECTOR3_EAST
+    west = mcMath.VECTOR3_WEST
+    right = mcMath.VECTOR3_RIGHT
+    left = mcMath.VECTOR3_LEFT
+    back = mcMath.VECTOR3_BACK
+    forward = mcMath.VECTOR3_FORWARD
+    static zero = mcMath.VECTOR3_ZERO
+    static one = mcMath.VECTOR3_ONE
+    static up = mcMath.VECTOR3_UP
+    static down = mcMath.VECTOR3_DOWN
+    static north = mcMath.VECTOR3_NORTH
+    static south = mcMath.VECTOR3_SOUTH
+    static east = mcMath.VECTOR3_EAST
+    static west = mcMath.VECTOR3_WEST
+    static right = mcMath.VECTOR3_RIGHT
+    static left = mcMath.VECTOR3_LEFT
+    static back = mcMath.VECTOR3_BACK
+    static forward = mcMath.VECTOR3_FORWARD
+    static add = mcMath.Vector3Utils.add
+    static clamp = mcMath.Vector3Utils.clamp
+    static cross = mcMath.Vector3Utils.cross
+    static distance = mcMath.Vector3Utils.distance
+    static dot = mcMath.Vector3Utils.dot
+    static equals = mcMath.Vector3Utils.equals
+    static floor = mcMath.Vector3Utils.floor
+    static lerp = mcMath.Vector3Utils.lerp
+    static magnitude = mcMath.Vector3Utils.magnitude
+    static normalize = mcMath.Vector3Utils.normalize
+    static scale = mcMath.Vector3Utils.scale
+    static slerp = mcMath.Vector3Utils.slerp
+    static subtract = mcMath.Vector3Utils.subtract
+}
 // LocalTeleport (Caret Notation ^^^)
 export interface ILocalTeleport { 
     sway_1: number 
@@ -215,6 +256,7 @@ export function getChunkIndex(location: Vector3){return {x: Math.floor(location.
 export function getChunkIndexB(x: number, z: number){return {x: Math.floor(x/16), y: Math.floor(z/16)}}
 export function getChunkIndexC(location: Vector2){return {x: Math.floor(location.x/16), y: Math.floor(location.y/16)}}
 export function chunkIndexToBoundingBox(chunkIndex: Vector2, heightRange: [min: number, max: number] = [-64, 320]){return {from: {x: Math.floor(chunkIndex.x*16), y: heightRange[0], z: Math.floor(chunkIndex.y*16)}, to: {x: Math.round((chunkIndex.x*16)+15), y: heightRange[1], z: Math.round((chunkIndex.y*16)+15)}}}
+export function chunkIndexToBoundingBoxB(chunkIndex: Vector2, heightRange: {min: number, max: number} = {min: -64, max: 320}){return {from: {x: Math.floor(chunkIndex.x*16), y: heightRange.min, z: Math.floor(chunkIndex.y*16)}, to: {x: Math.round((chunkIndex.x*16)+15), y: heightRange.max, z: Math.round((chunkIndex.y*16)+15)}}}
 export function doBoundingBoxesIntersect(box1: BoundingBox, box2: BoundingBox) {
     // Check for intersection along each axis
     const intersectX = (box1.min.x <= box2.max.x && box1.max.x >= box2.min.x);
@@ -224,6 +266,41 @@ export function doBoundingBoxesIntersect(box1: BoundingBox, box2: BoundingBox) {
     // If all axes intersect, the bounding boxes intersect
     return intersectX && intersectY && intersectZ;
 }
+export const approximatelyEqual = (v1, v2, epsilon = 0.001) =>
+    Math.abs(v1 - v2) < epsilon;
+export const approxEqual = (v1, v2, epsilon = 0.001) =>
+    Math.abs(v1 - v2) < epsilon;
+export const approximatelyEquals = (v1, v2, epsilon = 0.001) =>
+    Math.abs(v1 - v2) < epsilon;
+export const approxEquals = (v1, v2, epsilon = 0.001) =>
+    Math.abs(v1 - v2) < epsilon;
+export function parseExpression(str: string){return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "return("+str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll(/(?<![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])\=(?![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])/g, "==").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1")+")")}
+export function parseExpressionKE(str: string){return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "return("+str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1")+")")}
+export function parseExpressionR(str: string){return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "return("+str+")")}
+  
+  
+  
+export function* generateMathExpression(expression: (wx: number, wy: number, wz: number, x: number, y: number, z: number, ax: number, ay: number, az: number, bx: number, by: number, bz: number, nx: number, ny: number, nz: number, px: number, py: number, pz: number)=>boolean, generateCallback: (location: {x: number, y: number, z: number, rx: number, ry: number, rz: number, ax: number, ay: number, az: number, bx: number, by: number, bz: number, nx: number, ny: number, nz: number, px: number, py: number, pz: number, count: bigint, index: bigint})=>any, from: Vector3, to: Vector3, pos1: Vector3, pos2: Vector3, step = 1): Generator<void, bigint, unknown> {
+    var count = 0n;
+    var index = 0n;
+    for (let x = Math.min(from.x, to.x); x <= Math.max(from.x, to.x); x += step) {
+    for (let y = Math.min(from.y, to.y); y <= Math.max(from.y, to.y); y += step) {
+    for (let z = Math.min(from.z, to.z); z <= Math.max(from.z, to.z); z+= step) {
+            if (expression(x, y, z, x-((from.x+to.x)/2), y-((from.y+to.y)/2), z-((from.z+to.z)/2), pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z, Math.min(from.x, to.x), Math.min(from.y, to.y), Math.min(from.z, to.z), Math.max(from.x, to.x), Math.max(from.y, to.y), Math.max(from.z, to.z))) {
+                generateCallback({ x: x, y: y, z: z, rx: x-((from.x+to.x)/2), ry: y-((from.y+to.y)/2), rz: z-((from.z+to.z)/2), ax: pos1.x, ay: pos1.y, az: pos1.z, bx: pos2.x, by: pos2.y, bz: pos2.z, nx: Math.min(from.x, to.x), ny: Math.min(from.y, to.y), nz: Math.min(from.z, to.z), px: Math.max(from.x, to.x), py: Math.max(from.y, to.y), pz: Math.max(from.z, to.z), count, index });
+                count++;
+            }
+            index++;
+            yield void null;
+    }
+    }
+    }
+
+    return count;
+}
+export function dirmap(direction: Direction): "above"|"below"|"east"|"west"|"north"|"south"{return {Up: "above", Down: "below", East: "east", West: "west", North: "north", South: "south"}[direction] as "above"|"below"|"east"|"west"|"north"|"south"}
+export function diroffsetmap(direction: Direction){return {Up: Vector.up, Down: Vector.down, East: Vector.east, West: Vector.west, North: Vector.north, South: Vector.south}[direction]}
+export function diroffsetothersmap(direction: Direction){return {Up: {x: 1, y: 0, z: 1}, Down: {x: 1, y: 0, z: 1}, East: {x: 0, y: 1, z: 1}, West: {x: 0, y: 1, z: 1}, North: {x: 1, y: 1, z: 0}, South: {x: 1, y: 1, z: 0}}[direction]}
 export interface DimensionVolumeArea{
     dimension: Dimension, 
     from: Vector3, 
@@ -1275,25 +1352,28 @@ export function* generateDomeBG(center: Vector3, radius: number, thickness: numb
         return
     }catch(e){generatorProgress[generatorProgressId].endTick=system.currentTick; generatorProgress[generatorProgressId].endTime=Date.now(); generatorProgress[generatorProgressId].done=true; throw(e)}
 }
-export function* generateFillBG(begin: Vector3, end: Vector3, dimension: Dimension, generatorProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
+export function* generateFillBG(begin: Vector3, end: Vector3, dimension: Dimension, generatorProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation, index: bigint)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
     try{
         generatorProgress[generatorProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
         var msSinceLastYieldStart = Date.now()
+        var index = 0n
         if(integrity!=100){
-            for (let x = begin.x; x <= end.x; x++) {
-                for (let y = begin.y; y <= end.y; y++) {
-                    for (let z = begin.z; z <= end.z; z++) {
-                            if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+            for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                    for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
+                            if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension}, index);}
+                            index++
                     }
                     if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
                 }
                 if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
             }
         }else{
-            for (let x = begin.x; x <= end.x; x++) {
-                for (let y = begin.y; y <= end.y; y++) {
-                    for (let z = begin.z; z <= end.z; z++) {
-                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+            for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                    for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
+                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension}, index);
+                            index++
                     }
                     if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
                 }
@@ -1452,20 +1532,22 @@ export function generateMinecraftSphereBGIdGenerator() {
     generateMinecraftSphereBGProgressIndex = (generateMinecraftSphereBGProgressIndex+1)%32767
     return id
 }
-export function* generateMinecraftSphereBG(center: Vector3, radius: number, dimension: Dimension, generateMinecraftSphereBGProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
+export function* generateMinecraftSphereBG(center: Vector3, radius: number, dimension: Dimension, generateMinecraftSphereBGProgressId: string, minMSBetweenYields: number = 2000, placeBlockCallback: (location: DimensionLocation, index: bigint)=>any = ()=>{}, onComplete: ()=>any = ()=>{}, integrity: number = 100) {
     try{
         const centerX = center.x
         const centerY = center.y
         const centerZ = center.z
+        var index = 0n
         generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId]={done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false}
         var msSinceLastYieldStart = Date.now()
         if(integrity!=100){
             for (let x = centerX - radius; x <= centerX + radius; x++) {
                 for (let y = centerY - radius; y <= centerY + radius; y++) {
                     for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                        index++
                         const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
                         if (distanceSquared <= Math.pow(radius, 2)) {
-                            if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension});}
+                            if(Math.random()<=(integrity/100)){placeBlockCallback({x: x, y: y, z: z, dimension: dimension}, index);}
                         }
                     }
                     if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}
@@ -1476,9 +1558,12 @@ export function* generateMinecraftSphereBG(center: Vector3, radius: number, dime
             for (let x = centerX - radius; x <= centerX + radius; x++) {
                 for (let y = centerY - radius; y <= centerY + radius; y++) {
                     for (let z = centerZ - radius; z <= centerZ + radius; z++) {
-                        const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
-                        if (distanceSquared <= Math.pow(radius, 2)) {
-                            placeBlockCallback({x: x, y: y, z: z, dimension: dimension});
+                        for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                            index++
+                            const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                            if (distanceSquared <= Math.pow(radius, 2)) {
+                                placeBlockCallback({x: x, y: y, z: z, dimension: dimension}, index);
+                            }
                         }
                     }
                     if((Date.now()-msSinceLastYieldStart)>=minMSBetweenYields){msSinceLastYieldStart = Date.now(); yield undefined as void}

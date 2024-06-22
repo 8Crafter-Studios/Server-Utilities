@@ -1,5 +1,6 @@
-import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume, BoundingBoxUtils } from "@minecraft/server";
+import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume, BoundingBoxUtils, Direction } from "@minecraft/server";
 import { targetSelectorAllListC, targetSelectorAllListE, format_version } from "../Main";
+import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
@@ -8,6 +9,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "../Main";
+import * as transformrecipes from "transformrecipes";
 import * as coords from "Main/coordinates";
 import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
@@ -32,6 +34,48 @@ playersave;
 spawnprot;
 mcMath;
 export const coordinates_format_version = "6.0.1";
+export class Vector extends mcMath.Vector3Builder {
+    constructor() {
+        super(...arguments);
+        this.zero = mcMath.VECTOR3_ZERO;
+        this.one = mcMath.VECTOR3_ONE;
+        this.up = mcMath.VECTOR3_UP;
+        this.down = mcMath.VECTOR3_DOWN;
+        this.north = mcMath.VECTOR3_NORTH;
+        this.south = mcMath.VECTOR3_SOUTH;
+        this.east = mcMath.VECTOR3_EAST;
+        this.west = mcMath.VECTOR3_WEST;
+        this.right = mcMath.VECTOR3_RIGHT;
+        this.left = mcMath.VECTOR3_LEFT;
+        this.back = mcMath.VECTOR3_BACK;
+        this.forward = mcMath.VECTOR3_FORWARD;
+    }
+}
+Vector.zero = mcMath.VECTOR3_ZERO;
+Vector.one = mcMath.VECTOR3_ONE;
+Vector.up = mcMath.VECTOR3_UP;
+Vector.down = mcMath.VECTOR3_DOWN;
+Vector.north = mcMath.VECTOR3_NORTH;
+Vector.south = mcMath.VECTOR3_SOUTH;
+Vector.east = mcMath.VECTOR3_EAST;
+Vector.west = mcMath.VECTOR3_WEST;
+Vector.right = mcMath.VECTOR3_RIGHT;
+Vector.left = mcMath.VECTOR3_LEFT;
+Vector.back = mcMath.VECTOR3_BACK;
+Vector.forward = mcMath.VECTOR3_FORWARD;
+Vector.add = mcMath.Vector3Utils.add;
+Vector.clamp = mcMath.Vector3Utils.clamp;
+Vector.cross = mcMath.Vector3Utils.cross;
+Vector.distance = mcMath.Vector3Utils.distance;
+Vector.dot = mcMath.Vector3Utils.dot;
+Vector.equals = mcMath.Vector3Utils.equals;
+Vector.floor = mcMath.Vector3Utils.floor;
+Vector.lerp = mcMath.Vector3Utils.lerp;
+Vector.magnitude = mcMath.Vector3Utils.magnitude;
+Vector.normalize = mcMath.Vector3Utils.normalize;
+Vector.scale = mcMath.Vector3Utils.scale;
+Vector.slerp = mcMath.Vector3Utils.slerp;
+Vector.subtract = mcMath.Vector3Utils.subtract;
 export class WorldPosition {
     constructor(location, rotation, dimension, entity, block) {
         this.location = location;
@@ -290,6 +334,7 @@ export function getChunkIndex(location) { return { x: Math.floor(location.x / 16
 export function getChunkIndexB(x, z) { return { x: Math.floor(x / 16), y: Math.floor(z / 16) }; }
 export function getChunkIndexC(location) { return { x: Math.floor(location.x / 16), y: Math.floor(location.y / 16) }; }
 export function chunkIndexToBoundingBox(chunkIndex, heightRange = [-64, 320]) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange[0], z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange[1], z: Math.round((chunkIndex.y * 16) + 15) } }; }
+export function chunkIndexToBoundingBoxB(chunkIndex, heightRange = { min: -64, max: 320 }) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange.min, z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange.max, z: Math.round((chunkIndex.y * 16) + 15) } }; }
 export function doBoundingBoxesIntersect(box1, box2) {
     // Check for intersection along each axis
     const intersectX = (box1.min.x <= box2.max.x && box1.max.x >= box2.min.x);
@@ -298,6 +343,33 @@ export function doBoundingBoxesIntersect(box1, box2) {
     // If all axes intersect, the bounding boxes intersect
     return intersectX && intersectY && intersectZ;
 }
+export const approximatelyEqual = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
+export const approxEqual = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
+export const approximatelyEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
+export const approxEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
+export function parseExpression(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "return(" + str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll(/(?<![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])\=(?![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])/g, "==").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1") + ")"); }
+export function parseExpressionKE(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "return(" + str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1") + ")"); }
+export function parseExpressionR(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "return(" + str + ")"); }
+export function* generateMathExpression(expression, generateCallback, from, to, pos1, pos2, step = 1) {
+    var count = 0n;
+    var index = 0n;
+    for (let x = Math.min(from.x, to.x); x <= Math.max(from.x, to.x); x += step) {
+        for (let y = Math.min(from.y, to.y); y <= Math.max(from.y, to.y); y += step) {
+            for (let z = Math.min(from.z, to.z); z <= Math.max(from.z, to.z); z += step) {
+                if (expression(x, y, z, x - ((from.x + to.x) / 2), y - ((from.y + to.y) / 2), z - ((from.z + to.z) / 2), pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z, Math.min(from.x, to.x), Math.min(from.y, to.y), Math.min(from.z, to.z), Math.max(from.x, to.x), Math.max(from.y, to.y), Math.max(from.z, to.z))) {
+                    generateCallback({ x: x, y: y, z: z, rx: x - ((from.x + to.x) / 2), ry: y - ((from.y + to.y) / 2), rz: z - ((from.z + to.z) / 2), ax: pos1.x, ay: pos1.y, az: pos1.z, bx: pos2.x, by: pos2.y, bz: pos2.z, nx: Math.min(from.x, to.x), ny: Math.min(from.y, to.y), nz: Math.min(from.z, to.z), px: Math.max(from.x, to.x), py: Math.max(from.y, to.y), pz: Math.max(from.z, to.z), count, index });
+                    count++;
+                }
+                index++;
+                yield void null;
+            }
+        }
+    }
+    return count;
+}
+export function dirmap(direction) { return { Up: "above", Down: "below", East: "east", West: "west", North: "north", South: "south" }[direction]; }
+export function diroffsetmap(direction) { return { Up: Vector.up, Down: Vector.down, East: Vector.east, West: Vector.west, North: Vector.north, South: Vector.south }[direction]; }
+export function diroffsetothersmap(direction) { return { Up: { x: 1, y: 0, z: 1 }, Down: { x: 1, y: 0, z: 1 }, East: { x: 0, y: 1, z: 1 }, West: { x: 0, y: 1, z: 1 }, North: { x: 1, y: 1, z: 0 }, South: { x: 1, y: 1, z: 0 } }[direction]; }
 export function facingPoint(location, otherLocation) {
     const sl = location;
     const ol = otherLocation;
@@ -1585,13 +1657,15 @@ export function* generateFillBG(begin, end, dimension, generatorProgressId, minM
     try {
         generatorProgress[generatorProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
         var msSinceLastYieldStart = Date.now();
+        var index = 0n;
         if (integrity != 100) {
-            for (let x = begin.x; x <= end.x; x++) {
-                for (let y = begin.y; y <= end.y; y++) {
-                    for (let z = begin.z; z <= end.z; z++) {
+            for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                    for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
                         if (Math.random() <= (integrity / 100)) {
-                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                         }
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
                         msSinceLastYieldStart = Date.now();
@@ -1605,10 +1679,11 @@ export function* generateFillBG(begin, end, dimension, generatorProgressId, minM
             }
         }
         else {
-            for (let x = begin.x; x <= end.x; x++) {
-                for (let y = begin.y; y <= end.y; y++) {
-                    for (let z = begin.z; z <= end.z; z++) {
-                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+            for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                    for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
+                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
                         msSinceLastYieldStart = Date.now();
@@ -1846,16 +1921,18 @@ export function* generateMinecraftSphereBG(center, radius, dimension, generateMi
         const centerX = center.x;
         const centerY = center.y;
         const centerZ = center.z;
+        var index = 0n;
         generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
         var msSinceLastYieldStart = Date.now();
         if (integrity != 100) {
             for (let x = centerX - radius; x <= centerX + radius; x++) {
                 for (let y = centerY - radius; y <= centerY + radius; y++) {
                     for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                        index++;
                         const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
                         if (distanceSquared <= Math.pow(radius, 2)) {
                             if (Math.random() <= (integrity / 100)) {
-                                placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                                placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                             }
                         }
                     }
@@ -1874,9 +1951,12 @@ export function* generateMinecraftSphereBG(center, radius, dimension, generateMi
             for (let x = centerX - radius; x <= centerX + radius; x++) {
                 for (let y = centerY - radius; y <= centerY + radius; y++) {
                     for (let z = centerZ - radius; z <= centerZ + radius; z++) {
-                        const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
-                        if (distanceSquared <= Math.pow(radius, 2)) {
-                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                        for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                            index++;
+                            const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                            if (distanceSquared <= Math.pow(radius, 2)) {
+                                placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
+                            }
                         }
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {

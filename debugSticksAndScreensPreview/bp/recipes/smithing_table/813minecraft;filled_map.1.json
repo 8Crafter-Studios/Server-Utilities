@@ -1,0 +1,13 @@
+{
+"format_version": "1.17",
+"minecraft:recipe_smithing_transform": {
+    "description": {
+        "identifier": "andexdb:813minecraft:filled_map.1"
+    },
+    "tags": ["smithing_table"],
+    "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 813},
+    "base": "andexdb:smithing_table_enchanted_book",
+        "addition": "minecraft:netherite_ingot",
+        "result": {"item": "minecraft:filled_map", "data": 1}
+    }
+}

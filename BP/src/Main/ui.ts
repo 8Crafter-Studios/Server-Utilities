@@ -4,6 +4,7 @@ import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelecto
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
+import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
@@ -12,6 +13,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import *  as main from "Main";
+import *  as transformrecipes from "transformrecipes";
 import *  as coords from "Main/coordinates";
 import *  as cmds from "Main/commands";
 import *  as bans from "Main/ban";
@@ -251,12 +253,13 @@ form.button("Run Command", "textures/ui/ImpulseSquare.png");
 form.button("Script Eval", "textures/ui/RepeatSquare.png");
 form.button("Mange Restricted Areas", "textures/ui/xyz_axis.png");
 form.button("Manage Custom UIs", "textures/ui/feedIcon");
+form.button("Moderation §f[§cAlpha§f]", "textures/ui/hammer_l");
 form.button("Settings", "textures/ui/settings_glyph_color_2x");
 form.button("Manage Players", "textures/ui/user_icon_white");
 form.button("§eManage Commands §f[§6Beta§f]", "textures/ui/chat_keyboard_hover");
-form.button("§eItem Editor §f[§cAlpha§f]", "textures/ui/chat_keyboard_hover");
-form.button("§eMap Art Generator §f[§cExperimental§f]", "textures/items/map_locked");
-form.button("§eJava NBT Structure Loader §f[§cExperimental§f]", "textures/ui/xyz_axis");
+form.button("§eItem Editor §f[§cAlpha§f]", "textures/ui/icon_recipe_item");
+form.button("§eMap Art Generator §f[§cAlpha§f]", "textures/items/map_locked");
+form.button("§eJava NBT Structure Loader §f[§cAlpha§f]", "textures/ui/xyz_axis");
 forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {let r = (ra as ActionFormResponse); 
     // This will stop the code when the player closes the form
     if (r.canceled) return;
@@ -405,26 +408,30 @@ forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra =>
             break;
 
         case 20:
-            settings(sourceEntity)
+            moderationSettings(sourceEntity)
             break;
 
         case 21:
-            managePlayers(sourceEntity)
+            settings(sourceEntity)
             break;
 
         case 22:
-            manageCommands(sourceEntity)
+            managePlayers(sourceEntity)
             break;
 
         case 23:
-            try{itemSelector(sourceEntity as Player, sourceEntity as Player).then(a=>{if(!!a){uis.itemEditorTypeSelection(sourceEntity as Player, sourceEntity as Player, a)}})}catch{}
+            manageCommands(sourceEntity)
             break;
 
         case 24:
-            mapArtGenerator(sourceEntity)
+            try{itemSelector(sourceEntity as Player, sourceEntity as Player).then(a=>{if(!!a){uis.itemEditorTypeSelection(sourceEntity as Player, sourceEntity as Player, a)}})}catch{}
             break;
 
         case 25:
+            mapArtGenerator(sourceEntity)
+            break;
+
+        case 26:
             nbtStructureLoader(sourceEntity)
             break;
         default:
@@ -442,8 +449,8 @@ form.button("Eval Auto Execute Settings", "textures/ui/settings_glyph_color_2x")
 form.button("Personal Settings", "textures/ui/settings_glyph_color_2x");
 form.button("Notifications Settings", "textures/ui/icon_bell");
 form.button("Home System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
-form.button("RTP System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
-form.button("Back", "textures/ui/");/*
+form.button("RTP System Settings [§cExperimental§r]", "textures/items/ender_pearl");
+form.button("Back", "textures/ui/arrow_left");/*
 form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
 forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormResponse); 
     // This will stop the code when the player closes the form
@@ -483,6 +490,98 @@ forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormR
 }).catch(e => {
     console.error(e, e.stack);
 });}
+export function moderationSettings(sourceEntity: Entity|Player){
+    let form = new ActionFormData();
+    let players = world.getPlayers();
+form.title("Moderation");
+form.body("Choose menu to open. ");
+form.button("§4Banned Items§f(§cComing Soon!§f)", "textures/ui/icon_blackfriday");
+form.button("Manage Bans", "textures/ui/friend_glyph_desaturated");
+form.button("Anti-Spam", "textures/ui/mute_on");
+form.button("§4Anti-Cheat§f(§cComing Soon!§f)", "textures/ui/friend_glyph_desaturated");
+form.button("Back", "textures/ui/arrow_left");/*
+form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
+forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormResponse); 
+    // This will stop the code when the player closes the form
+    if (r.canceled) return;
+
+    let response = r.selection;
+    switch (response) {
+        case 0:
+        //manageBannedItems(sourceEntity)
+            break;
+
+        case 1:
+            manageBans(sourceEntity, moderationSettings)
+            break;
+
+        case 2:
+            antispamSettings(sourceEntity)
+            break;
+
+        case 3:
+            //anticheatSettings(sourceEntity)
+            break;
+
+        case 4:
+            mainMenu(sourceEntity)
+            break;
+        default:
+    }
+}).catch(e => {
+    console.error(e, e.stack);
+});}
+export function manageBans(sourceEntity: Entity|Player, backMenuFunction: (sourceEntity: Entity|Player)=>any=mainMenu){
+    let form6 = new ActionFormData; 
+    form6.title("Manage Bans"); 
+    ban.getValidBans().idBans.forEach((p)=>{form6.button(`${p.playerId}\nValid`, "textures/ui/online")}); 
+    ban.getExpiredBans().idBans.forEach((p)=>{form6.button(`${p.playerId}\nExpired`, "textures/ui/Ping_Offline_Red")}); 
+    ban.getValidBans().nameBans.forEach((p)=>{form6.button(`${p.playerName}\nValid`, "textures/ui/online")}); 
+    ban.getExpiredBans().nameBans.forEach((p)=>{form6.button(`${p.playerName}\nExpired`, "textures/ui/Ping_Offline_Red")}); 
+    let banList = ban.getValidBans().idBans.concat(ban.getExpiredBans().idBans).concat(ban.getValidBans().nameBans).concat(ban.getExpiredBans().nameBans)
+    form6.button("Add ID Ban"); 
+    form6.button("Add Name Ban"); 
+    form6.button("Back"); 
+    forceShow(form6, sourceEntity as Player).then(ga=>{let g = (ga as ActionFormResponse); 
+        if(g.canceled){backMenuFunction(sourceEntity); return}; 
+        switch(g.selection){
+            case banList.length: 
+            let form5 = new ModalFormData; form5.title(`Add ID Ban`); form5.textField("Player UUID\nThis is the uuid of the player. ", "Integer"); form5.textField("Ban Time (In Minutes)", "Decimal"); form5.textField("Reason", "JavaScript Object ex. `\nDate: ${new Date(D\nate\n.now()).toLo\ncaleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
+            form5.submitButton("Ban")
+            forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
+                if(h.canceled){return};
+                ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: String(h.formValues[0]), originalPlayerName: undefined, type: "id", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "banId:"+Date.now()+":"+String(h.formValues[0]), unbanDate: Number(h.formValues[1])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[2])})
+                backMenuFunction(sourceEntity)
+            }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+            break
+            case banList.length+1: 
+            let form6 = new ModalFormData; form6.title(`Add Name Ban`); form6.textField("Player Name\nThis is the name of the player. ", "String"); form6.textField("Ban Time (In Minutes)", "Decimal"); form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
+            form6.submitButton("Ban")
+            forceShow(form6, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
+                if(h.canceled){return};
+                ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: undefined, playerName: String(h.formValues[0]), type: "name", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "ban:"+Date.now()+":"+String(h.formValues[0]), unbanDate: Number(h.formValues[1])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[2])})
+                backMenuFunction(sourceEntity)
+            }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+            break
+            case banList.length+2: 
+            backMenuFunction(sourceEntity)
+            break/*
+            case banList.length+3: 
+            backMenuFunction(sourceEntity)
+            break
+            case banList.length+4: 
+            backMenuFunction(sourceEntity)*/
+            break
+            default: 
+            let form4 = new ActionFormData; form4.title(`Manage Ban`); let ba = banList[g.selection]; let timeRemaining = ba.timeRemaining; form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type=="id"?"playerId":"originalPlayerId"}: §6${ba.type=="id"?ba.playerId:ba.originalPlayerId}\n§r§b${ba.type=="id"?"originalPlayerName":"playerName"}: §6${ba.type=="id"?ba.originalPlayerName:ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${/*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`); form4.button("Unban"); form4.button("Back")
+            forceShow(form4, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
+                if(h.canceled){return};
+                if(h.selection==0){banList[g.selection].remove(); backMenuFunction(sourceEntity)};
+                if(h.selection==1){backMenuFunction(sourceEntity)};
+            }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+        }; 
+    }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+}
 export function globalSettings(sourceEntity: Entity|Player){
     let form2 = new ModalFormData();
     "andexdbSettings:autoEscapeChatMessages"
@@ -494,18 +593,20 @@ export function globalSettings(sourceEntity: Entity|Player){
     form2.textField("§l§fchatRankPrefix§r§f\nPrefix for chat ranks, default is rank:", "string", String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"));
     form2.textField("§l§fchatSudoPrefix§r§f\nPrefix for custom chat names, default is sudo:", "string", String(world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:"));
     form2.textField("§l§frankDisplayPrefix§r§f\nPrefix that appears before chat ranks in chat messages, default is \"[\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "["));
-    form2.textField("§l§frankDisplaySuffix§r§f\nSuffix that appears after chat ranks in chat messages, default is \"§§r§§f]\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "§r§f]"));
+    form2.textField("§l§frankDisplaySuffix§r§f\nSuffix that appears after chat ranks in chat messages, default is \"\uF019r\uF019f]\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "§r§f]"));
+    form2.textField("§l§frankDisplaySeparator§r§f\nSeparator that appears between ranks, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "));
     form2.textField("§l§fnameDisplayPrefix§r§f\nPrefix that appears before player's names in chat messages, default is \"<\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<"));
-    form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after player's names in chat messages, default is \"§§r§§f>\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"));
+    form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after player's names in chat messages, default is \"\uF019r\uF019f>\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"));
     form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
     form2.textField("§l§fgametestStructureDefaultSpawnLocation§r§f\nThe default spawn locations for the gametest structure, this is used when spawning in no ai entities or spawning in simulated player", "x, y, z", Object.values(world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {}).join(", "));
+    form2.dropdown("§l§finvalidChatCommandAction§r§f\nWhat to do when a chat command is typed that does not exist, or that the player does not have permission to use. ", ["Do Nothing", "Send Message", "Cancel Message", "Warn Player"], Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 0));
     form2.toggle("§l§fchatCommandsEnbaled§r§f\nSets whether or not to enable the chat commands, default is true", Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") ?? true));
     form2.toggle("§l§fdisableCustomChatMessages§r§f\nDisables the chat ranks and custom chat names, default is false", Boolean(world.getDynamicProperty("andexdbSettings:disableCustomChatMessages") ?? false));
-    form2.toggle("§l§fsendMessageOnInvalidChatCommand§r§f\nMakes the chat command still send as a chat message if that specific chat command does not exist, default is false", Boolean(world.getDynamicProperty("andexdbSettings:sendMessageOnInvalidChatCommand") ?? false));
     form2.toggle("§l§fallowCustomChatMessagesMuting§r§f\nAllows the chat mute button to work on the custom chat messages by using the /tellraw command instead of the world.sendMessage() function, a side-effect of this is that it will cause a 1 tick delay in chat messages, default is false", Boolean(world.getDynamicProperty("andexdbSettings:allowCustomChatMessagesMuting") ?? false));
     form2.toggle("§l§fautoEscapeChatMessages§r§f\nEvaluates escape codes in the chat automatically, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") ?? false));
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
+    form2.toggle("§l§fchatDisplayTimeStamp§r§f\nSets whether or not to put a timestamp before every chat message, default is false", config.chatDisplayTimeStamp);
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
     form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
@@ -514,24 +615,26 @@ export function globalSettings(sourceEntity: Entity|Player){
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
-        let [ chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, gametestStructureDefaultSpawnLocation, chatCommandsEnbaled, disableCustomChatMessages, sendMessageOnInvalidChatCommand, allowCustomChatMessagesMuting, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes, autoSavePlayerData, bepl, beppb, aebe, aepl ] = t.formValues;
+        let [ chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, gametestStructureDefaultSpawnLocation, invalidChatCommandAction, chatCommandsEnbaled, disableCustomChatMessages, allowCustomChatMessagesMuting, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes, chatDisplayTimeStamp, autoSavePlayerData, bepl, beppb, aebe, aepl ] = t.formValues;
         world.setDynamicProperty("andexdbSettings:chatCommandPrefix", chatCommandPrefix)
         world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", validChatCommandPrefixes)
         world.setDynamicProperty("andexdbSettings:chatRankPrefix", chatRankPrefix)
         world.setDynamicProperty("andexdbSettings:chatSudoPrefix", chatSudoPrefix)
         world.setDynamicProperty("andexdbSettings:rankDisplayPrefix", rankDisplayPrefix)
         world.setDynamicProperty("andexdbSettings:rankDisplaySuffix", rankDisplaySuffix)
+        world.setDynamicProperty("andexdbSettings:rankDisplaySeparator", rankDisplaySeparator)
         world.setDynamicProperty("andexdbSettings:nameDisplayPrefix", nameDisplayPrefix)
         world.setDynamicProperty("andexdbSettings:nameDisplaySuffix", nameDisplaySuffix)
         world.setDynamicProperty("andexdbSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator)
         if(String(gametestStructureDefaultSpawnLocation) != ""){world.setDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation", {x: Number(String(gametestStructureDefaultSpawnLocation).split(", ")[0]), y: Number(String(gametestStructureDefaultSpawnLocation).split(", ")[1]), z: Number(String(gametestStructureDefaultSpawnLocation).split(", ")[2])})}
         world.setDynamicProperty("andexdbSettings:chatCommandsEnbaled", chatCommandsEnbaled)
         world.setDynamicProperty("andexdbSettings:disableCustomChatMessages", disableCustomChatMessages)
-        world.setDynamicProperty("andexdbSettings:sendMessageOnInvalidChatCommand", sendMessageOnInvalidChatCommand)
+        world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction)
         world.setDynamicProperty("andexdbSettings:allowCustomChatMessagesMuting", allowCustomChatMessagesMuting)
         world.setDynamicProperty("andexdbSettings:autoEscapeChatMessages", autoEscapeChatMessages)
         world.setDynamicProperty("andexdbSettings:autoURIEscapeChatMessages", autoURIEscapeChatMessages)
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes)
+        world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStamp)
         world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData)
 }).catch(e => {
     console.error(e, e.stack);
@@ -590,6 +693,27 @@ export function notificationsSettings(sourceEntity: Entity|Player){
 }).catch(e => {
     console.error(e, e.stack);
 });}
+export function antispamSettings(sourceEntity: Entity|Player){
+    let form2 = new ModalFormData();
+    form2.title("Anti-Spam Settings [§cExperimental§r]")
+    form2.toggle("§l§fAnti-Spam Enabled§r§f", config.antispamEnabled);
+    form2.textField("§l§fWait time before player can send the spammed message again in seconds§r§f", "60", String(config.waitTimeAfterAntispamActivation));
+    form2.slider("§l§fMessage count to trigger anti-spam, defaults to 4§r§f", 1, 100, 1, config.antispamTriggerMessageCount);
+    form2.submitButton("Save")
+    forceShow(form2, (sourceEntity as Player)).then(to => {
+        let t = (to as ModalFormResponse)
+        if (t.canceled) {moderationSettings(sourceEntity); return};/*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+    
+        let [ antispamEnabled, waitTimeAfterAntispamActivation, antispamTriggerMessageCount ] = t.formValues;
+        config.antispamEnabled=antispamEnabled as boolean
+        config.waitTimeAfterAntispamActivation=isNaN(Number(waitTimeAfterAntispamActivation))?60:Number(waitTimeAfterAntispamActivation)
+        config.antispamTriggerMessageCount=Number(antispamTriggerMessageCount)
+        moderationSettings(sourceEntity)
+}).catch(e => {
+    console.error(e, e.stack);
+});}
 export function personalSettings(sourceEntity: Entity|Player){
     let form2 = new ModalFormData();
     "andexdbSettings:autoEscapeChatMessages"
@@ -601,9 +725,10 @@ export function personalSettings(sourceEntity: Entity|Player){
     form2.textField("§l§fchatSudoPrefix§r§f\nPrefix for your custom chat names, default is undefined:", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? "sudo:"));
     form2.textField("§l§frankDisplayPrefix§r§f\nPrefix that appears before your chat ranks in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix") ?? "["));
     form2.textField("§l§frankDisplaySuffix§r§f\nSuffix that appears after your chat ranks in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ?? "§r§f]"));
+    form2.textField("§l§frankDisplaySeparator§r§f\nSeparator that appears between your ranks, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? " "));
     form2.textField("§l§fnameDisplayPrefix§r§f\nPrefix that appears before your names in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? "<"));
     form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after your names in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? "§r§f>"));
-    form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? " "));
+    form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between your name and and your chat message, default is \" \"", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? " "));
     form2.textField("§l§fdebugStickUseCooldown§r§f\nCooldown between changing the block state of a block with a debug stick after you have just changed that state on the same block, default is 4", "number; default: 4", !!!sourceEntity.getDynamicProperty("debugStickUseCooldown")?undefined:String(sourceEntity.getDynamicProperty("debugStickUseCooldown") ?? 4));
     form2.textField("§l§fdebugStickHoldDuration§r§f\nTime after the actionbar for changing a block state with the debug stick appears before the actionbar can be changed again, default is 10", "number; default: 10", !!!sourceEntity.getDynamicProperty("debugStickHoldDuration")?undefined:String(sourceEntity.getDynamicProperty("debugStickHoldDuration") ?? 10));/*
     form2.textField("§l§fvalidChatCommandPrefixes§r§f\nList of valid prefixes for chat commands, use this if you have other add-ons with chat commands in them active, messages that start with any of these will not be sent and will not be modified by this add-on so it will work for you other packs, default is blank", "Comma-Separated List of Strings", String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? ""));
@@ -625,12 +750,13 @@ export function personalSettings(sourceEntity: Entity|Player){
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
-        let [ timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, debugStickUseCooldown, debugStickHoldDuration ] = t.formValues;
+        let [ timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, debugStickUseCooldown, debugStickHoldDuration ] = t.formValues;
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:timeZone", timeZone==""?undefined:timeZone)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatRankPrefix", chatRankPrefix==""?undefined:chatRankPrefix)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatSudoPrefix", chatSudoPrefix==""?undefined:chatSudoPrefix)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix", rankDisplayPrefix==""?undefined:rankDisplayPrefix)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix", rankDisplaySuffix==""?undefined:rankDisplaySuffix)
+        sourceEntity.setDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator", rankDisplaySeparator==""?undefined:rankDisplaySeparator)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix", nameDisplayPrefix==""?undefined:nameDisplayPrefix)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix", nameDisplaySuffix==""?undefined:nameDisplaySuffix)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator==""?undefined:chatNameAndMessageSeparator)
@@ -893,6 +1019,7 @@ export function mapArtGenerator(sourceEntity: Entity|Player){
             // This will assign every input their own variable
             let [snbt, chunkx, chunky, offsetx, offsetz, alignmentmode, dimension] = r.formValues; /*
             console.warn(r.formValues);*/
+            if(String(snbt).includes("#")){(sourceEntity as Player).sendMessage("§6Warning: The snbt was censored! ")}
             let newsnbta = JSON.parse((snbt as string).replace(/(?<=[,\{][\s\n]*?)(['"])?(?<vb>[a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*(?<vd>false|true|undefined|NULL|Infinity|-Infinity|[\-\+]?[0-9]+|"(?:[^"]|(?<=([^\\])(\\\\)*?\\)")*"|'(?:[^']|(?<=([^\\])(\\\\)*?\\)')*')(?=[\s\n]*?[,\}])/g, '"$<vb>":$<vd>'))
             //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
             //console.warn(JSONStringify(Object.assign(mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from), {dimension: dimensions[dimension as number]??sourceEntity.dimension, y: (dimensions[dimension as number]??sourceEntity.dimension).heightRange.max-((newsnbta.size[1]??1) as number)})))
@@ -924,6 +1051,7 @@ export function mapArtGeneratorB(sourceEntity: Entity|Player){
             // This will assign every input their own variable
             let [snbt, chunkx, chunky, dimension] = r.formValues; /*
             console.warn(r.formValues);*/
+            if(String(snbt).includes("#")){(sourceEntity as Player).sendMessage("§6Warning: The snbt was censored! ")}
             let newsnbta = JSON.parse((snbt as string).replace(/(['"])?([a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*([\"\'\`funIN\-0-9\{\[])/g, '"$2":$4'))
             //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
             generateNBTFileB(Object.assign(coords.chunkIndexToBoundingBox({x: chunkx as number, y: chunky as number}).from, {dimension: dimensions[dimension as number]??sourceEntity.dimension, y: (dimensions[dimension as number]??sourceEntity.dimension).heightRange.max-((newsnbta.size[1]??1) as number)}), newsnbta)
@@ -954,6 +1082,7 @@ export function nbtStructureLoader(sourceEntity: Entity|Player){
             // This will assign every input their own variable
             let [snbt, x, y, z, dimension] = r.formValues; /*
             console.warn(r.formValues);*/
+            if(String(snbt).includes("#")){(sourceEntity as Player).sendMessage("§6Warning: The snbt was censored! ")}
             let newsnbta = JSON.parse((snbt as string).replace(/(?<=[,\{][\s\n]*?)(['"])?(?<vb>[a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*(?<vd>false|true|undefined|NULL|Infinity|-Infinity|[\-\+]?[0-9]+|"(?:[^"]|(?<=([^\\])(\\\\)*?\\)")*"|'(?:[^']|(?<=([^\\])(\\\\)*?\\)')*')(?=[\s\n]*?[,\}])/g, '"$<vb>":$<vd>'))
             //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
             generateNBTFileD({dimension: dimensions[dimension as number]??sourceEntity.dimension, x: (Number(x)??sourceEntity.location.x), y: (Number(y)??sourceEntity.location.y), z: (Number(z)??sourceEntity.location.z)}, newsnbta, sourceEntity as Player)
@@ -1002,7 +1131,7 @@ export function playerController(sourceEntity: Entity|Player, message: string = 
         form.textField("Trigger Event", "Trigger Event")
         form.textField("addExperience", "Experience Amount")
         form.textField("addLevels", "Level Amount")
-        form.slider("Selected Slot", 0, 56, 1, playerList[playerTargetB].selectedSlot)
+        form.slider("Selected Slot", 0, 56, 1, playerList[playerTargetB].selectedSlotIndex)
         form.slider("§4Scale", 0, 10, 0.5)
         form.toggle("Is Sneaking", playerList[playerTargetB].isSneaking)
         form.toggle("Clear Velocity", false)
@@ -1072,7 +1201,7 @@ export function playerController(sourceEntity: Entity|Player, message: string = 
         forceShow(form, playerList[playerViewerB]).then(r => {
             if (r.canceled) return;
 
-            let [ changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlot, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug ] = (r as ModalFormResponse).formValues;
+            let [ changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlotIndex, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug ] = (r as ModalFormResponse).formValues;
             let newNameTag = String(nameTag)
             if (Boolean(multilineNameTag) == true) {newNameTag = String(nameTag).split("\\\\newline").join("\n");}
 /*      
@@ -1085,7 +1214,7 @@ export function playerController(sourceEntity: Entity|Player, message: string = 
                 try {playerList[playerTargetB].nameTag = String(newNameTag);} catch(e){console.error(e, e.stack);}
             }
             playerList[playerTargetB].isSneaking = Boolean(isSneaking);
-            playerList[playerTargetB].selectedSlot = Number(selectedSlot);
+            playerList[playerTargetB].selectedSlotIndex = Number(selectedSlotIndex);
             if (Boolean(addEffect) == true) {
                 try {playerList[playerTargetB].addEffect(String(effectToAdd), Number(secondsOfEffect), {amplifier: Number(effectAmplifier), showParticles: Boolean(effectShowEffectParticles)});} catch(e){console.error(e, e.stack);}
             }
@@ -1588,7 +1717,7 @@ forceShow(form, playerList[playerList.findIndex((x) => x == sourceEntity)]).then
     let r = (ro as ModalFormResponse)
     if (r.canceled) return;
 
-    let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled/*, selectedSlot*/, isWaterlogged/*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = r.formValues;
+    let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled/*, selectedSlotIndex*/, isWaterlogged/*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = r.formValues;
     let blockPropertyValue2: any
     blockPropertyValue2 = ""
     let blockPropertyValueArray: Array<any>
@@ -1760,7 +1889,7 @@ export function editorStickB(sourceEntity: Entity|Player, dimensionLocation: Dim
 forceShow(form, sourceEntity as Player).then(r => {
     if (r.canceled) return;
 
-    let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled/*, selectedSlot*/, isWaterlogged/*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = (r as ModalFormResponse).formValues;
+    let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled/*, selectedSlotIndex*/, isWaterlogged/*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = (r as ModalFormResponse).formValues;
     let blockPropertyValue2: any
     blockPropertyValue2 = ""
     let blockPropertyValueArray: Array<any>
@@ -1843,13 +1972,21 @@ forceShow(form, sourceEntity as Player).then(r => {
 });}
 export function editorStickC(sourceEntity: Entity|Player){}/*
 export function evalAutoScriptSettings(sourceEntity: Entity|Player){}*/
-export function managePlayers(sourceEntity: Entity|Player){
+export function managePlayers(sourceEntity: Entity|Player, pagen: number=0){
     let form = new ActionFormData; 
-    form.title("Manage Players"); 
-    let onlinePlayers = savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_=>_.isOnline); 
+    const page = Math.max(0, pagen)
+    const numsavedplayers = savedPlayer.getSavedPlayers().length
+    const numonlinesavedplayers = savedPlayer.getSavedPlayers().filter(_=>_.isOnline).length
+    const numofflinesavedplayers = savedPlayer.getSavedPlayers().filter(_=>!_.isOnline).length
+    form.title(`Manage Players ${Math.min(numsavedplayers, (page*50)+1)}-${Math.min(numsavedplayers, (page+1)*50)} of ${numsavedplayers}`); 
+    const numpages = Math.ceil(numsavedplayers/50)
+    form.button((page!=0)?"§7":""+"Previous Page", "textures/ui/arrow_left"); 
+    form.button((page<(numpages-1))?"§7":""+"Next Page", "textures/ui/arrow_right"); 
+    let onlinePlayers = savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_=>_.isOnline).slice(page*50, (page+1)*50); 
     onlinePlayers.forEach((p)=>{form.button(`${p.name}\n${ban.testForBannedPlayer(p)?"Banned":"Online"}`, "textures/ui/online")}); 
-    let offlinePlayers = savedPlayer.getSavedPlayers().filter(_=>!_.isOnline).sort((a: savedPlayer, b: savedPlayer)=>1-(2*Number(a.lastOnline<b.lastOnline))).sort((a: savedPlayer, b: savedPlayer)=>1-(2*Number(Number(a.isBanned)>Number(b.isBanned)))); 
+    let offlinePlayers = savedPlayer.getSavedPlayers().filter(_=>!_.isOnline).sort((a: savedPlayer, b: savedPlayer)=>(b.lastOnline-a.lastOnline)).sort((a: savedPlayer, b: savedPlayer)=>1-(2*Number(Number(a.isBanned)>Number(b.isBanned)))).slice((page*50)+Math.min(50, Math.max(0, numonlinesavedplayers-(page*50))), (page+1)*50); 
     offlinePlayers.forEach((p)=>{form.button(`${p.name}\n${ban.testForBannedPlayer(p)?"Banned":"Online: "+new Date(Number(p.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()}`, p.isBanned?"textures/ui/Ping_Offline_Red_Dark":"textures/ui/offline")}); 
+    const numplayersonpage = onlinePlayers.length+offlinePlayers.length
     let players = onlinePlayers.concat(offlinePlayers); 
     form.button("Manage Bans"); 
     form.button("Back"); 
@@ -1857,7 +1994,13 @@ export function managePlayers(sourceEntity: Entity|Player){
         let r = (ra as ActionFormResponse); 
         if(r.canceled){return}; 
         switch(r.selection){
-            case players.length: 
+            case 0: 
+            managePlayers(sourceEntity, Math.max(0, page-1))
+            break; 
+            case 1: 
+            managePlayers(sourceEntity, Math.min(numpages-1, page+1))
+            break; 
+            case numplayersonpage+2: 
                 let form6 = new ActionFormData; 
                 form6.title("Manage Bans"); 
                 ban.getValidBans().idBans.forEach((p)=>{form6.button(`${p.playerId}\nValid`, "textures/ui/online")}); 
@@ -1877,7 +2020,7 @@ export function managePlayers(sourceEntity: Entity|Player){
                         forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                             if(h.canceled){return};
                             ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: String(h.formValues[0]), originalPlayerName: undefined, type: "id", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "banId:"+Date.now()+":"+String(h.formValues[0]), unbanDate: Number(h.formValues[1])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[2])})
-                            managePlayers(sourceEntity)
+                            managePlayers(sourceEntity, page)
                         }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                         break
                         case banList.length+1: 
@@ -1886,33 +2029,33 @@ export function managePlayers(sourceEntity: Entity|Player){
                         forceShow(form6, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                             if(h.canceled){return};
                             ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: undefined, playerName: String(h.formValues[0]), type: "name", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "ban:"+Date.now()+":"+String(h.formValues[0]), unbanDate: Number(h.formValues[1])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[2])})
-                            managePlayers(sourceEntity)
+                            managePlayers(sourceEntity, page)
                         }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                         break
                         case banList.length+2: 
-                        managePlayers(sourceEntity)
+                        managePlayers(sourceEntity, page)
                         break/*
                         case banList.length+3: 
-                        managePlayers(sourceEntity)
+                        managePlayers(sourceEntity, page)
                         break
                         case banList.length+4: 
-                        managePlayers(sourceEntity)*/
+                        managePlayers(sourceEntity, page)*/
                         break
                         default: 
                         let form4 = new ActionFormData; form4.title(`Manage Ban`); let ba = banList[g.selection]; let timeRemaining = ba.timeRemaining; form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type=="id"?"playerId":"originalPlayerId"}: §6${ba.type=="id"?ba.playerId:ba.originalPlayerId}\n§r§b${ba.type=="id"?"originalPlayerName":"playerName"}: §6${ba.type=="id"?ba.originalPlayerName:ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${/*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`); form4.button("Unban"); form4.button("Back")
                         forceShow(form4, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
                             if(h.canceled){return};
-                            if(h.selection==0){banList[g.selection].remove(); managePlayers(sourceEntity)};
-                            if(h.selection==1){managePlayers(sourceEntity)};
+                            if(h.selection==0){banList[g.selection].remove(); managePlayers(sourceEntity, page)};
+                            if(h.selection==1){managePlayers(sourceEntity, page)};
                         }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                     }; 
                 }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
             break; 
-            case players.length+1: 
+            case numplayersonpage+3: 
             mainMenu(sourceEntity)
             break; 
             default: 
-            let player = players[r.selection]; 
+            let player = players[r.selection-2]; 
             let form2 = new ActionFormData; 
             form2.title(player.name); 
             form2.body(`UUID: ${player.id}\n${player.isOnline?"Online":"Last Online: "+new Date(Number(player.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player)?"ID BANNED":ban.testForIdBannedPlayer(player)?"NAME BANNED":""}`)
@@ -1920,6 +2063,10 @@ export function managePlayers(sourceEntity: Entity|Player){
             form2.button("Show Data"); 
             form2.button("Check Inventory"); 
             form2.button("Manage Bans"); 
+            form2.button("§4Manage Permissions§f(§cCOMING SOON!§f)"); 
+            form2.button("§4Manage Hotbar Presets§f(§cCOMING SOON!§f)"); 
+            form2.button("§4Manage Private Warps§f(§cCOMING SOON!§f)"); 
+            form2.button("§4Manage Homes§f(§cCOMING SOON!§f)"); 
             form2.button("Back"); 
             forceShow(form2, sourceEntity as Player).then(ga=>{let g = (ga as ActionFormResponse); 
                 if(g.canceled){return}; 
@@ -1928,15 +2075,15 @@ export function managePlayers(sourceEntity: Entity|Player){
                     let form3 = new MessageFormData; form3.title("Confirm Player Data Clear"); form3.body(`Are you sure you want to clear all of ${player.name}'s saved player data?\nThis action cannot be undone.`); form3.button2("Clear All Data"); form3.button1("Cancel")
                     forceShow(form3, sourceEntity as Player).then(ha=>{let h = (ha as MessageFormResponse); 
                         if(h.canceled){return};
-                        if(h.selection==0){managePlayers(sourceEntity)};
-                        if(h.selection==1){player.remove(); managePlayers(sourceEntity)};
+                        if(h.selection==0){managePlayers(sourceEntity, page)};
+                        if(h.selection==1){player.remove(); managePlayers(sourceEntity, page)};
                     }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                     break
                     case 1: 
                     let form4 = new ActionFormData; form4.title(`${player.name}'s Saved Player Data`); form4.body(`${/*arrayModifier(*/JSON.stringify(player).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")/*.split(""), (v, i)=>(Number(String((i/30).toFixed(4)))==Math.round(i/30)?"\n"+v:v))*/}`); form4.button("Done")
                     forceShow(form4, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
                         if(h.canceled){return};
-                        managePlayers(sourceEntity)
+                        managePlayers(sourceEntity, page)
                     }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                     break
                     case 2: 
@@ -1944,7 +2091,7 @@ export function managePlayers(sourceEntity: Entity|Player){
                     let form5 = new ActionFormData; form5.title(`${player.name}'s Saved Inventory Data`); form5.body(`${text}`); form5.button("Done")
                     forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
                         if(h.canceled){return};
-                        managePlayers(sourceEntity)
+                        managePlayers(sourceEntity, page)
                     }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                     break
                     case 3: 
@@ -1963,21 +2110,21 @@ export function managePlayers(sourceEntity: Entity|Player){
                         if(g.canceled){return}; 
                         switch(g.selection){
                             case banList.length: 
-                            let form5 = new ModalFormData; form5.title(`Add ID Ban`); form5.textField("Ban Time (In Minutes)", "Decimal"); form5.textField("Reason", "Text")
+                            let form5 = new ModalFormData; form5.title(`Add ID Ban`); form5.textField("Ban Time (In Minutes)", "Decimal"); form5.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
                             form5.submitButton("Ban")
                             forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                                 if(h.canceled){return};
                                 ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: player.id, originalPlayerName: player.name, type: "id", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "banId:"+Date.now()+":"+player.id, unbanDate: Number(h.formValues[0])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[1])})
-                                managePlayers(sourceEntity)
+                                managePlayers(sourceEntity, page)
                             }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                             break
                             case banList.length+1: 
-                            let form6 = new ModalFormData; form6.title(`Add Name Ban`); form6.textField("Ban Time (In Minutes)", "Decimal"); form6.textField("Reason", "Text")
+                            let form6 = new ModalFormData; form6.title(`Add Name Ban`); form6.textField("Ban Time (In Minutes)", "Decimal"); form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
                             form6.submitButton("Ban")
                             forceShow(form6, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
                                 if(h.canceled){return};
                                 ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: player.id, playerName: player.name, type: "name", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "ban:"+Date.now()+":"+player.name, unbanDate: Number(h.formValues[0])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[1])})
-                                managePlayers(sourceEntity)
+                                managePlayers(sourceEntity, page)
                             }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                             break
                             case banList.length+2: 
@@ -1990,17 +2137,17 @@ export function managePlayers(sourceEntity: Entity|Player){
                             managePlayers(sourceEntity)*/
                             break
                             default: 
-                            let form4 = new ActionFormData; form4.title(`Manage Ban`); let ba = banList[g.selection]; let timeRemaining = ba.timeRemaining; form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type=="id"?"playerId":"originalPlayerId"}: §6${ba.type=="id"?ba.playerId:ba.originalPlayerId}\n§r§b${ba.type=="id"?"originalPlayerName":"playerName"}: §6${ba.type=="id"?ba.originalPlayerName:ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${/*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`); form4.button("Unban"); form4.button("Back")
+                            let form4 = new ActionFormData; form4.title(`Manage Bans`); let ba = banList[g.selection]; let timeRemaining = ba.timeRemaining; form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type=="id"?"playerId":"originalPlayerId"}: §6${ba.type=="id"?ba.playerId:ba.originalPlayerId}\n§r§b${ba.type=="id"?"originalPlayerName":"playerName"}: §6${ba.type=="id"?ba.originalPlayerName:ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${/*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`); form4.button("Unban"); form4.button("Back")
                             forceShow(form4, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
                                 if(h.canceled){return};
-                                if(h.selection==0){banList[g.selection].remove(); managePlayers(sourceEntity)};
-                                if(h.selection==1){managePlayers(sourceEntity)};
+                                if(h.selection==0){banList[g.selection].remove(); managePlayers(sourceEntity, page)};
+                                if(h.selection==1){managePlayers(sourceEntity, page)};
                             }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                         }; 
                     }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                     break
-                    case 4: 
-                    managePlayers(sourceEntity)
+                    case 8: 
+                    managePlayers(sourceEntity, page)
                     break
                     default: 
                 }; 

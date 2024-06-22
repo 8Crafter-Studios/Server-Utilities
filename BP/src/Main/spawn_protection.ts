@@ -2,6 +2,7 @@ import { BlockVolume, CompoundBlockVolume, Player, type Vector3, system, world, 
 import { ActionFormData, ModalFormData, ActionFormResponse, ModalFormResponse } from "@minecraft/server-ui";
 import { format_version } from "Main";
 import { forceShow, mainMenu } from "./ui";
+import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
@@ -10,6 +11,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import *  as main from "Main";
+import *  as transformrecipes from "transformrecipes";
 import *  as coords from "Main/coordinates";
 import *  as cmds from "Main/commands";
 import *  as bans from "Main/ban";

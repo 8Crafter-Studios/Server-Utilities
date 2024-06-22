@@ -5,6 +5,7 @@ import { chatCommands, chatMessage, chatSend, commands_format_version, evaluateP
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal } from "./ui.js";
+import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
@@ -13,6 +14,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import *  as main from "Main";
+import *  as transformrecipes from "transformrecipes";
 import *  as coords from "./coordinates";
 import *  as cmds from "./commands";
 import *  as bans from "./ban";

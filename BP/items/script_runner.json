@@ -12,7 +12,7 @@
 			"minecraft:icon": {
 				"texture": "stick"
 			},
-			"minecraft:interact_button": true, 
+			"minecraft:interact_button": "Open Console", 
 			"minecraft:hover_text_color": "light_purple", 
 			"minecraft:foil": true,/*
 			"minecraft:render_offsets": {

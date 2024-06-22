@@ -1,6 +1,7 @@
 import { EquipmentSlot, Dimension, GameMode, world, Player, system } from "@minecraft/server";
 import { format_version } from "Main";
 import { ban } from "./ban";
+import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
@@ -9,6 +10,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
+import * as transformrecipes from "transformrecipes";
 import * as coords from "Main/coordinates";
 import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
@@ -51,7 +53,7 @@ export class savedPlayer {
         this.location = data.location;
         this.dimension = data.dimension;
         this.rotation = data.rotation;
-        this.selectedSlot = data.selectedSlot;
+        this.selectedSlotIndex = data.selectedSlotIndex;
         this.saveId = data.saveId ?? "player:" + this.id;
     }
     save() { world.setDynamicProperty(this.saveId, JSON.stringify(this)); }
@@ -68,7 +70,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
     static savePlayerData(savedPlayerData) { savedPlayerData.saveId = savedPlayerData.saveId ?? "player:" + savedPlayerData.id; savedPlayerData.format_version = savedPlayerData.format_version ?? format_version; savedPlayerData.player_save_format_version = savedPlayerData.player_save_format_version ?? format_version; world.setDynamicProperty(savedPlayerData.saveId ?? `player:${savedPlayerData.id}`, JSON.stringify(savedPlayerData)); return savedPlayerData.saveId ?? `player:${savedPlayerData.id}`; }
     static savePlayer(player) {
         let savedPlayerData;
-        savedPlayerData = { name: player.name, nameTag: player.nameTag, id: player.id, isOp: player.isOp(), tags: player.getTags(), items: { inventory: [], equipment: [], ender_chest: [] }, selectedSlot: player.selectedSlot, format_version: format_version, player_save_format_version: player_save_format_version, lastOnline: Date.now(), location: player.location, dimension: player.dimension, rotation: player.getRotation(), gameMode: player.getGameMode(), spawnPoint: player.getSpawnPoint() };
+        savedPlayerData = { name: player.name, nameTag: player.nameTag, id: player.id, isOp: player.isOp(), tags: player.getTags(), items: { inventory: [], equipment: [], ender_chest: [] }, selectedSlotIndex: player.selectedSlotIndex, format_version: format_version, player_save_format_version: player_save_format_version, lastOnline: Date.now(), location: player.location, dimension: player.dimension, rotation: player.getRotation(), gameMode: player.getGameMode(), spawnPoint: player.getSpawnPoint() };
         savedPlayerData.saveId = savedPlayerData.saveId ?? "player:" + savedPlayerData.id;
         savedPlayerData.format_version = savedPlayerData.format_version ?? format_version;
         for (let i = 0; i < player.getComponent("inventory").inventorySize; i++) {
