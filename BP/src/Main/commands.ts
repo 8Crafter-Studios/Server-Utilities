@@ -1,6 +1,6 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, } from "./coordinates";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure } from "@minecraft/server";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror } from "../Main";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
@@ -815,13 +815,20 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listidbans", escregexp: {v: "^listidbans$"}, aliases: [{commandName: "getidbans", escregexp: {v: "^getidbans$"}}], formats: [{format: "listidbans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listidbans"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listnamebans", escregexp: {v: "^listnamebans$"}, aliases: [{commandName: "getnamebans", escregexp: {v: "^getnamebans$"}}], formats: [{format: "listnamebans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listnamebans"}, 
     {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "timezone", escregexp: {v: "^timezone$"}, aliases: [{commandName: "tz", escregexp: {v: "^tz$"}}], formats: [{format: "timezone [UTCOffsetInHours: float]"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:timezone"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\cut", escregexp: {v: "^\\\\cut$"}, formats: [{format: "\\cut"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\cut"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\copy", escregexp: {v: "^\\\\copy$"}, formats: [{format: "\\copy"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\copy"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\paste", escregexp: {v: "^\\\\paste$"}, formats: [{format: "\\paste"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\paste"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\undo", escregexp: {v: "^\\\\undo$"}, formats: [{format: "\\undo"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\undo"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\replace", escregexp: {v: "^\\\\replace$"}, formats: [{format: "\\replace"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\replace"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generate", escregexp: {v: "^\\\\generate$"}, formats: [{format: "\\generate"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generate"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generatef", escregexp: {v: "^\\\\generatef$"}, formats: [{format: "\\generatef"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatef"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generatejs", escregexp: {v: "^\\\\generatejs$"}, formats: [{format: "\\generatejs"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatejs"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generatecallback", escregexp: {v: "^\\\\generatecallback$"}, formats: [{format: "\\generatecallback"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatecallback"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generates", escregexp: {v: "^\\\\generates$"}, formats: [{format: "\\generates"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generates"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\sphere", escregexp: {v: "^\\\\sphere$"}, formats: [{format: "\\sphere"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\sphere"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\hsphere", escregexp: {v: "^\\\\hsphere$"}, formats: [{format: "\\hsphere"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hsphere"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\cyl", escregexp: {v: "^\\\\cyl$"}, formats: [{format: "\\cyl"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\cyl"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\hcyl", escregexp: {v: "^\\\\hcyl$"}, formats: [{format: "\\hcyl"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hcyl"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\sphere", escregexp: {v: "^\\\\sphere$"}, formats: [{format: "\\sphere"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\sphere"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\hsphere", escregexp: {v: "^\\\\hsphere$"}, formats: [{format: "\\hsphere"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hsphere"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\cyl", escregexp: {v: "^\\\\cyl$"}, formats: [{format: "\\cyl"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\cyl"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\hcyl", escregexp: {v: "^\\\\hcyl$"}, formats: [{format: "\\hcyl"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hcyl"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\stack", escregexp: {v: "^\\\\stack$"}, formats: [{format: "\\stack"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\stack"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\pos1", escregexp: {v: "^\\\\pos1$"}, formats: [{format: "\\\\pos1"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\pos1"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\pos2", escregexp: {v: "^\\\\pos2$"}, formats: [{format: "\\\\pos2"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\pos2"}, 
@@ -829,6 +836,7 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\hpos2", escregexp: {v: "^\\\\hpos2$"}, formats: [{format: "\\\\hpos2"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hpos2"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\chunk", escregexp: {v: "^\\\\chunk$"}, formats: [{format: "\\\\chunk"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\chunk"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\selectmode", escregexp: {v: "^\\\\selectmode$"}, formats: [{format: "\\\\selectmode [default|noliquid|nopassable|noliquidnopassable]"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\selectmode"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\protectarea", escregexp: {v: "^\\\\protectarea$"}, formats: [{format: "\\\\protectarea"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\protectarea"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\itfill", escregexp: {v: "^\\\\itfill$"}, formats: [{format: "\\\\itfill"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\itfill"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\idtfill", escregexp: {v: "^\\\\idtfill$"}, formats: [{format: "\\\\idtfill"}], command_version: "0.0.1-alpha.2", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\idtfill"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "butcher", escregexp: {v: "^butcher$"}, aliases: [{commandName: "but", escregexp: {v: "^but$"}}], formats: [{format: "butcher"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:butcher"}, 
@@ -843,11 +851,11 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "getworldspawnpoint", escregexp: {v: "^getworldspawnpoint$"}, aliases: [{commandName: "getworldspawn", escregexp: {v: "^getworldspawn$"}}, {commandName: "getwsp", escregexp: {v: "^getwsp$"}}, {commandName: "getws", escregexp: {v: "^getws$"}}, {commandName: "gwsp", escregexp: {v: "^gwsp$"}}, {commandName: "gws", escregexp: {v: "^gws$"}}], formats: [{format: "getworldspawnpoint"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:getworldspawnpoint"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "findtransformdvindex", escregexp: {v: "^findtransformdvindex$"}, formats: [{format: "findtransformdvindex"}], command_version: "1.0.0", description: "", category: ["server"], commandSettingsId: "built-inCommandSettings:findtransformdvindex"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "transformresultatdvindex", escregexp: {v: "^transformresultatdvindex$"}, formats: [{format: "transformresultatdvindex"}], command_version: "1.0.0", description: "", category: ["server"], commandSettingsId: "built-inCommandSettings:transformresultatdvindex"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: {v: "^home$"}, formats: [{format: "home"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gohome", escregexp: {v: "^gohome$"}, formats: [{format: "gohome"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome"}, 
+    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "home", escregexp: {v: "^home$"}, formats: [{format: "home"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home"}, 
+    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "gohome", escregexp: {v: "^gohome$"}, formats: [{format: "gohome"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome"}, 
     {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "rtp", escregexp: {v: "^rtp$"}, formats: [{format: "rtp <player: targetSelector|playerName>"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "tpaccept", escregexp: {v: "^tpaccept$"}, formats: [{format: "tpaccept [player: targetSelector|playerName]"}, {format: "tpdeny all"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpaccept"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "tpdeny", escregexp: {v: "^tpdeny$"}, formats: [{format: "tpdeny [player: targetSelector|playerName]"}, {format: "tpdeny all"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpdeny"}, 
+    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "tpaccept", escregexp: {v: "^tpaccept$"}, formats: [{format: "tpaccept [player: targetSelector|playerName]"}, {format: "tpdeny all"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpaccept"}, 
+    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "tpdeny", escregexp: {v: "^tpdeny$"}, formats: [{format: "tpdeny [player: targetSelector|playerName]"}, {format: "tpdeny all"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpdeny"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "kick", escregexp: {v: "^kick$"}, formats: [{format: "kick <players: targetSelector> [reason: string]"}], command_version: "1.0.0", description: "", category: ["system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:kick"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "disconnect", escregexp: {v: "^disconnect$"}, aliases: [{commandName: "boot", escregexp: {v: "^boot$"}}], formats: [{format: "disconnect <players: targetSelector>"}], command_version: "1.0.0", description: "", category: ["Entity Scale Add-On", "system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:disconnect"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: {v: "^morph$"}, formats: [{format: ""}], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:morph"}, 
@@ -862,7 +870,7 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineuuidinfourl", escregexp: {v: "^offlineuuidinfourl$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineuuidinfourl"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineinfoescaped", escregexp: {v: "^offlineinfoescaped$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineinfoescaped"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineuuidinfoescaped", escregexp: {v: "^offlineuuidinfoescaped$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineuuidinfoescaped"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "help", escregexp: {v: "^help$"}, formats: [{format: "help"}, {format: "help chatcommands", description: "lists the available chat commands and their main formats"}, {format: "help javascriptfunctions", description: "lists all available javascript functions, constants, variables, and classes"}, {format: "help jsfunction <jsObjectId: string>", description: "gets the source code of a specific javascript function, constant, variable, or class"}], command_version: "1.5.2", category: ["misc"], description: "", commandSettingsId: "built-inCommandSettings:help"}
+    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "help", escregexp: {v: "^help$"}, formats: [{format: "help"}, {format: "help chatcommands", description: "lists the available chat commands and their main formats"}, {format: "help javascriptfunctions", description: "lists all available javascript functions, constants, variables, and classes"}, {format: "help jsfunction <jsObjectId: string>", description: "gets the source code of a specific javascript function, constant, variable, or class"}], command_version: "1.5.2", category: ["misc"], description: "", commandSettingsId: "built-inCommandSettings:help"}
 ] as {type: "built-in"|"custom"|"unknown"; requiredTags: string[]; formatting_code: string; commandName: string; escregexp: {v: string; f?: string; }; formats: command_formats_type_list; command_version: string; description: string; commandSettingsId: string; aliases?: {commandName: string, escregexp?: {v?: string, f?: string}}[]; category?: string|string[]; }[]/*
 export let abcdefgh = escapeRegExp.arguments*/
 export type command_formats_type_list = (string|string[]|command_formats_type_list|{format: string|command_formats_type_list, description?: string})[]|string|{format: string|command_formats_type_list, description?: string}
@@ -1219,8 +1227,8 @@ export class chunkLandClaim{
 }
 function extractCustomPatternTypes(str: string) {
     const patterns = [];
-    const regex = /(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g;
-    const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
+    const regex = /(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g;
+    const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
     const matchesa = str.match(regex);
     matchesa.forEach(m=>{
     const matches = m.match(regexb);
@@ -1282,8 +1290,8 @@ function extractCustomPatternTypes(str: string) {
 }
 function extractCustomPatternType(str: string) {
     const patternTypes = [];
-    const regex = /(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
-    const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
+    const regex = /(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
+    const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
     const matches = str.match(regex)[0].match(regexb);
     if (matches) {
         matches.forEach(match => {
@@ -1345,12 +1353,12 @@ export class BlockPattern{
     generateBlock(generateIndex: number|bigint = 0, forceMode?: "random"|"sequence"){return (((!!!forceMode&&this.type=="random")||forceMode=="random")?selectWeightedElement(this.blocks):this.blocks.map(b=>!!b.weight?new Array(b.weight).fill(b):[b]).flat()[Number(BigInt(generateIndex)%BigInt(this.blocks.map(b=>!!b.weight?new Array(b.weight).fill(b):[b]).flat().length))]) as {type: string, states?: {[id: string]: string|number|boolean}, chance?: number}}
     generateBlockP(generateIndex: number|bigint = 0, forceMode?: "random"|"sequence"){const p = ((!!!forceMode&&this.type=="random")||forceMode=="random")?selectWeightedElement(this.blocks):this.blocks.map(b=>!!b.weight?new Array(b.weight).fill(b):[b]).flat()[Number(BigInt(generateIndex)%BigInt(this.blocks.map(b=>!!b.weight?new Array(b.weight).fill(b):[b]).flat().length))]; return BlockPermutation.resolve(p.type, p.states)}
     static parse(){}
-    static extractRaw(str: string): string{return str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]}
+    static extractRaw(str: string): string{return str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]}
     static extract(str: string, mode: "random"|"sequence"="random"): BlockPattern{return new BlockPattern(extractCustomPatternType(str), mode)}
-    static extractWRaw(str: string, mode: "random"|"sequence"="random"): {raw: string, parsed: BlockPattern}{return {raw: str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0], parsed: new BlockPattern(extractCustomPatternType(str), mode)}}
-    static extractAllRaw(str: string): string[]{return str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g)}
+    static extractWRaw(str: string, mode: "random"|"sequence"="random"): {raw: string, parsed: BlockPattern}{return {raw: str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0], parsed: new BlockPattern(extractCustomPatternType(str), mode)}}
+    static extractAllRaw(str: string): string[]{return str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g)}
     static extractAll(str: string, mode: "random"|"sequence"="random"): BlockPattern{return new BlockPattern(extractCustomPatternTypes(str), mode)}
-    static extractAllWRaw(str: string, mode: "random"|"sequence"="random"): {raw: string[], parsed: BlockPattern[]}{return {raw: str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v=>new BlockPattern(v, mode))}}
+    static extractAllWRaw(str: string, mode: "random"|"sequence"="random"): {raw: string[], parsed: BlockPattern[]}{return {raw: str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v=>new BlockPattern(v, mode))}}
 }
 function selectWeightedElement(items: {[k: string]: any}[], weightProp: string = "weight") {
     let total = items.reduce((acc, item) => acc + (item[weightProp]??1), 0);
@@ -1466,7 +1474,7 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
     let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
     let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!switchTest.match((command.get(v.commandName, "built-in").regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!command.get(v.commandName, "built-in")?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))/*
     let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&!!switchTest.match(command.get(v.commandName, "built-in").regexp)))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
-    try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatMessages"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f][" + player.name + "]: " + newMessage); }catch{}})}catch{}
+    try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatMessages"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("chatMessageNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + player.name + "]: " + newMessage); }catch{}})}catch{}
     if(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(true)}
     if(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(false, false, 0, true)}
     if(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") != false){
@@ -2349,25 +2357,36 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
 "wset": `${command.dp}wset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
 "transformresultatdvindex": `${command.dp}transformresultatdvindex [data: int]`,
 "findtransformdvindex": `${command.dp}findtransformdvindex [itemName: string] [data: int]`,
-"brush": `${command.dp}brush none
-${command.dp}brush <brushType: sphere|cube|square|splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface> [-h] [radius: float]
-${command.dp}brush <brushType: raise|lower> <shape: sphere|cube§c|squarex|squarey|squarez§r> [radius: float]
-${command.dp}brush <brushType: extinguish|ex|remexp> [radius: float]`,
+"brush": `${command.dp}brush [-l] none
+${command.dp}brush [-l] <brushType: sphere|cube|square> [-h] <blockPattern: BlockPattern> [radius: float]
+${command.dp}brush [-l] <brushType: splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface> [-h] <blockPattern: BlockPattern> [radius: float] [decay: float]
+${command.dp}brush [-l] <brushType: raise|lower> <shape: sphere|cube§c|squarex|squarey|squarez§r> [radius: float]
+${command.dp}brush [-l] <brushType: extinguish|ex|remexp> [radius: float]`,
 "butcher": `${command.dp}butcher [-abfgnprtwipceh] [radius: float]`,
 "butcherdespawn": `${command.dp}butcherdespawn [-abfgnprtwipceh] [radius: float]`,
 "chunkinfo": `${command.dp}chunkinfo`,
 "selectioninfo": `${command.dp}selectioninfo`,
 "selinfo": `${command.dp}selinfo`,
 "seli": `${command.dp}seli`,
+"\\\\cut": `${command.dp}\\cut [-meb]`,
+"\\\\copy": `${command.dp}\\copy [-meb]`,
+"\\\\paste": `${command.dp}\\paste [-webxz] [integrity: float] [integritySeed: string] [rotation: 0|90|180|270] [animationMode: none|blocks|layers] [animationSeconds: float]`,
+"\\\\undo": `${command.dp}\\undo`,
 "\\\\pos1": `${command.dp}\\pos1 [location: x y z]`,
 "\\\\pos2": `${command.dp}\\pos2 [location: x y z]`,
 "\\\\hpos1": `${command.dp}\\hpos1`,
 "\\\\hpos2": `${command.dp}\\hpos2`,
 "\\\\chunk": `${command.dp}\\chunk`,
-"\\\\generate": `${command.dp}\\generate [-sr] <expression: 3DGeometricMathEquation>`,
-"\\\\generates": `${command.dp}\\generates <expression: 3DGeometricMathEquation> <integrity: float>`,
-"\\\\generate2d": `${command.dp}\\generate2d [-sr] <expression: 2DGeometricMathEquation>`,
-"\\\\generates2d": `${command.dp}\\generates2d <expression: 2DGeometricMathEquation> <integrity: float>`,
+"\\\\generate": `${command.dp}\\generate [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
+"\\\\generatef": `${command.dp}\\generatek [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
+"\\\\generatejs": `${command.dp}\\generatejs <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
+"\\\\generatecallback": `${command.dp}\\generatecallback <blockPattern: BlockPattern> <callback: (dimensionLocation, worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>any>`,
+"\\\\generates": `${command.dp}\\generates <step: float> <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
+"\\\\generate2d": `${command.dp}\\generate2d [-sr] <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
+"\\\\generatek2d": `${command.dp}\\generate2d [-sr] <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
+"\\\\generatejs2d": `${command.dp}\\generatejs2d <axis: x|y|z> <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, rotationRelativeX, rotationRelativeY, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
+"\\\\generatecallback2d": `${command.dp}\\generatecallback2d <axis: x|y|z> <blockPattern: BlockPattern> <callback: (dimensionLocation, worldX, worldY, worldZ, relativeX, relativeY, relativeZ, rotationRelativeX, rotationRelativeY, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>any>`,
+"\\\\generates2d": `${command.dp}\\generates2d <step: float> <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
 "\\\\stack": `${command.dp}\\stack [stackCount: int]`,
 "\\\\selectmode": `${command.dp}\\selectmode [default|noliquid|nopassable|noliquidnopassable]`,
 "\\\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [replaceTileName: Block] [replaceBlockStates: block states]`,
@@ -2638,17 +2657,25 @@ export enum commanddescriptions {
 "butcher" = "Kill all or nearby mobs. ",
 "butcherdespawn" = "Despawn all or nearby mobs. ",
 "brush" = "Sets the held item as the specified brush type or unbinds the brush from the held item. ",
+"\\\\cut" = "Cuts the selected area to the clipboard. ",
+"\\\\copy" = "Copies the selected area to the clipboard. ",
+"\\\\paste" = "Pastes the clipboard to the selected area. ",
+"\\\\undo" = "Undoes the last worldedit command that modified any blocks. ",
 "\\\\pos1" = "Sets the pos1 location of the selected area for use in other worldedit commands. ",
 "\\\\pos2" = "Sets the pos2 location of the selected area for use in other worldedit commands. ",
+"\\\\protectarea" = "Sets the selected area as a protected area. ",
 "\\\\hpos1" = "Sets the pos1 location of the selected area to the block that you are looking at for use in other worldedit commands. ",
 "\\\\hpos2" = "Sets the pos2 location of the selected area to the block that you are looking at for use in other worldedit commands. ",
 "\\\\chunk" = "Sets the pos1 and pos2 locations of the selected area to contain the entire chunk that you are currently in for use in other worldedit commands. ",
 "\\\\generate" = "Generates a 3d shape according to a formula in the selected area, in [-sr] the s modifier will prevent the math equation parser from replacing single equal signs with double equal signs and the r modifier will prevent that as well as any other modifications so that it is run as pure javascript, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\generates" = "Generates a 3d shape with the specified integrity according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\generate2d" = "Generates a 2d shape according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\generates2d" = "Generates a 2d shape with the specified integrity according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\stack" = "Stacks the specified number of copies of the selected area on top of the selected area. ",
-"\\\\selectmode" = "Sets the selection mode for the item your are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. ",
+"\\\\generatef" = "Generates a 3d shape according to a formula in the selected area, this one does not allow access to custom variables which will prevent being able to run scripts using this, this one is much more limited than \\\\generate so it is only reccommended if you are restricting the \\\\generate command from a player to prevent script execution, in [-sr] the s modifier will prevent the math equation parser from replacing single equal signs with double equal signs and the r modifier will prevent that as well as any other modifications so that it is run as pure javascript, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
+"\\\\generatejs" = "Generates a 3d shape according to the outputs of a JavaScript function in the selected area. ",
+"\\\\generatecallback" = "Executes the specified callback JavaScript function for each block in the selected area. ",
+"\\\\generates" = "Generates a 3d shape with the specified step according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
+"\\\\generate2d" = "Generates a 2d shape according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, cx: center relative x, cy: center relative y, cz: center relative z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
+"\\\\generates2d" = "Generates a 2d shape with the specified integrity according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, cx: center relative x, cy: center relative y, cz: center relative z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
+"\\\\stack" = "Stacks the specified number of copies of the step area on top of the selected area. ",
+"\\\\selectmode" = "Sets the selection mode for the item you are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. ",
 "\\\\replace" = "Replaces the blocks between the selected area with the selected block type. ",
 "disconnect" = "Disconnects a player from the server. ",
 "morph" = "Morphs into the morph with the specified ID. ",
@@ -2658,8 +2685,41 @@ export enum commanddescriptions {
 "visualscale" = "Sets your visual scale (the one that does not actually change your hitbox size) to the specified amount. ",
 "visualscaleenabled" = "Enables or diables your visual scaling. "
 }
+export const commandflags = {
+"butcher": `No Flags: Kill items and experience orbs.
+a: kill animals
+b: kill ambient mobs
+c: kill cloned players
+e: kill everything
+g: kill golems
+i: kill items and experience orbs
+p: kill players
+r: kill armor stands
+t: allow killing of name tagged entities`,
+"butcherdespawn": `No Flags: Kill items and experience orbs.
+a: despawn animals
+b: despawn ambient mobs
+c: despawn cloned players
+e: despawn everything
+g: despawn golems
+i: despawn items and experience orbs
+p: despawn players
+r: despawn armor stands
+t: allow despawning of name tagged entities`,
+"cut": `m: copy to memory instead of storage
+e: don't include entities
+b: don't include blocks`,
+"copy": `m: copy to memory instead of storage
+e: don't include entities
+b: don't include blocks`,
+"paste": `w: waterlog structure
+e: don't include entities
+b: don't include blocks
+x: mirror structure x axis
+z: mirror structure z axis`
+}
 
-export function getCommandHelpPage(commandName: string){let cmd = command.get(commandName, "built-in"); return (!!!commanddescriptions[cmd.commandName]&&!!!commandsyntaxes[cmd.commandName])?`§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`:`§e${cmd.commandName}${(cmd.aliases?.length??0)!=0?`(also ${cmd.aliases.map(v=>v.commandName).join(", ")})`:""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName]??"missing").split("\n").join("§r\n- ")}`}
+export function getCommandHelpPage(commandName: string){let cmd = command.get(commandName, "built-in"); return (!!!commanddescriptions[cmd.commandName]&&!!!commandsyntaxes[cmd.commandName])?`§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`:`§e${cmd.commandName}${(cmd.aliases?.length??0)!=0?`(also ${cmd.aliases.map(v=>v.commandName).join(", ")})`:""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName]??"missing").split("\n").join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]?"":"\nFlags:\n"+commandflags[cmd.currentCommandName].split("\n").join("§r\n")}`}
 
 export enum fillmodetypeenum {
     "" = "",
@@ -3337,8 +3397,8 @@ export function entityToContainerSlotArrayB(entity: Entity, getContainer: boolea
 export function getPlayerselectedSlotIndex(player: Player){
     return player.getComponent("inventory").container.getSlot(player.selectedSlotIndex)
 }
-export function getInventory(containerBlockPlayerOrEntity: Block|Entity|Player){
-    return (containerBlockPlayerOrEntity instanceof Block?containerBlockPlayerOrEntity.getComponent("inventory"):(containerBlockPlayerOrEntity as Entity|Player).getComponent("inventory"))
+export function getInventory<T extends Block|Entity|Player>(containerBlockPlayerOrEntity: T){
+    return (containerBlockPlayerOrEntity instanceof Block?containerBlockPlayerOrEntity.getComponent("inventory"):(containerBlockPlayerOrEntity as Entity|Player).getComponent("inventory")) as T extends Block ? BlockInventoryComponent : EntityInventoryComponent
 }
 export function getEquipment(containerBlockPlayerOrEntity: Entity|Player){
     return containerBlockPlayerOrEntity.getComponent("equippable")
@@ -3355,7 +3415,7 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
     let eventData = !!params.eventData?{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}:{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}
     let event = !!params.event?{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}:{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}
     let newMessage = params.newMessage??params.eventData?.message??params.event?.message
-    try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatCommands"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f][" + player.name + "]: " + newMessage); }catch{}})}catch{}
+    try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatCommands"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("commandNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + player.name + "]: " + newMessage); }catch{}})}catch{}
     function hotbarSwap(row: number, preset: number){
         let inventorye = player.getComponent("inventory") as EntityInventoryComponent
         let inventoryblock = world.getDimension(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[0]).getBlock({x: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[1]), y: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[2]), z: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[3])}).getComponent("inventory") as BlockInventoryComponent
@@ -3777,7 +3837,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             }else{
                 let argsa = evaluateParameters(switchTestB, ["presetText", "json", "presetText"])
                 let args = argsa.args
-                if((args[3]??"").trim()=="~"){args[3] = player.name}
+                //if((args[3]??"").trim()=="~"){args[3] = player.name}
                 if(!!!(args[1].type??args[1].typeId??args[1].id??args[1].itemType)){
                     player.sendMessage("§cError: Item type not specified in JSON. ")
                 }else{
@@ -3807,7 +3867,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 }
             }
         break; 
-        case !!switchTest.match(/^item$/):
+        case !!switchTest.match(/^item$/):{try{
             eventData.cancel = true;
             if(switchTestB.trim().split(" ").length==1){player.sendMessage(`item command format: 
 ${command.dp}item <mode: lore|lorene> <lore: JSON>
@@ -4154,7 +4214,8 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                     eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ").slice(1).join(" ") + "\": at \"\\item >>" + command.split(" ").slice(1).join(" ") + "<<\"");
                     break;
             }}catch(e){console.error(e, e.stack); player.sendMessage(e + e.stack)}}
-            break;
+        }catch(e){perror(player, e)}}
+        break;
         case !!switchTest.match(/^gmc$/): 
             eventData.cancel = true;
             try{player.runCommandAsync("/gamemode c")}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -4406,15 +4467,19 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
 .selectioninfo - §oDisplays info about the current selection. §r
 .selinfo - §oDisplays info about the current selection. §r
 .seli - §oDisplays info about the current selection. §r
+.\\cut - §oCuts the selected area to the clipboard. §r
+.\\copy - §oCopies the selected area to the clipboard. §r
+.\\paste - §oPastes the clipboard to the selected area. §r
 .\\pos1 - §oSets the pos1 location of the selected area for use in other worldedit commands. §r
 .\\pos2 - §oSets the pos2 location of the selected area for use in other worldedit commands. §r
 .\\hpos1 - §oSets the pos1 location of the selected area to the block that you are looking at for use in other worldedit commands. §r
 .\\hpos2 - §oSets the pos2 location of the selected area to the block that you are looking at for use in other worldedit commands. §r
 .\\chunk - §oSets the pos1 and pos2 locations of the selected area to contain the entire chunk that you are currently in for use in other worldedit commands. §r
 .\\generate - §oGenerates a 3d shape according to a formula in the selected area. §r
-.\\generates - §oGenerates a 3d shape with the specified integrity according to a formula in the selected area. §r
+.\\generate - §oGenerates a 3d shape according to a formula in the selected area, this formula is run in read-only mode. §r
+.\\generates - §oGenerates a 3d shape with the specified step according to a formula in the selected area. §r
 .\\generate2d - §oGenerates a 2d shape according to a formula in the selected area. §r
-.\\generates2d - §oGenerates a 2d shape with the specified integrity according to a formula in the selected area. §r
+.\\generates2d - §oGenerates a 2d shape with the specified step according to a formula in the selected area. §r
 .\\stack - §oStacks the specified number of copies of the selected area on top of the selected area. §r
 .\\selectmode - §oSets the selection mode for the item your are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. §r
 .\\replace - §oReplaces the blocks between the selected area with the selected block type. §r
@@ -5321,11 +5386,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^up$/): 
             eventData.cancel = true;
-            try{system.run(()=>{if(player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])-1).typeId == "minecraft:air" && (((newMessage.split(" ")[2]?.toLowerCase() != "false")&&(newMessage.split(" ")[2] != "0"))||(newMessage.split(" ")[2] == undefined))){player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])-1).setType("minecraft:glass")}; player.teleport({x: player.location.x, y: player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])).location.y, z: player.location.z}); eventData.sender.sendMessage(String())}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>{try{if(player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])-1).typeId == "minecraft:air" && (((newMessage.split(" ")[2]?.toLowerCase() != "false")&&(newMessage.split(" ")[2] != "0"))||(newMessage.split(" ")[2] == undefined))){player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])-1).setType("minecraft:glass")}}catch{}; player.teleport(Vector.add(roundVector3ToMiddleOfBlockFloorY(player.location), {x: 0, y: Number(newMessage.split(" ")[1]), z: 0})); eventData.sender.sendMessage(String())}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^top$/): 
             eventData.cancel = true;
-            try{system.run(()=>{let block = getTopSolidBlock(player.dimension.getBlock(player.location), player.dimension); if(block != undefined){player.teleport({x: player.location.x, y: block.y+1, z: player.location.z}, {}); }else{eventData.sender.sendMessage("§4No block could be found. ")}; eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z)}); })}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>{let block = getTopSolidBlock(player.dimension.getBlock({x: player.location.x, y: Math.max(player.location.y, player.dimension.heightRange.max), z: player.location.z}), player.dimension); if(block != undefined){player.teleport({x: player.location.x, y: block.y+1, z: player.location.z}, {}); }else{eventData.sender.sendMessage("§4No block could be found. ")}; eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z)}); })}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^printlayers$/): 
             eventData.cancel = true;
@@ -5362,50 +5427,56 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^structure$/): {
             eventData.cancel = true;
-            srun(()=>{let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);
-            let args = argsa.args;
-            switch (String(args[1]).toLowerCase()) {
-                case "save":
-                    args.push(...evaluateParameters(argsa.extra, [{ type: "string" }, { type: "Vector6" }, { type: "presetText" }, { type: "neboolean" }, { type: "neboolean" }]).args);
+            srun(()=>{let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);try{
+            //let args = argsa.args;
+            switch (String(argsa.args[1]).toLowerCase()) {
+                case "save":{
+                    let args = evaluateParameters(argsa.extra, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "presetText" }, { type: "neboolean" }, { type: "neboolean" }]).args;
+                    const locationa = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
+                    const locationb = evaluateCoordinates(args[6] ?? "~", args[7] ?? "~", args[8] ?? "~", player.location, player.getRotation());
+                    world.structureManager.createFromWorld(args[2], player.dimension, locationa, locationb, {saveMode: (args[9]??"").toLowerCase()=="world"?StructureSaveMode.World:StructureSaveMode.Memory, includeBlocks: args[10]??true, includeEntities: args[11]??true});
                     //name; fx,fy,fz,tx,ty,tz; savemode; includeblocks; includeentities
-                    break;
-                case "saveempty":
-                    args.push(...evaluateParameters(argsa.extra, [{ type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args);
+                }
+                break;
+                case "saveempty":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args;
                     //name; sizex; sizey; sizez
-                    const sa = world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] });
-                    args[6].toLowerCase() == "disk" ? sa.saveAs(sa.id, StructureSaveMode.World) : undefined;
+                    world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] }, args[6].toLowerCase() == "disk" ? StructureSaveMode.World : StructureSaveMode.Memory);
                     psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v => v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase() == "disk" ? "the disk" : "memory"}.`);
-                    break;
-                case "createempty":
-                    args.push(...evaluateParameters(argsa.extra, [{ type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args);
+                }
+                break;
+                case "createempty":{
+                    let args = evaluateParameters(argsa.extra, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args;
                     //name; sizex; sizey; sizez
-                    const sb = world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] });
-                    args[6].toLowerCase() == "disk" ? sb.saveAs(sb.id, StructureSaveMode.World) : undefined;
+                    world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] }, args[6].toLowerCase() == "disk" ? StructureSaveMode.World : StructureSaveMode.Memory);
                     psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v => v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase() == "disk" ? "the disk" : "memory"}.`);
-                    break;
-                case "delete":
-                    args.push(argsa.extra);
+                }
+                break;
+                case "delete":{
+                    let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra];
                     if (!!world.structureManager.get(args[2])) {
                         world.structureManager.delete(args[2]) ? psend(player, `§aSeccessfully deleted the structure "§r${args[2]}§a".`) : psend(player, `§cError: Failed to delete the structure "§r${args[2]}§c".`);
                     }
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
                     }
-                    break;
-                case "load":
-                    args.push(...evaluateParameters(argsa.extra, [{ type: "string" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "neboolean" }, { type: "neboolean" }, { type: "neboolean" }, { type: "presetText" }]).args);
+                }
+                break;
+                case "load":{
+                    let args = evaluateParameters(argsa.extra, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, {type: "number"}, {type: "string"}, { type: "neboolean" }, { type: "neboolean" }, { type: "neboolean" }, {type: "number"}, { type: "string" }, { type: "presetText" }, { type: "number" }]).args;
                     //name; x; y; z; includeblocks; includeentities; waterlogged; rotation; loadmode; animationtime
                     if (!!world.structureManager.get(args[2])) {
                         const location = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
-                        world.structureManager.place(args[2], player.dimension, location, {includeBlocks: args[6]??true, includeEntities: args[7]??true, waterlogged: args[8]??false});
+                        world.structureManager.place(args[2], player.dimension, location, {includeBlocks: args[8]??true, includeEntities: args[9]??true, waterlogged: args[10]??false, animationMode: StructureAnimationMode[args[13]]??StructureAnimationMode.None, animationSeconds: args[14], mirror: args[7].includes("x")?args[7].includes("z")?StructureMirrorAxis.XZ:StructureMirrorAxis.X:args[7].includes("z")?StructureMirrorAxis.Z:StructureMirrorAxis.None, integrity: args[11], integritySeed: args[12], rotation: Math.round(args[6]/90)==0?StructureRotation.None:Math.round(args[6]/90)==1?StructureRotation.Rotate90:Math.round(args[6]/90)==2?StructureRotation.Rotate180:Math.round(args[6]/90)==3?StructureRotation.Rotate270:StructureRotation.None});
                         psend(player, `§aSeccessfully loaded the structure "§r${args[2]}§a".`);
                     }
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
                     }
-                    break;
-                case "copy":
-                    args.push(evaluateParameters(argsa.extra, [{ type: "string" }, { type: "string" }]));
+                }
+                break;
+                case "copy":{
+                    let args = evaluateParameters(argsa.extra, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
                     if (!!world.structureManager.get(args[2])) {
                         world.structureManager.get(args[2]).saveAs(args[3]);
                         psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a".`);
@@ -5413,9 +5484,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
                     }
-                    break;
-                case "copytodisk":
-                    args.push(evaluateParameters(argsa.extra, [{ type: "string" }, { type: "string" }]));
+                }
+                break;
+                case "copytodisk":{
+                    let args = evaluateParameters(argsa.extra, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
                     if (!!world.structureManager.get(args[2])) {
                         world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.World);
                         psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" on the disk.`);
@@ -5423,9 +5495,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
                     }
-                    break;
-                case "copytomemory":
-                    args.push(evaluateParameters(argsa.extra, [{ type: "string" }, { type: "string" }]));
+                }
+                break;
+                case "copytomemory":{
+                    let args = evaluateParameters(argsa.extra, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
                     if (!!world.structureManager.get(args[2])) {
                         world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.Memory);
                         psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" in memory.`);
@@ -5433,9 +5506,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
                     }
-                    break;
-                case "savetodisk":
-                    args.push(argsa.extra);
+                }
+                break;
+                case "savetodisk":{
+                    let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra];
                     if (!!world.structureManager.get(args[2])) {
                         world.structureManager.get(args[2]).saveAs(args[2], StructureSaveMode.World);
                         psend(player, `§aSeccessfully saved the structure "§r${args[2]}§a" to the disk.`);
@@ -5443,9 +5517,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
                     }
-                    break;
-                case "movetomemory":
-                    args.push(argsa.extra);
+                }
+                break;
+                case "movetomemory":{
+                    let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra];
                     if (!!world.structureManager.get(args[2])) {
                         let s = world.structureManager.get(args[2]).saveAs("andexdb:structuremovingtomemoryplaceholderreserved5164896135268634876548961853426912579081261744790127659073267276846741241230675914307695134567412541637516742890576243098");
                         world.structureManager.delete(args[2]);
@@ -5456,15 +5531,18 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
                     }
-                    break;
-                case "removeall":
+                }
+                break;
+                case "removeall":{
                     //  world.structureManager.getIds().forEach(v=>world.structureManager.delete(v))
-                    break;
-                case "list":
+                }
+                break;
+                case "list":{
                     player.sendMessage(world.structureManager.getWorldStructureIds().map(h => h.replaceAll("§", "\uF019")).join("§r§f\n"));
+                }
                 break;
                 case "getinfo": {
-                    args.push(argsa.extra);
+                    let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra];
                     if (!!world.structureManager.get(args[2])) {
                         const structure = world.structureManager.get(args[2]);
                         psend(player, `§aID: ${structure.id}\nisValid: ${structure.isValid()}\nSize: ${JSON.stringify(structure.size)}.`);
@@ -5474,45 +5552,51 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     }
                 }
                 break;
-            }})
+                case "removeair": {
+                    let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra];
+                    if (!!world.structureManager.get(args[2])) {
+                        const structure = world.structureManager.get(args[2]);
+                        completeGenerator(removeAirFromStructure(structure), 2500).then(v=>psend(player, `Removed air blocks from the structure "§r${args[2]}§r§c".`)).catch(e=>perror(player, e));
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                }
+                break;
+            }}catch(e){perror(player, e)}})
         }
         break; 
         case !!switchTest.match(/^home$/): {
             eventData.cancel = true;
             if(config.homeSystemEnabled){
                 let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"])
-                let args = argsa.args
+                let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra]
                 switch(String(args[1])){
                     case "set": 
                         if(!(HomeSystem.testIfPlayerAtMaxHomes(player)||!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]))){
-                            args.push(argsa.extra)
                             new Home({location: Object.assign(player.location, {dimension: player.dimension}), name: args[2], owner: player, saveId: "home:"+player.id+":"+args[2]}).save()
                             player.sendMessage(`Successfully set the home "${args[2]}§r§f" to ${vTStr(player.location)} in ${main.dimensionTypeDisplayFormatting[player.dimension.id]}. `)
                         }else{player.sendMessage("§cError: Max homes reached. Please delete a home if you want to add a new one. ")}
                     break; 
                     case "remove": 
-                        args.push(argsa.extra)
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
                             HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).remove()
                             player.sendMessage(`Successfully removed the home "${args[2]}§r§f". `)
                         }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `)}
                     break; 
                     case "go": 
-                        args.push(argsa.extra)
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
                             srun(()=>player.teleport(HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location, {dimension: HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location.dimension}))
                             player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `)
                         }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `)}
                     break; 
                     case "warp": 
-                        args.push(argsa.extra)
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
                             srun(()=>player.teleport(HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location, {dimension: HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location.dimension}))
                             player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `)
                         }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `)}
                     break; 
                     case "teleport": 
-                        args.push(argsa.extra)
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
                             srun(()=>player.teleport(HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location, {dimension: HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location.dimension}))
                             player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `)
@@ -5599,13 +5683,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; */ // COMING SOON! 
         case !!switchTest.match(/^summon$/): {
             eventData.cancel = true;
-            system.run(()=>{
+            system.run(()=>{try{
                 const args = evaluateParameters(switchTestB, ["presetText", "number", "string", "Vector", "Vector", "Vector", "Vector", "Vector", "neboolean", "string"]).args
                 const rotation = evaluateRotationCoordinates(String(args[7]??0), String(args[6]??0).replace("~", "0"), player.getRotation())
                 const location = evaluateCoordinates(args[3]??"~", args[4]??"~", args[5]??"~", player.location, player.getRotation())
                 for(let i = 0; i < args[1]; i++){let a = player.dimension.spawnEntity(args[2], location, {initialPersistence: args[8]??false}); a.setRotation(rotation); a.nameTag=args[9]??""}
                 player?.sendMessage(`${args[1]==0?"§c":""}Summoned ${args[2]} * ${args[1]}. `)
-            })
+            }catch(e){perror(player, e)}})
         }
         break; 
         case !!switchTest.match(/^heal$/): {
@@ -6067,14 +6151,14 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
             let lastblockname = args[10]
             let lastblockstates = args[11]
             let replacemode = args[12]??false
-            let matchingblock=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
-            let cmatchingblock=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
-            let ccmatchingblock=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
-            let hsmatchingblock=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
-            let tmatchingblock=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
-            let omatchingblock=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
-            let homatchingblock=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
-            let sgmatchingblock=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]/*
+            let matchingblock=((lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let cmatchingblock=((clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let ccmatchingblock=((cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let hsmatchingblock=((hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let tmatchingblock=((tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let omatchingblock=((olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let homatchingblock=((holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let sgmatchingblock=((sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]) as [string, { [id: string]: string | number | boolean }]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
                 case "": 
@@ -6389,14 +6473,14 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
             let lastblockname = args[10]
             let lastblockstates = args[11]
             let replacemode = args[12]??false
-            let matchingblock=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
-            let cmatchingblock=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
-            let ccmatchingblock=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
-            let hsmatchingblock=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
-            let tmatchingblock=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
-            let omatchingblock=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
-            let homatchingblock=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
-            let sgmatchingblock=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]/*
+            let matchingblock=((lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let cmatchingblock=((clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let ccmatchingblock=((cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let hsmatchingblock=((hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let tmatchingblock=((tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let omatchingblock=((olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let homatchingblock=((holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let sgmatchingblock=((sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]) as [string, { [id: string]: string | number | boolean }]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
                 case "": 
@@ -6684,27 +6768,27 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             if((!circlemode)&&(!ccirclemode)&&(!hspheremode)&&(!tunnelmode)){coordinatesb = evaluateCoordinates(args[4], args[5], args[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); }
             let horadi: Vector3
             let hooffset: Vector3
-            let hointegrity = argsk[9]
-            let hothickness = argsk[10]
-            let hofirstblockname = argsk[11]
-            let hofirstblockstates = argsk[12]
-            let homode = argsk[13] as string
-            let holastblockname = argsk[14]
-            let holastblockstates = argsk[15]
-            let horeplacemode = argsk[16]??false
+            let hointegrity = argsk[10]
+            let hothickness = argsk[11]
+            let hofirstblockname = argsk[12]
+            let hofirstblockstates = argsk[13]
+            let homode = argsk[14] as string
+            let holastblockname = argsk[15]
+            let holastblockstates = argsk[16]
+            let horeplacemode = argsk[17]??false
             if((hovoidmode)){
                 horadi = evaluateCoordinates(argsk[4], argsk[5], argsk[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
                 hooffset = evaluateCoordinates(argsk[7], argsk[8], argsk[9], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
             }
             let oradi: Vector3
             let ooffset: Vector3
-            let ointegrity = argsk[9]
-            let ofirstblockname = argsm[10]
-            let ofirstblockstates = argsm[11]
-            let omode = argsm[12] as string
-            let olastblockname = argsm[13]
-            let olastblockstates = argsm[14]
-            let oreplacemode = argsm[15]??false
+            let ointegrity = argsk[10]
+            let ofirstblockname = argsm[11]
+            let ofirstblockstates = argsm[12]
+            let omode = argsm[13] as string
+            let olastblockname = argsm[14]
+            let olastblockstates = argsm[15]
+            let oreplacemode = argsm[16]??false
             if((ovoidmode)){
                 oradi = evaluateCoordinates(argsm[4], argsm[5], argsm[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
                 ooffset = evaluateCoordinates(argsm[7], argsm[8], argsm[9], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
@@ -6716,14 +6800,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = args[11]
             let lastblockstates = args[12]
             let replacemode = args[13]??false
-            let matchingblock=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
-            let cmatchingblock=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
-            let ccmatchingblock=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
-            let hsmatchingblock=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
-            let tmatchingblock=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
-            let omatchingblock=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
-            let homatchingblock=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
-            let sgmatchingblock=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]
+            let matchingblock=((lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let cmatchingblock=((clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let ccmatchingblock=((cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let hsmatchingblock=((hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let tmatchingblock=((tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let omatchingblock=((olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let homatchingblock=((holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let sgmatchingblock=((sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]) as [string, { [id: string]: string | number | boolean }]
             const blocktypes = BlockTypes.getAll()/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
@@ -7250,8 +7334,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 if((args[3]??"").trim()=="~"){args[3] = player.name}}
                 let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).find(v=>v.typeId=="minecraft:player") as Player
                 let targetb = targetSelectorAllListC(args[1], "", vTStr(player.location), player).find(v=>v.typeId=="minecraft:player") as Player
-                if((args[2]??"").trim()==""){args[2] = targetb?.selectedSlotIndex}
-                if((args[1]??"").trim()==""){args[1] = target?.selectedSlotIndex}
+                if((args[2]??"").trim()==""){args[2] = String(targetb?.selectedSlotIndex)}
+                if((args[1]??"").trim()==""){args[1] = String(target?.selectedSlotIndex)}
                 if(!!!target){
                     player.sendMessage(`§cError: No player matching the first specified target selector was found. `)
                 }else if(!!!targetb){
@@ -7701,7 +7785,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             }catch(e){player.sendMessage("§c"+e+" "+e.stack)}})
         }
         break; 
-        case !!switchTest.match(/^timezone$/): {
+        case !!switchTest.match(/^timezone$/)||!!switchTest.match(/^tz$/): {
             eventData.cancel = true;
             const args = evaluateParameters(switchTestB, ["presetText", "number"]).args
             player.setDynamicProperty("andexdbPersonalSettings:timeZone", args[1])
@@ -7774,13 +7858,38 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
         break; 
         case !!switchTest.match(/^\\replace$/): {
             eventData.cancel = true;
-            const args = evaluateParameters(switchTestB, ["presetText", "blockPattern", "string", "blockStates"]).args
-            const firstblockpattern = args[1] as BlockPattern
-            const lastblockname = args[2] as string
-            const lastblockstates = args[3] as Record<string, string | number | boolean>
+            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "blockPattern", "string", "blockStates"]).args
+            const firstblockpattern = args[2] as BlockPattern
+            const lastblockname = args[3] as string
+            const lastblockstates = args[4] as Record<string, string | number | boolean>
             const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
             const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.Memory})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                    const blocktypes = BlockTypes.getAll()
+                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{fillBlocksHFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, undefined, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\generatef$/): {
+            eventData.cancel = true;
+            const argsa = evaluateParameters(switchTestB, ["presetText", "-sr", "blockPattern"])
+            const args = [...argsa.args, argsa.extra]
+            const firstblockpattern = args[2] as BlockPattern
+            const expression = ((args[1] as string).includes("r")?parseExpressionR:(args[3] as string).includes("s")?parseExpressionKE:parseExpression)(args[3] as string)
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
             if(!!!coordinatesa){
                 player.sendMessage("§cError: pos1 is not set.")
             }else{
@@ -7788,7 +7897,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     const blocktypes = BlockTypes.getAll()
-                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFGB(coordinatesa, coordinatesb, player.dimension, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, undefined, args[13]??true, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{completeGeneratorB(generateMathExpression(expression as ()=>boolean, (l)=>{const b = firstblockpattern.generateBlock(l.count); const t = b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t)}, coordinatesa, coordinatesb, coordinatesa, coordinatesb), 2500).then(a=>{player.sendMessage(`${a.return==0n?"§c":""}${a.return} blocks replaced`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 }
             }
         }
@@ -7797,8 +7906,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             eventData.cancel = true;
             const argsa = evaluateParameters(switchTestB, ["presetText", "-sr", "blockPattern"])
             const args = [...argsa.args, argsa.extra]
-            const firstblockpattern = args[1] as BlockPattern
-            const expression = ((args[1] as string).includes("r")?parseExpressionR:(args[1] as string).includes("s")?parseExpressionKE:parseExpression)(args[2] as string)
+            const firstblockpattern = args[2] as BlockPattern
+            const expression = ((args[1] as string).includes("r")?parseExpressionBR:(args[3] as string).includes("s")?parseExpressionBKE:parseExpressionB)(args[3] as string)
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
             const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
             const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
@@ -7816,10 +7925,10 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
         break; 
         case !!switchTest.match(/^\\generates$/): {
             eventData.cancel = true;
-            const argsa = evaluateParameters(switchTestB, ["presetText", "number", "blockPattern"])
-            const args = [...argsa.args, argsa.extra]
-            const firstblockpattern = args[2] as BlockPattern
-            const expression = parseExpression(args[3] as string)
+            const argsa = evaluateParameters(switchTestB, ["presetText", "number", "-sr", "blockPattern"])
+            const args = [...argsa.args, argsa.extra] as [...typeof argsa.args, string]
+            const firstblockpattern = args[3] as BlockPattern
+            const expression = ((args[2] as string).includes("r")?parseExpressionBR:(args[4] as string).includes("s")?parseExpressionBKE:parseExpressionB)(args[4] as string)
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
             const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
             const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
@@ -7830,12 +7939,12 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     const blocktypes = BlockTypes.getAll()
-                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{completeGeneratorB(generateMathExpression(expression as ()=>boolean, (l)=>{const b = firstblockpattern.generateBlock(l.count); const t = b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t)}, coordinatesa, coordinatesb, coordinatesa, coordinatesb, args[1] as number), 2500).then(a=>{player.sendMessage(`${a.return==0n?"§c":""}${a.return} blocks replaced`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{completeGeneratorB(generateMathExpression(expression as ()=>boolean, (l)=>{const b = firstblockpattern.generateBlock(l.count); const t = b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t)}, coordinatesa, coordinatesb, coordinatesa, coordinatesb, args[1]), 2500).then(a=>{player.sendMessage(`${a.return==0n?"§c":""}${a.return} blocks replaced`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 }
             }
         }
         break; 
-        case !!switchTest.match(/^\\stack$/): {
+        case !!switchTest.match(/^\\stack$/): {try{
             eventData.cancel = true;
             const args = evaluateParameters(switchTestB, ["presetText", "number"]).args
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
@@ -7853,13 +7962,122 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 }else{
                     system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{
                         for(let i = 0; i<args[1]; i++){
-                            console.warn(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
+                            //console.warn(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
+                            try{undoClipboard.save(dimensiona, {from: ca, to: Vector.add(cb, {x: 0, y: height*args[1], z: 0})}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.Memory})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                             dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
                         }
                     }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 }
             }
-        }
+        }catch(e){perror(player, e)}}
+        break;
+        case !!switchTest.match(/^\\cut$/): {try{
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "-meb"]).args as [string, string]
+            args[1]??=""
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        tryrun(()=>blockClipboard.clear())
+                        try{blockClipboard.save(dimensiona, {from: ca, to: cb}, {includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), saveMode: args[1].includes("m")?StructureSaveMode.Memory:StructureSaveMode.World})
+                        player.sendMessage("The selected area has been cut to the clipboard.")}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, "", undefined, {minMSBetweenYields: 5000}, undefined, true, 100).then(()=>undefined, (e)=>{player.sendMessage("§c" + e + e.stack)})}catch(e){player.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){player.sendMessage("§c" + e + e.stack)}}); 
+                    }); 
+                }
+            }
+        }catch(e){perror(player, e)}}
+        break; 
+        case !!switchTest.match(/^\\copy$/): {try{
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "-meb"]).args as [string, string]
+            args[1]??=""
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        tryrun(()=>blockClipboard.clear())
+                        try{blockClipboard.save(dimensiona, {from: ca, to: cb}, {includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), saveMode: args[1].includes("m")?StructureSaveMode.Memory:StructureSaveMode.World})
+                        player.sendMessage("The selected area has been copied to the clipboard.")}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                    }); 
+                }
+            }
+        }catch(e){perror(player, e)}}
+        break; 
+        case !!switchTest.match(/^\\paste$/): {try{
+            eventData.cancel = true;
+            system.run(()=>{try{
+                const args = evaluateParameters(switchTestB, ["presetText", "-webxz", "number", "string", "number", "string", "number"]).args as [commandText: string, flags: string, integrity: number, integritySeed: string, rotation: number, animationMode: "none"|"blocks"|"layers", animationSeconds: number]
+                console.warn(JSON.stringify(args[1]))
+                args[1]??="";
+                args[2]??=1;
+                (args[3]=="undefined"||args[3]=="null"||args[3]=="random")?args[3]=undefined:undefined;
+                args[4]??=0;
+                args[5]??="none";
+                args[5]=args[5].toLowerCase() as "none"|"blocks"|"layers";
+                args[6]??=0;
+                const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+                const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+                const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+                const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+                const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+                if(!!!coordinatesa){
+                    player.sendMessage("§cError: pos1 is not set.")
+                }else if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else if(blockClipboard.ids.length==0){
+                    player.sendMessage("§cError: The clipboard is currently empty.")
+                }else{
+                    try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.Memory})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                    blockClipboard.place(Object.assign({dimension: dimensiona}, coordinatesa), {includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), waterlogged: args[1].includes("w"), animationMode: args[5]=="blocks"?StructureAnimationMode.Blocks:args[5]=="none"?StructureAnimationMode.None:args[5]=="layers"?StructureAnimationMode.Layers:undefined, animationSeconds: args[6], mirror: args[1].includes("x")?args[1].includes("z")?StructureMirrorAxis.XZ:StructureMirrorAxis.X:args[1].includes("z")?StructureMirrorAxis.Z:StructureMirrorAxis.None, rotation: Math.round(args[4]/90)==0?StructureRotation.None:Math.round(args[4]/90)==1?StructureRotation.Rotate90:Math.round(args[4]/90)==2?StructureRotation.Rotate180:Math.round(args[4]/90)==3?StructureRotation.Rotate270:StructureRotation.None, integrity: args[2], integritySeed: args[3]})
+                    player.sendMessage("The clipboard has been pasted to the selected area.")
+                }
+            }catch(e){perror(player, e)}}); 
+        }catch(e){perror(player, e)}}
+        break; 
+        case !!switchTest.match(/^\\undo$/): {try{
+            eventData.cancel = true;
+            system.run(()=>{try{
+                undoClipboard.undo()
+            }catch(e){perror(player, e)}}); 
+        }catch(e){perror(player, e)}}
+        break; 
+        case !!switchTest.match(/^\\protectarea$/): {try{
+            eventData.cancel = true;
+            system.run(()=>{try{
+                const args = evaluateParameters(switchTestB, ["presetText", "string", "string", "number", "string"]).args as [commandText: string, areaType: string, name: string, mode: number, icon_path: string]
+                if(!spawnProtectionTypeList.includes(args[1])){player.sendMessage(`§cError: "${args[1]}" is not a valid protected area type, please use one of the following protected area types: ${JSON.stringify(spawnProtectionTypeList)}.`); return};
+                const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+                const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+                const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+                const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+                const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+                if(!!!coordinatesa){
+                    player.sendMessage("§cError: pos1 is not set.")
+                }else if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    world.setDynamicProperty(args[1]+args[2], `${ca.x}, ${ca.y}, ${ca.z}, ${cb.x}, ${cb.y}, ${cb.z}, ${args[3]??0}, ${args[4]}`)
+                    player.sendMessage("The protected area has been saved.")
+                }
+            }catch(e){perror(player, e)}}); 
+        }catch(e){perror(player, e)}}
         break; 
         case !!switchTest.match(/^\\itfill$/): {
             eventData.cancel = true;
@@ -7913,19 +8131,19 @@ ${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Bloc
 ${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
-${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollowovoid [clearContainers: boolean]`)}else{
+${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
+${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> hollowovoid [clearContainers: boolean]`)}else{
             let argsa = evaluateParameters(switchTestB, ["presetText", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             let argsb = evaluateParameters(switchTestB, ["presetText", "string", "presetText", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             let argsd = evaluateParameters(switchTestB, ["presetText", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             let argsf = evaluateParameters(switchTestB, ["presetText", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             let argsh = evaluateParameters(switchTestB, ["presetText", "number", "string", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsj = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsl = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsj = evaluateParameters(switchTestB, ["presetText", "number", "number", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsl = evaluateParameters(switchTestB, ["presetText", "number", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             let argsn = evaluateParameters(switchTestB, ["presetText", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             //console.warn(argsh.args)
             let args = argsa.args
@@ -7974,13 +8192,13 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
             let tlastblockname = argsi[6]
             let tlastblockstates = argsi[7]
             let treplacemode = argsi[8]??false
-            let sgskygridsize = argso[4]
-            let sgfirstblockname = argso[5]
-            let sgfirstblockstates = argso[6]
-            let sgmode = argso[7] as string
-            let sglastblockname = argso[8]
-            let sglastblockstates = argso[9]
-            let sgreplacemode = argso[10]??false
+            let sgskygridsize = argso[1]
+            let sgfirstblockname = argso[2]
+            let sgfirstblockstates = argso[3]
+            let sgmode = argso[4] as string
+            let sglastblockname = argso[5]
+            let sglastblockstates = argso[6]
+            let sgreplacemode = argso[7]??false
             let circlemode = false
             new Date(Date.now()).getMilliseconds()
             let ccirclemode = false
@@ -7995,7 +8213,7 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
             if(["tunnel", "cylinder"].includes(fillmodetypeenum[argsi[5]??"undefined"?.toLowerCase()?.trim()])){tunnelmode=true}
             if(["ovoid"].includes(fillmodetypeenum[argsm[6]??"undefined"?.toLowerCase()?.trim()])){ovoidmode=true}
             if(["hollowovoid"].includes(fillmodetypeenum[argsk[7]??"undefined"?.toLowerCase()?.trim()])){hovoidmode=true}
-            if(["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[7]??"undefined"?.toLowerCase()?.trim()])){skygridmode=true}
+            if(["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[4]??"undefined"?.toLowerCase()?.trim()])){skygridmode=true}
             let coordinatesa: Vector3/*
             console.warn(circlemode, ccirclemode, hspheremode)*/
             if((!circlemode)&&(!ccirclemode)&&(!hspheremode)&&(!tunnelmode)){coordinatesa = player.getDynamicProperty("pos1") as Vector3/*evaluateCoordinates(args[1], args[2], args[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); */}
@@ -8013,7 +8231,7 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
             if((hovoidmode)){
                 const oradia = Vector.subtract(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3); 
                 horadi = {x: Math.abs(oradia.x), y: Math.abs(oradia.y), z: Math.abs(oradia.z)}; 
-                hooffset = evaluateCoordinates(argsk[1], argsk[2], argsk[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
+                hooffset = Vector.add({x: argsk[1], y: argsk[2], z: argsk[3]}, center); 
             }
             let oradi: Vector3
             let ooffset: Vector3
@@ -8026,7 +8244,7 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
             if((ovoidmode)){
                 const oradia = Vector.subtract(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3); 
                 oradi = {x: Math.abs(oradia.x), y: Math.abs(oradia.y), z: Math.abs(oradia.z)}
-                ooffset = evaluateCoordinates(argsm[1], argsm[2], argsm[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
+                ooffset = Vector.add({x: argsm[1], y: argsm[2], z: argsm[3]}, center); 
             }
             let firstblockname = args[1]
             let firstblockstates = args[2]
@@ -8034,14 +8252,14 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
             let lastblockname = args[4]
             let lastblockstates = args[5]
             let replacemode = args[6]??false
-            let matchingblock=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
-            let cmatchingblock=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
-            let ccmatchingblock=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
-            let hsmatchingblock=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
-            let tmatchingblock=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
-            let omatchingblock=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
-            let homatchingblock=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
-            let sgmatchingblock=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]/*
+            let matchingblock: [string, { [id: string]: string | number | boolean }?]=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
+            let cmatchingblock: [string, { [id: string]: string | number | boolean }?]=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
+            let ccmatchingblock: [string, { [id: string]: string | number | boolean }?]=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
+            let hsmatchingblock: [string, { [id: string]: string | number | boolean }?]=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
+            let tmatchingblock: [string, { [id: string]: string | number | boolean }?]=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
+            let omatchingblock: [string, { [id: string]: string | number | boolean }?]=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
+            let homatchingblock: [string, { [id: string]: string | number | boolean }?]=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
+            let sgmatchingblock: [string, { [id: string]: string | number | boolean }?]=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
                 case "": 
@@ -8207,49 +8425,49 @@ ${command.dp}\\idtfill <integrity: float> <skygridSize: float> <tileName: Block>
 ${command.dp}\\idtfill <integrity: float> <tileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> clear [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> drain
-${command.dp}\\idtfill <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
-${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [clearContainers: boolean]`)}else{
+${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
+${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [clearContainers: boolean]`)}else{
             let argsa = evaluateParameters(switchTestB, ["presetText", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsb = evaluateParameters(switchTestB, ["presetText", "number", "number", "string", "presetText", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsd = evaluateParameters(switchTestB, ["presetText", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsf = evaluateParameters(switchTestB, ["presetText", "number", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsh = evaluateParameters(switchTestB, ["presetText", "number", "number", "number", "string", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsj = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsl = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsb = evaluateParameters(switchTestB, ["presetText", "number", "string", "presetText", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsd = evaluateParameters(switchTestB, ["presetText", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsf = evaluateParameters(switchTestB, ["presetText", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsh = evaluateParameters(switchTestB, ["presetText", "number", "string", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsj = evaluateParameters(switchTestB, ["presetText", "number", "number", "number", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsl = evaluateParameters(switchTestB, ["presetText", "number", "number", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             let argsn = evaluateParameters(switchTestB, ["presetText", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             //console.warn(argsh.args)
             let args = argsa.args
@@ -8269,44 +8487,44 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
             let argslextra = argsl.extra
             let argsnextra = argsn.extra
             //console.warn(JSONStringify(args), JSONStringify(argsaextra))
-            let center = evaluateCoordinates(argsc[1], argsc[2], argsc[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
-            let cintegrity = argsc[4]
-            let radius = argsc[5]
-            let axis = argsc[6]
-            let cfirstblockname = argsc[7]
-            let cfirstblockstates = argsc[8]
-            let cmode = argsc[9] as string
-            let clastblockname = argsc[10]
-            let clastblockstates = argsc[11]
-            let creplacemode = argsc[12]??false
-            let ccfirstblockname = argse[6]
-            let ccfirstblockstates = argse[7]
-            let ccmode = argse[8] as string
-            let cclastblockname = argse[9]
-            let cclastblockstates = argse[10]
-            let ccreplacemode = argse[11]??false
-            let thickness = argsg[6]
-            let hsfirstblockname = argsg[7]
-            let hsfirstblockstates = argsg[8]
-            let hsmode = argsg[9] as string
-            let hslastblockname = argsg[10]
-            let hslastblockstates = argsg[11]
-            let hsreplacemode = argsg[12]??false
-            let tintegrity = argsi[4]
-            let taxis = argsi[7]
-            let tfirstblockname = argsi[8]
-            let tfirstblockstates = argsi[9]
-            let tmode = argsi[10] as string
-            let tlastblockname = argsi[11]
-            let tlastblockstates = argsi[12]
-            let treplacemode = argsi[13]??false
-            let sgskygridsize = argso[8]
-            let sgfirstblockname = argso[9]
-            let sgfirstblockstates = argso[10]
-            let sgmode = argso[11] as string
-            let sglastblockname = argso[12]
-            let sglastblockstates = argso[13]
-            let sgreplacemode = argso[14]??false
+            let center = player.getDynamicProperty("pos1") as Vector3//evaluateCoordinates(argsc[1], argsc[2], argsc[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
+            let radius = Vector.distance(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3)
+            let cintegrity = argsc[1]
+            let axis = argsc[2]
+            let cfirstblockname = argsc[3]
+            let cfirstblockstates = argsc[4]
+            let cmode = argsc[5] as string
+            let clastblockname = argsc[6]
+            let clastblockstates = argsc[7]
+            let creplacemode = argsc[8]??false
+            let ccfirstblockname = argse[2]
+            let ccfirstblockstates = argse[3]
+            let ccmode = argse[4] as string
+            let cclastblockname = argse[5]
+            let cclastblockstates = argse[6]
+            let ccreplacemode = argse[7]??false
+            let thickness = argsg[2]
+            let hsfirstblockname = argsg[3]
+            let hsfirstblockstates = argsg[4]
+            let hsmode = argsg[5] as string
+            let hslastblockname = argsg[6]
+            let hslastblockstates = argsg[7]
+            let hsreplacemode = argsg[8]??false
+            let tintegrity = argsi[1]
+            let taxis = argsi[2]
+            let tfirstblockname = argsi[3]
+            let tfirstblockstates = argsi[4]
+            let tmode = argsi[5] as string
+            let tlastblockname = argsi[6]
+            let tlastblockstates = argsi[7]
+            let treplacemode = argsi[8]??false
+            let sgskygridsize = argso[2]
+            let sgfirstblockname = argso[3]
+            let sgfirstblockstates = argso[4]
+            let sgmode = argso[5] as string
+            let sglastblockname = argso[6]
+            let sglastblockstates = argso[7]
+            let sgreplacemode = argso[8]??false
             let circlemode = false
             new Date(Date.now()).getMilliseconds()
             let ccirclemode = false
@@ -8315,60 +8533,62 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
             let ovoidmode = false
             let hovoidmode = false
             let skygridmode = false
-            if(["circle"].includes(fillmodetypeenum[argsc[9]??"undefined"?.toLowerCase()?.trim()])){circlemode=true}
-            if(["circlex", "circley", "circlez", "circlexy", "circleyz", "circlexz", "circlexyz", "sphere", "semisphere"].includes(fillmodetypeenum[argse[8]??"undefined"?.toLowerCase()?.trim()])){ccirclemode=true}
-            if(["hollowsphere", "cylinderx", "cylindery", "cylinderz", "cylinderxy", "cylinderyz", "cylinderxz", "cylinderxyz", "dome"].includes(fillmodetypeenum[argsg[9]??"undefined"?.toLowerCase()?.trim()])){hspheremode=true}
-            if(["tunnel", "cylinder"].includes(fillmodetypeenum[argsi[10]??"undefined"?.toLowerCase()?.trim()])){tunnelmode=true}
-            if(["ovoid"].includes(fillmodetypeenum[argsm[13]??"undefined"?.toLowerCase()?.trim()])){ovoidmode=true}
-            if(["hollowovoid"].includes(fillmodetypeenum[argsk[14]??"undefined"?.toLowerCase()?.trim()])){hovoidmode=true}
-            if(["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[11]??"undefined"?.toLowerCase()?.trim()])){skygridmode=true}
+            if(["circle"].includes(fillmodetypeenum[argsc[5]??"undefined"?.toLowerCase()?.trim()])){circlemode=true}
+            if(["circlex", "circley", "circlez", "circlexy", "circleyz", "circlexz", "circlexyz", "sphere", "semisphere"].includes(fillmodetypeenum[argse[4]??"undefined"?.toLowerCase()?.trim()])){ccirclemode=true}
+            if(["hollowsphere", "cylinderx", "cylindery", "cylinderz", "cylinderxy", "cylinderyz", "cylinderxz", "cylinderxyz", "dome"].includes(fillmodetypeenum[argsg[5]??"undefined"?.toLowerCase()?.trim()])){hspheremode=true}
+            if(["tunnel", "cylinder"].includes(fillmodetypeenum[argsi[5]??"undefined"?.toLowerCase()?.trim()])){tunnelmode=true}
+            if(["ovoid"].includes(fillmodetypeenum[argsm[7]??"undefined"?.toLowerCase()?.trim()])){ovoidmode=true}
+            if(["hollowovoid"].includes(fillmodetypeenum[argsk[8]??"undefined"?.toLowerCase()?.trim()])){hovoidmode=true}
+            if(["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[5]??"undefined"?.toLowerCase()?.trim()])){skygridmode=true}
             let coordinatesa: Vector3/*
             console.warn(circlemode, ccirclemode, hspheremode)*/
-            if((!circlemode)&&(!ccirclemode)&&(!hspheremode)&&(!tunnelmode)){coordinatesa = evaluateCoordinates(args[1], args[2], args[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); }
+            if((!circlemode)&&(!ccirclemode)&&(!hspheremode)&&(!tunnelmode)){coordinatesa = player.getDynamicProperty("pos1") as Vector3/*evaluateCoordinates(args[1], args[2], args[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); */}
             let coordinatesb: Vector3
-            if((!circlemode)&&(!ccirclemode)&&(!hspheremode)&&(!tunnelmode)){coordinatesb = evaluateCoordinates(args[4], args[5], args[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); }
+            if((!circlemode)&&(!ccirclemode)&&(!hspheremode)&&(!tunnelmode)){coordinatesb = player.getDynamicProperty("pos2") as Vector3/*evaluateCoordinates(args[4], args[5], args[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); */}
             let horadi: Vector3
             let hooffset: Vector3
-            let hointegrity = argsk[9]
-            let hothickness = argsk[10]
-            let hofirstblockname = argsk[11]
-            let hofirstblockstates = argsk[12]
-            let homode = argsk[13] as string
-            let holastblockname = argsk[14]
-            let holastblockstates = argsk[15]
-            let horeplacemode = argsk[16]??false
+            let hointegrity = argsk[4]
+            let hothickness = argsk[5]
+            let hofirstblockname = argsk[6]
+            let hofirstblockstates = argsk[7]
+            let homode = argsk[8] as string
+            let holastblockname = argsk[9]
+            let holastblockstates = argsk[10]
+            let horeplacemode = argsk[11]??false
             if((hovoidmode)){
-                horadi = evaluateCoordinates(argsk[4], argsk[5], argsk[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
-                hooffset = evaluateCoordinates(argsk[7], argsk[8], argsk[9], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
+                const oradia = Vector.subtract(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3); 
+                horadi = {x: Math.abs(oradia.x), y: Math.abs(oradia.y), z: Math.abs(oradia.z)}; 
+                hooffset = Vector.add({x: argsk[1], y: argsk[2], z: argsk[3]}, center); 
             }
             let oradi: Vector3
             let ooffset: Vector3
-            let ointegrity = argsk[9]
-            let ofirstblockname = argsm[10]
-            let ofirstblockstates = argsm[11]
-            let omode = argsm[12] as string
-            let olastblockname = argsm[13]
-            let olastblockstates = argsm[14]
-            let oreplacemode = argsm[15]??false
+            let ointegrity = argsk[4]
+            let ofirstblockname = argsm[5]
+            let ofirstblockstates = argsm[6]
+            let omode = argsm[7] as string
+            let olastblockname = argsm[8]
+            let olastblockstates = argsm[9]
+            let oreplacemode = argsm[10]??false
             if((ovoidmode)){
-                oradi = evaluateCoordinates(argsm[4], argsm[5], argsm[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
-                ooffset = evaluateCoordinates(argsm[7], argsm[8], argsm[9], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
+                const oradia = Vector.subtract(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3); 
+                oradi = {x: Math.abs(oradia.x), y: Math.abs(oradia.y), z: Math.abs(oradia.z)}
+                ooffset = Vector.add({x: argsm[1], y: argsm[2], z: argsm[3]}, center); 
             }
-            let integrity = args[7]
-            let firstblockname = args[8]
-            let firstblockstates = args[9]
-            let mode = args[10] as string
-            let lastblockname = args[11]
-            let lastblockstates = args[12]
-            let replacemode = args[13]??false
-            let matchingblock=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
-            let cmatchingblock=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
-            let ccmatchingblock=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
-            let hsmatchingblock=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
-            let tmatchingblock=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
-            let omatchingblock=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
-            let homatchingblock=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
-            let sgmatchingblock=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]
+            let integrity = args[1]
+            let firstblockname = args[2]
+            let firstblockstates = args[3]
+            let mode = args[4] as string
+            let lastblockname = args[5]
+            let lastblockstates = args[6]
+            let replacemode = args[7]??false
+            let matchingblock: [string, { [id: string]: string | number | boolean }?]=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
+            let cmatchingblock: [string, { [id: string]: string | number | boolean }?]=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
+            let ccmatchingblock: [string, { [id: string]: string | number | boolean }?]=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
+            let hsmatchingblock: [string, { [id: string]: string | number | boolean }?]=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
+            let tmatchingblock: [string, { [id: string]: string | number | boolean }?]=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
+            let omatchingblock: [string, { [id: string]: string | number | boolean }?]=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
+            let homatchingblock: [string, { [id: string]: string | number | boolean }?]=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
+            let sgmatchingblock: [string, { [id: string]: string | number | boolean }?]=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]
             const blocktypes = BlockTypes.getAll()/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
@@ -8376,7 +8596,7 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "replace": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, args[13]??true, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, args[7]??true, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "clear": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air"); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -8499,119 +8719,148 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
         break; 
         case !!switchTest.match(/^brush$/): {
             eventData.cancel = true;
-            let args = evaluateParameters(switchTestB, ["presetText", "string"]).args
+            let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string"]).args
             if(player.getComponent("inventory").container.getItem(player.selectedSlotIndex).isStackable){
                 player.sendMessage("§cError: The held item is a stackable item.")
             }else{
-                switch(args[1].toLowerCase()){
-                    case "none":
+                switch(args[2].toLowerCase()){
+                    case "none":{
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "none")
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore()}
                         player.sendMessage(`Seccessfully unbound the brush from the currently held item.`)
+                    }
                     break;
-                    case "extinguish":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args
+                    case "extinguish":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "extinguish")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[2])))?10:args[2])
-                        player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[2])))?10:args[2]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aExtinguish`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
+                    }
                     break;
-                    case "ex":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args
+                    case "ex":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "extinguish")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[2])))?10:args[2])
-                        player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[2])))?10:args[2]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aExtinguish`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
+                    }
                     break;
-                    case "remexp":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args
+                    case "remexp":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "remexp")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[2])))?10:args[2])
-                        player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[2])))?10:args[2]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aRemExp`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
+                    }
                     break;
-                    case "remexpne":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args
+                    case "remexpne":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "remexpne")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[2])))?10:args[2])
-                        player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[2])))?10:args[2]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aRemExpNE`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
+                    }
                     break;
-                    case "sphere":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number"]).args
+                    case "sphere":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "sphere")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to sphere with a radius of ${(isNaN(Number(args[4])))?3:args[4]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSphere`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to sphere with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
+                    }
                     break;
-                    case "cube":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number"]).args
+                    case "cube":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "cube")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to cube with a radius of ${(isNaN(Number(args[4])))?3:args[4]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aCube`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to cube with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
+                    }
                     break;
-                    case "square":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number"]).args
+                    case "square":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "square")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to square with a radius of ${(isNaN(Number(args[4])))?3:args[4]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSquare`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to square with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
+                    }
                     break;
-                    case "splatter":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args
+                    case "splatter":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splatter")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5])))?0:args[5])
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[4])))?3:args[4]} and a decay level of ${(isNaN(Number(args[5])))?0:args[5]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatter`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                    }
                     break;
-                    case "splattercube":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args
+                    case "splattercube":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splattercube")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5])))?0:args[5])
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[4])))?3:args[4]} and a decay level of ${(isNaN(Number(args[5])))?0:args[5]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterCube`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                    }
                     break;
-                    case "splattersquare":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args
+                    case "splattersquare":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splattersquare")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5])))?0:args[5])
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[4])))?3:args[4]} and a decay level of ${(isNaN(Number(args[5])))?0:args[5]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSquare`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                    }
                     break;
-                    case "splattersurface":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args
+                    case "splattersurface":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splattersurface")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5])))?0:args[5])
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter surface with a radius of ${(isNaN(Number(args[4])))?3:args[4]} and a decay level of ${(isNaN(Number(args[5])))?0:args[5]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to splatter surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                    }
                     break;
-                    case "splattercubesurface":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args
+                    case "splattercubesurface":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splattercubesurface")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5])))?0:args[5])
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter cube surface with a radius of ${(isNaN(Number(args[4])))?3:args[4]} and a decay level of ${(isNaN(Number(args[5])))?0:args[5]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterCubeSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to splatter cube surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                    }
                     break;
-                    case "splattersquaresurface":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args
+                    case "splattersquaresurface":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splattersquaresurface")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5])))?0:args[5])
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter square surface with a radius of ${(isNaN(Number(args[4])))?3:args[4]} and a decay level of ${(isNaN(Number(args[5])))?0:args[5]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSquareSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        player.sendMessage(`Seccessfully set brush type of the held item to splatter square surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                    }
                     break;
-                    default:
-                        player.sendMessage(`§cError: Unknown brush type "${args[1].toLowerCase()}".`)
+                    default:{
+                        player.sendMessage(`§cError: Unknown brush type "${args[2].toLowerCase()}".`)
+                    }
                     break;
                 }
             }
@@ -8629,7 +8878,7 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
         break; 
         case !!switchTest.match(/^butcher$/): {
             eventData.cancel = true;
-            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtwipceh", "number"]).args
+            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtwipcehl", "number"]).args
             args[1]??=""
             const types = (args[1]==""?["minecraft:item", "minecraft:xp_orb"]:[]) as string[]
             if((args[1] as string).includes("a")||(args[1] as string).includes("f")){types.push("minecraft:sheep", "minecraft:cow", "minecraft:pig", "minecraft:horse", "minecraft:sniffer", "minecraft:chicken")}
@@ -8641,6 +8890,7 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
             if((args[1] as string).includes("w")){types.push("minecraft:dolphin", "minecraft:drowned", "minecraft:sea_turtle", "minecraft:salmon", "minecraft:tropical_fish", "minecraft:cod", "minecraft:guardian", "minecraft:elder_guardian")}
             if((args[1] as string).includes("p")){types.push("minecraft:player")}
             if((args[1] as string).includes("c")){types.push("andexsa:cloned_player")}
+            if((args[1] as string).includes("l")){types.push("minecraft:ender_dragon", "minecraft:wither", "minecraft:elder_guardian")}
             srun(()=>{
                 let sc = 0n
                 player.dimension.getEntities({maxDistance: args[2]??10, location: player.location}).filter(v=>(types.includes(v.typeId)&&(v.nameTag==""||(args[1] as string).includes("t")))||(args[1] as string).includes("e")).forEach(v=>{v.kill(); sc++})
@@ -8650,7 +8900,7 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
         break; 
         case !!switchTest.match(/^butcherdespawn$/): {
             eventData.cancel = true;
-            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtwipceh", "number"]).args
+            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtwipcehl", "number"]).args
             args[1]??=""
             const types = (args[1]==""?["minecraft:item", "minecraft:experience_orb"]:[]) as string[]
             if((args[1] as string).includes("a")||(args[1] as string).includes("f")){types.push("minecraft:sheep", "minecraft:cow", "minecraft:pig", "minecraft:horse", "minecraft:sniffer", "minecraft:chicken")}
@@ -8662,6 +8912,7 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
             if((args[1] as string).includes("w")){types.push("minecraft:dolphin", "minecraft:drowned", "minecraft:sea_turtle", "minecraft:salmon", "minecraft:tropical_fish", "minecraft:cod", "minecraft:guardian", "minecraft:elder_guardian")}
             if((args[1] as string).includes("p")){types.push("minecraft:player")}
             if((args[1] as string).includes("c")){types.push("andexsa:cloned_player")}
+            if((args[1] as string).includes("l")){types.push("minecraft:ender_dragon", "minecraft:wither", "minecraft:elder_guardian")}
             srun(()=>{
                 let sc = 0n
                 player.dimension.getEntities({maxDistance: args[2]??10, location: player.location}).filter(v=>(types.includes(v.typeId)&&(v.nameTag==""||(args[1] as string).includes("t")))||(args[1] as string).includes("e")).forEach(v=>{v.typeId=="minecraft:player"?despawnEntities([v]):v.remove(); sc++})
@@ -8671,16 +8922,16 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
         break; 
         case !!switchTest.match(/^replacenear$/): {
             eventData.cancel = true;
-            const args = evaluateParameters(switchTestB, ["presetText", "number", "string", "blockStates", "string", "blockStates"]).args
-            const firstblockname = args[2]
-            const firstblockstates = args[3]
-            const lastblockname = args[4]
-            const lastblockstates = args[5]
-            const matchingblock=(lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]
-            const coordinatesa = mcMath.Vector3Utils.add(player.location, {x: -args[1], y: -args[1], z: -args[1]})
-            const coordinatesb = mcMath.Vector3Utils.add(player.location, {x: args[1], y: args[1], z: args[1]})
+            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "number", "string", "blockStates", "string", "blockStates"]).args
+            const firstblockname = args[3]
+            const firstblockstates = args[4]
+            const lastblockname = args[5]
+            const lastblockstates = args[6]
+            const matchingblock: [string, { [id: string]: string | number | boolean }?]=(lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]
+            const coordinatesa = mcMath.Vector3Utils.add(player.location, {x: -args[2], y: -args[2], z: -args[2]})
+            const coordinatesb = mcMath.Vector3Utils.add(player.location, {x: args[2], y: args[2], z: args[2]})
             const blocktypes = BlockTypes.getAll()
-            system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, matchingblock[0]=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:matchingblock[0], matchingblock[1], {matchingBlock: firstblockname, matchingBlockStates: firstblockstates, minMSBetweenYields: 2500}, undefined, args[13]??true, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, matchingblock[0]=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:matchingblock[0], matchingblock[1], {matchingBlock: firstblockname, matchingBlockStates: firstblockstates, minMSBetweenYields: 2500}, undefined, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
         }
         break; 
         case !!switchTest.match(/^jumpto$/)||!!switchTest.match(/^j$/): {
@@ -8966,13 +9217,150 @@ function JSONify(obj: object){
   return o;
 }
 
-export function evaluateParameters(commandstring: string, parameters: ({type: "presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates"|"blockPattern", maxLength?: number}|{type: "Vectors", vectorCount?: number, maxLength?: number}|string|"string"|"presetText")[]) {
+type ZeroToNineCharacters = "0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"
+type LowercaseLetter = "a"|"b"|"c"|"d"|"e"|"f"|"g"|"h"|"i"|"j"|"k"|"l"|"m"|"n"|"o"|"p"|"q"|"r"|"s"|"t"|"u"|"v"|"w"|"x"|"y"|"z"
+type UppercaseLetter = "A"|"B"|"C"|"D"|"E"|"F"|"G"|"H"|"I"|"J"|"K"|"L"|"M"|"N"|"O"|"P"|"Q"|"R"|"S"|"T"|"U"|"V"|"W"|"X"|"Y"|"Z"
+export type flagsMatcherTextA = ZeroToNineCharacters|LowercaseLetter|UppercaseLetter|"!"|"@"|"#"|"$"|"%"|"^"|"&"|"*"|"<"|">"|","|"."|"~";
+const teststssts = true;
+export type flagsMatcherTextB<T extends string> = T extends flagsMatcherTextA ? T : T extends `${flagsMatcherTextA}${infer R}` ? flagsMatcherTextB<R> : never;
+export type flagsMatcherTextC<T extends string> = T extends flagsMatcherTextA ? string : T extends `${flagsMatcherTextA}${infer R}` ? flagsMatcherTextC<R> : never;
+//function a<T extends string>(t: flagsMatcherTextC<T>, v: T): asserts t is flagsMatcherTextC<typeof v> {return void undefined};
+//a("a", "$123!")
+export type evaluateParametersTypeMap = {
+    presetText: string
+    number: number
+    boolean: boolean|undefined
+    neboolean: boolean|undefined
+    string: string|undefined
+    "non-booleanString": string|undefined
+    json: any
+    Vector: string|undefined
+    Vector1: string|undefined
+    Vector2: string|undefined
+    Vector3: string|undefined
+    Vector4: string|undefined
+    Vector5: string|undefined
+    Vector6: string|undefined
+    Vector7: string|undefined
+    Vector8: string|undefined
+    Vectors: string|undefined
+    targetSelector: string|undefined
+    blockStates: {[id: string]: string|number|boolean|undefined}|undefined
+    blockPattern: BlockPattern|undefined
+}
+type evaluateParametersTypeMapper<Tuple extends [...any[]]> = {
+    [Index in keyof Tuple]: Tuple[Index] extends 
+    "presetText" ? string|undefined : 
+    Tuple[Index] extends "number" ? number|undefined : 
+    Tuple[Index] extends "boolean" ? boolean|undefined : 
+    Tuple[Index] extends "neboolean" ? boolean|undefined : 
+    Tuple[Index] extends "string" ? string|undefined : 
+    Tuple[Index] extends "non-booleanString" ? string|undefined : 
+    Tuple[Index] extends "json" ? any|undefined : 
+    Tuple[Index] extends "Vector" ? string|undefined : 
+    Tuple[Index] extends "Vector1" ? string|undefined : 
+    Tuple[Index] extends "Vector2" ? string|undefined : 
+    Tuple[Index] extends "Vector3" ? string|undefined : 
+    Tuple[Index] extends "Vector4" ? string|undefined : 
+    Tuple[Index] extends "Vector5" ? string|undefined : 
+    Tuple[Index] extends "Vector6" ? string|undefined : 
+    Tuple[Index] extends "Vector7" ? string|undefined : 
+    Tuple[Index] extends "Vector8" ? string|undefined : 
+    Tuple[Index] extends "Vectors" ? string|undefined : 
+    Tuple[Index] extends "targetSelector" ? string|undefined : 
+    Tuple[Index] extends "blockStates" ? {[id: string]: string|number|boolean}|undefined : 
+    Tuple[Index] extends "blockPattern" ? BlockPattern|undefined : 
+    Tuple[Index] extends "dimension" ? Dimension|undefined : 
+    Tuple[Index] extends `-${string}` ? string : 
+    Tuple[Index] extends `f-${string}` ? {"0"?: boolean, "1"?: boolean, "2"?: boolean, "3"?: boolean, "4"?: boolean, "5"?: boolean, "6"?: boolean, "7"?: boolean, "8"?: boolean, "9"?: boolean, "a"?: boolean, "b"?: boolean, "c"?: boolean, "d"?: boolean, "e"?: boolean, "f"?: boolean, "g"?: boolean, "h"?: boolean, "i"?: boolean, "j"?: boolean, "k"?: boolean, "l"?: boolean, "m"?: boolean, "n"?: boolean, "o"?: boolean, "p"?: boolean, "q"?: boolean, "r"?: boolean, "s"?: boolean, "t"?: boolean, "u"?: boolean, "v"?: boolean, "w"?: boolean, "x"?: boolean, "y"?: boolean, "z"?: boolean, "A"?: boolean, "B"?: boolean, "C"?: boolean, "D"?: boolean, "E"?: boolean, "F"?: boolean, "G"?: boolean, "H"?: boolean, "I"?: boolean, "J"?: boolean, "K"?: boolean, "L"?: boolean, "M"?: boolean, "N"?: boolean, "O"?: boolean, "P"?: boolean, "Q"?: boolean, "R"?: boolean, "S"?: boolean, "T"?: boolean, "U"?: boolean, "V"?: boolean, "W"?: boolean, "X"?: boolean, "Y"?: boolean, "Z"?: boolean, "!"?: boolean, "@"?: boolean, "#"?: boolean, "$"?: boolean, "%"?: boolean, "^"?: boolean, "&"?: boolean, "*"?: boolean, "<"?: boolean, ">"?: boolean, ","?: boolean, "."?: boolean, "~"?: boolean} : 
+    Tuple[Index] extends {type: "number"} ? number|undefined : 
+    Tuple[Index] extends {type: "boolean"} ? boolean|undefined : 
+    Tuple[Index] extends {type: "neboolean"} ? boolean|undefined : 
+    Tuple[Index] extends {type: "string"} ? string|undefined : 
+    Tuple[Index] extends {type: "non-booleanString"} ? string|undefined : 
+    Tuple[Index] extends {type: "json"} ? any|undefined : 
+    Tuple[Index] extends {type: "Vector"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector1"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector2"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector3"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector4"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector5"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector6"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector7"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector8"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vectors"} ? string|undefined : 
+    Tuple[Index] extends {type: "targetSelector"} ? string|undefined : 
+    Tuple[Index] extends {type: "blockStates"} ? {[id: string]: string|number|boolean}|undefined : 
+    Tuple[Index] extends {type: "blockPattern"} ? BlockPattern|undefined : 
+    Tuple[Index] extends {type: "dimension"} ? Dimension|undefined : 
+    Tuple[Index] extends {type: `-${string}`} ? string : 
+    Tuple[Index] extends {type: `f-${string}`} ? {"0"?: boolean, "1"?: boolean, "2"?: boolean, "3"?: boolean, "4"?: boolean, "5"?: boolean, "6"?: boolean, "7"?: boolean, "8"?: boolean, "9"?: boolean, "a"?: boolean, "b"?: boolean, "c"?: boolean, "d"?: boolean, "e"?: boolean, "f"?: boolean, "g"?: boolean, "h"?: boolean, "i"?: boolean, "j"?: boolean, "k"?: boolean, "l"?: boolean, "m"?: boolean, "n"?: boolean, "o"?: boolean, "p"?: boolean, "q"?: boolean, "r"?: boolean, "s"?: boolean, "t"?: boolean, "u"?: boolean, "v"?: boolean, "w"?: boolean, "x"?: boolean, "y"?: boolean, "z"?: boolean, "A"?: boolean, "B"?: boolean, "C"?: boolean, "D"?: boolean, "E"?: boolean, "F"?: boolean, "G"?: boolean, "H"?: boolean, "I"?: boolean, "J"?: boolean, "K"?: boolean, "L"?: boolean, "M"?: boolean, "N"?: boolean, "O"?: boolean, "P"?: boolean, "Q"?: boolean, "R"?: boolean, "S"?: boolean, "T"?: boolean, "U"?: boolean, "V"?: boolean, "W"?: boolean, "X"?: boolean, "Y"?: boolean, "Z"?: boolean, "!"?: boolean, "@"?: boolean, "#"?: boolean, "$"?: boolean, "%"?: boolean, "^"?: boolean, "&"?: boolean, "*"?: boolean, "<"?: boolean, ">"?: boolean, ","?: boolean, "."?: boolean, "~"?: boolean} : 
+    any|undefined;
+  } & {length: Tuple['length']};
+export type evaluateParametersParameterTypes = "presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"Vectors"|"targetSelector"|"blockStates"|"blockPattern"|"dimension"|`-${string}`|`f-${string}`
+export type evaluateParametersParameter = {type: "presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates"|"blockPattern"|"dimension"|`-${string}`|`f-${string}`, maxLength?: number}|{type: "Vectors", vectorCount?: number, maxLength?: number}|"presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates"|"blockPattern"|"dimension"|`-${string}`|`f-${string}`
+
+export function evaluateParameters<T extends evaluateParametersParameter[]|[evaluateParametersParameter]>(commandstring: string, parameters: T): {
+    params: T,
+    extra: string,
+    args: {
+        [Index in keyof T]: T[Index] extends 
+        "presetText" ? string|undefined : 
+        T[Index] extends "number" ? number|undefined : 
+        T[Index] extends "boolean" ? boolean|undefined : 
+        T[Index] extends "neboolean" ? boolean|undefined : 
+        T[Index] extends "string" ? string|undefined : 
+        T[Index] extends "non-booleanString" ? string|undefined : 
+        T[Index] extends "json" ? any|undefined : 
+        T[Index] extends "Vector" ? string|undefined : 
+        T[Index] extends "Vector1" ? string|undefined : 
+        T[Index] extends "Vector2" ? string|undefined : 
+        T[Index] extends "Vector3" ? string|undefined : 
+        T[Index] extends "Vector4" ? string|undefined : 
+        T[Index] extends "Vector5" ? string|undefined : 
+        T[Index] extends "Vector6" ? string|undefined : 
+        T[Index] extends "Vector7" ? string|undefined : 
+        T[Index] extends "Vector8" ? string|undefined : 
+        T[Index] extends "Vectors" ? string|undefined : 
+        T[Index] extends "targetSelector" ? string|undefined : 
+        T[Index] extends "blockStates" ? {[id: string]: string|number|boolean}|undefined : 
+        T[Index] extends "blockPattern" ? BlockPattern|undefined : 
+        T[Index] extends "dimension" ? Dimension|undefined : 
+        T[Index] extends `-${string}` ? string : 
+        T[Index] extends `f-${string}` ? {"0"?: boolean, "1"?: boolean, "2"?: boolean, "3"?: boolean, "4"?: boolean, "5"?: boolean, "6"?: boolean, "7"?: boolean, "8"?: boolean, "9"?: boolean, "a"?: boolean, "b"?: boolean, "c"?: boolean, "d"?: boolean, "e"?: boolean, "f"?: boolean, "g"?: boolean, "h"?: boolean, "i"?: boolean, "j"?: boolean, "k"?: boolean, "l"?: boolean, "m"?: boolean, "n"?: boolean, "o"?: boolean, "p"?: boolean, "q"?: boolean, "r"?: boolean, "s"?: boolean, "t"?: boolean, "u"?: boolean, "v"?: boolean, "w"?: boolean, "x"?: boolean, "y"?: boolean, "z"?: boolean, "A"?: boolean, "B"?: boolean, "C"?: boolean, "D"?: boolean, "E"?: boolean, "F"?: boolean, "G"?: boolean, "H"?: boolean, "I"?: boolean, "J"?: boolean, "K"?: boolean, "L"?: boolean, "M"?: boolean, "N"?: boolean, "O"?: boolean, "P"?: boolean, "Q"?: boolean, "R"?: boolean, "S"?: boolean, "T"?: boolean, "U"?: boolean, "V"?: boolean, "W"?: boolean, "X"?: boolean, "Y"?: boolean, "Z"?: boolean, "!"?: boolean, "@"?: boolean, "#"?: boolean, "$"?: boolean, "%"?: boolean, "^"?: boolean, "&"?: boolean, "*"?: boolean, "<"?: boolean, ">"?: boolean, ","?: boolean, "."?: boolean, "~"?: boolean} : 
+        T[Index] extends {type: "number"} ? number|undefined : 
+        T[Index] extends {type: "boolean"} ? boolean|undefined : 
+        T[Index] extends {type: "neboolean"} ? boolean|undefined : 
+        T[Index] extends {type: "string"} ? string|undefined : 
+        T[Index] extends {type: "presetText"} ? string|undefined : 
+        T[Index] extends {type: "non-booleanString"} ? string|undefined : 
+        T[Index] extends {type: "json"} ? any|undefined : 
+        T[Index] extends {type: "Vector"} ? string|undefined : 
+        T[Index] extends {type: "Vector1"} ? string|undefined : 
+        T[Index] extends {type: "Vector2"} ? string|undefined : 
+        T[Index] extends {type: "Vector3"} ? string|undefined : 
+        T[Index] extends {type: "Vector4"} ? string|undefined : 
+        T[Index] extends {type: "Vector5"} ? string|undefined : 
+        T[Index] extends {type: "Vector6"} ? string|undefined : 
+        T[Index] extends {type: "Vector7"} ? string|undefined : 
+        T[Index] extends {type: "Vector8"} ? string|undefined : 
+        T[Index] extends {type: "Vectors"} ? string|undefined : 
+        T[Index] extends {type: "targetSelector"} ? string|undefined : 
+        T[Index] extends {type: "blockStates"} ? {[id: string]: string|number|boolean}|undefined : 
+        T[Index] extends {type: "blockPattern"} ? BlockPattern|undefined : 
+        T[Index] extends {type: "dimension"} ? Dimension|undefined : 
+        T[Index] extends {type: `-${string}`} ? string : 
+        T[Index] extends {type: `f-${string}`} ? {"0"?: boolean, "1"?: boolean, "2"?: boolean, "3"?: boolean, "4"?: boolean, "5"?: boolean, "6"?: boolean, "7"?: boolean, "8"?: boolean, "9"?: boolean, "a"?: boolean, "b"?: boolean, "c"?: boolean, "d"?: boolean, "e"?: boolean, "f"?: boolean, "g"?: boolean, "h"?: boolean, "i"?: boolean, "j"?: boolean, "k"?: boolean, "l"?: boolean, "m"?: boolean, "n"?: boolean, "o"?: boolean, "p"?: boolean, "q"?: boolean, "r"?: boolean, "s"?: boolean, "t"?: boolean, "u"?: boolean, "v"?: boolean, "w"?: boolean, "x"?: boolean, "y"?: boolean, "z"?: boolean, "A"?: boolean, "B"?: boolean, "C"?: boolean, "D"?: boolean, "E"?: boolean, "F"?: boolean, "G"?: boolean, "H"?: boolean, "I"?: boolean, "J"?: boolean, "K"?: boolean, "L"?: boolean, "M"?: boolean, "N"?: boolean, "O"?: boolean, "P"?: boolean, "Q"?: boolean, "R"?: boolean, "S"?: boolean, "T"?: boolean, "U"?: boolean, "V"?: boolean, "W"?: boolean, "X"?: boolean, "Y"?: boolean, "Z"?: boolean, "!"?: boolean, "@"?: boolean, "#"?: boolean, "$"?: boolean, "%"?: boolean, "^"?: boolean, "&"?: boolean, "*"?: boolean, "<"?: boolean, ">"?: boolean, ","?: boolean, "."?: boolean, "~"?: boolean} : 
+        any|undefined;
+      },
+    err: [Error, any][]
+} {
     let argumentsa = [] as any[]
     let ea = [] as [Error, any][]
-    let paramEval = commandstring/*
+    let paramEval = commandstring as string/*
     let parametersb = []
     if(typeof parameters[0] == "string"){parametersb = parameters.map(v=>({type: v}))}else{parametersb = parameters}*/
-    parameters.map(v=>(typeof v == "string"?(v=="Vectors"?{type: v, vectorCount: 3, maxLength: undefined} as {type: "Vectors", vectorCount?: number, maxLength?: number}:{type: v, vectorCount: undefined, maxLength: undefined} as {type: "Vectors", vectorCount?: number, maxLength?: number}):v?.type=="Vectors"?v:v)).forEach((p, i) => {if(paramEval.trim()==""){return}else{
+    parameters.map(v=>(typeof v == "string"?(v as any=="Vectors"?{type: v, vectorCount: 3, maxLength: undefined} as unknown as {type: "Vectors", vectorCount?: number, maxLength?: number}:{type: v, vectorCount: undefined, maxLength: undefined}):v?.type=="Vectors"?v as {type: "Vectors", vectorCount?: number, maxLength?: number}:v as unknown as {type: typeof v, vectorCount?: number, maxLength?: number})).forEach((p, i) => {if(paramEval.trim()==""){return}else{
         if (p.type == "presetText") {
             argumentsa.push(paramEval.trimStart().split(" ")[0]);
             paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
@@ -9019,9 +9407,9 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
                                     paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                                 }//1870//7018
                             } else {
-                                if (!!p.type.match(/^-[a-zA-Z0-9]+$/)) {
-                                    if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${p.type.slice(1).split("").join("|")})+(?=$|\\s)`))) {
-                                        let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${p.type.slice(1).split("").join("|")})+(?=$|\\s)`))[0]
+                                if (!!(p.type as string).match(/^-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                                    if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(1).split("").join("|")})+(?=$|\\s)`))) {
+                                        let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(1).split("").join("|")})+(?=$|\\s)`))[0]
                                         paramEval = paramEval.trimStart().slice(paramEval.trimStart().indexOf(value)+value.length) ?? "";
                                         try {
                                             argumentsa.push(value);
@@ -9036,82 +9424,89 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
                                     }
                                 }
                                 else {
-                                    if (p.type == "json") {
-                                        let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
-                                        paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
-                                        try {
-                                            argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
-                                        } catch (e) {
-                                            ea.push([e, e.stack])
-                                        };
-                                    } else {
-                                        if (p.type == "blockStates") {
-                                            if(paramEval.indexOf("[")==-1&&paramEval.indexOf("{")==-1){
-                                                argumentsa.push(undefined);
-                                            }else if((paramEval.indexOf("[")==-1?Infinity:paramEval.indexOf("["))<(paramEval.indexOf("{")==-1?Infinity:paramEval.indexOf("{"))){
-                                                let value = getParametersFromString(paramEval.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}")).resultsincludingunmodified[0];
-                                                paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
-                                                try {
-                                                    argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
-                                                } catch (e) {
-                                                    ea.push([e, e.stack])
-                                                };
-                                            }else{
-                                                let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
-                                                paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
-                                                try {
-                                                    argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
-                                                } catch (e) {
-                                                    ea.push([e, e.stack])
-                                                };
+                                if (!!(p.type as string).match(/^f-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                                        if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(2).split("").join("|")})+(?=$|\\s)`))) {
+                                            let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(2).split("").join("|")})+(?=$|\\s)`))[0]
+                                            paramEval = paramEval.trimStart().slice(paramEval.trimStart().indexOf(value)+value.length) ?? "";
+                                            try {
+                                                argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, value.includes(v)])));
                                             }
+                                            catch (e) {
+                                                ea.push([e, e.stack]);
+                                            }
+                                            ;
+                                        }
+                                        else {
+                                            argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, false])));
+                                        }
+                                    }
+                                    else {
+                                        if (p.type == "json") {
+                                            let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                            paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
+                                            try {
+                                                argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
+                                            } catch (e) {
+                                                ea.push([e, e.stack])
+                                            };
                                         } else {
-                                            if (p.type == "blockPattern") {
-                                                const ep = BlockPattern.extractWRaw(paramEval.trimStart());
-                                                paramEval = paramEval.slice(paramEval.indexOf(ep.raw)+ep.raw.length) ?? "";
-                                                try {
-                                                    argumentsa.push(ep.parsed);
-                                                } catch (e) {
-                                                    ea.push([e, e.stack])
-                                                };
+                                            if (p.type == "blockStates") {
+                                                if(paramEval.indexOf("[")==-1&&paramEval.indexOf("{")==-1){
+                                                    argumentsa.push(undefined);
+                                                }else if((paramEval.indexOf("[")==-1?Infinity:paramEval.indexOf("["))<(paramEval.indexOf("{")==-1?Infinity:paramEval.indexOf("{"))){
+                                                    let value = getParametersFromString(paramEval.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}")).resultsincludingunmodified[0];
+                                                    paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
+                                                    try {
+                                                        argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
+                                                    } catch (e) {
+                                                        ea.push([e, e.stack])
+                                                    };
+                                                }else{
+                                                    let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
+                                                    paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
+                                                    try {
+                                                        argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
+                                                    } catch (e) {
+                                                        ea.push([e, e.stack])
+                                                    };
+                                                }
                                             } else {
-                                                if (p.type == "targetSelector") {
-                                                    if(!paramEval.trimStart().startsWith("@")){
-                                                        if (paramEval.trimStart().startsWith("\"")) {
-                                                            let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
-                                                            paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
-                                                            paramEval = paramEval.slice(+(paramEval[0]==" ")) ?? "";
+                                                if (p.type == "blockPattern") {
+                                                    const ep = BlockPattern.extractWRaw(paramEval.trimStart());
+                                                    paramEval = paramEval.slice(paramEval.indexOf(ep.raw)+ep.raw.length) ?? "";
+                                                    try {
+                                                        argumentsa.push(ep.parsed);
+                                                    } catch (e) {
+                                                        ea.push([e, e.stack])
+                                                    };
+                                                } else {
+                                                    if (p.type == "targetSelector") {
+                                                        if(!paramEval.trimStart().startsWith("@")){
+                                                            if (paramEval.trimStart().startsWith("\"")) {
+                                                                let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                                                paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
+                                                                paramEval = paramEval.slice(+(paramEval[0]==" ")) ?? "";
+                                                                try {
+                                                                    argumentsa.push(!!!value?.v?undefined:('"'+value?.v+'"'));
+                                                                } catch (e) {
+                                                                    ea.push([e, e.stack])
+                                                                };
+                                                            } else {
+                                                                argumentsa.push(paramEval.split(" ")[0]);
+                                                                return paramEval.split(" ").slice(1).join(" ");
+                                                            }
+                                                        }else{
+                                                            let value = extractSelectors(paramEval)[0];
+                                                            paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                             try {
-                                                                argumentsa.push(!!!value?.v?undefined:('"'+value?.v+'"'));
+                                                                argumentsa.push(value);
                                                             } catch (e) {
                                                                 ea.push([e, e.stack])
                                                             };
-                                                        } else {
-                                                            argumentsa.push(paramEval.split(" ")[0]);
-                                                            return paramEval.split(" ").slice(1).join(" ");
                                                         }
-                                                    }else{
-                                                        let value = extractSelectors(paramEval)[0];
-                                                        paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
-                                                        try {
-                                                            argumentsa.push(value);
-                                                        } catch (e) {
-                                                            ea.push([e, e.stack])
-                                                        };
-                                                    }
-                                                } else {
-                                                    if (p.type == "Vector"||(p?.type ?? p) == "Vector1") {
-                                                        let value = paramEval.match(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*]([\-\+]?\d+(\.\d+)?)?|((?<=\s)|^)[\-\+]?\d+(\.\d+)?)(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g)?.[0];
-                                                        paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
-                                                        if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
-                                                        try {
-                                                            argumentsa.push(value);
-                                                        } catch (e) {
-                                                            ea.push([e, e.stack])
-                                                        };
                                                     } else {
-                                                        if (!!p.type.match(/^Vector[2-8]$/)) {
-                                                            let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.type.slice(6)}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                        if (p.type == "Vector"||(p?.type ?? p) == "Vector1") {
+                                                            let value = paramEval.match(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*]([\-\+]?\d+(\.\d+)?)?|((?<=\s)|^)[\-\+]?\d+(\.\d+)?)(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g)?.[0];
                                                             paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                             if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
                                                             try {
@@ -9120,8 +9515,8 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
                                                                 ea.push([e, e.stack])
                                                             };
                                                         } else {
-                                                            if (p.type == "Vectors") {
-                                                                let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.vectorCount??3}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                            if (!!(p.type as string).match(/^Vector[2-8]$/)) {
+                                                                let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${(p.type as string).slice(6)}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
                                                                 paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                                 if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
                                                                 try {
@@ -9129,7 +9524,18 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
                                                                 } catch (e) {
                                                                     ea.push([e, e.stack])
                                                                 };
-                                                            } else {}
+                                                            } else {
+                                                                if (p.type == "Vectors") {
+                                                                    let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.vectorCount??3}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
+                                                                    if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
+                                                                    try {
+                                                                        argumentsa.push(value);
+                                                                    } catch (e) {
+                                                                        ea.push([e, e.stack])
+                                                                    };
+                                                                } else {}
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -9147,7 +9553,7 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
     return {
         params: parameters,
         extra: paramEval,
-        args: argumentsa,
+        args: argumentsa as any,
         err: ea
     }
 }

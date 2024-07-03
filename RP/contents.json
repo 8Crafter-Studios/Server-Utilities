@@ -73,6 +73,9 @@
          "path" : "particles/custom_text_texture_billboard_2.particle.json"
       },
       {
+         "path" : "particles/green_cube.json"
+      },
+      {
          "path" : "texts/en_US.lang"
       },
       {

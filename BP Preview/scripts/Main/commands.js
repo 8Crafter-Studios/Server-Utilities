@@ -10529,7 +10529,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             targets.forEach(target => {
                                 let slots = [];
                                 for (let i = 0; i < 27; i++) {
-                                    slots.push(`slot: ${i}, item: ${ItemTypes.getAll().find(v => (tryget(() => target.runCommand(`testfor @s[hasitem={location=slot.enderchest,item=${v.id},slot=${i}}]`).successCount) ?? 0) != 0)?.id ?? (target.runCommand(`testfor @s[hasitem={location=slot.enderchest,item=minecraft:air,slot=${i}}]`).successCount != 0 ? "minecraft:air" : "unknown")}`);
+                                    slots.push(`slot: ${i}, item: ${ItemTypes.getAll().find(v => (tryget(() => target.runCommand(`testfor @s[hasitem={location=slot.enderchest,item=${v.id},slot=${i}}]`).successCount) ?? 0) != 0)?.id ?? "minecraft:air"}`);
                                 }
                                 ;
                                 player.sendMessage(`${target.name}'s Ender Chest Contents: \n${slots.join("§r§f\n")}`);

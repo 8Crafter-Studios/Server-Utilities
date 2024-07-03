@@ -1,4 +1,4 @@
-import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume, BoundingBoxUtils, Direction } from "@minecraft/server";
+import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume, BoundingBoxUtils, Direction, StructureSaveMode, Structure, BlockPermutation } from "@minecraft/server";
 import { targetSelectorAllListC, targetSelectorAllListE, format_version } from "../Main";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
@@ -347,9 +347,12 @@ export const approximatelyEqual = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2)
 export const approxEqual = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
 export const approximatelyEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
 export const approxEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
-export function parseExpression(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "return(" + str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll(/(?<![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])\=(?![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])/g, "==").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1") + ")"); }
-export function parseExpressionKE(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "return(" + str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1") + ")"); }
-export function parseExpressionR(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "return(" + str + ")"); }
+export function parseExpression(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "const approxEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon; return(" + str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll(/(?<![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])\=(?![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])/g, "==").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1") + ")"); }
+export function parseExpressionKE(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "const approxEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon; return(" + str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1") + ")"); }
+export function parseExpressionR(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "const approxEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon; return(" + str + ")"); }
+export function parseExpressionB(str) { return (wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz) => { return (eval(str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll(/(?<![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])\=(?![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])/g, "==").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1"))); }; }
+export function parseExpressionBKE(str) { return (wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz) => { return (eval(str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1"))); }; }
+export function parseExpressionBR(str) { return (wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz) => { return (eval(str)); }; }
 export function* generateMathExpression(expression, generateCallback, from, to, pos1, pos2, step = 1) {
     var count = 0n;
     var index = 0n;
@@ -370,6 +373,141 @@ export function* generateMathExpression(expression, generateCallback, from, to, 
 export function dirmap(direction) { return { Up: "above", Down: "below", East: "east", West: "west", North: "north", South: "south" }[direction]; }
 export function diroffsetmap(direction) { return { Up: Vector.up, Down: Vector.down, East: Vector.east, West: Vector.west, North: Vector.north, South: Vector.south }[direction]; }
 export function diroffsetothersmap(direction) { return { Up: { x: 1, y: 0, z: 1 }, Down: { x: 1, y: 0, z: 1 }, East: { x: 0, y: 1, z: 1 }, West: { x: 0, y: 1, z: 1 }, North: { x: 1, y: 1, z: 0 }, South: { x: 1, y: 1, z: 0 } }[direction]; }
+export function splitRange([min, max], size) {
+    const result = [];
+    let start = min;
+    while (start <= max) {
+        const end = Math.min(start + size - 1, max);
+        result.push([start, end]);
+        start = end + 1;
+    }
+    return result;
+}
+export function* splitArea(area, sizes = { x: 64, y: 128, z: 64 }) {
+    const indices = { x: 0, y: 0, z: 0 };
+    const xRanges = splitRange([area.from.x, area.to.x], sizes.x);
+    for (const xRange of xRanges) {
+        const zRanges = splitRange([area.from.z, area.to.z], sizes.z);
+        for (const zRange of zRanges) {
+            const partialRanges = [{ x: xRange[0], z: zRange[0] }, { x: xRange[1], z: zRange[1] }];
+            const yRanges = splitRange([area.from.y, area.to.y], sizes.y);
+            for (const yRange of yRanges) {
+                const finalRange = [
+                    { x: partialRanges[0].x, y: yRange[0], z: partialRanges[0].z },
+                    { x: partialRanges[1].x, y: yRange[1], z: partialRanges[1].z },
+                    Object.assign({}, indices),
+                    { x: partialRanges[0].x - area.from.x, y: yRange[0] - area.from.y, z: partialRanges[0].z - area.from.z }
+                ];
+                indices.y++;
+                yield finalRange;
+            }
+            indices.z++;
+        }
+        indices.x++;
+    }
+}
+export function* splitAreaB(area, sizes = { x: 64, y: 128, z: 64 }) {
+    const indices = { x: 0, y: 0, z: 0 };
+    const xRanges = splitRange([area.from.x, area.to.x], sizes.x);
+    for (const xRange of xRanges) {
+        const zRanges = splitRange([area.from.z, area.to.z], sizes.z);
+        for (const zRange of zRanges) {
+            const partialRanges = [{ x: xRange[0], z: zRange[0] }, { x: xRange[1], z: zRange[1] }];
+            const yRanges = splitRange([area.from.y, area.to.y], sizes.y);
+            for (const yRange of yRanges) {
+                const finalRange = {
+                    from: { x: partialRanges[0].x, y: yRange[0], z: partialRanges[0].z },
+                    to: { x: partialRanges[1].x, y: yRange[1], z: partialRanges[1].z },
+                    indices: Object.assign({}, indices),
+                    offset: { x: partialRanges[0].x - area.from.x, y: yRange[0] - area.from.y, z: partialRanges[0].z - area.from.z }
+                };
+                indices.y++;
+                yield finalRange;
+            }
+            indices.y = 0;
+            indices.z++;
+        }
+        indices.z = 0;
+        indices.x++;
+    }
+}
+export class blockClipboard {
+    static get ids() {
+        return world.structureManager.getWorldStructureIds().filter(v => v.startsWith("andexdb:clipboard"));
+    }
+    static clear() { this.ids.forEach(v => world.structureManager.delete(v)); }
+    static saveRange(dimension, range, options) {
+        try {
+            world.structureManager.createFromWorld(`andexdb:clipboard,${range[2].x ?? 0},${range[2].y ?? 0},${range[2].z ?? 0}`, dimension, range[0], range[1], options);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    static save(dimension, area, options, sizeLimits = { x: 64, y: 128, z: 64 }) {
+        for (const range of splitArea(area, sizeLimits)) {
+            this.saveRange(dimension, range, options);
+        }
+    }
+    static place(location, options, sizes = { x: 64, y: 128, z: 64 }) {
+        this.ids.map(v => ({ id: v, x: Number(v.split(",")[1] ?? 0) * sizes.x, y: Number(v.split(",")[2] ?? 0) * sizes.y, z: Number(v.split(",")[3] ?? 0) * sizes.z })).forEach(v => world.structureManager.place(v.id, location.dimension, Vector.add(v, location), options));
+    }
+}
+export class undoClipboard {
+    static get ids() {
+        return world.structureManager.getWorldStructureIds().filter(v => v.startsWith("andexdb:undoclipboard;"));
+    }
+    static saveIds(timestamp) {
+        return world.structureManager.getWorldStructureIds().filter(v => v.startsWith(`andexdb:undoclipboard;${timestamp}`));
+    }
+    static get saves() {
+        return world.getDynamicPropertyIds().filter(v => v.startsWith("andexdb:undoclipboard;"));
+    }
+    static get saveTimes() {
+        return [...new Set(world.structureManager.getWorldStructureIds().filter(v => v.startsWith("andexdb:undoclipboard;")).map(v => Number(v.slice(22).split(",")[0])))].sort().reverse()[0];
+    }
+    static clear() { this.ids.forEach(v => world.structureManager.delete(v)); }
+    static clearTime(timestamp) {
+        this.saveIds(timestamp).forEach(v => world.structureManager.delete(v));
+        world.setDynamicProperty(`andexdb:undoclipboard;${timestamp}`);
+        world.setDynamicProperty(`andexdb:undoclipboardd;${timestamp}`);
+    }
+    static saveRange(dimension, range, saveTime, options) {
+        try {
+            world.structureManager.createFromWorld(`andexdb:undoclipboard;${saveTime},${range[2].x ?? 0},${range[2].y ?? 0},${range[2].z ?? 0}`, dimension, range[0], range[1], options);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    static save(dimension, area, saveTime = Date.now(), options, sizeLimits = { x: 64, y: 128, z: 64 }) {
+        world.setDynamicProperty(`andexdb:undoclipboard;${saveTime}`, area.from);
+        world.setDynamicProperty(`andexdb:undoclipboardd;${saveTime}`, dimension.id);
+        for (const range of splitArea(area, sizeLimits)) {
+            this.saveRange(dimension, range, saveTime, options);
+        }
+    }
+    static undo(saveTime = this.saveTimes, options, clearSave = true, sizes = { x: 64, y: 128, z: 64 }) {
+        this.saveIds(saveTime).map(v => ({ id: v, x: Number(v.split(",")[1] ?? 0) * sizes.x, y: Number(v.split(",")[2] ?? 0) * sizes.y, z: Number(v.split(",")[3] ?? 0) * sizes.z })).forEach(v => world.structureManager.place(v.id, cmds.dimensions[String(world.getDynamicProperty(`andexdb:undoclipboardd;${saveTime}`))], Vector.add(v, world.getDynamicProperty(`andexdb:undoclipboard;${saveTime}`)), options));
+        if (clearSave) {
+            this.saveIds(saveTime).forEach(v => { this.clearTime(saveTime); });
+        }
+    }
+}
+export function* removeAirFromStructure(structure) {
+    for (let x = 0; x < structure.size.x; x++) {
+        for (let y = 0; y < structure.size.y; y++) {
+            for (let z = 0; z < structure.size.z; z++) {
+                if (structure.getBlockPermutation({ x, y, z }).type.id == "minecraft:air") {
+                    structure.setBlockPermutation({ x, y, z }, BlockPermutation.resolve("minecraft:structure_void"));
+                }
+                ;
+                yield void undefined;
+            }
+        }
+    }
+    structure.saveToWorld();
+}
 export function facingPoint(location, otherLocation) {
     const sl = location;
     const ol = otherLocation;
