@@ -3090,8 +3090,8 @@ export function managePlayers(sourceEntity, pagen = 0, maxplayersperpage = confi
     const numofflinesavedplayers = savedPlayer.getSavedPlayers().filter(_ => !_.isOnline).length;
     form.title(`Manage Players ${Math.min(numsavedplayers, (page * maxplayersperpage) + 1)}-${Math.min(numsavedplayers, (page + 1) * maxplayersperpage)} of ${numsavedplayers}`);
     const numpages = Math.ceil(numsavedplayers / maxplayersperpage);
-    form.button(((page != 0) ? "" : "§8") + "Previous Page", "textures/ui/arrow_left");
-    form.button(((page < (numpages - 1)) ? "" : "§0") + "Next Page", "textures/ui/arrow_right");
+    form.button(((page != 0) ? "§0" : "§8") + "Previous Page", "textures/ui/arrow_left");
+    form.button(((page < (numpages - 1)) ? "§0" : "§8") + "Next Page", "textures/ui/arrow_right");
     let displayPlayers = [...savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_ => _.isOnline), ...savedPlayer.getSavedPlayers().filter(_ => (!_.isOnline) && (_.isBanned)).sort((a, b) => (b.lastOnline - a.lastOnline)), ...savedPlayer.getSavedPlayers().filter(_ => (!_.isOnline) && (!_.isBanned)).sort((a, b) => (b.lastOnline - a.lastOnline))].slice(page * maxplayersperpage, (page + 1) * maxplayersperpage);
     displayPlayers.forEach((p) => { form.button(`${p.name}\n${ban.testForBannedPlayer(p) ? "Banned" : p.isOnline ? "Online" : "Online: " + new Date(Number(p.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString()}`, p.isOnline ? "textures/ui/online" : p.isBanned ? "textures/ui/Ping_Offline_Red_Dark" : "textures/ui/offline"); });
     const numplayersonpage = displayPlayers.length;
