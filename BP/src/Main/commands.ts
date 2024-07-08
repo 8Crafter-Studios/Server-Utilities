@@ -853,6 +853,7 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "aligncenter", escregexp: {v: "^aligncenter$"}, formats: [{format: "aligncenter"}], command_version: "1.0.0", description: "", category: ["world", "players"], commandSettingsId: "built-inCommandSettings:aligncenter"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "getworldspawnpoint", escregexp: {v: "^getworldspawnpoint$"}, aliases: [{commandName: "getworldspawn", escregexp: {v: "^getworldspawn$"}}, {commandName: "getwsp", escregexp: {v: "^getwsp$"}}, {commandName: "getws", escregexp: {v: "^getws$"}}, {commandName: "gwsp", escregexp: {v: "^gwsp$"}}, {commandName: "gws", escregexp: {v: "^gws$"}}], formats: [{format: "getworldspawnpoint"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:getworldspawnpoint"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "findtransformdvindex", escregexp: {v: "^findtransformdvindex$"}, formats: [{format: "findtransformdvindex"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:findtransformdvindex"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gettransformst", escregexp: {v: "^gettransformst$"}, formats: [{format: "gettransformst"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:gettransformst"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "transformresultatdvindex", escregexp: {v: "^transformresultatdvindex$"}, formats: [{format: "transformresultatdvindex"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:transformresultatdvindex"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "removeotheritemenchantments", escregexp: {v: "^removeotheritemenchantments$"}, aliases: [{commandName: "remotheritemenchants", escregexp: {v: "^remotheritemenchants$"}}, {commandName: "roie", escregexp: {v: "^roie$"}}], formats: [{format: "removeotheritemenchantments"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:removeotheritemenchantments"}, 
     {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "home", escregexp: {v: "^home$"}, formats: [{format: "home"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home"}, 
@@ -1893,6 +1894,8 @@ export const compareArrays = (array1: any[], array2: any[])=>(array1.length === 
 export const compareArraysB = (array1: any[], array2: any[])=>(array1.length === array2.length && array1.sort().every((value, index) => value === array2.sort()[index]))
 
 export const commandsyntaxes = {
+"align": `${command.dp}align`,
+"aligncenter": `${command.dp}aligncenter`,
 "binvsee": `${command.dp}binvsee <dimension: dimension|~> <block: x y z>`,
 "chatcommandui": `${command.dp}chatcommandui`,
 "chatsendui": `${command.dp}chatsendui`,
@@ -2356,6 +2359,7 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
 "wreset": `${command.dp}wreset`,
 "wset": `${command.dp}wset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
 "transformresultatdvindex": `${command.dp}transformresultatdvindex [data: int]`,
+"gettransformsteb": `${command.dp}gettransformsteb [itemName: string] [data: int]`,
 "findtransformdvindex": `${command.dp}findtransformdvindex [itemName: string] [data: int]`,
 "roie": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
 "remotheritemenchants": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
@@ -2523,6 +2527,8 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
 
 export enum commanddescriptions {
 //"ban" = "Bans a player. ",
+"align" = "Centers you on the x and z axis on the block you are currently at. ",
+"aligncenter" = "Centers you on the x, y, and z axis on the block you are currently at. ",
 "binvsee" = "Displays the contents of the specified block's inventory. ",
 "chatcommandui" = "Opens up a menu where you can type a chat command to run with no character limits. ",
 "chatsendui" = "Opens up a menu where you can type a chat message to send with no character limits. ",
@@ -2667,6 +2673,7 @@ export enum commanddescriptions {
 "wset" = "Sets a private warp. ",
 "chunkban" = "Fills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. ",
 "transformresultatdvindex" = "Displays what item a smithing table enchanted book combined with a enchantment transfer smithing template of the specified data value would turn in to. ",
+"gettransformst" = "Gives you an enchantment transfer smithing template with the data value needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. ",
 "findtransformdvindex" = "Displays the data value of enchantment transfer smithing template needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. ",
 "roie" = "Removes all enchantment types from an item except for the item types specified. ",
 "remotheritemenchants" = "Removes all enchantment types from an item except for the item types specified. ",
@@ -2692,7 +2699,7 @@ export enum commanddescriptions {
 "\\\\generatecallback" = "Executes the specified callback JavaScript function for each block in the selected area. ",
 "\\\\generates" = "Generates a 3d shape with the specified step according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
 "\\\\generate2d" = "Generates a 2d shape according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, cx: center relative x, cy: center relative y, cz: center relative z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\generates2d" = "Generates a 2d shape with the specified integrity according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, cx: center relative x, cy: center relative y, cz: center relative z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
+"\\\\generates2d" = "Generates a 2d shape with the specified step according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, cx: center relative x, cy: center relative y, cz: center relative z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
 "\\\\stack" = "Stacks the specified number of copies of the step area on top of the selected area. ",
 "\\\\selectmode" = "Sets the selection mode for the item you are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. ",
 "\\\\replace" = "Replaces the blocks between the selected area with the selected block type. ",
@@ -2723,6 +2730,7 @@ c: despawn cloned players
 e: despawn everything
 g: despawn golems
 i: despawn items and experience orbs
+l: despawn bosses
 p: despawn players
 r: despawn armor stands
 t: allow despawning of name tagged entities`,
@@ -4343,10 +4351,10 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
             eventData.cancel = true;
             switch (switchTestB.split(" ").slice(0, 2).join(" ").toLowerCase()){
                 case "help": 
-                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help cmd <command: CommandName>\n.help command <command: CommandName>\n.help chatcommands\n.help chatcommandsb\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>\n.help itemjsonformat\n.help itemjsonformatcmpr\n.help itemjsonformatsimplified§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
+                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help cmd <command: CommandName>\n.help command <command: CommandName>\n.help chatcommands\n.help chatcommandsb\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>\n.help jsfunction <JavaScriptFunctionVariableConstantOrClassName: string>\n.help itemjsonformat\n.help itemjsonformatcmpr\n.help itemjsonformatsimplified§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
                 break; 
                 case "help scriptevent": 
-                    eventData.sender.sendMessage("§2/scriptevent Syntax§f\n/scriptevent andexdb:debugStick <message: string>"); 
+                    eventData.sender.sendMessage("§2/scriptevent Syntax§f\n/scriptevent andexdb:debugStick <message: string>\n/scriptevent andexdb:spawnSimulatedPlayer [playerName: string]|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]"); 
                 break; 
                 case "help cmd": 
                     eventData.sender.sendMessage(getCommandHelpPage(switchTestB.split(" ").slice(2).join(" "))); 
@@ -4356,6 +4364,8 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                 break; 
                 case "help chatcommands": 
                     eventData.sender.sendMessage(`§2Chat Commands List§r
+.align - §oCenters you on the x and z axis on the block you are currently at. §r
+.aligncenter - §oCenters you on the x, y, and z axis on the block you are currently at. §r
 .binvsee - §oDisplays the contents of the specified block's inventory. §r
 .butcher - §oKill all or nearby mobs. §r
 .butcherdespawn - §oDespawn all or nearby mobs. §r
@@ -4444,6 +4454,9 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
 .printlayers - §oDisplays a list of all the blocks at your specified x and z coordinates. §r
 .rank - §oManages ranks stored in players. §r
 .remexp - §oRemoves explosive blocks in the specified radius. §r
+.remotheritemenchants - §oRemoves all enchantment types from an item except for the item types specified. §r
+.removeotheritemenchantments - §oRemoves all enchantment types from an item except for the item types specified. §r
+.roie - §oRemoves all enchantment types from an item except for the item types specified. §r
 .rtp - §oRequests to teleport to the specified player. §r
 .run - §oRuns the specified command. §r
 .scanenderchest - §oScans a player's ender chest and displays the contents of it. §r
@@ -4487,24 +4500,33 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
 .wreset - §oRemoves all private warps. §r
 .wset - §oSets a private warp. §r
 .transformresultatdvindex - §oDisplays what item a smithing table enchanted book combined with a enchantment transfer smithing template of the specified data value would turn in to. §r
+.gettransformst - §oGives you an enchantment transfer smithing template with the data value needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. §r
 .findtransformdvindex - §oDisplays the data value of enchantment transfer smithing template needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. §r
 §cDangerous Commands: §4
 .chunkban - §oFills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. §r
 §aWorldEdit Commands: §r
 .brush - §oSets the held item as the specified brush type or unbinds the brush from the held item. §r
+.butcher - §rKill all or nearby mobs. §r
+.butcherdespawn - §rDespawn all or nearby mobs. §r
 .selectioninfo - §oDisplays info about the current selection. §r
 .selinfo - §oDisplays info about the current selection. §r
 .seli - §oDisplays info about the current selection. §r
+.snapshot - §rManages backups and backup areas. §r
 .\\cut - §oCuts the selected area to the clipboard. §r
 .\\copy - §oCopies the selected area to the clipboard. §r
 .\\paste - §oPastes the clipboard to the selected area. §r
+.\\undo - §oUndoes the last action (from history). §r
+.\\backuparea - §oCreates a new backup area convering the entire selected area. §r
+.\\protectarea - §oSets the selected area as a protected area. §r
 .\\pos1 - §oSets the pos1 location of the selected area for use in other worldedit commands. §r
 .\\pos2 - §oSets the pos2 location of the selected area for use in other worldedit commands. §r
 .\\hpos1 - §oSets the pos1 location of the selected area to the block that you are looking at for use in other worldedit commands. §r
 .\\hpos2 - §oSets the pos2 location of the selected area to the block that you are looking at for use in other worldedit commands. §r
 .\\chunk - §oSets the pos1 and pos2 locations of the selected area to contain the entire chunk that you are currently in for use in other worldedit commands. §r
 .\\generate - §oGenerates a 3d shape according to a formula in the selected area. §r
-.\\generate - §oGenerates a 3d shape according to a formula in the selected area, this formula is run in read-only mode. §r
+.\\generatef - §oGenerates a 3d shape according to a formula in the selected area. §r
+.\\generatejs - §oGenerates a 3d shape according to the outputs of a JavaScript function in the selected area. §r
+.\\generatecallback - §oExecutes the specified callback JavaScript function for each block in the selected area. §r
 .\\generates - §oGenerates a 3d shape with the specified step according to a formula in the selected area. §r
 .\\generate2d - §oGenerates a 2d shape according to a formula in the selected area. §r
 .\\generates2d - §oGenerates a 2d shape with the specified step according to a formula in the selected area. §r
@@ -4569,6 +4591,9 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                     eventData.sender.sendMessage(`§2List of JavaScript Functions, Constants, Variables, and Classes§f\n{§bmain: [§f${Object.keys(main).join("§b, §f")}§b], coords: [§f${Object.keys(coords).join("§b, §f")}§b], cmds: [§f${Object.keys(cmds).join("§b, §f")}§b], bans: [§f${Object.keys(bans).join("§b, §f")}§b], uis: [§f${Object.keys(uis).join("§b, §f")}§b], playersave: [§f${Object.keys(playersave).join("§b, §f")}§b], spawnprot: [§f${Object.keys(spawnprot).join("§b, §f")}§b]§f}`); 
                 break; 
                 case "help jsfunction": 
+                    eventData.sender.sendMessage(`§2${newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" ")} js object definition§f\n${([...Object.entries(main), ...Object.entries(coords), ...Object.entries(cmds), ...Object.entries(bans), ...Object.entries(uis), ...Object.entries(playersave), ...Object.entries(spawnprot)].find(v=>v[0]==newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" "))??[, "§cError: The specified javascript function/constant/variable/class does not exist, check your spelling and capitallization. "])[1].toString().replaceAll("\\n", "\n")}`); 
+                break; 
+                case "help js": 
                     eventData.sender.sendMessage(`§2${newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" ")} js object definition§f\n${([...Object.entries(main), ...Object.entries(coords), ...Object.entries(cmds), ...Object.entries(bans), ...Object.entries(uis), ...Object.entries(playersave), ...Object.entries(spawnprot)].find(v=>v[0]==newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" "))??[, "§cError: The specified javascript function/constant/variable/class does not exist, check your spelling and capitallization. "])[1].toString().replaceAll("\\n", "\n")}`); 
                 break; 
                 case "help itemjsonformat": 
@@ -9092,6 +9117,14 @@ ${command.dp}snapshot list`); return}
             const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args as [string, string, number]
             !args[1].includes(":")?args[1]="minecraft:"+args[1]:undefined
             player.sendMessage(listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))==-1?"§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value.":`Data value for enchantment transfer smithing template is ${listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))}.`)
+        }
+        break; 
+        case !!switchTest.match(/^gettransformst$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args as [string, string, number]
+            !args[1].includes(":")?args[1]="minecraft:"+args[1]:undefined
+            player.runCommandAsync(`/give @s andexdb:enchantment_transfer_smithing_template 1 ${listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))}`)
+            player.sendMessage(listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))==-1?"§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value.":`You have been given an enchantment transfer smithing template with the data value ${listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))}.`)
         }
         break; 
         case !!switchTest.match(/^transformresultatdvindex$/): {
