@@ -1420,8 +1420,9 @@ export async function requestChatInput(player: Player, requestMessage?: string|R
 }
 export async function requestConditionalChatInput(player: Player, conditions: (player: Player, message: string, event: ChatSendBeforeEvent)=>boolean = ()=>true, options: {requestMessage?: string|RawMessage|(string|RawMessage)[], expireMs?: number, expireConditions?: (requestObject: {time: number, request?: string|RawMessage|(string|RawMessage)[], input?: string, id?: string, conditions: (player: Player, message: string, event: ChatSendBeforeEvent)=>boolean, [k: string]: any})=>boolean} = {}){
     let id = idGenerator()
+    const expireTime = Date.now()+(options.expireMs??Infinity)
     !!options.requestMessage?player.sendMessage(options.requestMessage):undefined
-    !!!currentlyRequestedChatInput[player.id]?currentlyRequestedChatInput[player.id]={anyInput: {}, conditionalInput: {[id]: {time: Date.now(), id: id, request: options.requestMessage, conditions: conditions??(()=>true), expireTime: Date.now()+(options.expireMs??Infinity), expireConditions: options.expireConditions??(()=>false)}}}:currentlyRequestedChatInput[player.id].conditionalInput[id]={time: Date.now(), id: id, request: options.requestMessage, conditions: conditions??(()=>true), expireTime: Date.now()+(options.expireMs??Infinity), expireConditions: options.expireConditions??(()=>false)}
+    !!!currentlyRequestedChatInput[player.id]?currentlyRequestedChatInput[player.id]={anyInput: {}, conditionalInput: {[id]: {time: Date.now(), id: id, request: options.requestMessage, conditions: conditions??(()=>true), expireTime: expireTime, expireConditions: options.expireConditions??(()=>false)}}}:currentlyRequestedChatInput[player.id].conditionalInput[id]={time: Date.now(), id: id, request: options.requestMessage, conditions: conditions??(()=>true), expireTime: Date.now()+(options.expireMs??Infinity), expireConditions: options.expireConditions??(()=>false)}
     return new Promise((resolve: (value: string) => any, reject: (error: Error) => any) => {
         function a(){
             if(!player.isValid()){

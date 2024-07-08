@@ -841,8 +841,8 @@ export const commands = [
     { type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "home", escregexp: { v: "^home$" }, formats: [{ format: "home" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home" },
     { type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "gohome", escregexp: { v: "^gohome$" }, formats: [{ format: "gohome" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome" },
     { type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "rtp", escregexp: { v: "^rtp$" }, formats: [{ format: "rtp <player: targetSelector|playerName>" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp" },
-    { type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "tpaccept", escregexp: { v: "^tpaccept$" }, formats: [{ format: "tpaccept [player: targetSelector|playerName]" }, { format: "tpdeny all" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpaccept" },
-    { type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "tpdeny", escregexp: { v: "^tpdeny$" }, formats: [{ format: "tpdeny [player: targetSelector|playerName]" }, { format: "tpdeny all" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpdeny" },
+    { type: "built-in", requiredTags: [], formatting_code: "§r§c", commandName: "tpaccept", escregexp: { v: "^tpaccept$" }, formats: [{ format: "tpaccept [player: targetSelector|playerName]" }, { format: "tpdeny all" }], command_version: "0.0.1-alpha", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpaccept" },
+    { type: "built-in", requiredTags: [], formatting_code: "§r§c", commandName: "tpdeny", escregexp: { v: "^tpdeny$" }, formats: [{ format: "tpdeny [player: targetSelector|playerName]" }, { format: "tpdeny all" }], command_version: "0.0.1-alpha", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpdeny" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "kick", escregexp: { v: "^kick$" }, formats: [{ format: "kick <players: targetSelector> [reason: string]" }], command_version: "1.0.0", description: "", category: ["system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:kick" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "disconnect", escregexp: { v: "^disconnect$" }, aliases: [{ commandName: "boot", escregexp: { v: "^boot$" } }], formats: [{ format: "disconnect <players: targetSelector>" }], command_version: "1.0.0", description: "", category: ["Entity Scale Add-On", "system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:disconnect" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: { v: "^morph$" }, formats: [{ format: "" }], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:morph" },
@@ -1486,8 +1486,9 @@ export async function requestChatInput(player, requestMessage) {
 }
 export async function requestConditionalChatInput(player, conditions = () => true, options = {}) {
     let id = idGenerator();
+    const expireTime = Date.now() + (options.expireMs ?? Infinity);
     !!options.requestMessage ? player.sendMessage(options.requestMessage) : undefined;
-    !!!currentlyRequestedChatInput[player.id] ? currentlyRequestedChatInput[player.id] = { anyInput: {}, conditionalInput: { [id]: { time: Date.now(), id: id, request: options.requestMessage, conditions: conditions ?? (() => true), expireTime: Date.now() + (options.expireMs ?? Infinity), expireConditions: options.expireConditions ?? (() => false) } } } : currentlyRequestedChatInput[player.id].conditionalInput[id] = { time: Date.now(), id: id, request: options.requestMessage, conditions: conditions ?? (() => true), expireTime: Date.now() + (options.expireMs ?? Infinity), expireConditions: options.expireConditions ?? (() => false) };
+    !!!currentlyRequestedChatInput[player.id] ? currentlyRequestedChatInput[player.id] = { anyInput: {}, conditionalInput: { [id]: { time: Date.now(), id: id, request: options.requestMessage, conditions: conditions ?? (() => true), expireTime: expireTime, expireConditions: options.expireConditions ?? (() => false) } } } : currentlyRequestedChatInput[player.id].conditionalInput[id] = { time: Date.now(), id: id, request: options.requestMessage, conditions: conditions ?? (() => true), expireTime: Date.now() + (options.expireMs ?? Infinity), expireConditions: options.expireConditions ?? (() => false) };
     return new Promise((resolve, reject) => {
         function a() {
             if (!player.isValid()) {
@@ -6680,23 +6681,23 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player")[0];
                             if (!!target) {
                                 //requestChatInput(player, "a").then(v=>psend(player, "as")); srun(()=>requestChatInput(player, "b").then(v=>psend(player, "bs"))); 
-                                requestConditionalChatInput(target, (player, message) => (message.toLowerCase().trim() == "y" || message.toLowerCase().trim() == "n"), { requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.` }).then(t => {
+                                requestConditionalChatInput(target, (player, message) => (message.toLowerCase().trim() == "y" || message.toLowerCase().trim() == "n"), { requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.`, expireMs: 60000 }).then(t => {
                                     if (t.toLowerCase().trim() == "y") {
                                         player.teleport(target.location, { dimension: target.dimension });
-                                        target.sendMessage(`§aAccepted teleport request from "${target.name}".`);
+                                        target.sendMessage(`§aAccepted teleport request from "${player.name}".`);
                                         player.sendMessage(`§aSuccessfully teleported to "${target.name}".`);
                                     }
                                     else {
-                                        target.sendMessage(`§cDenied "${target.name}"'s teleport request.`);
+                                        target.sendMessage(`§cDenied "${player.name}"'s teleport request.`);
                                         player.sendMessage(`§c"${target.name}" denied your teleport request.`);
                                     }
                                 }).catch(e => { if (e instanceof TimeoutError) {
                                     psend(target, `§c${player.name}'s teleport request timed out.`);
-                                    psend(player, "§cTeleport request timed out.");
+                                    psend(player, `§cThe teleport request to ${target.name} timed out.`);
                                 }
                                 else if (e instanceof ExpireError) {
                                     psend(target, `§c${player.name}'s teleport request expired.`);
-                                    psend(player, "§cTeleport request expired.");
+                                    psend(player, `§cThe teleport request to ${target.name} expired.`);
                                 }
                                 else
                                     psend(player, "§c" + e + " " + e.stack); });
@@ -6707,7 +6708,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         });
                     }
                     else {
-                        player.sendMessage("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>RTP System>Enable RTP System\"");
+                        player.sendMessage("§cRTPSystemDisabledError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>RTP System>Enable RTP System\"");
                     }
                 }
                 break; /*
