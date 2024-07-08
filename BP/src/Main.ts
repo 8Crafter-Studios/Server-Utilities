@@ -117,6 +117,43 @@ const srununbound = system.run
 export const srun = srununbound.bind(system)
 globalThis.srun = srun
 export const gt = globalThis
+export class config{
+    static get chatCommandsEnabled(){return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled")??true)}
+    static set chatCommandsEnabled(enabled: boolean|undefined){world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled??true)}
+    static get chatCommandPrefix(){return String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix")??"\\")}
+    static set chatCommandPrefix(prefix: string|undefined){world.setDynamicProperty("andexdbSettings:chatCommandPrefix", prefix??"\\")}
+    static get validChatCommandPrefixes(){return String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes")??"")}
+    static set validChatCommandPrefixes(prefixes: string|undefined){world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", prefixes??"")}
+    static get homeSystemEnabled(){return Boolean(world.getDynamicProperty("homeSystemSettings:homeSystemEnabled")??false)}
+    static set homeSystemEnabled(enabled: boolean|undefined){world.setDynamicProperty("homeSystemSettings:homeSystemEnabled", enabled??false)}
+    static get maxHomesPerPlayer(){return world.getDynamicProperty("homeSystemSettings:maxHomesPerPlayer")==-1?Infinity:Number(world.getDynamicProperty("homeSystemSettings:maxHomesPerPlayer")??Infinity)}
+    static set maxHomesPerPlayer(maxHomes: number|undefined){world.setDynamicProperty("homeSystemSettings:maxHomesPerPlayer", (maxHomes??Infinity)==Infinity?-1:maxHomes)}
+    static get rtpSystemEnabled(){return Boolean(world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled")??false)}
+    static set rtpSystemEnabled(enabled: boolean|undefined){world.setDynamicProperty("rtpSystemSettings:rtpSystemEnabled", enabled??false)}
+    static get antispamEnabled(){return Boolean(world.getDynamicProperty("antispamSettings:antispamEnabled")??false)}
+    static set antispamEnabled(enabled: boolean|undefined){world.setDynamicProperty("antispamSettings:antispamEnabled", enabled??false)}
+    static get waitTimeAfterAntispamActivation(){return isNaN(Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation")))?60:Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation") ?? 60)}
+    static set waitTimeAfterAntispamActivation(waitTimeInSeconds: number|undefined){world.setDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation", waitTimeInSeconds??60)}
+    static get antispamTriggerMessageCount(){return isNaN(Number(world.getDynamicProperty("antispamSettings:antispamTriggerMessageCount")))?4:Number(gwdp("antispamSettings:antispamTriggerMessageCount") ?? 4)}
+    static set antispamTriggerMessageCount(messageCount: number|undefined){world.setDynamicProperty("antispamSettings:antispamTriggerMessageCount", messageCount??4)}
+    static get timeZone(){return isNaN(Number(world.getDynamicProperty("andexdbSettings:timeZone")))?0:Number(world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}
+    static set timeZone(timeZone: number|undefined){world.setDynamicProperty("andexdbSettings:timeZone", timeZone??0)}
+    static get invalidChatCommandAction(){return isNaN(Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction")))?0:Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 0)}
+    static set invalidChatCommandAction(invalidChatCommandAction: number|undefined){world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction??0)}
+    static get chatDisplayTimeStamp(){return Boolean(world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false)}
+    static set chatDisplayTimeStamp(chatDisplayTimeStampEnabled: boolean|undefined){world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled??false)}
+    static get protectedAreasRefreshRate(){return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 1)}
+    static set protectedAreasRefreshRate(protectedAreasRefreshRate: number|undefined){world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate))?1:Math.min(1000, Math.max(1, Number(protectedAreasRefreshRate??1))))}
+    static get playerDataRefreshRate(){return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 5)}
+    static set playerDataRefreshRate(playerDataRefreshRate: number|undefined){world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate))?5:Math.min(1000, Math.max(1, Number(playerDataRefreshRate??5))))}
+    static get maxPlayersPerManagePlayersPage(){return Number(world.getDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage") ?? 10)}
+    static set maxPlayersPerManagePlayersPage(maxPlayersPerManagePlayersPage: number|undefined){world.setDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage", Math.min(1000, Math.max(1, maxPlayersPerManagePlayersPage??10)))}
+    static get maxBansPerManageBansPage(){return Number(world.getDynamicProperty("andexdbSettings:maxBansPerManageBansPage") ?? 10)}
+    static set maxBansPerManageBansPage(maxBansPerManageBansPage: number|undefined){world.setDynamicProperty("andexdbSettings:maxBansPerManageBansPage", maxBansPerManageBansPage??10)}
+    static get maxHomesPerManageHomesPage(){return Number(world.getDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage") ?? 10)}
+    static set maxHomesPerManageHomesPage(maxHomesPerManageHomesPage: number|undefined){world.setDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage", maxHomesPerManageHomesPage??10)}
+    static reset(){}
+}
 export class worldPlayers {/*
     savedPlayers: savedPlayerData[]; 
     bans: {idBans: ban[], nameBans: ban[], allBans: ban[]}; 
@@ -2571,7 +2608,7 @@ export function getNextTopSolidBlockBelowPosition(location: Vector3, dimension: 
     }; 
     return undefined
 }
-export function getGroundSolidBlock(location: Vector3, dimension: Dimension, onlySolid: boolean = false){let block = dimension.getBlock(location); while(block.y >= dimension.heightRange.min){if(onlySolid?!block.isSolid:block.isAir){block = block.below(1)}else{return block}}; return undefined}
+export function getGroundSolidBlock(location: Vector3, dimension: Dimension, onlySolid: boolean = false){let block = dimension.getBlock({x: location.x, y: Math.max(Math.min(location.y, dimension.heightRange.max), dimension.heightRange.min), z: location.z}); while(block.y >= dimension.heightRange.min){if(onlySolid?!block.isSolid:block.isAir){block = block.below(1)}else{return block}}; return undefined}
 export function getTopSolidBlock(location: Vector3, dimension: Dimension, onlySolid: boolean = false){let block = dimension.getBlock({x: location.x, y: dimension.heightRange.max, z: location.z}); while(block.y >= dimension.heightRange.min){if(onlySolid?!block.isSolid:block.isAir){block = block.below(1)}else{return block}}; return undefined}
 declare global {
     interface String {

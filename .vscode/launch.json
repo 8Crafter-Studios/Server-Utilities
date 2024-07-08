@@ -8,6 +8,7 @@
             "type": "minecraft-js",
             "request": "attach",
             "name": "Attach to MCFR",
+            "mode": "connect",
             "localRoot": "${workspaceFolder}/BP/src",
             "generatedSourceRoot": "${workspaceFolder}/BP/scripts",
             "sourceMapRoot": "${workspaceFolder}/BP/scripts",

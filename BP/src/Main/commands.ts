@@ -1,6 +1,6 @@
 import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, } from "./coordinates";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror, config } from "../Main";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
@@ -48,7 +48,7 @@ export function idGenerator() {
     return id
 }
 
-export const commands_format_version = "12.0.0-rc.1";
+export const commands_format_version = "20.0.0-rc.1";
     // @ts-expect-error
         [][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(![]+[+[]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[+!+[]]+(+(!+[]+!+[]+[+!+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[+!+[]])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]])()([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[(![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]]((+((+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+[+[]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+!+[]]])+[])[!+[]+!+[]]+[+!+[]])+(![]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]])()())[!+[]+!+[]+!+[]+[+[]]]+(+(+!+[]+[+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+[+!+[]])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]+!+[]])()[(!![]+[])[+[]]+(![]+[])[+[]]+(![]+[])[!+[]+!+[]+!+[]]+(![]+[])[+!+[]]] = [][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+'[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+([]+{})[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[+!+[]+[!+[]+!+[]+!+[]]]+(![]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]]+![]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]])()[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]()+[])[!+[]+!+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+","+"\\""+(+[![]]+[][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]())[+!+[]+[+!+[]]]+([][[]]+[])[+!+[]]+([][[]]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(+(+!+[]+[+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[!+[]+!+[]+!+[]+!+[]])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+"\\""+([+[]]+![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[!+[]+!+[]+[+[]]])([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(![]+[])[+[]])(f))')
     // @ts-expect-error
@@ -837,8 +837,10 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\chunk", escregexp: {v: "^\\\\chunk$"}, formats: [{format: "\\\\chunk"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\chunk"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\selectmode", escregexp: {v: "^\\\\selectmode$"}, formats: [{format: "\\\\selectmode [default|noliquid|nopassable|noliquidnopassable]"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\selectmode"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\protectarea", escregexp: {v: "^\\\\protectarea$"}, formats: [{format: "\\\\protectarea"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\protectarea"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\backuparea", escregexp: {v: "^\\\\backuparea$"}, formats: [{format: "\\\\backuparea"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\backuparea"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\itfill", escregexp: {v: "^\\\\itfill$"}, formats: [{format: "\\\\itfill"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\itfill"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\idtfill", escregexp: {v: "^\\\\idtfill$"}, formats: [{format: "\\\\idtfill"}], command_version: "0.0.1-alpha.2", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\idtfill"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "snapshot", escregexp: {v: "^snapshot$"}, formats: [{format: "snapshot"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:snapshot"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "butcher", escregexp: {v: "^butcher$"}, aliases: [{commandName: "but", escregexp: {v: "^but$"}}], formats: [{format: "butcher"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:butcher"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "butcherdespawn", escregexp: {v: "^butcherdespawn$"}, aliases: [{commandName: "butdes", escregexp: {v: "^butdes$"}}], formats: [{format: "butcherdespawn"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:butcherdespawn"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "remove", escregexp: {v: "^remove$"}, aliases: [{commandName: "rem", escregexp: {v: "^rem$"}}, {commandName: "rement", escregexp: {v: "^rement$"}}], formats: [{format: "remove"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:remove"}, 
@@ -848,9 +850,11 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "replacenear", escregexp: {v: "^replacenear$"}, formats: [{format: "replacenear"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:replacenear"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "jumpto", escregexp: {v: "^jumpto$"}, aliases: [{commandName: "j", escregexp: {v: "^j$"}}], formats: [{format: "jumpto"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:jumpto"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "align", escregexp: {v: "^align$"}, formats: [{format: "align"}], command_version: "1.0.0", description: "", category: ["world", "players"], commandSettingsId: "built-inCommandSettings:align"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "aligncenter", escregexp: {v: "^aligncenter$"}, formats: [{format: "aligncenter"}], command_version: "1.0.0", description: "", category: ["world", "players"], commandSettingsId: "built-inCommandSettings:aligncenter"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "getworldspawnpoint", escregexp: {v: "^getworldspawnpoint$"}, aliases: [{commandName: "getworldspawn", escregexp: {v: "^getworldspawn$"}}, {commandName: "getwsp", escregexp: {v: "^getwsp$"}}, {commandName: "getws", escregexp: {v: "^getws$"}}, {commandName: "gwsp", escregexp: {v: "^gwsp$"}}, {commandName: "gws", escregexp: {v: "^gws$"}}], formats: [{format: "getworldspawnpoint"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:getworldspawnpoint"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "findtransformdvindex", escregexp: {v: "^findtransformdvindex$"}, formats: [{format: "findtransformdvindex"}], command_version: "1.0.0", description: "", category: ["server"], commandSettingsId: "built-inCommandSettings:findtransformdvindex"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "transformresultatdvindex", escregexp: {v: "^transformresultatdvindex$"}, formats: [{format: "transformresultatdvindex"}], command_version: "1.0.0", description: "", category: ["server"], commandSettingsId: "built-inCommandSettings:transformresultatdvindex"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "findtransformdvindex", escregexp: {v: "^findtransformdvindex$"}, formats: [{format: "findtransformdvindex"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:findtransformdvindex"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "transformresultatdvindex", escregexp: {v: "^transformresultatdvindex$"}, formats: [{format: "transformresultatdvindex"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:transformresultatdvindex"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "removeotheritemenchantments", escregexp: {v: "^removeotheritemenchantments$"}, aliases: [{commandName: "remotheritemenchants", escregexp: {v: "^remotheritemenchants$"}}, {commandName: "roie", escregexp: {v: "^roie$"}}], formats: [{format: "removeotheritemenchantments"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:removeotheritemenchantments"}, 
     {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "home", escregexp: {v: "^home$"}, formats: [{format: "home"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home"}, 
     {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "gohome", escregexp: {v: "^gohome$"}, formats: [{format: "gohome"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome"}, 
     {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "rtp", escregexp: {v: "^rtp$"}, formats: [{format: "rtp <player: targetSelector|playerName>"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp"}, 
@@ -1226,18 +1230,25 @@ export class chunkLandClaim{
     static delete(claimId: string){world.setDynamicProperty(claimId)}
 }
 function extractCustomPatternTypes(str: string) {
-    const patterns = [];
-    const regex = /(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g;
-    const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
+    const patterns = [] as ({ type: string, states?: Record<string, string|number|boolean>, weight?: number }[]&{mode: "random"|"sequence"})[];;
+    const regex = /(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g;
+    const regexb = /([rs]:)?(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
     const matchesa = str.match(regex);
     matchesa.forEach(m=>{
     const matches = m.match(regexb);
     if (matches) {
-        const patternTypes = [];
-        matches.forEach(match => {
+        let mode: "random"|"sequence" = "random";
+        const patternTypes = [] as { type: string, states?: Record<string, string|number|boolean>, weight?: number }[];
+        matches.forEach((match, index) => {
+            if(index==0&&!!match.match(/^r:/)){
+                match=match.slice(2);
+            }else if(index==0&&!!match.match(/^s:/)){
+                match=match.slice(2);
+                mode="sequence";
+            };
             let type = match.trim();
-            let weight = null;
-            let states = null;
+            let weight: number = null;
+            let states: Record<string, string|number|boolean> = null;
 
             // Extract chance if present
             const weightMatch = type.match(/[%*]{1,2}(\d+)(?=[\s\n]*$|\[|\{)/);
@@ -1283,18 +1294,25 @@ function extractCustomPatternTypes(str: string) {
 
             patternTypes.push({ type, states, weight });
         });
-        patterns.push(patternTypes)
+        patterns.push(Object.assign(patternTypes, {mode: mode}))
     }
     })
     return patterns;
 }
 function extractCustomPatternType(str: string) {
-    const patternTypes = [];
-    const regex = /(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
-    const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
+    const patternTypes = [] as { type: string, states?: Record<string, string|number|boolean>, weight?: number }[]&{mode: "random"|"sequence"};
+    const regex = /(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
+    const regexb = /([rs]:)?(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
     const matches = str.match(regex)[0].match(regexb);
+    let mode: "random"|"sequence" = "random";
     if (matches) {
-        matches.forEach(match => {
+        matches.forEach((match, index) => {
+            if(index==0&&!!match.match(/^r:/)){
+                match=match.slice(2);
+            }else if(index==0&&!!match.match(/^s:/)){
+                match=match.slice(2);
+                mode="sequence";
+            };
             let type = match.trim();
             let weight = null;
             let states = null;
@@ -1344,21 +1362,22 @@ function extractCustomPatternType(str: string) {
             patternTypes.push({ type, states, weight });
         });
     }
-    return patternTypes;
+    return Object.assign(patternTypes, {mode: mode}) as { type: string, states?: Record<string, string|number|boolean>, weight?: number }[]&{mode: "random"|"sequence"};
 }
 export class BlockPattern{
-    blocks: {type: string, states?: {[id: string]: string|number|boolean}, weight?: number}[] = []
+    blocks: {type: string, states?: {[id: string]: string|number|boolean}, weight?: number, get raw(): string, get rawns(): string}[] = []
     type: "random"|"sequence" = "random"
-    constructor(blocks: {type: string, states?: {[id: string]: string|number|boolean}, chance?: number}[] = [], type: "random"|"sequence" = "random"){this.blocks = blocks, this.type=type}
+    constructor(blocks: {type: string, states?: {[id: string]: string|number|boolean}, weight?: number}[] = [], type: "random"|"sequence" = "random"){this.blocks = blocks.map(v=>({type: v.type, states: v.states, weight: v.weight, get raw(){return `${this.type}${!!this.weight?`%${this.weight}`:""}${!!this.states?`${JSON.stringify(this.states)}`:""}`}, get rawns(){return `${this.type}${!!this.weight?`%${this.weight}`:""}`}})), this.type=type}
     generateBlock(generateIndex: number|bigint = 0, forceMode?: "random"|"sequence"){return (((!!!forceMode&&this.type=="random")||forceMode=="random")?selectWeightedElement(this.blocks):this.blocks.map(b=>!!b.weight?new Array(b.weight).fill(b):[b]).flat()[Number(BigInt(generateIndex)%BigInt(this.blocks.map(b=>!!b.weight?new Array(b.weight).fill(b):[b]).flat().length))]) as {type: string, states?: {[id: string]: string|number|boolean}, chance?: number}}
     generateBlockP(generateIndex: number|bigint = 0, forceMode?: "random"|"sequence"){const p = ((!!!forceMode&&this.type=="random")||forceMode=="random")?selectWeightedElement(this.blocks):this.blocks.map(b=>!!b.weight?new Array(b.weight).fill(b):[b]).flat()[Number(BigInt(generateIndex)%BigInt(this.blocks.map(b=>!!b.weight?new Array(b.weight).fill(b):[b]).flat().length))]; return BlockPermutation.resolve(p.type, p.states)}
+    push(...blocks: {type: string, states?: {[id: string]: string|number|boolean}, weight?: number}[]){return this.blocks.push(...blocks.map(v=>({type: v.type, states: v.states, weight: v.weight, get raw(){return `${this.type}${!!this.weight?`%${this.weight}`:""}${!!this.states?`${JSON.stringify(this.states)}`:""}`}, get rawns(){return `${this.type}${!!this.weight?`%${this.weight}`:""}`}})))}
     static parse(){}
-    static extractRaw(str: string): string{return str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]}
-    static extract(str: string, mode: "random"|"sequence"="random"): BlockPattern{return new BlockPattern(extractCustomPatternType(str), mode)}
-    static extractWRaw(str: string, mode: "random"|"sequence"="random"): {raw: string, parsed: BlockPattern}{return {raw: str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0], parsed: new BlockPattern(extractCustomPatternType(str), mode)}}
-    static extractAllRaw(str: string): string[]{return str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g)}
-    static extractAll(str: string, mode: "random"|"sequence"="random"): BlockPattern{return new BlockPattern(extractCustomPatternTypes(str), mode)}
-    static extractAllWRaw(str: string, mode: "random"|"sequence"="random"): {raw: string[], parsed: BlockPattern[]}{return {raw: str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v=>new BlockPattern(v, mode))}}
+    static extractRaw(str: string): string{return str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]}
+    static extract(str: string, mode?: "random"|"sequence"): BlockPattern{return new BlockPattern(...((v)=>[v, mode??v.mode] as [{type: string;states?: Record<string, string | number | boolean>;weight?: number;}[], "random" | "sequence"])(extractCustomPatternType(str)))}
+    static extractWRaw(str: string, mode?: "random"|"sequence"): {raw: string, parsed: BlockPattern}{return {raw: str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0], parsed: new BlockPattern(...((v)=>[v, mode??v.mode] as [{type: string;states?: Record<string, string | number | boolean>;weight?: number;}[], "random" | "sequence"])(extractCustomPatternType(str)))}}
+    static extractAllRaw(str: string): string[]{return str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g)}
+    static extractAll(str: string, mode?: "random"|"sequence"): BlockPattern[]{return extractCustomPatternTypes(str).map(v=>new BlockPattern(v, mode??v.mode))}
+    static extractAllWRaw(str: string, mode?: "random"|"sequence"): {raw: string[], parsed: BlockPattern[]}{return {raw: str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v=>new BlockPattern(v, mode??v.mode))}}
 }
 function selectWeightedElement(items: {[k: string]: any}[], weightProp: string = "weight") {
     let total = items.reduce((acc, item) => acc + (item[weightProp]??1), 0);
@@ -1371,33 +1390,7 @@ function selectWeightedElement(items: {[k: string]: any}[], weightProp: string =
         }
     }
 }
-export class config{
-    static get chatCommandsEnabled(){return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled")??true)}
-    static set chatCommandsEnabled(enabled: boolean|undefined){world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled??true)}
-    static get chatCommandPrefix(){return String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix")??"\\")}
-    static set chatCommandPrefix(prefix: string|undefined){world.setDynamicProperty("andexdbSettings:chatCommandPrefix", prefix??"\\")}
-    static get validChatCommandPrefixes(){return String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes")??"")}
-    static set validChatCommandPrefixes(prefixes: string|undefined){world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", prefixes??"")}
-    static get homeSystemEnabled(){return Boolean(world.getDynamicProperty("homeSystemSettings:homeSystemEnabled")??false)}
-    static set homeSystemEnabled(enabled: boolean|undefined){world.setDynamicProperty("homeSystemSettings:homeSystemEnabled", enabled??false)}
-    static get maxHomesPerPlayer(){return gwdp("homeSystemSettings:maxHomesPerPlayer")==-1?Infinity:Number(gwdp("homeSystemSettings:maxHomesPerPlayer")??Infinity)}
-    static set maxHomesPerPlayer(maxHomes: number|undefined){swdp("homeSystemSettings:maxHomesPerPlayer", (maxHomes??Infinity)==Infinity?-1:maxHomes)}
-    static get rtpSystemEnabled(){return Boolean(world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled")??false)}
-    static set rtpSystemEnabled(enabled: boolean|undefined){world.setDynamicProperty("rtpSystemSettings:rtpSystemEnabled", enabled??false)}
-    static get antispamEnabled(){return Boolean(world.getDynamicProperty("antispamSettings:antispamEnabled")??false)}
-    static set antispamEnabled(enabled: boolean|undefined){world.setDynamicProperty("antispamSettings:antispamEnabled", enabled??false)}
-    static get waitTimeAfterAntispamActivation(){return isNaN(Number(gwdp("antispamSettings:waitTimeAfterAntispamActivation")))?60:Number(gwdp("antispamSettings:waitTimeAfterAntispamActivation") ?? 60)}
-    static set waitTimeAfterAntispamActivation(waitTimeInSeconds: number|undefined){swdp("antispamSettings:waitTimeAfterAntispamActivation", waitTimeInSeconds??60)}
-    static get antispamTriggerMessageCount(){return isNaN(Number(gwdp("antispamSettings:antispamTriggerMessageCount")))?4:Number(gwdp("antispamSettings:antispamTriggerMessageCount") ?? 4)}
-    static set antispamTriggerMessageCount(messageCount: number|undefined){swdp("antispamSettings:antispamTriggerMessageCount", messageCount??4)}
-    static get timeZone(){return isNaN(Number(gwdp("andexdbSettings:timeZone")))?0:Number(gwdp("andexdbSettings:timeZone") ?? 0)}
-    static set timeZone(timeZone: number|undefined){swdp("andexdbSettings:timeZone", timeZone??0)}
-    static get invalidChatCommandAction(){return isNaN(Number(gwdp("andexdbSettings:invalidChatCommandAction")))?0:Number(gwdp("andexdbSettings:invalidChatCommandAction") ?? 0)}
-    static set invalidChatCommandAction(invalidChatCommandAction: number|undefined){swdp("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction??0)}
-    static get chatDisplayTimeStamp(){return Boolean(gwdp("andexdbSettings:chatDisplayTimeStamp") ?? false)}
-    static set chatDisplayTimeStamp(chatDisplayTimeStampEnabled: boolean|undefined){swdp("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled??false)}
-    static reset(){}
-}
+export function testForObjectExtension(a: object, b: object){return Object.entries(b).every(v=>Object.keys(a).includes(v[0])?Object.entries(a).find(c=>c[0]==v[0])[1]==v[1]:false)}
 //((a: Player)=>{})(new executeCommandPlayer(getPlayer("Andexter8")))
 export function send(message: string){world.sendMessage(message)}; 
 export class TimeoutError extends Error {
@@ -1499,6 +1492,8 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
 export const EquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand]
 export const OtherEquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Offhand]
 export const dimensions = [world.getDimension("overworld"), world.getDimension("nether"), world.getDimension("the_end")]
+export const dimensionsb = {"minecraft:overworld": world.getDimension("overworld"), "minecraft:nether": world.getDimension("nether"), "minecraft:the_end": world.getDimension("the_end")}
+export const dimensionsc = {"overworld": world.getDimension("overworld"), "nether": world.getDimension("nether"), "the_end": world.getDimension("the_end")}
 export const overworld = world.getDimension("overworld")
 export const nether = world.getDimension("nether")
 export const the_end = world.getDimension("the_end")
@@ -2318,10 +2313,15 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 "settings": `${command.dp}settings`,
 "shuffleinventory": `${command.dp}shuffleinventory <playerTarget: targetSelector|~>`,
 "structure": `${command.dp}structure createempty <structureName: string> <sizeX: float> <sizeY: float> <sizeZ: float> [saveMode: memory|disk]
+${command.dp}structure save <structureName: string> <from: x y z> <to: x y z> [saveMode: world|memory] [includeEntities: Boolean] [includeBlocks: Boolean]
+${command.dp}structure load <structureName: string> <to: x y z> [rotation: 0|90|190|270] [mirror: none|x|z|xz] [includeEntities: Boolean] [includeBlocks: Boolean] [waterlogged: Boolean] [integrity: float] [integritySeed: string] [animationMode: none|blocks|layers] [animationSeconds: float]
 ${command.dp}structure delete <structureName: string>
 ${command.dp}structure copy <copyFromStructureName: string> <copyToStructureName: string>
+${command.dp}structure copytodisk <structureName: string> <copyToStructureName: string>
+${command.dp}structure copytomemory <structureName: string> <copyToStructureName: string>
 ${command.dp}structure savetodisk <structureName: string>
 ${command.dp}structure movetomemory <structureName: string>
+${command.dp}structure removeair <structureName: string>
 ${command.dp}structure removeall
 ${command.dp}structure list`,
 "summon": `${command.dp}summon <spawnCount: int> <entity: EntityType<[spawnEvent]>> [spawnPos: x y z] [yRot: value] [xRot: value] [persistent: bool] [nameTag: string]
@@ -2357,6 +2357,9 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
 "wset": `${command.dp}wset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
 "transformresultatdvindex": `${command.dp}transformresultatdvindex [data: int]`,
 "findtransformdvindex": `${command.dp}findtransformdvindex [itemName: string] [data: int]`,
+"roie": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
+"remotheritemenchants": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
+"removeotheritemenchantments": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
 "brush": `${command.dp}brush [-l] none
 ${command.dp}brush [-l] <brushType: sphere|cube|square> [-h] <blockPattern: BlockPattern> [radius: float]
 ${command.dp}brush [-l] <brushType: splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface> [-h] <blockPattern: BlockPattern> [radius: float] [decay: float]
@@ -2368,10 +2371,21 @@ ${command.dp}brush [-l] <brushType: extinguish|ex|remexp> [radius: float]`,
 "selectioninfo": `${command.dp}selectioninfo`,
 "selinfo": `${command.dp}selinfo`,
 "seli": `${command.dp}seli`,
+"snapshot": `${command.dp}snapshot backup <areaId: string>
+${command.dp}snapshot rollback <areaId: string> [backupIndex: number]
+${command.dp}snapshot deletebackup <areaId: string> [backupIndex: number]
+${command.dp}snapshot clearbackups <areaId: string>
+${command.dp}snapshot deletearea <areaId: string>
+${command.dp}snapshot clearareas
+${command.dp}snapshot listbackups <areaId: string>
+${command.dp}snapshot listareas
+${command.dp}snapshot list`,
 "\\\\cut": `${command.dp}\\cut [-meb]`,
 "\\\\copy": `${command.dp}\\copy [-meb]`,
 "\\\\paste": `${command.dp}\\paste [-webxz] [integrity: float] [integritySeed: string] [rotation: 0|90|180|270] [animationMode: none|blocks|layers] [animationSeconds: float]`,
-"\\\\undo": `${command.dp}\\undo`,
+"\\\\undo": `${command.dp}\\undo [-kt]`,
+"\\\\protectarea": `${command.dp}\\protectarea <areaType: string> <name: string> [mode: 0|1(default=0)] [icon_path: string]`,
+"\\\\backuparea": `${command.dp}\\backuparea <id: string>`,
 "\\\\pos1": `${command.dp}\\pos1 [location: x y z]`,
 "\\\\pos2": `${command.dp}\\pos2 [location: x y z]`,
 "\\\\hpos1": `${command.dp}\\hpos1`,
@@ -2654,16 +2668,21 @@ export enum commanddescriptions {
 "chunkban" = "Fills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. ",
 "transformresultatdvindex" = "Displays what item a smithing table enchanted book combined with a enchantment transfer smithing template of the specified data value would turn in to. ",
 "findtransformdvindex" = "Displays the data value of enchantment transfer smithing template needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. ",
+"roie" = "Removes all enchantment types from an item except for the item types specified. ",
+"remotheritemenchants" = "Removes all enchantment types from an item except for the item types specified. ",
+"removeotheritemenchantments" = "Removes all enchantment types from an item except for the item types specified. ",
 "butcher" = "Kill all or nearby mobs. ",
 "butcherdespawn" = "Despawn all or nearby mobs. ",
 "brush" = "Sets the held item as the specified brush type or unbinds the brush from the held item. ",
+"snapshot" = "Manages backups and backup areas. ",
 "\\\\cut" = "Cuts the selected area to the clipboard. ",
 "\\\\copy" = "Copies the selected area to the clipboard. ",
 "\\\\paste" = "Pastes the clipboard to the selected area. ",
-"\\\\undo" = "Undoes the last worldedit command that modified any blocks. ",
+"\\\\undo" = "Undoes the last action (from history). ",
 "\\\\pos1" = "Sets the pos1 location of the selected area for use in other worldedit commands. ",
 "\\\\pos2" = "Sets the pos2 location of the selected area for use in other worldedit commands. ",
 "\\\\protectarea" = "Sets the selected area as a protected area. ",
+"\\\\backuparea" = "Creates a new backup area convering the entire selected area. ",
 "\\\\hpos1" = "Sets the pos1 location of the selected area to the block that you are looking at for use in other worldedit commands. ",
 "\\\\hpos2" = "Sets the pos2 location of the selected area to the block that you are looking at for use in other worldedit commands. ",
 "\\\\chunk" = "Sets the pos1 and pos2 locations of the selected area to contain the entire chunk that you are currently in for use in other worldedit commands. ",
@@ -2693,6 +2712,7 @@ c: kill cloned players
 e: kill everything
 g: kill golems
 i: kill items and experience orbs
+l: kill bosses
 p: kill players
 r: kill armor stands
 t: allow killing of name tagged entities`,
@@ -2716,7 +2736,9 @@ b: don't include blocks`,
 e: don't include entities
 b: don't include blocks
 x: mirror structure x axis
-z: mirror structure z axis`
+z: mirror structure z axis`,
+"undo": `k: don't remove the undo save point after finishing the undo
+t: spawn in a ticking area before running the undo command`
 }
 
 export function getCommandHelpPage(commandName: string){let cmd = command.get(commandName, "built-in"); return (!!!commanddescriptions[cmd.commandName]&&!!!commandsyntaxes[cmd.commandName])?`§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`:`§e${cmd.commandName}${(cmd.aliases?.length??0)!=0?`(also ${cmd.aliases.map(v=>v.commandName).join(", ")})`:""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName]??"missing").split("\n").join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]?"":"\nFlags:\n"+commandflags[cmd.currentCommandName].split("\n").join("§r\n")}`}
@@ -3402,6 +3424,12 @@ export function getInventory<T extends Block|Entity|Player>(containerBlockPlayer
 }
 export function getEquipment(containerBlockPlayerOrEntity: Entity|Player){
     return containerBlockPlayerOrEntity.getComponent("equippable")
+}
+export function getEntityHeldItemSlot(entity: Entity){
+    return entity.getComponent("equippable").getEquipmentSlot(EquipmentSlot.Mainhand)
+}
+export function getPlayerHeldItemSlot(player: Player){
+    return player.getComponent("inventory").container.getSlot(player.selectedSlotIndex)
 }
 export const JunkItemTypes = ["dirt", "stick", "deadbush", "tripwire_hook", "rotten_flesh", "string", "cobblestone", "stone", "diorite", "andesite", "granite", "tuff", "end_stone", "wheat_seeds", "tallgrass", "leather_helmet", "leather_boots", "leather_chestplate", "leather_leggings", "wooden_sword", "wooden_axe", "wooden_pickaxe", "wooden_shovel", "wooden_hoe", "spider_eye"]
 export const OpItemTypes = ["diamond", "netherite_ingot", "gold_ingot", "iron_ingot", "diamond_sword", "diamond_chestplate", "diamond_helmet", "diamond_leggings", "diamond_boots", "diamond_pickaxe", "diamond_shovel", "diamond_hoe", "diamond_block"]
@@ -5390,7 +5418,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^top$/): 
             eventData.cancel = true;
-            try{system.run(()=>{let block = getTopSolidBlock(player.dimension.getBlock({x: player.location.x, y: Math.max(player.location.y, player.dimension.heightRange.max), z: player.location.z}), player.dimension); if(block != undefined){player.teleport({x: player.location.x, y: block.y+1, z: player.location.z}, {}); }else{eventData.sender.sendMessage("§4No block could be found. ")}; eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z)}); })}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>{let block = getTopSolidBlock(player.dimension.getBlock({x: player.location.x, y: Math.min(player.location.y, player.dimension.heightRange.max), z: player.location.z}), player.dimension); if(block != undefined){player.teleport({x: player.location.x, y: block.y+1, z: player.location.z}, {}); }else{eventData.sender.sendMessage("§4No block could be found. ")}; eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z)}); })}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^printlayers$/): 
             eventData.cancel = true;
@@ -5431,7 +5459,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             //let args = argsa.args;
             switch (String(argsa.args[1]).toLowerCase()) {
                 case "save":{
-                    let args = evaluateParameters(argsa.extra, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "presetText" }, { type: "neboolean" }, { type: "neboolean" }]).args;
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "presetText" }, { type: "neboolean" }, { type: "neboolean" }]).args;
                     const locationa = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
                     const locationb = evaluateCoordinates(args[6] ?? "~", args[7] ?? "~", args[8] ?? "~", player.location, player.getRotation());
                     world.structureManager.createFromWorld(args[2], player.dimension, locationa, locationb, {saveMode: (args[9]??"").toLowerCase()=="world"?StructureSaveMode.World:StructureSaveMode.Memory, includeBlocks: args[10]??true, includeEntities: args[11]??true});
@@ -5446,7 +5474,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 }
                 break;
                 case "createempty":{
-                    let args = evaluateParameters(argsa.extra, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args;
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args;
                     //name; sizex; sizey; sizez
                     world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] }, args[6].toLowerCase() == "disk" ? StructureSaveMode.World : StructureSaveMode.Memory);
                     psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v => v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase() == "disk" ? "the disk" : "memory"}.`);
@@ -5463,9 +5491,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 }
                 break;
                 case "load":{
-                    let args = evaluateParameters(argsa.extra, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, {type: "number"}, {type: "string"}, { type: "neboolean" }, { type: "neboolean" }, { type: "neboolean" }, {type: "number"}, { type: "string" }, { type: "presetText" }, { type: "number" }]).args;
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, {type: "number"}, {type: "string"}, { type: "neboolean" }, { type: "neboolean" }, { type: "neboolean" }, {type: "number"}, { type: "string" }, { type: "presetText" }, { type: "number" }]).args;
                     //name; x; y; z; includeblocks; includeentities; waterlogged; rotation; loadmode; animationtime
                     if (!!world.structureManager.get(args[2])) {
+                        args[6]??=0;
+                        args[7]??="";
                         const location = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
                         world.structureManager.place(args[2], player.dimension, location, {includeBlocks: args[8]??true, includeEntities: args[9]??true, waterlogged: args[10]??false, animationMode: StructureAnimationMode[args[13]]??StructureAnimationMode.None, animationSeconds: args[14], mirror: args[7].includes("x")?args[7].includes("z")?StructureMirrorAxis.XZ:StructureMirrorAxis.X:args[7].includes("z")?StructureMirrorAxis.Z:StructureMirrorAxis.None, integrity: args[11], integritySeed: args[12], rotation: Math.round(args[6]/90)==0?StructureRotation.None:Math.round(args[6]/90)==1?StructureRotation.Rotate90:Math.round(args[6]/90)==2?StructureRotation.Rotate180:Math.round(args[6]/90)==3?StructureRotation.Rotate270:StructureRotation.None});
                         psend(player, `§aSeccessfully loaded the structure "§r${args[2]}§a".`);
@@ -5476,7 +5506,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 }
                 break;
                 case "copy":{
-                    let args = evaluateParameters(argsa.extra, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
                     if (!!world.structureManager.get(args[2])) {
                         world.structureManager.get(args[2]).saveAs(args[3]);
                         psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a".`);
@@ -5487,7 +5517,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 }
                 break;
                 case "copytodisk":{
-                    let args = evaluateParameters(argsa.extra, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
                     if (!!world.structureManager.get(args[2])) {
                         world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.World);
                         psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" on the disk.`);
@@ -5498,7 +5528,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 }
                 break;
                 case "copytomemory":{
-                    let args = evaluateParameters(argsa.extra, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
                     if (!!world.structureManager.get(args[2])) {
                         world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.Memory);
                         psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" in memory.`);
@@ -5511,7 +5541,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 case "savetodisk":{
                     let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra];
                     if (!!world.structureManager.get(args[2])) {
-                        world.structureManager.get(args[2]).saveAs(args[2], StructureSaveMode.World);
+                        const a = world.structureManager.get(args[2]).saveAs("andexdb:structuresavingtodiskplaceholderreserved5164896135268634876548961853426912579081261744790127659073267276846741241230675914307695134567412541637516742890576243098", StructureSaveMode.World);
+                        world.structureManager.delete(args[2]);
+                        a.saveAs(args[2], StructureSaveMode.World);
+                        world.structureManager.delete(a);
                         psend(player, `§aSeccessfully saved the structure "§r${args[2]}§a" to the disk.`);
                     }
                     else {
@@ -5784,7 +5817,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^liststructures$/)||!!switchTest.match(/^getstructures$/): {
             eventData.cancel = true;
-            srun(()=>player.sendMessage(world.structureManager.getWorldStructureIds().join("§r\n")))
+            srun(()=>player.sendMessage(world.structureManager.getWorldStructureIds().sort().join("§r\n")))
         }
         break; 
         case !!switchTest.match(/^listbans$/)||!!switchTest.match(/^getbans$/): {
@@ -7874,9 +7907,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 if(!!!coordinatesb){
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
-                    try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.Memory})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
-                    const blocktypes = BlockTypes.getAll()
-                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{fillBlocksHFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, undefined, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                    system.run(()=>{
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        const blocktypes = BlockTypes.getAll()
+                        try{fillBlocksHFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, undefined, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    }); 
                 }
             }
         }
@@ -7961,9 +7996,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{
+                        try{undoClipboard.save(dimensiona, {from: ca, to: Vector.add(cb, {x: 0, y: height*args[1], z: 0})}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         for(let i = 0; i<args[1]; i++){
                             //console.warn(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
-                            try{undoClipboard.save(dimensiona, {from: ca, to: Vector.add(cb, {x: 0, y: height*args[1], z: 0})}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.Memory})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                             dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
                         }
                     }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -7987,6 +8022,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{
+                        try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         tryrun(()=>blockClipboard.clear())
                         try{blockClipboard.save(dimensiona, {from: ca, to: cb}, {includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), saveMode: args[1].includes("m")?StructureSaveMode.Memory:StructureSaveMode.World})
                         player.sendMessage("The selected area has been cut to the clipboard.")}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
@@ -8044,17 +8080,18 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 }else if(blockClipboard.ids.length==0){
                     player.sendMessage("§cError: The clipboard is currently empty.")
                 }else{
-                    try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.Memory})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
-                    blockClipboard.place(Object.assign({dimension: dimensiona}, coordinatesa), {includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), waterlogged: args[1].includes("w"), animationMode: args[5]=="blocks"?StructureAnimationMode.Blocks:args[5]=="none"?StructureAnimationMode.None:args[5]=="layers"?StructureAnimationMode.Layers:undefined, animationSeconds: args[6], mirror: args[1].includes("x")?args[1].includes("z")?StructureMirrorAxis.XZ:StructureMirrorAxis.X:args[1].includes("z")?StructureMirrorAxis.Z:StructureMirrorAxis.None, rotation: Math.round(args[4]/90)==0?StructureRotation.None:Math.round(args[4]/90)==1?StructureRotation.Rotate90:Math.round(args[4]/90)==2?StructureRotation.Rotate180:Math.round(args[4]/90)==3?StructureRotation.Rotate270:StructureRotation.None, integrity: args[2], integritySeed: args[3]})
-                    player.sendMessage("The clipboard has been pasted to the selected area.")
+                    try{try{undoClipboard.save(dimensiona, {from: ca, to: Vector.add(ca, blockClipboard.saveSize)}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                    blockClipboard.place(Object.assign({dimension: dimensiona}, ca), {includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), waterlogged: args[1].includes("w"), animationMode: args[5]=="blocks"?StructureAnimationMode.Blocks:args[5]=="none"?StructureAnimationMode.None:args[5]=="layers"?StructureAnimationMode.Layers:undefined, animationSeconds: args[6], mirror: args[1].includes("x")?args[1].includes("z")?StructureMirrorAxis.XZ:StructureMirrorAxis.X:args[1].includes("z")?StructureMirrorAxis.Z:StructureMirrorAxis.None, rotation: Math.round(args[4]/90)==0?StructureRotation.None:Math.round(args[4]/90)==1?StructureRotation.Rotate90:Math.round(args[4]/90)==2?StructureRotation.Rotate180:Math.round(args[4]/90)==3?StructureRotation.Rotate270:StructureRotation.None, integrity: args[2], integritySeed: args[3]})
+                    player.sendMessage("The clipboard has been pasted to the selected area.")}catch(e){player.sendMessage(e+" "+e.stack)}
                 }
             }catch(e){perror(player, e)}}); 
         }catch(e){perror(player, e)}}
         break; 
         case !!switchTest.match(/^\\undo$/): {try{
             eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "f-kt"]).args;
             system.run(()=>{try{
-                undoClipboard.undo()
+                if(undoClipboard.ids.length==0){player.sendMessage("§cNothing to undo. ")}else if(!(args[1]?.t??false)){try{if(undoClipboard.undo(undefined, undefined, !(args[1]?.k??false))==0){player.sendMessage("§cNothing to undo. ")}else{player.sendMessage("Successfully reverted the area. ")}}catch(e){player.sendMessage(e+" "+e.stack)}}else{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(world.getDynamicProperty(`andexdb:undoclipboard;${undoClipboard.saveTimes}`) as Vector3, Vector.add(world.getDynamicProperty(`andexdb:undoclipboard;${undoClipboard.saveTimes}`) as Vector3, undoClipboard.saveSize(undoClipboard.saveTimes)))}); return a})(), dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${undoClipboard.saveTimes}`))]??dimensionsb["minecraft:overworld"]).then(tac=>{ta=tac; try{if(undoClipboard.undo(undefined, undefined, !(args[1]?.k??false))==0){player.sendMessage("§cNothing to undo. ")}else{player.sendMessage("Successfully reverted the area. ")}}catch(e){player.sendMessage(e+" "+e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}
             }catch(e){perror(player, e)}}); 
         }catch(e){perror(player, e)}}
         break; 
@@ -8073,8 +8110,28 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 }else if(!!!coordinatesb){
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
-                    world.setDynamicProperty(args[1]+args[2], `${ca.x}, ${ca.y}, ${ca.z}, ${cb.x}, ${cb.y}, ${cb.z}, ${args[3]??0}, ${args[4]}`)
+                    world.setDynamicProperty("v2:"+args[1]+args[2], JSON.stringify({from: ca, to: cb, dimension: dimensions.indexOf(dimensiona), mode: args[3]??0, icon_path: args[4]}))
                     player.sendMessage("The protected area has been saved.")
+                }
+            }catch(e){perror(player, e)}}); 
+        }catch(e){perror(player, e)}}
+        break; 
+        case !!switchTest.match(/^\\backuparea$/): {try{
+            eventData.cancel = true;
+            system.run(()=>{try{
+                const args = evaluateParameters(switchTestB, ["presetText", "string"]).args as [commandText: string, id: string]
+                const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+                const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+                const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+                const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+                const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+                if(!!!coordinatesa){
+                    player.sendMessage("§cError: pos1 is not set.")
+                }else if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    AreaBackups.createAreaBackup(args[1], dimensiona, {from: ca, to: cb})
+                    player.sendMessage(`The backup area has been created with the id "${args[1]}".`)
                 }
             }catch(e){perror(player, e)}}); 
         }catch(e){perror(player, e)}}
@@ -8726,7 +8783,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                 switch(args[2].toLowerCase()){
                     case "none":{
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "none")
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore()}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore())}
                         player.sendMessage(`Seccessfully unbound the brush from the currently held item.`)
                     }
                     break;
@@ -8734,7 +8791,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "extinguish")
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aExtinguish`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`])}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bSelect Mode: ${player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getDynamicProperty("selectmode")}`, `§r§bBrush Type: §aExtinguish`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
                     }
                     break;
@@ -8742,7 +8799,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "extinguish")
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aExtinguish`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`])}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aExtinguish`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
                     }
                     break;
@@ -8750,7 +8807,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "remexp")
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aRemExp`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`])}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aRemExp`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
                     }
                     break;
@@ -8758,7 +8815,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "remexpne")
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aRemExpNE`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`])}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aRemExpNE`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
                     }
                     break;
@@ -8768,7 +8825,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSphere`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSphere`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to sphere with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
                     }
                     break;
@@ -8778,7 +8835,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aCube`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aCube`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to cube with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
                     }
                     break;
@@ -8788,7 +8845,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSquare`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSquare`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to square with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
                     }
                     break;
@@ -8799,7 +8856,8 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatter`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        //console.warn(JSON.stringify((args[4] as BlockPattern).blocks))
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatter`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: `, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
                     }
                     break;
@@ -8810,7 +8868,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterCube`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterCube`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
                     }
                     break;
@@ -8821,7 +8879,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSquare`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSquare`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
                     }
                     break;
@@ -8832,7 +8890,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to splatter surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
                     }
                     break;
@@ -8843,7 +8901,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterCubeSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterCubeSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to splatter cube surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
                     }
                     break;
@@ -8854,7 +8912,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
-                        if(args[1].l){player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSquareSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: §d${JSON.stringify((args[4] as BlockPattern).blocks)}`, `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`])}
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSquareSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
                         player.sendMessage(`Seccessfully set brush type of the held item to splatter square surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
                     }
                     break;
@@ -8864,6 +8922,79 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                     break;
                 }
             }
+        }
+        break; 
+        case !!switchTest.match(/^snapshot$/): {
+            eventData.cancel = true;
+            srun(()=>{let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);try{
+            if((argsa.args[1]??"").trim()==""){player.sendMessage(`${command.dp}snapshot backup <areaId: string>
+${command.dp}snapshot rollback <areaId: string> [backupIndex: number]
+${command.dp}snapshot deletebackup <areaId: string> [backupIndex: number]
+${command.dp}snapshot clearbackups <areaId: string>
+${command.dp}snapshot deletearea <areaId: string>
+${command.dp}snapshot clearareas
+${command.dp}snapshot listbackups <areaId: string>
+${command.dp}snapshot listareas
+${command.dp}snapshot list`); return}
+            //let args = argsa.args;
+            switch (String(argsa.args[1]).toLowerCase()) {
+                case "backup":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }]).args;
+                    if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
+                    AreaBackups.get("areabackup:"+args[2]).backup(Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})
+                    player.sendMessage(`Created a backup of the area ${JSON.stringify(args[2])} at ${new Date(Date.now()+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?"":"+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)%96)}.`)
+                }
+                break;
+                case "rollback":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }]).args;
+                    if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
+                    AreaBackups.get("areabackup:"+args[2]).rollback(AreaBackups.get("areabackup:"+args[2]).backups[args[3]??0])
+                    player.sendMessage(`Restored the area ${JSON.stringify(args[2])} from the backup at ${new Date(AreaBackups.get("areabackup:"+args[2]).backups[args[3]??0]+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?"":"+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)%96)}.`)
+                }
+                break;
+                case "deletebackup":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }]).args;
+                    if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
+                    AreaBackups.get(args[2]).clearBackup(AreaBackups.get(args[2]).backups[args[3]??0])
+                    player.sendMessage(`Deleted the backup at ${new Date(AreaBackups.get("areabackup:"+args[2]).backups[args[3]??0]+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?"":"+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)%96)} of area ${JSON.stringify(args[2])}.`)
+                }
+                break;
+                case "clearbackups":{
+                    if(!player.hasTag("canClearAllBackupsOfArea")){player.sendMessage(`§cPermissionsError: You do not have permission to use this sub-command.`); return}
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }]).args;
+                    if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
+                    AreaBackups.get(args[2]).clearBackups()
+                    player.sendMessage(`Cleared all of the backups of area ${JSON.stringify(args[2])}.`)
+                }
+                break;
+                case "deletearea":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }]).args;
+                    if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
+                    AreaBackups.get(args[2]).delete()
+                    player.sendMessage(`Deleted the backup area ${JSON.stringify(args[2])}.`)
+                }
+                break;
+                case "clearareas":{
+                    if(!player.hasTag("canClearAllBackupAreas")){player.sendMessage(`§cPermissionsError: You do not have permission to use this sub-command.`); return}
+                    AreaBackups.clear()
+                    player.sendMessage(`Cleared all of the backup areas.`)
+                }
+                break;
+                case "listbackups":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }]).args;
+                    if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
+                    player.sendMessage(AreaBackups.get("areabackup:"+args[2]).backups.map((v, i)=>`${i}. ${new Date(v+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?"":"+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)%96)}`).join("\n"))
+                }
+                break;
+                case "listareas":{
+                    player.sendMessage(AreaBackups.ids.map((v, i)=>`${JSON.stringify(v.slice(11))}: ${JSON.stringify(AreaBackups.get(v).toJSONNoId())}`).join("\n"))
+                }
+                break;
+                case "list":{
+                    player.sendMessage(AreaBackups.ids.map((v, i)=>`${JSON.stringify(v.slice(11))}: ${JSON.stringify(AreaBackups.get(v).toJSONNoId())}`).join("\n"))
+                }
+                break;
+            }}catch(e){perror(player, e)}})
         }
         break; 
         case !!switchTest.match(/^selectioninfo$/)||!!switchTest.match(/^selinfo$/)||!!switchTest.match(/^seli$/): {
@@ -8890,7 +9021,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
             if((args[1] as string).includes("w")){types.push("minecraft:dolphin", "minecraft:drowned", "minecraft:sea_turtle", "minecraft:salmon", "minecraft:tropical_fish", "minecraft:cod", "minecraft:guardian", "minecraft:elder_guardian")}
             if((args[1] as string).includes("p")){types.push("minecraft:player")}
             if((args[1] as string).includes("c")){types.push("andexsa:cloned_player")}
-            if((args[1] as string).includes("l")){types.push("minecraft:ender_dragon", "minecraft:wither", "minecraft:elder_guardian")}
+            if((args[1] as string).includes("l")){types.push("minecraft:ender_dragon", "minecraft:wither", "minecraft:elder_guardian", "minecraft:warden")}
             srun(()=>{
                 let sc = 0n
                 player.dimension.getEntities({maxDistance: args[2]??10, location: player.location}).filter(v=>(types.includes(v.typeId)&&(v.nameTag==""||(args[1] as string).includes("t")))||(args[1] as string).includes("e")).forEach(v=>{v.kill(); sc++})
@@ -8937,13 +9068,18 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
         case !!switchTest.match(/^jumpto$/)||!!switchTest.match(/^j$/): {
             eventData.cancel = true;
             let blockHit = player.getBlockFromViewDirection({includeLiquidBlocks: false, includePassableBlocks: false})
-            let dir = blockHit.face=="Down"?mcMath.VECTOR3_DOWN:blockHit.face=="Up"?mcMath.VECTOR3_UP:blockHit.face=="North"?mcMath.VECTOR3_NORTH:blockHit.face=="South"?mcMath.VECTOR3_SOUTH:blockHit.face=="East"?mcMath.VECTOR3_EAST:mcMath.VECTOR3_WEST
-            srun(()=>player.teleport(mcMath.Vector3Utils.add(blockHit.block.location, dir)))
+            let dir = blockHit.face=="Down"?mcMath.VECTOR3_DOWN:blockHit.face=="Up"?mcMath.VECTOR3_UP:blockHit.face=="North"?mcMath.VECTOR3_SOUTH:blockHit.face=="South"?mcMath.VECTOR3_NORTH:blockHit.face=="East"?mcMath.VECTOR3_EAST:mcMath.VECTOR3_WEST
+            srun(()=>player.teleport(roundVector3ToMiddleOfBlockFloorY(mcMath.Vector3Utils.add(blockHit.block.location, dir))))
         }
         break; 
         case !!switchTest.match(/^align$/): {
             eventData.cancel = true;
             srun(()=>player.teleport(roundVector3ToMiddleOfBlockFloorY(player.location)))
+        }
+        break; 
+        case !!switchTest.match(/^aligncenter$/): {
+            eventData.cancel = true;
+            srun(()=>player.teleport(roundVector3ToMiddleOfBlock(player.location)))
         }
         break; 
         case !!switchTest.match(/^getworldspawnpoint$/)||!!switchTest.match(/^getworldspawn$/)||!!switchTest.match(/^getwsp$/)||!!switchTest.match(/^getws$/)||!!switchTest.match(/^gwsp$/)||!!switchTest.match(/^gws$/): {
@@ -8962,6 +9098,15 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
             eventData.cancel = true;
             const args = evaluateParameters(switchTestB, ["presetText", "number"]).args as [string, number]
             player.sendMessage(`Enchantment transfer smithing template result at data value ${args[1]} is ${JSON.stringify(listoftransformrecipes[args[1]])}.`)
+        }
+        break; 
+        case !!switchTest.match(/^removeotheritemenchantments$/)||!!switchTest.match(/^remotheritemenchants$/)||!!switchTest.match(/^roie$/): {
+            eventData.cancel = true;
+            srun(()=>{try{let item = getPlayerHeldItemSlot(player).getItem(); 
+            const args = evaluateParameters(switchTestB, ["presetText", "json"]).args
+            EnchantmentTypes.getAll().map(v=>v.id).filter(v=>!args[1].includes(v)).forEach(v=>item.getComponent("enchantable").removeEnchantment(v))
+            getPlayerHeldItemSlot(player).setItem(item)
+            player.sendMessage(`Successfully removed all other enchantment types from the item.`)}catch(e){player.sendMessage("§c"+e+" "+e.stack)}})
         }
         break; 
         case !!switchTest.match(/^ignite$/): {
@@ -9415,6 +9560,7 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
                                             argumentsa.push(value);
                                         }
                                         catch (e) {
+                                            argumentsa.push("");
                                             ea.push([e, e.stack]);
                                         }
                                         ;
@@ -9432,6 +9578,7 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
                                                 argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, value.includes(v)])));
                                             }
                                             catch (e) {
+                                                argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, false])));
                                                 ea.push([e, e.stack]);
                                             }
                                             ;

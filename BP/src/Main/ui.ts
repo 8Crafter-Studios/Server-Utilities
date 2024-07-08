@@ -1,6 +1,6 @@
 import { Player, system, world, Entity, type DimensionLocation, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, type ExplosionOptions, GameRules, GameRule } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version, srun, dimensionTypeDisplayFormatting } from "Main";
+import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version, srun, dimensionTypeDisplayFormatting, config } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -21,7 +21,7 @@ import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-import { chatCommands, chatMessage, chatSend, command, commandSettings, command_settings_format_version, commands, commands_format_version, config, dimensions, evaluateParameters, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
+import { chatCommands, chatMessage, chatSend, command, commandSettings, command_settings_format_version, commands, commands_format_version, dimensions, evaluateParameters, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -444,12 +444,15 @@ export function settings(sourceEntity: Entity|Player){
     let players = world.getPlayers();
 form.title("Settings");
 form.body("Choose menu to open. ");
-form.button("Global Settings", "textures/ui/settings_glyph_color_2x");
-form.button("Eval Auto Execute Settings", "textures/ui/settings_glyph_color_2x");
-form.button("Personal Settings", "textures/ui/settings_glyph_color_2x");
+form.button("Global Settings", "textures/ui/worldsIcon");
+form.button("Script Settings", "textures/ui/debug_glyph_color");
+form.button("UI Settings", "textures/ui/feedIcon");
+form.button("Eval Auto Execute Settings", "textures/ui/automation_glyph_color");
+form.button("Personal Settings", "textures/ui/profile_glyph_color");
 form.button("Notifications Settings", "textures/ui/icon_bell");
 form.button("Home System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
 form.button("RTP System Settings [§cExperimental§r]", "textures/items/ender_pearl");
+form.button("Manage Game Rules", "textures/ui/controller_glyph_color");
 form.button("Back", "textures/ui/arrow_left");/*
 form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
 forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormResponse); 
@@ -463,26 +466,38 @@ forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormR
             break;
 
         case 1:
-            evalAutoScriptSettings(sourceEntity)
+            scriptSettings(sourceEntity)
             break;
 
         case 2:
-            personalSettings(sourceEntity)
+            uiSettings(sourceEntity)
             break;
 
         case 3:
-            notificationsSettings(sourceEntity)
+            evalAutoScriptSettings(sourceEntity)
             break;
 
         case 4:
-            homeSystemSettings(sourceEntity)
+            personalSettings(sourceEntity)
             break;
 
         case 5:
-            rtpSettings(sourceEntity)
+            notificationsSettings(sourceEntity)
             break;
 
         case 6:
+            homeSystemSettings(sourceEntity)
+            break;
+
+        case 7:
+            rtpSettings(sourceEntity)
+            break;
+
+        case 8:
+            manageGameRulesUI(sourceEntity)
+            break;
+
+        case 9:
             mainMenu(sourceEntity)
             break;
         default:
@@ -611,7 +626,7 @@ export function globalSettings(sourceEntity: Entity|Player){
     form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
-        if (t.canceled) return;/*
+        if (t.canceled) {settings(sourceEntity); return;};/*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
@@ -636,6 +651,44 @@ export function globalSettings(sourceEntity: Entity|Player){
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes)
         world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStamp)
         world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData)
+        settings(sourceEntity); 
+}).catch(e => {
+    console.error(e, e.stack);
+});}
+export function scriptSettings(sourceEntity: Entity|Player){
+    let form2 = new ModalFormData();
+    form2.title("Script Settings")
+    form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 5", "integer from 1-1000", String(config.playerDataRefreshRate));
+    form2.submitButton("Save")
+    forceShow(form2, (sourceEntity as Player)).then(to => {
+        let t = (to as ModalFormResponse)
+        if (t.canceled) {settings(sourceEntity); return;};/*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+    
+        let [ playerDataRefreshRate ] = t.formValues;
+        config.playerDataRefreshRate=Number(playerDataRefreshRate)
+        settings(sourceEntity); 
+}).catch(e => {
+    console.error(e, e.stack);
+});}
+export function uiSettings(sourceEntity: Entity|Player){
+    let form2 = new ModalFormData();
+    "andexdbSettings:autoEscapeChatMessages"
+    "andexdbSettings:autoURIEscapeChatMessages"
+    "andexdbSettings:allowChatEscapeCodes"
+    form2.title("UI Settings")
+    form2.textField("§l§fmaxPlayersPerManagePlayersPage§r§f\nThe maximum number of players to display at once on the manage players menu, the default is 10", "integer from 1-1000", String(config.maxPlayersPerManagePlayersPage));
+    form2.submitButton("Save")
+    forceShow(form2, (sourceEntity as Player)).then(to => {
+        let t = (to as ModalFormResponse)
+        if (t.canceled) {settings(sourceEntity); return;};/*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+    
+        let [ maxPlayersPerManagePlayersPage ] = t.formValues;
+        config.maxPlayersPerManagePlayersPage=Number(maxPlayersPerManagePlayersPage)
+        settings(sourceEntity); 
 }).catch(e => {
     console.error(e, e.stack);
 });}
@@ -647,13 +700,14 @@ export function homeSystemSettings(sourceEntity: Entity|Player){
     form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
-        if (t.canceled) return;/*
+        if (t.canceled) {settings(sourceEntity); return;};/*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
         let [ homeSystemEnabled, maxHomesPerPlayer ] = t.formValues;
         config.homeSystemEnabled=homeSystemEnabled as boolean
         config.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
+        settings(sourceEntity); 
 }).catch(e => {
     console.error(e, e.stack);
 });}
@@ -665,13 +719,14 @@ export function rtpSettings(sourceEntity: Entity|Player){
     form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
-        if (t.canceled) return;/*
+        if (t.canceled) {settings(sourceEntity); return;};/*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
         let [ rtpSystemEnabled ] = t.formValues;
         config.rtpSystemEnabled=rtpSystemEnabled as boolean
         //config.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
+        settings(sourceEntity); 
 }).catch(e => {
     console.error(e, e.stack);
 });}
@@ -683,13 +738,14 @@ export function notificationsSettings(sourceEntity: Entity|Player){
     form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
-        if (t.canceled) return;/*
+        if (t.canceled) {settings(sourceEntity); return;};/*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
         let [ getAllChatCommands, getGameRuleChangeNotifications ] = t.formValues;
         Boolean(getAllChatCommands)?sourceEntity.addTag("getAllChatCommands"):sourceEntity.removeTag("getAllChatCommands")
         Boolean(getGameRuleChangeNotifications)?sourceEntity.addTag("getGameRuleChangeNotifications"):sourceEntity.removeTag("getGameRuleChangeNotifications")
+        settings(sourceEntity); 
 }).catch(e => {
     console.error(e, e.stack);
 });}
@@ -746,7 +802,7 @@ export function personalSettings(sourceEntity: Entity|Player){
     form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
-        if (t.canceled) return;/*
+        if (t.canceled) {settings(sourceEntity); return;};/*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
@@ -774,6 +830,7 @@ export function personalSettings(sourceEntity: Entity|Player){
         world.setDynamicProperty("andexdbSettings:autoURIEscapeChatMessages", autoURIEscapeChatMessages)
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes)
         world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData)*/
+        settings(sourceEntity); 
 }).catch(e => {
     console.error(e, e.stack);
 });}
@@ -811,7 +868,7 @@ export function evalAutoScriptSettings(sourceEntity: Entity|Player){
     form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
-        if (t.canceled) return;
+        if (t.canceled) {settings(sourceEntity); return;};
     
         let [ becs, beddete, beea, beer, bee, beide, beiu, beiuo, bepa, bepbb, bepiwb, bepiwe, bepl, beppb, aebe, aepl, aeed ] = t.formValues;
         world.setDynamicProperty("evalBeforeEvents:chatSend", becs)
@@ -831,6 +888,7 @@ export function evalAutoScriptSettings(sourceEntity: Entity|Player){
         world.setDynamicProperty("evalAfterEvents:blockExplode", aebe)
         world.setDynamicProperty("evalAfterEvents:playerLeave", aepl)
         world.setDynamicProperty("evalAfterEvents:entityDie", aeed)
+        settings(sourceEntity); 
 }).catch(e => {
     console.error(e, e.stack);
 });}
@@ -1972,7 +2030,7 @@ forceShow(form, sourceEntity as Player).then(r => {
 });}
 export function editorStickC(sourceEntity: Entity|Player){}/*
 export function evalAutoScriptSettings(sourceEntity: Entity|Player){}*/
-export function managePlayers(sourceEntity: Entity|Player, pagen: number=0, maxplayersperpage: number = 50){
+export function managePlayers(sourceEntity: Entity|Player, pagen: number=0, maxplayersperpage: number = config.maxPlayersPerManagePlayersPage??10){
     let form = new ActionFormData; 
     const page = Math.max(0, pagen)
     const numsavedplayers = savedPlayer.getSavedPlayers().length
@@ -2187,13 +2245,13 @@ export function manageCommands(sourceEntity: Entity|Player){
                 formB.button("Back"); 
                 forceShow(formB, sourceEntity as Player).then(ra=>{
                     let r = (ra as ActionFormResponse); 
-                    if(r.canceled){return}; 
+                    if(r.canceled){manageCommands(sourceEntity); return}; 
                     switch(r.selection){
                         case commandsListB.length+(+(category!="custom"&&category!="all")): 
                             let form5 = new ModalFormData; form5.title(`Add Custom Command`); form5.textField("Command Name§c*", "mycommand"); form5.dropdown("Command Code Type (commands means the command just runs a list of minecraft commands, and javascript means that the command runs a list of javascript scripts/code)", ["commands", "javascript"]); form5.textField("Command Version§c*", "SemVer String; ex. 1.7.0-beta.1.2.a.b.c.d", "1.0.0"); form5.textField("Formatting Code§c*", "required: string", "§r§f"); form5.textField("Description", "string"); form5.textField("Formats", "JSON", "[\"myCommand\", \"myCommand <string: string> [integer: int]\"]"); form5.textField("Command Prefix (leave blank to use default)", "default"); form5.toggle("Enable Automatic Parameter Evaluation", true)
                             form5.submitButton("Create Command")
                             forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
-                                if(h.canceled){return};
+                                if(h.canceled){manageCommands(sourceEntity); return};
                                 if(!!!h.formValues[0]){let formErrora = new MessageFormData; formErrora.body(`Required parameter 'Command Name' was left blank`); formErrora.title("Error"); formErrora.button1("Back"); formErrora.button2("Cancel"); forceShow(formErrora, sourceEntity as Player).then(()=>{manageCommands(sourceEntity); return}); return}
                                 if(!!command.getCustomCommands().find(v=>v.commandName==String(h.formValues[0]))){let formError = new MessageFormData; formError.body(`There is already a custom command with the name '${String(h.formValues[0]).replaceAll("'", "\\'")}`); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return}); manageCommands(sourceEntity); return}; 
                                 new command({commandName: String(h.formValues[0]), commands_format_version: commands_format_version, command_version: String(h.formValues[2]), customCommandType: ["commands", "javascript"][Number(h.formValues[1])] as "commands" | "javascript", description: String(h.formValues[4]), type: "custom", formatting_code: String(h.formValues[3]), formats: JSONParse(h.formValues[5]==""?"undefined":String(h.formValues[5]??"undefined")), customCommandPrefix: String(h.formValues[6]), customCommandParametersEnabled: Boolean(h.formValues[7]), customCommandId: "customCommand:"+String(h.formValues[0]), format_version: format_version}).save()
@@ -2215,7 +2273,7 @@ export function manageCommands(sourceEntity: Entity|Player){
                             form2.button("Settings"); 
                             form2.button("Back"); 
                             forceShow(form2, sourceEntity as Player).then(ga=>{let g = (ga as ActionFormResponse); 
-                                if(g.canceled){return}; 
+                                if(g.canceled){manageCommands(sourceEntity); return}; 
                                 switch(g.selection+(Number(commandsItem.type!="custom")*3)){
                                     case 0: 
                                     let form3 = new MessageFormData; form3.title("Confirm Deletion of Command"); form3.body(`Are you sure you want to delete the custom ${commandsItem.commandName} command?\nThis action cannot be undone.`); form3.button2("Delete Command"); form3.button1("Cancel")
@@ -2271,7 +2329,7 @@ export function manageCommands(sourceEntity: Entity|Player){
                                     let form7 = new ModalFormData; form7.title(`Editing Code for ${commandsItem.commandName}`); if(commandsItem.customCommandCodeLines==1||commandsItem.customCommandCodeLines==0||!!!commandsItem.customCommandCodeLines){form7.textField("Line "+0+"\nUse ${params[index]} to acess the value of a parameter or to access a javascript variable use ${javascript code}.", commandsItem.customCommandType=="commands"?"Minecraft Command":"JavaScript Code", commandsItem.code[0])}else{for(let i = 0; i<commandsItem.customCommandCodeLines; i++){form7.textField("Line "+i+(i==0?"\nUse ${params[index]} to acess the value of a parameter or to access a javascript variable use ${javascript code}.":""), commandsItem.customCommandType=="commands"?"Minecraft Command":"JavaScript Code", commandsItem.code[i])}}
                                     form7.submitButton("Save")
                                     forceShow(form7, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
-                                        if(h.canceled){return};
+                                        if(h.canceled){manageCommands(sourceEntity); return};
                                         h.formValues.forEach((v, i)=>{world.setDynamicProperty("customCommandCode:"+commandsItem.commandName+":"+i, v)})
                                         world.getDynamicPropertyIds().filter(v=>((v.startsWith("customCommandCode:"+commandsItem.commandName+":"))&&(Number(v.slice(("customCommandCode:"+commandsItem.commandName+":").length))>=commandsItem.customCommandCodeLines))).forEach(v=>world.setDynamicProperty(v))
                                         manageCommands(sourceEntity)
@@ -2280,7 +2338,7 @@ export function manageCommands(sourceEntity: Entity|Player){
                                     case 3: 
                                     let form4 = new ActionFormData; form4.title(`${commandsItem.commandName} Command Info`); form4.body(`§r§f${/*arrayModifier(*/JSON.stringify(commandsItem).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")/*.split(""), (v, i)=>(Number(String((i/30).toFixed(4)))==Math.round(i/30)?"\n"+v:v))*/}`); form4.button("Done")
                                     forceShow(form4, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
-                                        if(h.canceled){return};
+                                        if(h.canceled){manageCommands(sourceEntity); return};
                                         manageCommands(sourceEntity)
                                     }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                                     break
@@ -2288,7 +2346,7 @@ export function manageCommands(sourceEntity: Entity|Player){
                                     let form6 = new ModalFormData; form6.title(`Command Settings for ${commandsItem.type} ${commandsItem.commandName}`); form6.textField("Required Tags", "JSON", JSONStringify(commandsItem.settings.requiredTags??["canUseChatCommands"])); form6.slider("Required Permission Level", 0, 15, 1, Number(commandsItem.settings.requiredPermissionLevel??0)); form6.toggle("Requires OP", commandsItem.settings.requiresOp); form6.toggle("Enabled", commandsItem.settings.enabled)
                                     form6.submitButton("Save")
                                     forceShow(form6, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
-                                        if(h.canceled){return};
+                                        if(h.canceled){manageCommands(sourceEntity); return};
                                         commandsItem.settings.save({requiredTags: h.formValues[0]==""?[]:JSONParse(String(h.formValues[0])), requiredPermissionLevel: Number(h.formValues[1]), requiresOp: Boolean(h.formValues[2]), enabled: Boolean(h.formValues[3]), settings_version: command_settings_format_version, format_version: format_version})
                                         manageCommands(sourceEntity)
                                     }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 

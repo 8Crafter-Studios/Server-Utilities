@@ -1,5 +1,5 @@
 import { EquipmentSlot, Dimension, GameMode, world, Player, system } from "@minecraft/server";
-import { format_version } from "Main";
+import { format_version, config } from "Main";
 import { ban } from "./ban";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
@@ -95,7 +95,7 @@ getBan(banId: string){let banString = String(world.getDynamicProperty(banId)).sp
     static getSavedPlayers() { let players; players = []; savedPlayer.getSavedPlayerIds().forEach((b) => { players.push(savedPlayer.getSavedPlayer(b)); }); return players; }
     static getSavedPlayersAlphabeticalOrder() { let players; players = []; savedPlayer.getSavedPlayerIds().forEach((b) => { players.push(savedPlayer.getSavedPlayer(b)); }); return players.sort((a, b) => 1 - (2 * Number([String(a.name.toLowerCase()), String(b.name.toLowerCase())].sort()[0] == String(a.name.toLowerCase())))); }
 }
-system.runInterval(() => { if (world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true) {
+import("Main").then(v => system.runInterval(() => { if (world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true) {
     world.getAllPlayers().forEach((p) => { savedPlayer.savePlayer(p); });
-} }, 5);
+} }, v.config.playerDataRefreshRate ?? 5));
 //# sourceMappingURL=player_save.js.map

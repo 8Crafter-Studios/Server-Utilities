@@ -1,5 +1,5 @@
 import { Block, Dimension, type DimensionLocation, DimensionType, Player, type Vector2, type Vector3, world, Entity, system, BlockVolume, CompoundBlockVolume, type BoundingBox, BoundingBoxUtils, Direction, StructureSaveMode, type StructurePlaceOptions, type StructureCreateOptions, Structure, BlockPermutation } from "@minecraft/server";
-import { targetSelectorAllListC, targetSelectorAllListE, format_version } from "../Main";
+import { targetSelectorAllListC, targetSelectorAllListE, format_version, tryget } from "../Main";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -17,7 +17,7 @@ import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-import { shuffle, vTStr } from "Main/commands";
+import { dimensions, dimensionsb, dimensionsc, shuffle, vTStr } from "Main/commands";
 import type { BirchStandingSignStates } from "@minecraft/vanilla-data";
 mcServer
 mcServerUi/*
@@ -339,8 +339,10 @@ export function* splitArea(area: {from: Vector3, to: Vector3}, sizes: Vector3 = 
                 indices.y++;
                 yield finalRange;
             }
+            indices.y=0
             indices.z++;
         }
+        indices.z=0
         indices.x++;
     }
 }
@@ -377,11 +379,15 @@ export class blockClipboard {
 	static get ids(){
 	return world.structureManager.getWorldStructureIds().filter(v=>v.startsWith("andexdb:clipboard"))
 	}
+	static get saveSize(){
+        return (world.getDynamicProperty(`andexdb:clipboards`)??Vector.zero) as Vector3
+	}
 	static clear(){this.ids.forEach(v=>world.structureManager.delete(v))}
 	static saveRange(dimension: Dimension, range: [from: Vector3, to: Vector3, indices: Vector3], options?: StructureCreateOptions){
 	try{world.structureManager.createFromWorld(`andexdb:clipboard,${range[2].x??0},${range[2].y??0},${range[2].z??0}`, dimension, range[0],  range[1], options)}catch(e){console.error(e, e.stack)}
 	}
 	static save(dimension: Dimension, area: {from: Vector3, to: Vector3}, options?: StructureCreateOptions, sizeLimits={x:64,y:128,z:64}){
+        world.setDynamicProperty(`andexdb:clipboards`, ((v: Vector3)=>({x: Math.abs(v.x), y: Math.abs(v.y), z: Math.abs(v.z)}))(Vector.subtract(area.to, area.from)))
 		for (const range of splitArea(area, sizeLimits)) {
     			this.saveRange(dimension, range as any, options);
 		}
@@ -397,6 +403,9 @@ export class undoClipboard {
 	static saveIds(timestamp: number|string){
 	return world.structureManager.getWorldStructureIds().filter(v=>v.startsWith(`andexdb:undoclipboard;${timestamp}`))
 	}
+	static saveSize(timestamp: number|string){
+	return (world.getDynamicProperty(`andexdb:undoclipboards;${timestamp}`)??Vector.zero) as Vector3
+	}
 	static get saves(){
 	return world.getDynamicPropertyIds().filter(v=>v.startsWith("andexdb:undoclipboard;"))
 	}
@@ -408,6 +417,7 @@ export class undoClipboard {
         this.saveIds(timestamp).forEach(v=>world.structureManager.delete(v))
         world.setDynamicProperty(`andexdb:undoclipboard;${timestamp}`)
         world.setDynamicProperty(`andexdb:undoclipboardd;${timestamp}`)
+        world.setDynamicProperty(`andexdb:undoclipboards;${timestamp}`)
     }
 	static saveRange(dimension: Dimension, range: [from: Vector3, to: Vector3, indices: Vector3], saveTime: number, options?: StructureCreateOptions){
 	    try{
@@ -417,15 +427,85 @@ export class undoClipboard {
 	static save(dimension: Dimension, area: {from: Vector3, to: Vector3}, saveTime=Date.now(), options?: StructureCreateOptions, sizeLimits={x:64,y:128,z:64}){
         world.setDynamicProperty(`andexdb:undoclipboard;${saveTime}`, area.from)
         world.setDynamicProperty(`andexdb:undoclipboardd;${saveTime}`, dimension.id)
+        world.setDynamicProperty(`andexdb:undoclipboards;${saveTime}`, ((v: Vector3)=>({x: Math.abs(v.x), y: Math.abs(v.y), z: Math.abs(v.z)}))(Vector.subtract(area.to, area.from)))
 		for (const range of splitArea(area, sizeLimits)) {
     			this.saveRange(dimension, range as any, saveTime, options);
 		}
 	}
 	static undo(saveTime=this.saveTimes, options?: StructurePlaceOptions, clearSave: boolean=true, sizes: Vector3 = { x: 64, y: 128, z: 64 }){
-		this.saveIds(saveTime).map(v=>({id: v, x: Number(v.split(",")[1]??0)*sizes.x, y: Number(v.split(",")[2]??0)*sizes.y, z: Number(v.split(",")[3]??0)*sizes.z})).forEach(v=>world.structureManager.place(v.id, cmds.dimensions[String(world.getDynamicProperty(`andexdb:undoclipboardd;${saveTime}`))], Vector.add(v, world.getDynamicProperty(`andexdb:undoclipboard;${saveTime}`) as Vector3), options))
+        if(this.ids.length==0){return 0;}; 
+		this.saveIds(saveTime).map(v=>({id: v, x: Number(v.split(",")[1]??0)*sizes.x, y: Number(v.split(",")[2]??0)*sizes.y, z: Number(v.split(",")[3]??0)*sizes.z})).forEach(v=>world.structureManager.place(v.id, dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${saveTime}`))]??dimensionsb["minecraft:overworld"], Vector.add(v, world.getDynamicProperty(`andexdb:undoclipboard;${saveTime}`) as Vector3), options))
         if(clearSave){
             this.saveIds(saveTime).forEach(v=>{this.clearTime(saveTime)})
         }
+        return 1;
+	}
+}
+export class AreaBackups {
+	static get ids(){
+	return world.getDynamicPropertyIds().filter(v=>v.startsWith("areabackup:"))
+	}
+	static get structureIds(){
+	return world.structureManager.getWorldStructureIds().filter(v=>v.startsWith("areabackup:"))
+	}
+	static get areas(){
+	return this.ids.map(v=>this.get(v))
+	}
+    static get(id: string){return new AreaBackup(id)}
+    static delete(id: string){new AreaBackup(id).delete()}
+	static clear(){this.ids.forEach(v=>new AreaBackup(v).delete())}
+    static createAreaBackup(id: string, dimension: Dimension, area: {from: Vector3, to: Vector3}){world.setDynamicProperty("areabackup:"+id.replaceAll(";", "").replaceAll(",", ""), JSON.stringify({from: area.from, to: area.to, dimension: dimension.id})); return new AreaBackup(id)}
+}
+export class AreaBackup {
+    id: string
+    constructor(id: string){
+        this.id=id
+    }
+    get from(){return JSON.parse(String(world.getDynamicProperty(this.id))).from as Vector3}
+    get to(){return JSON.parse(String(world.getDynamicProperty(this.id))).to as Vector3}
+    get dimension(){return tryget(()=>world.getDimension(JSON.parse(String(world.getDynamicProperty(this.id))).dimension as string))??dimensionsc.overworld}
+	get backups(){
+	return world.structureManager.getWorldStructureIds().filter(v=>v.startsWith(`${this.id};`)).map(v=>Number(v.split(";")[1].split(",")[0])).sort().reverse()
+	}
+	get backupStructureIds(){
+	return world.structureManager.getWorldStructureIds().filter(v=>v.startsWith(`${this.id};`))
+	}
+	saveIds(timestamp: number|string){
+	return world.structureManager.getWorldStructureIds().filter(v=>v.startsWith(`${this.id};${timestamp}`))
+	}
+	get size(){
+	return ((v: Vector3)=>({x: Math.abs(v.x), y: Math.abs(v.y), z: Math.abs(v.z)}))(Vector.subtract(this.from, this.to)) as Vector3
+	}
+    toJSON(){return {id: this.id, from: this.from, to: this.to, dimension: this.dimension}}
+    toJSONNoId(){return {from: this.from, to: this.to, dimension: this.dimension}}
+    delete(){
+        this.clear()
+        world.setDynamicProperty(this.id)
+    }
+	clear(){this.backupStructureIds.forEach(v=>world.structureManager.delete(v))}
+	clearBackup(timestamp: number|string){
+        this.saveIds(timestamp).forEach(v=>world.structureManager.delete(v))
+    }
+	clearBackups(){
+        this.backups.forEach(v=>this.saveIds(v).forEach(v=>world.structureManager.delete(v)))
+    }
+	backupRange(range: [from: Vector3, to: Vector3, indices: Vector3], saveTime: number, options?: StructureCreateOptions){
+	    try{
+            world.structureManager.createFromWorld(`${this.id};${saveTime},${range[2].x??0},${range[2].y??0},${range[2].z??0}`, this.dimension, range[0],  range[1], options);
+        }catch(e){console.error(e, e.stack)}
+	}
+	backup(saveTime=Date.now(), options: StructureCreateOptions={saveMode: StructureSaveMode.World, includeBlocks: true, includeEntities: false}, sizeLimits={x:64,y:128,z:64}){
+		for (const range of splitArea({from: this.from, to: this.to}, sizeLimits)) {
+    			this.backupRange(range as any, saveTime, options);
+		}
+	}
+	rollback(saveTime=this.backups[0], clearSave: boolean=false, options?: StructurePlaceOptions, sizes: Vector3 = { x: 64, y: 128, z: 64 }){
+        if(this.backupStructureIds.length==0){return 0;}; 
+		this.saveIds(saveTime).map(v=>({id: v, x: Number(v.split(",")[1]??0)*sizes.x, y: Number(v.split(",")[2]??0)*sizes.y, z: Number(v.split(",")[3]??0)*sizes.z})).forEach(v=>world.structureManager.place(v.id, this.dimension, Vector.add(this.from, v), options))
+        if(clearSave){
+            this.clearBackup(saveTime)
+        }
+        return 1;
 	}
 }
 export function* removeAirFromStructure(structure: Structure){
