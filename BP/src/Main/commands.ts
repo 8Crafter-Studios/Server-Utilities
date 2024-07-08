@@ -9069,7 +9069,7 @@ ${command.dp}snapshot list`); return}
             if((args[1] as string).includes("w")){types.push("minecraft:dolphin", "minecraft:drowned", "minecraft:sea_turtle", "minecraft:salmon", "minecraft:tropical_fish", "minecraft:cod", "minecraft:guardian", "minecraft:elder_guardian")}
             if((args[1] as string).includes("p")){types.push("minecraft:player")}
             if((args[1] as string).includes("c")){types.push("andexsa:cloned_player")}
-            if((args[1] as string).includes("l")){types.push("minecraft:ender_dragon", "minecraft:wither", "minecraft:elder_guardian")}
+            if((args[1] as string).includes("l")){types.push("minecraft:ender_dragon", "minecraft:wither", "minecraft:elder_guardian", "minecraft:warden")}
             srun(()=>{
                 let sc = 0n
                 player.dimension.getEntities({maxDistance: args[2]??10, location: player.location}).filter(v=>(types.includes(v.typeId)&&(v.nameTag==""||(args[1] as string).includes("t")))||(args[1] as string).includes("e")).forEach(v=>{v.typeId=="minecraft:player"?despawnEntities([v]):v.remove(); sc++})

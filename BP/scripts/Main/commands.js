@@ -13905,7 +13905,7 @@ ${command.dp}snapshot list`);
                         types.push("andexsa:cloned_player");
                     }
                     if (args[1].includes("l")) {
-                        types.push("minecraft:ender_dragon", "minecraft:wither", "minecraft:elder_guardian");
+                        types.push("minecraft:ender_dragon", "minecraft:wither", "minecraft:elder_guardian", "minecraft:warden");
                     }
                     srun(() => {
                         let sc = 0n;
