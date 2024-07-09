@@ -1,5 +1,5 @@
-import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume, BoundingBoxUtils, Direction } from "@minecraft/server";
-import { targetSelectorAllListC, targetSelectorAllListE, format_version } from "../Main";
+import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume, BoundingBoxUtils, Direction, StructureSaveMode, Structure, BlockPermutation } from "@minecraft/server";
+import { targetSelectorAllListC, targetSelectorAllListE, format_version, tryget } from "../Main";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -17,7 +17,7 @@ import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-import { shuffle, vTStr } from "Main/commands";
+import { dimensions, dimensionsb, dimensionsc, shuffle, vTStr } from "Main/commands";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -347,9 +347,12 @@ export const approximatelyEqual = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2)
 export const approxEqual = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
 export const approximatelyEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
 export const approxEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
-export function parseExpression(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "return(" + str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll(/(?<![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])\=(?![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])/g, "==").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1") + ")"); }
-export function parseExpressionKE(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "return(" + str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1") + ")"); }
-export function parseExpressionR(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "return(" + str + ")"); }
+export function parseExpression(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "const approxEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon; return(" + str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll(/(?<![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])\=(?![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])/g, "==").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1") + ")"); }
+export function parseExpressionKE(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "const approxEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon; return(" + str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1") + ")"); }
+export function parseExpressionR(str) { return Function("wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz", "const approxEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon; return(" + str + ")"); }
+export function parseExpressionB(str) { return (wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz) => { return (eval(str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll(/(?<![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])\=(?![\=\<\>\+\-\*\/\\\[\]\{\}\(\&])/g, "==").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1"))); }; }
+export function parseExpressionBKE(str) { return (wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz) => { return (eval(str.replaceAll(/(?<!\^)\^(?!\^)/g, "**").replaceAll("^^", "^").replaceAll(/\|([^\|]+)\|/g, "Math.abs($1)").replaceAll(/([0-9en])(?=[xyzXYZ\(])/g, "$1*").replaceAll(/(?<=[xyXYzZ\)])([xyXYzZ\(])/g, "*$1").replaceAll(/(?<=[xyXYzZ\)])((rz|ry|rz|ax|ay|az|bx|by|bz}nx|ny|nz|px|py|pz))/g, "*$1").replaceAll(/(?<!Math\.)(sqrt|cbrt|tan|cotan|abs|acos|acosh|asin|asinh|atan|atan2|atanh|ceil|clz32|cos|cosh|exp|expm1|floor|fround|hypot|imul|log|log1p|log2|log10|max|min|pow|random|round|sign|sin|sinh|tanh|trunc)/g, "Math.$1").replaceAll(/(?<=[0-9enlENLxyXY\)])(Math\.)/g, "*$1"))); }; }
+export function parseExpressionBR(str) { return (wx, wy, wz, x, y, z, ax, ay, az, bx, by, bz, nx, ny, nz, px, py, pz) => { return (eval(str)); }; }
 export function* generateMathExpression(expression, generateCallback, from, to, pos1, pos2, step = 1) {
     var count = 0n;
     var index = 0n;
@@ -370,6 +373,229 @@ export function* generateMathExpression(expression, generateCallback, from, to, 
 export function dirmap(direction) { return { Up: "above", Down: "below", East: "east", West: "west", North: "north", South: "south" }[direction]; }
 export function diroffsetmap(direction) { return { Up: Vector.up, Down: Vector.down, East: Vector.east, West: Vector.west, North: Vector.north, South: Vector.south }[direction]; }
 export function diroffsetothersmap(direction) { return { Up: { x: 1, y: 0, z: 1 }, Down: { x: 1, y: 0, z: 1 }, East: { x: 0, y: 1, z: 1 }, West: { x: 0, y: 1, z: 1 }, North: { x: 1, y: 1, z: 0 }, South: { x: 1, y: 1, z: 0 } }[direction]; }
+export function splitRange([min, max], size) {
+    const result = [];
+    let start = min;
+    while (start <= max) {
+        const end = Math.min(start + size - 1, max);
+        result.push([start, end]);
+        start = end + 1;
+    }
+    return result;
+}
+export function* splitArea(area, sizes = { x: 64, y: 128, z: 64 }) {
+    const indices = { x: 0, y: 0, z: 0 };
+    const xRanges = splitRange([area.from.x, area.to.x], sizes.x);
+    for (const xRange of xRanges) {
+        const zRanges = splitRange([area.from.z, area.to.z], sizes.z);
+        for (const zRange of zRanges) {
+            const partialRanges = [{ x: xRange[0], z: zRange[0] }, { x: xRange[1], z: zRange[1] }];
+            const yRanges = splitRange([area.from.y, area.to.y], sizes.y);
+            for (const yRange of yRanges) {
+                const finalRange = [
+                    { x: partialRanges[0].x, y: yRange[0], z: partialRanges[0].z },
+                    { x: partialRanges[1].x, y: yRange[1], z: partialRanges[1].z },
+                    Object.assign({}, indices),
+                    { x: partialRanges[0].x - area.from.x, y: yRange[0] - area.from.y, z: partialRanges[0].z - area.from.z }
+                ];
+                indices.y++;
+                yield finalRange;
+            }
+            indices.y = 0;
+            indices.z++;
+        }
+        indices.z = 0;
+        indices.x++;
+    }
+}
+export function* splitAreaB(area, sizes = { x: 64, y: 128, z: 64 }) {
+    const indices = { x: 0, y: 0, z: 0 };
+    const xRanges = splitRange([area.from.x, area.to.x], sizes.x);
+    for (const xRange of xRanges) {
+        const zRanges = splitRange([area.from.z, area.to.z], sizes.z);
+        for (const zRange of zRanges) {
+            const partialRanges = [{ x: xRange[0], z: zRange[0] }, { x: xRange[1], z: zRange[1] }];
+            const yRanges = splitRange([area.from.y, area.to.y], sizes.y);
+            for (const yRange of yRanges) {
+                const finalRange = {
+                    from: { x: partialRanges[0].x, y: yRange[0], z: partialRanges[0].z },
+                    to: { x: partialRanges[1].x, y: yRange[1], z: partialRanges[1].z },
+                    indices: Object.assign({}, indices),
+                    offset: { x: partialRanges[0].x - area.from.x, y: yRange[0] - area.from.y, z: partialRanges[0].z - area.from.z }
+                };
+                indices.y++;
+                yield finalRange;
+            }
+            indices.y = 0;
+            indices.z++;
+        }
+        indices.z = 0;
+        indices.x++;
+    }
+}
+export class blockClipboard {
+    static get ids() {
+        return world.structureManager.getWorldStructureIds().filter(v => v.startsWith("andexdb:clipboard"));
+    }
+    static get saveSize() {
+        return (world.getDynamicProperty(`andexdb:clipboards`) ?? Vector.zero);
+    }
+    static clear() { this.ids.forEach(v => world.structureManager.delete(v)); }
+    static saveRange(dimension, range, options) {
+        try {
+            world.structureManager.createFromWorld(`andexdb:clipboard,${range[2].x ?? 0},${range[2].y ?? 0},${range[2].z ?? 0}`, dimension, range[0], range[1], options);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    static save(dimension, area, options, sizeLimits = { x: 64, y: 128, z: 64 }) {
+        world.setDynamicProperty(`andexdb:clipboards`, ((v) => ({ x: Math.abs(v.x), y: Math.abs(v.y), z: Math.abs(v.z) }))(Vector.subtract(area.to, area.from)));
+        for (const range of splitArea(area, sizeLimits)) {
+            this.saveRange(dimension, range, options);
+        }
+    }
+    static place(location, options, sizes = { x: 64, y: 128, z: 64 }) {
+        this.ids.map(v => ({ id: v, x: Number(v.split(",")[1] ?? 0) * sizes.x, y: Number(v.split(",")[2] ?? 0) * sizes.y, z: Number(v.split(",")[3] ?? 0) * sizes.z })).forEach(v => world.structureManager.place(v.id, location.dimension, Vector.add(v, location), options));
+    }
+}
+export class undoClipboard {
+    static get ids() {
+        return world.structureManager.getWorldStructureIds().filter(v => v.startsWith("andexdb:undoclipboard;"));
+    }
+    static saveIds(timestamp) {
+        return world.structureManager.getWorldStructureIds().filter(v => v.startsWith(`andexdb:undoclipboard;${timestamp}`));
+    }
+    static saveSize(timestamp) {
+        return (world.getDynamicProperty(`andexdb:undoclipboards;${timestamp}`) ?? Vector.zero);
+    }
+    static get saves() {
+        return world.getDynamicPropertyIds().filter(v => v.startsWith("andexdb:undoclipboard;"));
+    }
+    static get saveTimes() {
+        return [...new Set(world.structureManager.getWorldStructureIds().filter(v => v.startsWith("andexdb:undoclipboard;")).map(v => Number(v.slice(22).split(",")[0])))].sort().reverse()[0];
+    }
+    static clear() { this.ids.forEach(v => world.structureManager.delete(v)); }
+    static clearTime(timestamp) {
+        this.saveIds(timestamp).forEach(v => world.structureManager.delete(v));
+        world.setDynamicProperty(`andexdb:undoclipboard;${timestamp}`);
+        world.setDynamicProperty(`andexdb:undoclipboardd;${timestamp}`);
+        world.setDynamicProperty(`andexdb:undoclipboards;${timestamp}`);
+    }
+    static saveRange(dimension, range, saveTime, options) {
+        try {
+            world.structureManager.createFromWorld(`andexdb:undoclipboard;${saveTime},${range[2].x ?? 0},${range[2].y ?? 0},${range[2].z ?? 0}`, dimension, range[0], range[1], options);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    static save(dimension, area, saveTime = Date.now(), options, sizeLimits = { x: 64, y: 128, z: 64 }) {
+        world.setDynamicProperty(`andexdb:undoclipboard;${saveTime}`, area.from);
+        world.setDynamicProperty(`andexdb:undoclipboardd;${saveTime}`, dimension.id);
+        world.setDynamicProperty(`andexdb:undoclipboards;${saveTime}`, ((v) => ({ x: Math.abs(v.x), y: Math.abs(v.y), z: Math.abs(v.z) }))(Vector.subtract(area.to, area.from)));
+        for (const range of splitArea(area, sizeLimits)) {
+            this.saveRange(dimension, range, saveTime, options);
+        }
+    }
+    static undo(saveTime = this.saveTimes, options, clearSave = true, sizes = { x: 64, y: 128, z: 64 }) {
+        if (this.ids.length == 0) {
+            return 0;
+        }
+        ;
+        this.saveIds(saveTime).map(v => ({ id: v, x: Number(v.split(",")[1] ?? 0) * sizes.x, y: Number(v.split(",")[2] ?? 0) * sizes.y, z: Number(v.split(",")[3] ?? 0) * sizes.z })).forEach(v => world.structureManager.place(v.id, dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${saveTime}`))] ?? dimensionsb["minecraft:overworld"], Vector.add(v, world.getDynamicProperty(`andexdb:undoclipboard;${saveTime}`)), options));
+        if (clearSave) {
+            this.saveIds(saveTime).forEach(v => { this.clearTime(saveTime); });
+        }
+        return 1;
+    }
+}
+export class AreaBackups {
+    static get ids() {
+        return world.getDynamicPropertyIds().filter(v => v.startsWith("areabackup:"));
+    }
+    static get structureIds() {
+        return world.structureManager.getWorldStructureIds().filter(v => v.startsWith("areabackup:"));
+    }
+    static get areas() {
+        return this.ids.map(v => this.get(v));
+    }
+    static get(id) { return new AreaBackup(id); }
+    static delete(id) { new AreaBackup(id).delete(); }
+    static clear() { this.ids.forEach(v => new AreaBackup(v).delete()); }
+    static createAreaBackup(id, dimension, area) { world.setDynamicProperty("areabackup:" + id.replaceAll(";", "").replaceAll(",", ""), JSON.stringify({ from: area.from, to: area.to, dimension: dimension.id })); return new AreaBackup(id); }
+}
+export class AreaBackup {
+    constructor(id) {
+        this.id = id;
+    }
+    get from() { return JSON.parse(String(world.getDynamicProperty(this.id))).from; }
+    get to() { return JSON.parse(String(world.getDynamicProperty(this.id))).to; }
+    get dimension() { return tryget(() => world.getDimension(JSON.parse(String(world.getDynamicProperty(this.id))).dimension)) ?? dimensionsc.overworld; }
+    get backups() {
+        return world.structureManager.getWorldStructureIds().filter(v => v.startsWith(`${this.id};`)).map(v => Number(v.split(";")[1].split(",")[0])).sort().reverse();
+    }
+    get backupStructureIds() {
+        return world.structureManager.getWorldStructureIds().filter(v => v.startsWith(`${this.id};`));
+    }
+    saveIds(timestamp) {
+        return world.structureManager.getWorldStructureIds().filter(v => v.startsWith(`${this.id};${timestamp}`));
+    }
+    get size() {
+        return ((v) => ({ x: Math.abs(v.x), y: Math.abs(v.y), z: Math.abs(v.z) }))(Vector.subtract(this.from, this.to));
+    }
+    toJSON() { return { id: this.id, from: this.from, to: this.to, dimension: this.dimension }; }
+    toJSONNoId() { return { from: this.from, to: this.to, dimension: this.dimension }; }
+    delete() {
+        this.clear();
+        world.setDynamicProperty(this.id);
+    }
+    clear() { this.backupStructureIds.forEach(v => world.structureManager.delete(v)); }
+    clearBackup(timestamp) {
+        this.saveIds(timestamp).forEach(v => world.structureManager.delete(v));
+    }
+    clearBackups() {
+        this.backups.forEach(v => this.saveIds(v).forEach(v => world.structureManager.delete(v)));
+    }
+    backupRange(range, saveTime, options) {
+        try {
+            world.structureManager.createFromWorld(`${this.id};${saveTime},${range[2].x ?? 0},${range[2].y ?? 0},${range[2].z ?? 0}`, this.dimension, range[0], range[1], options);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    backup(saveTime = Date.now(), options = { saveMode: StructureSaveMode.World, includeBlocks: true, includeEntities: false }, sizeLimits = { x: 64, y: 128, z: 64 }) {
+        for (const range of splitArea({ from: this.from, to: this.to }, sizeLimits)) {
+            this.backupRange(range, saveTime, options);
+        }
+    }
+    rollback(saveTime = this.backups[0], clearSave = false, options, sizes = { x: 64, y: 128, z: 64 }) {
+        if (this.backupStructureIds.length == 0) {
+            return 0;
+        }
+        ;
+        this.saveIds(saveTime).map(v => ({ id: v, x: Number(v.split(",")[1] ?? 0) * sizes.x, y: Number(v.split(",")[2] ?? 0) * sizes.y, z: Number(v.split(",")[3] ?? 0) * sizes.z })).forEach(v => world.structureManager.place(v.id, this.dimension, Vector.add(this.from, v), options));
+        if (clearSave) {
+            this.clearBackup(saveTime);
+        }
+        return 1;
+    }
+}
+export function* removeAirFromStructure(structure) {
+    for (let x = 0; x < structure.size.x; x++) {
+        for (let y = 0; y < structure.size.y; y++) {
+            for (let z = 0; z < structure.size.z; z++) {
+                if (structure.getBlockPermutation({ x, y, z }).type.id == "minecraft:air") {
+                    structure.setBlockPermutation({ x, y, z }, BlockPermutation.resolve("minecraft:structure_void"));
+                }
+                ;
+                yield void undefined;
+            }
+        }
+    }
+    structure.saveToWorld();
+}
 export function facingPoint(location, otherLocation) {
     const sl = location;
     const ol = otherLocation;

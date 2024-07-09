@@ -1,6 +1,6 @@
 import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, GameRules, GameRule } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version, srun, dimensionTypeDisplayFormatting } from "Main";
+import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version, srun, dimensionTypeDisplayFormatting, config } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -21,7 +21,7 @@ import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-import { chatCommands, chatMessage, chatSend, command, commandSettings, command_settings_format_version, commands, commands_format_version, config, dimensions, evaluateParameters, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
+import { chatCommands, chatMessage, chatSend, command, commandSettings, command_settings_format_version, commands, commands_format_version, dimensions, evaluateParameters, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -544,12 +544,15 @@ export function settings(sourceEntity) {
     let players = world.getPlayers();
     form.title("Settings");
     form.body("Choose menu to open. ");
-    form.button("Global Settings", "textures/ui/settings_glyph_color_2x");
-    form.button("Eval Auto Execute Settings", "textures/ui/settings_glyph_color_2x");
-    form.button("Personal Settings", "textures/ui/settings_glyph_color_2x");
+    form.button("Global Settings", "textures/ui/worldsIcon");
+    form.button("Script Settings", "textures/ui/debug_glyph_color");
+    form.button("UI Settings", "textures/ui/feedIcon");
+    form.button("Eval Auto Execute Settings", "textures/ui/automation_glyph_color");
+    form.button("Personal Settings", "textures/ui/profile_glyph_color");
     form.button("Notifications Settings", "textures/ui/icon_bell");
     form.button("Home System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
     form.button("RTP System Settings [§cExperimental§r]", "textures/items/ender_pearl");
+    form.button("Manage Game Rules", "textures/ui/controller_glyph_color");
     form.button("Back", "textures/ui/arrow_left"); /*
     form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
     forceShow(form, sourceEntity).then(ra => {
@@ -563,21 +566,30 @@ export function settings(sourceEntity) {
                 globalSettings(sourceEntity);
                 break;
             case 1:
-                evalAutoScriptSettings(sourceEntity);
+                scriptSettings(sourceEntity);
                 break;
             case 2:
-                personalSettings(sourceEntity);
+                uiSettings(sourceEntity);
                 break;
             case 3:
-                notificationsSettings(sourceEntity);
+                evalAutoScriptSettings(sourceEntity);
                 break;
             case 4:
-                homeSystemSettings(sourceEntity);
+                personalSettings(sourceEntity);
                 break;
             case 5:
-                rtpSettings(sourceEntity);
+                notificationsSettings(sourceEntity);
                 break;
             case 6:
+                homeSystemSettings(sourceEntity);
+                break;
+            case 7:
+                rtpSettings(sourceEntity);
+                break;
+            case 8:
+                manageGameRulesUI(sourceEntity);
+                break;
+            case 9:
                 mainMenu(sourceEntity);
                 break;
             default:
@@ -744,8 +756,11 @@ export function globalSettings(sourceEntity) {
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
-            return; /*
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, gametestStructureDefaultSpawnLocation, invalidChatCommandAction, chatCommandsEnbaled, disableCustomChatMessages, allowCustomChatMessagesMuting, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes, chatDisplayTimeStamp, autoSavePlayerData, bepl, beppb, aebe, aepl] = t.formValues;
@@ -771,6 +786,52 @@ export function globalSettings(sourceEntity) {
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes);
         world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStamp);
         world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData);
+        settings(sourceEntity);
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function scriptSettings(sourceEntity) {
+    let form2 = new ModalFormData();
+    form2.title("Script Settings");
+    form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 5", "integer from 1-1000", String(config.playerDataRefreshRate));
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(to => {
+        let t = to;
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+        let [playerDataRefreshRate] = t.formValues;
+        config.playerDataRefreshRate = Number(playerDataRefreshRate);
+        settings(sourceEntity);
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function uiSettings(sourceEntity) {
+    let form2 = new ModalFormData();
+    "andexdbSettings:autoEscapeChatMessages";
+    "andexdbSettings:autoURIEscapeChatMessages";
+    "andexdbSettings:allowChatEscapeCodes";
+    form2.title("UI Settings");
+    form2.textField("§l§fmaxPlayersPerManagePlayersPage§r§f\nThe maximum number of players to display at once on the manage players menu, the default is 10", "integer from 1-1000", String(config.maxPlayersPerManagePlayersPage));
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(to => {
+        let t = to;
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+        let [maxPlayersPerManagePlayersPage] = t.formValues;
+        config.maxPlayersPerManagePlayersPage = Number(maxPlayersPerManagePlayersPage);
+        settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
@@ -783,13 +844,17 @@ export function homeSystemSettings(sourceEntity) {
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
-            return; /*
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [homeSystemEnabled, maxHomesPerPlayer] = t.formValues;
         config.homeSystemEnabled = homeSystemEnabled;
         config.maxHomesPerPlayer = String(maxHomesPerPlayer).toLowerCase() == "infinity" ? Infinity : Number(maxHomesPerPlayer);
+        settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
@@ -802,13 +867,17 @@ export function rtpSettings(sourceEntity) {
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
-            return; /*
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [rtpSystemEnabled] = t.formValues;
         config.rtpSystemEnabled = rtpSystemEnabled;
         //config.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
+        settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
@@ -821,13 +890,17 @@ export function notificationsSettings(sourceEntity) {
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
-            return; /*
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [getAllChatCommands, getGameRuleChangeNotifications] = t.formValues;
         Boolean(getAllChatCommands) ? sourceEntity.addTag("getAllChatCommands") : sourceEntity.removeTag("getAllChatCommands");
         Boolean(getGameRuleChangeNotifications) ? sourceEntity.addTag("getGameRuleChangeNotifications") : sourceEntity.removeTag("getGameRuleChangeNotifications");
+        settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
@@ -889,8 +962,11 @@ export function personalSettings(sourceEntity) {
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
-            return; /*
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, debugStickUseCooldown, debugStickHoldDuration] = t.formValues;
@@ -917,6 +993,7 @@ export function personalSettings(sourceEntity) {
         world.setDynamicProperty("andexdbSettings:autoURIEscapeChatMessages", autoURIEscapeChatMessages)
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes)
         world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData)*/
+        settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
@@ -955,8 +1032,11 @@ export function evalAutoScriptSettings(sourceEntity) {
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
+        if (t.canceled) {
+            settings(sourceEntity);
             return;
+        }
+        ;
         let [becs, beddete, beea, beer, bee, beide, beiu, beiuo, bepa, bepbb, bepiwb, bepiwe, bepl, beppb, aebe, aepl, aeed] = t.formValues;
         world.setDynamicProperty("evalBeforeEvents:chatSend", becs);
         world.setDynamicProperty("evalBeforeEvents:dataDrivenEntityTrggerEvent", beddete);
@@ -975,6 +1055,7 @@ export function evalAutoScriptSettings(sourceEntity) {
         world.setDynamicProperty("evalAfterEvents:blockExplode", aebe);
         world.setDynamicProperty("evalAfterEvents:playerLeave", aepl);
         world.setDynamicProperty("evalAfterEvents:entityDie", aeed);
+        settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
@@ -3001,22 +3082,20 @@ export function editorStickB(sourceEntity, dimensionLocation) {
 }
 export function editorStickC(sourceEntity) { } /*
 export function evalAutoScriptSettings(sourceEntity: Entity|Player){}*/
-export function managePlayers(sourceEntity, pagen = 0) {
+export function managePlayers(sourceEntity, pagen = 0, maxplayersperpage = config.maxPlayersPerManagePlayersPage ?? 10) {
     let form = new ActionFormData;
     const page = Math.max(0, pagen);
     const numsavedplayers = savedPlayer.getSavedPlayers().length;
     const numonlinesavedplayers = savedPlayer.getSavedPlayers().filter(_ => _.isOnline).length;
     const numofflinesavedplayers = savedPlayer.getSavedPlayers().filter(_ => !_.isOnline).length;
-    form.title(`Manage Players ${Math.min(numsavedplayers, (page * 50) + 1)}-${Math.min(numsavedplayers, (page + 1) * 50)} of ${numsavedplayers}`);
-    const numpages = Math.ceil(numsavedplayers / 50);
-    form.button((page != 0) ? "§7" : "" + "Previous Page", "textures/ui/arrow_left");
-    form.button((page < (numpages - 1)) ? "§7" : "" + "Next Page", "textures/ui/arrow_right");
-    let onlinePlayers = savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_ => _.isOnline).slice(page * 50, (page + 1) * 50);
-    onlinePlayers.forEach((p) => { form.button(`${p.name}\n${ban.testForBannedPlayer(p) ? "Banned" : "Online"}`, "textures/ui/online"); });
-    let offlinePlayers = savedPlayer.getSavedPlayers().filter(_ => !_.isOnline).sort((a, b) => (b.lastOnline - a.lastOnline)).sort((a, b) => 1 - (2 * Number(Number(a.isBanned) > Number(b.isBanned)))).slice((page * 50) + Math.min(50, Math.max(0, numonlinesavedplayers - (page * 50))), (page + 1) * 50);
-    offlinePlayers.forEach((p) => { form.button(`${p.name}\n${ban.testForBannedPlayer(p) ? "Banned" : "Online: " + new Date(Number(p.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString()}`, p.isBanned ? "textures/ui/Ping_Offline_Red_Dark" : "textures/ui/offline"); });
-    const numplayersonpage = onlinePlayers.length + offlinePlayers.length;
-    let players = onlinePlayers.concat(offlinePlayers);
+    form.title(`Manage Players ${Math.min(numsavedplayers, (page * maxplayersperpage) + 1)}-${Math.min(numsavedplayers, (page + 1) * maxplayersperpage)} of ${numsavedplayers}`);
+    const numpages = Math.ceil(numsavedplayers / maxplayersperpage);
+    form.button(((page != 0) ? "§0" : "§8") + "Previous Page", "textures/ui/arrow_left");
+    form.button(((page < (numpages - 1)) ? "§0" : "§8") + "Next Page", "textures/ui/arrow_right");
+    let displayPlayers = [...savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_ => _.isOnline), ...savedPlayer.getSavedPlayers().filter(_ => (!_.isOnline) && (_.isBanned)).sort((a, b) => (b.lastOnline - a.lastOnline)), ...savedPlayer.getSavedPlayers().filter(_ => (!_.isOnline) && (!_.isBanned)).sort((a, b) => (b.lastOnline - a.lastOnline))].slice(page * maxplayersperpage, (page + 1) * maxplayersperpage);
+    displayPlayers.forEach((p) => { form.button(`${p.name}\n${ban.testForBannedPlayer(p) ? "Banned" : p.isOnline ? "Online" : "Online: " + new Date(Number(p.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString()}`, p.isOnline ? "textures/ui/online" : p.isBanned ? "textures/ui/Ping_Offline_Red_Dark" : "textures/ui/offline"); });
+    const numplayersonpage = displayPlayers.length;
+    let players = displayPlayers;
     form.button("Manage Bans");
     form.button("Back");
     forceShow(form, sourceEntity).then(ra => {
@@ -3342,6 +3421,7 @@ export function manageCommands(sourceEntity) {
                 forceShow(formB, sourceEntity).then(ra => {
                     let r = ra;
                     if (r.canceled) {
+                        manageCommands(sourceEntity);
                         return;
                     }
                     ;
@@ -3361,6 +3441,7 @@ export function manageCommands(sourceEntity) {
                             forceShow(form5, sourceEntity).then(ha => {
                                 let h = ha;
                                 if (h.canceled) {
+                                    manageCommands(sourceEntity);
                                     return;
                                 }
                                 ;
@@ -3413,6 +3494,7 @@ export function manageCommands(sourceEntity) {
                             forceShow(form2, sourceEntity).then(ga => {
                                 let g = ga;
                                 if (g.canceled) {
+                                    manageCommands(sourceEntity);
                                     return;
                                 }
                                 ;
@@ -3529,6 +3611,7 @@ export function manageCommands(sourceEntity) {
                                         forceShow(form7, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
+                                                manageCommands(sourceEntity);
                                                 return;
                                             }
                                             ;
@@ -3545,6 +3628,7 @@ export function manageCommands(sourceEntity) {
                                         forceShow(form4, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
+                                                manageCommands(sourceEntity);
                                                 return;
                                             }
                                             ;
@@ -3562,6 +3646,7 @@ export function manageCommands(sourceEntity) {
                                         forceShow(form6, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
+                                                manageCommands(sourceEntity);
                                                 return;
                                             }
                                             ;

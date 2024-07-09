@@ -7489,6 +7489,15 @@
          "path" : "structures/AllayTests/allay_pickup_item.mcstructure"
       },
       {
+         "path" : "structures/andexdb/-2-294_steb.mcstructure"
+      },
+      {
+         "path" : "structures/APITests/create_explosion_advanced.mcstructure"
+      },
+      {
+         "path" : "structures/andexdb/-32k_steb.mcstructure"
+      },
+      {
          "path" : "structures/andexdb/32k_steb.mcstructure"
       },
       {
@@ -7511,9 +7520,6 @@
       },
       {
          "path" : "structures/APITests/cauldron.mcstructure"
-      },
-      {
-         "path" : "structures/APITests/create_explosion_advanced.mcstructure"
       },
       {
          "path" : "structures/APITests/jukebox.mcstructure"
