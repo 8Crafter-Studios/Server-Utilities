@@ -199,6 +199,12 @@
          "path" : "recipes/smithing_table/1217minecraft;magma_cube_spawn_egg.json"
       },
       {
+         "path" : "structures/PathFindingTests/carpet_walk_around.mcstructure"
+      },
+      {
+         "path" : "LICENSE.txt"
+      },
+      {
          "path" : "recipes/smithing_table/1354minecraft;orange_stained_glass_pane.json"
       },
       {
@@ -1667,21 +1673,6 @@
       },
       {
          "path" : "node_modules/esbuild/lib/main.d.ts"
-      },
-      {
-         "path" : "recipes/smithing_table/346minecraft;cherry_pressure_plate.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1644minecraft;smooth_basalt.json"
-      },
-      {
-         "path" : "structures/APITests/grow_pointed_dripstone.mcstructure"
-      },
-      {
-         "path" : "recipes/smithing_table/1219minecraft;mangrove_button.json"
-      },
-      {
-         "path" : "recipes/smithing_table/292minecraft;brown_terracotta.json"
       },
       {
          "path" : "recipes/smithing_table/877minecraft;gold_nugget.json"
@@ -3355,6 +3346,21 @@
          "path" : "recipes/smithing_table/1215minecraft;magma.json"
       },
       {
+         "path" : "recipes/smithing_table/346minecraft;cherry_pressure_plate.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1644minecraft;smooth_basalt.json"
+      },
+      {
+         "path" : "structures/APITests/grow_pointed_dripstone.mcstructure"
+      },
+      {
+         "path" : "recipes/smithing_table/1219minecraft;mangrove_button.json"
+      },
+      {
+         "path" : "recipes/smithing_table/292minecraft;brown_terracotta.json"
+      },
+      {
          "path" : "recipes/smithing_table/1220minecraft;mangrove_chest_boat.json"
       },
       {
@@ -3661,10 +3667,10 @@
          "path" : "recipes/smithing_table/1282minecraft;music_disc_creator_music_box.json"
       },
       {
-         "path" : "recipes/smithing_table/1680minecraft;splash_potion.10.json"
+         "path" : "recipes/smithing_table/1283minecraft;music_disc_far.json"
       },
       {
-         "path" : "recipes/smithing_table/1283minecraft;music_disc_far.json"
+         "path" : "recipes/smithing_table/1680minecraft;splash_potion.10.json"
       },
       {
          "path" : "recipes/smithing_table/1323minecraft;normal_stone_stairs.json"
@@ -7808,9 +7814,6 @@
       },
       {
          "path" : "structures/MultifaceTests/spread_up_within_same_corner.mcstructure"
-      },
-      {
-         "path" : "structures/PathFindingTests/carpet_walk_around.mcstructure"
       },
       {
          "path" : "structures/PathFindingTests/doorway.mcstructure"

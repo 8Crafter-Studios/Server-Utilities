@@ -1,6 +1,9 @@
 {
    "content" : [
       {
+         "path" : "textures/particles/xz_axis_particle_pos1.png"
+      },
+      {
          "path" : "textures/items/diamond_red_up_arrow_transform_template.png"
       },
       {
@@ -22,16 +25,19 @@
          "path" : "particles/custom_item_texture_billboard_2.particle.json"
       },
       {
+         "path" : "models/blocks/no_bones.geo.json"
+      },
+      {
          "path" : "blocks.json"
       },
       {
          "path" : "font/glyph_F0.png"
       },
       {
-         "path" : "models/blocks/no_bones.geo.json"
+         "path" : "contents.json"
       },
       {
-         "path" : "contents.json"
+         "path" : "LICENSE.txt"
       },
       {
          "path" : "textures/items/netherite_downgrade_smithing_template.png"
@@ -47,6 +53,9 @@
       },
       {
          "path" : "particles/block_destruct_2.json"
+      },
+      {
+         "path" : "particles/custom_block_texture_billboard.particle - Copy.json"
       },
       {
          "path" : "particles/custom_block_texture_billboard.particle.json"
