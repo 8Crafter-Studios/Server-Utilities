@@ -535,7 +535,7 @@ export class AreaBackup {
     get to() { return JSON.parse(String(world.getDynamicProperty(this.id))).to; }
     get dimension() { return tryget(() => world.getDimension(JSON.parse(String(world.getDynamicProperty(this.id))).dimension)) ?? dimensionsc.overworld; }
     get backups() {
-        return world.structureManager.getWorldStructureIds().filter(v => v.startsWith(`${this.id};`)).map(v => Number(v.split(";")[1].split(",")[0])).sort().reverse();
+        return [...new Set(world.structureManager.getWorldStructureIds().filter(v => v.startsWith(`${this.id};`)).map(v => Number(v.split(";")[1].split(",")[0])))].sort().reverse();
     }
     get backupStructureIds() {
         return world.structureManager.getWorldStructureIds().filter(v => v.startsWith(`${this.id};`));

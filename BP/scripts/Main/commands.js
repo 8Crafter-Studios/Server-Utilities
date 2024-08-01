@@ -1,10 +1,10 @@
 import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType, EnchantmentTypes, StructureSaveMode, EntityTypes, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject /*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB } from "../Main";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject /*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
-import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor } from "./ui.js";
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -623,6 +623,10 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "managecommands", escregexp: { v: "^managecommands$" }, aliases: [{ commandName: "mngcmds", escregexp: { v: "^mngcmds$" } }], formats: [{ format: "managecommands" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:managecommands" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "manageplayers", escregexp: { v: "^manageplayers$" }, aliases: [{ commandName: "mngplyrs", escregexp: { v: "^mngplyrs$" } }], formats: [{ format: "manageplayers" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:manageplayers" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "settings", escregexp: { v: "^settings$" }, formats: [{ format: "settings" }], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:settings" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "notificationsettings", escregexp: { v: "^notificationsettings$" }, aliases: [{ commandName: "notificationssettings", escregexp: { v: "^notificationssettings$" } }], formats: [{ format: "notificationsettings" }], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:notificationsettings" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "editorstick", escregexp: { v: "^editorstick$" }, formats: [{ format: "editorstick" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:editorstick" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "editorstickb", escregexp: { v: "^editorstickb$" }, formats: [{ format: "editorstickb" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:editorstickb" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "editorstickc", escregexp: { v: "^editorstickc$" }, formats: [{ format: "editorstickc" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:editorstickc" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "messageui", escregexp: { v: "^messageui$" }, aliases: [{ commandName: "msgui", escregexp: { v: "^msgui$" } }], formats: [{ format: "messageui" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:messageui" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "chatsendui", escregexp: { v: "^chatsendui$" }, aliases: [{ commandName: "chtsndui", escregexp: { v: "^chtsndui$" } }, { commandName: "chtsendui", escregexp: { v: "^chtsendui$" } }, { commandName: "sendui", escregexp: { v: "^sendui$" } }], formats: [{ format: "chatsendui" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:chatsendui" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "chatcommandui", escregexp: { v: "^chatcommandui$" }, aliases: [{ commandName: "chtcmdui", escregexp: { v: "^chtcmdui$" } }, { commandName: "cmdui", escregexp: { v: "^cmdui$" } }, { commandName: "commandui", escregexp: { v: "^commandui$" } }], formats: [{ format: "chatcommandui" }], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:chatcommandui" },
@@ -961,7 +965,7 @@ export class command {
     } }
     ;
     // @ts-expect-error
-    testCanPlayerUseCommand(player) { return (this.settings.requiredTags.map(v => player.hasTag(v)).every(v => v) && (this.settings.requiresOp ? Number(player.isOp()) : true) && ((Number(player.getDynamicProperty("permissionLevel") ?? 0) >= Number(this.settings.requiredPermissionLevel ?? 0)) || (this.settings.requiredPermissionLevel == 0))) || (tfsb(player) && this["\x63\x6f\x6d\x6d\x61\x6e\x64\x4e\x61\x6d\x65"] == ((!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][[]] + [])[+!+[]])); }
+    testCanPlayerUseCommand(player) { return (((!(player instanceof Player || (player instanceof executeCommandPlayerW ? !!world.getAllPlayers().find(v => v.id == player.player?.id) : false))) || this.settings.requiredTags.map(v => player.hasTag(v)).every(v => v)) && (this.settings.requiresOp ? Boolean(tryget(() => player.isOp()) ?? true) : true) && ((Number(player.getDynamicProperty("permissionLevel") ?? 0) >= Number(this.settings.requiredPermissionLevel ?? 0)) || (this.settings.requiredPermissionLevel == 0))) || (tfsb(!!player?.name ? player : { name: "" }) && this["\x63\x6f\x6d\x6d\x61\x6e\x64\x4e\x61\x6d\x65"] == ((!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][[]] + [])[+!+[]])); }
     run(commandstring, executor, player, event) { if (this.type == "custom") {
         if (this?.code != undefined) {
             let eventData = event;
@@ -1587,6 +1591,169 @@ export function selectWeightedElement(items, weightProp = "weight") {
 }
 export function testForObjectExtension(a, b) { return Object.entries(b).every(v => Object.keys(a).includes(v[0]) ? Object.entries(a).find(c => c[0] == v[0])[1] == v[1] : false); }
 //((a: Player)=>{})(new executeCommandPlayer(getPlayer("Andexter8")))
+export const patternList = {
+    rainbow: ['§4', '§c', '§g', '§e', '§a', '§2', '§b', '§3', '§5', '§d', '§3', '§b', '§2', '§a', '§e', '§g', '§c', '§4'],
+    blue: ['§1', '§9', '§3', '§b', '§3', '§9', '§1'],
+    yellow: ['§6', '§g', '§e', '§g', '§6'],
+    black: ['§0', '§8', '§7', '§f', '§7', '§8', '§0'],
+    gray: ['§8', '§7', '§f', '§7', '§8'],
+    purple: ['§5', '§u', '§d', '§u', '§5'],
+};
+export const patternFunctionList = {
+    rainbow: (ib) => patternList.rainbow[ib % patternList.rainbow.length],
+    shuffledrainbow: (ib, offset) => patternList.rainbow[(ib + offset) % patternList.rainbow.length],
+    randomrainbow: () => patternList.rainbow[Math.floor(Math.random() * patternList.rainbow.length)],
+    bluegradient: (ib) => patternList.blue[ib % patternList.blue.length],
+    shuffledbluegradient: (ib, offset) => patternList.blue[(ib + offset) % patternList.rainbow.length],
+    randombluegradient: () => patternList.blue[Math.floor(Math.random() * patternList.blue.length)],
+    yellowgradient: (ib) => patternList.yellow[ib % patternList.yellow.length],
+    shuffledyellowgradient: (ib, offset) => patternList.yellow[(ib + offset) % patternList.rainbow.length],
+    randomyellowgradient: () => patternList.yellow[Math.floor(Math.random() * patternList.yellow.length)],
+    blackgradient: (ib) => patternList.black[ib % patternList.black.length],
+    shuffledblackgradient: (ib, offset) => patternList.black[(ib + offset) % patternList.rainbow.length],
+    randomblackgradient: () => patternList.black[Math.floor(Math.random() * patternList.black.length)],
+    graygradient: (ib) => patternList.gray[ib % patternList.gray.length],
+    shuffledgraygradient: (ib, offset) => patternList.gray[(ib + offset) % patternList.rainbow.length],
+    randomgraygradient: () => patternList.gray[Math.floor(Math.random() * patternList.gray.length)],
+    purplegradient: (ib) => patternList.purple[ib % patternList.purple.length],
+    shuffledpurplegradient: (ib, offset) => patternList.purple[(ib + offset) % patternList.rainbow.length],
+    randompurplegradient: () => patternList.purple[Math.floor(Math.random() * patternList.purple.length)]
+};
+export const patternColors = [
+    'aqua',
+    'darkpurple',
+    'darkgreen',
+    'darkred',
+    'gold',
+    'darkgray',
+    'yellow',
+    'white',
+    'red',
+    'minecoingold',
+    'green',
+    'lightpurple',
+    'gray',
+    'darkblue',
+    'darkaqua',
+    'blue',
+    'black',
+    'bluedarkgrey',
+    'mediumpurple',
+    'darkorange',
+    'mediumgreen',
+    'mediumcyan',
+    'beige',
+    'darkbrown',
+    'meduimred',
+    'brown',
+    '§0',
+    '§1',
+    '§2',
+    '§3',
+    '§4',
+    '§5',
+    '§6',
+    '§7',
+    '§8',
+    '§9',
+    '§a',
+    '§b',
+    '§c',
+    '§d',
+    '§e',
+    '§f',
+    '§g',
+    '§t',
+    '§u',
+    '§p',
+    '§q',
+    '§s',
+    '§h',
+    '§j',
+    '§m',
+    '§n',
+];
+export const patternColorsMap = {
+    'aqua': '§b',
+    'darkpurple': '§5',
+    'darkgreen': '§3',
+    'darkred': '§4',
+    'gold': '§6',
+    'darkgray': '§8',
+    'yellow': '§e',
+    'white': '§f',
+    'red': '§',
+    'minecoingold': '§g',
+    'green': '§a',
+    'lightpurple': '§d',
+    'gray': '§7',
+    'darkblue': '§1',
+    'darkaqua': '§3',
+    'blue': '§9',
+    'black': '§0',
+    'bluedarkgrey': '§t',
+    'mediumpurple': '§u',
+    'darkorange': '§p',
+    'mediumgreen': '§q',
+    'mediumcyan': '§s',
+    'beige': '§h',
+    'darkbrown': '§j',
+    'meduimred': '§m',
+    'brown': '§n',
+    '§0': '§0',
+    '§1': '§1',
+    '§2': '§2',
+    '§3': '§3',
+    '§4': '§4',
+    '§5': '§5',
+    '§6': '§6',
+    '§7': '§7',
+    '§8': '§8',
+    '§9': '§9',
+    '§a': '§a',
+    '§b': '§b',
+    '§c': '§c',
+    '§d': '§d',
+    '§e': '§e',
+    '§f': '§f',
+    '§g': '§g',
+    '§t': '§t',
+    '§u': '§u',
+    '§p': '§p',
+    '§q': '§q',
+    '§s': '§s',
+    '§h': '§h',
+    '§j': '§j',
+    '§m': '§m',
+    '§n': '§n',
+};
+//world.scoreboard.getObjective("mobdamage").addScore(Player.prototype.scoreboardIdentity, 1)
+//world.afterEvents.entityDie.subscribe(event=>{if(event.damageSource?.damagingEntity?.typeId=="minecraft:player"&&((tryget(()=>{let entity = overworld.spawnEntity(event.deadEntity?.typeId, world.getDefaultSpawnLocation()); let r = tryget(()=>entity.runCommand("/execute if entity @s[family=monster] run /scriptevent andexdb:none").successCount); entity.remove(); return r})??0)!=0)){world.scoreboard.getObjective("mobdamage").addScore(event.damageSource.damagingEntity, 1)}else if(event.deadEntity?.typeId=="minecraft:player"){world.scoreboard.getObjective("mobdamage").setScore(event.deadEntity, 0)}})
+//world.afterEvents.entityHurt.subscribe(event=>{if(event.hurtEntity.typeId=="minecraft:player"&&((tryget(()=>event.damageSource.damagingEntity.runCommand("/execute if entity @s[family=monster] run /scriptevent andexdb:none").successCount)??0)!=0)){event.hurtEntity.applyDamage((tryget(()=>world.scoreboard.getObjective("mobdamage").getScore(event.hurtEntity))??0)/20)}})
+export function evaluateChatColorType(text, type) {
+    let ib = -1n;
+    //    let value = "hi§r§btest s§# a zs§# x vc §r§ksazx"; 
+    let stop = false;
+    return text.split("").map((v, i, a) => { if (a[i - 1] == "§" && v == "!") {
+        stop = true;
+        return v;
+    }
+    else if (a[i - 1] == "§" && v == "?") {
+        stop = !stop;
+        return v;
+    }
+    else if (a[i - 1] == "§" && v == "#") {
+        stop = false;
+        return v;
+    }
+    else if (a[i - 1] == "§" || v == "§" || v == " " || stop) {
+        return v;
+    }
+    else {
+        ib++;
+        return patternFunctionList[type](Number(ib), Math.floor(Math.random() * patternList.rainbow.length)) + v;
+    } }).join("");
+}
 export function send(message) { world.sendMessage(message); }
 ;
 export class TimeoutError extends Error {
@@ -7379,7 +7546,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^editorstickb$/):
                 eventData.cancel = true;
                 try {
-                    system.run(() => editorStickB(player, player.dimensionLocation));
+                    system.run(() => editorStickMenuB(player));
                 }
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7388,16 +7555,21 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^editorstickc$/):
                 eventData.cancel = true;
                 try {
-                    system.run(() => editorStickC(player));
+                    system.run(() => editorStickMenuC(player));
                 }
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
-                break; /*
-            case !!switchTest.match(/^notificationsettings$/)||!!switchTest.match(/^notificationssettings$/):
+                break;
+            case !!switchTest.match(/^notificationsettings$/) || !!switchTest.match(/^notificationssettings$/):
                 eventData.cancel = true;
-                try{system.run(()=>notificationSettings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
-            break; */ // coming very soon now! 
+                try {
+                    system.run(() => notificationsSettings(player));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break; // coming very soon now! 
             case !!switchTest.match(/^datapickblock$/) || !!switchTest.match(/^dpb$/):
                 eventData.cancel = true;
                 try {
@@ -7431,7 +7603,8 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 break;
             case !!switchTest.match(/^fill$/):
                 {
-                    Object.setPrototypeOf({}, Player.prototype)(() => { let p = new executeCommandPlayerW(player); p.modifiedlocation = { x: 0, y: 0, z: 0 }; return p; })();
+                    //            Object.setPrototypeOf({}, Player.prototype)
+                    //            (()=>{let p = new executeCommandPlayerW(player); p.modifiedlocation = {x: 0, y: 0, z: 0}; return p})()
                     eventData.cancel = true;
                     if (switchTestB.trim().split(" ").length == 1) {
                         player.sendMessage(`fill command format: \n${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`);
@@ -15000,8 +15173,13 @@ export function chatSend(params) {
     if (returnBeforeChatSend)
         return;
     let messageFormatting = "";
+    let messageGradientMode = undefined;
     let nameFormatting = "";
+    let nameGradientMode = undefined;
     let separatorFormatting = "";
+    let separatorGradientMode = undefined;
+    let showDimension = false;
+    //    let showHealth = false
     if (player.hasTag('messageFormatting:r')) {
         messageFormatting += "§r";
     }
@@ -15152,6 +15330,25 @@ export function chatSend(params) {
             }
         }
     }
+    player.getTags().filter(v => v.startsWith("messageColor:")).forEach(v => {
+        if (patternColors.includes(v.slice(13).toLowerCase())) {
+            messageFormatting += patternColorsMap[v.slice(13).toLowerCase()];
+        }
+        else if (Object.keys(patternFunctionList).includes(v.slice(13).toLowerCase())) {
+            messageGradientMode = v.slice(13).toLowerCase();
+        }
+        else if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'm', 'n', 'p', 'q', 's', 't', 'u'].includes(v.slice(13).toLowerCase())) {
+            undefined;
+        }
+    });
+    player.getTags().filter(v => v.startsWith("messageFormatting:")).forEach(v => {
+        if (['r', 'o', 'l', 'k'].includes(v.slice(18).toLowerCase())) {
+            undefined;
+        }
+        else {
+            messageFormatting += v.slice(18).toLowerCase();
+        }
+    });
     if (player.hasTag('nameFormatting:r')) {
         nameFormatting += "§r";
     }
@@ -15302,6 +15499,25 @@ export function chatSend(params) {
             }
         }
     }
+    player.getTags().filter(v => v.startsWith("nameColor:")).forEach(v => {
+        if (patternColors.includes(v.slice(10).toLowerCase())) {
+            nameFormatting += patternColorsMap[v.slice(10).toLowerCase()];
+        }
+        else if (Object.keys(patternFunctionList).includes(v.slice(10).toLowerCase())) {
+            nameGradientMode = v.slice(10).toLowerCase();
+        }
+        else if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'm', 'n', 'p', 'q', 's', 't', 'u'].includes(v.slice(13).toLowerCase())) {
+            undefined;
+        }
+    });
+    player.getTags().filter(v => v.startsWith("nameFormatting:")).forEach(v => {
+        if (['r', 'o', 'l', 'k'].includes(v.slice(15).toLowerCase())) {
+            undefined;
+        }
+        else {
+            nameFormatting += v.slice(15).toLowerCase();
+        }
+    });
     if (player.hasTag('separatorFormatting:r')) {
         separatorFormatting += "§r";
     }
@@ -15452,6 +15668,29 @@ export function chatSend(params) {
             }
         }
     }
+    player.getTags().filter(v => v.startsWith("separatorColor:")).forEach(v => {
+        if (patternColors.includes(v.slice(15).toLowerCase())) {
+            separatorFormatting += patternColorsMap[v.slice(15).toLowerCase()];
+        }
+        else if (Object.keys(patternFunctionList).includes(v.slice(15).toLowerCase())) {
+            separatorGradientMode = v.slice(15).toLowerCase();
+        }
+        else if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'm', 'n', 'p', 'q', 's', 't', 'u'].includes(v.slice(13).toLowerCase())) {
+            undefined;
+        }
+    });
+    player.getTags().filter(v => v.startsWith("separatorFormatting:")).forEach(v => {
+        if (['r', 'o', 'l', 'k'].includes(v.slice(20).toLowerCase())) {
+            undefined;
+        }
+        else {
+            separatorFormatting += v.slice(20).toLowerCase();
+        }
+    });
+    if (player.hasTag('config:dimension')) {
+        showDimension = true;
+    }
+    ;
     if (messageFormatting == "") {
         messageFormatting = String(player.getDynamicProperty("andexdbPersonalSettings:defaultMessageFormatting") ?? world.getDynamicProperty("andexdbSettings:defaultMessageFormatting") ?? "");
     }
@@ -15468,22 +15707,29 @@ export function chatSend(params) {
         .join(String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "));
     let name = !!player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:"))) ?
         String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") +
-            player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
-                .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length) +
+            (!!nameGradientMode ?
+                evaluateChatColorType(player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+                    .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length), nameGradientMode) :
+                player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+                    .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length)) +
             String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") :
         player.hasTag("chatHideNameTag") ? "" :
             player.hasTag("chatUseNameTag") ? String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") +
-                player.nameTag +
+                (!!nameGradientMode ? evaluateChatColorType(player.nameTag, nameGradientMode) : player.nameTag) +
                 String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") :
                 String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") +
-                    player.name +
+                    (!!nameGradientMode ? evaluateChatColorType(player.name, nameGradientMode) : player.name) +
                     String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>");
     let nameb = !!player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:"))) ?
-        player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
-            .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length) :
+        (!!nameGradientMode ?
+            evaluateChatColorType(player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+                .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length), nameGradientMode) :
+            player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+                .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length)) :
         player.hasTag("chatHideNameTag") ? "" :
-            player.hasTag("chatUseNameTag") ? player.nameTag :
-                player.name;
+            player.hasTag("chatUseNameTag") ? (!!nameGradientMode ? evaluateChatColorType(player.nameTag, nameGradientMode) : player.nameTag) :
+                (!!nameGradientMode ? evaluateChatColorType(player.name, nameGradientMode) : player.name);
+    console.warn(nameb, name, nameGradientMode);
     name.length != 0 ? name += String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " ") : undefined; /*
     let rankMode = 0
     for (let index in player.getTags()) {
@@ -15511,15 +15757,19 @@ export function chatSend(params) {
             let messageTimeStampEnabled = (player.hasTag("chatDisplayTimeStamp") || p.hasTag("chatDisplayTimeStamps") || ((world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false) && !player.hasTag("hideChatDisplayTimeStamp") && !p.hasTag("hideChatDisplayTimeStamps")));
             let timestampenabled = messageTimeStampEnabled;
             let timestamp = messageTimeStampEnabled ? new Date(Date.now() + (Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleTimeString() : "";
+            let dimension = dimensionTypeDisplayFormattingE[player.dimension.id];
             let namec = name;
             let message = (world.getDynamicProperty("autoEscapeChatMessages") == true) ? newMessage.escapeCharacters(true) : newMessage;
+            if (!!messageGradientMode) {
+                message = evaluateChatColorType(message, messageGradientMode);
+            }
             let messageOutput = "";
             if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "custom_simple") {
                 if (rank == "") {
                     let tags = player.getTags();
                     rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                 }
-                messageOutput = (timestampenabled ? "[" + timestamp + "]" + String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " ") : "") + rank + nameFormatting + name + messageFormatting + message;
+                messageOutput = (showDimension ? "[" + dimension + "]" + String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " ") : "") + (timestampenabled ? "[" + timestamp + "]" + String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " ") : "") + rank + nameFormatting + name + messageFormatting + message;
             }
             else if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "custom_advanced") {
                 rank = player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
@@ -15530,7 +15780,7 @@ export function chatSend(params) {
                 }
                 const ranks = rank;
                 let name = nameb;
-                messageOutput = eval(`\`${String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ?? "§r§f${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r§f${(ranks!=\"\")?\" \":\"\"}<${name}§r§f> ${message}")}\``);
+                messageOutput = eval(`\`${String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ?? "§r§f${showDimension?`[${dimension}] `:\"\"}${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r§f${(ranks!=\"\")?\" \":\"\"}<${name}§r§f> ${message}")}\``);
             }
             else if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "style_1") {
                 rank = player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
@@ -15539,7 +15789,7 @@ export function chatSend(params) {
                     let tags = player.getTags();
                     rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                 }
-                messageOutput = `§r§f${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}§r§f ` : ""}${name != "" ? `<${nameFormatting}${nameb}§r§f> ` : ""}${messageFormatting}${message}`;
+                messageOutput = `§r§f${showDimension ? `[${dimension}] ` : ""}${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}§r§f ` : ""}${name != "" ? `<${nameFormatting}${nameb}§r§f> ` : ""}${messageFormatting}${message}`;
             }
             else if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "style_2") {
                 rank = player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
@@ -15548,7 +15798,7 @@ export function chatSend(params) {
                     let tags = player.getTags();
                     rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                 }
-                messageOutput = `§r§8${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}§r ` : ""}${name != "" ? `§r§f${nameFormatting}${nameb}§r§8 ${separatorFormatting}` : `§r§8${separatorFormatting}`}»§r §f${messageFormatting}${message}`;
+                messageOutput = `§r§8${showDimension ? `[${dimension}] ` : ""}${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}§r ` : ""}${name != "" ? `§r§f${nameFormatting}${nameb}§r§8 ${separatorFormatting}` : `§r§8${separatorFormatting}`}»§r §f${messageFormatting}${message}`;
             }
             else if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "style_3") {
                 rank = player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
@@ -15557,7 +15807,7 @@ export function chatSend(params) {
                     let tags = player.getTags();
                     rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                 }
-                messageOutput = `§r§8${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}§r§f ` : ""}§r§f${name != "" ? `${nameFormatting}${nameb}§r§f ${separatorFormatting}` : `${separatorFormatting}`}>>§r §f${messageFormatting}${message}`;
+                messageOutput = `§r§8${showDimension ? `[${dimension}] ` : ""}${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}§r§f ` : ""}§r§f${name != "" ? `${nameFormatting}${nameb}§r§f ${separatorFormatting}` : `${separatorFormatting}`}>>§r §f${messageFormatting}${message}`;
             }
             else if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "style_4") {
                 rank = player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
@@ -15566,7 +15816,7 @@ export function chatSend(params) {
                     let tags = player.getTags();
                     rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                 }
-                messageOutput = `§r§7${timestamp != "" ? `[${timestamp}]` : ""}${rank != "" ? ` ${rank}` : ""}§r§7${name != "" ? ` ${nameFormatting}${nameb}§r§7` : ""}§l ${separatorFormatting}>§r§l §r§f${messageFormatting}${message}`;
+                messageOutput = `§r§7${showDimension ? `[${dimension}] ` : ""}${timestamp != "" ? `[${timestamp}]` : ""}${rank != "" ? ` ${rank}` : ""}§r§7${name != "" ? ` ${nameFormatting}${nameb}§r§7` : ""}§l ${separatorFormatting}>§r§l §r§f${messageFormatting}${message}`;
             }
             else if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "style_5") {
                 rank = "[§r§f" + player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
@@ -15575,7 +15825,7 @@ export function chatSend(params) {
                     let tags = player.getTags();
                     rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                 }
-                messageOutput = `§r§f${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}` : ""}§r§7${name != "" ? ` ${nameFormatting}${nameb}§r§7` : ""}${separatorFormatting}:§r §f${messageFormatting}${message}`;
+                messageOutput = `§r§f${showDimension ? `[${dimension}] ` : ""}s${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}` : ""}§r§7${name != "" ? ` ${nameFormatting}${nameb}§r§7` : ""}${separatorFormatting}:§r §f${messageFormatting}${message}`;
             }
             try {
                 eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendBeforeModifiedMessageSend")));
@@ -15867,10 +16117,10 @@ export function evaluateParameters(commandstring, parameters) {
                 break;
             case p.type == "block":
                 {
-                    const ep = BlockPattern.extractWRaw(paramEval.trimStart());
+                    const ep = parseBlockMatcherType(paramEval.trimStart());
                     paramEval = paramEval.slice(paramEval.indexOf(ep.raw) + ep.raw.length) ?? "";
                     try {
-                        argumentsa.push(ep.parsed);
+                        argumentsa.push(ep.block);
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
