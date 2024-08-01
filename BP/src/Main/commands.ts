@@ -612,6 +612,7 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gmd", escregexp: {v: "^gmd$"}, formats: [{format: "gmd"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:gmd"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gmp", escregexp: {v: "^gmp$"}, formats: [{format: "gmp"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:gmp"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gmr", escregexp: {v: "^gmr$"}, formats: [{format: "gmr"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:gmr"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "enderchest", escregexp: {v: "^enderchest$"}, formats: [{format: "enderchest"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:enderchest"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "getuuid", escregexp: {v: "^getuuid$"}, formats: [{format: "getuuid <targetSelector: targetSelector>"}], command_version: "1.0.0", description: "", category: ["entities"], commandSettingsId: "built-inCommandSettings:getuuid"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warpset", escregexp: {v: "^warpset$"}, formats: [{format: "warpset <dimension: dimension|~> <x: float|~> <y: float|~> <z: float|~> <name: escapableString>"}], command_version: "1.1.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:warpset"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warp", escregexp: {v: "^warp$"}, formats: [{format: "warp <warpName: escapableString>"}], command_version: "1.1.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:warp"}, 
@@ -4608,6 +4609,11 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                 break; 
             }
         break; */
+        case !!switchTest.match(/^enderchest$/): 
+        eventData.cancel = true;
+            try{player.runCommandAsync("/setblock ~~~ ender_chest")}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            system.run(()=>{targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Spawned an ender chest. "))})})
+        break; 
         case !!switchTest.match(/^playersettings$/): 
             eventData.cancel = true;
             switch (Math.min(newMessage.split(" ").length, 3)){
@@ -10065,6 +10071,7 @@ export function chatSend(params: {returnBeforeChatSend: boolean|undefined, playe
         }
     })
     if (player.hasTag('config:dimension')) { showDimension=true};
+    if (player.hasTag('config:chatdimension')) { showDimension=true};
     if(messageFormatting==""){messageFormatting=String(player.getDynamicProperty("andexdbPersonalSettings:defaultMessageFormatting") ?? world.getDynamicProperty("andexdbSettings:defaultMessageFormatting") ?? "")}
     if(nameFormatting==""){nameFormatting=String(player.getDynamicProperty("andexdbPersonalSettings:defaultNameFormatting") ?? world.getDynamicProperty("andexdbSettings:defaultNameFormatting") ?? "")}
     if(separatorFormatting==""){separatorFormatting=String(player.getDynamicProperty("andexdbPersonalSettings:defaultSeparatorFormatting") ?? world.getDynamicProperty("andexdbSettings:defaultSeparatorFormatting") ?? "")}
