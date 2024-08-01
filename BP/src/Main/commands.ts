@@ -3013,23 +3013,31 @@ b: kill ambient mobs
 c: kill cloned players
 e: kill everything
 g: kill golems
+h: kill hostile mobs
 i: kill items and experience orbs
+j: kill projectiles
 l: kill bosses
+o: kill paintings
 p: kill players
 r: kill armor stands
-t: allow killing of name tagged entities`,
+t: allow killing of name tagged entities
+v: kill vehicles`,
 "butcherdespawn": `No Flags: Kill items and experience orbs.
 a: despawn animals
 b: despawn ambient mobs
 c: despawn cloned players
 e: despawn everything
 g: despawn golems
+h: despawn hostile mobs
 i: despawn items and experience orbs
+j: despawn projectiles
 l: despawn bosses
+o: despawn paintings
 p: despawn players
 r: despawn armor stands
-t: allow despawning of name tagged entities`,
-"cut": `m: copy to memory instead of storage
+t: allow despawning of name tagged entities
+v: despawn vehicles`,
+"cut": `m: cut to memory instead of storage
 e: don't include entities
 b: don't include blocks`,
 "copy": `m: copy to memory instead of storage
@@ -9527,22 +9535,24 @@ ${command.dp}snapshot list`); return}
                 case "deletebackup":{
                     let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }]).args;
                     if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
-                    AreaBackups.get(args[2]).clearBackup(AreaBackups.get(args[2]).backups[args[3]??0])
-                    player.sendMessage(`Deleted the backup at ${new Date(AreaBackups.get("areabackup:"+args[2]).backups[args[3]??0]+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?"":"+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)%96)} of area ${JSON.stringify(args[2])}.`)
+                    const backuptime = tryget(()=>AreaBackups.get("areabackup:"+args[2]).backups[args[3]??0])
+                    if(!!!backuptime){player.sendMessage(`§cError: No backup found at index ${args[3]}.`); return}
+                    AreaBackups.get("areabackup:"+args[2]).clearBackup(backuptime)
+                    player.sendMessage(`Deleted the backup at ${new Date(backuptime+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?"":"+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)%96)} of area ${JSON.stringify(args[2])}.`)
                 }
                 break;
                 case "clearbackups":{
                     if(!player.hasTag("canClearAllBackupsOfArea")){player.sendMessage(`§cPermissionsError: You do not have permission to use this sub-command.`); return}
                     let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }]).args;
                     if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
-                    AreaBackups.get(args[2]).clearBackups()
+                    AreaBackups.get("areabackup:"+args[2]).clearBackups()
                     player.sendMessage(`Cleared all of the backups of area ${JSON.stringify(args[2])}.`)
                 }
                 break;
                 case "deletearea":{
                     let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }]).args;
                     if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
-                    AreaBackups.get(args[2]).delete()
+                    AreaBackups.get("areabackup:"+args[2]).delete()
                     player.sendMessage(`Deleted the backup area ${JSON.stringify(args[2])}.`)
                 }
                 break;
@@ -9555,11 +9565,11 @@ ${command.dp}snapshot list`); return}
                 case "listbackups":{
                     let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }]).args;
                     if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
-                    player.sendMessage(AreaBackups.get("areabackup:"+args[2]).backups.map((v, i)=>`${i}. ${new Date(v+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?"":"+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)%96)}`).join("\n"))
+                    player.sendMessage(AreaBackups.get("areabackup:"+args[2]).backups.length==0?`§cError: No backups have been saved for this backup area. Please back it up using §e\\snapshot backup ${JSON.stringify(args[2])}`:AreaBackups.get("areabackup:"+args[2]).backups.map((v, i)=>`${i}. ${new Date(v+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?"":"+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)%96)}`).join("\n"))
                 }
                 break;
                 case "listareas":{
-                    player.sendMessage(AreaBackups.ids.map((v, i)=>`${JSON.stringify(v.slice(11))}: ${JSON.stringify(AreaBackups.get(v).toJSONNoId())}`).join("\n"))
+                    player.sendMessage(AreaBackups.ids.length==0?`§cError: No backup areas have been created. Please create a backup area by first selecting the two corners of the area that you want to back up, and then type §e\\backuparea §cfollowed by the id you want to set for the backup area.`:AreaBackups.ids.map((v, i)=>`${JSON.stringify(v.slice(11))}: ${JSON.stringify(AreaBackups.get(v).toJSONNoId())}`).join("\n"))
                 }
                 break;
                 case "list":{
@@ -9581,12 +9591,17 @@ ${command.dp}snapshot list`); return}
         break; 
         case !!switchTest.match(/^butcher$/): {
             eventData.cancel = true;
-            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtwipcehl", "number"]).args
+            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtwipcehljocv", "number"]).args
             args[1]??=""
-            const types = (args[1]==""?["minecraft:item", "minecraft:xp_orb"]:[]) as string[]
+            const types = (args[1]==""?["minecraft:item", "minecraft:xp_orb", "minecraft:area_effect_cloud"]:[]) as string[]
             if((args[1] as string).includes("a")||(args[1] as string).includes("f")){types.push("minecraft:sheep", "minecraft:cow", "minecraft:pig", "minecraft:horse", "minecraft:sniffer", "minecraft:chicken")}
+            if((args[1] as string).includes("h")){types.push("minecraft:zombie", "minecraft:husk", "minecraft:drowned", "minecraft:spider", "minecraft:skeleton", "minecraft:slime", "minecraft:blaze", "minecraft:magma_cube", "minecraft:bogged", "minecraft:breeze", "minecraft:cave_spider", "minecraft:creeper", "minecraft:elder_guardian", "minecraft:guardian", "minecraft:enderman", "minecraft:endermite", "minecraft:evocation_illager", "minecraft:ghast", "minecraft:hoglin", "minecraft:phantom", "minecraft:piglin_brute", "minecraft:pillager", "minecraft:ravager", "minecraft:shulker", "minecraft:silverfish", "minecraft:stray", "minecraft:vex", "minecraft:vindicator", "minecraft:warden", "minecraft:witch", "minecraft:wither", "minecraft:ender_dragon", "minecraft:wither_skeleton", "minecraft:zombie_villager", "minecraft:zombie_villager_v2")}
             if((args[1] as string).includes("b")||(args[1] as string).includes("f")){types.push("minecraft:bat", "minecraft:bee")}
             if((args[1] as string).includes("i")){types.push("minecraft:item", "minecraft:xp_orb")}
+            if((args[1] as string).includes("o")){types.push("minecraft:painting")}
+            if((args[1] as string).includes("v")){types.push("minecraft:minecart", "minecraft:boat", "minecraft:chest_boat", "minecraft:chest_minecart", "minecraft:tnt_minecart", "minecraft:hopper_minecart")}
+            if((args[1] as string).includes("c")){types.push("minecraft:area_effect_cloud", "minecraft:tnt")}
+            if((args[1] as string).includes("j")){types.push("minecraft:arrow", "minecraft:snowball", "minecraft:ice_bomb", "minecraft:wind_charge_projectile", "minecraft:egg", "minecraft:dragon_fireball", "minecraft:fireball", "minecraft:small_fireball", "minecraft:xb_bottle", "minecraft:wither_skull", "minecraft:wither_skull_dangerous", "minecraft:thrown_trident", "minecraft:splash_potion", "minecraft:lingering_potion", "minecraft:shulker_bullet")}
             if((args[1] as string).includes("n")){types.push("minecraft:npc")}
             if((args[1] as string).includes("g")||(args[1] as string).includes("f")){types.push("minecraft:iron_golem", "minecraft:snow_golem", "minecraft:copper_golem", "minecraft:tuff_golem")}
             if((args[1] as string).includes("r")){types.push("minecraft:armor_stand")}
@@ -9603,12 +9618,17 @@ ${command.dp}snapshot list`); return}
         break; 
         case !!switchTest.match(/^butcherdespawn$/): {
             eventData.cancel = true;
-            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtwipcehl", "number"]).args
+            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtwipcehljocv", "number"]).args
             args[1]??=""
-            const types = (args[1]==""?["minecraft:item", "minecraft:experience_orb"]:[]) as string[]
+            const types = (args[1]==""?["minecraft:item", "minecraft:experience_orb", "minecraft:area_effect_cloud"]:[]) as string[]
             if((args[1] as string).includes("a")||(args[1] as string).includes("f")){types.push("minecraft:sheep", "minecraft:cow", "minecraft:pig", "minecraft:horse", "minecraft:sniffer", "minecraft:chicken")}
+            if((args[1] as string).includes("h")){types.push("minecraft:zombie", "minecraft:husk", "minecraft:drowned", "minecraft:spider", "minecraft:skeleton", "minecraft:slime", "minecraft:blaze", "minecraft:magma_cube", "minecraft:bogged", "minecraft:breeze", "minecraft:cave_spider", "minecraft:creeper", "minecraft:elder_guardian", "minecraft:guardian", "minecraft:enderman", "minecraft:endermite", "minecraft:evocation_illager", "minecraft:ghast", "minecraft:hoglin", "minecraft:phantom", "minecraft:piglin_brute", "minecraft:pillager", "minecraft:ravager", "minecraft:shulker", "minecraft:silverfish", "minecraft:stray", "minecraft:vex", "minecraft:vindicator", "minecraft:warden", "minecraft:witch", "minecraft:wither", "minecraft:ender_dragon", "minecraft:wither_skeleton", "minecraft:zombie_villager", "minecraft:zombie_villager_v2")}
             if((args[1] as string).includes("b")||(args[1] as string).includes("f")){types.push("minecraft:bat", "minecraft:bee")}
             if((args[1] as string).includes("i")){types.push("minecraft:item", "minecraft:xp_orb")}
+            if((args[1] as string).includes("o")){types.push("minecraft:painting")}
+            if((args[1] as string).includes("v")){types.push("minecraft:minecart", "minecraft:boat", "minecraft:chest_boat", "minecraft:chest_minecart", "minecraft:tnt_minecart", "minecraft:hopper_minecart")}
+            if((args[1] as string).includes("c")){types.push("minecraft:area_effect_cloud", "minecraft:tnt")}
+            if((args[1] as string).includes("j")){types.push("minecraft:arrow", "minecraft:snowball", "minecraft:ice_bomb", "minecraft:wind_charge_projectile", "minecraft:egg", "minecraft:dragon_fireball", "minecraft:fireball", "minecraft:small_fireball", "minecraft:xb_bottle", "minecraft:wither_skull", "minecraft:wither_skull_dangerous", "minecraft:thrown_trident", "minecraft:splash_potion", "minecraft:lingering_potion", "minecraft:shulker_bullet")}
             if((args[1] as string).includes("n")){types.push("minecraft:npc")}
             if((args[1] as string).includes("g")||(args[1] as string).includes("f")){types.push("minecraft:iron_golem", "minecraft:snow_golem", "minecraft:copper_golem", "minecraft:tuff_golem")}
             if((args[1] as string).includes("r")){types.push("minecraft:armor_stand")}
