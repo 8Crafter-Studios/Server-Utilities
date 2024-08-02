@@ -554,7 +554,7 @@ export function settings(sourceEntitya) {
     form.button("Personal Settings", "textures/ui/profile_glyph_color");
     form.button("Notifications Settings", "textures/ui/icon_bell");
     form.button("Home System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
-    form.button("RTP System Settings [§cExperimental§r]", "textures/items/ender_pearl");
+    form.button("TPA System Settings [§cExperimental§r]", "textures/items/ender_pearl");
     form.button("Manage Game Rules", "textures/ui/controller_glyph_color");
     form.button("Back", "textures/ui/arrow_left"); /*
     form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
@@ -590,7 +590,7 @@ export function settings(sourceEntitya) {
                 homeSystemSettings(sourceEntity);
                 break;
             case 8:
-                rtpSettings(sourceEntity);
+                tpaSettings(sourceEntity);
                 break;
             case 9:
                 manageGameRulesUI(sourceEntity);
@@ -933,11 +933,11 @@ export function homeSystemSettings(sourceEntitya) {
         console.error(e, e.stack);
     });
 }
-export function rtpSettings(sourceEntitya) {
+export function tpaSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
-    form2.title("RTP System Settings [§cExperimental§r]");
-    form2.toggle("§l§fEnable RTP System", config.rtpSystemEnabled);
+    form2.title("TPA System Settings [§cExperimental§r]");
+    form2.toggle("§l§fEnable TPA System", config.tpaSystemEnabled);
     //form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.maxHomesPerPlayer));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
@@ -949,8 +949,8 @@ export function rtpSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [rtpSystemEnabled] = t.formValues;
-        config.rtpSystemEnabled = rtpSystemEnabled;
+        let [tpaSystemEnabled] = t.formValues;
+        config.tpaSystemEnabled = tpaSystemEnabled;
         //config.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
         settings(sourceEntity);
     }).catch(e => {

@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.17.0";
+export const format_version = "1.18.1";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -49,11 +49,11 @@ import "Main/spawn_protection.js";
 import "@minecraft/math.js";
 export const mainmetaimport = import.meta;
 export const subscribedEvents = {};
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause } from "@minecraft/server";
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector, dirmap, diroffsetmap, diroffsetothersmap } from "Main/coordinates";
-import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput, BlockPattern, dimensions } from "Main/commands";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector, dirmap, diroffsetmap, diroffsetothersmap, generateMinecraftConeBG } from "Main/coordinates";
+import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput, BlockPattern, dimensions, testBlockForMatch, overworld, executeCommandPlayerW, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
@@ -151,6 +151,8 @@ export class config {
     static set invalidChatCommandAction(invalidChatCommandAction) { world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction ?? 0); }
     static get chatDisplayTimeStamp() { return Boolean(world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false); }
     static set chatDisplayTimeStamp(chatDisplayTimeStampEnabled) { world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled ?? false); }
+    static get showRanksOnPlayerNameTags() { return Boolean(world.getDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags") ?? false); }
+    static set showRanksOnPlayerNameTags(showRanksOnPlayerNameTags) { world.setDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags", showRanksOnPlayerNameTags ?? false); }
     static get protectedAreasRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 1); }
     static set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 1 : Math.min(1000, Math.max(1, Number(protectedAreasRefreshRate ?? 1)))); }
     static get playerDataRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 5); }
@@ -161,6 +163,8 @@ export class config {
     static set maxBansPerManageBansPage(maxBansPerManageBansPage) { world.setDynamicProperty("andexdbSettings:maxBansPerManageBansPage", maxBansPerManageBansPage ?? 10); }
     static get maxHomesPerManageHomesPage() { return Number(world.getDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage") ?? 10); }
     static set maxHomesPerManageHomesPage(maxHomesPerManageHomesPage) { world.setDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage", maxHomesPerManageHomesPage ?? 10); }
+    static get artificialLagMS() { return Number(world.getDynamicProperty("andexdbSettings:artificialLagMS") ?? 0); }
+    static set artificialLagMS(artificialLagMS) { world.setDynamicProperty("andexdbSettings:artificialLagMS", artificialLagMS ?? 0); }
     static reset() { }
 }
 export class worldPlayers {
@@ -585,6 +589,8 @@ export function JSONStringify(JSONObject, keepUndefined = false, space) {
             return "{{NaN}}";
         else if (v === undefined && keepUndefined)
             return "{{undefined}}";
+        else if (typeof v === "function")
+            return { function: v.toString() };
         if (String(v).match(/^{{(Infinity|NaN|-Infinity|undefined)}}$/)) {
             v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}');
         }
@@ -862,6 +868,9 @@ export function splitTextByMaxProperyLength(string) { let length = string.length
     substringlist.push(string.slice((i - 1) * 32767, i == Math.ceil(length) ? string.length : i * 32767));
 } ; return substringlist; }
 ;
+/**
+ * @deprecated
+ */
 export function fillBlocks(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, to).getBlockLocationIterator()).forEach(v => { if (subArray.length <= new BlockVolume(from, to).getSpan().x) {
     subArray.push(v);
 }
@@ -869,10 +878,19 @@ else {
     mainArray.push(new BlockVolume({ x: subArray.sort((a, b) => a.x - b.x)[0].x, y: subArray.sort((a, b) => a.y - b.y)[0].y, z: subArray.sort((a, b) => a.z - b.z)[0].z }, { x: subArray.sort((a, b) => b.x - a.x)[0].x, y: subArray.sort((a, b) => b.y - a.y)[0].y, z: subArray.sort((a, b) => b.z - a.z)[0].z }));
 } }); let counter = 0; mainArray.forEach(v => counter += dimension.fillBlocks(new BlockVolume(v.from, v.to), block, options).getCapacity()); return counter; }
 ;
+/**
+ * @deprecated
+ */
 export function fillBlocksB(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += dimension.fillBlocks(new BlockVolume(v.from, v.to), block, options).getCapacity()); return counter; }
 ;
+/**
+ * @deprecated
+ */
 export function fillBlocksF(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block instanceof BlockPermutation ? block.type.id : block instanceof BlockType ? block.id : block} ${block instanceof BlockPermutation ? "[" + Object.entries(block.getAllStates()).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""} ${!!options?.matchingBlock ? options?.matchingBlock instanceof BlockPermutation ? "replace " + options?.matchingBlock?.type?.id ?? "" : "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlock ? options?.matchingBlock instanceof BlockPermutation ? "[" + Object.entries(options?.matchingBlock.getAllStates()).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : "" : ""}`).successCount); return counter; }
 ;
+/**
+ * @deprecated
+ */
 export function fillBlocksH(from, to, dimension, block, blockStates, options, placeholderid) {
     let mainArray = [];
     let subArray = [];
@@ -906,8 +924,14 @@ export function fillBlocksH(from, to, dimension, block, blockStates, options, pl
     return counter;
 }
 ;
+/**
+ * @deprecated
+ */
 export function fillBlocksHB(from, to, dimension, block, blockStates, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => { counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block} ${!!blockStates ? "[" + Object.entries(blockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}  ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount; }); return counter; }
 ;
+/**
+ * @deprecated
+ */
 export function fillBlocksHW(from, to, dimension, block, blockStates, options, placeholderid, replacemode = false) {
     let mainArray = [];
     let subArray = [];
@@ -951,6 +975,9 @@ export function fillBlocksHW(from, to, dimension, block, blockStates, options, p
     return counter;
 }
 ;
+/**
+ * @deprecated
+ */
 export async function fillBlocksHWG(begin, end, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;
     const id = generatorProgressIdGenerator();
@@ -966,7 +993,7 @@ export async function fillBlocksHWG(begin, end, dimension, block, blockStates, o
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -979,7 +1006,7 @@ export async function fillBlocksHWG(begin, end, dimension, block, blockStates, o
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -998,7 +1025,7 @@ export async function fillBlocksHWG(begin, end, dimension, block, blockStates, o
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -1017,7 +1044,7 @@ export async function fillBlocksHWG(begin, end, dimension, block, blockStates, o
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -1039,7 +1066,7 @@ export async function fillBlocksHWG(begin, end, dimension, block, blockStates, o
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1052,7 +1079,7 @@ export async function fillBlocksHWG(begin, end, dimension, block, blockStates, o
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1069,7 +1096,7 @@ export async function fillBlocksHWG(begin, end, dimension, block, blockStates, o
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -1087,7 +1114,7 @@ export async function fillBlocksHWG(begin, end, dimension, block, blockStates, o
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -1113,6 +1140,9 @@ export async function fillBlocksHWG(begin, end, dimension, block, blockStates, o
     });
 }
 ;
+/**
+ * @deprecated
+ */
 export async function fillBlocksHHG(begin, end, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;
     const id = generatorProgressIdGenerator();
@@ -1128,7 +1158,7 @@ export async function fillBlocksHHG(begin, end, dimension, block, blockStates, o
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1141,7 +1171,7 @@ export async function fillBlocksHHG(begin, end, dimension, block, blockStates, o
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1160,7 +1190,7 @@ export async function fillBlocksHHG(begin, end, dimension, block, blockStates, o
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -1179,7 +1209,7 @@ export async function fillBlocksHHG(begin, end, dimension, block, blockStates, o
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -1201,7 +1231,7 @@ export async function fillBlocksHHG(begin, end, dimension, block, blockStates, o
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1214,7 +1244,7 @@ export async function fillBlocksHHG(begin, end, dimension, block, blockStates, o
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1231,7 +1261,7 @@ export async function fillBlocksHHG(begin, end, dimension, block, blockStates, o
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -1249,7 +1279,7 @@ export async function fillBlocksHHG(begin, end, dimension, block, blockStates, o
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -1276,6 +1306,9 @@ export async function fillBlocksHHG(begin, end, dimension, block, blockStates, o
 }
 ;
 //world.broadcastClientMessage("test", "hisa")
+/**
+ * @deprecated
+ */
 export async function fillBlocksHOTG(begin, end, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;
     const id = generatorProgressIdGenerator();
@@ -1291,7 +1324,7 @@ export async function fillBlocksHOTG(begin, end, dimension, block, blockStates, 
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1304,7 +1337,7 @@ export async function fillBlocksHOTG(begin, end, dimension, block, blockStates, 
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1323,7 +1356,7 @@ export async function fillBlocksHOTG(begin, end, dimension, block, blockStates, 
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -1342,7 +1375,7 @@ export async function fillBlocksHOTG(begin, end, dimension, block, blockStates, 
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -1364,7 +1397,7 @@ export async function fillBlocksHOTG(begin, end, dimension, block, blockStates, 
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1377,7 +1410,7 @@ export async function fillBlocksHOTG(begin, end, dimension, block, blockStates, 
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1394,7 +1427,7 @@ export async function fillBlocksHOTG(begin, end, dimension, block, blockStates, 
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -1412,7 +1445,7 @@ export async function fillBlocksHOTG(begin, end, dimension, block, blockStates, 
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -1438,6 +1471,9 @@ export async function fillBlocksHOTG(begin, end, dimension, block, blockStates, 
     });
 }
 ;
+/**
+ * @deprecated
+ */
 export function fillBlocksHH(from, to, dimension, block, blockStates, options, placeholderid, replacemode = false) {
     let mainArray = [];
     let mainArrayB = [];
@@ -1487,6 +1523,9 @@ export function fillBlocksHH(from, to, dimension, block, blockStates, options, p
     return counter;
 }
 ;
+/**
+ * @deprecated
+ */
 export function fillBlocksHO(from, to, dimension, block, blockStates, options, placeholderid, replacemode = false) {
     let mainArray = [];
     let mainArrayB = [];
@@ -1535,6 +1574,9 @@ export function fillBlocksHO(from, to, dimension, block, blockStates, options, p
     return counter;
 }
 ;
+/**
+ * @deprecated
+ */
 export function fillBlocksHP(from, to, dimension, block, blockStates, options, placeholderid, replacemode = false) {
     let mainArray = [];
     let mainArrayB = [];
@@ -1573,6 +1615,9 @@ export function fillBlocksHP(from, to, dimension, block, blockStates, options, p
     return counter;
 }
 ;
+/**
+ * @deprecated
+ */
 export function fillBlocksHC(center, radius, dimension, axis /*"x"|"y"|"z"|"ns"|"sn"|"ew"|"we"|"ud"|"du"|"X"|"Y"|"Z"|"NS"|"SN"|"EW"|"WE"|"UD"|"DU"*/, block, blockStates, options, placeholderid, replacemode = false) {
     let mainArray = drawMinecraftCircle(center, radius, axis).map(v => dimension.getBlock(v));
     let counter = 0;
@@ -1602,6 +1647,21 @@ export function fillBlocksHC(center, radius, dimension, axis /*"x"|"y"|"z"|"ns"|
     return counter;
 }
 ;
+/**
+ * Generates a sphere.
+ * @deprecated Legacy function that may cause script hang errors. Superceeded by fillBlocksHSGB().
+ * @param {Vector3} center The location of the center of the sphere.
+ * @param {number} radius Radius of the sphere.
+ * @param {Dimension} dimension The dimension to generate the sphere in.
+ * @param {string} block The block type of the block permutation to generate.
+ * @param {Record<string, string | number | boolean>} blockStates The block states of the block permutation to generate.
+ * @param options Optional extra options for the sphere generation execution.
+ * @param options.matchingBlock The type of the block mask to match.
+ * @param options.matchingBlockStates The block states of the block mask to match.
+ * @param {string} placeholderid The namespaced id of the block type to use as a placeholder block during generation.
+ * @param {boolean} replacemode Whether or not to clear container blocks before replacing them.
+ * @returns A promise that resolves with the details of the hollow sphere generation once the hollow sphere generation is complete.
+ */
 export function fillBlocksHS(center, radius, dimension, block, blockStates, options, placeholderid, replacemode = false) {
     /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
     let counter = 0;
@@ -1648,6 +1708,24 @@ export function fillBlocksHS(center, radius, dimension, block, blockStates, opti
     return counter;
 }
 ;
+/**
+ * Generates a sphere.
+ * @deprecated Legacy function. Superceeded by fillBlocksHSGB().
+ * @async
+ * @param {Vector3} center The location of the center of the sphere.
+ * @param {number} radius Radius of the sphere.
+ * @param {Dimension} dimension The dimension to generate the sphere in.
+ * @param {string} block The block type of the block permutation to generate.
+ * @param {Record<string, string | number | boolean>} blockStates The block states of the block permutation to generate.
+ * @param options Optional extra options for the sphere generation execution.
+ * @param options.matchingBlock The type of the block mask to match.
+ * @param options.matchingBlockStates The block states of the block mask to match.
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick.
+ * @param {string} placeholderid The namespaced id of the block type to use as a placeholder block during generation.
+ * @param {boolean} replacemode Whether or not to clear container blocks before replacing them.
+ * @param {number} integrity The integrity of the sphere generation.
+ * @returns A promise that resolves with the details of the sphere generation once the sphere generation is complete.
+ */
 export async function fillBlocksHSG(center, radius, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
     let counter = 0;
@@ -1664,7 +1742,7 @@ export async function fillBlocksHSG(center, radius, dimension, block, blockState
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -1677,7 +1755,7 @@ export async function fillBlocksHSG(center, radius, dimension, block, blockState
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -1695,7 +1773,7 @@ export async function fillBlocksHSG(center, radius, dimension, block, blockState
                     }
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -1709,6 +1787,472 @@ export async function fillBlocksHSG(center, radius, dimension, block, blockState
                     }
                     if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), blockStates)).filter(v => !!(Object.entries(blockb.getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
                         v.dimension.getBlock(v).setPermutation(blockb);
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if ((generateMinecraftSphereBGProgress[id]?.done) !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generateMinecraftSphereBGProgress[id];
+                delete generateMinecraftSphereBGProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+/**
+ * Generates a sphere.
+ * @since 1.18.0-development.26
+ * @version 1.0.0
+ * @param {Vector3} center The location of the center of the sphere.
+ * @param {number} radius Radius of the sphere.
+ * @param {Dimension} dimension The dimension to generate the sphere in.
+ * @param block The function to determine the BlockPermutation to generate.
+ * @param options Optional extra options for the sphere generation execution.
+ * @param options.matchingBlock The type of the block mask to match.
+ * @param options.matchingBlockStates The block states of the block mask to match.
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick.
+ * @param {boolean} replacemode Whether or not to clear container blocks before replacing them.
+ * @param {number} integrity The integrity of the sphere generation.
+ * @returns A promise that resolves with the details of the sphere generation once the sphere generation is complete.
+ */
+export async function fillBlocksHSGB(center, radius, dimension, block, options, replacemode = false, integrity = 100) {
+    /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
+    let counter = 0;
+    const id = generateMinecraftSphereBGIdGenerator();
+    if (options?.verifyBlockActuallyChanged ?? false) {
+        if (!!!options?.matchingBlock) {
+            if (replacemode) {
+                system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        const currentBlock = block(v, index);
+                        if (v.dimension.getBlock(v).permutation == currentBlock) {
+                            if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                                clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                            }
+                            v.dimension.getBlock(v).setPermutation(currentBlock);
+                            counter++;
+                        }
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+            else {
+                system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        const currentBlock = block(v, index);
+                        if (v.dimension.getBlock(v).permutation == currentBlock) {
+                            v.dimension.getBlock(v).setPermutation(currentBlock);
+                            counter++;
+                        }
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+        }
+        else {
+            if (replacemode) {
+                system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                            if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                                clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                            }
+                            v.dimension.getBlock(v).setPermutation(block(v, index));
+                            counter++;
+                        }
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+            else {
+                system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                            v.dimension.getBlock(v).setPermutation(block(v, index));
+                            counter++;
+                        }
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+        }
+    }
+    else {
+        if (!!!options?.matchingBlock) {
+            if (replacemode) {
+                system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                        }
+                        v.dimension.getBlock(v).setPermutation(block(v, index));
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+            else {
+                system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(block(v, index));
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+        }
+        else {
+            if (replacemode) {
+                system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                            if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                                clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                            }
+                            v.dimension.getBlock(v).setPermutation(block(v, index));
+                            counter++;
+                        }
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+            else {
+                system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                            v.dimension.getBlock(v).setPermutation(block(v, index));
+                            counter++;
+                        }
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if ((generateMinecraftSphereBGProgress[id]?.done) !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generateMinecraftSphereBGProgress[id];
+                delete generateMinecraftSphereBGProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+/**
+ * Generates a hollow sphere.
+ * @since 1.18.0-development.27
+ * @version 1.0.0
+ * @param {Vector3} center The location of the center of the hollow sphere.
+ * @param {number} radius Radius of the hollow sphere.
+ * @param {number} thickness Thickness of the hollow sphere.
+ * @param {Dimension} dimension The dimension to generate the hollow sphere in.
+ * @param block The function to determine the BlockPermutation to generate.
+ * @param options Optional extra options for the sphere generation execution.
+ * @param options.matchingBlock The type of the block mask to match.
+ * @param options.matchingBlockStates The block states of the block mask to match.
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick.
+ * @param {boolean} replacemode Whether or not to clear container blocks before replacing them.
+ * @param {number} integrity The integrity of the hollow sphere generation.
+ * @returns A promise that resolves with the details of the hollow sphere generation once the hollow sphere generation is complete.
+ */
+export async function fillBlocksHHSGB(center, radius, thickness, dimension, block, options, replacemode = false, integrity = 100) {
+    /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
+    let counter = 0;
+    const id = generateMinecraftSphereBGIdGenerator();
+    if (options?.verifyBlockActuallyChanged ?? false) {
+        if (!!!options?.matchingBlock) {
+            if (replacemode) {
+                system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        const currentBlock = block(v, index);
+                        if (v.dimension.getBlock(v).permutation == currentBlock) {
+                            if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                                clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                            }
+                            v.dimension.getBlock(v).setPermutation(currentBlock);
+                            counter++;
+                        }
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+            else {
+                system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        const currentBlock = block(v, index);
+                        if (v.dimension.getBlock(v).permutation == currentBlock) {
+                            v.dimension.getBlock(v).setPermutation(currentBlock);
+                            counter++;
+                        }
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+        }
+        else {
+            if (replacemode) {
+                system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                            if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                                clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                            }
+                            v.dimension.getBlock(v).setPermutation(block(v, index));
+                            counter++;
+                        }
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+            else {
+                system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                            v.dimension.getBlock(v).setPermutation(block(v, index));
+                            counter++;
+                        }
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+        }
+    }
+    else {
+        if (!!!options?.matchingBlock) {
+            if (replacemode) {
+                system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                        }
+                        v.dimension.getBlock(v).setPermutation(block(v, index));
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+            else {
+                system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        v.dimension.getBlock(v).setPermutation(block(v, index));
+                        counter++;
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+        }
+        else {
+            if (replacemode) {
+                system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                            if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                                clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                            }
+                            v.dimension.getBlock(v).setPermutation(block(v, index));
+                            counter++;
+                        }
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+            else {
+                system.runJob(generateHollowSphereBG(center, radius, thickness, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                    try {
+                        if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                            v.dimension.getBlock(v).setPermutation(block(v, index));
+                            counter++;
+                        }
+                    }
+                    catch (e) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                            generatorProgress[id].containsUnloadedChunks = true;
+                        }
+                    }
+                }, undefined, integrity));
+            }
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if ((generateMinecraftSphereBGProgress[id]?.done) !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generateMinecraftSphereBGProgress[id];
+                delete generateMinecraftSphereBGProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+/**
+ * Generates a cone.
+ * @since 1.18.0-development.20
+ * @version 1.0.0
+ * @param {Vector3} center The location of the bottom center of the cone.
+ * @param {boolean} radius Radius of the cone.
+ * @param {boolean} height Height of the cone.
+ * @param {Dimension} dimension The dimension to generate the cone in.
+ * @param block The function to determine the BlockPermutation to generate.
+ * @param options Optional extra options for the cone generation execution.
+ * @param options.matchingBlock The type of the block mask to match.
+ * @param options.matchingBlockStates The block states of the block mask to match.
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick.
+ * @param replacemode Whether or not to clear container blocks before replacing them.
+ * @param integrity The integrity of the cone generation.
+ * @returns A promise that resolves with the details of the cone generation once the cone generation is complete.
+ */
+export async function fillBlocksHCGB(center, radius, height, dimension, block, options, replacemode = false, integrity = 100) {
+    let counter = 0;
+    const id = generateMinecraftSphereBGIdGenerator();
+    if (!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateMinecraftConeBG(center, radius, height, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateMinecraftConeBG(center, radius, height, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    else {
+        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
+        if (replacemode) {
+            system.runJob(generateMinecraftConeBG(center, radius, height, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                        }
+                        v.dimension.getBlock(v).setPermutation(block(v, index));
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateMinecraftConeBG(center, radius, height, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        v.dimension.getBlock(v).setPermutation(block(v, index));
                         counter++;
                     }
                 }
@@ -1737,6 +2281,217 @@ export async function fillBlocksHSG(center, radius, dimension, block, blockState
     });
 }
 ;
+/**
+ * Generates a skygrid.
+ * @since 1.18.0-development.20
+ * @version 1.0.0
+ * @async
+ * @param {Vector3} from The location of a corner of the area to generate the skygrid in.
+ * @param {Vector3} to The location of the opposite corner of the area to generate the skygrid in.
+ * @param {number} skygridSize The size of the skygrid.
+ * @param {Dimension} dimension The dimension to generate the skygrid in.
+ * @param {string} block The block type of the BlockPermutation to generate.
+ * @param {FillOptions2} options Optional extra options for the skygrid generation execution.
+ * @param replacemode Whether or not to clear container blocks before replacing them.
+ * @param integrity The integrity of the skygrid generation.
+ * @returns A promise that resolves with the details of the skygrid generation once the skygrid generation is complete.
+ */
+export async function fillBlocksHSGGB(from, to, skygridSize, dimension, block, options, replacemode = false, integrity = 100) {
+    let counter = 0;
+    const id = generateMinecraftSphereBGIdGenerator();
+    if (!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateSkygridBG(from, to, skygridSize, id, dimension, (v, index) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+        else {
+            system.runJob(generateSkygridBG(from, to, skygridSize, id, dimension, (v, index) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+    }
+    else {
+        if (replacemode) {
+            system.runJob(generateSkygridBG(from, to, skygridSize, id, dimension, (v, index) => {
+                try {
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                        }
+                        v.dimension.getBlock(v).setPermutation(block(v, index));
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+        else {
+            system.runJob(generateSkygridBG(from, to, skygridSize, id, dimension, (v, index) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        v.dimension.getBlock(v).setPermutation(block(v, index));
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if ((generateMinecraftSphereBGProgress[id]?.done) !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generateMinecraftSphereBGProgress[id];
+                delete generateMinecraftSphereBGProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+/**
+ * Generates an inverse skygrid.
+ * @since 1.18.0-development.20
+ * @version 1.0.0
+ * @async
+ * @param {Vector3} from The location of a corner of the area to generate the inverse skygrid in.
+ * @param {Vector3} to The location of the opposite corner of the area to generate the inverse skygrid in.
+ * @param {number} skygridSize The size of the skygrid.
+ * @param {Dimension} dimension The dimension to generate the inverse skygrid in.
+ * @param {string} block The block type of the BlockPermutation to generate.
+ * @param {FillOptions2} options Optional extra options for the inverse skygrid generation execution.
+ * @param replacemode Whether or not to clear container blocks before replacing them.
+ * @param integrity The integrity of the inverse skygrid generation.
+ * @returns A promise that resolves with the details of the inverse skygrid generation once the inverse skygrid generation is complete.
+ */
+export async function fillBlocksHISGGB(from, to, skygridSize, dimension, block, options, replacemode = false, integrity = 100) {
+    let counter = 0;
+    const id = generateMinecraftSphereBGIdGenerator();
+    if (!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateInverseSkygridBG(from, to, skygridSize, id, dimension, (v, index) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+        else {
+            system.runJob(generateInverseSkygridBG(from, to, skygridSize, id, dimension, (v, index) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+    }
+    else {
+        if (replacemode) {
+            system.runJob(generateInverseSkygridBG(from, to, skygridSize, id, dimension, (v, index) => {
+                try {
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                        }
+                        v.dimension.getBlock(v).setPermutation(block(v, index));
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+        else {
+            system.runJob(generateInverseSkygridBG(from, to, skygridSize, id, dimension, (v, index) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        v.dimension.getBlock(v).setPermutation(block(v, index));
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, { integrity, minMSBetweenYields: options?.minMSBetweenYields ?? 5000 }));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if ((generateMinecraftSphereBGProgress[id]?.done) !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generateMinecraftSphereBGProgress[id];
+                delete generateMinecraftSphereBGProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+/**
+ * @todo Make the new updated version of this function and then deprecate this one.
+ */
 export async function fillBlocksHSSG(center, radius, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
     let counter = 0;
@@ -1753,7 +2508,7 @@ export async function fillBlocksHSSG(center, radius, dimension, block, blockStat
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -1766,7 +2521,7 @@ export async function fillBlocksHSSG(center, radius, dimension, block, blockStat
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -1784,7 +2539,7 @@ export async function fillBlocksHSSG(center, radius, dimension, block, blockStat
                     }
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -1802,7 +2557,7 @@ export async function fillBlocksHSSG(center, radius, dimension, block, blockStat
                     }
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -1826,6 +2581,23 @@ export async function fillBlocksHSSG(center, radius, dimension, block, blockStat
     });
 }
 ;
+/**
+ * Generates a hollow sphere.
+ * @deprecated Legacy function that may cause script hang errors. Superceeded by fillBlocksHHSGB().
+ * @param {Vector3} center The location of the center of the hollow sphere.
+ * @param {number} radius Radius of the hollow sphere.
+ * @param {number} thickness Thickness of the hollow sphere.
+ * @param {Dimension} dimension The dimension to generate the hollow sphere in.
+ * @param {string} block The block type of the block permutation to generate.
+ * @param {Record<string, string | number | boolean>} blockStates The block states of the block permutation to generate.
+ * @param options Optional extra options for the sphere generation execution.
+ * @param options.matchingBlock The type of the block mask to match.
+ * @param options.matchingBlockStates The block states of the block mask to match.
+ * @param {string} placeholderid The namespaced id of the block type to use as a placeholder block during generation.
+ * @param {boolean} replacemode Whether or not to clear container blocks before replacing them.
+ * @param {number} integrity The integrity of the hollow sphere generation.
+ * @returns A promise that resolves with the details of the hollow sphere generation once the hollow sphere generation is complete.
+ */
 export function fillBlocksHHS(center, radius, thickness, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
     let mainArray = generateHollowSphere(center, radius, thickness).map(v => dimension.getBlock(v));
@@ -1859,6 +2631,24 @@ export function fillBlocksHHS(center, radius, thickness, dimension, block, block
     return counter;
 }
 ;
+/**
+ * Generates a hollow sphere.
+ * @deprecated Legacy function. Superceeded by fillBlocksHHSGB().
+ * @async
+ * @param {Vector3} center The location of the center of the hollow sphere.
+ * @param {number} radius Radius of the hollow sphere.
+ * @param {number} thickness Thickness of the hollow sphere.
+ * @param {Dimension} dimension The dimension to generate the hollow sphere in.
+ * @param {string} block The block type of the block permutation to generate.
+ * @param {Record<string, string | number | boolean>} blockStates The block states of the block permutation to generate.
+ * @param options Optional extra options for the sphere generation execution.
+ * @param options.matchingBlock The type of the block mask to match.
+ * @param options.matchingBlockStates The block states of the block mask to match.
+ * @param {string} placeholderid The namespaced id of the block type to use as a placeholder block during generation.
+ * @param {boolean} replacemode Whether or not to clear container blocks before replacing them.
+ * @param {number} integrity The integrity of the hollow sphere generation.
+ * @returns A promise that resolves with the details of the hollow sphere generation once the hollow sphere generation is complete.
+ */
 export async function fillBlocksHHSG(center, radius, thickness, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;
     let blockb = BlockPermutation.resolve(block, blockStates);
@@ -1874,7 +2664,7 @@ export async function fillBlocksHHSG(center, radius, thickness, dimension, block
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -1887,7 +2677,7 @@ export async function fillBlocksHHSG(center, radius, thickness, dimension, block
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -1905,7 +2695,7 @@ export async function fillBlocksHHSG(center, radius, thickness, dimension, block
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1923,7 +2713,7 @@ export async function fillBlocksHHSG(center, radius, thickness, dimension, block
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1948,6 +2738,9 @@ export async function fillBlocksHHSG(center, radius, thickness, dimension, block
     });
 }
 ;
+/**
+ * @todo Make the new updated version of this function and then deprecate this one.
+ */
 export async function fillBlocksHDG(center, radius, thickness, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;
     let types = BlockTypes.getAll();
@@ -1964,7 +2757,7 @@ export async function fillBlocksHDG(center, radius, thickness, dimension, block,
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1977,7 +2770,7 @@ export async function fillBlocksHDG(center, radius, thickness, dimension, block,
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -1996,7 +2789,7 @@ export async function fillBlocksHDG(center, radius, thickness, dimension, block,
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -2015,7 +2808,7 @@ export async function fillBlocksHDG(center, radius, thickness, dimension, block,
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -2037,7 +2830,7 @@ export async function fillBlocksHDG(center, radius, thickness, dimension, block,
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2050,7 +2843,7 @@ export async function fillBlocksHDG(center, radius, thickness, dimension, block,
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2067,7 +2860,7 @@ export async function fillBlocksHDG(center, radius, thickness, dimension, block,
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -2085,7 +2878,7 @@ export async function fillBlocksHDG(center, radius, thickness, dimension, block,
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -2111,6 +2904,9 @@ export async function fillBlocksHDG(center, radius, thickness, dimension, block,
     });
 }
 ;
+/**
+ * @todo Make the new updated version of this function and then deprecate this one.
+ */
 export async function fillBlocksHHOG(center, radius, offset, thickness, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;
     let blockb = BlockPermutation.resolve(block, blockStates);
@@ -2126,7 +2922,7 @@ export async function fillBlocksHHOG(center, radius, offset, thickness, dimensio
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -2139,7 +2935,7 @@ export async function fillBlocksHHOG(center, radius, offset, thickness, dimensio
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -2156,7 +2952,7 @@ export async function fillBlocksHHOG(center, radius, offset, thickness, dimensio
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2174,7 +2970,7 @@ export async function fillBlocksHHOG(center, radius, offset, thickness, dimensio
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2199,6 +2995,9 @@ export async function fillBlocksHHOG(center, radius, offset, thickness, dimensio
     });
 }
 ;
+/**
+ * @todo Make the new updated version of this function and then deprecate this one.
+ */
 export async function fillBlocksHOG(center, radius, offset, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;
     let blockb = BlockPermutation.resolve(block, blockStates);
@@ -2214,7 +3013,7 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -2227,7 +3026,7 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -2244,7 +3043,7 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2262,7 +3061,7 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2287,6 +3086,21 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
     });
 }
 ;
+/**
+ * Generates a skygrid.
+ * @deprecated
+ * @async
+ * @param {Vector3} from The location of a corner of the area to generate the skygrid in.
+ * @param {Vector3} to The location of the opposite corner of the area to generate the skygrid in.
+ * @param {number} skygridSize The size of the skygrid.
+ * @param {Dimension} dimension The dimension to generate the skygrid in.
+ * @param {string} block The block type of the BlockPermutation to generate.
+ * @param {Record<string, string | number | boolean>} blockStates The block states of the BlockPermutation to generate.
+ * @param {FillOptions2} options Optional extra options for the inverse skygrid generation execution.
+ * @param replacemode Whether or not to clear container blocks before replacing them.
+ * @param integrity The integrity of the skygrid generation.
+ * @returns A promise that resolves with the details of the skygrid generation once the skygrid generation is complete.
+ */
 export async function fillBlocksHSGG(from, to, skygridSize, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;
     let blockb = BlockPermutation.resolve(block, blockStates);
@@ -2302,7 +3116,7 @@ export async function fillBlocksHSGG(from, to, skygridSize, dimension, block, bl
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -2315,7 +3129,7 @@ export async function fillBlocksHSGG(from, to, skygridSize, dimension, block, bl
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -2332,7 +3146,7 @@ export async function fillBlocksHSGG(from, to, skygridSize, dimension, block, bl
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2350,7 +3164,7 @@ export async function fillBlocksHSGG(from, to, skygridSize, dimension, block, bl
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2375,6 +3189,21 @@ export async function fillBlocksHSGG(from, to, skygridSize, dimension, block, bl
     });
 }
 ;
+/**
+ * Generates an inverse skygrid.
+ * @deprecated
+ * @async
+ * @param {Vector3} from The location of a corner of the area to generate the inverse skygrid in.
+ * @param {Vector3} to The location of the opposite corner of the area to generate the inverse skygrid in.
+ * @param {number} skygridSize The size of the skygrid.
+ * @param {Dimension} dimension The dimension to generate the inverse skygrid in.
+ * @param {string} block The block type of the BlockPermutation to generate.
+ * @param {Record<string, string | number | boolean>} blockStates The block states of the BlockPermutation to generate.
+ * @param {FillOptions2} options Optional extra options for the inverse skygrid generation execution.
+ * @param replacemode Whether or not to clear container blocks before replacing them.
+ * @param integrity The integrity of the inverse skygrid generation.
+ * @returns A promise that resolves with the details of the inverse skygrid generation once the inverse skygrid generation is complete.
+ */
 export async function fillBlocksHISGG(from, to, skygridSize, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;
     let blockb = BlockPermutation.resolve(block, blockStates);
@@ -2390,7 +3219,7 @@ export async function fillBlocksHISGG(from, to, skygridSize, dimension, block, b
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -2403,7 +3232,7 @@ export async function fillBlocksHISGG(from, to, skygridSize, dimension, block, b
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -2420,7 +3249,7 @@ export async function fillBlocksHISGG(from, to, skygridSize, dimension, block, b
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2438,7 +3267,7 @@ export async function fillBlocksHISGG(from, to, skygridSize, dimension, block, b
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2463,6 +3292,22 @@ export async function fillBlocksHISGG(from, to, skygridSize, dimension, block, b
     });
 }
 ;
+/**
+ * Generates a tunnel.
+ * @deprecated Legacy function that may cause script hang errors.
+ * @param {Vector3} center The location of the center of the tunnel.
+ * @param {number} radius The radius of the tunnel.
+ * @param {number} length The length of the tunnel.
+ * @param {number} axis The axis of the tunnel.
+ * @param {Dimension} dimension The dimension to generate the tunnel in.
+ * @param {string} block The block type of the block permutation to generate.
+ * @param {Record<string, string | number | boolean>} [blockStates] - The block states of the block permutation to generate.
+ * @param {FillOptions1} [options] - Optional extra options for the tunnel generation execution.
+ * @param {string} [placeholderid] The namespaced id of the block type to use as a placeholder block during generation.
+ * @param {boolean} [replacemode] Whether or not to clear container blocks before replacing them.
+ * @param {number} [integrity] The integrity of the tunnel generation.
+ * @returns A promise that resolves with the details of the tunnel generation once the tunnel generation is complete.
+ */
 export function fillBlocksHT(center, radius, length, axis, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/
     let mainArray = [...new Set(generateMinecraftTunnel(center, radius, length, axis).map(v => dimension.getBlock(v)))];
@@ -2499,6 +3344,24 @@ export function fillBlocksHT(center, radius, length, axis, dimension, block, blo
     return counter;
 }
 ;
+/**
+ * Generates a fill.
+ * @deprecated Legacy function. Superceeded by fillBlocksHFGB().
+ * @async
+ * @param {Vector3} begin The location of a corner of the area to fill in.
+ * @param {Vector3} end The location of the opposite corner of the area to fill in.
+ * @param {Dimension} dimension The dimension to generate the fill in.
+ * @param block A string representing the block type to generate or a function to determine the BlockType to generate.
+ * @param {Record<string, string | number | boolean>} blockStates The block states of the block permutation to generate.
+ * @param options Optional extra options for the fill generation execution.
+ * @param options.matchingBlock The type of the block mask to match.
+ * @param options.matchingBlockStates The block states of the block mask to match.
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick.
+ * @param {string} placeholderid The namespaced id of the block type to use as a placeholder block during generation.
+ * @param replacemode Whether or not to clear container blocks before replacing them.
+ * @param integrity The integrity of the fill generation.
+ * @returns A promise that resolves with the details of the fill generation once the fill generation is complete.
+ */
 export async function fillBlocksHFG(begin, end, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;
     const id = generatorProgressIdGenerator();
@@ -2514,7 +3377,7 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2527,7 +3390,7 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2546,7 +3409,7 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -2565,7 +3428,7 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -2587,7 +3450,7 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2600,7 +3463,7 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
                         counter++;
                     }
                     catch (e) {
-                        if (e instanceof TypeError) {
+                        if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                             generatorProgress[id].containsUnloadedChunks = true;
                         }
                     }
@@ -2617,7 +3480,7 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -2635,7 +3498,7 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
                             counter++;
                         }
                         catch (e) {
-                            if (e instanceof TypeError) {
+                            if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                                 generatorProgress[id].containsUnloadedChunks = true;
                             }
                         }
@@ -2661,7 +3524,22 @@ export async function fillBlocksHFG(begin, end, dimension, block, blockStates, o
     });
 }
 ;
-export async function fillBlocksHFGB(begin, end, dimension, block, options, placeholderid, replacemode = false, integrity = 100) {
+/**
+ * Generates a fill.
+ * @async
+ * @param {Vector3} begin The location of a corner of the area to fill in.
+ * @param {Vector3} end The location of the opposite corner of the area to fill in.
+ * @param {Dimension} dimension The dimension to generate the fill in.
+ * @param block The function to determine the BlockPermutation to generate.
+ * @param options Optional extra options for the fill generation execution.
+ * @param options.matchingBlock The type of the block mask to match.
+ * @param options.matchingBlockStates The block states of the block mask to match.
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick.
+ * @param replacemode Whether or not to clear container blocks before replacing them.
+ * @param integrity The integrity of the fill generation.
+ * @returns A promise that resolves with the details of the fill generation once the fill generation is complete.
+ */
+export async function fillBlocksHFGB(begin, end, dimension, block, options, replacemode = false, integrity = 100) {
     let counter = 0;
     const id = generatorProgressIdGenerator();
     if (!!!options?.matchingBlock) {
@@ -2675,7 +3553,7 @@ export async function fillBlocksHFGB(begin, end, dimension, block, options, plac
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -2688,7 +3566,7 @@ export async function fillBlocksHFGB(begin, end, dimension, block, options, plac
                     counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -2696,20 +3574,22 @@ export async function fillBlocksHFGB(begin, end, dimension, block, options, plac
         }
     }
     else {
-        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
         let currentBlock = undefined;
         if (replacemode) {
             system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
                 currentBlock = block(v, index);
-                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), currentBlock.getAllStates())).filter(v => !!(Object.entries(BlockPermutation.resolve(currentBlock.type.id).getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
-                    try {
+                try {
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                        }
                         v.dimension.getBlock(v).setPermutation(currentBlock);
                         counter++;
                     }
-                    catch (e) {
-                        if (e instanceof TypeError) {
-                            generatorProgress[id].containsUnloadedChunks = true;
-                        }
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
             }, undefined, integrity));
@@ -2717,18 +3597,15 @@ export async function fillBlocksHFGB(begin, end, dimension, block, options, plac
         else {
             system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
                 currentBlock = block(v, index);
-                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
-                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
-                }
-                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), currentBlock.getAllStates())).filter(v => !!(Object.entries(BlockPermutation.resolve(currentBlock.type.id).getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
-                    try {
+                try {
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
                         v.dimension.getBlock(v).setPermutation(currentBlock);
                         counter++;
                     }
-                    catch (e) {
-                        if (e instanceof TypeError) {
-                            generatorProgress[id].containsUnloadedChunks = true;
-                        }
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
             }, undefined, integrity));
@@ -2751,38 +3628,97 @@ export async function fillBlocksHFGB(begin, end, dimension, block, options, plac
     });
 }
 ;
-export async function fillBlocksSHFGB(begin, radius, dimension, block, options, placeholderid, replacemode = false, integrity = 100) {
+/**
+ * Generates a flood fill.
+ * @async
+ * @param {Vector3} begin The location of a corner of the area to flood.
+ * @param {Vector3} end The location of the opposite corner of the area to flood.
+ * @param {Dimension} dimension The dimension to generate the flood fill in.
+ * @param options Optional extra options for the fill generation execution.
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick.
+ * @param integrity The integrity of the flood fill generation.
+ * @returns A promise that resolves with the details of the flood fill generation once the flood fill generation is complete.
+ */
+export async function fillBlocksHFFGB(begin, end, dimension, options, integrity = 100) {
+    let counter = 0;
+    const id = generatorProgressIdGenerator();
+    system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+        try {
+            if (v.dimension.getBlock(v).typeId == "minecraft:air") {
+                v.dimension.getBlock(v).setType("minecraft:water");
+                counter++;
+            }
+            else if (v.dimension.getBlock(v).type.canBeWaterlogged == true && !v.dimension.getBlock(v).isWaterlogged) {
+                v.dimension.getBlock(v).setType("minecraft:water");
+                counter++;
+            }
+        }
+        catch (e) {
+            if (e instanceof TypeError || e instanceof LocationInUnloadedChunkError) {
+                generatorProgress[id].containsUnloadedChunks = true;
+            }
+        }
+    }, undefined, integrity));
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+/**
+ * Generates a walls fill.
+ * @async
+ * @param {Vector3} begin The location of a corner of the area to have its walls filled in.
+ * @param {Vector3} end The location of the opposite corner of the area to have its walls filled in.
+ * @param {Dimension} dimension The dimension to generate the walls fill in.
+ * @param block The function to determine the BlockPermutation to generate.
+ * @param options Optional extra options for the walls fill generation execution.
+ * @param options.matchingBlock The type of the block mask to match.
+ * @param options.matchingBlockStates The block states of the block mask to match.
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick.
+ * @param replacemode Whether or not to clear container blocks before replacing them.
+ * @param integrity The integrity of the walls fill generation.
+ * @returns A promise that resolves with the details of the walls fill generation once the walls fill generation is complete.
+ */
+export async function fillBlocksHWFGB(begin, end, dimension, block, options, replacemode = false, integrity = 100) {
     let counter = 0;
     const id = generatorProgressIdGenerator();
     if (!!!options?.matchingBlock) {
         if (replacemode) {
-            system.runJob(generateMinecraftSphereBG(begin, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+            system.runJob(generateWallsFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
                 try {
                     if (!!v.dimension.getBlock(v).getComponent("inventory")) {
                         clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
                     }
-                    if (!!block(v, index)) {
-                        v.dimension.getBlock(v).setPermutation(block(v, index));
-                        counter++;
-                    }
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
             }, undefined, integrity));
         }
         else {
-            system.runJob(generateMinecraftSphereBG(begin, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+            system.runJob(generateWallsFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
                 try {
-                    if (!!block(v, index)) {
-                        v.dimension.getBlock(v).setPermutation(block(v, index));
-                        counter++;
-                    }
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
                 }
                 catch (e) {
-                    if (e instanceof TypeError) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
                         generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
@@ -2790,43 +3726,246 @@ export async function fillBlocksSHFGB(begin, radius, dimension, block, options, 
         }
     }
     else {
-        let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
         let currentBlock = undefined;
         if (replacemode) {
-            system.runJob(generateMinecraftSphereBG(begin, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+            system.runJob(generateWallsFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
                 currentBlock = block(v, index);
-                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), currentBlock.getAllStates())).filter(v => !!(Object.entries(BlockPermutation.resolve(currentBlock.type.id).getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
-                    try {
-                        if (!!block(v, index)) {
-                            v.dimension.getBlock(v).setPermutation(currentBlock);
-                            counter++;
+                try {
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
                         }
+                        v.dimension.getBlock(v).setPermutation(currentBlock);
+                        counter++;
                     }
-                    catch (e) {
-                        if (e instanceof TypeError) {
-                            generatorProgress[id].containsUnloadedChunks = true;
-                        }
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
             }, undefined, integrity));
         }
         else {
-            system.runJob(generateMinecraftSphereBG(begin, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+            system.runJob(generateWallsFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
                 currentBlock = block(v, index);
-                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
-                    clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
-                }
-                if ((!!options?.matchingBlockStates) ? ((BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type) && (matchingblockb.getAllStates() == Object.fromEntries(Object.entries(Object.assign(v.dimension.getBlock(v)?.permutation?.getAllStates(), currentBlock.getAllStates())).filter(v => !!(Object.entries(BlockPermutation.resolve(currentBlock.type.id).getAllStates()).find(s => v[0] == s[0])))))) : (BlockTypes.get(options?.matchingBlock) == v.dimension.getBlock(v).type)) {
-                    try {
-                        if (!!block(v, index)) {
-                            v.dimension.getBlock(v).setPermutation(currentBlock);
-                            counter++;
-                        }
+                try {
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        v.dimension.getBlock(v).setPermutation(currentBlock);
+                        counter++;
                     }
-                    catch (e) {
-                        if (e instanceof TypeError) {
-                            generatorProgress[id].containsUnloadedChunks = true;
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+/**
+ * Generates a hollow fill.
+ * @async
+ * @param {Vector3} begin The location of a corner of the area to have its edges filled in.
+ * @param {Vector3} end The location of the opposite corner of the area to have its edges filled in.
+ * @param {Dimension} dimension The dimension to generate the hollow fill in.
+ * @param block The function to determine the BlockPermutation to generate.
+ * @param options Optional extra options for the hollow fill generation execution.
+ * @param options.matchingBlock The type of the block mask to match.
+ * @param options.matchingBlockStates The block states of the block mask to match.
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick.
+ * @param replacemode Whether or not to clear container blocks before replacing them.
+ * @param integrity The integrity of the hollow fill generation.
+ * @returns A promise that resolves with the details of the hollow fill generation once the hollow fill generation is complete.
+ */
+export async function fillBlocksHHFGB(begin, end, dimension, block, options, replacemode = false, integrity = 100) {
+    let counter = 0;
+    const id = generatorProgressIdGenerator();
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    else {
+        let currentBlock = undefined;
+        if (replacemode) {
+            system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                currentBlock = block(v, index);
+                try {
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
                         }
+                        v.dimension.getBlock(v).setPermutation(currentBlock);
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                currentBlock = block(v, index);
+                try {
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        v.dimension.getBlock(v).setPermutation(currentBlock);
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+/**
+ * Generates a outline fill.
+ * @async
+ * @param {Vector3} begin The location of a corner of the area to have its outline filled in.
+ * @param {Vector3} end The location of the opposite corner of the area to have its outline filled in.
+ * @param {Dimension} dimension The dimension to generate the outline fill in.
+ * @param block The function to determine the BlockPermutation to generate.
+ * @param options Optional extra options for the outline fill generation execution.
+ * @param options.matchingBlock The type of the block mask to match.
+ * @param options.matchingBlockStates The block states of the block mask to match.
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick.
+ * @param replacemode Whether or not to clear container blocks before replacing them.
+ * @param integrity The integrity of the outline fill generation.
+ * @returns A promise that resolves with the details of the outline fill generation once the outline fill generation is complete.
+ */
+export async function fillBlocksHOFGB(begin, end, dimension, block, options, replacemode = false, integrity = 100) {
+    let counter = 0;
+    const id = generatorProgressIdGenerator();
+    if (!!!options?.matchingBlock) {
+        if (replacemode) {
+            system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    else {
+        let currentBlock = undefined;
+        if (replacemode) {
+            system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                currentBlock = block(v, index);
+                try {
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                        }
+                        v.dimension.getBlock(v).setPermutation(currentBlock);
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateHollowFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                currentBlock = block(v, index);
+                try {
+                    if ((!!options?.matchingBlockStates) ? testBlockForMatch(v.dimension.getBlock(v), { id: options?.matchingBlock, states: options?.matchingBlockStates }) : (options?.matchingBlock == v.dimension.getBlock(v).typeId)) {
+                        v.dimension.getBlock(v).setPermutation(currentBlock);
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
                     }
                 }
             }, undefined, integrity));
@@ -2865,6 +4004,9 @@ else {
 ;
 export function clearAllContainerBlocks(blocks) { blocks.forEach(v => cmds.clearContainer(v.getComponent("inventory").container)); return blocks; }
 ;
+/**
+ * @deprecated
+ */
 export function fillBlocksC(begin, end, dimension, blocktype = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) {
     let mainArray = Array.from(new BlockVolume(begin, end).getBlockLocationIterator());
     let counter = 0;
@@ -3073,6 +4215,9 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
     return counter;
 }
 ;
+/**
+ * @deprecated
+ */
 export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false, onComplete = () => { }, onCompleteArgsObject, ...onCompleteArgs) {
     var timea = Date.now();
     var mainArray = Array.from(new BlockVolume(begin, end).getBlockLocationIterator());
@@ -3309,8 +4454,14 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
 }
 ;
 export function v3Multiply(a, b) { return typeof b == "object" ? { x: a.x * b.x, y: a.y * b.y, z: a.z * b.z } : { x: a.x * b, y: a.y * b, z: a.z * b }; }
+/**
+ * @deprecated
+ */
 export function fillBlocksD(from, to, dimension, block = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += fillBlocksC(v.from, v.to, dimension, block, blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates)); return counter; }
 ;
+/**
+ * @deprecated
+ */
 export async function fillBlocksE(from, to, dimension, block = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => system.run(() => counter += fillBlocksC(v.from, v.to, dimension, block, blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates))); return counter; }
 ;
 export function catchtry(trycallbackfn, catchcallbackfn = (e) => console.error(e, e.stack), finallycallbackfn = (v) => { return v; }) { let v; v = undefined; try {
@@ -3998,6 +5149,7 @@ export const dimensionTypeDisplayFormatting = { "minecraft:overworld": "the over
 export const dimensionTypeDisplayFormattingB = { "minecraft:overworld": "overworld", "overworld": "overworld", "minecraft:nether": "nether", "nether": "nether", "minecraft:the_end": "the end", "the_end": "the end" };
 export const dimensionTypeDisplayFormattingC = { "minecraft:overworld": "The Overworld", "overworld": "The Overworld", "minecraft:nether": "The Nether", "nether": "The Nether", "minecraft:the_end": "The End", "the_end": "The End" };
 export const dimensionTypeDisplayFormattingD = { "minecraft:overworld": "Overworld", "overworld": "Overworld", "minecraft:nether": "Nether", "nether": "Nether", "minecraft:the_end": "The End", "the_end": "The End" };
+export const dimensionTypeDisplayFormattingE = { "minecraft:overworld": "§aOverworld", "overworld": "§aOverworld", "minecraft:nether": "§cNether", "nether": "§cNether", "minecraft:the_end": "§dThe End", "the_end": "§dThe End" };
 export function tryget(callbackfn) { try {
     return callbackfn();
 }
@@ -4171,7 +5323,40 @@ world.beforeEvents.playerInteractWithEntity.subscribe(event => {
             } /*
             console.warn(targetList);*/
         }
-        event.player.sendMessage("§btypeId§a: §u" + playerTargetB.typeId + "§a, §bUUID§a: §u" + playerTargetB.id + "§a, §bnameTag§a: §u" + playerTargetB.nameTag + "§a, §bdistance§a: §u" + distance + "§a, §bLocation§a: §9{ §c" + playerTargetB.location.x + "§a, §c" + playerTargetB.location.y + "§a, §c" + playerTargetB.location.z + "§9 }§a, §bisSneaking§a: §g" + playerTargetB.isSneaking + "§a, §bscoreboardIdentityId§a: §u" + scoreboardIdentity + "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName + "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType + "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType + ", §bgetEntitiesFromViewDirection§a: { §sEntity§a: " + entityViewedEntityType + ", §sDistance§a: " + entityViewedEntityDistance + " }, §bgetComponents§a: §n[§u" + componentList + "§n]§a, §bgetEffects§a: §n[§a" + effectsList + "§n]§a, §bgetTags§a: [" + playerTargetB.getTags() + "], §bgetVelocity§a: §9{ §c" + (playerTargetB.getVelocity().x + "§a, §c" + playerTargetB.getVelocity().y + "§a, §c" + playerTargetB.getVelocity().z) + "§9 }§a, §bgetViewDirection§a: { " + (playerTargetB.getViewDirection().x, playerTargetB.getViewDirection().y, playerTargetB.getViewDirection().z) + ", §bselectedSlotIndex§a: " + playerTargetB.selectedSlotIndex + spawnPointAllCoordinates);
+        event.player.sendMessage("§btypeId§a: §u" + playerTargetB.typeId +
+            "§a, §bUUID§a: §u" + playerTargetB.id +
+            "§a, §bnameTag§a: §u" + playerTargetB.nameTag +
+            "§a, §bdistance§a: §u" + distance +
+            "§a, §bLocation§a: §9{ §c" +
+            playerTargetB.location.x + "§a, §c" +
+            playerTargetB.location.y + "§a, §c" +
+            playerTargetB.location.z +
+            "§9 }§a, §bdimension§a: §u" + playerTargetB.dimension +
+            "§a, §bhealth§a: §g" + playerTargetB.getComponent("health")?.currentValue +
+            "§a, §bdefaultHealth§a: §g" + playerTargetB.getComponent("health")?.defaultValue +
+            "§a, §beffectiveMinHealth§a: §g" + playerTargetB.getComponent("health")?.effectiveMin +
+            "§a, §beffectiveMaxHealth§a: §g" + playerTargetB.getComponent("health")?.effectiveMax +
+            "§a, §bisSneaking§a: §g" + playerTargetB.isSneaking +
+            "§a, §bscoreboardIdentityId§a: §u" + scoreboardIdentity +
+            "§a, §bscoreboardIdentityDisplayName§a: §u" + scoreboardIdentityDisplayName +
+            "§a, §bscoreboardIdentityType§a: §u" + scoreboardIdentityType +
+            "§a, §bgetBlockFromViewDirection§a: " + blockViewedBlockType +
+            ", §bgetEntitiesFromViewDirection§a: { §sEntity§a: " +
+            entityViewedEntityType + ", §sDistance§a: " +
+            entityViewedEntityDistance +
+            " }, §bgetComponents§a: §n[§u" + componentList +
+            "§n]§a, §bgetEffects§a: §n[§a" + effectsList +
+            "§n]§a, §bgetTags§a: [" + playerTargetB.getTags() +
+            "], §bgetVelocity§a: §9{ §c" +
+            (playerTargetB.getVelocity().x + "§a, §c" +
+                playerTargetB.getVelocity().y + "§a, §c" +
+                playerTargetB.getVelocity().z) +
+            "§9 }§a, §bgetViewDirection§a: { " +
+            (playerTargetB.getViewDirection().x,
+                playerTargetB.getViewDirection().y,
+                playerTargetB.getViewDirection().z) +
+            ", §bselectedSlotIndex§a: " + playerTargetB.selectedSlotIndex +
+            spawnPointAllCoordinates);
     }
 });
 world.beforeEvents.playerLeave.subscribe(event => {
@@ -4196,7 +5381,7 @@ world.afterEvents.blockExplode.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getBlockExplodeNotifications", "getBlockExplodeNotificationsIn:" + event.dimension, "getBlockExplodeNotificationsForExplodedBlockType:" + event.explodedBlockPermutation.type.id]).forEach(p => psend(p, `[§l§dServer§r][§eblockExplode§r] Block of type ${event.explodedBlockPermutation.type.id} in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was blown up${!!event.source ? ` by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}` : ""}. `));
+        getPlayersWithAnyOfTags(["getBlockExplodeNotifications", "getBlockExplodeNotificationsIn:" + event.dimension, "getBlockExplodeNotificationsForExplodedBlockType:" + event.explodedBlockPermutation.type.id]).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eblockExplode§r] Block of type ${event.explodedBlockPermutation.type.id} in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was blown up${!!event.source ? ` by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}` : ""}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4213,7 +5398,7 @@ world.afterEvents.buttonPush.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getButtonPushNotifications", "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location) + " " + event.block.dimension, "getButtonPushNotificationsForBlockAt:" + event.block.dimension + " " + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(event.block.location)]).filter(p => !p.hasTag("excludeButtonPushNotificationsIn:" + event.dimension.id)).forEach(p => psend(p, `[§l§dServer§r][§ebuttonPush§r] Button in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was pressed by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}. `));
+        getPlayersWithAnyOfTags(["getButtonPushNotifications", "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location) + " " + event.block.dimension, "getButtonPushNotificationsForBlockAt:" + event.block.dimension + " " + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(event.block.location)]).filter(p => !p.hasTag("excludeButtonPushNotificationsIn:" + event.dimension.id)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebuttonPush§r] Button in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was pressed by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4261,7 +5446,7 @@ world.afterEvents.effectAdd.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEffectAddNotifications", "getEffectAddNotificationsForEntityType:" + event.entity.typeId, "getEntitySpawnNotificationsForEntityId:" + event.entity.id, "getEntitySpawnNotificationsWithEffectType:" + event.effect.typeId, "getEntitySpawnNotificationsWithEffectName:" + event.effect.displayName, "getEntitySpawnNotificationsWithAmplifier:" + event.effect.amplifier, "getEntitySpawnNotificationsWithEffectDuration:" + event.effect.duration]).forEach(p => psend(p, `[§l§dServer§r][§eeffectAdd§r] The effect ${event.effect.displayName} with the amplifier ${event.effect.amplifier} and the duration ${event.effect.duration} was added to ${event.entity.typeId == "minecraft:player" ? event.entity?.name : `an entity of type ${event.entity.typeId} with the id ${event.entity.id} in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location}`}. `));
+        getPlayersWithAnyOfTags(["getEffectAddNotifications", "getEffectAddNotificationsForEntityType:" + event.entity.typeId, "getEntitySpawnNotificationsForEntityId:" + event.entity.id, "getEntitySpawnNotificationsWithEffectType:" + event.effect.typeId, "getEntitySpawnNotificationsWithEffectName:" + event.effect.displayName, "getEntitySpawnNotificationsWithAmplifier:" + event.effect.amplifier, "getEntitySpawnNotificationsWithEffectDuration:" + event.effect.duration]).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eeffectAdd§r] The effect ${event.effect.displayName} with the amplifier ${event.effect.amplifier} and the duration ${event.effect.duration} was added to ${event.entity.typeId == "minecraft:player" ? event.entity?.name : `an entity of type ${event.entity.typeId} with the id ${event.entity.id} in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location}`}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4312,7 +5497,7 @@ world.afterEvents.entityHitEntity.subscribe(event => {
     }
     try {
         if (["minecraft:ender_crystal"].includes(event.hitEntity?.typeId)) {
-            getPlayersWithTags("getHitEntityTriggerExplosionNotifications").filter(p => !p.hasTag("excludeHitEntityTriggerExplosionNotificationsIn:" + (tryget(() => event.hitEntity?.dimension) ?? "unknown")) && ((!!event.damagingEntity && (event.damagingEntity?.isValid() ?? true)) ? !p.hasTag("excludeHitEntityTriggerExplosionNotificationsBy:" + event.damagingEntity?.name ?? event.damagingEntity?.nameTag) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsById:" + event.damagingEntity?.id) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsByType:" + event.damagingEntity?.typeId) : !p.hasTag("excludeHitEntityTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsCauseType:" + event.hitEntity?.typeId)).forEach(p => psend(p, `[§l§dServer§r][§eexplosiveEntityTriggeredByHit§r] ${!!event.damagingEntity ? `${event.damagingEntity?.name ?? event.damagingEntity?.nameTag ?? event.damagingEntity?.typeId} hit exploding entity of type "${event.hitEntity?.typeId}"` : `Exploding entity of type "${event.hitEntity?.typeId}" was hit`}${(!!tryget(() => event.hitEntity?.dimension) && (event.hitEntity?.isValid() ?? true)) ? ` in ${dimensionTypeDisplayFormatting[tryget(() => event.hitEntity?.dimension?.id)] ?? "an unknown dimension"} at ${(!!tryget(() => event.hitEntity?.location) && (event.hitEntity?.isValid() ?? true)) ? vTStr(event.hitEntity?.location) : "an unknwon location"}` : (!!event.damagingEntity.dimension && (event.damagingEntity?.isValid() ?? true)) ? `, the entity/player who hit the explosive entity is in ${dimensionTypeDisplayFormatting[tryget(() => event.damagingEntity?.dimension?.id)] ?? "an unknown dimension"} at ${(!!tryget(() => event.damagingEntity?.location) && (event.damagingEntity?.isValid() ?? true)) ? vTStr(mcMath.Vector3Utils.floor(event.damagingEntity?.location)) : "an unknwon location"}` : ""}. `));
+            getPlayersWithTags("getHitEntityTriggerExplosionNotifications").filter(p => !p.hasTag("excludeHitEntityTriggerExplosionNotificationsIn:" + (tryget(() => event.hitEntity?.dimension) ?? "unknown")) && ((!!event.damagingEntity && (event.damagingEntity?.isValid() ?? true)) ? !p.hasTag("excludeHitEntityTriggerExplosionNotificationsBy:" + event.damagingEntity?.name ?? event.damagingEntity?.nameTag) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsById:" + event.damagingEntity?.id) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsByType:" + event.damagingEntity?.typeId) : !p.hasTag("excludeHitEntityTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsCauseType:" + event.hitEntity?.typeId)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveEntityTriggeredByHit§r] ${!!event.damagingEntity ? `${event.damagingEntity?.name ?? event.damagingEntity?.nameTag ?? event.damagingEntity?.typeId} hit exploding entity of type "${event.hitEntity?.typeId}"` : `Exploding entity of type "${event.hitEntity?.typeId}" was hit`}${(!!tryget(() => event.hitEntity?.dimension) && (event.hitEntity?.isValid() ?? true)) ? ` in ${dimensionTypeDisplayFormatting[tryget(() => event.hitEntity?.dimension?.id)] ?? "an unknown dimension"} at ${(!!tryget(() => event.hitEntity?.location) && (event.hitEntity?.isValid() ?? true)) ? vTStr(event.hitEntity?.location) : "an unknwon location"}` : (!!event.damagingEntity.dimension && (event.damagingEntity?.isValid() ?? true)) ? `, the entity/player who hit the explosive entity is in ${dimensionTypeDisplayFormatting[tryget(() => event.damagingEntity?.dimension?.id)] ?? "an unknown dimension"} at ${(!!tryget(() => event.damagingEntity?.location) && (event.damagingEntity?.isValid() ?? true)) ? vTStr(mcMath.Vector3Utils.floor(event.damagingEntity?.location)) : "an unknwon location"}` : ""}. `));
         }
     }
     catch (e) {
@@ -4330,7 +5515,7 @@ world.afterEvents.entityHurt.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.hurtEntity?.typeId, "getEntitySpawnNotificationsForId:" + event.hurtEntity?.id, "getEntitySpawnNotificationsWithCause:" + event.damageSource?.cause, "getEntitySpawnNotificationsWithDamage:" + event.damage, "getEntitySpawnNotificationsWithDamagingEntityOfType:" + event.damageSource?.damagingEntity?.typeId, "getEntitySpawnNotificationsWithDamagingEntityWithId:" + event.damageSource?.damagingEntity?.id, "getEntitySpawnNotificationsWithDamagingProjectileOfType:" + event.damageSource?.damagingProjectile?.typeId, "getEntitySpawnNotificationsWithDamagingProjectileWithId:" + event.damageSource?.damagingProjectile?.id]).forEach(p => psend(p, `[§l§dServer§r][§eentityHurt§r] Entity of type ${event.hurtEntity?.typeId} with the id ${event.hurtEntity?.id} took ${event.damage} damage of type "${event.damageSource?.cause}" in ${tryget(() => dimensionTypeDisplayFormatting[event.hurtEntity?.dimension?.id]) ?? "an unknown dimension"} at ${(event.hurtEntity?.isValid() ?? false) ? vTStr(event.hurtEntity?.location) : "an unknown location"}${!!event.damageSource?.damagingEntity ? `, the entity was damaged by ${event.damageSource?.damagingEntity?.typeId == "minecraft:player" ? event.damageSource?.damagingEntity?.name : `an entity of type ${event.damageSource?.damagingEntity?.typeId} with the ID ${event.damageSource?.damagingEntity?.id}${tryget(() => event.damageSource.damagingEntity.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingEntity.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingEntity.dimension.id] + " at " + vTStr(event.damageSource.damagingEntity.location))}` : ""}${!!event.damageSource?.damagingProjectile ? `, the projectile that damaged the entity was ${`a projectile of type ${event.damageSource?.damagingProjectile?.typeId} with the ID ${event.damageSource?.damagingProjectile?.id}${tryget(() => event.damageSource.damagingProjectile.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingProjectile.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingProjectile.dimension.id] + " at " + vTStr(event.damageSource.damagingProjectile.location))}` : ""}. `));
+        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.hurtEntity?.typeId, "getEntitySpawnNotificationsForId:" + event.hurtEntity?.id, "getEntitySpawnNotificationsWithCause:" + event.damageSource?.cause, "getEntitySpawnNotificationsWithDamage:" + event.damage, "getEntitySpawnNotificationsWithDamagingEntityOfType:" + event.damageSource?.damagingEntity?.typeId, "getEntitySpawnNotificationsWithDamagingEntityWithId:" + event.damageSource?.damagingEntity?.id, "getEntitySpawnNotificationsWithDamagingProjectileOfType:" + event.damageSource?.damagingProjectile?.typeId, "getEntitySpawnNotificationsWithDamagingProjectileWithId:" + event.damageSource?.damagingProjectile?.id]).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityHurt§r] Entity of type ${event.hurtEntity?.typeId} with the id ${event.hurtEntity?.id} took ${event.damage} damage of type "${event.damageSource?.cause}" in ${tryget(() => dimensionTypeDisplayFormatting[event.hurtEntity?.dimension?.id]) ?? "an unknown dimension"} at ${(event.hurtEntity?.isValid() ?? false) ? vTStr(event.hurtEntity?.location) : "an unknown location"}${!!event.damageSource?.damagingEntity ? `, the entity was damaged by ${event.damageSource?.damagingEntity?.typeId == "minecraft:player" ? event.damageSource?.damagingEntity?.name : `an entity of type ${event.damageSource?.damagingEntity?.typeId} with the ID ${event.damageSource?.damagingEntity?.id}${tryget(() => event.damageSource.damagingEntity.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingEntity.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingEntity.dimension.id] + " at " + vTStr(event.damageSource.damagingEntity.location))}` : ""}${!!event.damageSource?.damagingProjectile ? `, the projectile that damaged the entity was ${`a projectile of type ${event.damageSource?.damagingProjectile?.typeId} with the ID ${event.damageSource?.damagingProjectile?.id}${tryget(() => event.damageSource.damagingProjectile.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingProjectile.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingProjectile.dimension.id] + " at " + vTStr(event.damageSource.damagingProjectile.location))}` : ""}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4347,7 +5532,7 @@ world.afterEvents.entityLoad.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntityLoadNotifications", "getEntityLoadNotificationsForType:" + event.entity.typeId, "getEntityLoadNotificationsForId:" + event.entity.id]).forEach(p => psend(p, `[§l§dServer§r][§eentityLoad§r] Entity of type ${event.entity.typeId} with the ID ${event.entity.id}${event.entity.nameTag != "" ? " and the name \"" + event.entity.nameTag + "\"" : ""} was loaded in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${vTStr(event.entity.location)}. `));
+        getPlayersWithAnyOfTags(["getEntityLoadNotifications", "getEntityLoadNotificationsForType:" + event.entity.typeId, "getEntityLoadNotificationsForId:" + event.entity.id]).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityLoad§r] Entity of type ${event.entity.typeId} with the ID ${event.entity.id}${event.entity.nameTag != "" ? " and the name \"" + event.entity.nameTag + "\"" : ""} was loaded in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${vTStr(event.entity.location)}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4364,7 +5549,7 @@ world.afterEvents.entityRemove.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntityRemoveNotifications", "getEntityRemoveNotificationsForType:" + event.typeId, "getEntityRemoveNotificationsForId:" + event.removedEntityId]).forEach(p => psend(p, `[§l§dServer§r][§eentityRemove§r] Entity of type ${event.typeId} with the id ${event.removedEntityId} was removed. `));
+        getPlayersWithAnyOfTags(["getEntityRemoveNotifications", "getEntityRemoveNotificationsForType:" + event.typeId, "getEntityRemoveNotificationsForId:" + event.removedEntityId]).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityRemove§r] Entity of type ${event.typeId} with the id ${event.removedEntityId} was removed. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4381,7 +5566,7 @@ world.afterEvents.entitySpawn.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.entity.typeId, "getEntitySpawnNotificationsForId:" + event.entity.id, "getEntitySpawnNotificationsWithCause:" + event.cause]).forEach(p => psend(p, `[§l§dServer§r][§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location} with the cause "${event.cause}". `));
+        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.entity.typeId, "getEntitySpawnNotificationsForId:" + event.entity.id, "getEntitySpawnNotificationsWithCause:" + event.cause]).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location} with the cause "${event.cause}". `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4398,7 +5583,7 @@ world.afterEvents.explosion.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getExplosionNotifications", "getExplosionNotificationsForSourceType:" + event.source?.typeId ?? "none"]).filter(p => !p.hasTag("excludeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeExplosionNotificationsBy:" + event.source?.name ?? tryget(() => event.source?.nameTag) ?? "undefined") && !p.hasTag("excludeExplosionNotificationsById:" + event.source?.id) && !p.hasTag("excludeExplosionNotificationsType:" + event.source?.typeId) : !p.hasTag("excludeExplosionNotificationsWithNoSource"))).forEach(p => psend(p, `[§l§dServer§r][§eexplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length != 0 ? " around " : ""}${event.getImpactedBlocks().length == 0 ? "" : vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `));
+        getPlayersWithAnyOfTags(["getExplosionNotifications", "getExplosionNotificationsForSourceType:" + event.source?.typeId ?? "none"]).filter(p => !p.hasTag("excludeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeExplosionNotificationsBy:" + event.source?.name ?? tryget(() => event.source?.nameTag) ?? "undefined") && !p.hasTag("excludeExplosionNotificationsById:" + event.source?.id) && !p.hasTag("excludeExplosionNotificationsType:" + event.source?.typeId) : !p.hasTag("excludeExplosionNotificationsWithNoSource"))).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length != 0 ? " around " : ""}${event.getImpactedBlocks().length == 0 ? "" : vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4438,7 +5623,7 @@ world.afterEvents.gameRuleChange.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getGameRuleChangeNotifications").filter(p => !p.hasTag("excludeGameRuleChangeNotificationsFor:" + event.rule)).forEach(p => psend(p, `[§l§dServer§r][§egameRuleChange§r] "${event.rule}" was changed to ${event.value}. `));
+        getPlayersWithTags("getGameRuleChangeNotifications").filter(p => !p.hasTag("excludeGameRuleChangeNotificationsFor:" + event.rule)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§egameRuleChange§r] "${event.rule}" was changed to ${event.value}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4455,7 +5640,7 @@ world.afterEvents.playerGameModeChange.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getGameModeChangeNotifications").filter(p => !p.hasTag("excludeGameModeChangeNotificationsFor:" + event.player.name) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.fromGameMode) && !p.hasTag("excludeGameModeChangeNotificationsTo:" + event.toGameMode)).forEach(p => psend(p, `[§l§dServer§r][§eplayerGameModeChange§r][${event.player.name}] Changed from ${event.fromGameMode} to ${event.toGameMode}. `));
+        getPlayersWithTags("getGameModeChangeNotifications").filter(p => !p.hasTag("excludeGameModeChangeNotificationsFor:" + event.player.name) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.fromGameMode) && !p.hasTag("excludeGameModeChangeNotificationsTo:" + event.toGameMode)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eplayerGameModeChange§r][${event.player.name}] Changed from ${event.fromGameMode} to ${event.toGameMode}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4472,7 +5657,7 @@ world.afterEvents.weatherChange.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getWeatherChangeNotifications").filter(p => !p.hasTag("excludeWeatherChangeNotificationsTo:" + event.newWeather) && !p.hasTag("excludeGameModeChangeNotificationsIn:" + event.dimension) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.previousWeather)).forEach(p => psend(p, `[§l§dServer§r][§eweatherChange§r] Weather in ${event.dimension} changed from ${event.previousWeather} to ${event.newWeather}. `));
+        getPlayersWithTags("getWeatherChangeNotifications").filter(p => !p.hasTag("excludeWeatherChangeNotificationsTo:" + event.newWeather) && !p.hasTag("excludeGameModeChangeNotificationsIn:" + event.dimension) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.previousWeather)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eweatherChange§r] Weather in ${event.dimension} changed from ${event.previousWeather} to ${event.newWeather}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4569,7 +5754,7 @@ world.afterEvents.leverAction.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getLeverActionNotifications").filter(p => !p.hasTag("excludeLeverActionNotificationsTo:" + event.isPowered) && !p.hasTag("excludeLeverActionNotificationsIn:" + event.dimension) && !p.hasTag("excludeLeverActionNotificationsBy:" + event.player.name) && !p.hasTag("excludeLeverActionNotificationsAt:" + Object.values(event.block.location).join(","))).forEach(p => psend(p, `[§l§dServer§r][§eleverAction§r][${event.player.name}] Lever in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} turned ${event.isPowered ? "ON" : "OFF"}. `));
+        getPlayersWithTags("getLeverActionNotifications").filter(p => !p.hasTag("excludeLeverActionNotificationsTo:" + event.isPowered) && !p.hasTag("excludeLeverActionNotificationsIn:" + event.dimension) && !p.hasTag("excludeLeverActionNotificationsBy:" + event.player.name) && !p.hasTag("excludeLeverActionNotificationsAt:" + Object.values(event.block.location).join(","))).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eleverAction§r][${event.player.name}] Lever in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} turned ${event.isPowered ? "ON" : "OFF"}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4587,7 +5772,7 @@ world.afterEvents.messageReceive.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getMessageReceiveNotifications").filter(p => !p.hasTag("excludeMessageReceiveNotificationsWithId:" + event.id) && !p.hasTag("excludeMessageReceiveNotificationsWithMessage:" + event.message) && !p.hasTag("excludeMessageReceiveNotificationsBy:" + event.player.name)).forEach(p => psend(p, `[§l§dServer§r][§emessageReceive§r][${event.player.name}] Message recieved with ID ${event.id} and value "${event.message}". `));
+        getPlayersWithTags("getMessageReceiveNotifications").filter(p => !p.hasTag("excludeMessageReceiveNotificationsWithId:" + event.id) && !p.hasTag("excludeMessageReceiveNotificationsWithMessage:" + event.message) && !p.hasTag("excludeMessageReceiveNotificationsBy:" + event.player.name)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§emessageReceive§r][${event.player.name}] Message recieved with ID ${event.id} and value "${event.message}". `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4637,7 +5822,7 @@ world.afterEvents.playerDimensionChange.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getPlayerDimensionChangeNotifications", "includePlayerDimensionChangeNotificationsBy:" + event.player.name, "includePlayerDimensionChangeNotificationsFromDimension:" + event.fromDimension, "includePlayerDimensionChangeNotificationsToDimension:" + event.toDimension, "includeBeforeChatSendNotificationsById:" + event.player.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + event.player.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + event.player.name)).forEach(p => psend(p, `[§l§dServer§r][§eplayerDimensionChange§r][${event.player.name}] Entered ${dimensionTypeDisplayFormatting[event.fromDimension.id]} at ${vTStr(event.fromLocation)} from ${dimensionTypeDisplayFormatting[event.toDimension.id]} at ${vTStr(event.toLocation)}. `));
+        getPlayersWithAnyOfTags(["getPlayerDimensionChangeNotifications", "includePlayerDimensionChangeNotificationsBy:" + event.player.name, "includePlayerDimensionChangeNotificationsFromDimension:" + event.fromDimension, "includePlayerDimensionChangeNotificationsToDimension:" + event.toDimension, "includeBeforeChatSendNotificationsById:" + event.player.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + event.player.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + event.player.name)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eplayerDimensionChange§r][${event.player.name}] Entered ${dimensionTypeDisplayFormatting[event.fromDimension.id]} at ${vTStr(event.fromLocation)} from ${dimensionTypeDisplayFormatting[event.toDimension.id]} at ${vTStr(event.toLocation)}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -4655,7 +5840,7 @@ world.afterEvents.playerInteractWithBlock.subscribe(event => {
     }
     try {
         if ((["minecraft:respawn_anchor", "minecraft:tnt"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:overworld") || (["minecraft:bed", "minecraft:tnt"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:nether") || (["minecraft:respawn_anchor", "minecraft:tnt", "minecraft:bed"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:overworld")) {
-            getPlayersWithTags("getBlockInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsIn:" + event.block.dimension) && (!!event.player ? !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBlockType:" + event.block.typeId)).forEach(p => psend(p, `[§l§dServer§r][§eexplosiveBlockInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive block of type "${event.block.typeId}"` : `Explosive block of type "${event.block.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.block.dimension.id]} at ${vTStr(event.block.location)}${!!event.itemStack ? ` using ${event.itemStack.typeId}` : ""}. `));
+            getPlayersWithTags("getBlockInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsIn:" + event.block.dimension) && (!!event.player ? !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBlockType:" + event.block.typeId)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveBlockInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive block of type "${event.block.typeId}"` : `Explosive block of type "${event.block.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.block.dimension.id]} at ${vTStr(event.block.location)}${!!event.itemStack ? ` using ${event.itemStack.typeId}` : ""}. `));
         }
     }
     catch (e) {
@@ -4674,7 +5859,7 @@ world.afterEvents.playerInteractWithEntity.subscribe(event => {
     }
     try {
         if (["minecraft:creeper"].includes(event.target.typeId) && !!event.itemStack) {
-            getPlayersWithTags("getEntityInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsIn:" + event.target.dimension) && (!!event.player ? !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsEntityType:" + event.target.typeId)).forEach(p => psend(p, `[§l§dServer§r][§eexplosiveEntityInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive entity of type "${event.target.typeId}"` : `Explosive entity of type "${event.target.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.target.dimension.id]} at ${vTStr(event.target.location)}${!!event.itemStack ? ` using ${event.itemStack.typeId}` : ""}. `));
+            getPlayersWithTags("getEntityInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsIn:" + event.target.dimension) && (!!event.player ? !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsEntityType:" + event.target.typeId)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveEntityInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive entity of type "${event.target.typeId}"` : `Explosive entity of type "${event.target.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.target.dimension.id]} at ${vTStr(event.target.location)}${!!event.itemStack ? ` using ${event.itemStack.typeId}` : ""}. `));
         }
     }
     catch (e) {
@@ -4837,7 +6022,7 @@ world.beforeEvents.explosion.subscribe(event => {
     } /*
     eval(String(world.getDynamicProperty("scriptEvalBeforeEventsExplosion")))*/
     try {
-        getPlayersWithAnyOfTags(["getBeforeExplosionNotifications", "getExplosionNotificationsForSourceType:" + event.source?.typeId ?? "none", "getExplosionNotificationsForSourceId:" + event.source?.id ?? "none"]).filter(p => !p.hasTag("excludeBeforeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeBeforeExplosionNotificationsType:" + event.source?.typeId) : true) && ((!!event.source && (event.source?.isValid() ?? true)) ? !p.hasTag("excludeBeforeExplosionNotificationsBy:" + event.source?.name ?? tryget(() => event.source?.nameTag)) && !p.hasTag("excludeBeforeExplosionNotificationsById:" + event.source?.id) : !p.hasTag("excludeBeforeExplosionNotificationsWithNoSource"))).forEach(p => psend(p, `[§l§dServer§r][§ebeforeExplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length == 0 ? "" : " around " + vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `));
+        getPlayersWithAnyOfTags(["getBeforeExplosionNotifications", "getExplosionNotificationsForSourceType:" + event.source?.typeId ?? "none", "getExplosionNotificationsForSourceId:" + event.source?.id ?? "none"]).filter(p => !p.hasTag("excludeBeforeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeBeforeExplosionNotificationsType:" + event.source?.typeId) : true) && ((!!event.source && (event.source?.isValid() ?? true)) ? !p.hasTag("excludeBeforeExplosionNotificationsBy:" + event.source?.name ?? tryget(() => event.source?.nameTag)) && !p.hasTag("excludeBeforeExplosionNotificationsById:" + event.source?.id) : !p.hasTag("excludeBeforeExplosionNotificationsWithNoSource"))).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebeforeExplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length == 0 ? "" : " around " + vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5415,7 +6600,7 @@ console.error(e, e.stack);
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:debug_stick_b") {
+    if (event.itemStack.typeId === "andexdb:editor_stick_b") {
         event.cancel = true;
         try {
             (event.source).runCommandAsync(String("/scriptevent andexdb:debugStickMenuB hisa"));
@@ -5429,7 +6614,7 @@ console.error(e, e.stack);
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:debug_stick_c") {
+    if (event.itemStack.typeId === "andexdb:editor_stick_c") {
         event.cancel = true;
         try {
             (event.source).runCommandAsync(String("/scriptevent andexdb:debugStickMenuC hisa"));
@@ -5562,7 +6747,7 @@ console.error(e, e.stack);
                             const blocktypes = BlockTypes.getAll();
                             //console.warn("a")
                             try {
-                                fillBlocksSHFGB(pos, radius, event.source.dimension, (l, i) => { const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
+                                fillBlocksHSGB(pos, radius, event.source.dimension, (l, i) => { const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, true, 100);
                             }
                             catch (e) {
                                 event.source.sendMessage("§c" + e + e.stack);
@@ -5586,7 +6771,7 @@ console.error(e, e.stack);
                             const blocktypes = BlockTypes.getAll();
                             //console.warn("a")
                             try {
-                                fillBlocksHFGB({ x: pos.x - radius, y: pos.y - radius, z: pos.z - radius }, { x: pos.x + radius, y: pos.y + radius, z: pos.z + radius }, event.source.dimension, (l, i) => { const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
+                                fillBlocksHFGB({ x: pos.x - radius, y: pos.y - radius, z: pos.z - radius }, { x: pos.x + radius, y: pos.y + radius, z: pos.z + radius }, event.source.dimension, (l, i) => { const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, true, 100);
                             }
                             catch (e) {
                                 event.source.sendMessage("§c" + e + e.stack);
@@ -5612,7 +6797,7 @@ console.error(e, e.stack);
                             const blocktypes = BlockTypes.getAll();
                             //console.warn("a")
                             try {
-                                fillBlocksHFGB(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i) => { const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
+                                fillBlocksHFGB(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i) => { const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, true, 100);
                             }
                             catch (e) {
                                 event.source.sendMessage("§c" + e + e.stack);
@@ -5637,9 +6822,9 @@ console.error(e, e.stack);
                             const blocktypes = BlockTypes.getAll();
                             //console.warn("a")
                             try {
-                                fillBlocksSHFGB(pos, radius, event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Vector.distance(pos, l) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true)) {
+                                fillBlocksHSGB(pos, radius, event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Vector.distance(pos, l) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true)) {
                                     return null;
-                                } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
+                                } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, true, 100);
                             }
                             catch (e) {
                                 event.source.sendMessage("§c" + e + e.stack);
@@ -5666,7 +6851,7 @@ console.error(e, e.stack);
                             try {
                                 fillBlocksHFGB({ x: pos.x - radius, y: pos.y - radius, z: pos.z - radius }, { x: pos.x + radius, y: pos.y + radius, z: pos.z + radius }, event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Vector.distance(pos, l) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true)) {
                                     return null;
-                                } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
+                                } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, true, 100);
                             }
                             catch (e) {
                                 event.source.sendMessage("§c" + e + e.stack);
@@ -5695,7 +6880,7 @@ console.error(e, e.stack);
                             try {
                                 fillBlocksHFGB(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Vector.distance(pos, l) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true)) {
                                     return null;
-                                } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
+                                } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, true, 100);
                             }
                             catch (e) {
                                 event.source.sendMessage("§c" + e + e.stack);
@@ -5722,9 +6907,9 @@ console.error(e, e.stack);
                             const blocktypes = BlockTypes.getAll();
                             //console.warn("a")
                             try {
-                                fillBlocksSHFGB(pos, radius, event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Vector.distance(pos, l) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true) || (!(tryget(() => l.dimension.getBlock(l)[locb]().isAir) ?? true))) {
+                                fillBlocksHSGB(pos, radius, event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Vector.distance(pos, l) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true) || (!(tryget(() => l.dimension.getBlock(l)[locb]().isAir) ?? true))) {
                                     return null;
-                                } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
+                                } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, true, 100);
                             }
                             catch (e) {
                                 event.source.sendMessage("§c" + e + e.stack);
@@ -5754,7 +6939,7 @@ console.error(e, e.stack);
                             try {
                                 fillBlocksHFGB({ x: pos.x - radius, y: pos.y - radius, z: pos.z - radius }, { x: pos.x + radius, y: pos.y + radius, z: pos.z + radius }, event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Math.min(radius, Vector.distance(pos, l)) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true) || (!(tryget(() => l.dimension.getBlock(l)[locb]().isAir) ?? true))) {
                                     return null;
-                                } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
+                                } ; const b = blockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, true, 100);
                             }
                             catch (e) {
                                 event.source.sendMessage("§c" + e + e.stack);
@@ -5784,7 +6969,7 @@ console.error(e, e.stack);
                             try {
                                 fillBlocksHFGB(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i) => { if (((Math.max(0.0001, Math.random())) < ((Math.min(radius, Vector.distance(pos, l)) / radius) * (decay / 10))) || (tryget(() => l.dimension.getBlock(l).isAir) ?? true) || (!(tryget(() => l.dimension.getBlock(l)[locb]().isAir) ?? true))) {
                                     return null;
-                                } ; const b = blockpattern.generateBlock(i); return b.type == "null" ? null : b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, undefined, true, 100);
+                                } ; const b = blockpattern.generateBlock(i); return b.type == "null" ? null : b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, true, 100);
                             }
                             catch (e) {
                                 event.source.sendMessage("§c" + e + e.stack);
@@ -5956,7 +7141,7 @@ console.error(e, e.stack);
 });
 world.beforeEvents.chatSend.subscribe((eventData) => {
     try {
-        getPlayersWithAnyOfTags(["getBeforeChatSendNotifications", "includeBeforeChatSendNotificationsBy:" + eventData.sender.name, "includeBeforeChatSendNotificationsById:" + eventData.sender.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + eventData.sender.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + eventData.sender.name)).forEach(p => psend(p, `[§l§dServer§r][§ebeforeChatSend§r][${eventData.sender.name}] Chat message sent${!!eventData.targets ? " with targets " + eventData.targets.map(p => p.name).join() : ""} with the message ${JSONStringify(eventData.message)}. `));
+        getPlayersWithAnyOfTags(["getBeforeChatSendNotifications", "includeBeforeChatSendNotificationsBy:" + eventData.sender.name, "includeBeforeChatSendNotificationsById:" + eventData.sender.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + eventData.sender.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + eventData.sender.name)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebeforeChatSend§r][${eventData.sender.name}] Chat message sent${!!eventData.targets ? " with targets " + eventData.targets.map(p => p.name).join() : ""} with the message ${JSONStringify(eventData.message)}. `));
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5971,18 +7156,242 @@ try {
                 for (let index in playerList2) {
                     try {
                         if ((playerList2[index].isSneaking && ((playerList2[index].getComponent("minecraft:inventory").container?.getItem(playerList2[index].selectedSlotIndex))?.typeId == "andexdb:editor_stick"))) {
-                            let blockStates = Object.entries(playerList2[index].getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true }).block.permutation.getAllStates());
+                            let block = playerList2[index].getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true }).block;
+                            let blockStates = Object.entries(block.permutation.getAllStates());
                             let blockStatesB;
                             blockStatesB = ["none"];
                             blockStates.forEach((s, i) => { try {
                                 blockStatesB[i] = `${s[0]}: §c${s[1]}`;
                             }
                             catch { } });
-                            playerList2[index].onScreenDisplay.setActionBar(`§b${playerList2[index].getBlockFromViewDirection({ includePassableBlocks: true, includeLiquidBlocks: true }).block.typeId}\n§l§eTags: §r§a${playerList2[index].getBlockFromViewDirection({ includePassableBlocks: true, includeLiquidBlocks: true }).block.getTags().join(", ")}\n§l§eBlock States: §r§a${blockStatesB.join("\n§a")}\n§l§eIs Waterlogged: §r§a${playerList2[index].getBlockFromViewDirection({ includePassableBlocks: true, includeLiquidBlocks: true }).block.isWaterlogged}\n§l§eRedstone Power: §r§c${playerList2[index].getBlockFromViewDirection({ includePassableBlocks: true, includeLiquidBlocks: true }).block.getRedstonePower()}`);
+                            playerList2[index].onScreenDisplay.setActionBar(`§b${block.typeId}
+§l§eTags: §r§a${block.getTags().join(", ")}
+§l§eBlock States: §r§a${blockStatesB.join("\n§a")}
+§l§eIs Waterlogged: §r${((b) => (b ? "§2" : "§4") + String(b))(block.isWaterlogged)}
+§l§eIs Air: §r${((b) => (b ? "§2" : "§4") + String(b))(block.isAir)}
+§l§eIs Liquid: §r${((b) => (b ? "§2" : "§4") + String(b))(block.isLiquid)}
+§l§eIs Solid: §r${((b) => (b ? "§2" : "§4") + String(b))(block.isSolid)}
+§l§eRedstone Power: §r§c${block.getRedstonePower()}${!!block.getComponent("inventory") ? `
+§l§eminecraft:inventory: §r§9{§eSlots Filled: §r§c${block.getComponent("inventory").container.size - block.getComponent("inventory").container.emptySlotsCount}§b/§c${block.getComponent("inventory").container.size}§9}` : ""}${!!block.getComponent("lavaContainer") ? `
+§l§eminecraft:lavaContainer: §r§9{§eFill Level: §r§c${block.getComponent("lavaContainer").fillLevel}§9}` : ""}${!!block.getComponent("piston") ? `
+§l§eminecraft:piston: §r§9{§eIs Moving: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("piston").isMoving)}§a, §eState: §r§u${block.getComponent("piston").state}§a, §eAttatched Block Count: §r§c${block.getComponent("piston").getAttachedBlocks().length}§9}` : ""}${!!block.getComponent("potionContainer") ? `
+§l§eminecraft:potionContainer: §r§9{§eFill Level: §r§c${block.getComponent("potionContainer").fillLevel}§9}` : ""}${!!block.getComponent("recordPlayer") ? `
+§l§eminecraft:recordPlayer: §r§9{§eIs Playing: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("recordPlayer").isPlaying())}§9}` : ""}${!!block.getComponent("sign") ? `
+§l§eminecraft:sign: §r§9{§eIs Waxed: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("sign").isWaxed)}§a, §eF Dye: §r§u${block.getComponent("sign").getTextDyeColor(SignSide.Front) ?? "null"}§a, §eB Dye: §r§u${block.getComponent("sign").getTextDyeColor(SignSide.Back) ?? "null"}§a, §eF Text Length: §r§c${block.getComponent("sign").getText(SignSide.Front).length}§a, §eB Text Length: §r§c${block.getComponent("sign").getText(SignSide.Back).length}§a, §eF Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block.getComponent("sign").getRawText(SignSide.Front)))}§a, §eB Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block.getComponent("sign").getRawText(SignSide.Back)))}§9}` : ""}${!!block.getComponent("snowContainer") ? `
+§l§eminecraft:snowContainer: §r§9{§eFill Level: §r§c${block.getComponent("snowContainer").fillLevel}§9}` : ""}${!!block.getComponent("waterContainer") ? `
+§l§eminecraft:waterContainer: §r§9{§eFill Level: §r§c${block.getComponent("waterContainer").fillLevel}§a, §eCustom Color: §r§c${JSON.stringify(block.getComponent("waterContainer").getCustomColor())}§9}` : ""}`);
                         }
                         ;
                     }
                     catch (e) { }
+                    if (config.showRanksOnPlayerNameTags && !playerList2[index].hasTag("doNotSetNameTag")) {
+                        let nameFormatting = "";
+                        let nameGradientMode = undefined;
+                        let showDimension = false;
+                        let showHealth = false;
+                        if (playerList2[index].hasTag('nameFormatting:r')) {
+                            nameFormatting += "§r";
+                        }
+                        ;
+                        if (playerList2[index].hasTag('nameFormatting:o')) {
+                            nameFormatting += "§o";
+                        }
+                        ;
+                        if (playerList2[index].hasTag('nameFormatting:l')) {
+                            nameFormatting += "§l";
+                        }
+                        ;
+                        if (playerList2[index].hasTag('nameFormatting:k')) {
+                            nameFormatting += "§k";
+                        }
+                        ;
+                        if (playerList2[index].hasTag('nameColor:0')) {
+                            nameFormatting += "§0";
+                        }
+                        else {
+                            if (playerList2[index].hasTag('nameColor:1')) {
+                                nameFormatting += "§1";
+                            }
+                            else {
+                                if (playerList2[index].hasTag('nameColor:2')) {
+                                    nameFormatting += "§2";
+                                }
+                                else {
+                                    if (playerList2[index].hasTag('nameColor:3')) {
+                                        nameFormatting += "§3";
+                                    }
+                                    else {
+                                        if (playerList2[index].hasTag('nameColor:4')) {
+                                            nameFormatting += "§4";
+                                        }
+                                        else {
+                                            if (playerList2[index].hasTag('nameColor:5')) {
+                                                nameFormatting += "§5";
+                                            }
+                                            else {
+                                                if (playerList2[index].hasTag('nameColor:6')) {
+                                                    nameFormatting += "§6";
+                                                }
+                                                else {
+                                                    if (playerList2[index].hasTag('nameColor:7')) {
+                                                        nameFormatting += "§7";
+                                                    }
+                                                    else {
+                                                        if (playerList2[index].hasTag('nameColor:8')) {
+                                                            nameFormatting += "§8";
+                                                        }
+                                                        else {
+                                                            if (playerList2[index].hasTag('nameColor:9')) {
+                                                                nameFormatting += "§9";
+                                                            }
+                                                            else {
+                                                                if (playerList2[index].hasTag('nameColor:a')) {
+                                                                    nameFormatting += "§a";
+                                                                }
+                                                                else {
+                                                                    if (playerList2[index].hasTag('nameColor:b')) {
+                                                                        nameFormatting += "§b";
+                                                                    }
+                                                                    else {
+                                                                        if (playerList2[index].hasTag('nameColor:c')) {
+                                                                            nameFormatting += "§c";
+                                                                        }
+                                                                        else {
+                                                                            if (playerList2[index].hasTag('nameColor:d')) {
+                                                                                nameFormatting += "§d";
+                                                                            }
+                                                                            else {
+                                                                                if (playerList2[index].hasTag('nameColor:e')) {
+                                                                                    nameFormatting += "§e";
+                                                                                }
+                                                                                else {
+                                                                                    if (playerList2[index].hasTag('nameColor:f')) {
+                                                                                        nameFormatting += "§f";
+                                                                                    }
+                                                                                    else {
+                                                                                        if (playerList2[index].hasTag('nameColor:g')) {
+                                                                                            nameFormatting += "§g";
+                                                                                        }
+                                                                                        else {
+                                                                                            if (playerList2[index].hasTag('nameColor:h')) {
+                                                                                                nameFormatting += "§h";
+                                                                                            }
+                                                                                            else {
+                                                                                                if (playerList2[index].hasTag('nameColor:i')) {
+                                                                                                    nameFormatting += "§i";
+                                                                                                }
+                                                                                                else {
+                                                                                                    if (playerList2[index].hasTag('nameColor:j')) {
+                                                                                                        nameFormatting += "§j";
+                                                                                                    }
+                                                                                                    else {
+                                                                                                        if (playerList2[index].hasTag('nameColor:m')) {
+                                                                                                            nameFormatting += "§m";
+                                                                                                        }
+                                                                                                        else {
+                                                                                                            if (playerList2[index].hasTag('nameColor:n')) {
+                                                                                                                nameFormatting += "§n";
+                                                                                                            }
+                                                                                                            else {
+                                                                                                                if (playerList2[index].hasTag('nameColor:p')) {
+                                                                                                                    nameFormatting += "§p";
+                                                                                                                }
+                                                                                                                else {
+                                                                                                                    if (playerList2[index].hasTag('nameColor:q')) {
+                                                                                                                        nameFormatting += "§q";
+                                                                                                                    }
+                                                                                                                    else {
+                                                                                                                        if (playerList2[index].hasTag('nameColor:s')) {
+                                                                                                                            nameFormatting += "§s";
+                                                                                                                        }
+                                                                                                                        else {
+                                                                                                                            if (playerList2[index].hasTag('nameColor:t')) {
+                                                                                                                                nameFormatting += "§t";
+                                                                                                                            }
+                                                                                                                            else {
+                                                                                                                                if (playerList2[index].hasTag('nameColor:u')) {
+                                                                                                                                    nameFormatting += "§u";
+                                                                                                                                }
+                                                                                                                                ;
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        playerList2[index].getTags().filter(v => v.startsWith("nameColor:")).forEach(v => {
+                            if (patternColors.includes(v.slice(10).toLowerCase())) {
+                                nameFormatting += patternColorsMap[v.slice(10).toLowerCase()];
+                            }
+                            else if (Object.keys(patternFunctionList).includes(v.slice(10).toLowerCase())) {
+                                nameGradientMode = v.slice(10).toLowerCase();
+                            }
+                            else if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'm', 'n', 'p', 'q', 's', 't', 'u'].includes(v.slice(13).toLowerCase())) {
+                                undefined;
+                            }
+                        });
+                        playerList2[index].getTags().filter(v => v.startsWith("nameFormatting:")).forEach(v => {
+                            if (['r', 'o', 'l', 'k'].includes(v.slice(15).toLowerCase())) {
+                                undefined;
+                            }
+                            else {
+                                nameFormatting += v.slice(15).toLowerCase();
+                            }
+                        });
+                        if (playerList2[index].hasTag('config:health')) {
+                            showHealth = true;
+                        }
+                        ;
+                        if (playerList2[index].hasTag('config:dimension')) {
+                            showDimension = true;
+                        }
+                        ;
+                        let nameb = playerList2[index].hasTag("nameTagUseSudo") ?
+                            (!!nameGradientMode ?
+                                evaluateChatColorType(playerList2[index].getTags().find(t => t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+                                    .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length), nameGradientMode) :
+                                playerList2[index].getTags().find(t => t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+                                    .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length)) :
+                            !!playerList2[index].getTags().find(t => t.startsWith("nameTagSudo:")) ? (!!nameGradientMode ?
+                                evaluateChatColorType(tryget(() => playerList2[index].getTags().find(t => t.startsWith("nameTagSudo:")).slice(12)), nameGradientMode) :
+                                tryget(() => playerList2[index].getTags().find(t => t.startsWith("nameTagSudo:")).slice(12))) : (playerList2[index].hasTag("chatHideNameTag") ? "" :
+                                playerList2[index].hasTag("chatUseNameTag") ? (!!nameGradientMode ? evaluateChatColorType(playerList2[index].nameTag, nameGradientMode) : playerList2[index].nameTag) :
+                                    (!!nameGradientMode ? evaluateChatColorType(playerList2[index].name, nameGradientMode) : playerList2[index].name));
+                        let indexb = index;
+                        let rank = playerList2[indexb].getTags().filter(t => t.startsWith(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
+                            .map((t, index, array) => { let rank = t.slice(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length); let tags = playerList2[indexb].getTags(); return eval(`\`${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]")}\``); }).join(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
+                        if (rank == "") {
+                            let tags = playerList2[indexb].getTags();
+                            rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
+                        }
+                        let dimension = dimensionTypeDisplayFormattingE[playerList2[index].dimension.id];
+                        playerList2[indexb].nameTag = (showDimension ? "[" + dimension + "§r§f] " : "") + rank + " " + nameb + (showHealth ? "§r§f[" + playerList2[indexb].getComponent("health").currentValue + "/" + playerList2[indexb].getComponent("health").effectiveMax + "] " : ""); /*(
+                            playerList2[index].hasTag("nameTagUseSudo")?
+                            playerList2[index].getTags().find(t=>t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+                            .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length):
+                            tryget(()=>playerList2[index].getTags().find(t=>t.startsWith("nameTagSudo:")).slice(12))??playerList2[index].name
+                        )*/
+                    }
                     try {
                         if (playerList2[index].hasTag("isSneaking")) {
                             try {
@@ -6011,6 +7420,10 @@ try {
         }
         catch (e) {
             console.error(e, e.stack);
+        }
+        if (config.artificialLagMS != 0 && !isNaN(config.artificialLagMS)) {
+            const endTime = Date.now() + config.artificialLagMS;
+            while (Date.now() < endTime) { }
         }
     }, 2);
 }
@@ -6096,7 +7509,10 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
         chatSend({ returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@"), sender: sourceEntity }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@"), sender: sourceEntity }, newMessage: message.replaceAll("\\@\\", "@"), player: sourceEntity });
     }
     if (id == "andexdb:chatCommands") {
-        chatCommands({ returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@"), sender: sourceEntity }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@"), sender: sourceEntity }, newMessage: message.replaceAll("\\@\\", "@"), player: sourceEntity });
+        chatCommands({ returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: sourceEntity }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: sourceEntity }, newMessage: message.replaceAll("\\@\\", "@"), player: sourceEntity });
+    }
+    if (id == "andexdb:cmd") {
+        chatCommands({ returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
     }
     if (id == "andexdb:blockExplosion") {
         const overworld = world.getDimension(String(message.split("|")[0]));
@@ -11202,10 +12618,28 @@ console.error(e, e.stack);
             console.error(e, e.stack);
         }
     }
+    if (id == "s:eb") {
+        let player = sourceEntity;
+        try {
+            eval(message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
     if (id == "is:e") {
         let player = sourceEntity;
         try {
             eval?.(message);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    if (id == "is:eb") {
+        let player = sourceEntity;
+        try {
+            eval?.(message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"));
         }
         catch (e) {
             console.error(e, e.stack);
@@ -11220,10 +12654,28 @@ console.error(e, e.stack);
             psend(player, e + " " + e.stack);
         }
     }
+    if (id == "s:elcb") {
+        let player = sourceEntity;
+        try {
+            eval(message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"));
+        }
+        catch (e) {
+            psend(player, e + " " + e.stack);
+        }
+    }
     if (id == "is:elc") {
         let player = sourceEntity;
         try {
             eval?.(message);
+        }
+        catch (e) {
+            psend(player, e + " " + e.stack);
+        }
+    }
+    if (id == "is:elcb") {
+        let player = sourceEntity;
+        try {
+            eval?.(message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"));
         }
         catch (e) {
             psend(player, e + " " + e.stack);

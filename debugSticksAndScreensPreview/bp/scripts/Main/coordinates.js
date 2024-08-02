@@ -343,6 +343,7 @@ export function doBoundingBoxesIntersect(box1, box2) {
     // If all axes intersect, the bounding boxes intersect
     return intersectX && intersectY && intersectZ;
 }
+export function VSTR(vector1, vector2) { return { from: { x: Math.min(vector1.x, vector2.x), y: Math.min(vector1.y, vector2.y), z: Math.min(vector1.z, vector2.z) }, to: { x: Math.max(vector1.x, vector2.x), y: Math.max(vector1.y, vector2.y), z: Math.max(vector1.z, vector2.z) } }; }
 export const approximatelyEqual = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
 export const approxEqual = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
 export const approximatelyEquals = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
@@ -372,6 +373,7 @@ export function* generateMathExpression(expression, generateCallback, from, to, 
 }
 export function dirmap(direction) { return { Up: "above", Down: "below", East: "east", West: "west", North: "north", South: "south" }[direction]; }
 export function diroffsetmap(direction) { return { Up: Vector.up, Down: Vector.down, East: Vector.east, West: Vector.west, North: Vector.north, South: Vector.south }[direction]; }
+export function diroffsetmapb(direction) { return { up: Vector.up, down: Vector.down, east: Vector.east, west: Vector.west, north: Vector.north, south: Vector.south }[direction]; }
 export function diroffsetothersmap(direction) { return { Up: { x: 1, y: 0, z: 1 }, Down: { x: 1, y: 0, z: 1 }, East: { x: 0, y: 1, z: 1 }, West: { x: 0, y: 1, z: 1 }, North: { x: 1, y: 1, z: 0 }, South: { x: 1, y: 1, z: 0 } }[direction]; }
 export function splitRange([min, max], size) {
     const result = [];
@@ -533,7 +535,7 @@ export class AreaBackup {
     get to() { return JSON.parse(String(world.getDynamicProperty(this.id))).to; }
     get dimension() { return tryget(() => world.getDimension(JSON.parse(String(world.getDynamicProperty(this.id))).dimension)) ?? dimensionsc.overworld; }
     get backups() {
-        return world.structureManager.getWorldStructureIds().filter(v => v.startsWith(`${this.id};`)).map(v => Number(v.split(";")[1].split(",")[0])).sort().reverse();
+        return [...new Set(world.structureManager.getWorldStructureIds().filter(v => v.startsWith(`${this.id};`)).map(v => Number(v.split(";")[1].split(",")[0])))].sort().reverse();
     }
     get backupStructureIds() {
         return world.structureManager.getWorldStructureIds().filter(v => v.startsWith(`${this.id};`));
@@ -1453,14 +1455,16 @@ export function* generateSkygridBG(from, to, gridSize, generatorProgressId, dime
         const endY = Math.floor(to.y);
         const endZ = Math.floor(to.z);
         generatorProgress[generatorProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
+        var index = 0n;
         var msSinceLastYieldStart = Date.now();
         if ((options?.integrity ?? 100) != 100) {
             for (let x = startX; x <= endX; x += gridSize) {
                 for (let y = startY; y <= endY; y += gridSize) {
                     for (let z = startZ; z <= endZ; z += gridSize) {
                         if (Math.random() <= ((options?.integrity ?? 100) / 100)) {
-                            placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension });
+                            placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension }, index);
                         }
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= (options?.minMSBetweenYields ?? 2000)) {
                         msSinceLastYieldStart = Date.now();
@@ -1477,7 +1481,8 @@ export function* generateSkygridBG(from, to, gridSize, generatorProgressId, dime
             for (let x = startX; x <= endX; x += gridSize) {
                 for (let y = startY; y <= endY; y += gridSize) {
                     for (let z = startZ; z <= endZ; z += gridSize) {
-                        placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension });
+                        placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension }, index);
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= (options?.minMSBetweenYields ?? 2000)) {
                         msSinceLastYieldStart = Date.now();
@@ -1511,17 +1516,20 @@ export function* generateInverseSkygridBG(from, to, gridSize, generatorProgressI
         const endY = Math.floor(to.y);
         const endZ = Math.floor(to.z);
         generatorProgress[generatorProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
+        var index = 0n;
         var msSinceLastYieldStart = Date.now();
         if ((options?.integrity ?? 100) != 100) {
             for (let x = startX; x <= endX; x++) {
                 for (let y = startY; y <= endY; y++) {
                     for (let z = startZ; z <= endZ; z++) {
                         if (Math.floor(startX - x) % gridSize === 0 && Math.floor(startY - y) % gridSize === 0 && Math.floor(startZ - z) % gridSize === 0) {
+                            index++;
                             continue; // Skip positions where the skygrid would generate blocks
                         }
                         if (Math.random() <= ((options?.integrity ?? 100) / 100)) {
-                            placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension });
+                            placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension }, index);
                         }
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= (options?.minMSBetweenYields ?? 2000)) {
                         msSinceLastYieldStart = Date.now();
@@ -1540,11 +1548,13 @@ export function* generateInverseSkygridBG(from, to, gridSize, generatorProgressI
                     for (let z = startZ; z <= endZ; z++) {
                         //console.warn(x % gridSize, y % gridSize, z % gridSize)
                         if (Math.floor(startX - x) % gridSize === 0 && Math.floor(startY - y) % gridSize === 0 && Math.floor(startZ - z) % gridSize === 0) {
+                            index++;
                             continue; // Skip positions where the skygrid would generate blocks
                         }
                         else {
-                            placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension });
+                            placeBlockCallback({ x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dimension: dimension }, index);
                         }
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= (options?.minMSBetweenYields ?? 2000)) {
                         msSinceLastYieldStart = Date.now();
@@ -1757,6 +1767,7 @@ export function* generateHollowSphereBG(center, radius, thickness, dimension, ge
         const centerY = center.y;
         const centerZ = center.z;
         generatorProgress[generatorProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
+        var index = 0n;
         var msSinceLastYieldStart = Date.now();
         if (integrity != 100) {
             for (let x = centerX - radius; x <= centerX + radius; x++) {
@@ -1765,8 +1776,9 @@ export function* generateHollowSphereBG(center, radius, thickness, dimension, ge
                         const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2 + (z - centerZ) ** 2);
                         if (distance >= radius - thickness && distance <= radius) {
                             if (Math.random() <= (integrity / 100)) {
-                                placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                                placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                             }
+                            index++;
                         }
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
@@ -1786,7 +1798,8 @@ export function* generateHollowSphereBG(center, radius, thickness, dimension, ge
                     for (let z = centerZ - radius; z <= centerZ + radius; z++) {
                         const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2 + (z - centerZ) ** 2);
                         if (distance >= radius - thickness && distance <= radius) {
-                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
+                            index++;
                         }
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
@@ -1938,14 +1951,16 @@ export function* generateFillBG(begin, end, dimension, generatorProgressId, minM
 export function* generateWallsFillBG(begin, end, dimension, generatorProgressId, minMSBetweenYields = 2000, placeBlockCallback = () => { }, onComplete = () => { }, integrity = 100) {
     try {
         generatorProgress[generatorProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
+        var index = 0n;
         var msSinceLastYieldStart = Date.now();
         if (integrity != 100) {
             for (let x = begin.x; x <= end.x; x++) {
                 for (let y = begin.y; y <= end.y; y++) {
                     for (let z = begin.z; z <= end.z; (x == begin.x || x == end.x || z == end.z) ? z++ : z = end.z) {
                         if (Math.random() <= (integrity / 100)) {
-                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                         }
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
                         msSinceLastYieldStart = Date.now();
@@ -1962,7 +1977,8 @@ export function* generateWallsFillBG(begin, end, dimension, generatorProgressId,
             for (let x = begin.x; x <= end.x; x++) {
                 for (let y = begin.y; y <= end.y; y++) {
                     for (let z = begin.z; z <= end.z; (x == begin.x || x == end.x || z == end.z) ? z++ : z = end.z) {
-                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
                         msSinceLastYieldStart = Date.now();
@@ -1992,13 +2008,15 @@ export function* generateHollowFillBG(begin, end, dimension, generatorProgressId
     try {
         generatorProgress[generatorProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
         var msSinceLastYieldStart = Date.now();
+        var index = 0n;
         if (integrity != 100) {
             for (let x = begin.x; x <= end.x; x++) {
                 for (let y = begin.y; y <= end.y; y++) {
                     for (let z = begin.z; z <= end.z; (x == begin.x || x == end.x || y == begin.y || y == end.y || z == end.z) ? z++ : z = end.z) {
                         if (Math.random() <= (integrity / 100)) {
-                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                         }
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
                         msSinceLastYieldStart = Date.now();
@@ -2015,7 +2033,8 @@ export function* generateHollowFillBG(begin, end, dimension, generatorProgressId
             for (let x = begin.x; x <= end.x; x++) {
                 for (let y = begin.y; y <= end.y; y++) {
                     for (let z = begin.z; z <= end.z; (x == begin.x || x == end.x || y == begin.y || y == end.y || z == end.z) ? z++ : z = end.z) {
-                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
                         msSinceLastYieldStart = Date.now();
@@ -2044,13 +2063,14 @@ export function* generateHollowFillBG(begin, end, dimension, generatorProgressId
 export function* generateOutlineFillBG(begin, end, dimension, generatorProgressId, minMSBetweenYields = 2000, placeBlockCallback = () => { }, onComplete = () => { }, integrity = 100) {
     try {
         generatorProgress[generatorProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
+        var index = 0n;
         var msSinceLastYieldStart = Date.now();
         if (integrity != 100) {
             for (let x = begin.x; x <= end.x; x++) {
                 for (let y = begin.y; y <= end.y; y++) {
                     for (let z = begin.z; z <= end.z; (((x == begin.x || x == end.x) && (y == begin.y || y == end.y)) || z == end.z) ? z++ : z = end.z) {
                         if (Math.random() <= (integrity / 100)) {
-                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                         }
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
@@ -2068,7 +2088,7 @@ export function* generateOutlineFillBG(begin, end, dimension, generatorProgressI
             for (let x = begin.x; x <= end.x; x++) {
                 for (let y = begin.y; y <= end.y; (x == begin.x || x == end.x || y == end.y) ? y++ : y = end.y) {
                     for (let z = begin.z; z <= end.z; (((x == begin.x || x == end.x) && (y == begin.y || y == end.y)) || z == end.z) ? z++ : z = end.z) {
-                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                        placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
                         msSinceLastYieldStart = Date.now();
@@ -2094,6 +2114,10 @@ export function* generateOutlineFillBG(begin, end, dimension, generatorProgressI
         throw (e);
     }
 }
+/**
+ * Generates a minecraft sphere.
+ * @deprecated Superceeded by generateMinecraftSphereBG().
+ */
 export function generateMinecraftSphere(center, radius) {
     const centerX = center.x;
     const centerY = center.y;
@@ -2111,6 +2135,10 @@ export function generateMinecraftSphere(center, radius) {
     }
     return coordinates;
 }
+/**
+ * Generates a minecraft sphere.
+ * @deprecated Superceeded by generateMinecraftSphereBG().
+ */
 export function generateMinecraftSphereB(center, radius, dimension, placeBlockCallback) {
     const centerX = center.x;
     const centerY = center.y;
@@ -2142,6 +2170,11 @@ export function generateMinecraftSphereBGIdGenerator() {
     generateMinecraftSphereBGProgressIndex = (generateMinecraftSphereBGProgressIndex + 1) % 32767;
     return id;
 }
+/**
+ * Generates a minecraft sphere.
+ * @version 1.2.0
+ * @generator
+ */
 export function* generateMinecraftSphereBG(center, radius, dimension, generateMinecraftSphereBGProgressId, minMSBetweenYields = 2000, placeBlockCallback = () => { }, onComplete = () => { }, integrity = 100) {
     try {
         const centerX = center.x;
@@ -2154,13 +2187,13 @@ export function* generateMinecraftSphereBG(center, radius, dimension, generateMi
             for (let x = centerX - radius; x <= centerX + radius; x++) {
                 for (let y = centerY - radius; y <= centerY + radius; y++) {
                     for (let z = centerZ - radius; z <= centerZ + radius; z++) {
-                        index++;
                         const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
                         if (distanceSquared <= Math.pow(radius, 2)) {
                             if (Math.random() <= (integrity / 100)) {
                                 placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                             }
                         }
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
                         msSinceLastYieldStart = Date.now();
@@ -2177,13 +2210,11 @@ export function* generateMinecraftSphereBG(center, radius, dimension, generateMi
             for (let x = centerX - radius; x <= centerX + radius; x++) {
                 for (let y = centerY - radius; y <= centerY + radius; y++) {
                     for (let z = centerZ - radius; z <= centerZ + radius; z++) {
-                        for (let z = centerZ - radius; z <= centerZ + radius; z++) {
-                            index++;
-                            const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
-                            if (distanceSquared <= Math.pow(radius, 2)) {
-                                placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
-                            }
+                        const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                        if (distanceSquared <= Math.pow(radius, 2)) {
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                         }
+                        index++;
                     }
                     if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
                         msSinceLastYieldStart = Date.now();
@@ -2209,12 +2240,72 @@ export function* generateMinecraftSphereBG(center, radius, dimension, generateMi
         throw (e);
     }
 }
+/**
+ * Generates a minecraft cone.
+ * @since 1.18.0-development.20
+ * @version 1.0.0
+ * @generator
+ */
+export function* generateMinecraftConeBG(center, radius, height, dimension, generateMinecraftConeBGProgressId, minMSBetweenYields = 2000, placeBlockCallback = () => { }, onComplete = () => { }, integrity = 100) {
+    try {
+        const centerX = center.x;
+        const centerY = center.y;
+        const centerZ = center.z;
+        var index = 0n;
+        generateMinecraftSphereBGProgress[generateMinecraftConeBGProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
+        let msSinceLastYieldStart = Date.now();
+        for (let y = centerY; y <= centerY + height; y++) {
+            const currentRadius = radius * (1 - (y - centerY) / height);
+            for (let x = centerX - currentRadius; x <= centerX + currentRadius; x++) {
+                for (let z = centerZ - currentRadius; z <= centerZ + currentRadius; z++) {
+                    const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(z - centerZ, 2);
+                    if (distanceSquared <= Math.pow(currentRadius, 2)) {
+                        if (integrity != 100) {
+                            if (Math.random() <= (integrity / 100)) {
+                                placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
+                            }
+                        }
+                        else {
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
+                        }
+                    }
+                    index++;
+                }
+                if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                    msSinceLastYieldStart = Date.now();
+                    yield undefined;
+                }
+            }
+            if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                msSinceLastYieldStart = Date.now();
+                yield undefined;
+            }
+        }
+        onComplete();
+        generateMinecraftSphereBGProgress[generateMinecraftConeBGProgressId].endTick = system.currentTick;
+        generateMinecraftSphereBGProgress[generateMinecraftConeBGProgressId].endTime = Date.now();
+        generateMinecraftSphereBGProgress[generateMinecraftConeBGProgressId].done = true;
+        return;
+    }
+    catch (e) {
+        generateMinecraftSphereBGProgress[generateMinecraftConeBGProgressId].endTick = system.currentTick;
+        generateMinecraftSphereBGProgress[generateMinecraftConeBGProgressId].endTime = Date.now();
+        generateMinecraftSphereBGProgress[generateMinecraftConeBGProgressId].done = true;
+        throw (e);
+    }
+}
+/**
+ * Generates a minecraft top half semi-sphere.
+ * @version 1.1.0
+ * @generator
+ */
 export function* generateMinecraftSemiSphereBG(center, radius, dimension, generateMinecraftSphereBGProgressId, minMSBetweenYields = 2000, placeBlockCallback = () => { }, onComplete = () => { }, integrity = 100) {
     try {
         const centerX = center.x;
         const centerY = center.y;
         const centerZ = center.z;
         generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
+        var index = 0n;
         var msSinceLastYieldStart = Date.now();
         if (integrity != 100) {
             for (let x = centerX - radius; x <= centerX + radius; x++) {
@@ -2224,9 +2315,10 @@ export function* generateMinecraftSemiSphereBG(center, radius, dimension, genera
                             const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
                             if (distanceSquared <= Math.pow(radius, 2)) {
                                 if (Math.random() <= (integrity / 100)) {
-                                    placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
+                                    placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                                 }
                             }
+                            index++;
                         }
                         if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
                             msSinceLastYieldStart = Date.now();
@@ -2242,18 +2334,17 @@ export function* generateMinecraftSemiSphereBG(center, radius, dimension, genera
         }
         else {
             for (let x = centerX - radius; x <= centerX + radius; x++) {
-                for (let y = centerY - radius; y <= centerY + radius; y++) {
-                    if (y >= centerY) {
-                        for (let z = centerZ - radius; z <= centerZ + radius; z++) {
-                            const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
-                            if (distanceSquared <= Math.pow(radius, 2)) {
-                                placeBlockCallback({ x: x, y: y, z: z, dimension: dimension });
-                            }
+                for (let y = centerY; y <= centerY + radius; y++) {
+                    for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                        const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                        if (distanceSquared <= Math.pow(radius, 2)) {
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
                         }
-                        if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
-                            msSinceLastYieldStart = Date.now();
-                            yield undefined;
-                        }
+                        index++;
+                    }
+                    if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                        msSinceLastYieldStart = Date.now();
+                        yield undefined;
                     }
                 }
                 if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
@@ -2275,6 +2366,82 @@ export function* generateMinecraftSemiSphereBG(center, radius, dimension, genera
         throw (e);
     }
 }
+/**
+ * Generates a minecraft bottom half semi-sphere.
+ * @version 1.1.0
+ * @generator
+ */
+export function* generateMinecraftSemiSphereBGB(center, radius, dimension, generateMinecraftSphereBGProgressId, minMSBetweenYields = 2000, placeBlockCallback = () => { }, onComplete = () => { }, integrity = 100) {
+    try {
+        const centerX = center.x;
+        const centerY = center.y;
+        const centerZ = center.z;
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId] = { done: false, startTick: system.currentTick, startTime: Date.now(), containsUnloadedChunks: false };
+        var index = 0n;
+        var msSinceLastYieldStart = Date.now();
+        if (integrity != 100) {
+            for (let x = centerX - radius; x <= centerX + radius; x++) {
+                for (let y = centerY - radius; y <= centerY + radius; y++) {
+                    if (y >= centerY) {
+                        for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                            const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                            if (distanceSquared <= Math.pow(radius, 2)) {
+                                if (Math.random() <= (integrity / 100)) {
+                                    placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
+                                }
+                            }
+                            index++;
+                        }
+                        if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                            msSinceLastYieldStart = Date.now();
+                            yield undefined;
+                        }
+                    }
+                }
+                if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                    msSinceLastYieldStart = Date.now();
+                    yield undefined;
+                }
+            }
+        }
+        else {
+            for (let x = centerX - radius; x <= centerX + radius; x++) {
+                for (let y = centerY - radius; y <= centerY; y++) {
+                    for (let z = centerZ - radius; z <= centerZ + radius; z++) {
+                        const distanceSquared = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) + Math.pow(z - centerZ, 2);
+                        if (distanceSquared <= Math.pow(radius, 2)) {
+                            placeBlockCallback({ x: x, y: y, z: z, dimension: dimension }, index);
+                        }
+                        index++;
+                    }
+                    if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                        msSinceLastYieldStart = Date.now();
+                        yield undefined;
+                    }
+                }
+                if ((Date.now() - msSinceLastYieldStart) >= minMSBetweenYields) {
+                    msSinceLastYieldStart = Date.now();
+                    yield undefined;
+                }
+            }
+        }
+        onComplete();
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].endTick = system.currentTick;
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].endTime = Date.now();
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].done = true;
+        return;
+    }
+    catch (e) {
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].endTick = system.currentTick;
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].endTime = Date.now();
+        generateMinecraftSphereBGProgress[generateMinecraftSphereBGProgressId].done = true;
+        throw (e);
+    }
+}
+/**
+ * Generates a list of coordinates for a minecraft sphere.
+ * @deprecated Legacy function that may cause the script to exceed the scripting memory limit.
+ */
 export async function drawMinecraftSphere(center, radius, precision = 360) {
     const coordinates = [];
     for (let i = 0; i < precision; i++) {
@@ -2288,6 +2455,10 @@ export async function drawMinecraftSphere(center, radius, precision = 360) {
         return [...new Set(coordinates)];
     })();
 }
+/**
+ * Generates a list of coordinates for a lopsided minecraft sphere.
+ * @deprecated Legacy function that may cause the script to exceed the scripting memory limit.
+ */
 export function drawMinecraftLopsidedSphere(center, radius) {
     const coordinates = [];
     for (let i = 0; i < 360; i++) {
@@ -2295,6 +2466,10 @@ export function drawMinecraftLopsidedSphere(center, radius) {
     }
     return coordinates;
 }
+/**
+ * Generates a list of coordinates for a minecraft cylinder.
+ * @deprecated Legacy function that may cause the script to exceed the scripting memory limit.
+ */
 export function generateMinecraftCylinder(blockType, radius, thickness, centerX, centerY, centerZ) {
     // Example command to create a hollow cylinder with air inside:
     const commands = [];

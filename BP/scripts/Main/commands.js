@@ -859,7 +859,7 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "removeotheritemenchantments", escregexp: { v: "^removeotheritemenchantments$" }, aliases: [{ commandName: "remotheritemenchants", escregexp: { v: "^remotheritemenchants$" } }, { commandName: "roie", escregexp: { v: "^roie$" } }], formats: [{ format: "removeotheritemenchantments" }], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:removeotheritemenchantments" },
     { type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "home", escregexp: { v: "^home$" }, formats: [{ format: "home" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home" },
     { type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "gohome", escregexp: { v: "^gohome$" }, formats: [{ format: "gohome" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome" },
-    { type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "rtp", escregexp: { v: "^rtp$" }, formats: [{ format: "rtp <player: targetSelector|playerName>" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp" },
+    { type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "tpa", escregexp: { v: "^tpa$" }, formats: [{ format: "tpa <player: targetSelector|playerName>" }], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpa" },
     { type: "built-in", requiredTags: [], formatting_code: "§r§c", commandName: "tpaccept", escregexp: { v: "^tpaccept$" }, formats: [{ format: "tpaccept [player: targetSelector|playerName]" }, { format: "tpdeny all" }], command_version: "0.0.1-alpha", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpaccept" },
     { type: "built-in", requiredTags: [], formatting_code: "§r§c", commandName: "tpdeny", escregexp: { v: "^tpdeny$" }, formats: [{ format: "tpdeny [player: targetSelector|playerName]" }, { format: "tpdeny all" }], command_version: "0.0.1-alpha", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpdeny" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "kick", escregexp: { v: "^kick$" }, formats: [{ format: "kick <players: targetSelector> [reason: string]" }], command_version: "1.0.0", description: "", category: ["system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:kick" },
@@ -2751,7 +2751,6 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
     "rank": `${command.dp}rank <players: targetSelector> <mode: add|remove> <tag: string>\n${command.dp}rank <players: targetSelector> clear`,
     "remexp": `${command.dp}remexp [radius: number]`,
     "replacenear": `${command.dp}repalcenear <radius: number> <replaceTileName: Block> <replaceBlockStates: block states> <tileName: Block> <blockStates: block states>`,
-    "rtp": `${command.dp}rtp <player: targetSelector|playerName|string>`,
     "run": `${command.dp}run <delayTicks: int> <command: command>`,
     "scanenderchest": `${command.dp}scanenderchest [targets: targetSelector|~]`,
     "scanenderchestc": `${command.dp}scanenderchestc [target: string|~]`,
@@ -2842,6 +2841,7 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
     "thru": `${command.dp}thru`,
     "timezone": `${command.dp}timezone [UTCOffsetInHours: float]`,
     "top": `${command.dp}top`,
+    "tpa": `${command.dp}tpa <player: targetSelector|playerName|string>`,
     "tpaccept": `${command.dp}tpaccept [player: targetSelector|playerName|string]`,
     "tpdeny": `${command.dp}tpdeny [player: targetSelector|playerName|string]`,
     "tz": `${command.dp}tz [UTCOffsetInHours: float]`,
@@ -3128,7 +3128,6 @@ export var commanddescriptions;
     commanddescriptions["rank"] = "Manages ranks stored in players. ";
     commanddescriptions["remexp"] = "Removes explosive blocks in the specified radius. ";
     commanddescriptions["replacenear"] = "Replaces blocks of the specified type with another specified block type in the specified radius. ";
-    commanddescriptions["rtp"] = "Requests to teleport to the specified player. ";
     commanddescriptions["run"] = "Runs the specified command. ";
     commanddescriptions["scanenderchest"] = "Scans a player's ender chest and displays the contents of it. ";
     commanddescriptions["scanenderchestc"] = "Scans a player's ender chest and displays the contents of it. ";
@@ -3154,6 +3153,7 @@ export var commanddescriptions;
     commanddescriptions["thru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at. ";
     commanddescriptions["vthru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at, even if it would put you into the void. ";
     commanddescriptions["top"] = "Teleports on top of the highest solid block at your x and z coordinates. ";
+    commanddescriptions["tpa"] = "Requests to teleport to the specified player. ";
     commanddescriptions["tpaccept"] = "Accepts a player's teleport request. ";
     commanddescriptions["tpdeny"] = "Denies a player's teleport request. ";
     commanddescriptions["transferitem"] = "Transfers the item in your hand to the specified player's inventory. ";
@@ -5435,7 +5435,6 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .remotheritemenchants - §oRemoves all enchantment types from an item except for the item types specified. §r
 .removeotheritemenchantments - §oRemoves all enchantment types from an item except for the item types specified. §r
 .roie - §oRemoves all enchantment types from an item except for the item types specified. §r
-.rtp - §oRequests to teleport to the specified player. §r
 .run - §oRuns the specified command. §r
 .scanenderchest - §oScans a player's ender chest and displays the contents of it. §r
 .scanenderchestc - §oScans a player's ender chest and displays the contents of it. §r
@@ -5456,6 +5455,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .timezone - §oSets your timezone to the specific UTC offset in hours. §r
 .thru - §oTeleports on top of the highest solid block at your x and z coordinates. §r
 .top - §oTeleports on top of the highest solid block at your x and z coordinates. §r
+.tpa - §oRequests to teleport to the specified player. §r
 .tpaccept - §oAccepts a player's teleport request. §r
 .tpdeny - §oDenies a player's teleport request. §r
 .transferitem - §oTransfers the item in your hand to the specified player's inventory. §r
@@ -7002,11 +7002,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     }
                 }
                 break;
-            case !!switchTest.match(/^rtp$/):
+            case !!switchTest.match(/^tpa$/):
                 {
                     eventData.cancel = true;
                     // /scriptevent andexdb:spawnSimulatedPlayer t§ee§as§ft §4P§dl§layer|~~~|overworld|~~~
-                    if (config.rtpSystemEnabled) {
+                    if (config.tpaSystemEnabled) {
                         srun(() => {
                             let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args;
                             args[1].trim().startsWith("@");
@@ -7040,13 +7040,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         });
                     }
                     else {
-                        player.sendMessage("§cRTPSystemDisabledError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>RTP System>Enable RTP System\"");
+                        player.sendMessage("§cTPASystemDisabledError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>TPA System>Enable TPA System\"");
                     }
                 }
                 break; /*
-            case !!switchTest.match(/^rtpblock$/): {
+            case !!switchTest.match(/^tpablock$/): {
                 eventData.cancel = true;
-                if(config.rtpSystemEnabled){
+                if(config.tpaSystemEnabled){
                     srun(()=>{
                     let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args
                     let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v=>v.typeId=="minecraft:player")[0] as Player
@@ -7062,7 +7062,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     }else{player.sendMessage(`§cError: Unable to find player.`)}
                     })
                 }else{
-                    player.sendMessage("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>RTP System>Enable Teleport Request System\"")
+                    player.sendMessage("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>TPA System>Enable Teleport Request System\"")
                 }
             }
             break; */ // COMING SOON! 
@@ -15787,7 +15787,6 @@ export function chatSend(params) {
         player.hasTag("chatHideNameTag") ? "" :
             player.hasTag("chatUseNameTag") ? (!!nameGradientMode ? evaluateChatColorType(player.nameTag, nameGradientMode) : player.nameTag) :
                 (!!nameGradientMode ? evaluateChatColorType(player.name, nameGradientMode) : player.name);
-    console.warn(nameb, name, nameGradientMode);
     name.length != 0 ? name += String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " ") : undefined; /*
     let rankMode = 0
     for (let index in player.getTags()) {
@@ -16202,8 +16201,8 @@ export function evaluateParameters(commandstring, parameters) {
                             ;
                         }
                         else {
-                            argumentsa.push(paramEval.split(" ")[0]);
-                            return paramEval.split(" ").slice(1).join(" ");
+                            argumentsa.push(paramEval.trimStart().split(" ")[0]);
+                            paramEval = paramEval.trimStart().split(" ").slice(1).join(" ").trimStart();
                         }
                     }
                     else {

@@ -128,8 +128,8 @@ export class config{
     static set homeSystemEnabled(enabled: boolean|undefined){world.setDynamicProperty("homeSystemSettings:homeSystemEnabled", enabled??false)}
     static get maxHomesPerPlayer(){return world.getDynamicProperty("homeSystemSettings:maxHomesPerPlayer")==-1?Infinity:Number(world.getDynamicProperty("homeSystemSettings:maxHomesPerPlayer")??Infinity)}
     static set maxHomesPerPlayer(maxHomes: number|undefined){world.setDynamicProperty("homeSystemSettings:maxHomesPerPlayer", (maxHomes??Infinity)==Infinity?-1:maxHomes)}
-    static get rtpSystemEnabled(){return Boolean(world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled")??false)}
-    static set rtpSystemEnabled(enabled: boolean|undefined){world.setDynamicProperty("rtpSystemSettings:rtpSystemEnabled", enabled??false)}
+    static get tpaSystemEnabled(){return Boolean(world.getDynamicProperty("tpaSystemSettings:tpaSystemEnabled")??world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled")??false)}
+    static set tpaSystemEnabled(enabled: boolean|undefined){world.setDynamicProperty("tpaSystemSettings:tpaSystemEnabled", enabled??false)}
     static get antispamEnabled(){return Boolean(world.getDynamicProperty("antispamSettings:antispamEnabled")??false)}
     static set antispamEnabled(enabled: boolean|undefined){world.setDynamicProperty("antispamSettings:antispamEnabled", enabled??false)}
     static get waitTimeAfterAntispamActivation(){return isNaN(Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation")))?60:Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation") ?? 60)}
