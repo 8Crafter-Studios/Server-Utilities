@@ -808,6 +808,10 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\paste", escregexp: { v: "^\\\\paste$" }, formats: [{ format: "\\paste" }], command_version: "3.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\paste" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\undo", escregexp: { v: "^\\\\undo$" }, formats: [{ format: "\\undo" }], command_version: "3.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\undo" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\replace", escregexp: { v: "^\\\\replace$" }, formats: [{ format: "\\replace" }], command_version: "2.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\replace" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\remove", escregexp: { v: "^\\\\remove$" }, formats: [{ format: "\\remove" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\remove" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\set", escregexp: { v: "^\\\\set$" }, formats: [{ format: "\\set" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\set" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\seti", escregexp: { v: "^\\\\seti$" }, formats: [{ format: "\\seti" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\seti" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\flood", escregexp: { v: "^\\\\flood$" }, formats: [{ format: "\\flood" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\flood" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generate", escregexp: { v: "^\\\\generate$" }, formats: [{ format: "\\generate" }], command_version: "2.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generate" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generatef", escregexp: { v: "^\\\\generatef$" }, formats: [{ format: "\\generatef" }], command_version: "2.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatef" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\generatejs", escregexp: { v: "^\\\\generatejs$" }, formats: [{ format: "\\generatejs" }], command_version: "0.0.1-alpha", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatejs" },
@@ -2899,6 +2903,11 @@ ${command.dp}snapshot list`,
     "\\\\hpos1": `${command.dp}\\hpos1`,
     "\\\\hpos2": `${command.dp}\\hpos2`,
     "\\\\chunk": `${command.dp}\\chunk`,
+    "\\\\sphere": `${command.dp}\\sphere <radius: float> <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\hsphere": `${command.dp}\\hsphere <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\cone": `${command.dp}\\cone <radius: float> <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\hcone": `${command.dp}\\hcone <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\remove": `${command.dp}\\remove`,
     "\\\\generate": `${command.dp}\\generate [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
     "\\\\generatef": `${command.dp}\\generatek [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
     "\\\\generatejs": `${command.dp}\\generatejs <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
@@ -7861,7 +7870,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -7890,7 +7899,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                                     clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                                 }
                                                 ;
-                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                                 let endTime = Date.now();
                                                 player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                             }
@@ -7940,7 +7949,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                     }
                                     ;
-                                    let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                    let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                     let endTime = Date.now();
                                     player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
@@ -7962,7 +7971,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                             case "walls":
                                 system.run(() => { try {
                                     let startTime = Date.now();
-                                    let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                    let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                     let endTime = Date.now();
                                     player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
@@ -7973,7 +7982,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                             case "hollow":
                                 system.run(() => { try {
                                     let startTime = Date.now();
-                                    let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                    let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                     let endTime = Date.now();
                                     player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
@@ -7984,7 +7993,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                             case "outline":
                                 system.run(() => { try {
                                     let startTime = Date.now();
-                                    let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                    let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                     let endTime = Date.now();
                                     player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
@@ -7995,7 +8004,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                             case "pillars":
                                 system.run(() => { try {
                                     let startTime = Date.now();
-                                    let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                    let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                     let endTime = Date.now();
                                     player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
@@ -8265,7 +8274,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                     }
                                     ;
-                                    let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                    let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                     let endTime = Date.now();
                                     player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
@@ -8493,7 +8502,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -8522,7 +8531,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                                     clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                                 }
                                                 ;
-                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                                 let endTime = Date.now();
                                                 player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                             }
@@ -8589,7 +8598,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -8627,7 +8636,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -8646,7 +8655,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -8665,7 +8674,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -8684,7 +8693,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -9154,7 +9163,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -9387,7 +9396,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9403,7 +9412,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "replace":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[13] ?? true, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[13] ?? true, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9461,7 +9470,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "fill":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9493,7 +9502,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "walls":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9509,7 +9518,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "hollow":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9525,7 +9534,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "outline":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9542,7 +9551,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -10081,7 +10090,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -10118,7 +10127,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     srun(() => { try {
                         let startTime = Date.now();
-                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
@@ -10144,7 +10153,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     srun(() => { try {
                         let startTime = Date.now();
-                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
@@ -10174,7 +10183,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
-                            let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                            let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
                             player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
@@ -10207,7 +10216,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     system.run(() => { try {
                         let startTime = Date.now();
-                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
@@ -10240,7 +10249,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
-                            let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                            let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
                             player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
@@ -10273,7 +10282,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     system.run(() => { try {
                         let startTime = Date.now();
-                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
@@ -10306,7 +10315,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
-                            let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                            let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
                             player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
@@ -10339,7 +10348,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     system.run(() => { try {
                         let startTime = Date.now();
-                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
@@ -10372,7 +10381,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
-                            let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                            let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
                             player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
@@ -10405,7 +10414,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     system.run(() => { try {
                         let startTime = Date.now();
-                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
@@ -10438,7 +10447,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
-                            let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                            let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
                             player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
@@ -11632,7 +11641,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11830,7 +11839,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHFGB(ca, cb, dimensiona, () => airpermutation, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHFGB(ca, cb, dimensiona, () => airpermutation, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11882,7 +11891,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHWFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHWFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11935,7 +11944,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHSGB(coordinatesa, radius - 0.5, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHSGB(coordinatesa, radius - 0.5, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11989,7 +11998,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHHSGB(coordinatesa, radius - 0.5, thickness, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHHSGB(coordinatesa, radius - 0.5, thickness, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12043,7 +12052,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHCGB(coordinatesa, radius, height, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHCGB(coordinatesa, radius, height, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12721,7 +12730,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -12750,7 +12759,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                                     clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                                 }
                                                 ;
-                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                                 let endTime = Date.now();
                                                 player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                             }
@@ -12817,7 +12826,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -12855,7 +12864,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -12874,7 +12883,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -12893,7 +12902,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -12912,7 +12921,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -13382,7 +13391,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -13617,7 +13626,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13633,7 +13642,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "replace":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[7] ?? true, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[7] ?? true, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13691,7 +13700,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "fill":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13723,7 +13732,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "walls":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13739,7 +13748,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "hollow":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13755,7 +13764,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "outline":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13772,7 +13781,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -14311,7 +14320,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
