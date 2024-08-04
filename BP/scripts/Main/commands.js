@@ -812,6 +812,7 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\set", escregexp: { v: "^\\\\set$" }, formats: [{ format: "\\set" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\set" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\seti", escregexp: { v: "^\\\\seti$" }, formats: [{ format: "\\seti" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\seti" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\flood", escregexp: { v: "^\\\\flood$" }, formats: [{ format: "\\flood" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\flood" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\drain", escregexp: { v: "^\\\\drain$" }, formats: [{ format: "\\drain" }], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\drain" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generate", escregexp: { v: "^\\\\generate$" }, formats: [{ format: "\\generate" }], command_version: "2.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generate" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generatef", escregexp: { v: "^\\\\generatef$" }, formats: [{ format: "\\generatef" }], command_version: "2.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatef" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\generatejs", escregexp: { v: "^\\\\generatejs$" }, formats: [{ format: "\\generatejs" }], command_version: "0.0.1-alpha", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatejs" },
@@ -2908,6 +2909,11 @@ ${command.dp}snapshot list`,
     "\\\\cone": `${command.dp}\\cone <radius: float> <blockPattern: BlockPattern> [mask: mask]`,
     "\\\\hcone": `${command.dp}\\hcone <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: mask]`,
     "\\\\remove": `${command.dp}\\remove`,
+    "\\\\walls": `${command.dp}\\walls <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\set": `${command.dp}\\set <blockPattern: BlockPattern>`,
+    "\\\\seti": `${command.dp}\\seti <integrity: number> <blockPattern: BlockPattern>`,
+    "\\\\flood": `${command.dp}\\flood`,
+    "\\\\drain": `${command.dp}\\drain`,
     "\\\\generate": `${command.dp}\\generate [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
     "\\\\generatef": `${command.dp}\\generatek [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
     "\\\\generatejs": `${command.dp}\\generatejs <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
@@ -2920,7 +2926,7 @@ ${command.dp}snapshot list`,
     "\\\\generates2d": `${command.dp}\\generates2d <step: float> <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
     "\\\\stack": `${command.dp}\\stack [stackCount: int]`,
     "\\\\selectmode": `${command.dp}\\selectmode [default|noliquid|nopassable|noliquidnopassable]`,
-    "\\\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [replaceTileName: Block] [replaceBlockStates: block states]`,
+    "\\\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [mask: mask]`,
     "\\\\idtfill": `${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block|random> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block|random> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
@@ -3216,6 +3222,14 @@ export var commanddescriptions;
     commanddescriptions["\\\\stack"] = "Stacks the specified number of copies of the step area on top of the selected area. ";
     commanddescriptions["\\\\selectmode"] = "Sets the selection mode for the item you are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. ";
     commanddescriptions["\\\\replace"] = "Replaces the blocks between the selected area with the selected block type. ";
+    commanddescriptions["\\\\walls"] = "Replaces the walls of the selected area with the selected block type. ";
+    commanddescriptions["\\\\set"] = "Sets the blocks between the selected area to the selected block type. ";
+    commanddescriptions["\\\\seti"] = "Sets the blocks between the selected area to the selected block type with the specified integrity. ";
+    commanddescriptions["\\\\flood"] = "Floods the blocks between the selected area. ";
+    commanddescriptions["\\\\remove"] = "Remove the blocks in the selected area. ";
+    commanddescriptions["\\\\sphere"] = "Generates a sphere in the selected area. ";
+    commanddescriptions["\\\\hsphere"] = "Generates a hollow sphere in the selected area. ";
+    commanddescriptions["\\\\cone"] = "Generates a cone in the selected area. ";
     commanddescriptions["disconnect"] = "Disconnects a player from the server. ";
     commanddescriptions["morph"] = "Morphs into the morph with the specified ID. ";
     commanddescriptions["scale"] = "Sets your scale value to the specified amount. ";
@@ -5597,6 +5611,8 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .\\hpos1 - §oSets the pos1 location of the selected area to the block that you are looking at for use in other worldedit commands. §r
 .\\hpos2 - §oSets the pos2 location of the selected area to the block that you are looking at for use in other worldedit commands. §r
 .\\chunk - §oSets the pos1 and pos2 locations of the selected area to contain the entire chunk that you are currently in for use in other worldedit commands. §r
+.\\shift - §oShifts the pos1 and pos2 locations of the selected area. §r
+.\\offset - §oOffsets the pos1 and pos2 locations of the selected area. §r
 .\\generate - §oGenerates a 3d shape according to a formula in the selected area. §r
 .\\generatef - §oGenerates a 3d shape according to a formula in the selected area. §r
 .\\generatejs - §oGenerates a 3d shape according to the outputs of a JavaScript function in the selected area. §r
@@ -5607,6 +5623,14 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
 .\\stack - §oStacks the specified number of copies of the selected area on top of the selected area. §r
 .\\selectmode - §oSets the selection mode for the item your are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. §r
 .\\replace - §oReplaces the blocks between the selected area with the selected block type. §r
+.\\walls - §oReplaces the walls of the selected area with the selected block type. §r
+.\\set - §oSets the blocks between the selected area to the selected block type. §r
+.\\seti - §oSets the blocks between the selected area to the selected block type with the specified integrity. §r
+.\\flood - §oFloods the blocks between the selected area. §r
+.\\remove - §oRemove the blocks in the selected area. §r
+.\\sphere - §oGenerates a sphere in the selected area. §r
+.\\hsphere - §oGenerates a hollow sphere in the selected area. §r
+.\\cone - §oGenerates a cone in the selected area. §r
 §bCommands that require "8Crafter's Entity Scale, NBT, and Behavior Modifier, Bossbar, and Morph Addon" in order to function: §6
 .disconnect - §oDisconnects one or more players from the server. §r§6
 .morph - §oMorphs into the morph with the specified ID. §r§6
@@ -11848,7 +11872,6 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             case !!switchTest.match(/^\\flood$/):
                 {
                     eventData.cancel = true;
-                    const args = evaluateParameters(switchTestB, ["presetText"]).args;
                     const coordinatesa = player.getDynamicProperty("pos1");
                     const coordinatesb = player.getDynamicProperty("pos2");
                     const ca = { x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z) };
@@ -11875,6 +11898,69 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         }
                                         try {
                                             fillBlocksHFFGB(ca, cb, dimensiona, { minMSBetweenYields: 2500 }, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        }
+                                        catch (e) {
+                                            eventData.sender.sendMessage("§c" + e + e.stack);
+                                        }
+                                        finally {
+                                            tac.forEach(tab => tab?.remove());
+                                        }
+                                    });
+                                }
+                                catch (e) {
+                                    eventData.sender.sendMessage("§c" + e + e.stack);
+                                }
+                            });
+                        }
+                    }
+                }
+                break;
+            case !!switchTest.match(/^\\drain$/):
+                {
+                    eventData.cancel = true;
+                    const coordinatesa = player.getDynamicProperty("pos1");
+                    const coordinatesb = player.getDynamicProperty("pos2");
+                    const ca = { x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z) };
+                    const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
+                    const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
+                    const airpermutation = BlockPermutation.resolve("air");
+                    if (!!!coordinatesa) {
+                        player.sendMessage("§cError: pos1 is not set.");
+                    }
+                    else {
+                        if (!!!coordinatesb) {
+                            player.sendMessage("§cError: pos2 is not set.");
+                        }
+                        else {
+                            system.run(() => {
+                                let ta;
+                                try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(ca, cb) }); return a; })(), dimensiona).then(tac => {
+                                        ta = tac;
+                                        try {
+                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                        }
+                                        catch (e) {
+                                            perror(player, e);
+                                        }
+                                        try {
+                                            fillBlocksHFGB(ca, cb, dimensiona, () => airpermutation, { matchingBlock: "minecraft:water", minMSBetweenYields: 2500 }).then(a => {
+                                                fillBlocksHFGB(ca, cb, dimensiona, () => airpermutation, { matchingBlock: "minecraft:flowing_water", minMSBetweenYields: 2500 }).then(b => {
+                                                    fillBlocksHFGB(ca, cb, dimensiona, () => airpermutation, { matchingBlock: "minecraft:lava", minMSBetweenYields: 2500 }).then(c => {
+                                                        fillBlocksHFGB(ca, cb, dimensiona, () => airpermutation, { matchingBlock: "minecraft:flowing_lava", minMSBetweenYields: 2500 }).then(d => {
+                                                            player.sendMessage(`${a.counter + b.counter + c.counter + d.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`);
+                                                        }, (e) => {
+                                                            eventData.sender.sendMessage("§c" + e + e.stack);
+                                                        });
+                                                    }, (e) => {
+                                                        eventData.sender.sendMessage("§c" + e + e.stack);
+                                                    });
+                                                }, (e) => {
+                                                    eventData.sender.sendMessage("§c" + e + e.stack);
+                                                });
+                                            }, (e) => {
+                                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                            });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);

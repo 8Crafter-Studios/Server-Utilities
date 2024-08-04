@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.18.1-development.17";
+export const format_version = "1.18.2-development.27";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -362,7 +362,7 @@ export function clamp24HoursTo12Hours(hours: number){return twoWayModulo(hours-1
  */
 export function formatTime(date: Date, timeZoneOffset: number = 0){const dateb = new Date(date.valueOf()+(timeZoneOffset*3600000)); return `${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")} ${dateb.getUTCHours()>11?"P":"A"}M`}
 /**
- * Formats a date object to a time string formatted as 07/21/2024, 12:37:01 PM. 
+ * Formats a date object to a date time string formatted as 07/21/2024, 12:37:01 PM. 
  * @since 1.18.2-development.10
  * @version 1.0.1
  */
