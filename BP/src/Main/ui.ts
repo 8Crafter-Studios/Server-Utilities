@@ -1131,7 +1131,7 @@ export function chatCommandRunner(sourceEntitya: Entity|executeCommandPlayerW|Pl
             // This will assign every input their own variable
             let [message, asPlayer] = r.formValues; /*
             console.warn(r.formValues);*/
-            chatCommands({returnBeforeChatSend: false, player: playerList[asPlayer as number]??sourceEntity as Player, newMessage: message as string, event: {cancel: false, message: message as string, sender: playerList[asPlayer as number]??sourceEntity as Player}, eventData: {cancel: false, message: message as string, sender: playerList[asPlayer as number]??sourceEntity as Player}})
+            chatCommands({returnBeforeChatSend: false, player: playerList[asPlayer as number]??sourceEntity as Player, newMessage: message as string, event: {cancel: false, message: message as string, sender: playerList[asPlayer as number]??sourceEntity as Player}, eventData: {cancel: false, message: message as string, sender: playerList[asPlayer as number]??sourceEntity as Player}, fromExecute: true})
             // Do something
         }).catch(e => {
             console.error(e, e.stack);

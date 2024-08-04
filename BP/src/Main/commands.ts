@@ -1,5 +1,5 @@
 import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, type BlockComponentTypeMap } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE } from "../Main";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, formatTime } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
@@ -1557,23 +1557,23 @@ export const patternList = {
 }
 export const patternFunctionList = {
     rainbow: (ib: number)=>patternList.rainbow[ib%patternList.rainbow.length], 
-    shuffledrainbow: (ib: number, offset: number)=>patternList.rainbow[(ib+offset)%patternList.rainbow.length], 
-    randomrainbow: ()=>patternList.rainbow[Math.floor(Math.random()*patternList.rainbow.length)], 
+    randomrainbow: (ib: number, offset: number)=>patternList.rainbow[(ib+offset)%patternList.rainbow.length], 
+    shuffledrainbow: ()=>patternList.rainbow[Math.floor(Math.random()*patternList.rainbow.length)], 
     bluegradient: (ib: number)=>patternList.blue[ib%patternList.blue.length], 
-    shuffledbluegradient: (ib: number, offset: number)=>patternList.blue[(ib+offset)%patternList.rainbow.length], 
-    randombluegradient: ()=>patternList.blue[Math.floor(Math.random()*patternList.blue.length)], 
+    randombluegradient: (ib: number, offset: number)=>patternList.blue[(ib+offset)%patternList.blue.length], 
+    shuffledbluegradient: ()=>patternList.blue[Math.floor(Math.random()*patternList.blue.length)], 
     yellowgradient: (ib: number)=>patternList.yellow[ib%patternList.yellow.length], 
-    shuffledyellowgradient: (ib: number, offset: number)=>patternList.yellow[(ib+offset)%patternList.rainbow.length], 
-    randomyellowgradient: ()=>patternList.yellow[Math.floor(Math.random()*patternList.yellow.length)], 
+    randomyellowgradient: (ib: number, offset: number)=>patternList.yellow[(ib+offset)%patternList.yellow.length], 
+    shuffledyellowgradient: ()=>patternList.yellow[Math.floor(Math.random()*patternList.yellow.length)], 
     blackgradient: (ib: number)=>patternList.black[ib%patternList.black.length], 
-    shuffledblackgradient: (ib: number, offset: number)=>patternList.black[(ib+offset)%patternList.rainbow.length], 
-    randomblackgradient: ()=>patternList.black[Math.floor(Math.random()*patternList.black.length)], 
+    randomblackgradient: (ib: number, offset: number)=>patternList.black[(ib+offset)%patternList.black.length], 
+    shuffledblackgradient: ()=>patternList.black[Math.floor(Math.random()*patternList.black.length)], 
     graygradient: (ib: number)=>patternList.gray[ib%patternList.gray.length], 
-    shuffledgraygradient: (ib: number, offset: number)=>patternList.gray[(ib+offset)%patternList.rainbow.length], 
-    randomgraygradient: ()=>patternList.gray[Math.floor(Math.random()*patternList.gray.length)], 
+    randomgraygradient: (ib: number, offset: number)=>patternList.gray[(ib+offset)%patternList.gray.length], 
+    shuffledgraygradient: ()=>patternList.gray[Math.floor(Math.random()*patternList.gray.length)], 
     purplegradient: (ib: number)=>patternList.purple[ib%patternList.purple.length], 
-    shuffledpurplegradient: (ib: number, offset: number)=>patternList.purple[(ib+offset)%patternList.rainbow.length], 
-    randompurplegradient: ()=>patternList.purple[Math.floor(Math.random()*patternList.purple.length)]
+    randompurplegradient: (ib: number, offset: number)=>patternList.purple[(ib+offset)%patternList.purple.length], 
+    shuffledpurplegradient: ()=>patternList.purple[Math.floor(Math.random()*patternList.purple.length)]
 }
 export const patternColors = [
 	'aqua',
@@ -3015,6 +3015,15 @@ export enum commanddescriptions {
 "visualscale" = "Sets your visual scale (the one that does not actually change your hitbox size) to the specified amount. ",
 "visualscaleenabled" = "Enables or diables your visual scaling. "
 }
+export async function cycleRGB(callback: (current: {r: number, g: number, b: number})=>any, cancel: ()=>boolean = ()=>false, step: number = 1){
+    async function nextR(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.r>=256){callback(current); await waitTick(); nextNB(current)}else{current.r+=step; callback(current); await waitTick(); nextR(current)}}
+    async function nextG(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.g>=256){callback(current); await waitTick(); nextNR(current)}else{current.g+=step; callback(current); await waitTick(); nextG(current)}}
+    async function nextB(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.b>=256){callback(current); await waitTick(); nextNG(current)}else{current.b+=step; callback(current); await waitTick(); nextB(current)}}
+    async function nextNR(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.r<=0){callback(current); await waitTick(); nextB(current)}else{current.r-=step; callback(current); await waitTick(); nextNR(current)}}
+    async function nextNG(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.g<=0){callback(current); await waitTick(); nextR(current)}else{current.g-=step; callback(current); await waitTick(); nextNG(current)}}
+    async function nextNB(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.b<=0){callback(current); await waitTick(); nextG(current)}else{current.b-=step; callback(current); await waitTick(); nextNB(current)}}
+    nextR({r: 0, g: 0, b: 256})
+}
 export const commandflags = {
 "butcher": `No Flags: Kill items and experience orbs.
 a: kill animals
@@ -3281,6 +3290,8 @@ export enum propertyTypeEnum {
     "removedynamicproperty" = "removedynamicproperty",
     "minecraft:removedynamicproperty" = "removedynamicproperty"
 }
+//world.afterEvents.dataDrivenEntityTrigger.subscribe(event=>{if(event.getModifiers().find(v=>v.removedComponentGroups.includes("andexsa:entity_inventory_5_minecart_hopper"))){bsend(JSON.stringify(event.getModifiers()))}})
+//world.afterEvents.dataDrivenEntityTrigger.subscribe(event=>{if(event.getModifiers().find(v=>v.removedComponentGroups.includes("andexsa:entity_inventory_5_minecart_hopper"))){event.getModifiers().find(v=>v.removedComponentGroups.includes("andexsa:entity_inventory_5_minecart_hopper")).removedComponentGroups=[]; event.getModifiers().find(v=>v.removedComponentGroups.includes("andexsa:entity_inventory_5_minecart_hopper")).addedComponentGroups=["andexsa:entity_inventory_5_minecart_hopper"]; bsend(JSON.stringify(event.getModifiers().))}})
 export interface ItemJSONParseInput {
     "name"?: string,
     "minecraft:name"?: string,
@@ -3773,7 +3784,7 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
         system.run(()=>{try{for(let i = 0; i < 9; i++){inventorye.container.swapItems(i, i+((row-1)*9), inventoryblock.container)}; /*; eventData.sender.sendMessage(String("l" + slotsArray))*/}catch(e){eventData.sender.sendMessage("§c" + e + " " + e.stack)}})}
         let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0]
         let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
-        let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!switchTest.match((command.get(v.commandName, "built-in").regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!command.get(v.commandName, "built-in")?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))/*
+        let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!switchTest.match((command.get(v.commandName, "built-in").regexp)))))&&(params.fromExecute||command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!command.get(v.commandName, "built-in")?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp)))))&&(params.fromExecute||command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(params.fromExecute||command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))/*
         let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!(switchTest.match((command.get(v.commandName, "built-in").regexp))))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
     if(commanda?.type=="built-in"){switch (true){
         case !!switchTest.match(/^give$/): 
@@ -6218,7 +6229,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     player.sendMessage(`§cError: No players matching the specified target selector were found. `)
                 }else targets.forEach(target=>{
                     try{
-                        target.runCommand("/kick "+target.name+(!!args[2]?" "+args[2]:""))
+                        target.runCommand("/kick "+JSON.stringify(target.name)+(!!args[2]?" "+args[2]:""))
                         player?.sendMessage(`${target?.name??target?.id} was kicked from the game. `)
                     }catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                 })
@@ -10154,7 +10165,7 @@ export function chatSend(params: {returnBeforeChatSend: boolean|undefined, playe
     world.getAllPlayers().forEach(p=>{
         let messageTimeStampEnabled = (player.hasTag("chatDisplayTimeStamp")||p.hasTag("chatDisplayTimeStamps")||((world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false)&&!player.hasTag("hideChatDisplayTimeStamp")&&!p.hasTag("hideChatDisplayTimeStamps")))
         let timestampenabled = messageTimeStampEnabled
-        let timestamp = messageTimeStampEnabled?new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString():""
+        let timestamp = messageTimeStampEnabled?formatTime(new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000))):""
         let dimension = dimensionTypeDisplayFormattingE[player.dimension.id]
         let namec = name
         let message = (world.getDynamicProperty("autoEscapeChatMessages") == true)?newMessage.escapeCharacters(true):newMessage
