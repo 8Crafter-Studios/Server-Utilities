@@ -1,16 +1,13 @@
 {
    "content" : [
       {
+         "path" : "textures/particles/xz_axis_particle_pos1.png"
+      },
+      {
          "path" : "textures/items/diamond_red_up_arrow_transform_template.png"
       },
       {
          "path" : ".mcattributes"
-      },
-      {
-         "path" : ".zip"
-      },
-      {
-         "path" : "manifest.json"
       },
       {
          "path" : "animations/animation.none.none.none.animation.json"
@@ -34,6 +31,12 @@
          "path" : "contents.json"
       },
       {
+         "path" : "LICENSE.txt"
+      },
+      {
+         "path" : "manifest.json"
+      },
+      {
          "path" : "textures/items/netherite_downgrade_smithing_template.png"
       },
       {
@@ -47,6 +50,9 @@
       },
       {
          "path" : "particles/block_destruct_2.json"
+      },
+      {
+         "path" : "particles/custom_block_texture_billboard.particle - Copy.json"
       },
       {
          "path" : "particles/custom_block_texture_billboard.particle.json"
@@ -71,6 +77,9 @@
       },
       {
          "path" : "particles/custom_text_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "particles/green_cube.json"
       },
       {
          "path" : "texts/en_US.lang"

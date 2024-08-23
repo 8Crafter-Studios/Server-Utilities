@@ -1,5 +1,5 @@
 import { EquipmentSlot, Dimension, GameMode, world, Player, system } from "@minecraft/server";
-import { format_version } from "Main";
+import { format_version, config, tryget } from "Main";
 import { ban } from "./ban";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
@@ -33,7 +33,7 @@ uis;
 playersave;
 spawnprot;
 mcMath;
-export const player_save_format_version = "1.2.0";
+export const player_save_format_version = "1.3.0";
 export class savedPlayer {
     constructor(data) {
         this.format_version = format_version;
@@ -50,6 +50,7 @@ export class savedPlayer {
         this.gameMode = data.gameMode;
         this.properties = data.properties;
         this.lastOnline = data.lastOnline;
+        this.firstJoined = data.firstJoined ?? data.lastOnline ?? Date.now();
         this.location = data.location;
         this.dimension = data.dimension;
         this.rotation = data.rotation;
@@ -70,7 +71,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
     static savePlayerData(savedPlayerData) { savedPlayerData.saveId = savedPlayerData.saveId ?? "player:" + savedPlayerData.id; savedPlayerData.format_version = savedPlayerData.format_version ?? format_version; savedPlayerData.player_save_format_version = savedPlayerData.player_save_format_version ?? format_version; world.setDynamicProperty(savedPlayerData.saveId ?? `player:${savedPlayerData.id}`, JSON.stringify(savedPlayerData)); return savedPlayerData.saveId ?? `player:${savedPlayerData.id}`; }
     static savePlayer(player) {
         let savedPlayerData;
-        savedPlayerData = { name: player.name, nameTag: player.nameTag, id: player.id, isOp: player.isOp(), tags: player.getTags(), items: { inventory: [], equipment: [], ender_chest: [] }, selectedSlotIndex: player.selectedSlotIndex, format_version: format_version, player_save_format_version: player_save_format_version, lastOnline: Date.now(), location: player.location, dimension: player.dimension, rotation: player.getRotation(), gameMode: player.getGameMode(), spawnPoint: player.getSpawnPoint() };
+        savedPlayerData = { name: player.name, nameTag: player.nameTag, id: player.id, isOp: player.isOp(), tags: player.getTags(), items: { inventory: [], equipment: [], ender_chest: [] }, selectedSlotIndex: player.selectedSlotIndex, format_version: format_version, player_save_format_version: player_save_format_version, lastOnline: Date.now(), firstJoined: tryget(() => (this.getSavedPlayer("player:" + player.id).firstJoined)) ?? Date.now(), location: player.location, dimension: player.dimension, rotation: player.getRotation(), gameMode: player.getGameMode(), spawnPoint: player.getSpawnPoint() };
         savedPlayerData.saveId = savedPlayerData.saveId ?? "player:" + savedPlayerData.id;
         savedPlayerData.format_version = savedPlayerData.format_version ?? format_version;
         for (let i = 0; i < player.getComponent("inventory").inventorySize; i++) {
@@ -95,7 +96,7 @@ getBan(banId: string){let banString = String(world.getDynamicProperty(banId)).sp
     static getSavedPlayers() { let players; players = []; savedPlayer.getSavedPlayerIds().forEach((b) => { players.push(savedPlayer.getSavedPlayer(b)); }); return players; }
     static getSavedPlayersAlphabeticalOrder() { let players; players = []; savedPlayer.getSavedPlayerIds().forEach((b) => { players.push(savedPlayer.getSavedPlayer(b)); }); return players.sort((a, b) => 1 - (2 * Number([String(a.name.toLowerCase()), String(b.name.toLowerCase())].sort()[0] == String(a.name.toLowerCase())))); }
 }
-system.runInterval(() => { if (world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true) {
+import("Main").then(v => system.runInterval(() => { if (world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true) {
     world.getAllPlayers().forEach((p) => { savedPlayer.savePlayer(p); });
-} }, 5);
+} }, v.config.playerDataRefreshRate ?? 5));
 //# sourceMappingURL=player_save.js.map

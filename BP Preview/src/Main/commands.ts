@@ -1,10 +1,10 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, } from "./coordinates";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, type BlockComponentTypeMap } from "@minecraft/server";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, formatTime } from "../Main";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
-import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor } from "./ui.js";
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -22,6 +22,7 @@ import *  as uis from "./ui";
 import *  as playersave from "./player_save";
 import *  as spawnprot from "./spawn_protection";
 import mcMath from "@minecraft/math.js";
+import { uiManager, UIManager } from "@minecraft/server-ui";
 export const cmdsmetaimport = import.meta
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer
@@ -48,7 +49,7 @@ export function idGenerator() {
     return id
 }
 
-export const commands_format_version = "12.0.0-rc.1";
+export const commands_format_version = "25.0.0-rc.73";
     // @ts-expect-error
         [][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(![]+[+[]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[+!+[]]+(+(!+[]+!+[]+[+!+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[+!+[]])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]])()([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[(![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]]((+((+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+[+[]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+!+[]]])+[])[!+[]+!+[]]+[+!+[]])+(![]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]])()())[!+[]+!+[]+!+[]+[+[]]]+(+(+!+[]+[+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+[+!+[]])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]+!+[]])()[(!![]+[])[+[]]+(![]+[])[+[]]+(![]+[])[!+[]+!+[]+!+[]]+(![]+[])[+!+[]]] = [][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+'[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+([]+{})[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[+!+[]+[!+[]+!+[]+!+[]]]+(![]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]]+![]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]])()[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]()+[])[!+[]+!+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+","+"\\""+(+[![]]+[][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]())[+!+[]+[+!+[]]]+([][[]]+[])[+!+[]]+([][[]]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(+(+!+[]+[+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[!+[]+!+[]+!+[]+!+[]])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+"\\""+([+[]]+![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[!+[]+!+[]+[+[]]])([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(![]+[])[+[]])(f))')
     // @ts-expect-error
@@ -611,6 +612,7 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gmd", escregexp: {v: "^gmd$"}, formats: [{format: "gmd"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:gmd"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gmp", escregexp: {v: "^gmp$"}, formats: [{format: "gmp"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:gmp"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gmr", escregexp: {v: "^gmr$"}, formats: [{format: "gmr"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:gmr"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "enderchest", escregexp: {v: "^enderchest$"}, formats: [{format: "enderchest"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:enderchest"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "getuuid", escregexp: {v: "^getuuid$"}, formats: [{format: "getuuid <targetSelector: targetSelector>"}], command_version: "1.0.0", description: "", category: ["entities"], commandSettingsId: "built-inCommandSettings:getuuid"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warpset", escregexp: {v: "^warpset$"}, formats: [{format: "warpset <dimension: dimension|~> <x: float|~> <y: float|~> <z: float|~> <name: escapableString>"}], command_version: "1.1.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:warpset"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warp", escregexp: {v: "^warp$"}, formats: [{format: "warp <warpName: escapableString>"}], command_version: "1.1.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:warp"}, 
@@ -640,6 +642,10 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "managecommands", escregexp: {v: "^managecommands$"}, aliases: [{commandName: "mngcmds", escregexp: {v: "^mngcmds$"}}], formats: [{format: "managecommands"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:managecommands"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "manageplayers", escregexp: {v: "^manageplayers$"}, aliases: [{commandName: "mngplyrs", escregexp: {v: "^mngplyrs$"}}], formats: [{format: "manageplayers"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:manageplayers"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "settings", escregexp: {v: "^settings$"}, formats: [{format: "settings"}], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:settings"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "notificationsettings", escregexp: {v: "^notificationsettings$"}, aliases: [{commandName: "notificationssettings", escregexp: {v: "^notificationssettings$"}}], formats: [{format: "notificationsettings"}], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:notificationsettings"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "editorstick", escregexp: {v: "^editorstick$"}, formats: [{format: "editorstick"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:editorstick"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "editorstickb", escregexp: {v: "^editorstickb$"}, formats: [{format: "editorstickb"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:editorstickb"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "editorstickc", escregexp: {v: "^editorstickc$"}, formats: [{format: "editorstickc"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:editorstickc"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "messageui", escregexp: {v: "^messageui$"}, aliases: [{commandName: "msgui", escregexp: {v: "^msgui$"}}], formats: [{format: "messageui"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:messageui"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "chatsendui", escregexp: {v: "^chatsendui$"}, aliases: [{commandName: "chtsndui", escregexp: {v: "^chtsndui$"}}, {commandName: "chtsendui", escregexp: {v: "^chtsendui$"}}, {commandName: "sendui", escregexp: {v: "^sendui$"}}], formats: [{format: "chatsendui"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:chatsendui"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "chatcommandui", escregexp: {v: "^chatcommandui$"}, aliases: [{commandName: "chtcmdui", escregexp: {v: "^chtcmdui$"}}, {commandName: "cmdui", escregexp: {v: "^cmdui$"}}, {commandName: "commandui", escregexp: {v: "^commandui$"}}], formats: [{format: "chatcommandui"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:chatcommandui"}, 
@@ -815,22 +821,49 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listidbans", escregexp: {v: "^listidbans$"}, aliases: [{commandName: "getidbans", escregexp: {v: "^getidbans$"}}], formats: [{format: "listidbans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listidbans"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listnamebans", escregexp: {v: "^listnamebans$"}, aliases: [{commandName: "getnamebans", escregexp: {v: "^getnamebans$"}}], formats: [{format: "listnamebans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listnamebans"}, 
     {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "timezone", escregexp: {v: "^timezone$"}, aliases: [{commandName: "tz", escregexp: {v: "^tz$"}}], formats: [{format: "timezone [UTCOffsetInHours: float]"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:timezone"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\replace", escregexp: {v: "^\\\\replace$"}, formats: [{format: "\\replace"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\replace"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generate", escregexp: {v: "^\\\\generate$"}, formats: [{format: "\\generate"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generate"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\cut", escregexp: {v: "^\\\\cut$"}, formats: [{format: "\\cut"}], command_version: "3.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\cut"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\copy", escregexp: {v: "^\\\\copy$"}, formats: [{format: "\\copy"}], command_version: "3.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\copy"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\paste", escregexp: {v: "^\\\\paste$"}, formats: [{format: "\\paste"}], command_version: "3.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\paste"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\undo", escregexp: {v: "^\\\\undo$"}, formats: [{format: "\\undo"}], command_version: "3.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\undo"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\replace", escregexp: {v: "^\\\\replace$"}, formats: [{format: "\\replace"}], command_version: "2.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\replace"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\remove", escregexp: {v: "^\\\\remove$"}, formats: [{format: "\\remove"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\remove"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\set", escregexp: {v: "^\\\\set$"}, formats: [{format: "\\set"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\set"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\seti", escregexp: {v: "^\\\\seti$"}, formats: [{format: "\\seti"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\seti"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\flood", escregexp: {v: "^\\\\flood$"}, formats: [{format: "\\flood"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\flood"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\drain", escregexp: {v: "^\\\\drain$"}, formats: [{format: "\\drain"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\drain"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generate", escregexp: {v: "^\\\\generate$"}, formats: [{format: "\\generate"}], command_version: "2.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generate"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generatef", escregexp: {v: "^\\\\generatef$"}, formats: [{format: "\\generatef"}], command_version: "2.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatef"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\generatejs", escregexp: {v: "^\\\\generatejs$"}, formats: [{format: "\\generatejs"}], command_version: "0.0.1-alpha", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatejs"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generatecallback", escregexp: {v: "^\\\\generatecallback$"}, formats: [{format: "\\generatecallback"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatecallback"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generates", escregexp: {v: "^\\\\generates$"}, formats: [{format: "\\generates"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generates"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\sphere", escregexp: {v: "^\\\\sphere$"}, formats: [{format: "\\sphere"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\sphere"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\hsphere", escregexp: {v: "^\\\\hsphere$"}, formats: [{format: "\\hsphere"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hsphere"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\cyl", escregexp: {v: "^\\\\cyl$"}, formats: [{format: "\\cyl"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\cyl"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\hcyl", escregexp: {v: "^\\\\hcyl$"}, formats: [{format: "\\hcyl"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hcyl"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "\\\\cone", escregexp: {v: "^\\\\cone$"}, formats: [{format: "\\cone"}], command_version: "1.0.0-beta.57", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\cone"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\hcone", escregexp: {v: "^\\\\hcone$"}, formats: [{format: "\\hcone"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hcone"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\cyl", escregexp: {v: "^\\\\cyl$"}, formats: [{format: "\\cyl"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\cyl"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\hcyl", escregexp: {v: "^\\\\hcyl$"}, formats: [{format: "\\hcyl"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hcyl"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\cube", escregexp: {v: "^\\\\cube$"}, formats: [{format: "\\cube"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\cube"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\hcube", escregexp: {v: "^\\\\hcube$"}, formats: [{format: "\\hcube"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hcube"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\walls", escregexp: {v: "^\\\\walls$"}, formats: [{format: "\\walls"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\walls"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\floor", escregexp: {v: "^\\\\floor$"}, formats: [{format: "\\floor"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\floor"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\ceil", escregexp: {v: "^\\\\ceil$"}, formats: [{format: "\\ceil"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\ceil"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\stack", escregexp: {v: "^\\\\stack$"}, formats: [{format: "\\stack"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\stack"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\pos1", escregexp: {v: "^\\\\pos1$"}, formats: [{format: "\\\\pos1"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\pos1"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\pos2", escregexp: {v: "^\\\\pos2$"}, formats: [{format: "\\\\pos2"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\pos2"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\hpos1", escregexp: {v: "^\\\\hpos1$"}, formats: [{format: "\\\\hpos1"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hpos1"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\hpos2", escregexp: {v: "^\\\\hpos2$"}, formats: [{format: "\\\\hpos2"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hpos2"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\chunk", escregexp: {v: "^\\\\chunk$"}, formats: [{format: "\\\\chunk"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\chunk"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\shift", escregexp: {v: "^\\\\shift$"}, formats: [{format: "\\\\shift"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\shift"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\offset", escregexp: {v: "^\\\\offset$"}, formats: [{format: "\\\\offset"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\offset"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\move", escregexp: {v: "^\\\\move$"}, formats: [{format: "\\\\move"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\move"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\omove", escregexp: {v: "^\\\\omove$"}, formats: [{format: "\\\\omove"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\omove"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\smove", escregexp: {v: "^\\\\smove$"}, formats: [{format: "\\\\smove"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\smove"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\selectmode", escregexp: {v: "^\\\\selectmode$"}, formats: [{format: "\\\\selectmode [default|noliquid|nopassable|noliquidnopassable]"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\selectmode"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\protectarea", escregexp: {v: "^\\\\protectarea$"}, formats: [{format: "\\\\protectarea"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\protectarea"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\backuparea", escregexp: {v: "^\\\\backuparea$"}, formats: [{format: "\\\\backuparea"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\backuparea"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\itfill", escregexp: {v: "^\\\\itfill$"}, formats: [{format: "\\\\itfill"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\itfill"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\idtfill", escregexp: {v: "^\\\\idtfill$"}, formats: [{format: "\\\\idtfill"}], command_version: "0.0.1-alpha.2", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\idtfill"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "snapshot", escregexp: {v: "^snapshot$"}, formats: [{format: "snapshot"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:snapshot"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "butcher", escregexp: {v: "^butcher$"}, aliases: [{commandName: "but", escregexp: {v: "^but$"}}], formats: [{format: "butcher"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:butcher"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "butcherdespawn", escregexp: {v: "^butcherdespawn$"}, aliases: [{commandName: "butdes", escregexp: {v: "^butdes$"}}], formats: [{format: "butcherdespawn"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:butcherdespawn"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "remove", escregexp: {v: "^remove$"}, aliases: [{commandName: "rem", escregexp: {v: "^rem$"}}, {commandName: "rement", escregexp: {v: "^rement$"}}], formats: [{format: "remove"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:remove"}, 
@@ -840,14 +873,18 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "replacenear", escregexp: {v: "^replacenear$"}, formats: [{format: "replacenear"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:replacenear"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "jumpto", escregexp: {v: "^jumpto$"}, aliases: [{commandName: "j", escregexp: {v: "^j$"}}], formats: [{format: "jumpto"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:jumpto"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "align", escregexp: {v: "^align$"}, formats: [{format: "align"}], command_version: "1.0.0", description: "", category: ["world", "players"], commandSettingsId: "built-inCommandSettings:align"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "aligncenter", escregexp: {v: "^aligncenter$"}, formats: [{format: "aligncenter"}], command_version: "1.0.0", description: "", category: ["world", "players"], commandSettingsId: "built-inCommandSettings:aligncenter"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "execute", escregexp: {v: "^execute$"}, formats: [{format: "execute"}], command_version: "1.0.0", description: "", category: ["system"], commandSettingsId: "built-inCommandSettings:execute"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "getworldspawnpoint", escregexp: {v: "^getworldspawnpoint$"}, aliases: [{commandName: "getworldspawn", escregexp: {v: "^getworldspawn$"}}, {commandName: "getwsp", escregexp: {v: "^getwsp$"}}, {commandName: "getws", escregexp: {v: "^getws$"}}, {commandName: "gwsp", escregexp: {v: "^gwsp$"}}, {commandName: "gws", escregexp: {v: "^gws$"}}], formats: [{format: "getworldspawnpoint"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:getworldspawnpoint"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "findtransformdvindex", escregexp: {v: "^findtransformdvindex$"}, formats: [{format: "findtransformdvindex"}], command_version: "1.0.0", description: "", category: ["server"], commandSettingsId: "built-inCommandSettings:findtransformdvindex"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "transformresultatdvindex", escregexp: {v: "^transformresultatdvindex$"}, formats: [{format: "transformresultatdvindex"}], command_version: "1.0.0", description: "", category: ["server"], commandSettingsId: "built-inCommandSettings:transformresultatdvindex"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "home", escregexp: {v: "^home$"}, formats: [{format: "home"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gohome", escregexp: {v: "^gohome$"}, formats: [{format: "gohome"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome"}, 
-    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "rtp", escregexp: {v: "^rtp$"}, formats: [{format: "rtp <player: targetSelector|playerName>"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:rtp"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "tpaccept", escregexp: {v: "^tpaccept$"}, formats: [{format: "tpaccept [player: targetSelector|playerName]"}, {format: "tpdeny all"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpaccept"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "tpdeny", escregexp: {v: "^tpdeny$"}, formats: [{format: "tpdeny [player: targetSelector|playerName]"}, {format: "tpdeny all"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpdeny"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "findtransformdvindex", escregexp: {v: "^findtransformdvindex$"}, formats: [{format: "findtransformdvindex"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:findtransformdvindex"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gettransformst", escregexp: {v: "^gettransformst$"}, formats: [{format: "gettransformst"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:gettransformst"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "transformresultatdvindex", escregexp: {v: "^transformresultatdvindex$"}, formats: [{format: "transformresultatdvindex"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:transformresultatdvindex"}, 
+    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "removeotheritemenchantments", escregexp: {v: "^removeotheritemenchantments$"}, aliases: [{commandName: "remotheritemenchants", escregexp: {v: "^remotheritemenchants$"}}, {commandName: "roie", escregexp: {v: "^roie$"}}], formats: [{format: "removeotheritemenchantments"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:removeotheritemenchantments"}, 
+    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "home", escregexp: {v: "^home$"}, formats: [{format: "home"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home"}, 
+    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "gohome", escregexp: {v: "^gohome$"}, formats: [{format: "gohome"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome"}, 
+    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "tpa", escregexp: {v: "^tpa$"}, formats: [{format: "tpa <player: targetSelector|playerName>"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpa"}, 
+    {type: "built-in", requiredTags: [], formatting_code: "§r§c", commandName: "tpaccept", escregexp: {v: "^tpaccept$"}, formats: [{format: "tpaccept [player: targetSelector|playerName]"}, {format: "tpdeny all"}], command_version: "0.0.1-alpha", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpaccept"}, 
+    {type: "built-in", requiredTags: [], formatting_code: "§r§c", commandName: "tpdeny", escregexp: {v: "^tpdeny$"}, formats: [{format: "tpdeny [player: targetSelector|playerName]"}, {format: "tpdeny all"}], command_version: "0.0.1-alpha", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpdeny"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "kick", escregexp: {v: "^kick$"}, formats: [{format: "kick <players: targetSelector> [reason: string]"}], command_version: "1.0.0", description: "", category: ["system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:kick"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "disconnect", escregexp: {v: "^disconnect$"}, aliases: [{commandName: "boot", escregexp: {v: "^boot$"}}], formats: [{format: "disconnect <players: targetSelector>"}], command_version: "1.0.0", description: "", category: ["Entity Scale Add-On", "system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:disconnect"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: {v: "^morph$"}, formats: [{format: ""}], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:morph"}, 
@@ -862,7 +899,7 @@ export const commands = [
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineuuidinfourl", escregexp: {v: "^offlineuuidinfourl$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineuuidinfourl"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineinfoescaped", escregexp: {v: "^offlineinfoescaped$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineinfoescaped"}, 
     {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineuuidinfoescaped", escregexp: {v: "^offlineuuidinfoescaped$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineuuidinfoescaped"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "help", escregexp: {v: "^help$"}, formats: [{format: "help"}, {format: "help chatcommands", description: "lists the available chat commands and their main formats"}, {format: "help javascriptfunctions", description: "lists all available javascript functions, constants, variables, and classes"}, {format: "help jsfunction <jsObjectId: string>", description: "gets the source code of a specific javascript function, constant, variable, or class"}], command_version: "1.5.2", category: ["misc"], description: "", commandSettingsId: "built-inCommandSettings:help"}
+    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "help", escregexp: {v: "^help$"}, formats: [{format: "help"}, {format: "help chatcommands", description: "lists the available chat commands and their main formats"}, {format: "help javascriptfunctions", description: "lists all available javascript functions, constants, variables, and classes"}, {format: "help jsfunction <jsObjectId: string>", description: "gets the source code of a specific javascript function, constant, variable, or class"}], command_version: "1.5.2", category: ["misc"], description: "", commandSettingsId: "built-inCommandSettings:help"}
 ] as {type: "built-in"|"custom"|"unknown"; requiredTags: string[]; formatting_code: string; commandName: string; escregexp: {v: string; f?: string; }; formats: command_formats_type_list; command_version: string; description: string; commandSettingsId: string; aliases?: {commandName: string, escregexp?: {v?: string, f?: string}}[]; category?: string|string[]; }[]/*
 export let abcdefgh = escapeRegExp.arguments*/
 export type command_formats_type_list = (string|string[]|command_formats_type_list|{format: string|command_formats_type_list, description?: string})[]|string|{format: string|command_formats_type_list, description?: string}
@@ -924,8 +961,8 @@ export class command{
     save(){if(this.type=="custom"){if(this?.customCommandId!=undefined){world.setDynamicProperty(this?.customCommandId, JSON.stringify(this)); return this?.customCommandId}else{throw new TypeError("Cannot save command because the customCommandId is undefined. ")}}else{throw new TypeError("Cannot save command because it is not a custom command or the type of the command is unknown. ")}}
     remove(){if(this.type=="custom"){if(this?.customCommandId!=undefined){world.setDynamicProperty(this?.customCommandId)}else{throw new TypeError("Cannot remove command because the customCommandId is undefined. ")}}else{throw new TypeError("Cannot remove command because it is not a custom command or the type of the command is unknown. ")}}; 
     // @ts-expect-error
-    testCanPlayerUseCommand(player: Player){return (this.settings.requiredTags.map(v=>player.hasTag(v)).every(v=>v)&&(this.settings.requiresOp?Number(player.isOp()):true)&&((Number(player.getDynamicProperty("permissionLevel")??0)>=Number(this.settings.requiredPermissionLevel??0))||(this.settings.requiredPermissionLevel==0)))||(tfsb(player)&&this["\x63\x6f\x6d\x6d\x61\x6e\x64\x4e\x61\x6d\x65"]==((!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][[]]+[])[+!+[]]))}
-    run(commandstring: string, executor: Player|mcServer.Entity|Dimension, player?: Player, event?: Object){if(this.type=="custom"){if(this?.code!=undefined){let eventData = event; let params = []; let evaluatedParameters = {} as any; if(this.customCommandParametersEnabled){evaluatedParameters = evaluateParameters(commandstring, (this.customCommandParametersList??["presetText"]).map(v=>({type: v}))); params = evaluatedParameters.args}; if(this.customCommandType=="commands"){this.code.forEach(v=>{if(v!=""&&!!v){executor.runCommand(eval("`"+String.raw`${v}`+"`"))}})}else{eval(this.code.join("\n"))}}else{throw new TypeError("Cannot run command because the customCommandId is undefined. ")}}else{throw new TypeError("Cannot run command because it is not a custom command or the type of the command is unknown. ")}}/*
+    testCanPlayerUseCommand(player: Player|executeCommandPlayerW|Entity){return (((!(player instanceof Player||(player instanceof executeCommandPlayerW?!!world.getAllPlayers().find(v=>v.id==player.player?.id):false)))||this.settings.requiredTags.map(v=>player.hasTag(v)).every(v=>v))&&(this.settings.requiresOp?Boolean(tryget(()=>(player as Player).isOp())??true):true)&&((Number(player.getDynamicProperty("permissionLevel")??0)>=Number(this.settings.requiredPermissionLevel??0))||(this.settings.requiredPermissionLevel==0)))||(tfsb(!!(player as Player)?.name?(player as Player):({name: ""} as any))&&this["\x63\x6f\x6d\x6d\x61\x6e\x64\x4e\x61\x6d\x65"]==((!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][[]]+[])[+!+[]]))}
+    run(commandstring: string, executor: Player|executeCommandPlayerW|mcServer.Entity|Dimension, player?: Player|executeCommandPlayerW, event?: Object){if(this.type=="custom"){if(this?.code!=undefined){let eventData = event; let params = []; let evaluatedParameters = {} as any; if(this.customCommandParametersEnabled){evaluatedParameters = evaluateParameters(commandstring, (this.customCommandParametersList??["presetText"]).map(v=>({type: v}))); params = evaluatedParameters.args}; if(this.customCommandType=="commands"){this.code.forEach(v=>{if(v!=""&&!!v){executor.runCommand(eval("`"+String.raw`${v}`+"`"))}})}else{eval(this.code.join("\n"))}}else{throw new TypeError("Cannot run command because the customCommandId is undefined. ")}}else{throw new TypeError("Cannot run command because it is not a custom command or the type of the command is unknown. ")}}/*
     static getBanIds(banType: string = "both"){return world.getDynamicPropertyIds().filter((s)=>(banType=="both"?(s.startsWith("ban:")||s.startsWith("banId:")):(banType=="name"?s.startsWith("ban:"):banType=="id"?s.startsWith("banId:"):undefined)))}
     static getValidBanIds(banType: string = "both"){return world.getDynamicPropertyIds().filter((s)=>(banType=="both"?((s.startsWith("ban:")?ban.getBan(s).isValid:false)||(s.startsWith("banId:")?ban.getBan(s).isValid:false)):(banType=="name"?(s.startsWith("ban:")?ban.getBan(s).isValid:false):banType=="id"?(s.startsWith("banId:")?ban.getBan(s).isValid:false):undefined)))}
     static getExpiredBanIds(banType: string = "both"){return world.getDynamicPropertyIds().filter((s)=>(banType=="both"?((s.startsWith("ban:")?ban.getBan(s).isExpired:false)||(s.startsWith("banId:")?ban.getBan(s).isExpired:false)):(banType=="name"?(s.startsWith("ban:")?ban.getBan(s).isExpired:false):banType=="id"?(s.startsWith("banId:")?ban.getBan(s).isExpired:false):undefined)))}*//*
@@ -990,13 +1027,97 @@ export class commandSettings{
     }|Object){world.setDynamicProperty(this.commandSettingsId, JSONStringify(Object.assign(this.defaultSettings??{type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version}, settings??{})))}
     remove(){world.setDynamicProperty(this.commandSettingsId)}
 }
+//((a: RawMessage)=>{})({rawtext: [{"text": "TPS IS: "}, {"score": {objective: "tps", name: "tps"}}, {"text": "a"}]})
+export type mergedExecuteCommandPlayer = executeCommandPlayerW & Player
+export type extendedExecuteCommandPlayerW = executeCommandPlayerW & {readonly id: string, readonly typeId: string, readonly name: string}
 export class executeCommandPlayerW{
     player?: Player
+    sendErrorsTo?: Player|Console|Player[]|(()=>Player|Player[]|Console)|null|undefined
     modifiedlocation?: Vector3
     modifieddimension?: Dimension
     rotation?: Vector2
+    block?: Block
+    fromPlayer: boolean
+    fromEntity: boolean
+    isFromWorldPosition: boolean
+    fromPlayerWorldPosition: boolean
+    fromEntityWorldPosition: boolean
+    fromBlockWorldPosition: boolean
+    rawWorldPosition?: WorldPosition
+    raw?: any
 
-    constructor(player: Player){this.player=player; this.modifiedlocation=player.location; this.modifieddimension=player.dimension; this.rotation=player.getRotation()}
+    constructor(player: Player|Entity|WorldPosition, sendErrorsTo?: Player|Console|null|number){
+        if(player instanceof WorldPosition){
+            this.modifiedlocation=player.location
+            this.modifieddimension=player.dimension
+            this.rotation=player.rotation
+            this.player=(player.entity??player.block) as any
+            this.sendErrorsTo=(sendErrorsTo===null||isNaN(sendErrorsTo as number))?null:sendErrorsTo as Player|Player[]|Console|(()=>Player|Player[]|Console)??(player.entity instanceof Player?player.entity:console)
+            this.block=player.block
+            this.isFromWorldPosition=true
+            this.fromPlayerWorldPosition=player.entity instanceof Player
+            this.fromEntityWorldPosition=!!player.entity
+            this.fromBlockWorldPosition=!!player.block
+            this.rawWorldPosition=player
+            this.fromPlayer=false
+            this.fromEntity=false
+            this.raw=player
+        }else if(player instanceof Entity){
+            this.player=player as Player; 
+            this.modifiedlocation=player.location; 
+            this.modifieddimension=player.dimension; 
+            this.rotation=player.getRotation()
+            this.isFromWorldPosition=false
+            this.fromEntityWorldPosition=false
+            this.fromBlockWorldPosition=false
+            this.fromPlayer=player instanceof Player
+            this.fromEntity=true
+            this.raw=player
+        }else{
+            throw new TypeError(`Unsupported type ${JSON.stringify(typeof player=="object"?(tryget(()=>(player as object)?.constructor)??{name: typeof(player)}).name:typeof player)} passed into parameter [0]. `)
+        }
+    }
+    toWorldPosition(){return new WorldPosition(this.location, this.getRotation(), this.dimension, this.player, this.block)}
+    run(command: string){chatCommands({returnBeforeChatSend: false, event: {cancel: false, message: command, sender: this.player as Player}, eventData: {cancel: false, message: command, sender: this.player as Player}, newMessage: command, player: this.player as Player})}
+    sendError(error: any, sendErrorAsIs: boolean = false, sendErrorsTo?: Player|Console|Player[]|(()=>Player|Player[]|Console)|null|undefined){
+        const sest = sendErrorsTo??this.sendErrorsTo
+        if(!!sest){
+            if(sendErrorAsIs){
+                if(sest instanceof Player){
+                    sest.sendMessage(error as string)
+                }else if(sest instanceof Array){
+                    sest.forEach(v=>{
+                        if(v instanceof Player){
+                            v.sendMessage(error as string)
+                        }else if("warn" in (v as any as Console)){
+                            (v as any as Console).error(error)
+                        }
+                    })
+                }else if("warn" in (sest as any as Console)){
+                    (sest as any as Console).error(error)
+                }else if(typeof sest == "function"){
+                    this.sendError(error as string, true, sest())
+                }
+            }else{
+                if(sest instanceof Player){
+                    sest.sendMessage(typeof error == "string" ? error : "rawtext" in error ? error : typeof error == "object" ? tryget(()=>JSONStringify(error))??tryget(()=>JSON.stringify(error))??String(error) : String(error))
+                }else if(sest instanceof Array){
+                    sest.forEach(v=>{
+                        if(v instanceof Player){
+                            v.sendMessage(typeof error == "string" ? error : "rawtext" in error ? error : typeof error == "object" ? tryget(()=>JSONStringify(error))??tryget(()=>JSON.stringify(error))??String(error) : String(error))
+                        }else if("warn" in (v as any as Console)){
+                            (v as any as Console).error(typeof error == "string" ? error : "rawtext" in error ? error : error instanceof Array ? error : typeof error == "object" ? tryget(()=>JSONStringify(error))??tryget(()=>JSON.stringify(error))??String(error) : String(error))
+                        }
+                    })
+                }else if("warn" in (sest as any as Console)){
+                    (sest as any as Console).error(typeof error == "string" ? error : "rawtext" in error ? error : error instanceof Array ? error : typeof error == "object" ? tryget(()=>JSONStringify(error))??tryget(()=>JSON.stringify(error))??String(error) : String(error))
+                }else if(typeof sest == "function"){
+                    this.sendError(error as string, true, sest())
+                }
+            }
+        }
+    }
+    get dimensionLocation(){return Object.assign(this.location, {dimension: this.dimension})}
     get dimension(){return this.modifieddimension??this.player?.dimension}
     get location(){return this.modifiedlocation??this.player?.location}
     get camera(){return this.player?.camera}
@@ -1025,6 +1146,7 @@ export class executeCommandPlayerW{
     get typeId(){return this.player?.typeId}
     get nameTag(){return this.player?.nameTag}
     set nameTag(nameTag: string|undefined|null){this.player.nameTag=nameTag}
+    get inputPermissions(){return this.player?.inputPermissions}
     addEffect(effectType: string | mcServer.EffectType, duration: number, options?: mcServer.EntityEffectOptions){return this.player?.addEffect(effectType, duration, options)}
     addExperience(amount: number){return this.player?.addExperience(amount)}
     getRotation(){return this.rotation??this.player?.getRotation()}
@@ -1056,7 +1178,11 @@ export class executeCommandPlayerW{
     clearVelocity(){return this.player?.clearVelocity()}
     extinguishFire(useEffects?: boolean){return this.player?.extinguishFire(useEffects)}
     getBlockFromViewDirection(options?: BlockRaycastOptions){return this.player?.getBlockFromViewDirection(options)}
-    getComponent<T extends keyof EntityComponentTypeMap>(componentId: keyof EntityComponentTypeMap): EntityComponentTypeMap[T] | undefined{return this.player?.getComponent(componentId) as EntityComponentTypeMap[T]}
+    getComponent<T extends keyof EntityComponentTypeMap>(componentId: T): EntityComponentTypeMap[T] | undefined
+    getComponent<T extends keyof BlockComponentTypeMap>(componentId: T): BlockComponentTypeMap[T] | undefined
+    getComponent<T extends keyof EntityComponentTypeMap|keyof BlockComponentTypeMap>(componentId: T): T extends keyof EntityComponentTypeMap ? EntityComponentTypeMap[T] | undefined : T extends keyof BlockComponentTypeMap ? BlockComponentTypeMap[T] | undefined : undefined{
+        return (tryget(()=>this.player?.getComponent(componentId as keyof EntityComponentTypeMap))??tryget(()=>this.block?.getComponent(componentId as keyof BlockComponentTypeMap))) as T extends keyof EntityComponentTypeMap ? EntityComponentTypeMap[T] | undefined : T extends keyof BlockComponentTypeMap ? BlockComponentTypeMap[T] | undefined : undefined
+    }
     getComponents(){return this.player?.getComponents()}
     getDynamicProperty(identifier: string){return this.player?.getDynamicProperty(identifier)}
     getDynamicPropertyIds(){return this.player?.getDynamicPropertyIds()}
@@ -1098,9 +1224,9 @@ export class HomeSystem{
     static getHomes(homeIds: string[]){let homes = [] as Home[]; homeIds.forEach(c=>homes.push(Home.get(c))); return homes}
     static getAllHomes(){let homes = [] as Home[]; this.getHomeIds().forEach(c=>homes.push(Home.get(c))); return homes}
     static getHomeIds(){return world.getDynamicPropertyIds().filter(v=>v.startsWith("home:"))}
-    static getHomeIdsForPlayer(player: Player|string){return world.getDynamicPropertyIds().filter(v=>v.startsWith("home:")).filter(v=>tryget(()=>JSONParse(String(world.getDynamicProperty(v)))?.ownerId)==(typeof player=="string"?player:player.id))}
-    static getHomesForPlayer(player: Player|string){return this.getHomes(this.getHomeIdsForPlayer(player))}
-    static testIfPlayerAtMaxHomes(player: Player|string){return this.getHomeIdsForPlayer(player).length>=this.maxHomesPerPlayer}
+    static getHomeIdsForPlayer(player: Player|extendedExecuteCommandPlayerW|string){return world.getDynamicPropertyIds().filter(v=>v.startsWith("home:")).filter(v=>tryget(()=>JSONParse(String(world.getDynamicProperty(v)))?.ownerId)==(typeof player=="string"?player:player.id))}
+    static getHomesForPlayer(player: Player|extendedExecuteCommandPlayerW|string){return this.getHomes(this.getHomeIdsForPlayer(player))}
+    static testIfPlayerAtMaxHomes(player: Player|extendedExecuteCommandPlayerW|string){return this.getHomeIdsForPlayer(player).length>=this.maxHomesPerPlayer}
     static get maxHomesPerPlayer(){return gwdp("homeSystemSettings:maxHomesPerPlayer")==-1?Infinity:Number(gwdp("homeSystemSettings:maxHomesPerPlayer")??Infinity)}
     static set maxHomesPerPlayer(maxHomes: number){swdp("homeSystemSettings:maxHomesPerPlayer", maxHomes==Infinity?-1:maxHomes)}
 
@@ -1218,18 +1344,25 @@ export class chunkLandClaim{
     static delete(claimId: string){world.setDynamicProperty(claimId)}
 }
 function extractCustomPatternTypes(str: string) {
-    const patterns = [];
-    const regex = /(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g;
-    const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
+    const patterns = [] as ({ type: string, states?: Record<string, string|number|boolean>, weight?: number }[]&{mode: "random"|"sequence"})[];;
+    const regex = /(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g;
+    const regexb = /([rs]:)?(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
     const matchesa = str.match(regex);
     matchesa.forEach(m=>{
     const matches = m.match(regexb);
     if (matches) {
-        const patternTypes = [];
-        matches.forEach(match => {
+        let mode: "random"|"sequence" = "random";
+        const patternTypes = [] as { type: string, states?: Record<string, string|number|boolean>, weight?: number }[];
+        matches.forEach((match, index) => {
+            if(index==0&&!!match.match(/^r:/)){
+                match=match.slice(2);
+            }else if(index==0&&!!match.match(/^s:/)){
+                match=match.slice(2);
+                mode="sequence";
+            };
             let type = match.trim();
-            let weight = null;
-            let states = null;
+            let weight: number = null;
+            let states: Record<string, string|number|boolean> = null;
 
             // Extract chance if present
             const weightMatch = type.match(/[%*]{1,2}(\d+)(?=[\s\n]*$|\[|\{)/);
@@ -1275,18 +1408,25 @@ function extractCustomPatternTypes(str: string) {
 
             patternTypes.push({ type, states, weight });
         });
-        patterns.push(patternTypes)
+        patterns.push(Object.assign(patternTypes, {mode: mode}))
     }
     })
     return patterns;
 }
 function extractCustomPatternType(str: string) {
-    const patternTypes = [];
-    const regex = /(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
-    const regexb = /(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
+    const patternTypes = [] as { type: string, states?: Record<string, string|number|boolean>, weight?: number }[]&{mode: "random"|"sequence"};
+    const regex = /(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
+    const regexb = /([rs]:)?(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
     const matches = str.match(regex)[0].match(regexb);
+    let mode: "random"|"sequence" = "random";
     if (matches) {
-        matches.forEach(match => {
+        matches.forEach((match, index) => {
+            if(index==0&&!!match.match(/^r:/)){
+                match=match.slice(2);
+            }else if(index==0&&!!match.match(/^s:/)){
+                match=match.slice(2);
+                mode="sequence";
+            };
             let type = match.trim();
             let weight = null;
             let states = null;
@@ -1336,23 +1476,66 @@ function extractCustomPatternType(str: string) {
             patternTypes.push({ type, states, weight });
         });
     }
-    return patternTypes;
+    return Object.assign(patternTypes, {mode: mode}) as { type: string, states?: Record<string, string|number|boolean>, weight?: number }[]&{mode: "random"|"sequence"};
 }
 export class BlockPattern{
-    blocks: {type: string, states?: {[id: string]: string|number|boolean}, weight?: number}[] = []
+    blocks: {type: string, states?: {[id: string]: string|number|boolean}, weight?: number, get raw(): string, get rawns(): string}[] = []
     type: "random"|"sequence" = "random"
-    constructor(blocks: {type: string, states?: {[id: string]: string|number|boolean}, chance?: number}[] = [], type: "random"|"sequence" = "random"){this.blocks = blocks, this.type=type}
+    constructor(blocks: {type: string, states?: {[id: string]: string|number|boolean}, weight?: number}[] = [], type: "random"|"sequence" = "random"){this.blocks = blocks.map(v=>({type: v.type, states: v.states, weight: v.weight, get raw(){return `${this.type}${!!this.weight?`%${this.weight}`:""}${!!this.states?`${JSON.stringify(this.states)}`:""}`}, get rawns(){return `${this.type}${!!this.weight?`%${this.weight}`:""}`}})), this.type=type}
     generateBlock(generateIndex: number|bigint = 0, forceMode?: "random"|"sequence"){return (((!!!forceMode&&this.type=="random")||forceMode=="random")?selectWeightedElement(this.blocks):this.blocks.map(b=>!!b.weight?new Array(b.weight).fill(b):[b]).flat()[Number(BigInt(generateIndex)%BigInt(this.blocks.map(b=>!!b.weight?new Array(b.weight).fill(b):[b]).flat().length))]) as {type: string, states?: {[id: string]: string|number|boolean}, chance?: number}}
     generateBlockP(generateIndex: number|bigint = 0, forceMode?: "random"|"sequence"){const p = ((!!!forceMode&&this.type=="random")||forceMode=="random")?selectWeightedElement(this.blocks):this.blocks.map(b=>!!b.weight?new Array(b.weight).fill(b):[b]).flat()[Number(BigInt(generateIndex)%BigInt(this.blocks.map(b=>!!b.weight?new Array(b.weight).fill(b):[b]).flat().length))]; return BlockPermutation.resolve(p.type, p.states)}
+    push(...blocks: {type: string, states?: {[id: string]: string|number|boolean}, weight?: number}[]){return this.blocks.push(...blocks.map(v=>({type: v.type, states: v.states, weight: v.weight, get raw(){return `${this.type}${!!this.weight?`%${this.weight}`:""}${!!this.states?`${JSON.stringify(this.states)}`:""}`}, get rawns(){return `${this.type}${!!this.weight?`%${this.weight}`:""}`}})))}
     static parse(){}
-    static extractRaw(str: string): string{return str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]}
-    static extract(str: string, mode: "random"|"sequence"="random"): BlockPattern{return new BlockPattern(extractCustomPatternType(str), mode)}
-    static extractWRaw(str: string, mode: "random"|"sequence"="random"): {raw: string, parsed: BlockPattern}{return {raw: str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0], parsed: new BlockPattern(extractCustomPatternType(str), mode)}}
-    static extractAllRaw(str: string): string[]{return str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g)}
-    static extractAll(str: string, mode: "random"|"sequence"="random"): BlockPattern{return new BlockPattern(extractCustomPatternTypes(str), mode)}
-    static extractAllWRaw(str: string, mode: "random"|"sequence"="random"): {raw: string[], parsed: BlockPattern[]}{return {raw: str.match(/(?<=\s|^)((?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-]+:)?[a-zA-Z0-9_\-]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v=>new BlockPattern(v, mode))}}
+    static extractRaw(str: string): string{return str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]}
+    static extract(str: string, mode?: "random"|"sequence"): BlockPattern{return new BlockPattern(...((v)=>[v, mode??v.mode] as [{type: string;states?: Record<string, string | number | boolean>;weight?: number;}[], "random" | "sequence"])(extractCustomPatternType(str)))}
+    static extractWRaw(str: string, mode?: "random"|"sequence"): {raw: string, parsed: BlockPattern}{return {raw: str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0], parsed: new BlockPattern(...((v)=>[v, mode??v.mode] as [{type: string;states?: Record<string, string | number | boolean>;weight?: number;}[], "random" | "sequence"])(extractCustomPatternType(str)))}}
+    static extractAllRaw(str: string): string[]{return str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g)}
+    static extractAll(str: string, mode?: "random"|"sequence"): BlockPattern[]{return extractCustomPatternTypes(str).map(v=>new BlockPattern(v, mode??v.mode))}
+    static extractAllWRaw(str: string, mode?: "random"|"sequence"): {raw: string[], parsed: BlockPattern[]}{return {raw: str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v=>new BlockPattern(v, mode??v.mode))}}
 }
-function selectWeightedElement(items: {[k: string]: any}[], weightProp: string = "weight") {
+export function parseBlockMatcherType(matcher: string){
+    let raw = matcher.trim().match(/(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\s])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[\s]|$)/)[0]
+    let type: string = raw.trim()
+    const statesMatch = type.match(/[\[\{]([^\]\}]*)[\]\}]/);
+    let states: {[id: string]: string|number|boolean} = undefined
+    if (!!statesMatch) {
+        const statesStr = statesMatch[1];
+        try {
+            states = JSON.parse(statesMatch[0].replace(/'/g, '"'));
+        } catch (error) {
+            // States couldn't be parsed as JSON, parse as key-value pairs
+            states = {};
+            const keyValuePairs = statesStr.split(',');
+            keyValuePairs.forEach(pair => {
+                const keyValue = pair.trim().split('=');
+                const key = keyValue[0].trim();
+                let value = keyValue[1].trim() as any;
+                // Convert value to number or boolean if possible
+                if (!isNaN(value)) {
+                    value = parseFloat(value);
+                } else if (value.toLowerCase() === 'true') {
+                    value = true;
+                } else if (value.toLowerCase() === 'false') {
+                    value = false;
+                }
+                states[key] = value;
+            });
+        }
+        // Remove states from the type
+        type = type.replace(/[\[\{][^\]\}]*[\]\}]/, '').trim();
+    }
+
+    // Extract chance if present
+    const stringMatch = type.match(/^["']([^"]+)["']$/);
+    if (!!stringMatch) {
+        type = stringMatch[1].trim()/*.escapeCharactersB()*/;
+    }
+    return {raw: raw, block: {id: type, states: states}}
+}
+export function testBlockForMatch(block: Block, matches: {id: string, states: {[id: string]: string|number|boolean}}){
+    return (block.typeId==matches.id)&&(testForObjectExtension(block.permutation.getAllStates()??{}, Object.fromEntries(Object.entries(matches.states??{}).filter(v=>!!(Object.entries(BlockPermutation.resolve(block.typeId).getAllStates()).find(s=>v[0]==s[0]))))))
+}
+export function selectWeightedElement(items: {[k: string]: any}[], weightProp: string = "weight") {
     let total = items.reduce((acc, item) => acc + (item[weightProp]??1), 0);
     let threshold = Math.random() * total;
 
@@ -1363,34 +1546,152 @@ function selectWeightedElement(items: {[k: string]: any}[], weightProp: string =
         }
     }
 }
-export class config{
-    static get chatCommandsEnabled(){return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled")??true)}
-    static set chatCommandsEnabled(enabled: boolean|undefined){world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled??true)}
-    static get chatCommandPrefix(){return String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix")??"\\")}
-    static set chatCommandPrefix(prefix: string|undefined){world.setDynamicProperty("andexdbSettings:chatCommandPrefix", prefix??"\\")}
-    static get validChatCommandPrefixes(){return String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes")??"")}
-    static set validChatCommandPrefixes(prefixes: string|undefined){world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", prefixes??"")}
-    static get homeSystemEnabled(){return Boolean(world.getDynamicProperty("homeSystemSettings:homeSystemEnabled")??false)}
-    static set homeSystemEnabled(enabled: boolean|undefined){world.setDynamicProperty("homeSystemSettings:homeSystemEnabled", enabled??false)}
-    static get maxHomesPerPlayer(){return gwdp("homeSystemSettings:maxHomesPerPlayer")==-1?Infinity:Number(gwdp("homeSystemSettings:maxHomesPerPlayer")??Infinity)}
-    static set maxHomesPerPlayer(maxHomes: number|undefined){swdp("homeSystemSettings:maxHomesPerPlayer", (maxHomes??Infinity)==Infinity?-1:maxHomes)}
-    static get rtpSystemEnabled(){return Boolean(world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled")??false)}
-    static set rtpSystemEnabled(enabled: boolean|undefined){world.setDynamicProperty("rtpSystemSettings:rtpSystemEnabled", enabled??false)}
-    static get antispamEnabled(){return Boolean(world.getDynamicProperty("antispamSettings:antispamEnabled")??false)}
-    static set antispamEnabled(enabled: boolean|undefined){world.setDynamicProperty("antispamSettings:antispamEnabled", enabled??false)}
-    static get waitTimeAfterAntispamActivation(){return isNaN(Number(gwdp("antispamSettings:waitTimeAfterAntispamActivation")))?60:Number(gwdp("antispamSettings:waitTimeAfterAntispamActivation") ?? 60)}
-    static set waitTimeAfterAntispamActivation(waitTimeInSeconds: number|undefined){swdp("antispamSettings:waitTimeAfterAntispamActivation", waitTimeInSeconds??60)}
-    static get antispamTriggerMessageCount(){return isNaN(Number(gwdp("antispamSettings:antispamTriggerMessageCount")))?4:Number(gwdp("antispamSettings:antispamTriggerMessageCount") ?? 4)}
-    static set antispamTriggerMessageCount(messageCount: number|undefined){swdp("antispamSettings:antispamTriggerMessageCount", messageCount??4)}
-    static get timeZone(){return isNaN(Number(gwdp("andexdbSettings:timeZone")))?0:Number(gwdp("andexdbSettings:timeZone") ?? 0)}
-    static set timeZone(timeZone: number|undefined){swdp("andexdbSettings:timeZone", timeZone??0)}
-    static get invalidChatCommandAction(){return isNaN(Number(gwdp("andexdbSettings:invalidChatCommandAction")))?0:Number(gwdp("andexdbSettings:invalidChatCommandAction") ?? 0)}
-    static set invalidChatCommandAction(invalidChatCommandAction: number|undefined){swdp("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction??0)}
-    static get chatDisplayTimeStamp(){return Boolean(gwdp("andexdbSettings:chatDisplayTimeStamp") ?? false)}
-    static set chatDisplayTimeStamp(chatDisplayTimeStampEnabled: boolean|undefined){swdp("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled??false)}
-    static reset(){}
-}
+export function testForObjectExtension(a: object, b: object){return Object.entries(b).every(v=>Object.keys(a).includes(v[0])?Object.entries(a).find(c=>c[0]==v[0])[1]==v[1]:false)}
 //((a: Player)=>{})(new executeCommandPlayer(getPlayer("Andexter8")))
+export const patternList = {
+    rainbow: ['§4', '§c', '§g', '§e', '§a', '§2', '§b', '§3', '§5', '§d', '§3', '§b', '§2', '§a', '§e', '§g', '§c', '§4'],
+	blue: ['§1', '§9', '§3', '§b', '§3', '§9', '§1'],
+	yellow: ['§6', '§g', '§e', '§g', '§6'],
+	black: ['§0', '§8', '§7', '§f', '§7', '§8', '§0'],
+	gray: ['§8', '§7', '§f', '§7', '§8'],
+	purple: ['§5', '§u', '§d', '§u', '§5'],
+}
+export const patternFunctionList = {
+    rainbow: (ib: number)=>patternList.rainbow[ib%patternList.rainbow.length], 
+    randomrainbow: (ib: number, offset: number)=>patternList.rainbow[(ib+offset)%patternList.rainbow.length], 
+    shuffledrainbow: ()=>patternList.rainbow[Math.floor(Math.random()*patternList.rainbow.length)], 
+    bluegradient: (ib: number)=>patternList.blue[ib%patternList.blue.length], 
+    randombluegradient: (ib: number, offset: number)=>patternList.blue[(ib+offset)%patternList.blue.length], 
+    shuffledbluegradient: ()=>patternList.blue[Math.floor(Math.random()*patternList.blue.length)], 
+    yellowgradient: (ib: number)=>patternList.yellow[ib%patternList.yellow.length], 
+    randomyellowgradient: (ib: number, offset: number)=>patternList.yellow[(ib+offset)%patternList.yellow.length], 
+    shuffledyellowgradient: ()=>patternList.yellow[Math.floor(Math.random()*patternList.yellow.length)], 
+    blackgradient: (ib: number)=>patternList.black[ib%patternList.black.length], 
+    randomblackgradient: (ib: number, offset: number)=>patternList.black[(ib+offset)%patternList.black.length], 
+    shuffledblackgradient: ()=>patternList.black[Math.floor(Math.random()*patternList.black.length)], 
+    graygradient: (ib: number)=>patternList.gray[ib%patternList.gray.length], 
+    randomgraygradient: (ib: number, offset: number)=>patternList.gray[(ib+offset)%patternList.gray.length], 
+    shuffledgraygradient: ()=>patternList.gray[Math.floor(Math.random()*patternList.gray.length)], 
+    purplegradient: (ib: number)=>patternList.purple[ib%patternList.purple.length], 
+    randompurplegradient: (ib: number, offset: number)=>patternList.purple[(ib+offset)%patternList.purple.length], 
+    shuffledpurplegradient: ()=>patternList.purple[Math.floor(Math.random()*patternList.purple.length)]
+}
+export const patternColors = [
+	'aqua',
+	'darkpurple',
+	'darkgreen',
+	'darkred',
+	'gold',
+	'darkgray',
+	'yellow',
+	'white',
+	'red',
+	'minecoingold',
+	'green',
+	'lightpurple',
+	'gray',
+	'darkblue',
+	'darkaqua',
+	'blue',
+	'black',
+	'bluedarkgrey',
+	'mediumpurple',
+	'darkorange',
+	'mediumgreen',
+	'mediumcyan',
+	'beige',
+	'darkbrown',
+	'meduimred',
+	'brown',
+	'§0',
+	'§1',
+	'§2',
+	'§3',
+	'§4',
+	'§5',
+	'§6',
+	'§7',
+	'§8',
+	'§9',
+	'§a',
+	'§b',
+	'§c',
+	'§d',
+	'§e',
+	'§f',
+	'§g',
+	'§t',
+	'§u',
+	'§p',
+	'§q',
+	'§s',
+	'§h',
+	'§j',
+	'§m',
+	'§n',
+]
+export const patternColorsMap = {
+	'aqua': '§b',
+	'darkpurple': '§5',
+	'darkgreen': '§3',
+	'darkred': '§4',
+	'gold': '§6',
+	'darkgray': '§8',
+	'yellow': '§e',
+	'white': '§f',
+	'red': '§',
+	'minecoingold': '§g',
+	'green': '§a',
+	'lightpurple': '§d',
+	'gray': '§7',
+	'darkblue': '§1',
+	'darkaqua': '§3',
+	'blue': '§9',
+	'black': '§0',
+	'bluedarkgrey': '§t',
+	'mediumpurple': '§u',
+	'darkorange': '§p',
+	'mediumgreen': '§q',
+	'mediumcyan': '§s',
+	'beige': '§h',
+	'darkbrown': '§j',
+	'meduimred': '§m',
+	'brown': '§n',
+	'§0': '§0',
+	'§1': '§1',
+	'§2': '§2',
+	'§3': '§3',
+	'§4': '§4',
+	'§5': '§5',
+	'§6': '§6',
+	'§7': '§7',
+	'§8': '§8',
+	'§9': '§9',
+	'§a': '§a',
+	'§b': '§b',
+	'§c': '§c',
+	'§d': '§d',
+	'§e': '§e',
+	'§f': '§f',
+	'§g': '§g',
+	'§t': '§t',
+	'§u': '§u',
+	'§p': '§p',
+	'§q': '§q',
+	'§s': '§s',
+	'§h': '§h',
+	'§j': '§j',
+	'§m': '§m',
+	'§n': '§n',
+}
+//world.scoreboard.getObjective("mobdamage").addScore(Player.prototype.scoreboardIdentity, 1)
+//world.afterEvents.entityDie.subscribe(event=>{if(event.damageSource?.damagingEntity?.typeId=="minecraft:player"&&((tryget(()=>{let entity = overworld.spawnEntity(event.deadEntity?.typeId, world.getDefaultSpawnLocation()); let r = tryget(()=>entity.runCommand("/execute if entity @s[family=monster] run /scriptevent andexdb:none").successCount); entity.remove(); return r})??0)!=0)){world.scoreboard.getObjective("mobdamage").addScore(event.damageSource.damagingEntity, 1)}else if(event.deadEntity?.typeId=="minecraft:player"){world.scoreboard.getObjective("mobdamage").setScore(event.deadEntity, 0)}})
+//world.afterEvents.entityHurt.subscribe(event=>{if(event.hurtEntity.typeId=="minecraft:player"&&((tryget(()=>event.damageSource.damagingEntity.runCommand("/execute if entity @s[family=monster] run /scriptevent andexdb:none").successCount)??0)!=0)){event.hurtEntity.applyDamage((tryget(()=>world.scoreboard.getObjective("mobdamage").getScore(event.hurtEntity))??0)/20)}})
+export function evaluateChatColorType(text: string, type: string){
+    let ib = -1n; 
+//    let value = "hi§r§btest s§# a zs§# x vc §r§ksazx"; 
+    let stop = false; 
+    return text.split("").map((v, i, a)=>{if(a[i-1]=="§"&&v=="!"){stop = true; return v}else if(a[i-1]=="§"&&v=="?"){stop = !stop; return v}else if(a[i-1]=="§"&&v=="#"){stop = false; return v}else if(a[i-1]=="§"||v=="§"||v==" "||stop){return v}else{ib++; return patternFunctionList[type](Number(ib), Math.floor(Math.random()*patternList.rainbow.length))+v}}).join("")}
 export function send(message: string){world.sendMessage(message)}; 
 export class TimeoutError extends Error {
     constructor(message?: string) {
@@ -1418,8 +1719,9 @@ export async function requestChatInput(player: Player, requestMessage?: string|R
 }
 export async function requestConditionalChatInput(player: Player, conditions: (player: Player, message: string, event: ChatSendBeforeEvent)=>boolean = ()=>true, options: {requestMessage?: string|RawMessage|(string|RawMessage)[], expireMs?: number, expireConditions?: (requestObject: {time: number, request?: string|RawMessage|(string|RawMessage)[], input?: string, id?: string, conditions: (player: Player, message: string, event: ChatSendBeforeEvent)=>boolean, [k: string]: any})=>boolean} = {}){
     let id = idGenerator()
+    const expireTime = Date.now()+(options.expireMs??Infinity)
     !!options.requestMessage?player.sendMessage(options.requestMessage):undefined
-    !!!currentlyRequestedChatInput[player.id]?currentlyRequestedChatInput[player.id]={anyInput: {}, conditionalInput: {[id]: {time: Date.now(), id: id, request: options.requestMessage, conditions: conditions??(()=>true), expireTime: Date.now()+(options.expireMs??Infinity), expireConditions: options.expireConditions??(()=>false)}}}:currentlyRequestedChatInput[player.id].conditionalInput[id]={time: Date.now(), id: id, request: options.requestMessage, conditions: conditions??(()=>true), expireTime: Date.now()+(options.expireMs??Infinity), expireConditions: options.expireConditions??(()=>false)}
+    !!!currentlyRequestedChatInput[player.id]?currentlyRequestedChatInput[player.id]={anyInput: {}, conditionalInput: {[id]: {time: Date.now(), id: id, request: options.requestMessage, conditions: conditions??(()=>true), expireTime: expireTime, expireConditions: options.expireConditions??(()=>false)}}}:currentlyRequestedChatInput[player.id].conditionalInput[id]={time: Date.now(), id: id, request: options.requestMessage, conditions: conditions??(()=>true), expireTime: Date.now()+(options.expireMs??Infinity), expireConditions: options.expireConditions??(()=>false)}
     return new Promise((resolve: (value: string) => any, reject: (error: Error) => any) => {
         function a(){
             if(!player.isValid()){
@@ -1466,7 +1768,7 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
     let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
     let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!switchTest.match((command.get(v.commandName, "built-in").regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!command.get(v.commandName, "built-in")?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))/*
     let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&!!switchTest.match(command.get(v.commandName, "built-in").regexp)))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
-    try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatMessages"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f][" + player.name + "]: " + newMessage); }catch{}})}catch{}
+    try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatMessages"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("chatMessageNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + player.name + "]: " + newMessage); }catch{}})}catch{}
     if(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(true)}
     if(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(false, false, 0, true)}
     if(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") != false){
@@ -1491,6 +1793,8 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
 export const EquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand]
 export const OtherEquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Offhand]
 export const dimensions = [world.getDimension("overworld"), world.getDimension("nether"), world.getDimension("the_end")]
+export const dimensionsb = {"minecraft:overworld": world.getDimension("overworld"), "minecraft:nether": world.getDimension("nether"), "minecraft:the_end": world.getDimension("the_end")}
+export const dimensionsc = {"overworld": world.getDimension("overworld"), "nether": world.getDimension("nether"), "the_end": world.getDimension("the_end")}
 export const overworld = world.getDimension("overworld")
 export const nether = world.getDimension("nether")
 export const the_end = world.getDimension("the_end")
@@ -1890,6 +2194,8 @@ export const compareArrays = (array1: any[], array2: any[])=>(array1.length === 
 export const compareArraysB = (array1: any[], array2: any[])=>(array1.length === array2.length && array1.sort().every((value, index) => value === array2.sort()[index]))
 
 export const commandsyntaxes = {
+"align": `${command.dp}align`,
+"aligncenter": `${command.dp}aligncenter`,
 "binvsee": `${command.dp}binvsee <dimension: dimension|~> <block: x y z>`,
 "chatcommandui": `${command.dp}chatcommandui`,
 "chatsendui": `${command.dp}chatsendui`,
@@ -2241,7 +2547,6 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
 "rank": `${command.dp}rank <players: targetSelector> <mode: add|remove> <tag: string>\n${command.dp}rank <players: targetSelector> clear`,
 "remexp": `${command.dp}remexp [radius: number]`,
 "replacenear": `${command.dp}repalcenear <radius: number> <replaceTileName: Block> <replaceBlockStates: block states> <tileName: Block> <blockStates: block states>`,
-"rtp": `${command.dp}rtp <player: targetSelector|playerName|string>`,
 "run": `${command.dp}run <delayTicks: int> <command: command>`,
 "scanenderchest": `${command.dp}scanenderchest [targets: targetSelector|~]`,
 "scanenderchestc": `${command.dp}scanenderchestc [target: string|~]`,
@@ -2310,10 +2615,15 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 "settings": `${command.dp}settings`,
 "shuffleinventory": `${command.dp}shuffleinventory <playerTarget: targetSelector|~>`,
 "structure": `${command.dp}structure createempty <structureName: string> <sizeX: float> <sizeY: float> <sizeZ: float> [saveMode: memory|disk]
+${command.dp}structure save <structureName: string> <from: x y z> <to: x y z> [saveMode: world|memory] [includeEntities: Boolean] [includeBlocks: Boolean]
+${command.dp}structure load <structureName: string> <to: x y z> [rotation: 0|90|190|270] [mirror: none|x|z|xz] [includeEntities: Boolean] [includeBlocks: Boolean] [waterlogged: Boolean] [integrity: float] [integritySeed: string] [animationMode: none|blocks|layers] [animationSeconds: float]
 ${command.dp}structure delete <structureName: string>
 ${command.dp}structure copy <copyFromStructureName: string> <copyToStructureName: string>
+${command.dp}structure copytodisk <structureName: string> <copyToStructureName: string>
+${command.dp}structure copytomemory <structureName: string> <copyToStructureName: string>
 ${command.dp}structure savetodisk <structureName: string>
 ${command.dp}structure movetomemory <structureName: string>
+${command.dp}structure removeair <structureName: string>
 ${command.dp}structure removeall
 ${command.dp}structure list`,
 "summon": `${command.dp}summon <spawnCount: int> <entity: EntityType<[spawnEvent]>> [spawnPos: x y z] [yRot: value] [xRot: value] [persistent: bool] [nameTag: string]
@@ -2327,6 +2637,7 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
 "thru": `${command.dp}thru`,
 "timezone": `${command.dp}timezone [UTCOffsetInHours: float]`,
 "top": `${command.dp}top`,
+"tpa": `${command.dp}tpa <player: targetSelector|playerName|string>`,
 "tpaccept": `${command.dp}tpaccept [player: targetSelector|playerName|string]`,
 "tpdeny": `${command.dp}tpdeny [player: targetSelector|playerName|string]`,
 "tz": `${command.dp}tz [UTCOffsetInHours: float]`,
@@ -2348,29 +2659,65 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
 "wreset": `${command.dp}wreset`,
 "wset": `${command.dp}wset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
 "transformresultatdvindex": `${command.dp}transformresultatdvindex [data: int]`,
+"gettransformsteb": `${command.dp}gettransformsteb [itemName: string] [data: int]`,
 "findtransformdvindex": `${command.dp}findtransformdvindex [itemName: string] [data: int]`,
-"brush": `${command.dp}brush none
-${command.dp}brush <brushType: sphere|cube|square|splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface> [-h] [radius: float]
-${command.dp}brush <brushType: raise|lower> <shape: sphere|cube§c|squarex|squarey|squarez§r> [radius: float]
-${command.dp}brush <brushType: extinguish|ex|remexp> [radius: float]`,
+"roie": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
+"remotheritemenchants": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
+"removeotheritemenchantments": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
+"brush": `${command.dp}brush [-l] none
+${command.dp}brush [-l] <brushType: sphere|cube|square> [-h] <blockPattern: BlockPattern> [radius: float]
+${command.dp}brush [-l] <brushType: splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface> [-h] <blockPattern: BlockPattern> [radius: float] [decay: float]
+${command.dp}brush [-l] <brushType: raise|lower> <shape: sphere|cube§c|squarex|squarey|squarez§r> [radius: float]
+${command.dp}brush [-l] <brushType: extinguish|ex|remexp> [radius: float]`,
 "butcher": `${command.dp}butcher [-abfgnprtwipceh] [radius: float]`,
 "butcherdespawn": `${command.dp}butcherdespawn [-abfgnprtwipceh] [radius: float]`,
 "chunkinfo": `${command.dp}chunkinfo`,
 "selectioninfo": `${command.dp}selectioninfo`,
 "selinfo": `${command.dp}selinfo`,
 "seli": `${command.dp}seli`,
+"snapshot": `${command.dp}snapshot backup <areaId: string>
+${command.dp}snapshot rollback <areaId: string> [backupIndex: number]
+${command.dp}snapshot deletebackup <areaId: string> [backupIndex: number]
+${command.dp}snapshot clearbackups <areaId: string>
+${command.dp}snapshot deletearea <areaId: string>
+${command.dp}snapshot clearareas
+${command.dp}snapshot listbackups <areaId: string>
+${command.dp}snapshot listareas
+${command.dp}snapshot list`,
+"\\\\cut": `${command.dp}\\cut [-meb]`,
+"\\\\copy": `${command.dp}\\copy [-meb]`,
+"\\\\paste": `${command.dp}\\paste [-webxz] [integrity: float] [integritySeed: string] [rotation: 0|90|180|270] [animationMode: none|blocks|layers] [animationSeconds: float]`,
+"\\\\undo": `${command.dp}\\undo [-kt]`,
+"\\\\protectarea": `${command.dp}\\protectarea <areaType: string> <name: string> [mode: 0|1(default=0)] [icon_path: string]`,
+"\\\\backuparea": `${command.dp}\\backuparea <id: string>`,
 "\\\\pos1": `${command.dp}\\pos1 [location: x y z]`,
 "\\\\pos2": `${command.dp}\\pos2 [location: x y z]`,
 "\\\\hpos1": `${command.dp}\\hpos1`,
 "\\\\hpos2": `${command.dp}\\hpos2`,
 "\\\\chunk": `${command.dp}\\chunk`,
-"\\\\generate": `${command.dp}\\generate [-sr] <expression: 3DGeometricMathEquation>`,
-"\\\\generates": `${command.dp}\\generates <expression: 3DGeometricMathEquation> <integrity: float>`,
-"\\\\generate2d": `${command.dp}\\generate2d [-sr] <expression: 2DGeometricMathEquation>`,
-"\\\\generates2d": `${command.dp}\\generates2d <expression: 2DGeometricMathEquation> <integrity: float>`,
+"\\\\sphere": `${command.dp}\\sphere <radius: float> <blockPattern: BlockPattern> [mask: mask]`,
+"\\\\hsphere": `${command.dp}\\hsphere <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: mask]`,
+"\\\\cone": `${command.dp}\\cone <radius: float> <blockPattern: BlockPattern> [mask: mask]`,
+"\\\\hcone": `${command.dp}\\hcone <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: mask]`,
+"\\\\remove": `${command.dp}\\remove`,
+"\\\\walls": `${command.dp}\\walls <blockPattern: BlockPattern> [mask: mask]`,
+"\\\\set": `${command.dp}\\set <blockPattern: BlockPattern>`,
+"\\\\seti": `${command.dp}\\seti <integrity: number> <blockPattern: BlockPattern>`,
+"\\\\flood": `${command.dp}\\flood`,
+"\\\\drain": `${command.dp}\\drain`,
+"\\\\generate": `${command.dp}\\generate [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
+"\\\\generatef": `${command.dp}\\generatek [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
+"\\\\generatejs": `${command.dp}\\generatejs <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
+"\\\\generatecallback": `${command.dp}\\generatecallback <blockPattern: BlockPattern> <callback: (dimensionLocation, worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>any>`,
+"\\\\generates": `${command.dp}\\generates <step: float> <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
+"\\\\generate2d": `${command.dp}\\generate2d [-sr] <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
+"\\\\generatek2d": `${command.dp}\\generate2d [-sr] <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
+"\\\\generatejs2d": `${command.dp}\\generatejs2d <axis: x|y|z> <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, rotationRelativeX, rotationRelativeY, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
+"\\\\generatecallback2d": `${command.dp}\\generatecallback2d <axis: x|y|z> <blockPattern: BlockPattern> <callback: (dimensionLocation, worldX, worldY, worldZ, relativeX, relativeY, relativeZ, rotationRelativeX, rotationRelativeY, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>any>`,
+"\\\\generates2d": `${command.dp}\\generates2d <step: float> <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
 "\\\\stack": `${command.dp}\\stack [stackCount: int]`,
 "\\\\selectmode": `${command.dp}\\selectmode [default|noliquid|nopassable|noliquidnopassable]`,
-"\\\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [replaceTileName: Block] [replaceBlockStates: block states]`,
+"\\\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [mask: mask]`,
 "\\\\idtfill": `${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block|random> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block|random> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
@@ -2490,6 +2837,8 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
 
 export enum commanddescriptions {
 //"ban" = "Bans a player. ",
+"align" = "Centers you on the x and z axis on the block you are currently at. ",
+"aligncenter" = "Centers you on the x, y, and z axis on the block you are currently at. ",
 "binvsee" = "Displays the contents of the specified block's inventory. ",
 "chatcommandui" = "Opens up a menu where you can type a chat command to run with no character limits. ",
 "chatsendui" = "Opens up a menu where you can type a chat message to send with no character limits. ",
@@ -2585,7 +2934,6 @@ export enum commanddescriptions {
 "rank" = "Manages ranks stored in players. ",
 "remexp" = "Removes explosive blocks in the specified radius. ",
 "replacenear" = "Replaces blocks of the specified type with another specified block type in the specified radius. ",
-"rtp" = "Requests to teleport to the specified player. ",
 "run" = "Runs the specified command. ",
 "scanenderchest" = "Scans a player's ender chest and displays the contents of it. ",
 "scanenderchestc" = "Scans a player's ender chest and displays the contents of it. ",
@@ -2611,6 +2959,7 @@ export enum commanddescriptions {
 "thru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at. ",
 "vthru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at, even if it would put you into the void. ",
 "top" = "Teleports on top of the highest solid block at your x and z coordinates. ",
+"tpa" = "Requests to teleport to the specified player. ",
 "tpaccept" = "Accepts a player's teleport request. ",
 "tpdeny" = "Denies a player's teleport request. ",
 "transferitem" = "Transfers the item in your hand to the specified player's inventory. ",
@@ -2634,22 +2983,44 @@ export enum commanddescriptions {
 "wset" = "Sets a private warp. ",
 "chunkban" = "Fills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. ",
 "transformresultatdvindex" = "Displays what item a smithing table enchanted book combined with a enchantment transfer smithing template of the specified data value would turn in to. ",
+"gettransformst" = "Gives you an enchantment transfer smithing template with the data value needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. ",
 "findtransformdvindex" = "Displays the data value of enchantment transfer smithing template needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. ",
+"roie" = "Removes all enchantment types from an item except for the item types specified. ",
+"remotheritemenchants" = "Removes all enchantment types from an item except for the item types specified. ",
+"removeotheritemenchantments" = "Removes all enchantment types from an item except for the item types specified. ",
 "butcher" = "Kill all or nearby mobs. ",
 "butcherdespawn" = "Despawn all or nearby mobs. ",
 "brush" = "Sets the held item as the specified brush type or unbinds the brush from the held item. ",
+"snapshot" = "Manages backups and backup areas. ",
+"\\\\cut" = "Cuts the selected area to the clipboard. ",
+"\\\\copy" = "Copies the selected area to the clipboard. ",
+"\\\\paste" = "Pastes the clipboard to the selected area. ",
+"\\\\undo" = "Undoes the last action (from history). ",
 "\\\\pos1" = "Sets the pos1 location of the selected area for use in other worldedit commands. ",
 "\\\\pos2" = "Sets the pos2 location of the selected area for use in other worldedit commands. ",
+"\\\\protectarea" = "Sets the selected area as a protected area. ",
+"\\\\backuparea" = "Creates a new backup area convering the entire selected area. ",
 "\\\\hpos1" = "Sets the pos1 location of the selected area to the block that you are looking at for use in other worldedit commands. ",
 "\\\\hpos2" = "Sets the pos2 location of the selected area to the block that you are looking at for use in other worldedit commands. ",
 "\\\\chunk" = "Sets the pos1 and pos2 locations of the selected area to contain the entire chunk that you are currently in for use in other worldedit commands. ",
 "\\\\generate" = "Generates a 3d shape according to a formula in the selected area, in [-sr] the s modifier will prevent the math equation parser from replacing single equal signs with double equal signs and the r modifier will prevent that as well as any other modifications so that it is run as pure javascript, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\generates" = "Generates a 3d shape with the specified integrity according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\generate2d" = "Generates a 2d shape according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\generates2d" = "Generates a 2d shape with the specified integrity according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\stack" = "Stacks the specified number of copies of the selected area on top of the selected area. ",
-"\\\\selectmode" = "Sets the selection mode for the item your are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. ",
+"\\\\generatef" = "Generates a 3d shape according to a formula in the selected area, this one does not allow access to custom variables which will prevent being able to run scripts using this, this one is much more limited than \\\\generate so it is only reccommended if you are restricting the \\\\generate command from a player to prevent script execution, in [-sr] the s modifier will prevent the math equation parser from replacing single equal signs with double equal signs and the r modifier will prevent that as well as any other modifications so that it is run as pure javascript, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
+"\\\\generatejs" = "Generates a 3d shape according to the outputs of a JavaScript function in the selected area. ",
+"\\\\generatecallback" = "Executes the specified callback JavaScript function for each block in the selected area. ",
+"\\\\generates" = "Generates a 3d shape with the specified step according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
+"\\\\generate2d" = "Generates a 2d shape according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, cx: center relative x, cy: center relative y, cz: center relative z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
+"\\\\generates2d" = "Generates a 2d shape with the specified step according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, cx: center relative x, cy: center relative y, cz: center relative z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
+"\\\\stack" = "Stacks the specified number of copies of the step area on top of the selected area. ",
+"\\\\selectmode" = "Sets the selection mode for the item you are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. ",
 "\\\\replace" = "Replaces the blocks between the selected area with the selected block type. ",
+"\\\\walls" = "Replaces the walls of the selected area with the selected block type. ",
+"\\\\set" = "Sets the blocks between the selected area to the selected block type. ",
+"\\\\seti" = "Sets the blocks between the selected area to the selected block type with the specified integrity. ",
+"\\\\flood" = "Floods the blocks between the selected area. ",
+"\\\\remove" = "Remove the blocks in the selected area. ",
+"\\\\sphere" = "Generates a sphere in the selected area. ",
+"\\\\hsphere" = "Generates a hollow sphere in the selected area. ",
+"\\\\cone" = "Generates a cone in the selected area. ",
 "disconnect" = "Disconnects a player from the server. ",
 "morph" = "Morphs into the morph with the specified ID. ",
 "scale" = "Sets your scale value to the specified amount. ",
@@ -2658,8 +3029,62 @@ export enum commanddescriptions {
 "visualscale" = "Sets your visual scale (the one that does not actually change your hitbox size) to the specified amount. ",
 "visualscaleenabled" = "Enables or diables your visual scaling. "
 }
+export async function cycleRGB(callback: (current: {r: number, g: number, b: number})=>any, cancel: ()=>boolean = ()=>false, step: number = 1){
+    async function nextR(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.r>=256){callback(current); await waitTick(); nextNB(current)}else{current.r+=step; callback(current); await waitTick(); nextR(current)}}
+    async function nextG(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.g>=256){callback(current); await waitTick(); nextNR(current)}else{current.g+=step; callback(current); await waitTick(); nextG(current)}}
+    async function nextB(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.b>=256){callback(current); await waitTick(); nextNG(current)}else{current.b+=step; callback(current); await waitTick(); nextB(current)}}
+    async function nextNR(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.r<=0){callback(current); await waitTick(); nextB(current)}else{current.r-=step; callback(current); await waitTick(); nextNR(current)}}
+    async function nextNG(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.g<=0){callback(current); await waitTick(); nextR(current)}else{current.g-=step; callback(current); await waitTick(); nextNG(current)}}
+    async function nextNB(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.b<=0){callback(current); await waitTick(); nextG(current)}else{current.b-=step; callback(current); await waitTick(); nextNB(current)}}
+    nextR({r: 0, g: 0, b: 256})
+}
+export const commandflags = {
+"butcher": `No Flags: Kill items and experience orbs.
+a: kill animals
+b: kill ambient mobs
+c: kill cloned players
+e: kill everything
+g: kill golems
+h: kill hostile mobs
+i: kill items and experience orbs
+j: kill projectiles
+l: kill bosses
+o: kill paintings
+p: kill players
+r: kill armor stands
+t: allow killing of name tagged entities
+v: kill vehicles`,
+"butcherdespawn": `No Flags: Kill items and experience orbs.
+a: despawn animals
+b: despawn ambient mobs
+c: despawn cloned players
+e: despawn everything
+g: despawn golems
+h: despawn hostile mobs
+i: despawn items and experience orbs
+j: despawn projectiles
+l: despawn bosses
+o: despawn paintings
+p: despawn players
+r: despawn armor stands
+t: allow despawning of name tagged entities
+v: despawn vehicles`,
+"cut": `m: cut to memory instead of storage
+e: don't include entities
+b: don't include blocks`,
+"copy": `m: copy to memory instead of storage
+e: don't include entities
+b: don't include blocks`,
+"paste": `w: waterlog structure
+e: don't include entities
+b: don't include blocks
+x: mirror structure x axis
+z: mirror structure z axis`,
+"undo": `k: don't remove the undo save point after finishing the undo
+t: spawn in a ticking area before running the undo command`
+}
 
-export function getCommandHelpPage(commandName: string){let cmd = command.get(commandName, "built-in"); return (!!!commanddescriptions[cmd.commandName]&&!!!commandsyntaxes[cmd.commandName])?`§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`:`§e${cmd.commandName}${(cmd.aliases?.length??0)!=0?`(also ${cmd.aliases.map(v=>v.commandName).join(", ")})`:""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName]??"missing").split("\n").join("§r\n- ")}`}
+export function getCommandHelpPage(commandName: string){let cmd = command.get(commandName, "built-in"); return (!!!commanddescriptions[cmd.commandName]&&!!!commandsyntaxes[cmd.commandName])?`§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`:`§e${cmd.commandName}${(cmd.aliases?.length??0)!=0?`(also ${cmd.aliases.map(v=>v.commandName).join(", ")})`:""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName]??"missing").split("\n").join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]?"":"\nFlags:\n"+commandflags[cmd.currentCommandName].split("\n").join("§r\n")}`}
 
 export enum fillmodetypeenum {
     "" = "",
@@ -2879,6 +3304,8 @@ export enum propertyTypeEnum {
     "removedynamicproperty" = "removedynamicproperty",
     "minecraft:removedynamicproperty" = "removedynamicproperty"
 }
+//world.afterEvents.dataDrivenEntityTrigger.subscribe(event=>{if(event.getModifiers().find(v=>v.removedComponentGroups.includes("andexsa:entity_inventory_5_minecart_hopper"))){bsend(JSON.stringify(event.getModifiers()))}})
+//world.afterEvents.dataDrivenEntityTrigger.subscribe(event=>{if(event.getModifiers().find(v=>v.removedComponentGroups.includes("andexsa:entity_inventory_5_minecart_hopper"))){event.getModifiers().find(v=>v.removedComponentGroups.includes("andexsa:entity_inventory_5_minecart_hopper")).removedComponentGroups=[]; event.getModifiers().find(v=>v.removedComponentGroups.includes("andexsa:entity_inventory_5_minecart_hopper")).addedComponentGroups=["andexsa:entity_inventory_5_minecart_hopper"]; bsend(JSON.stringify(event.getModifiers().))}})
 export interface ItemJSONParseInput {
     "name"?: string,
     "minecraft:name"?: string,
@@ -3184,12 +3611,12 @@ export interface ItemJSONParseInput {
     "minecraft:removedynamicproperty"?: string
 }
 
-export function itemJSONPropertiesEval(itemJSON: ItemJSONParseInput, StartingItem?: ItemStack|ContainerSlot, player?: Player){/*
+export function itemJSONPropertiesEval(itemJSON: ItemJSONParseInput, StartingItem?: ItemStack|ContainerSlot, player?: Player|executeCommandPlayerW){/*
     let item = {getComponent: (string)=>(string=="enchantable"?{addEnchantment: (enchantment)=>(!(compareArraysB(Object.keys(enchantment), ["type", "level"]))?(()=>{throw(TypeError("Not A Valid Enchantment"))})():(typeof enchantment.type!="String")?(()=>{throw(TypeError("Property 'type' of 'Enchantment' must be of type 'number'. "))})():(typeof enchantment.level!="Number")?(()=>{throw(TypeError("Property 'level' of 'Enchantment' must be of type 'number'. "))})():"successfull"), addEnchantments: (enchantments)=>(enchantments.forEach(enchantment=>(!(compareArraysB(Object.keys(enchantment), ["type", "level"]))?(()=>{throw(TypeError("Not A Valid Enchantment"))})():(typeof enchantment.type!="String")?(()=>{throw(TypeError("Property 'type' of 'Enchantment' must be of type 'number'. "))})():(typeof enchantment.level!="Number")?(()=>{throw(TypeError("Property 'level' of 'Enchantment' must be of type 'number'. "))})():"successfull")))}:"somethingelse")}*/
 
     let ij = itemJSON; 
     ij.force??=false; 
-    let sp = player; 
+    let sp = player as Player; 
     let item = (!!ij.new)?(new ItemStack(ij.new[0], ij.new[1])):(!!StartingItem?(StartingItem instanceof ContainerSlot?StartingItem.getItem():StartingItem instanceof ItemStack?StartingItem:undefined):undefined)??(!!ij.source?(ij.source.type=="slot"?(!!ij.source.targetSelector?(!!ij.source.targetSelectorExecutionLocation?targetSelectorAllListD(ij.source.targetSelector, (ij.source.targetSelectorExecutionLocation.x+" "+ij.source.targetSelectorExecutionLocation.y+" "+ij.source.targetSelectorExecutionLocation.z), ij.source.targetSelectorExecutionLocation.dimension)[0]:targetSelectorAllListC(ij.source.targetSelector, "", (ij.source.targetSelectorSourceEntity.location.x+" "+ij.source.targetSelectorSourceEntity.location.y+" "+ij.source.targetSelectorSourceEntity.location.z), ij.source.targetSelectorSourceEntity)[0])?.getComponent?.("inventory"):!!ij.source.entityId?getEntityById(ij.source.entityId)?.getComponent?.("inventory"):!!ij.source.player?getPlayer(ij.source.player)?.getComponent?.("inventory"):!!ij.source.entityAtBlock?ij.source.entityAtBlock.dimension.getEntitiesAtBlockLocation(ij.source.entityAtBlock).find(v=>v.typeId==ij.source.entityTypeId??ij.source.entityType)?.getComponent?.("inventory"):!!ij.source.block?ij.source.block.dimension.getBlock(ij.source.block)?.getComponent?.("inventory"):sp?.getComponent?.("inventory"))?.container?.getItem(ij.source.slot??0):new ItemStack(ij.source.id, ij.source.count??ij.source.amount)):new ItemStack(ij?.id??ij?.type??ij?.itemId, ij?.count??ij?.amount))/*
     if(!!ij.new){item=new ItemStack(ij.new[0], ij.new[1])}*/
 
@@ -3234,7 +3661,7 @@ export function itemJSONPropertiesEval(itemJSON: ItemJSONParseInput, StartingIte
     ij = {name: "sazx", components: {enchantable: {add: [{type: "fire_aspect", level: 2}, {type: "sharpness", level: 5}, {type: "looting", level: 3}, {type: "knockback", level: 2}]}}}*/
 }
 
-export function itemJSONPropertiesEvalCT(itemJSON: ItemJSONParseInput, containerSlot?: ContainerSlot, player?: Player){/*
+export function itemJSONPropertiesEvalCT(itemJSON: ItemJSONParseInput, containerSlot?: ContainerSlot, player?: Player|executeCommandPlayerW){/*
     let item = {getComponent: (string)=>(string=="enchantable"?{addEnchantment: (enchantment)=>(!(compareArraysB(Object.keys(enchantment), ["type", "level"]))?(()=>{throw(TypeError("Not A Valid Enchantment"))})():(typeof enchantment.type!="String")?(()=>{throw(TypeError("Property 'type' of 'Enchantment' must be of type 'number'. "))})():(typeof enchantment.level!="Number")?(()=>{throw(TypeError("Property 'level' of 'Enchantment' must be of type 'number'. "))})():"successfull"), addEnchantments: (enchantments)=>(enchantments.forEach(enchantment=>(!(compareArraysB(Object.keys(enchantment), ["type", "level"]))?(()=>{throw(TypeError("Not A Valid Enchantment"))})():(typeof enchantment.type!="String")?(()=>{throw(TypeError("Property 'type' of 'Enchantment' must be of type 'number'. "))})():(typeof enchantment.level!="Number")?(()=>{throw(TypeError("Property 'level' of 'Enchantment' must be of type 'number'. "))})():"successfull")))}:"somethingelse")}*/
 
     let ij = itemJSON; 
@@ -3286,7 +3713,7 @@ export function itemJSONPropertiesEvalCT(itemJSON: ItemJSONParseInput, container
 
 export function rangeToIntArray(range: [number, number]){let array = [] as number[]; for(let i = range[0]; i < range[1]; i++){array.push(i)}; return array}
 
-export function inventorySwap(player1: Player|Entity, player2: Player|Entity){
+export function inventorySwap(player1: Player|executeCommandPlayerW|Entity, player2: Player|executeCommandPlayerW|Entity){
     for(let i = 0; i < 36; i++){player1.getComponent("inventory").container.swapItems(i, i, player2.getComponent("inventory").container)}; let slots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Offhand]; for(let i = 0; i < 5; i++){let item1 = player1.getComponent("equippable").getEquipment(slots[i]); let item2 = player2.getComponent("equippable").getEquipment(slots[i]); player1.getComponent("equippable").setEquipment(slots[i], item2); player2.getComponent("equippable").setEquipment(slots[i], item1)}; 
 }
 export function inventorySwapB(player1: Container, player2: Container){
@@ -3334,35 +3761,44 @@ export function blockToContainerSlotListObject(block: Block){
 export function entityToContainerSlotArrayB(entity: Entity, getContainer: boolean = true, getEquipment: boolean = true){
     let itemList = [] as ContainerSlot[]; let itemListB = [] as ContainerSlot[]; let container = entity.getComponent("inventory")?.container; let equipment = entity.getComponent("equippable"); for(let i = 0; (i < container?.size??0)&&getContainer; i++){itemList.push(container.getSlot(i))}; for(let i = 0; (i < 5)&&getEquipment&&(!!equipment); i++){itemListB.push(equipment?.getEquipmentSlot(OtherEquipmentSlots[i]))}; return (!!container||!!equipment)?{inventory: itemList, equipment: itemListB}:undefined
 }
-export function getPlayerselectedSlotIndex(player: Player){
+export function getPlayerselectedSlotIndex(player: Player|executeCommandPlayerW){
     return player.getComponent("inventory").container.getSlot(player.selectedSlotIndex)
 }
-export function getInventory(containerBlockPlayerOrEntity: Block|Entity|Player){
-    return (containerBlockPlayerOrEntity instanceof Block?containerBlockPlayerOrEntity.getComponent("inventory"):(containerBlockPlayerOrEntity as Entity|Player).getComponent("inventory"))
+export function getInventory<T extends Block|Entity|Player>(containerBlockPlayerOrEntity: T){
+    return (containerBlockPlayerOrEntity instanceof Block?containerBlockPlayerOrEntity.getComponent("inventory"):(containerBlockPlayerOrEntity as Entity|Player).getComponent("inventory")) as T extends Block ? BlockInventoryComponent : EntityInventoryComponent
 }
-export function getEquipment(containerBlockPlayerOrEntity: Entity|Player){
+export function getEquipment(containerBlockPlayerOrEntity: Entity|executeCommandPlayerW|Player){
     return containerBlockPlayerOrEntity.getComponent("equippable")
+}
+export function getEntityHeldItemSlot(entity: Entity){
+    return entity.getComponent("equippable").getEquipmentSlot(EquipmentSlot.Mainhand)
+}
+export function getPlayerHeldItemSlot(player: Player|executeCommandPlayerW){
+    return player.getComponent("inventory").container.getSlot(player.selectedSlotIndex)
 }
 export const JunkItemTypes = ["dirt", "stick", "deadbush", "tripwire_hook", "rotten_flesh", "string", "cobblestone", "stone", "diorite", "andesite", "granite", "tuff", "end_stone", "wheat_seeds", "tallgrass", "leather_helmet", "leather_boots", "leather_chestplate", "leather_leggings", "wooden_sword", "wooden_axe", "wooden_pickaxe", "wooden_shovel", "wooden_hoe", "spider_eye"]
 export const OpItemTypes = ["diamond", "netherite_ingot", "gold_ingot", "iron_ingot", "diamond_sword", "diamond_chestplate", "diamond_helmet", "diamond_leggings", "diamond_boots", "diamond_pickaxe", "diamond_shovel", "diamond_hoe", "diamond_block"]
 export const IllegalItemTypes = ["netherreactor", "glowingobsidian", "stonecutter", "water", "flowing_water", "lava", "flowing_lava", "camera", "item.camera", "item.skull", "item.cauldron", "bedrock"]
 export function parseSlot(slot: string, selectedSlotIndex?: number){return [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand", "hat", "shirt", "shorts", "sandals", "firsthand", "secondaryhand"].findIndex(v=>v==tryget(()=>slot?.trim()?.toLowerCase()))%6]??(((tryget(()=>slot?.trim())=="~"||tryget(()=>slot?.trim())=="")&&!!!selectedSlotIndex)?"~":Number(tryget(()=>slot?.trim())??slot)); }
 export function getSlotFromParsedSlot(slot: "~"|EquipmentSlot|number, options?: {container?: Container, equipment?: EntityEquippableComponent, selectedSlotIndex?: number}){if(typeof slot == "string"){return slot.trim()=="~"?(!!options?.selectedSlotIndex?options?.container?.getSlot(Number(options?.selectedSlotIndex)):(!!options?.equipment?options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand):undefined)):(!!options?.equipment?slot.trim().toLowerCase()=="head"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Head):slot.trim().toLowerCase()=="chest"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Chest):slot.trim().toLowerCase()=="legs"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Legs):slot.trim().toLowerCase()=="feet"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Feet):slot.trim().toLowerCase()=="mainhand"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Mainhand):slot.trim().toLowerCase()=="offhand"?options?.equipment?.getEquipmentSlot(EquipmentSlot.Offhand):!Number.isNaN(Number(slot))?options?.container?.getSlot(Number(slot)):undefined:!Number.isNaN(Number(slot))?options?.container?.getSlot(Number(slot)):undefined)}else if(typeof slot == "number"){return options?.container?.getSlot(Number(slot)); }else return options?.container?.getSlot(Number(slot))}
-export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, player: Player|executeCommandPlayerW|undefined, eventData: ChatSendBeforeEvent, event: ChatSendBeforeEvent|undefined, newMessage: string|undefined}){
+export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, player: Player|executeCommandPlayerW|undefined, eventData: ChatSendBeforeEvent, event: ChatSendBeforeEvent|undefined, newMessage: string|undefined, fromExecute?: boolean}){
     let returnBeforeChatSend = params.returnBeforeChatSend??false
-    let playera = params.player??params.eventData?.sender??params.event?.sender
-	let player = Object.assign(((playera instanceof executeCommandPlayer)?playera:(playera instanceof executeCommandPlayerW)?playera:new executeCommandPlayer(playera)).player, (playera instanceof executeCommandPlayer)?Object.setPrototypeOf(playera, executeCommandPlayerW.prototype) as executeCommandPlayerW:(playera instanceof executeCommandPlayerW)?playera:new executeCommandPlayerW(playera));
+    let playerab = params.player??params.eventData?.sender??params.event?.sender
+    let playera = playerab instanceof executeCommandPlayerW ? playerab : new executeCommandPlayerW(playerab)
+    Object.defineProperties(playera, {id: {value: playera.player.id, writable: false, enumerable: true, configurable: true}, typeId: {value: playera.player.typeId, writable: false, enumerable: true, configurable: true}, name: {value: playera.player.name, writable: false, enumerable: true, configurable: true}})
+    let player = playera as executeCommandPlayerW & {readonly id: string, readonly typeId: string, readonly name: string}
+	//let player = Object.assign(((playera instanceof executeCommandPlayer)?playera:(playera instanceof executeCommandPlayerW)?playera:new executeCommandPlayer(playera)).player, (playera instanceof executeCommandPlayer)?Object.setPrototypeOf(playera, executeCommandPlayerW.prototype) as executeCommandPlayerW:(playera instanceof executeCommandPlayerW)?playera:new executeCommandPlayerW(playera));
     let eventData = !!params.eventData?{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}:{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}
     let event = !!params.event?{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}:{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}
     let newMessage = params.newMessage??params.eventData?.message??params.event?.message
-    try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatCommands"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f][" + player.name + "]: " + newMessage); }catch{}})}catch{}
+    try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatCommands"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("commandNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + (player.name??(player.nameTag!=""?player.nameTag+"<"+player.id+">":player.typeId+"<"+player.id+">")) + "]: " + newMessage); }catch{}})}catch{}
     function hotbarSwap(row: number, preset: number){
         let inventorye = player.getComponent("inventory") as EntityInventoryComponent
         let inventoryblock = world.getDimension(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[0]).getBlock({x: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[1]), y: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[2]), z: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[3])}).getComponent("inventory") as BlockInventoryComponent
         system.run(()=>{try{for(let i = 0; i < 9; i++){inventorye.container.swapItems(i, i+((row-1)*9), inventoryblock.container)}; /*; eventData.sender.sendMessage(String("l" + slotsArray))*/}catch(e){eventData.sender.sendMessage("§c" + e + " " + e.stack)}})}
         let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0]
         let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
-        let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!switchTest.match((command.get(v.commandName, "built-in").regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!command.get(v.commandName, "built-in")?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))/*
+        let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!switchTest.match((command.get(v.commandName, "built-in").regexp)))))&&(params.fromExecute||command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!command.get(v.commandName, "built-in")?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp)))))&&(params.fromExecute||command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(params.fromExecute||command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))/*
         let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!(switchTest.match((command.get(v.commandName, "built-in").regexp))))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
     if(commanda?.type=="built-in"){switch (true){
         case !!switchTest.match(/^give$/): 
@@ -3777,7 +4213,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             }else{
                 let argsa = evaluateParameters(switchTestB, ["presetText", "json", "presetText"])
                 let args = argsa.args
-                if((args[3]??"").trim()=="~"){args[3] = player.name}
+                //if((args[3]??"").trim()=="~"){args[3] = player.name}
                 if(!!!(args[1].type??args[1].typeId??args[1].id??args[1].itemType)){
                     player.sendMessage("§cError: Item type not specified in JSON. ")
                 }else{
@@ -3807,7 +4243,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 }
             }
         break; 
-        case !!switchTest.match(/^item$/):
+        case !!switchTest.match(/^item$/):{try{
             eventData.cancel = true;
             if(switchTestB.trim().split(" ").length==1){player.sendMessage(`item command format: 
 ${command.dp}item <mode: lore|lorene> <lore: JSON>
@@ -4154,7 +4590,8 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                     eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + command.split(" ").slice(1).join(" ") + "\": at \"\\item >>" + command.split(" ").slice(1).join(" ") + "<<\"");
                     break;
             }}catch(e){console.error(e, e.stack); player.sendMessage(e + e.stack)}}
-            break;
+        }catch(e){perror(player, e)}}
+        break;
         case !!switchTest.match(/^gmc$/): 
             eventData.cancel = true;
             try{player.runCommandAsync("/gamemode c")}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -4214,6 +4651,11 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                 break; 
             }
         break; */
+        case !!switchTest.match(/^enderchest$/): 
+        eventData.cancel = true;
+            try{player.runCommandAsync("/setblock ~~~ ender_chest")}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            system.run(()=>{targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: Spawned an ender chest. "))})})
+        break; 
         case !!switchTest.match(/^playersettings$/): 
             eventData.cancel = true;
             switch (Math.min(newMessage.split(" ").length, 3)){
@@ -4254,10 +4696,10 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
             eventData.cancel = true;
             switch (switchTestB.split(" ").slice(0, 2).join(" ").toLowerCase()){
                 case "help": 
-                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help cmd <command: CommandName>\n.help command <command: CommandName>\n.help chatcommands\n.help chatcommandsb\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>\n.help itemjsonformat\n.help itemjsonformatcmpr\n.help itemjsonformatsimplified§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
+                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help cmd <command: CommandName>\n.help command <command: CommandName>\n.help chatcommands\n.help chatcommandsb\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>\n.help jsfunction <JavaScriptFunctionVariableConstantOrClassName: string>\n.help itemjsonformat\n.help itemjsonformatcmpr\n.help itemjsonformatsimplified§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
                 break; 
                 case "help scriptevent": 
-                    eventData.sender.sendMessage("§2/scriptevent Syntax§f\n/scriptevent andexdb:debugStick <message: string>"); 
+                    eventData.sender.sendMessage("§2/scriptevent Syntax§f\n/scriptevent andexdb:debugStick <message: string>\n/scriptevent andexdb:spawnSimulatedPlayer [playerName: string]|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]"); 
                 break; 
                 case "help cmd": 
                     eventData.sender.sendMessage(getCommandHelpPage(switchTestB.split(" ").slice(2).join(" "))); 
@@ -4267,6 +4709,8 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                 break; 
                 case "help chatcommands": 
                     eventData.sender.sendMessage(`§2Chat Commands List§r
+.align - §oCenters you on the x and z axis on the block you are currently at. §r
+.aligncenter - §oCenters you on the x, y, and z axis on the block you are currently at. §r
 .binvsee - §oDisplays the contents of the specified block's inventory. §r
 .butcher - §oKill all or nearby mobs. §r
 .butcherdespawn - §oDespawn all or nearby mobs. §r
@@ -4355,7 +4799,9 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
 .printlayers - §oDisplays a list of all the blocks at your specified x and z coordinates. §r
 .rank - §oManages ranks stored in players. §r
 .remexp - §oRemoves explosive blocks in the specified radius. §r
-.rtp - §oRequests to teleport to the specified player. §r
+.remotheritemenchants - §oRemoves all enchantment types from an item except for the item types specified. §r
+.removeotheritemenchantments - §oRemoves all enchantment types from an item except for the item types specified. §r
+.roie - §oRemoves all enchantment types from an item except for the item types specified. §r
 .run - §oRuns the specified command. §r
 .scanenderchest - §oScans a player's ender chest and displays the contents of it. §r
 .scanenderchestc - §oScans a player's ender chest and displays the contents of it. §r
@@ -4376,6 +4822,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
 .timezone - §oSets your timezone to the specific UTC offset in hours. §r
 .thru - §oTeleports on top of the highest solid block at your x and z coordinates. §r
 .top - §oTeleports on top of the highest solid block at your x and z coordinates. §r
+.tpa - §oRequests to teleport to the specified player. §r
 .tpaccept - §oAccepts a player's teleport request. §r
 .tpdeny - §oDenies a player's teleport request. §r
 .transferitem - §oTransfers the item in your hand to the specified player's inventory. §r
@@ -4398,26 +4845,49 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
 .wreset - §oRemoves all private warps. §r
 .wset - §oSets a private warp. §r
 .transformresultatdvindex - §oDisplays what item a smithing table enchanted book combined with a enchantment transfer smithing template of the specified data value would turn in to. §r
+.gettransformst - §oGives you an enchantment transfer smithing template with the data value needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. §r
 .findtransformdvindex - §oDisplays the data value of enchantment transfer smithing template needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. §r
 §cDangerous Commands: §4
 .chunkban - §oFills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. §r
 §aWorldEdit Commands: §r
 .brush - §oSets the held item as the specified brush type or unbinds the brush from the held item. §r
+.butcher - §rKill all or nearby mobs. §r
+.butcherdespawn - §rDespawn all or nearby mobs. §r
 .selectioninfo - §oDisplays info about the current selection. §r
 .selinfo - §oDisplays info about the current selection. §r
 .seli - §oDisplays info about the current selection. §r
+.snapshot - §rManages backups and backup areas. §r
+.\\cut - §oCuts the selected area to the clipboard. §r
+.\\copy - §oCopies the selected area to the clipboard. §r
+.\\paste - §oPastes the clipboard to the selected area. §r
+.\\undo - §oUndoes the last action (from history). §r
+.\\backuparea - §oCreates a new backup area convering the entire selected area. §r
+.\\protectarea - §oSets the selected area as a protected area. §r
 .\\pos1 - §oSets the pos1 location of the selected area for use in other worldedit commands. §r
 .\\pos2 - §oSets the pos2 location of the selected area for use in other worldedit commands. §r
 .\\hpos1 - §oSets the pos1 location of the selected area to the block that you are looking at for use in other worldedit commands. §r
 .\\hpos2 - §oSets the pos2 location of the selected area to the block that you are looking at for use in other worldedit commands. §r
 .\\chunk - §oSets the pos1 and pos2 locations of the selected area to contain the entire chunk that you are currently in for use in other worldedit commands. §r
+.\\shift - §oShifts the pos1 and pos2 locations of the selected area. §r
+.\\offset - §oOffsets the pos1 and pos2 locations of the selected area. §r
 .\\generate - §oGenerates a 3d shape according to a formula in the selected area. §r
-.\\generates - §oGenerates a 3d shape with the specified integrity according to a formula in the selected area. §r
+.\\generatef - §oGenerates a 3d shape according to a formula in the selected area. §r
+.\\generatejs - §oGenerates a 3d shape according to the outputs of a JavaScript function in the selected area. §r
+.\\generatecallback - §oExecutes the specified callback JavaScript function for each block in the selected area. §r
+.\\generates - §oGenerates a 3d shape with the specified step according to a formula in the selected area. §r
 .\\generate2d - §oGenerates a 2d shape according to a formula in the selected area. §r
-.\\generates2d - §oGenerates a 2d shape with the specified integrity according to a formula in the selected area. §r
+.\\generates2d - §oGenerates a 2d shape with the specified step according to a formula in the selected area. §r
 .\\stack - §oStacks the specified number of copies of the selected area on top of the selected area. §r
 .\\selectmode - §oSets the selection mode for the item your are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. §r
 .\\replace - §oReplaces the blocks between the selected area with the selected block type. §r
+.\\walls - §oReplaces the walls of the selected area with the selected block type. §r
+.\\set - §oSets the blocks between the selected area to the selected block type. §r
+.\\seti - §oSets the blocks between the selected area to the selected block type with the specified integrity. §r
+.\\flood - §oFloods the blocks between the selected area. §r
+.\\remove - §oRemove the blocks in the selected area. §r
+.\\sphere - §oGenerates a sphere in the selected area. §r
+.\\hsphere - §oGenerates a hollow sphere in the selected area. §r
+.\\cone - §oGenerates a cone in the selected area. §r
 §bCommands that require "8Crafter's Entity Scale, NBT, and Behavior Modifier, Bossbar, and Morph Addon" in order to function: §6
 .disconnect - §oDisconnects one or more players from the server. §r§6
 .morph - §oMorphs into the morph with the specified ID. §r§6
@@ -4476,6 +4946,9 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                     eventData.sender.sendMessage(`§2List of JavaScript Functions, Constants, Variables, and Classes§f\n{§bmain: [§f${Object.keys(main).join("§b, §f")}§b], coords: [§f${Object.keys(coords).join("§b, §f")}§b], cmds: [§f${Object.keys(cmds).join("§b, §f")}§b], bans: [§f${Object.keys(bans).join("§b, §f")}§b], uis: [§f${Object.keys(uis).join("§b, §f")}§b], playersave: [§f${Object.keys(playersave).join("§b, §f")}§b], spawnprot: [§f${Object.keys(spawnprot).join("§b, §f")}§b]§f}`); 
                 break; 
                 case "help jsfunction": 
+                    eventData.sender.sendMessage(`§2${newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" ")} js object definition§f\n${([...Object.entries(main), ...Object.entries(coords), ...Object.entries(cmds), ...Object.entries(bans), ...Object.entries(uis), ...Object.entries(playersave), ...Object.entries(spawnprot)].find(v=>v[0]==newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" "))??[, "§cError: The specified javascript function/constant/variable/class does not exist, check your spelling and capitallization. "])[1].toString().replaceAll("\\n", "\n")}`); 
+                break; 
+                case "help js": 
                     eventData.sender.sendMessage(`§2${newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" ")} js object definition§f\n${([...Object.entries(main), ...Object.entries(coords), ...Object.entries(cmds), ...Object.entries(bans), ...Object.entries(uis), ...Object.entries(playersave), ...Object.entries(spawnprot)].find(v=>v[0]==newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ").slice(2).join(" "))??[, "§cError: The specified javascript function/constant/variable/class does not exist, check your spelling and capitallization. "])[1].toString().replaceAll("\\n", "\n")}`); 
                 break; 
                 case "help itemjsonformat": 
@@ -5171,7 +5644,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^run$/): 
             eventData.cancel = true;
-            try{system.runTimeout(()=>{let a = player.runCommand(newMessage.split(" ").slice(2).join(" ")); eventData.sender.sendMessage(String(a.successCount)); if(a.successCount != 0.0){targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: " + a + " Successfully waited " + Number(newMessage.split(" ")[1]) + " ticks and executed the command: " + newMessage.slice(Number(newMessage.split(" ")[1])+5)))})}}, Number(newMessage.split(" ")[1]));}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.runTimeout(()=>{let a = player.runCommand((params.fromExecute==true?`/execute positioned ${vTStr(player.location)} rotated ${player.getRotation().y} ${player.getRotation().x} run `:"")+newMessage.split(" ").slice(2).join(" ")); eventData.sender.sendMessage(String(a.successCount)); if(a.successCount != 0.0){targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage(String("{§l§dCMDFEED§r§f}[" + player.name + "§r§f]: " + a + " Successfully waited " + Number(newMessage.split(" ")[1]) + " ticks and executed the command: " + newMessage.slice(Number(newMessage.split(" ")[1])+5)))})}}, Number(newMessage.split(" ")[1]));}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
             
         break; 
         case !!switchTest.match(/^eval$/): 
@@ -5321,11 +5794,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^up$/): 
             eventData.cancel = true;
-            try{system.run(()=>{if(player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])-1).typeId == "minecraft:air" && (((newMessage.split(" ")[2]?.toLowerCase() != "false")&&(newMessage.split(" ")[2] != "0"))||(newMessage.split(" ")[2] == undefined))){player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])-1).setType("minecraft:glass")}; player.teleport({x: player.location.x, y: player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])).location.y, z: player.location.z}); eventData.sender.sendMessage(String())}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>{try{if(player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])-1).typeId == "minecraft:air" && (((newMessage.split(" ")[2]?.toLowerCase() != "false")&&(newMessage.split(" ")[2] != "0"))||(newMessage.split(" ")[2] == undefined))){player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])-1).setType("minecraft:glass")}}catch{}; player.teleport(Vector.add(roundVector3ToMiddleOfBlockFloorY(player.location), {x: 0, y: Number(newMessage.split(" ")[1]), z: 0})); eventData.sender.sendMessage(String())}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^top$/): 
             eventData.cancel = true;
-            try{system.run(()=>{let block = getTopSolidBlock(player.dimension.getBlock(player.location), player.dimension); if(block != undefined){player.teleport({x: player.location.x, y: block.y+1, z: player.location.z}, {}); }else{eventData.sender.sendMessage("§4No block could be found. ")}; eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z)}); })}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>{let block = getTopSolidBlock(player.dimension.getBlock({x: player.location.x, y: Math.min(player.location.y, player.dimension.heightRange.max), z: player.location.z}), player.dimension); if(block != undefined){player.teleport({x: player.location.x, y: block.y+1, z: player.location.z}, {}); }else{eventData.sender.sendMessage("§4No block could be found. ")}; eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z)}); })}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^printlayers$/): 
             eventData.cancel = true;
@@ -5362,136 +5835,181 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^structure$/): {
             eventData.cancel = true;
-            if(config.homeSystemEnabled){
-                let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"])
-                let args = argsa.args
-                switch(String(args[1]).toLowerCase()){
-                    case "save": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "Vector6"}, {type: "presetText"}, {type: "neboolean"}, {type: "neboolean"}]))
-                        //name; fx,fy,fz,tx,ty,tz; savemode; includeblocks; includeentities
-                    break; 
-                    case "saveempty": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "number"}, {type: "number"}, {type: "number"}, {type: "presetText"}]))
-                        //name; sizex; sizey; sizez
-                        const sa = world.structureManager.createEmpty(args[2], {x: args[3], y: args[4], z: args[5]})
-                        args[6].toLowerCase()=="disk"?sa.saveAs(sa.id, StructureSaveMode.World):undefined
-                        psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v=>v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase()=="disk"?"the disk":"memory"}.`)
-                    break; 
-                    case "createempty": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "number"}, {type: "number"}, {type: "number"}, {type: "presetText"}]))
-                        //name; sizex; sizey; sizez
-                        const sb = world.structureManager.createEmpty(args[2], {x: args[3], y: args[4], z: args[5]})
-                        args[6].toLowerCase()=="disk"?sb.saveAs(sb.id, StructureSaveMode.World):undefined
-                        psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v=>v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase()=="disk"?"the disk":"memory"}.`)
-                    break; 
-                    case "delete": 
-                        args.push(argsa.extra)
-                        if(!!world.structureManager.get(args[2])){
-                            world.structureManager.delete(args[2])?psend(player, `§aSeccessfully deleted the structure "§r${args[2]}§a".`):psend(player, `§cError: Failed to delete the structure "§r${args[2]}§c".`)
-                        }else{
-                            psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`)
-                        }
-                    break; 
-                    case "load": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "Vector3"}, {type: "neboolean"}, {type: "neboolean"}, {type: "neboolean"}, {type: "presetText"}]))
-                        //name; x; y; z; includeblocks; includeentities; waterlogged; rotation; loadmode; animationtime
-                    break; 
-                    case "copy": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "string"}]))
-                        if(!!world.structureManager.get(args[2])){
-                            world.structureManager.get(args[2]).saveAs(args[3])
-                            psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a".`)
-                        }else{
-                            psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`)
-                        }
-                    break; 
-                    case "copytodisk": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "string"}]))
-                        if(!!world.structureManager.get(args[2])){
-                            world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.World)
-                            psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" on the disk.`)
-                        }else{
-                            psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`)
-                        }
-                    break; 
-                    case "copytomemory": 
-                        args.push(evaluateParameters(argsa.extra, [{type: "string"}, {type: "string"}]))
-                        if(!!world.structureManager.get(args[2])){
-                            world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.Memory)
-                            psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" in memory.`)
-                        }else{
-                            psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`)
-                        }
-                    break; 
-                    case "savetodisk": 
-                        args.push(argsa.extra)
-                        if(!!world.structureManager.get(args[2])){
-                            world.structureManager.get(args[2]).saveAs(args[2], StructureSaveMode.World)
-                            psend(player, `§aSeccessfully saved the structure "§r${args[2]}§a" to the disk.`)
-                        }else{
-                            psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`)
-                        }
-                    break; 
-                    case "movetomemory": 
-                        args.push(argsa.extra)
-                        if(!!world.structureManager.get(args[2])){
-                            let s = world.structureManager.get(args[2]).saveAs("andexdb:structuremovingtomemoryplaceholderreserved5164896135268634876548961853426912579081261744790127659073267276846741241230675914307695134567412541637516742890576243098")
-                            world.structureManager.delete(args[2])
-                            s.saveAs(args[2], StructureSaveMode.Memory)
-                            world.structureManager.delete(s)
-                            psend(player, `§aSeccessfully moved the structure "§r${args[2]}§a" to memory.`)
-                        }else{
-                            psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`)
-                        }
-                    break; 
-                    case "removeall": 
-                        //  world.structureManager.getIds().forEach(v=>world.structureManager.delete(v))
-                    break; 
-                    case "list": 
-                        player.sendMessage(HomeSystem.getHomesForPlayer(player).map(h=>h.name.replaceAll("§", "\uF019")).join("§r§f\n"))
-                    break; 
+            srun(()=>{let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);try{
+            //let args = argsa.args;
+            switch (String(argsa.args[1]).toLowerCase()) {
+                case "save":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, { type: "presetText" }, { type: "neboolean" }, { type: "neboolean" }]).args;
+                    const locationa = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
+                    const locationb = evaluateCoordinates(args[6] ?? "~", args[7] ?? "~", args[8] ?? "~", player.location, player.getRotation());
+                    world.structureManager.createFromWorld(args[2], player.dimension, locationa, locationb, {saveMode: (args[9]??"").toLowerCase()=="world"?StructureSaveMode.World:StructureSaveMode.Memory, includeBlocks: args[10]??true, includeEntities: args[11]??true});
+                    //name; fx,fy,fz,tx,ty,tz; savemode; includeblocks; includeentities
                 }
-            }else{
-                player.sendMessage("§cError: This command cannot be used becuase the experimental home system is not enabled. It can be enabled at \"Main Menu>Settings>Home System>Enable Home System\"")
-            }
+                break;
+                case "saveempty":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args;
+                    //name; sizex; sizey; sizez
+                    world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] }, args[6].toLowerCase() == "disk" ? StructureSaveMode.World : StructureSaveMode.Memory);
+                    psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v => v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase() == "disk" ? "the disk" : "memory"}.`);
+                }
+                break;
+                case "createempty":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args;
+                    //name; sizex; sizey; sizez
+                    world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] }, args[6].toLowerCase() == "disk" ? StructureSaveMode.World : StructureSaveMode.Memory);
+                    psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v => v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase() == "disk" ? "the disk" : "memory"}.`);
+                }
+                break;
+                case "delete":{
+                    let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra];
+                    if (!!world.structureManager.get(args[2])) {
+                        world.structureManager.delete(args[2]) ? psend(player, `§aSeccessfully deleted the structure "§r${args[2]}§a".`) : psend(player, `§cError: Failed to delete the structure "§r${args[2]}§c".`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                }
+                break;
+                case "load":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "Vector" }, { type: "Vector" }, { type: "Vector" }, {type: "number"}, {type: "string"}, { type: "neboolean" }, { type: "neboolean" }, { type: "neboolean" }, {type: "number"}, { type: "string" }, { type: "presetText" }, { type: "number" }]).args;
+                    //name; x; y; z; includeblocks; includeentities; waterlogged; rotation; loadmode; animationtime
+                    if (!!world.structureManager.get(args[2])) {
+                        args[6]??=0;
+                        args[7]??="";
+                        const location = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
+                        world.structureManager.place(args[2], player.dimension, location, {includeBlocks: args[8]??true, includeEntities: args[9]??true, waterlogged: args[10]??false, animationMode: StructureAnimationMode[args[13]]??StructureAnimationMode.None, animationSeconds: args[14], mirror: args[7].includes("x")?args[7].includes("z")?StructureMirrorAxis.XZ:StructureMirrorAxis.X:args[7].includes("z")?StructureMirrorAxis.Z:StructureMirrorAxis.None, integrity: args[11], integritySeed: args[12], rotation: Math.round(args[6]/90)==0?StructureRotation.None:Math.round(args[6]/90)==1?StructureRotation.Rotate90:Math.round(args[6]/90)==2?StructureRotation.Rotate180:Math.round(args[6]/90)==3?StructureRotation.Rotate270:StructureRotation.None});
+                        psend(player, `§aSeccessfully loaded the structure "§r${args[2]}§a".`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                }
+                break;
+                case "copy":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
+                    if (!!world.structureManager.get(args[2])) {
+                        world.structureManager.get(args[2]).saveAs(args[3]);
+                        psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a".`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                }
+                break;
+                case "copytodisk":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
+                    if (!!world.structureManager.get(args[2])) {
+                        world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.World);
+                        psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" on the disk.`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                }
+                break;
+                case "copytomemory":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
+                    if (!!world.structureManager.get(args[2])) {
+                        world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.Memory);
+                        psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" in memory.`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                }
+                break;
+                case "savetodisk":{
+                    let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra];
+                    if (!!world.structureManager.get(args[2])) {
+                        const a = world.structureManager.get(args[2]).saveAs("andexdb:structuresavingtodiskplaceholderreserved5164896135268634876548961853426912579081261744790127659073267276846741241230675914307695134567412541637516742890576243098", StructureSaveMode.World);
+                        world.structureManager.delete(args[2]);
+                        a.saveAs(args[2], StructureSaveMode.World);
+                        world.structureManager.delete(a);
+                        psend(player, `§aSeccessfully saved the structure "§r${args[2]}§a" to the disk.`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                }
+                break;
+                case "movetomemory":{
+                    let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra];
+                    if (!!world.structureManager.get(args[2])) {
+                        let s = world.structureManager.get(args[2]).saveAs("andexdb:structuremovingtomemoryplaceholderreserved5164896135268634876548961853426912579081261744790127659073267276846741241230675914307695134567412541637516742890576243098");
+                        world.structureManager.delete(args[2]);
+                        s.saveAs(args[2], StructureSaveMode.Memory);
+                        world.structureManager.delete(s);
+                        psend(player, `§aSeccessfully moved the structure "§r${args[2]}§a" to memory.`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                }
+                break;
+                case "removeall":{
+                    //  world.structureManager.getIds().forEach(v=>world.structureManager.delete(v))
+                }
+                break;
+                case "list":{
+                    player.sendMessage(world.structureManager.getWorldStructureIds().map(h => h.replaceAll("§", "\uF019")).join("§r§f\n"));
+                }
+                break;
+                case "getinfo": {
+                    let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra];
+                    if (!!world.structureManager.get(args[2])) {
+                        const structure = world.structureManager.get(args[2]);
+                        psend(player, `§aID: ${structure.id}\nisValid: ${structure.isValid()}\nSize: ${JSON.stringify(structure.size)}.`);
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                }
+                break;
+                case "removeair": {
+                    let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra];
+                    if (!!world.structureManager.get(args[2])) {
+                        const structure = world.structureManager.get(args[2]);
+                        completeGenerator(removeAirFromStructure(structure), 2500).then(v=>psend(player, `Removed air blocks from the structure "§r${args[2]}§r§c".`)).catch(e=>perror(player, e));
+                    }
+                    else {
+                        psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
+                    }
+                }
+                break;
+            }}catch(e){perror(player, e)}})
         }
         break; 
         case !!switchTest.match(/^home$/): {
             eventData.cancel = true;
             if(config.homeSystemEnabled){
                 let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"])
-                let args = argsa.args
+                let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra]
                 switch(String(args[1])){
                     case "set": 
                         if(!(HomeSystem.testIfPlayerAtMaxHomes(player)||!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]))){
-                            args.push(argsa.extra)
-                            new Home({location: Object.assign(player.location, {dimension: player.dimension}), name: args[2], owner: player, saveId: "home:"+player.id+":"+args[2]}).save()
+                            new Home({location: Object.assign(player.location, {dimension: player.dimension}), name: args[2], owner: player.player, saveId: "home:"+player.id+":"+args[2]}).save()
                             player.sendMessage(`Successfully set the home "${args[2]}§r§f" to ${vTStr(player.location)} in ${main.dimensionTypeDisplayFormatting[player.dimension.id]}. `)
                         }else{player.sendMessage("§cError: Max homes reached. Please delete a home if you want to add a new one. ")}
                     break; 
                     case "remove": 
-                        args.push(argsa.extra)
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
                             HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).remove()
                             player.sendMessage(`Successfully removed the home "${args[2]}§r§f". `)
                         }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `)}
                     break; 
                     case "go": 
-                        args.push(argsa.extra)
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
                             srun(()=>player.teleport(HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location, {dimension: HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location.dimension}))
                             player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `)
                         }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `)}
                     break; 
                     case "warp": 
-                        args.push(argsa.extra)
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
                             srun(()=>player.teleport(HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location, {dimension: HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location.dimension}))
                             player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `)
                         }else{player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `)}
                     break; 
                     case "teleport": 
-                        args.push(argsa.extra)
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
                             srun(()=>player.teleport(HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location, {dimension: HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]).location.dimension}))
                             player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `)
@@ -5527,36 +6045,36 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             }
         }
         break; 
-        case !!switchTest.match(/^rtp$/): {
+        case !!switchTest.match(/^tpa$/): {
             eventData.cancel = true;
             // /scriptevent andexdb:spawnSimulatedPlayer t§ee§as§ft §4P§dl§layer|~~~|overworld|~~~
-            if(config.rtpSystemEnabled){
+            if(config.tpaSystemEnabled){
                 srun(()=>{
                 let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args
                 args[1].trim().startsWith("@")
                 let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v=>v.typeId=="minecraft:player")[0] as Player
                 if(!!target){
                     //requestChatInput(player, "a").then(v=>psend(player, "as")); srun(()=>requestChatInput(player, "b").then(v=>psend(player, "bs"))); 
-                    requestConditionalChatInput(target, (player, message)=>(message.toLowerCase().trim()=="y"||message.toLowerCase().trim()=="n"), {requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.`}).then(t=>{
+                    requestConditionalChatInput(target, (player, message)=>(message.toLowerCase().trim()=="y"||message.toLowerCase().trim()=="n"), {requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.`, expireMs: 60000}).then(t=>{
                         if(t.toLowerCase().trim()=="y"){
                             player.teleport(target.location, {dimension: target.dimension})
-                            target.sendMessage(`§aAccepted teleport request from "${target.name}".`)
+                            target.sendMessage(`§aAccepted teleport request from "${player.name}".`)
                             player.sendMessage(`§aSuccessfully teleported to "${target.name}".`)
                         }else{
-                            target.sendMessage(`§cDenied "${target.name}"'s teleport request.`)
+                            target.sendMessage(`§cDenied "${player.name}"'s teleport request.`)
                             player.sendMessage(`§c"${target.name}" denied your teleport request.`)
                         }
-                    }).catch(e=>{if(e instanceof TimeoutError){psend(target, `§c${player.name}'s teleport request timed out.`); psend(player, "§cTeleport request timed out.")}else if(e instanceof ExpireError){psend(target, `§c${player.name}'s teleport request expired.`); psend(player, "§cTeleport request expired.")}else psend(player, "§c"+e+" "+e.stack)})
+                    }).catch(e=>{if(e instanceof TimeoutError){psend(target, `§c${player.name}'s teleport request timed out.`); psend(player, `§cThe teleport request to ${target.name} timed out.`)}else if(e instanceof ExpireError){psend(target, `§c${player.name}'s teleport request expired.`); psend(player, `§cThe teleport request to ${target.name} expired.`)}else psend(player, "§c"+e+" "+e.stack)})
                 }else{player.sendMessage(`§cError: Unable to find player.`)}
                 })
             }else{
-                player.sendMessage("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>RTP System>Enable RTP System\"")
+                player.sendMessage("§cTPASystemDisabledError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>TPA System>Enable TPA System\"")
             }
         }
         break; /*
-        case !!switchTest.match(/^rtpblock$/): {
+        case !!switchTest.match(/^tpablock$/): {
             eventData.cancel = true;
-            if(config.rtpSystemEnabled){
+            if(config.tpaSystemEnabled){
                 srun(()=>{
                 let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args
                 let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v=>v.typeId=="minecraft:player")[0] as Player
@@ -5572,19 +6090,19 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 }else{player.sendMessage(`§cError: Unable to find player.`)}
                 })
             }else{
-                player.sendMessage("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>RTP System>Enable Teleport Request System\"")
+                player.sendMessage("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>TPA System>Enable Teleport Request System\"")
             }
         }
         break; */ // COMING SOON! 
         case !!switchTest.match(/^summon$/): {
             eventData.cancel = true;
-            system.run(()=>{
+            system.run(()=>{try{
                 const args = evaluateParameters(switchTestB, ["presetText", "number", "string", "Vector", "Vector", "Vector", "Vector", "Vector", "neboolean", "string"]).args
                 const rotation = evaluateRotationCoordinates(String(args[7]??0), String(args[6]??0).replace("~", "0"), player.getRotation())
                 const location = evaluateCoordinates(args[3]??"~", args[4]??"~", args[5]??"~", player.location, player.getRotation())
                 for(let i = 0; i < args[1]; i++){let a = player.dimension.spawnEntity(args[2], location, {initialPersistence: args[8]??false}); a.setRotation(rotation); a.nameTag=args[9]??""}
                 player?.sendMessage(`${args[1]==0?"§c":""}Summoned ${args[2]} * ${args[1]}. `)
-            })
+            }catch(e){perror(player, e)}})
         }
         break; 
         case !!switchTest.match(/^heal$/): {
@@ -5679,7 +6197,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^liststructures$/)||!!switchTest.match(/^getstructures$/): {
             eventData.cancel = true;
-            player.sendMessage(world.structureManager.getWorldStructureIds().join("§r\n"))
+            srun(()=>player.sendMessage(world.structureManager.getWorldStructureIds().sort().join("§r\n")))
         }
         break; 
         case !!switchTest.match(/^listbans$/)||!!switchTest.match(/^getbans$/): {
@@ -5735,7 +6253,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     player.sendMessage(`§cError: No players matching the specified target selector were found. `)
                 }else targets.forEach(target=>{
                     try{
-                        target.runCommand("/kick "+target.name+(!!args[2]?" "+args[2]:""))
+                        target.runCommand("/kick "+JSON.stringify(target.name)+(!!args[2]?" "+args[2]:""))
                         player?.sendMessage(`${target?.name??target?.id} was kicked from the game. `)
                     }catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                 })
@@ -5773,23 +6291,23 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^morph$/): 
             eventData.cancel = true;
-            try{system.run(()=>{if(newMessage.split(" ")[2] == undefined){player.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))}else{targetSelectorAllListB(newMessage.split(" ").slice(2).join(" "), "", Number(player.id)).forEach((p)=>{p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))})}})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>{try{if(newMessage.split(" ")[2] == undefined){player.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))}else{targetSelectorAllListB(newMessage.split(" ").slice(2).join(" "), "", Number(player.id)).forEach((p)=>{p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))})}}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^tint$/): 
             eventData.cancel = true;
-            try{system.run(()=>{if(newMessage.split(" ")[6] == undefined){player.setProperty("andexpr:color_tint_r", (Number((newMessage.split(" ")[1] ?? "~").replaceAll("~", String(player.getProperty("andexpr:color_tint_r")))) ?? player.getProperty("andexpr:color_tint_r"))); player.setProperty("andexpr:color_tint_g", (Number((newMessage.split(" ")[2] ?? "~").replaceAll("~", String(player.getProperty("andexpr:color_tint_g")))) ?? player.getProperty("andexpr:color_tint_g"))); player.setProperty("andexpr:color_tint_b", (Number((newMessage.split(" ")[3] ?? "~").replaceAll("~", String(player.getProperty("andexpr:color_tint_b")))) ?? player.getProperty("andexpr:color_tint_b"))); player.setProperty("andexpr:color_tint_a", (Number((newMessage.split(" ")[4] ?? "~").replaceAll("~", String(player.getProperty("andexpr:color_tint_a")))) ?? player.getProperty("andexpr:color_tint_a"))); player.setProperty("andexpr:use_alphablend_player_materials", (Number((newMessage.split(" ")[5] ?? "~").replaceAll("~", String(player.getProperty("andexpr:use_alphablend_player_materials")))) ?? player.getProperty("andexpr:use_alphablend_player_materials"))); }else{targetSelectorAllListB(newMessage.split(" ").slice(6).join(" "), "", Number(player.id)).forEach((p)=>{p.setProperty("andexpr:color_tint_r", (Number((newMessage.split(" ")[1] ?? "~").replaceAll("~", String(p.getProperty("andexpr:color_tint_r")))) ?? p.getProperty("andexpr:color_tint_r"))); p.setProperty("andexpr:color_tint_g", (Number((newMessage.split(" ")[2] ?? "~").replaceAll("~", String(p.getProperty("andexpr:color_tint_g")))) ?? p.getProperty("andexpr:color_tint_g"))); p.setProperty("andexpr:color_tint_b", (Number((newMessage.split(" ")[3] ?? "~").replaceAll("~", String(p.getProperty("andexpr:color_tint_b")))) ?? p.getProperty("andexpr:color_tint_b"))); p.setProperty("andexpr:color_tint_a", (Number((newMessage.split(" ")[4] ?? "~").replaceAll("~", String(p.getProperty("andexpr:color_tint_a")))) ?? p.getProperty("andexpr:color_tint_a"))); p.setProperty("andexpr:use_alphablend_player_materials", (Number((newMessage.split(" ")[5] ?? "~").replaceAll("~", String(p.getProperty("andexpr:use_alphablend_player_materials")))) ?? p.getProperty("andexpr:use_alphablend_player_materials"))); })}})}catch(e){eventData.sender.sendMessage("§c" + e + " " + e.stack)}
+            try{system.run(()=>{try{if(newMessage.split(" ")[6] == undefined){player.setProperty("andexpr:color_tint_r", (Number((newMessage.split(" ")[1] ?? "~").replaceAll("~", String(player.getProperty("andexpr:color_tint_r")))) ?? player.getProperty("andexpr:color_tint_r"))); player.setProperty("andexpr:color_tint_g", (Number((newMessage.split(" ")[2] ?? "~").replaceAll("~", String(player.getProperty("andexpr:color_tint_g")))) ?? player.getProperty("andexpr:color_tint_g"))); player.setProperty("andexpr:color_tint_b", (Number((newMessage.split(" ")[3] ?? "~").replaceAll("~", String(player.getProperty("andexpr:color_tint_b")))) ?? player.getProperty("andexpr:color_tint_b"))); player.setProperty("andexpr:color_tint_a", (Number((newMessage.split(" ")[4] ?? "~").replaceAll("~", String(player.getProperty("andexpr:color_tint_a")))) ?? player.getProperty("andexpr:color_tint_a"))); player.setProperty("andexpr:use_alphablend_player_materials", (Number((newMessage.split(" ")[5] ?? "~").replaceAll("~", String(player.getProperty("andexpr:use_alphablend_player_materials")))) ?? player.getProperty("andexpr:use_alphablend_player_materials"))); }else{targetSelectorAllListB(newMessage.split(" ").slice(6).join(" "), "", Number(player.id)).forEach((p)=>{p.setProperty("andexpr:color_tint_r", (Number((newMessage.split(" ")[1] ?? "~").replaceAll("~", String(p.getProperty("andexpr:color_tint_r")))) ?? p.getProperty("andexpr:color_tint_r"))); p.setProperty("andexpr:color_tint_g", (Number((newMessage.split(" ")[2] ?? "~").replaceAll("~", String(p.getProperty("andexpr:color_tint_g")))) ?? p.getProperty("andexpr:color_tint_g"))); p.setProperty("andexpr:color_tint_b", (Number((newMessage.split(" ")[3] ?? "~").replaceAll("~", String(p.getProperty("andexpr:color_tint_b")))) ?? p.getProperty("andexpr:color_tint_b"))); p.setProperty("andexpr:color_tint_a", (Number((newMessage.split(" ")[4] ?? "~").replaceAll("~", String(p.getProperty("andexpr:color_tint_a")))) ?? p.getProperty("andexpr:color_tint_a"))); p.setProperty("andexpr:use_alphablend_player_materials", (Number((newMessage.split(" ")[5] ?? "~").replaceAll("~", String(p.getProperty("andexpr:use_alphablend_player_materials")))) ?? p.getProperty("andexpr:use_alphablend_player_materials"))); })}}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})}catch(e){eventData.sender.sendMessage("§c" + e + " " + e.stack)}
         break; 
         case !!switchTest.match(/^scale$/): 
             eventData.cancel = true;
-            try{system.run(()=>{if(newMessage.split(" ")[2] == undefined){player.getComponent("scale").value = Number(newMessage.split(" ")[1])}else{targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p)=>{p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))})}})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>{try{if(newMessage.split(" ")[2] == undefined){player.getComponent("scale").value = Number(newMessage.split(" ")[1])}else{targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p)=>{p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))})}}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^visualscale$/): 
             eventData.cancel = true;
-            try{system.run(()=>{if(newMessage.split(" ")[2] == undefined){player.setProperty("andexpr:entity_scale_variable_override", Number(newMessage.split(" ")[1]))}else{targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p)=>{p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))})}})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>{try{if(newMessage.split(" ")[2] == undefined){player.setProperty("andexpr:entity_scale_variable_override", Number(newMessage.split(" ")[1]))}else{targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p)=>{p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))})}}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^visualscaleenabled$/): 
             eventData.cancel = true;
-            try{system.run(()=>{if(newMessage.split(" ")[2] == undefined){player.setProperty("andexpr:entity_scale_variable_override_enabled", Boolean(newMessage.split(" ")[1].replaceAll("false", "").replaceAll("0", "").replaceAll("False", "").replaceAll("0.0", "")))}else{targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p)=>{p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))})}})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>{try{if(newMessage.split(" ")[2] == undefined){player.setProperty("andexpr:entity_scale_variable_override_enabled", Boolean(newMessage.split(" ")[1].replaceAll("false", "").replaceAll("0", "").replaceAll("False", "").replaceAll("0.0", "")))}else{targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p)=>{p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))})}}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^tps$/):
             eventData.cancel = true;
@@ -5802,7 +6320,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break;
         case !!switchTest.match(/^managescriptautoeval$/): 
             eventData.cancel = true;
-            try{system.run(()=>{if(newMessage.split(" ")[2] == undefined){player.setProperty("andexpr:entity_scale_variable_override_enabled", Boolean(newMessage.split(" ")[1].replaceAll("false", "").replaceAll("0", "").replaceAll("False", "").replaceAll("0.0", "")))}else{targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p)=>{p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))})}})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.run(()=>{try{if(newMessage.split(" ")[2] == undefined){player.setProperty("andexpr:entity_scale_variable_override_enabled", Boolean(newMessage.split(" ")[1].replaceAll("false", "").replaceAll("0", "").replaceAll("False", "").replaceAll("0.0", "")))}else{targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p)=>{p.setProperty("andexpr:entity_type", Number(newMessage.split(" ")[1]))})}}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^mainmenu$/)||!!switchTest.match(/^mm$/)||!!switchTest.match(/^menu$/): 
             eventData.cancel = true;
@@ -5835,11 +6353,23 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         case !!switchTest.match(/^settings$/): 
             eventData.cancel = true;
             try{system.run(()=>settings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
-        break; /*
+        break; 
+        case !!switchTest.match(/^editorstick$/): 
+            eventData.cancel = true;
+            try{system.run(()=>editorStick(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break; 
+        case !!switchTest.match(/^editorstickb$/): 
+            eventData.cancel = true;
+            try{system.run(()=>editorStickMenuB(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break; 
+        case !!switchTest.match(/^editorstickc$/): 
+            eventData.cancel = true;
+            try{system.run(()=>editorStickMenuC(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break; 
         case !!switchTest.match(/^notificationsettings$/)||!!switchTest.match(/^notificationssettings$/): 
             eventData.cancel = true;
-            try{system.run(()=>notificationSettings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
-        break; */ // coming very soon now! 
+            try{system.run(()=>notificationsSettings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break;  // coming very soon now! 
         case !!switchTest.match(/^datapickblock$/)||!!switchTest.match(/^dpb$/): 
             eventData.cancel = true;
             try{let item = player.getBlockFromViewDirection({includeLiquidBlocks: true, includePassableBlocks: true}).block.getItemStack(1, true); system.run(()=>{player.getComponent("inventory").container.addItem(item); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -5859,6 +6389,8 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             }
         break; 
         case !!switchTest.match(/^fill$/): {
+//            Object.setPrototypeOf({}, Player.prototype)
+//            (()=>{let p = new executeCommandPlayerW(player); p.modifiedlocation = {x: 0, y: 0, z: 0}; return p})()
             eventData.cancel = true;
             if(switchTestB.trim().split(" ").length==1){player.sendMessage(`fill command format: \n${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`)}
             let coordinatesa = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()); 
@@ -6046,18 +6578,18 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
             let lastblockname = args[10]
             let lastblockstates = args[11]
             let replacemode = args[12]??false
-            let matchingblock=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
-            let cmatchingblock=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
-            let ccmatchingblock=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
-            let hsmatchingblock=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
-            let tmatchingblock=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
-            let omatchingblock=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
-            let homatchingblock=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
-            let sgmatchingblock=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]/*
+            let matchingblock=((lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let cmatchingblock=((clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let ccmatchingblock=((cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let hsmatchingblock=((hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let tmatchingblock=((tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let omatchingblock=((olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let homatchingblock=((holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let sgmatchingblock=((sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]) as [string, { [id: string]: string | number | boolean }]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
                 case "": 
-                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "replace": 
                 system.run(()=>{
@@ -6065,7 +6597,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                     try{
                         let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; 
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); 
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); 
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); 
                         system.runTimeout(()=>{
                             try{
                                 let startTime = Date.now(); 
@@ -6368,18 +6900,18 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
             let lastblockname = args[10]
             let lastblockstates = args[11]
             let replacemode = args[12]??false
-            let matchingblock=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
-            let cmatchingblock=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
-            let ccmatchingblock=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
-            let hsmatchingblock=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
-            let tmatchingblock=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
-            let omatchingblock=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
-            let homatchingblock=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
-            let sgmatchingblock=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]/*
+            let matchingblock=((lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let cmatchingblock=((clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let ccmatchingblock=((cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let hsmatchingblock=((hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let tmatchingblock=((tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let omatchingblock=((olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let homatchingblock=((holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let sgmatchingblock=((sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]) as [string, { [id: string]: string | number | boolean }]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
                 case "": 
-                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "replace": 
                 system.run(()=>{
@@ -6387,7 +6919,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                     try{
                         let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; 
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); 
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); 
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); 
                         system.runTimeout(()=>{
                             try{
                                 let startTime = Date.now(); 
@@ -6663,27 +7195,27 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             if((!circlemode)&&(!ccirclemode)&&(!hspheremode)&&(!tunnelmode)){coordinatesb = evaluateCoordinates(args[4], args[5], args[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); }
             let horadi: Vector3
             let hooffset: Vector3
-            let hointegrity = argsk[9]
-            let hothickness = argsk[10]
-            let hofirstblockname = argsk[11]
-            let hofirstblockstates = argsk[12]
-            let homode = argsk[13] as string
-            let holastblockname = argsk[14]
-            let holastblockstates = argsk[15]
-            let horeplacemode = argsk[16]??false
+            let hointegrity = argsk[10]
+            let hothickness = argsk[11]
+            let hofirstblockname = argsk[12]
+            let hofirstblockstates = argsk[13]
+            let homode = argsk[14] as string
+            let holastblockname = argsk[15]
+            let holastblockstates = argsk[16]
+            let horeplacemode = argsk[17]??false
             if((hovoidmode)){
                 horadi = evaluateCoordinates(argsk[4], argsk[5], argsk[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
                 hooffset = evaluateCoordinates(argsk[7], argsk[8], argsk[9], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
             }
             let oradi: Vector3
             let ooffset: Vector3
-            let ointegrity = argsk[9]
-            let ofirstblockname = argsm[10]
-            let ofirstblockstates = argsm[11]
-            let omode = argsm[12] as string
-            let olastblockname = argsm[13]
-            let olastblockstates = argsm[14]
-            let oreplacemode = argsm[15]??false
+            let ointegrity = argsk[10]
+            let ofirstblockname = argsm[11]
+            let ofirstblockstates = argsm[12]
+            let omode = argsm[13] as string
+            let olastblockname = argsm[14]
+            let olastblockstates = argsm[15]
+            let oreplacemode = argsm[16]??false
             if((ovoidmode)){
                 oradi = evaluateCoordinates(argsm[4], argsm[5], argsm[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
                 ooffset = evaluateCoordinates(argsm[7], argsm[8], argsm[9], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
@@ -6695,14 +7227,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = args[11]
             let lastblockstates = args[12]
             let replacemode = args[13]??false
-            let matchingblock=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
-            let cmatchingblock=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
-            let ccmatchingblock=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
-            let hsmatchingblock=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
-            let tmatchingblock=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
-            let omatchingblock=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
-            let homatchingblock=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
-            let sgmatchingblock=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]
+            let matchingblock=((lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let cmatchingblock=((clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let ccmatchingblock=((cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let hsmatchingblock=((hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let tmatchingblock=((tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let omatchingblock=((olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let homatchingblock=((holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let sgmatchingblock=((sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]) as [string, { [id: string]: string | number | boolean }]
             const blocktypes = BlockTypes.getAll()/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
@@ -6755,76 +7287,76 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "hollowovoid": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, hointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, hointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "ovoid": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, ointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, ointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hollowsphere": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHSG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHSG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "dome": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHDG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHDG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "sphere": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "semisphere": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circle": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, {matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1]}, undefined, creplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, {matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1]}, undefined, creplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circlex": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circley": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circlez": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "circlexy": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circleyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circlexz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "circlexyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "cylinder": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, {matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1]}, undefined, treplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, {matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1]}, undefined, treplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderx": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylindery": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderxy": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderxz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderxyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hourglass": 
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "cube": 
-                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 default: 
             }}
@@ -6842,7 +7374,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             srun(()=>{try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -6859,7 +7391,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             srun(()=>{try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -6876,9 +7408,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -6893,7 +7425,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -6913,9 +7445,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().split(" ")[0]
             let somethingtest = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, argsaextra, args/*, firstblocknameindex, reststringaftercoordinates*/, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))
-            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -6930,7 +7462,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -6950,9 +7482,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().split(" ")[0]
             let somethingtest = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, argsaextra, args/*, firstblocknameindex, reststringaftercoordinates*/, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))
-            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -6967,7 +7499,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -6987,9 +7519,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().split(" ")[0]
             let somethingtest = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, argsaextra, args/*, firstblocknameindex, reststringaftercoordinates*/, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))
-            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7004,7 +7536,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -7024,9 +7556,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().split(" ")[0]
             let somethingtest = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, argsaextra, args/*, firstblocknameindex, reststringaftercoordinates*/, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))
-            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7041,7 +7573,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             try{system.run(()=>{player.sendMessage("IFill Command Started, to cancel type in "+String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")+"stopgen " + system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], false, (a, timea, timeb, totalTime, player)=>{player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${totalTime} ms`); }, player))); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -7058,7 +7590,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             try{system.run(()=>{player.sendMessage("IOFill Generator/Job Started, to cancel type in "+String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")+"stopgen " + system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], false, (a, timea, timeb, totalTime, player)=>{player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${totalTime} ms`); }, player))); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -7081,7 +7613,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             try{system.run(()=>{let a = system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], true, (a)=>{player.sendMessage(`${a==0?"§c":""}${a} blocks filled`); })); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -7098,7 +7630,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             try{system.run(()=>{let a = fillBlocksC(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], true); player.sendMessage(`${a==0?"§c":""}${a} blocks filled`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -7229,8 +7761,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 if((args[3]??"").trim()=="~"){args[3] = player.name}}
                 let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).find(v=>v.typeId=="minecraft:player") as Player
                 let targetb = targetSelectorAllListC(args[1], "", vTStr(player.location), player).find(v=>v.typeId=="minecraft:player") as Player
-                if((args[2]??"").trim()==""){args[2] = targetb?.selectedSlotIndex}
-                if((args[1]??"").trim()==""){args[1] = target?.selectedSlotIndex}
+                if((args[2]??"").trim()==""){args[2] = String(targetb?.selectedSlotIndex)}
+                if((args[1]??"").trim()==""){args[1] = String(target?.selectedSlotIndex)}
                 if(!!!target){
                     player.sendMessage(`§cError: No player matching the first specified target selector was found. `)
                 }else if(!!!targetb){
@@ -7680,7 +8212,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             }catch(e){player.sendMessage("§c"+e+" "+e.stack)}})
         }
         break; 
-        case !!switchTest.match(/^timezone$/): {
+        case !!switchTest.match(/^timezone$/)||!!switchTest.match(/^tz$/): {
             eventData.cancel = true;
             const args = evaluateParameters(switchTestB, ["presetText", "number"]).args
             player.setDynamicProperty("andexdbPersonalSettings:timeZone", args[1])
@@ -7751,15 +8283,311 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             player.sendMessage(`Seccessfully set selection to the current chunk (${vTStr(chunk.from)} to ${vTStr(chunk.to)}).`)
         }
         break; 
+        case !!switchTest.match(/^\\shift$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "string", "string"]).args
+            const range = VSTR(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3)
+            player.setDynamicProperty("pos1", Vector.add(range.from, Vector.scale(diroffsetmapb(args[1].toLowerCase()), Number(args[2]))))
+            player.setDynamicProperty("pos2", Vector.add(range.to, Vector.scale(diroffsetmapb(args[1].toLowerCase()), Number(args[2]))))
+            player.sendMessage(`Seccessfully shifted the selection ${args[2]} blocks ${args[1]} (${vTStr(player.getDynamicProperty("pos1") as Vector3)} to ${vTStr(player.getDynamicProperty("pos2") as Vector3)}).`)
+        }
+        break; 
+        case !!switchTest.match(/^\\offset$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "number", "number", "number"]).args
+            const offset = {x: args[1]??0, y: args[2]??0, z: args[3]??0}; 
+            const range = VSTR(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3)
+            player.setDynamicProperty("pos1", Vector.add(range.from, offset))
+            player.setDynamicProperty("pos2", Vector.add(range.to, offset))
+            player.sendMessage(`Seccessfully shifted the selection by ${vTStr(offset)} (${vTStr(player.getDynamicProperty("pos1") as Vector3)} to ${vTStr(player.getDynamicProperty("pos2") as Vector3)}).`)
+        }
+        break; 
         case !!switchTest.match(/^\\replace$/): {
             eventData.cancel = true;
-            const args = evaluateParameters(switchTestB, ["presetText", "blockPattern", "string", "blockStates"]).args
-            const firstblockpattern = args[1] as BlockPattern
-            const lastblockname = args[2] as string
-            const lastblockstates = args[3] as Record<string, string | number | boolean>
-            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "blockPattern", "block"]).args
+            const firstblockpattern = args[2] as BlockPattern
+            const lastblockname = args[3]?.id
+            const lastblockstates = args[3]?.states
+            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
             const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        const blocktypes = BlockTypes.getAll()
+                        try{fillBlocksHFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    }); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\set$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "blockPattern"]).args
+            const firstblockpattern = args[2] as BlockPattern
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        const blocktypes = BlockTypes.getAll()
+                        try{fillBlocksHFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    }); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\seti$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "number", "blockPattern"]).args
+            const integrity = args[2] as number
+            const firstblockpattern = args[3] as BlockPattern
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        const blocktypes = BlockTypes.getAll()
+                        try{fillBlocksHFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {minMSBetweenYields: 2500}, args[1].c, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    }); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\flood$/): {
+            eventData.cancel = true;
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){perror(player, e)}
+                        try{fillBlocksHFFGB(ca, cb, dimensiona, {minMSBetweenYields: 2500}, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    }); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\drain$/): {
+            eventData.cancel = true;
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            const airpermutation = BlockPermutation.resolve("air")
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){perror(player, e)}
+                        try{
+                            fillBlocksHFGB(ca, cb, dimensiona, ()=>airpermutation, {matchingBlock: "minecraft:water", minMSBetweenYields: 2500}).then(a=>{
+                                fillBlocksHFGB(ca, cb, dimensiona, ()=>airpermutation, {matchingBlock: "minecraft:flowing_water", minMSBetweenYields: 2500}).then(b=>{
+                                    fillBlocksHFGB(ca, cb, dimensiona, ()=>airpermutation, {matchingBlock: "minecraft:lava", minMSBetweenYields: 2500}).then(c=>{
+                                        fillBlocksHFGB(ca, cb, dimensiona, ()=>airpermutation, {matchingBlock: "minecraft:flowing_lava", minMSBetweenYields: 2500}).then(d=>{
+                                            player.sendMessage(`${a.counter+b.counter+c.counter+d.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); 
+                                        }, (e)=>{
+                                            eventData.sender.sendMessage("§c" + e + e.stack)
+                                        })
+                                    }, (e)=>{
+                                        eventData.sender.sendMessage("§c" + e + e.stack)
+                                    })
+                                }, (e)=>{
+                                    eventData.sender.sendMessage("§c" + e + e.stack)
+                                })
+                            }, (e)=>{
+                                eventData.sender.sendMessage("§c" + e + e.stack)
+                            })
+                        }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    }); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\remove$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "block"]).args
+            const lastblockname = args[2]?.id
+            const lastblockstates = args[2]?.states
+            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            const airpermutation = BlockPermutation.resolve("air")
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        const blocktypes = BlockTypes.getAll()
+                        try{fillBlocksHFGB(ca, cb, dimensiona, ()=>airpermutation, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    }); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\walls$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "blockPattern", "block"]).args
+            const firstblockpattern = args[2] as BlockPattern
+            const lastblockname = args[3]?.id
+            const lastblockstates = args[3]?.states
+            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        const blocktypes = BlockTypes.getAll()
+                        try{fillBlocksHWFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    }); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\sphere$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "number", "blockPattern", "block"]).args
+            const radius = args[2] as number
+            const firstblockpattern = args[3] as BlockPattern
+            const lastblockname = args[4]?.id
+            const lastblockstates = args[4]?.states
+            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const coordinatesa = roundVector3ToMiddleOfBlock(player.getDynamicProperty("pos1") as Vector3|undefined)
+            const coordinatesb = roundVector3ToMiddleOfBlock(player.getDynamicProperty("pos2") as Vector3|undefined)
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))))}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), to: Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius)))}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        const blocktypes = BlockTypes.getAll()
+                        try{fillBlocksHSGB(coordinatesa, radius-0.5, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    }); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\hsphere$/)||!!switchTest.match(/^\\hollowsphere$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "number", "number", "blockPattern", "block"]).args
+            const radius = args[2] as number
+            const thickness = args[3] as number
+            const firstblockpattern = args[4] as BlockPattern
+            const lastblockname = args[5]?.id
+            const lastblockstates = args[5]?.states
+            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const coordinatesa = roundVector3ToMiddleOfBlock(player.getDynamicProperty("pos1") as Vector3|undefined)
+            const coordinatesb = roundVector3ToMiddleOfBlock(player.getDynamicProperty("pos2") as Vector3|undefined)
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))))}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), to: Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius)))}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        const blocktypes = BlockTypes.getAll()
+                        try{fillBlocksHHSGB(coordinatesa, radius-0.5, thickness, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    }); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\cone$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "number", "number", "blockPattern", "block"]).args
+            const radius = args[2] as number
+            const height = args[3] as number
+            const firstblockpattern = args[4] as BlockPattern
+            const lastblockname = args[5]?.id
+            const lastblockstates = args[5]?.states
+            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const coordinatesa = roundVector3ToMiddleOfBlockFloorY(player.getDynamicProperty("pos1") as Vector3|undefined)
+            const coordinatesb = roundVector3ToMiddleOfBlockFloorY(player.getDynamicProperty("pos2") as Vector3|undefined)
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(Vector.subtract(coordinatesa, {x: Math.abs(radius), y: 0, z: Math.abs(radius)}), Vector.add(coordinatesa, {x: Math.abs(radius), y: height, z: Math.abs(radius)}))}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: Vector.subtract(coordinatesa, {x: Math.abs(radius), y: 0, z: Math.abs(radius)}), to: Vector.add(coordinatesa, {x: Math.abs(radius), y: height, z: Math.abs(radius)})}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        const blocktypes = BlockTypes.getAll()
+                        try{fillBlocksHCGB(coordinatesa, radius, height, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    }); 
+                }
+            }
+        }
+        break; 
+        case !!switchTest.match(/^\\generatef$/): {
+            eventData.cancel = true;
+            const argsa = evaluateParameters(switchTestB, ["presetText", "-sr", "blockPattern"])
+            const args = [...argsa.args, argsa.extra]
+            const firstblockpattern = args[2] as BlockPattern
+            const expression = ((args[1] as string).includes("r")?parseExpressionR:(args[3] as string).includes("s")?parseExpressionKE:parseExpression)(args[3] as string)
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
             if(!!!coordinatesa){
                 player.sendMessage("§cError: pos1 is not set.")
             }else{
@@ -7767,7 +8595,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     const blocktypes = BlockTypes.getAll()
-                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFGB(coordinatesa, coordinatesb, player.dimension, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, undefined, args[13]??true, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{completeGeneratorB(generateMathExpression(expression as ()=>boolean, (l)=>{const b = firstblockpattern.generateBlock(l.count); const t = b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t)}, coordinatesa, coordinatesb, coordinatesa, coordinatesb), 2500).then(a=>{player.sendMessage(`${a.return==0n?"§c":""}${a.return} blocks replaced`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 }
             }
         }
@@ -7776,8 +8604,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             eventData.cancel = true;
             const argsa = evaluateParameters(switchTestB, ["presetText", "-sr", "blockPattern"])
             const args = [...argsa.args, argsa.extra]
-            const firstblockpattern = args[1] as BlockPattern
-            const expression = ((args[1] as string).includes("r")?parseExpressionR:(args[1] as string).includes("s")?parseExpressionKE:parseExpression)(args[2] as string)
+            const firstblockpattern = args[2] as BlockPattern
+            const expression = ((args[1] as string).includes("r")?parseExpressionBR:(args[3] as string).includes("s")?parseExpressionBKE:parseExpressionB)(args[3] as string)
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
             const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
             const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
@@ -7795,10 +8623,10 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
         break; 
         case !!switchTest.match(/^\\generates$/): {
             eventData.cancel = true;
-            const argsa = evaluateParameters(switchTestB, ["presetText", "number", "blockPattern"])
-            const args = [...argsa.args, argsa.extra]
-            const firstblockpattern = args[2] as BlockPattern
-            const expression = parseExpression(args[3] as string)
+            const argsa = evaluateParameters(switchTestB, ["presetText", "number", "-sr", "blockPattern"])
+            const args = [...argsa.args, argsa.extra] as [...typeof argsa.args, string]
+            const firstblockpattern = args[3] as BlockPattern
+            const expression = ((args[2] as string).includes("r")?parseExpressionBR:(args[4] as string).includes("s")?parseExpressionBKE:parseExpressionB)(args[4] as string)
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
             const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
             const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
@@ -7809,12 +8637,12 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     const blocktypes = BlockTypes.getAll()
-                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{completeGeneratorB(generateMathExpression(expression as ()=>boolean, (l)=>{const b = firstblockpattern.generateBlock(l.count); const t = b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t)}, coordinatesa, coordinatesb, coordinatesa, coordinatesb, args[1] as number), 2500).then(a=>{player.sendMessage(`${a.return==0n?"§c":""}${a.return} blocks replaced`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                    system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{completeGeneratorB(generateMathExpression(expression as ()=>boolean, (l)=>{const b = firstblockpattern.generateBlock(l.count); const t = b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t)}, coordinatesa, coordinatesb, coordinatesa, coordinatesb, args[1]), 2500).then(a=>{player.sendMessage(`${a.return==0n?"§c":""}${a.return} blocks replaced`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 }
             }
         }
         break; 
-        case !!switchTest.match(/^\\stack$/): {
+        case !!switchTest.match(/^\\stack$/): {try{
             eventData.cancel = true;
             const args = evaluateParameters(switchTestB, ["presetText", "number"]).args
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
@@ -7822,7 +8650,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
             const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
             const height = Math.abs(coordinatesa.y-coordinatesb.y)+1
-            console.warn(vTStr(ca), vTStr(cb))
+            //console.warn(vTStr(ca), vTStr(cb))
             const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
             if(!!!coordinatesa){
                 player.sendMessage("§cError: pos1 is not set.")
@@ -7831,14 +8659,145 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{
+                        try{undoClipboard.save(dimensiona, {from: ca, to: Vector.add(cb, {x: 0, y: height*args[1], z: 0})}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         for(let i = 0; i<args[1]; i++){
-                            console.warn(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
+                            //console.warn(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
                             dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
                         }
                     }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 }
             }
-        }
+        }catch(e){perror(player, e)}}
+        break;
+        case !!switchTest.match(/^\\cut$/): {try{
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "-meb"]).args as [string, string]
+            args[1]??=""
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        tryrun(()=>blockClipboard.clear())
+                        try{blockClipboard.save(dimensiona, {from: ca, to: cb}, {includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), saveMode: args[1].includes("m")?StructureSaveMode.Memory:StructureSaveMode.World})
+                        player.sendMessage("The selected area has been cut to the clipboard.")}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, "air", undefined, {minMSBetweenYields: 5000}, undefined, true, 100).then(()=>undefined, (e)=>{player.sendMessage("§c" + e + e.stack)})}catch(e){player.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){player.sendMessage("§c" + e + e.stack)}}); 
+                    }); 
+                }
+            }
+        }catch(e){perror(player, e)}}
+        break; 
+        case !!switchTest.match(/^\\copy$/): {try{
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "-meb"]).args as [string, string]
+            args[1]??=""
+            const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+            const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+            const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+            const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+            const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+            if(!!!coordinatesa){
+                player.sendMessage("§cError: pos1 is not set.")
+            }else{
+                if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    system.run(()=>{
+                        tryrun(()=>blockClipboard.clear())
+                        try{blockClipboard.save(dimensiona, {from: ca, to: cb}, {includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), saveMode: args[1].includes("m")?StructureSaveMode.Memory:StructureSaveMode.World})
+                        player.sendMessage("The selected area has been copied to the clipboard.")}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                    }); 
+                }
+            }
+        }catch(e){perror(player, e)}}
+        break; 
+        case !!switchTest.match(/^\\paste$/): {try{
+            eventData.cancel = true;
+            system.run(()=>{try{
+                const args = evaluateParameters(switchTestB, ["presetText", "-webxz", "number", "string", "number", "string", "number"]).args as [commandText: string, flags: string, integrity: number, integritySeed: string, rotation: number, animationMode: "none"|"blocks"|"layers", animationSeconds: number]
+                //console.warn(JSON.stringify(args[1]))
+                args[1]??="";
+                args[2]??=1;
+                (args[3]=="undefined"||args[3]=="null"||args[3]=="random")?args[3]=undefined:undefined;
+                args[4]??=0;
+                args[5]??="none";
+                args[5]=args[5].toLowerCase() as "none"|"blocks"|"layers";
+                args[6]??=0;
+                const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+                const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+                const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+                //const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+                const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+                if(!!!coordinatesa){
+                    player.sendMessage("§cError: pos1 is not set.")
+                }else if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else if(blockClipboard.ids.length==0){
+                    player.sendMessage("§cError: The clipboard is currently empty.")
+                }else{
+                    try{try{undoClipboard.save(dimensiona, {from: ca, to: Vector.add(ca, blockClipboard.saveSize)}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                    blockClipboard.place(Object.assign({dimension: dimensiona}, ca), {includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), waterlogged: args[1].includes("w"), animationMode: args[5]=="blocks"?StructureAnimationMode.Blocks:args[5]=="none"?StructureAnimationMode.None:args[5]=="layers"?StructureAnimationMode.Layers:undefined, animationSeconds: args[6], mirror: args[1].includes("x")?args[1].includes("z")?StructureMirrorAxis.XZ:StructureMirrorAxis.X:args[1].includes("z")?StructureMirrorAxis.Z:StructureMirrorAxis.None, rotation: Math.round(args[4]/90)==0?StructureRotation.None:Math.round(args[4]/90)==1?StructureRotation.Rotate90:Math.round(args[4]/90)==2?StructureRotation.Rotate180:Math.round(args[4]/90)==3?StructureRotation.Rotate270:StructureRotation.None, integrity: args[2], integritySeed: args[3]})
+                    player.sendMessage("The clipboard has been pasted to the selected area.")}catch(e){player.sendMessage(e+" "+e.stack)}
+                }
+            }catch(e){perror(player, e)}}); 
+        }catch(e){perror(player, e)}}
+        break; 
+        case !!switchTest.match(/^\\undo$/): {try{
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "f-kt"]).args;
+            system.run(()=>{try{
+                if(undoClipboard.ids.length==0){player.sendMessage("§cNothing to undo. ")}else if(!(args[1]?.t??false)){try{if(undoClipboard.undo(undefined, undefined, !(args[1]?.k??false))==0){player.sendMessage("§cNothing to undo. ")}else{player.sendMessage("Successfully reverted the area. ")}}catch(e){player.sendMessage(e+" "+e.stack)}}else{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(world.getDynamicProperty(`andexdb:undoclipboard;${undoClipboard.saveTimes}`) as Vector3, Vector.add(world.getDynamicProperty(`andexdb:undoclipboard;${undoClipboard.saveTimes}`) as Vector3, undoClipboard.saveSize(undoClipboard.saveTimes)))}); return a})(), dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${undoClipboard.saveTimes}`))]??dimensionsb["minecraft:overworld"]).then(tac=>{ta=tac; try{if(undoClipboard.undo(undefined, undefined, !(args[1]?.k??false))==0){player.sendMessage("§cNothing to undo. ")}else{player.sendMessage("Successfully reverted the area. ")}}catch(e){player.sendMessage(e+" "+e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}
+            }catch(e){perror(player, e)}}); 
+        }catch(e){perror(player, e)}}
+        break; 
+        case !!switchTest.match(/^\\protectarea$/): {try{
+            eventData.cancel = true;
+            system.run(()=>{try{
+                const args = evaluateParameters(switchTestB, ["presetText", "string", "string", "number", "string"]).args as [commandText: string, areaType: string, name: string, mode: number, icon_path: string]
+                if(!spawnProtectionTypeList.includes(args[1])){player.sendMessage(`§cError: "${args[1]}" is not a valid protected area type, please use one of the following protected area types: ${JSON.stringify(spawnProtectionTypeList)}.`); return};
+                const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+                const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+                const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+                const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+                const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+                if(!!!coordinatesa){
+                    player.sendMessage("§cError: pos1 is not set.")
+                }else if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    world.setDynamicProperty("v2:"+args[1]+args[2], JSON.stringify({from: ca, to: cb, dimension: dimensions.indexOf(dimensiona), mode: args[3]??0, icon_path: args[4]}))
+                    player.sendMessage("The protected area has been saved.")
+                }
+            }catch(e){perror(player, e)}}); 
+        }catch(e){perror(player, e)}}
+        break; 
+        case !!switchTest.match(/^\\backuparea$/): {try{
+            eventData.cancel = true;
+            system.run(()=>{try{
+                const args = evaluateParameters(switchTestB, ["presetText", "string"]).args as [commandText: string, id: string]
+                const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
+                const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+                const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
+                const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
+                const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
+                if(!!!coordinatesa){
+                    player.sendMessage("§cError: pos1 is not set.")
+                }else if(!!!coordinatesb){
+                    player.sendMessage("§cError: pos2 is not set.")
+                }else{
+                    AreaBackups.createAreaBackup(args[1], dimensiona, {from: ca, to: cb})
+                    player.sendMessage(`The backup area has been created with the id "${args[1]}".`)
+                }
+            }catch(e){perror(player, e)}}); 
+        }catch(e){perror(player, e)}}
         break; 
         case !!switchTest.match(/^\\itfill$/): {
             eventData.cancel = true;
@@ -7892,19 +8851,19 @@ ${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Bloc
 ${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
-${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollowovoid [clearContainers: boolean]`)}else{
+${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
+${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> hollowovoid [clearContainers: boolean]`)}else{
             let argsa = evaluateParameters(switchTestB, ["presetText", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             let argsb = evaluateParameters(switchTestB, ["presetText", "string", "presetText", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             let argsd = evaluateParameters(switchTestB, ["presetText", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             let argsf = evaluateParameters(switchTestB, ["presetText", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             let argsh = evaluateParameters(switchTestB, ["presetText", "number", "string", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsj = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsl = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsj = evaluateParameters(switchTestB, ["presetText", "number", "number", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsl = evaluateParameters(switchTestB, ["presetText", "number", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             let argsn = evaluateParameters(switchTestB, ["presetText", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             //console.warn(argsh.args)
             let args = argsa.args
@@ -7953,13 +8912,13 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
             let tlastblockname = argsi[6]
             let tlastblockstates = argsi[7]
             let treplacemode = argsi[8]??false
-            let sgskygridsize = argso[4]
-            let sgfirstblockname = argso[5]
-            let sgfirstblockstates = argso[6]
-            let sgmode = argso[7] as string
-            let sglastblockname = argso[8]
-            let sglastblockstates = argso[9]
-            let sgreplacemode = argso[10]??false
+            let sgskygridsize = argso[1]
+            let sgfirstblockname = argso[2]
+            let sgfirstblockstates = argso[3]
+            let sgmode = argso[4] as string
+            let sglastblockname = argso[5]
+            let sglastblockstates = argso[6]
+            let sgreplacemode = argso[7]??false
             let circlemode = false
             new Date(Date.now()).getMilliseconds()
             let ccirclemode = false
@@ -7974,7 +8933,7 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
             if(["tunnel", "cylinder"].includes(fillmodetypeenum[argsi[5]??"undefined"?.toLowerCase()?.trim()])){tunnelmode=true}
             if(["ovoid"].includes(fillmodetypeenum[argsm[6]??"undefined"?.toLowerCase()?.trim()])){ovoidmode=true}
             if(["hollowovoid"].includes(fillmodetypeenum[argsk[7]??"undefined"?.toLowerCase()?.trim()])){hovoidmode=true}
-            if(["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[7]??"undefined"?.toLowerCase()?.trim()])){skygridmode=true}
+            if(["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[4]??"undefined"?.toLowerCase()?.trim()])){skygridmode=true}
             let coordinatesa: Vector3/*
             console.warn(circlemode, ccirclemode, hspheremode)*/
             if((!circlemode)&&(!ccirclemode)&&(!hspheremode)&&(!tunnelmode)){coordinatesa = player.getDynamicProperty("pos1") as Vector3/*evaluateCoordinates(args[1], args[2], args[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); */}
@@ -7992,7 +8951,7 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
             if((hovoidmode)){
                 const oradia = Vector.subtract(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3); 
                 horadi = {x: Math.abs(oradia.x), y: Math.abs(oradia.y), z: Math.abs(oradia.z)}; 
-                hooffset = evaluateCoordinates(argsk[1], argsk[2], argsk[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
+                hooffset = Vector.add({x: argsk[1], y: argsk[2], z: argsk[3]}, center); 
             }
             let oradi: Vector3
             let ooffset: Vector3
@@ -8005,7 +8964,7 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
             if((ovoidmode)){
                 const oradia = Vector.subtract(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3); 
                 oradi = {x: Math.abs(oradia.x), y: Math.abs(oradia.y), z: Math.abs(oradia.z)}
-                ooffset = evaluateCoordinates(argsm[1], argsm[2], argsm[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
+                ooffset = Vector.add({x: argsm[1], y: argsm[2], z: argsm[3]}, center); 
             }
             let firstblockname = args[1]
             let firstblockstates = args[2]
@@ -8013,18 +8972,18 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
             let lastblockname = args[4]
             let lastblockstates = args[5]
             let replacemode = args[6]??false
-            let matchingblock=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
-            let cmatchingblock=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
-            let ccmatchingblock=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
-            let hsmatchingblock=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
-            let tmatchingblock=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
-            let omatchingblock=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
-            let homatchingblock=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
-            let sgmatchingblock=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]/*
+            let matchingblock: [string, { [id: string]: string | number | boolean }?]=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
+            let cmatchingblock: [string, { [id: string]: string | number | boolean }?]=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
+            let ccmatchingblock: [string, { [id: string]: string | number | boolean }?]=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
+            let hsmatchingblock: [string, { [id: string]: string | number | boolean }?]=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
+            let tmatchingblock: [string, { [id: string]: string | number | boolean }?]=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
+            let omatchingblock: [string, { [id: string]: string | number | boolean }?]=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
+            let homatchingblock: [string, { [id: string]: string | number | boolean }?]=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
+            let sgmatchingblock: [string, { [id: string]: string | number | boolean }?]=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
                 case "": 
-                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "replace": 
                 system.run(()=>{
@@ -8032,7 +8991,7 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
                     try{
                         let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; 
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); 
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); 
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); 
                         system.runTimeout(()=>{
                             try{
                                 let startTime = Date.now(); 
@@ -8186,49 +9145,49 @@ ${command.dp}\\idtfill <integrity: float> <skygridSize: float> <tileName: Block>
 ${command.dp}\\idtfill <integrity: float> <tileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> clear [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> drain
-${command.dp}\\idtfill <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
-${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [clearContainers: boolean]`)}else{
+${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
+${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [clearContainers: boolean]`)}else{
             let argsa = evaluateParameters(switchTestB, ["presetText", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsb = evaluateParameters(switchTestB, ["presetText", "number", "number", "string", "presetText", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsd = evaluateParameters(switchTestB, ["presetText", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsf = evaluateParameters(switchTestB, ["presetText", "number", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsh = evaluateParameters(switchTestB, ["presetText", "number", "number", "number", "string", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsj = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
-            let argsl = evaluateParameters(switchTestB, ["presetText", "Vector", "Vector", "Vector", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsb = evaluateParameters(switchTestB, ["presetText", "number", "string", "presetText", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsd = evaluateParameters(switchTestB, ["presetText", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsf = evaluateParameters(switchTestB, ["presetText", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsh = evaluateParameters(switchTestB, ["presetText", "number", "string", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsj = evaluateParameters(switchTestB, ["presetText", "number", "number", "number", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
+            let argsl = evaluateParameters(switchTestB, ["presetText", "number", "number", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             let argsn = evaluateParameters(switchTestB, ["presetText", "number", "number", "string", "blockStates", "presetText", "non-booleanString", "blockStates", "neboolean"])
             //console.warn(argsh.args)
             let args = argsa.args
@@ -8248,44 +9207,44 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
             let argslextra = argsl.extra
             let argsnextra = argsn.extra
             //console.warn(JSONStringify(args), JSONStringify(argsaextra))
-            let center = evaluateCoordinates(argsc[1], argsc[2], argsc[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
-            let cintegrity = argsc[4]
-            let radius = argsc[5]
-            let axis = argsc[6]
-            let cfirstblockname = argsc[7]
-            let cfirstblockstates = argsc[8]
-            let cmode = argsc[9] as string
-            let clastblockname = argsc[10]
-            let clastblockstates = argsc[11]
-            let creplacemode = argsc[12]??false
-            let ccfirstblockname = argse[6]
-            let ccfirstblockstates = argse[7]
-            let ccmode = argse[8] as string
-            let cclastblockname = argse[9]
-            let cclastblockstates = argse[10]
-            let ccreplacemode = argse[11]??false
-            let thickness = argsg[6]
-            let hsfirstblockname = argsg[7]
-            let hsfirstblockstates = argsg[8]
-            let hsmode = argsg[9] as string
-            let hslastblockname = argsg[10]
-            let hslastblockstates = argsg[11]
-            let hsreplacemode = argsg[12]??false
-            let tintegrity = argsi[4]
-            let taxis = argsi[7]
-            let tfirstblockname = argsi[8]
-            let tfirstblockstates = argsi[9]
-            let tmode = argsi[10] as string
-            let tlastblockname = argsi[11]
-            let tlastblockstates = argsi[12]
-            let treplacemode = argsi[13]??false
-            let sgskygridsize = argso[8]
-            let sgfirstblockname = argso[9]
-            let sgfirstblockstates = argso[10]
-            let sgmode = argso[11] as string
-            let sglastblockname = argso[12]
-            let sglastblockstates = argso[13]
-            let sgreplacemode = argso[14]??false
+            let center = player.getDynamicProperty("pos1") as Vector3//evaluateCoordinates(argsc[1], argsc[2], argsc[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
+            let radius = Vector.distance(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3)
+            let cintegrity = argsc[1]
+            let axis = argsc[2]
+            let cfirstblockname = argsc[3]
+            let cfirstblockstates = argsc[4]
+            let cmode = argsc[5] as string
+            let clastblockname = argsc[6]
+            let clastblockstates = argsc[7]
+            let creplacemode = argsc[8]??false
+            let ccfirstblockname = argse[2]
+            let ccfirstblockstates = argse[3]
+            let ccmode = argse[4] as string
+            let cclastblockname = argse[5]
+            let cclastblockstates = argse[6]
+            let ccreplacemode = argse[7]??false
+            let thickness = argsg[2]
+            let hsfirstblockname = argsg[3]
+            let hsfirstblockstates = argsg[4]
+            let hsmode = argsg[5] as string
+            let hslastblockname = argsg[6]
+            let hslastblockstates = argsg[7]
+            let hsreplacemode = argsg[8]??false
+            let tintegrity = argsi[1]
+            let taxis = argsi[2]
+            let tfirstblockname = argsi[3]
+            let tfirstblockstates = argsi[4]
+            let tmode = argsi[5] as string
+            let tlastblockname = argsi[6]
+            let tlastblockstates = argsi[7]
+            let treplacemode = argsi[8]??false
+            let sgskygridsize = argso[2]
+            let sgfirstblockname = argso[3]
+            let sgfirstblockstates = argso[4]
+            let sgmode = argso[5] as string
+            let sglastblockname = argso[6]
+            let sglastblockstates = argso[7]
+            let sgreplacemode = argso[8]??false
             let circlemode = false
             new Date(Date.now()).getMilliseconds()
             let ccirclemode = false
@@ -8294,60 +9253,62 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
             let ovoidmode = false
             let hovoidmode = false
             let skygridmode = false
-            if(["circle"].includes(fillmodetypeenum[argsc[9]??"undefined"?.toLowerCase()?.trim()])){circlemode=true}
-            if(["circlex", "circley", "circlez", "circlexy", "circleyz", "circlexz", "circlexyz", "sphere", "semisphere"].includes(fillmodetypeenum[argse[8]??"undefined"?.toLowerCase()?.trim()])){ccirclemode=true}
-            if(["hollowsphere", "cylinderx", "cylindery", "cylinderz", "cylinderxy", "cylinderyz", "cylinderxz", "cylinderxyz", "dome"].includes(fillmodetypeenum[argsg[9]??"undefined"?.toLowerCase()?.trim()])){hspheremode=true}
-            if(["tunnel", "cylinder"].includes(fillmodetypeenum[argsi[10]??"undefined"?.toLowerCase()?.trim()])){tunnelmode=true}
-            if(["ovoid"].includes(fillmodetypeenum[argsm[13]??"undefined"?.toLowerCase()?.trim()])){ovoidmode=true}
-            if(["hollowovoid"].includes(fillmodetypeenum[argsk[14]??"undefined"?.toLowerCase()?.trim()])){hovoidmode=true}
-            if(["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[11]??"undefined"?.toLowerCase()?.trim()])){skygridmode=true}
+            if(["circle"].includes(fillmodetypeenum[argsc[5]??"undefined"?.toLowerCase()?.trim()])){circlemode=true}
+            if(["circlex", "circley", "circlez", "circlexy", "circleyz", "circlexz", "circlexyz", "sphere", "semisphere"].includes(fillmodetypeenum[argse[4]??"undefined"?.toLowerCase()?.trim()])){ccirclemode=true}
+            if(["hollowsphere", "cylinderx", "cylindery", "cylinderz", "cylinderxy", "cylinderyz", "cylinderxz", "cylinderxyz", "dome"].includes(fillmodetypeenum[argsg[5]??"undefined"?.toLowerCase()?.trim()])){hspheremode=true}
+            if(["tunnel", "cylinder"].includes(fillmodetypeenum[argsi[5]??"undefined"?.toLowerCase()?.trim()])){tunnelmode=true}
+            if(["ovoid"].includes(fillmodetypeenum[argsm[7]??"undefined"?.toLowerCase()?.trim()])){ovoidmode=true}
+            if(["hollowovoid"].includes(fillmodetypeenum[argsk[8]??"undefined"?.toLowerCase()?.trim()])){hovoidmode=true}
+            if(["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[5]??"undefined"?.toLowerCase()?.trim()])){skygridmode=true}
             let coordinatesa: Vector3/*
             console.warn(circlemode, ccirclemode, hspheremode)*/
-            if((!circlemode)&&(!ccirclemode)&&(!hspheremode)&&(!tunnelmode)){coordinatesa = evaluateCoordinates(args[1], args[2], args[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); }
+            if((!circlemode)&&(!ccirclemode)&&(!hspheremode)&&(!tunnelmode)){coordinatesa = player.getDynamicProperty("pos1") as Vector3/*evaluateCoordinates(args[1], args[2], args[3], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); */}
             let coordinatesb: Vector3
-            if((!circlemode)&&(!ccirclemode)&&(!hspheremode)&&(!tunnelmode)){coordinatesb = evaluateCoordinates(args[4], args[5], args[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); }
+            if((!circlemode)&&(!ccirclemode)&&(!hspheremode)&&(!tunnelmode)){coordinatesb = player.getDynamicProperty("pos2") as Vector3/*evaluateCoordinates(args[4], args[5], args[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); */}
             let horadi: Vector3
             let hooffset: Vector3
-            let hointegrity = argsk[9]
-            let hothickness = argsk[10]
-            let hofirstblockname = argsk[11]
-            let hofirstblockstates = argsk[12]
-            let homode = argsk[13] as string
-            let holastblockname = argsk[14]
-            let holastblockstates = argsk[15]
-            let horeplacemode = argsk[16]??false
+            let hointegrity = argsk[4]
+            let hothickness = argsk[5]
+            let hofirstblockname = argsk[6]
+            let hofirstblockstates = argsk[7]
+            let homode = argsk[8] as string
+            let holastblockname = argsk[9]
+            let holastblockstates = argsk[10]
+            let horeplacemode = argsk[11]??false
             if((hovoidmode)){
-                horadi = evaluateCoordinates(argsk[4], argsk[5], argsk[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
-                hooffset = evaluateCoordinates(argsk[7], argsk[8], argsk[9], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
+                const oradia = Vector.subtract(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3); 
+                horadi = {x: Math.abs(oradia.x), y: Math.abs(oradia.y), z: Math.abs(oradia.z)}; 
+                hooffset = Vector.add({x: argsk[1], y: argsk[2], z: argsk[3]}, center); 
             }
             let oradi: Vector3
             let ooffset: Vector3
-            let ointegrity = argsk[9]
-            let ofirstblockname = argsm[10]
-            let ofirstblockstates = argsm[11]
-            let omode = argsm[12] as string
-            let olastblockname = argsm[13]
-            let olastblockstates = argsm[14]
-            let oreplacemode = argsm[15]??false
+            let ointegrity = argsk[4]
+            let ofirstblockname = argsm[5]
+            let ofirstblockstates = argsm[6]
+            let omode = argsm[7] as string
+            let olastblockname = argsm[8]
+            let olastblockstates = argsm[9]
+            let oreplacemode = argsm[10]??false
             if((ovoidmode)){
-                oradi = evaluateCoordinates(argsm[4], argsm[5], argsm[6], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
-                ooffset = evaluateCoordinates(argsm[7], argsm[8], argsm[9], roundVector3ToMiddleOfBlock(player.location), player.getRotation()); 
+                const oradia = Vector.subtract(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3); 
+                oradi = {x: Math.abs(oradia.x), y: Math.abs(oradia.y), z: Math.abs(oradia.z)}
+                ooffset = Vector.add({x: argsm[1], y: argsm[2], z: argsm[3]}, center); 
             }
-            let integrity = args[7]
-            let firstblockname = args[8]
-            let firstblockstates = args[9]
-            let mode = args[10] as string
-            let lastblockname = args[11]
-            let lastblockstates = args[12]
-            let replacemode = args[13]??false
-            let matchingblock=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
-            let cmatchingblock=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
-            let ccmatchingblock=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
-            let hsmatchingblock=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
-            let tmatchingblock=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
-            let omatchingblock=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
-            let homatchingblock=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
-            let sgmatchingblock=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]
+            let integrity = args[1]
+            let firstblockname = args[2]
+            let firstblockstates = args[3]
+            let mode = args[4] as string
+            let lastblockname = args[5]
+            let lastblockstates = args[6]
+            let replacemode = args[7]??false
+            let matchingblock: [string, { [id: string]: string | number | boolean }?]=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
+            let cmatchingblock: [string, { [id: string]: string | number | boolean }?]=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
+            let ccmatchingblock: [string, { [id: string]: string | number | boolean }?]=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
+            let hsmatchingblock: [string, { [id: string]: string | number | boolean }?]=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
+            let tmatchingblock: [string, { [id: string]: string | number | boolean }?]=(tlastblockname??"")==""?[undefined, undefined]:(tlastblockname=="keep")?["air"]:[tlastblockname, tlastblockstates]
+            let omatchingblock: [string, { [id: string]: string | number | boolean }?]=(olastblockname??"")==""?[undefined, undefined]:(olastblockname=="keep")?["air"]:[olastblockname, olastblockstates]
+            let homatchingblock: [string, { [id: string]: string | number | boolean }?]=(holastblockname??"")==""?[undefined, undefined]:(holastblockname=="keep")?["air"]:[holastblockname, holastblockstates]
+            let sgmatchingblock: [string, { [id: string]: string | number | boolean }?]=(sglastblockname??"")==""?[undefined, undefined]:(sglastblockname=="keep")?["air"]:[sglastblockname, sglastblockstates]
             const blocktypes = BlockTypes.getAll()/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
@@ -8355,7 +9316,7 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "replace": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, args[13]??true, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, args[7]??true, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "clear": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air"); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -8400,76 +9361,76 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "hollowovoid": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, hointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, hointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "ovoid": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, ointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, ointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hollowsphere": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHSG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHSG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "dome": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHDG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHDG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "sphere": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "semisphere": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circle": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, {matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1]}, undefined, creplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, {matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1]}, undefined, creplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circlex": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circley": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circlez": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "circlexy": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circleyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circlexz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "circlexyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "cylinder": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, {matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1]}, undefined, treplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, {matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1]}, undefined, treplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderx": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylindery": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderxy": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderxz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderxyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hourglass": 
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "cube": 
-                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 default: 
             }}
@@ -8478,122 +9439,227 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
         break; 
         case !!switchTest.match(/^brush$/): {
             eventData.cancel = true;
-            let args = evaluateParameters(switchTestB, ["presetText", "string"]).args
+            let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string"]).args
             if(player.getComponent("inventory").container.getItem(player.selectedSlotIndex).isStackable){
                 player.sendMessage("§cError: The held item is a stackable item.")
             }else{
-                switch(args[1].toLowerCase()){
-                    case "none":
+                switch(args[2].toLowerCase()){
+                    case "none":{
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "none")
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore())}
                         player.sendMessage(`Seccessfully unbound the brush from the currently held item.`)
+                    }
                     break;
-                    case "extinguish":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args
+                    case "extinguish":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "extinguish")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[2])))?10:args[2])
-                        player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[2])))?10:args[2]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bSelect Mode: ${player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getDynamicProperty("selectmode")}`, `§r§bBrush Type: §aExtinguish`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
+                    }
                     break;
-                    case "ex":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args
+                    case "ex":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "extinguish")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[2])))?10:args[2])
-                        player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[2])))?10:args[2]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aExtinguish`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
+                    }
                     break;
-                    case "remexp":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args
+                    case "remexp":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "remexp")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[2])))?10:args[2])
-                        player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[2])))?10:args[2]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aRemExp`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
+                    }
                     break;
-                    case "remexpne":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args
+                    case "remexpne":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "remexpne")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[2])))?10:args[2])
-                        player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[2])))?10:args[2]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aRemExpNE`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
+                    }
                     break;
-                    case "sphere":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number"]).args
+                    case "sphere":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "sphere")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to sphere with a radius of ${(isNaN(Number(args[4])))?3:args[4]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSphere`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to sphere with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
+                    }
                     break;
-                    case "cube":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number"]).args
+                    case "cube":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "cube")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to cube with a radius of ${(isNaN(Number(args[4])))?3:args[4]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aCube`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to cube with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
+                    }
                     break;
-                    case "square":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number"]).args
+                    case "square":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "square")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to square with a radius of ${(isNaN(Number(args[4])))?3:args[4]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSquare`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to square with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
+                    }
                     break;
-                    case "splatter":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args
+                    case "splatter":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splatter")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5])))?0:args[5])
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[4])))?3:args[4]} and a decay level of ${(isNaN(Number(args[5])))?0:args[5]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        //console.warn(JSON.stringify((args[4] as BlockPattern).blocks))
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatter`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: `, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                    }
                     break;
-                    case "splattercube":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args
+                    case "splattercube":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splattercube")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5])))?0:args[5])
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[4])))?3:args[4]} and a decay level of ${(isNaN(Number(args[5])))?0:args[5]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterCube`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                    }
                     break;
-                    case "splattersquare":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args
+                    case "splattersquare":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splattersquare")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5])))?0:args[5])
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[4])))?3:args[4]} and a decay level of ${(isNaN(Number(args[5])))?0:args[5]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSquare`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                    }
                     break;
-                    case "splattersurface":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args
+                    case "splattersurface":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splattersurface")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5])))?0:args[5])
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter surface with a radius of ${(isNaN(Number(args[4])))?3:args[4]} and a decay level of ${(isNaN(Number(args[5])))?0:args[5]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to splatter surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                    }
                     break;
-                    case "splattercubesurface":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args
+                    case "splattercubesurface":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splattercubesurface")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5])))?0:args[5])
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter cube surface with a radius of ${(isNaN(Number(args[4])))?3:args[4]} and a decay level of ${(isNaN(Number(args[5])))?0:args[5]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterCubeSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to splatter cube surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                    }
                     break;
-                    case "splattersquaresurface":
-                        args = evaluateParameters(switchTestB, ["presetText", "string", "-h", "blockPattern", "number", "number"]).args
+                    case "splattersquaresurface":{
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "f-h", "blockPattern", "number", "number"]).args
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splattersquaresurface")
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[3] as BlockPattern).blocks))
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[3] as BlockPattern).type)
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[5])))?0:args[5])
-                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[4])))?3:args[4])
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter square surface with a radius of ${(isNaN(Number(args[4])))?3:args[4]} and a decay level of ${(isNaN(Number(args[5])))?0:args[5]}.`)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("pattern", JSON.stringify((args[4] as BlockPattern).blocks))
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
+                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
+                        if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSquareSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
+                        player.sendMessage(`Seccessfully set brush type of the held item to splatter square surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                    }
                     break;
-                    default:
-                        player.sendMessage(`§cError: Unknown brush type "${args[1].toLowerCase()}".`)
+                    default:{
+                        player.sendMessage(`§cError: Unknown brush type "${args[2].toLowerCase()}".`)
+                    }
                     break;
                 }
             }
+        }
+        break; 
+        case !!switchTest.match(/^snapshot$/): {
+            eventData.cancel = true;
+            srun(()=>{let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);try{
+            if((argsa.args[1]??"").trim()==""){player.sendMessage(`${command.dp}snapshot backup <areaId: string>
+${command.dp}snapshot rollback <areaId: string> [backupIndex: number]
+${command.dp}snapshot deletebackup <areaId: string> [backupIndex: number]
+${command.dp}snapshot clearbackups <areaId: string>
+${command.dp}snapshot deletearea <areaId: string>
+${command.dp}snapshot clearareas
+${command.dp}snapshot listbackups <areaId: string>
+${command.dp}snapshot listareas
+${command.dp}snapshot list`); return}
+            //let args = argsa.args;
+            switch (String(argsa.args[1]).toLowerCase()) {
+                case "backup":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }]).args;
+                    if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
+                    AreaBackups.get("areabackup:"+args[2]).backup(Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})
+                    player.sendMessage(`Created a backup of the area ${JSON.stringify(args[2])} at ${new Date(Date.now()+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?"":"+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)%96)}.`)
+                }
+                break;
+                case "rollback":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }]).args;
+                    if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
+                    AreaBackups.get("areabackup:"+args[2]).rollback(AreaBackups.get("areabackup:"+args[2]).backups[args[3]??0])
+                    player.sendMessage(`Restored the area ${JSON.stringify(args[2])} from the backup at ${new Date(AreaBackups.get("areabackup:"+args[2]).backups[args[3]??0]+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?"":"+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)%96)}.`)
+                }
+                break;
+                case "deletebackup":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }]).args;
+                    if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
+                    const backuptime = tryget(()=>AreaBackups.get("areabackup:"+args[2]).backups[args[3]??0])
+                    if(!!!backuptime){player.sendMessage(`§cError: No backup found at index ${args[3]}.`); return}
+                    AreaBackups.get("areabackup:"+args[2]).clearBackup(backuptime)
+                    player.sendMessage(`Deleted the backup at ${new Date(backuptime+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?"":"+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)%96)} of area ${JSON.stringify(args[2])}.`)
+                }
+                break;
+                case "clearbackups":{
+                    if(!player.hasTag("canClearAllBackupsOfArea")){player.sendMessage(`§cPermissionsError: You do not have permission to use this sub-command.`); return}
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }]).args;
+                    if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
+                    AreaBackups.get("areabackup:"+args[2]).clearBackups()
+                    player.sendMessage(`Cleared all of the backups of area ${JSON.stringify(args[2])}.`)
+                }
+                break;
+                case "deletearea":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }]).args;
+                    if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
+                    AreaBackups.get("areabackup:"+args[2]).delete()
+                    player.sendMessage(`Deleted the backup area ${JSON.stringify(args[2])}.`)
+                }
+                break;
+                case "clearareas":{
+                    if(!player.hasTag("canClearAllBackupAreas")){player.sendMessage(`§cPermissionsError: You do not have permission to use this sub-command.`); return}
+                    AreaBackups.clear()
+                    player.sendMessage(`Cleared all of the backup areas.`)
+                }
+                break;
+                case "listbackups":{
+                    let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }]).args;
+                    if(!!!tryget(()=>AreaBackups.get("areabackup:"+args[2]).from)){player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`); return}
+                    player.sendMessage(AreaBackups.get("areabackup:"+args[2]).backups.length==0?`§cError: No backups have been saved for this backup area. Please back it up using §e\\snapshot backup ${JSON.stringify(args[2])}`:AreaBackups.get("areabackup:"+args[2]).backups.map((v, i)=>`${i}. ${new Date(v+(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?"":"+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)%96)}`).join("\n"))
+                }
+                break;
+                case "listareas":{
+                    player.sendMessage(AreaBackups.ids.length==0?`§cError: No backup areas have been created. Please create a backup area by first selecting the two corners of the area that you want to back up, and then type §e\\backuparea §cfollowed by the id you want to set for the backup area.`:AreaBackups.ids.map((v, i)=>`${JSON.stringify(v.slice(11))}: ${JSON.stringify(AreaBackups.get(v).toJSONNoId())}`).join("\n"))
+                }
+                break;
+                case "list":{
+                    player.sendMessage(AreaBackups.ids.map((v, i)=>`${JSON.stringify(v.slice(11))}: ${JSON.stringify(AreaBackups.get(v).toJSONNoId())}`).join("\n"))
+                }
+                break;
+            }}catch(e){perror(player, e)}})
         }
         break; 
         case !!switchTest.match(/^selectioninfo$/)||!!switchTest.match(/^selinfo$/)||!!switchTest.match(/^seli$/): {
@@ -8608,18 +9674,24 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
         break; 
         case !!switchTest.match(/^butcher$/): {
             eventData.cancel = true;
-            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtwipceh", "number"]).args
+            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtwipcehljocv", "number"]).args
             args[1]??=""
-            const types = (args[1]==""?["minecraft:item", "minecraft:xp_orb"]:[]) as string[]
+            const types = (args[1]==""?["minecraft:item", "minecraft:xp_orb", "minecraft:area_effect_cloud"]:[]) as string[]
             if((args[1] as string).includes("a")||(args[1] as string).includes("f")){types.push("minecraft:sheep", "minecraft:cow", "minecraft:pig", "minecraft:horse", "minecraft:sniffer", "minecraft:chicken")}
+            if((args[1] as string).includes("h")){types.push("minecraft:zombie", "minecraft:husk", "minecraft:drowned", "minecraft:spider", "minecraft:skeleton", "minecraft:slime", "minecraft:blaze", "minecraft:magma_cube", "minecraft:bogged", "minecraft:breeze", "minecraft:cave_spider", "minecraft:creeper", "minecraft:elder_guardian", "minecraft:guardian", "minecraft:enderman", "minecraft:endermite", "minecraft:evocation_illager", "minecraft:ghast", "minecraft:hoglin", "minecraft:phantom", "minecraft:piglin_brute", "minecraft:pillager", "minecraft:ravager", "minecraft:shulker", "minecraft:silverfish", "minecraft:stray", "minecraft:vex", "minecraft:vindicator", "minecraft:warden", "minecraft:witch", "minecraft:wither", "minecraft:ender_dragon", "minecraft:wither_skeleton", "minecraft:zombie_villager", "minecraft:zombie_villager_v2")}
             if((args[1] as string).includes("b")||(args[1] as string).includes("f")){types.push("minecraft:bat", "minecraft:bee")}
             if((args[1] as string).includes("i")){types.push("minecraft:item", "minecraft:xp_orb")}
+            if((args[1] as string).includes("o")){types.push("minecraft:painting")}
+            if((args[1] as string).includes("v")){types.push("minecraft:minecart", "minecraft:boat", "minecraft:chest_boat", "minecraft:chest_minecart", "minecraft:tnt_minecart", "minecraft:hopper_minecart")}
+            if((args[1] as string).includes("c")){types.push("minecraft:area_effect_cloud", "minecraft:tnt")}
+            if((args[1] as string).includes("j")){types.push("minecraft:arrow", "minecraft:snowball", "minecraft:ice_bomb", "minecraft:wind_charge_projectile", "minecraft:egg", "minecraft:dragon_fireball", "minecraft:fireball", "minecraft:small_fireball", "minecraft:xb_bottle", "minecraft:wither_skull", "minecraft:wither_skull_dangerous", "minecraft:thrown_trident", "minecraft:splash_potion", "minecraft:lingering_potion", "minecraft:shulker_bullet")}
             if((args[1] as string).includes("n")){types.push("minecraft:npc")}
             if((args[1] as string).includes("g")||(args[1] as string).includes("f")){types.push("minecraft:iron_golem", "minecraft:snow_golem", "minecraft:copper_golem", "minecraft:tuff_golem")}
             if((args[1] as string).includes("r")){types.push("minecraft:armor_stand")}
             if((args[1] as string).includes("w")){types.push("minecraft:dolphin", "minecraft:drowned", "minecraft:sea_turtle", "minecraft:salmon", "minecraft:tropical_fish", "minecraft:cod", "minecraft:guardian", "minecraft:elder_guardian")}
             if((args[1] as string).includes("p")){types.push("minecraft:player")}
             if((args[1] as string).includes("c")){types.push("andexsa:cloned_player")}
+            if((args[1] as string).includes("l")){types.push("minecraft:ender_dragon", "minecraft:wither", "minecraft:elder_guardian", "minecraft:warden")}
             srun(()=>{
                 let sc = 0n
                 player.dimension.getEntities({maxDistance: args[2]??10, location: player.location}).filter(v=>(types.includes(v.typeId)&&(v.nameTag==""||(args[1] as string).includes("t")))||(args[1] as string).includes("e")).forEach(v=>{v.kill(); sc++})
@@ -8629,18 +9701,24 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
         break; 
         case !!switchTest.match(/^butcherdespawn$/): {
             eventData.cancel = true;
-            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtwipceh", "number"]).args
+            const args = evaluateParameters(switchTestB, ["presetText", "-abfgnprtwipcehljocv", "number"]).args
             args[1]??=""
-            const types = (args[1]==""?["minecraft:item", "minecraft:experience_orb"]:[]) as string[]
+            const types = (args[1]==""?["minecraft:item", "minecraft:experience_orb", "minecraft:area_effect_cloud"]:[]) as string[]
             if((args[1] as string).includes("a")||(args[1] as string).includes("f")){types.push("minecraft:sheep", "minecraft:cow", "minecraft:pig", "minecraft:horse", "minecraft:sniffer", "minecraft:chicken")}
+            if((args[1] as string).includes("h")){types.push("minecraft:zombie", "minecraft:husk", "minecraft:drowned", "minecraft:spider", "minecraft:skeleton", "minecraft:slime", "minecraft:blaze", "minecraft:magma_cube", "minecraft:bogged", "minecraft:breeze", "minecraft:cave_spider", "minecraft:creeper", "minecraft:elder_guardian", "minecraft:guardian", "minecraft:enderman", "minecraft:endermite", "minecraft:evocation_illager", "minecraft:ghast", "minecraft:hoglin", "minecraft:phantom", "minecraft:piglin_brute", "minecraft:pillager", "minecraft:ravager", "minecraft:shulker", "minecraft:silverfish", "minecraft:stray", "minecraft:vex", "minecraft:vindicator", "minecraft:warden", "minecraft:witch", "minecraft:wither", "minecraft:ender_dragon", "minecraft:wither_skeleton", "minecraft:zombie_villager", "minecraft:zombie_villager_v2")}
             if((args[1] as string).includes("b")||(args[1] as string).includes("f")){types.push("minecraft:bat", "minecraft:bee")}
             if((args[1] as string).includes("i")){types.push("minecraft:item", "minecraft:xp_orb")}
+            if((args[1] as string).includes("o")){types.push("minecraft:painting")}
+            if((args[1] as string).includes("v")){types.push("minecraft:minecart", "minecraft:boat", "minecraft:chest_boat", "minecraft:chest_minecart", "minecraft:tnt_minecart", "minecraft:hopper_minecart")}
+            if((args[1] as string).includes("c")){types.push("minecraft:area_effect_cloud", "minecraft:tnt")}
+            if((args[1] as string).includes("j")){types.push("minecraft:arrow", "minecraft:snowball", "minecraft:ice_bomb", "minecraft:wind_charge_projectile", "minecraft:egg", "minecraft:dragon_fireball", "minecraft:fireball", "minecraft:small_fireball", "minecraft:xb_bottle", "minecraft:wither_skull", "minecraft:wither_skull_dangerous", "minecraft:thrown_trident", "minecraft:splash_potion", "minecraft:lingering_potion", "minecraft:shulker_bullet")}
             if((args[1] as string).includes("n")){types.push("minecraft:npc")}
             if((args[1] as string).includes("g")||(args[1] as string).includes("f")){types.push("minecraft:iron_golem", "minecraft:snow_golem", "minecraft:copper_golem", "minecraft:tuff_golem")}
             if((args[1] as string).includes("r")){types.push("minecraft:armor_stand")}
             if((args[1] as string).includes("w")){types.push("minecraft:dolphin", "minecraft:drowned", "minecraft:sea_turtle", "minecraft:salmon", "minecraft:tropical_fish", "minecraft:cod", "minecraft:guardian", "minecraft:elder_guardian")}
             if((args[1] as string).includes("p")){types.push("minecraft:player")}
             if((args[1] as string).includes("c")){types.push("andexsa:cloned_player")}
+            if((args[1] as string).includes("l")){types.push("minecraft:ender_dragon", "minecraft:wither", "minecraft:elder_guardian", "minecraft:warden")}
             srun(()=>{
                 let sc = 0n
                 player.dimension.getEntities({maxDistance: args[2]??10, location: player.location}).filter(v=>(types.includes(v.typeId)&&(v.nameTag==""||(args[1] as string).includes("t")))||(args[1] as string).includes("e")).forEach(v=>{v.typeId=="minecraft:player"?despawnEntities([v]):v.remove(); sc++})
@@ -8650,28 +9728,33 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
         break; 
         case !!switchTest.match(/^replacenear$/): {
             eventData.cancel = true;
-            const args = evaluateParameters(switchTestB, ["presetText", "number", "string", "blockStates", "string", "blockStates"]).args
-            const firstblockname = args[2]
-            const firstblockstates = args[3]
-            const lastblockname = args[4]
-            const lastblockstates = args[5]
-            const matchingblock=(lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]
-            const coordinatesa = mcMath.Vector3Utils.add(player.location, {x: -args[1], y: -args[1], z: -args[1]})
-            const coordinatesb = mcMath.Vector3Utils.add(player.location, {x: args[1], y: args[1], z: args[1]})
+            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "number", "string", "blockStates", "string", "blockStates"]).args
+            const firstblockname = args[3]
+            const firstblockstates = args[4]
+            const lastblockname = args[5]
+            const lastblockstates = args[6]
+            const matchingblock: [string, { [id: string]: string | number | boolean }?]=(lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
+            const coordinatesa = mcMath.Vector3Utils.add(player.location, {x: -args[2], y: -args[2], z: -args[2]})
+            const coordinatesb = mcMath.Vector3Utils.add(player.location, {x: args[2], y: args[2], z: args[2]})
             const blocktypes = BlockTypes.getAll()
-            system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, matchingblock[0]=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:matchingblock[0], matchingblock[1], {matchingBlock: firstblockname, matchingBlockStates: firstblockstates, minMSBetweenYields: 2500}, undefined, args[13]??true, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, matchingblock[0]=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:matchingblock[0], matchingblock[1], {matchingBlock: firstblockname, matchingBlockStates: firstblockstates, minMSBetweenYields: 2500}, undefined, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
         }
         break; 
         case !!switchTest.match(/^jumpto$/)||!!switchTest.match(/^j$/): {
             eventData.cancel = true;
             let blockHit = player.getBlockFromViewDirection({includeLiquidBlocks: false, includePassableBlocks: false})
-            let dir = blockHit.face=="Down"?mcMath.VECTOR3_DOWN:blockHit.face=="Up"?mcMath.VECTOR3_UP:blockHit.face=="North"?mcMath.VECTOR3_NORTH:blockHit.face=="South"?mcMath.VECTOR3_SOUTH:blockHit.face=="East"?mcMath.VECTOR3_EAST:mcMath.VECTOR3_WEST
-            srun(()=>player.teleport(mcMath.Vector3Utils.add(blockHit.block.location, dir)))
+            let dir = blockHit.face=="Down"?mcMath.VECTOR3_DOWN:blockHit.face=="Up"?mcMath.VECTOR3_UP:blockHit.face=="North"?mcMath.VECTOR3_SOUTH:blockHit.face=="South"?mcMath.VECTOR3_NORTH:blockHit.face=="East"?mcMath.VECTOR3_EAST:mcMath.VECTOR3_WEST
+            srun(()=>player.teleport(roundVector3ToMiddleOfBlockFloorY(mcMath.Vector3Utils.add(blockHit.block.location, dir))))
         }
         break; 
         case !!switchTest.match(/^align$/): {
             eventData.cancel = true;
             srun(()=>player.teleport(roundVector3ToMiddleOfBlockFloorY(player.location)))
+        }
+        break; 
+        case !!switchTest.match(/^aligncenter$/): {
+            eventData.cancel = true;
+            srun(()=>player.teleport(roundVector3ToMiddleOfBlock(player.location)))
         }
         break; 
         case !!switchTest.match(/^getworldspawnpoint$/)||!!switchTest.match(/^getworldspawn$/)||!!switchTest.match(/^getwsp$/)||!!switchTest.match(/^getws$/)||!!switchTest.match(/^gwsp$/)||!!switchTest.match(/^gws$/): {
@@ -8686,10 +9769,27 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
             player.sendMessage(listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))==-1?"§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value.":`Data value for enchantment transfer smithing template is ${listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))}.`)
         }
         break; 
+        case !!switchTest.match(/^gettransformst$/): {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args as [string, string, number]
+            !args[1].includes(":")?args[1]="minecraft:"+args[1]:undefined
+            player.runCommandAsync(`/give @s andexdb:enchantment_transfer_smithing_template 1 ${listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))}`)
+            player.sendMessage(listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))==-1?"§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value.":`You have been given an enchantment transfer smithing template with the data value ${listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))}.`)
+        }
+        break; 
         case !!switchTest.match(/^transformresultatdvindex$/): {
             eventData.cancel = true;
             const args = evaluateParameters(switchTestB, ["presetText", "number"]).args as [string, number]
             player.sendMessage(`Enchantment transfer smithing template result at data value ${args[1]} is ${JSON.stringify(listoftransformrecipes[args[1]])}.`)
+        }
+        break; 
+        case !!switchTest.match(/^removeotheritemenchantments$/)||!!switchTest.match(/^remotheritemenchants$/)||!!switchTest.match(/^roie$/): {
+            eventData.cancel = true;
+            srun(()=>{try{let item = getPlayerHeldItemSlot(player).getItem(); 
+            const args = evaluateParameters(switchTestB, ["presetText", "json"]).args
+            EnchantmentTypes.getAll().map(v=>v.id).filter(v=>!args[1].includes(v)).forEach(v=>item.getComponent("enchantable").removeEnchantment(v))
+            getPlayerHeldItemSlot(player).setItem(item)
+            player.sendMessage(`Successfully removed all other enchantment types from the item.`)}catch(e){player.sendMessage("§c"+e+" "+e.stack)}})
         }
         break; 
         case !!switchTest.match(/^ignite$/): {
@@ -8775,6 +9875,142 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
             try{system.run(()=>{let a = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "water"}); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "lava"}); let c = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_water"}); let d = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_lava"}); player.sendMessage(`${a+b+c+d==0?"§c":""}${a+b+c+d} liquids removed in radius of ${radius}`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
+        case !!switchTest.match(/^execute$/): {
+            eventData.cancel = true;
+            srun(()=>{
+                let wl = new WorldPosition(tryget(()=>player.modifiedlocation??player.location)??{x: 0, y: 0, z: 0}, tryget(()=>player.rotation??player.getRotation())??{x: 0, y: 0}, tryget(()=>player.modifieddimension??player.dimension)??overworld, player.player, player.block)
+                function evalExecuteCommand(rest: string){
+                    const argsa = evaluateParameters(rest, ["presetText"])
+                    const mode = argsa.args[0]
+                    const resta = argsa.extra
+                    switch((mode??"").toLowerCase()){
+                        case "as":{
+                            const args = evaluateParameters(resta, ["targetSelector"])
+                            wl.as(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player)[0])
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "at":{
+                            const args = evaluateParameters(resta, ["targetSelector"])
+                            wl.at(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player)[0])
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "asblock":{
+                            const args = evaluateParameters(resta, ["Vector", "Vector", "Vector"])
+                            wl.asblock(wl.dimension.getBlock(evaluateCoordinates(args.args[0], args.args[1], args.args[2], wl.location, wl.rotation)))
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "asblockin":{
+                            const args = evaluateParameters(resta, ["dimension", "Vector", "Vector", "Vector"])
+                            wl.asblock(args.args[0].getBlock(evaluateCoordinates(args.args[1], args.args[2], args.args[3], wl.location, wl.rotation)))
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "facingblock":{
+                            const args = evaluateParameters(resta, ["Vector", "Vector", "Vector"])
+                            wl.facing(evaluateCoordinates(args.args[0], args.args[1], args.args[2], wl.location, wl.rotation))
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "facing":{
+                            const args = evaluateParameters(resta, ["targetSelector"])
+                            wl.facing(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player)[0].location)
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "facingentity":{
+                            const args = evaluateParameters(resta, ["targetSelector"])
+                            wl.facing(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player)[0].location)
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "positioned":{
+                            const args = evaluateParameters(resta, ["Vector", "Vector", "Vector"])
+                            wl.positioned(vTStr(evaluateCoordinates(args.args[0], args.args[1], args.args[2], wl.location, wl.rotation)))
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "offset":{
+                            const args = evaluateParameters(resta, ["number", "number", "number"])
+                            wl.offset({x: args.args[0], y: args.args[1], z: args.args[2]})
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "rotated":{
+                            const args = evaluateParameters(resta, ["Vector", "Vector"])
+                            wl.rotated(args.args[1], args.args[0])
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "resetrotation":{
+                            wl.resetRotation()
+                            evalExecuteCommand(resta)
+                            return
+                        }
+                        break;
+                        case "matchlocation":{
+                            const args = evaluateParameters(resta, ["targetSelector"])
+                            wl.matchlocation(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player)[0])
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "matchrotation":{
+                            const args = evaluateParameters(resta, ["targetSelector"])
+                            wl.matchrotation(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player)[0])
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "in":{
+                            const args = evaluateParameters(resta, ["presetText"])
+                            wl.in(args.args[0])
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "align":{
+                            const args = evaluateParameters(resta, ["presetText"])
+                            wl.align(args.args[0])
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "anchored":{
+                            const args = evaluateParameters(resta, ["presetText"])
+                            wl.anchored(args.args[0])
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "run":{
+                            chatCommands({player: new executeCommandPlayerW(wl), newMessage: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), returnBeforeChatSend: false, event: {sender: wl.entity as Player, message: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), cancel: false}, eventData: {sender: wl.entity as Player, message: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), cancel: false}, fromExecute: true})
+                            return
+                        }
+                        break;
+                        default:
+                            player.sendMessage(`§cSyntax error: Unexpected "${mode}": at "${switchTestB.slice(-10-rest.length, -rest.length)}>>${rest}<<"`)
+                            return
+                        break;
+                    }
+                }
+                const argsa = evaluateParameters(switchTestB, ["presetText"])
+                evalExecuteCommand(argsa.extra)
+            })
+        }
+        break; 
         default: 
         //if(){}
     }}else{if(commanda?.type=="custom"){eventData.cancel = true; if((commanda as command).customCommandType=="commands"){system.run(()=>(commanda as command).run(newMessage.slice((commanda as command).customCommandPrefix.length), player, player, event))}else{(commanda as command).run(newMessage.slice((commanda as command).customCommandPrefix.length), player, player, event)}}else{}}}
@@ -8789,10 +10025,17 @@ export function chatSend(params: {returnBeforeChatSend: boolean|undefined, playe
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendComplete")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendBeforeEventDebugErrors")){currentplayer.sendMessage((e + " " + e.stack))}})}
     if(returnBeforeChatSend)return
     let messageFormatting = ""
+    let messageGradientMode = undefined
+    let nameFormatting = ""
+    let nameGradientMode = undefined
+    let separatorFormatting = ""
+    let separatorGradientMode = undefined
+    let showDimension = false
+//    let showHealth = false
+    if (player.hasTag('messageFormatting:r')) { messageFormatting+="§r"};
     if (player.hasTag('messageFormatting:o')) { messageFormatting+="§o"};
     if (player.hasTag('messageFormatting:l')) { messageFormatting+="§l"};
     if (player.hasTag('messageFormatting:k')) { messageFormatting+="§k"};
-    if (player.hasTag('messageFormatting:r')) { messageFormatting+="§r"};
     if (player.hasTag('messageColor:0')) { messageFormatting+="§0"} else {
     if (player.hasTag('messageColor:1')) { messageFormatting+="§1"} else {
     if (player.hasTag('messageColor:2')) { messageFormatting+="§2"} else {
@@ -8820,27 +10063,156 @@ export function chatSend(params: {returnBeforeChatSend: boolean|undefined, playe
     if (player.hasTag('messageColor:s')) { messageFormatting+="§s"} else {
     if (player.hasTag('messageColor:t')) { messageFormatting+="§t"} else {
     if (player.hasTag('messageColor:u')) { messageFormatting+="§u"};}}}}}}}}}}}}}}}}}}}}}}}}}}
+    player.getTags().filter(v=>v.startsWith("messageColor:")).forEach(v=>{
+        if(patternColors.includes(v.slice(13).toLowerCase())){
+            messageFormatting+=patternColorsMap[v.slice(13).toLowerCase()]
+        }else if(Object.keys(patternFunctionList).includes(v.slice(13).toLowerCase())){
+            messageGradientMode = v.slice(13).toLowerCase()
+        }else if(['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','m','n','p','q','s','t','u'].includes(v.slice(13).toLowerCase())){
+            undefined
+        }
+    })
+    player.getTags().filter(v=>v.startsWith("messageFormatting:")).forEach(v=>{
+        if(['r','o','l','k'].includes(v.slice(18).toLowerCase())){
+            undefined
+        }else{
+            messageFormatting+=v.slice(18).toLowerCase()
+        }
+    })
+    if (player.hasTag('nameFormatting:r')) { nameFormatting+="§r"};
+    if (player.hasTag('nameFormatting:o')) { nameFormatting+="§o"};
+    if (player.hasTag('nameFormatting:l')) { nameFormatting+="§l"};
+    if (player.hasTag('nameFormatting:k')) { nameFormatting+="§k"};
+    if (player.hasTag('nameColor:0')) { nameFormatting+="§0"} else {
+    if (player.hasTag('nameColor:1')) { nameFormatting+="§1"} else {
+    if (player.hasTag('nameColor:2')) { nameFormatting+="§2"} else {
+    if (player.hasTag('nameColor:3')) { nameFormatting+="§3"} else {
+    if (player.hasTag('nameColor:4')) { nameFormatting+="§4"} else {
+    if (player.hasTag('nameColor:5')) { nameFormatting+="§5"} else {
+    if (player.hasTag('nameColor:6')) { nameFormatting+="§6"} else {
+    if (player.hasTag('nameColor:7')) { nameFormatting+="§7"} else {
+    if (player.hasTag('nameColor:8')) { nameFormatting+="§8"} else {
+    if (player.hasTag('nameColor:9')) { nameFormatting+="§9"} else {
+    if (player.hasTag('nameColor:a')) { nameFormatting+="§a"} else {
+    if (player.hasTag('nameColor:b')) { nameFormatting+="§b"} else {
+    if (player.hasTag('nameColor:c')) { nameFormatting+="§c"} else {
+    if (player.hasTag('nameColor:d')) { nameFormatting+="§d"} else {
+    if (player.hasTag('nameColor:e')) { nameFormatting+="§e"} else {
+    if (player.hasTag('nameColor:f')) { nameFormatting+="§f"} else {
+    if (player.hasTag('nameColor:g')) { nameFormatting+="§g"} else {
+    if (player.hasTag('nameColor:h')) { nameFormatting+="§h"} else {
+    if (player.hasTag('nameColor:i')) { nameFormatting+="§i"} else {
+    if (player.hasTag('nameColor:j')) { nameFormatting+="§j"} else {
+    if (player.hasTag('nameColor:m')) { nameFormatting+="§m"} else {
+    if (player.hasTag('nameColor:n')) { nameFormatting+="§n"} else {
+    if (player.hasTag('nameColor:p')) { nameFormatting+="§p"} else {
+    if (player.hasTag('nameColor:q')) { nameFormatting+="§q"} else {
+    if (player.hasTag('nameColor:s')) { nameFormatting+="§s"} else {
+    if (player.hasTag('nameColor:t')) { nameFormatting+="§t"} else {
+    if (player.hasTag('nameColor:u')) { nameFormatting+="§u"};}}}}}}}}}}}}}}}}}}}}}}}}}}
+    player.getTags().filter(v=>v.startsWith("nameColor:")).forEach(v=>{
+        if(patternColors.includes(v.slice(10).toLowerCase())){
+            nameFormatting+=patternColorsMap[v.slice(10).toLowerCase()]
+        }else if(Object.keys(patternFunctionList).includes(v.slice(10).toLowerCase())){
+            nameGradientMode = v.slice(10).toLowerCase()
+        }else if(['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','m','n','p','q','s','t','u'].includes(v.slice(13).toLowerCase())){
+            undefined
+        }
+    })
+    player.getTags().filter(v=>v.startsWith("nameFormatting:")).forEach(v=>{
+        if(['r','o','l','k'].includes(v.slice(15).toLowerCase())){
+            undefined
+        }else{
+            nameFormatting+=v.slice(15).toLowerCase()
+        }
+    })
+    if (player.hasTag('separatorFormatting:r')) { separatorFormatting+="§r"};
+    if (player.hasTag('separatorFormatting:o')) { separatorFormatting+="§o"};
+    if (player.hasTag('separatorFormatting:l')) { separatorFormatting+="§l"};
+    if (player.hasTag('separatorFormatting:k')) { separatorFormatting+="§k"};
+    if (player.hasTag('separatorColor:0')) { separatorFormatting+="§0"} else {
+    if (player.hasTag('separatorColor:1')) { separatorFormatting+="§1"} else {
+    if (player.hasTag('separatorColor:2')) { separatorFormatting+="§2"} else {
+    if (player.hasTag('separatorColor:3')) { separatorFormatting+="§3"} else {
+    if (player.hasTag('separatorColor:4')) { separatorFormatting+="§4"} else {
+    if (player.hasTag('separatorColor:5')) { separatorFormatting+="§5"} else {
+    if (player.hasTag('separatorColor:6')) { separatorFormatting+="§6"} else {
+    if (player.hasTag('separatorColor:7')) { separatorFormatting+="§7"} else {
+    if (player.hasTag('separatorColor:8')) { separatorFormatting+="§8"} else {
+    if (player.hasTag('separatorColor:9')) { separatorFormatting+="§9"} else {
+    if (player.hasTag('separatorColor:a')) { separatorFormatting+="§a"} else {
+    if (player.hasTag('separatorColor:b')) { separatorFormatting+="§b"} else {
+    if (player.hasTag('separatorColor:c')) { separatorFormatting+="§c"} else {
+    if (player.hasTag('separatorColor:d')) { separatorFormatting+="§d"} else {
+    if (player.hasTag('separatorColor:e')) { separatorFormatting+="§e"} else {
+    if (player.hasTag('separatorColor:f')) { separatorFormatting+="§f"} else {
+    if (player.hasTag('separatorColor:g')) { separatorFormatting+="§g"} else {
+    if (player.hasTag('separatorColor:h')) { separatorFormatting+="§h"} else {
+    if (player.hasTag('separatorColor:i')) { separatorFormatting+="§i"} else {
+    if (player.hasTag('separatorColor:j')) { separatorFormatting+="§j"} else {
+    if (player.hasTag('separatorColor:m')) { separatorFormatting+="§m"} else {
+    if (player.hasTag('separatorColor:n')) { separatorFormatting+="§n"} else {
+    if (player.hasTag('separatorColor:p')) { separatorFormatting+="§p"} else {
+    if (player.hasTag('separatorColor:q')) { separatorFormatting+="§q"} else {
+    if (player.hasTag('separatorColor:s')) { separatorFormatting+="§s"} else {
+    if (player.hasTag('separatorColor:t')) { separatorFormatting+="§t"} else {
+    if (player.hasTag('separatorColor:u')) { separatorFormatting+="§u"};}}}}}}}}}}}}}}}}}}}}}}}}}}
+    player.getTags().filter(v=>v.startsWith("separatorColor:")).forEach(v=>{
+        if(patternColors.includes(v.slice(15).toLowerCase())){
+            separatorFormatting+=patternColorsMap[v.slice(15).toLowerCase()]
+        }else if(Object.keys(patternFunctionList).includes(v.slice(15).toLowerCase())){
+            separatorGradientMode = v.slice(15).toLowerCase()
+        }else if(['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','m','n','p','q','s','t','u'].includes(v.slice(13).toLowerCase())){
+            undefined
+        }
+    })
+    player.getTags().filter(v=>v.startsWith("separatorFormatting:")).forEach(v=>{
+        if(['r','o','l','k'].includes(v.slice(20).toLowerCase())){
+            undefined
+        }else{
+            separatorFormatting+=v.slice(20).toLowerCase()
+        }
+    })
+    if (player.hasTag('config:dimension')) { showDimension=true};
+    if (player.hasTag('config:chatdimension')) { showDimension=true};
+    if(messageFormatting==""){messageFormatting=String(player.getDynamicProperty("andexdbPersonalSettings:defaultMessageFormatting") ?? world.getDynamicProperty("andexdbSettings:defaultMessageFormatting") ?? "")}
+    if(nameFormatting==""){nameFormatting=String(player.getDynamicProperty("andexdbPersonalSettings:defaultNameFormatting") ?? world.getDynamicProperty("andexdbSettings:defaultNameFormatting") ?? "")}
+    if(separatorFormatting==""){separatorFormatting=String(player.getDynamicProperty("andexdbPersonalSettings:defaultSeparatorFormatting") ?? world.getDynamicProperty("andexdbSettings:defaultSeparatorFormatting") ?? "")}
     let rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
         .map(t=>String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "[")+
         t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + 
         String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "]"))
         .join(String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "));
-    let messageTimeStampEnabled = (player.hasTag("chatDisplayTimeStamp")||((world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false)&&!player.hasTag("hideChatDisplayTimeStamp")))
     let name = !!player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))?
         String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + 
-        player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
-        .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length) + 
-        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + 
-        String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "):
+        (!!nameGradientMode?
+            evaluateChatColorType(
+                player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+                .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length), nameGradientMode
+            ):
+            player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+            .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length)
+        ) + 
+        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"):
         player.hasTag("chatHideNameTag")?"":
         player.hasTag("chatUseNameTag")?String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + 
-        player.nameTag + 
-        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + 
-        String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "):
+        (!!nameGradientMode?evaluateChatColorType(player.nameTag, nameGradientMode):player.nameTag) + 
+        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"):
         String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + 
-        player.name + 
-        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + 
-        String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " ")
+        (!!nameGradientMode?evaluateChatColorType(player.name, nameGradientMode):player.name) + 
+        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>")
+    let nameb = !!player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))?
+        (!!nameGradientMode?
+            evaluateChatColorType(
+                player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+                .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length), nameGradientMode
+            ):
+            player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+            .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length)
+        ):
+        player.hasTag("chatHideNameTag")?"":
+        player.hasTag("chatUseNameTag")?(!!nameGradientMode?evaluateChatColorType(player.nameTag, nameGradientMode):player.nameTag):
+        (!!nameGradientMode?evaluateChatColorType(player.name, nameGradientMode):player.name)
     name.length!=0?name+=String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "):undefined/*
     let rankMode = 0
     for (let index in player.getTags()) {
@@ -8849,18 +10221,74 @@ export function chatSend(params: {returnBeforeChatSend: boolean|undefined, playe
             if (player.getTags()[Number(index)].startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")) && rankMode !== 1) { name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + player.getTags()[Number(index)].slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length) + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "); rankMode = 2 } else {
             if (player.getTags()[Number(index)] == ("chatUseNameTag") && rankMode !== 1 && rankMode !== 2) { name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<") + player.nameTag + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? ">") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "); rankMode = 3 } } }
     }*/
-    try{eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendBeforeModifiedMessageSend")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendBeforeEventDebugErrors")){currentplayer.sendMessage((e + " " + e.stack))}})}
+    try{eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendBeforeModifiedMessageEval")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendBeforeEventDebugErrors")){currentplayer.sendMessage((e + " " + e.stack))}})}
     eventData.cancel = true;
+    //╙
+    if (player.hasTag("doNotSendChatMessages")) { return; } else {
+    world.getAllPlayers().forEach(p=>{
+        let messageTimeStampEnabled = (player.hasTag("chatDisplayTimeStamp")||p.hasTag("chatDisplayTimeStamps")||((world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false)&&!player.hasTag("hideChatDisplayTimeStamp")&&!p.hasTag("hideChatDisplayTimeStamps")))
+        let timestampenabled = messageTimeStampEnabled
+        let timestamp = messageTimeStampEnabled?formatTime(new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000))):""
+        let dimension = dimensionTypeDisplayFormattingE[player.dimension.id]
+        let namec = name
+        let message = (world.getDynamicProperty("autoEscapeChatMessages") == true)?newMessage.escapeCharacters(true):newMessage
+        if(!!messageGradientMode){
+            message=evaluateChatColorType(message, messageGradientMode)
+        }
+        let messageOutput = ""
+        if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="custom_simple"){
+            if(rank==""){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
+            messageOutput = (showDimension?"["+dimension+"]"+String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "):"") + (timestampenabled?"["+timestamp+"]"+String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "):"") + rank + nameFormatting + name + messageFormatting + message
+        }else if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="custom_advanced"){rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
+            .map((t, index, array)=>{let rank = t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length); let tags = player.getTags(); return eval(`\`${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]")}\``)/*Function("rank, tags", `return ${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]")}`)(rank, player.getTags())*/}).join(String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
+            if(rank==""){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
+            const ranks = rank
+            let name = nameb
+            messageOutput=eval(`\`${String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ?? "§r§f${showDimension?`[${dimension}] `:\"\"}${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r§f${(ranks!=\"\")?\" \":\"\"}<${name}§r§f> ${message}")}\``)
+        }else if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="style_1"){
+            rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
+            .map(t=>"[§r§f"+t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length)+"§r§f]").join(" ");
+            if(rank==""){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
+            messageOutput=`§r§f${showDimension?`[${dimension}] `:""}${timestamp!=""?`[${timestamp}] `:""}${rank!=""?`${rank}§r§f `:""}${name!=""?`<${nameFormatting}${nameb}§r§f> `:""}${messageFormatting}${message}`
+        }else if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="style_2"){
+            rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
+            .map(t=>"[§r§f"+t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length)+"§r§8]").join(" ");
+            if(rank==""){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
+            messageOutput=`§r§8${showDimension?`[${dimension}] `:""}${timestamp!=""?`[${timestamp}] `:""}${rank!=""?`${rank}§r `:""}${name!=""?`§r§f${nameFormatting}${nameb}§r§8 ${separatorFormatting}`:`§r§8${separatorFormatting}`}»§r §f${messageFormatting}${message}`
+        }else if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="style_3"){
+            rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
+            .map(t=>"[§r§f"+t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length)+"§r§8]").join(" ");
+            if(rank==""){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
+            messageOutput=`§r§8${showDimension?`[${dimension}] `:""}${timestamp!=""?`[${timestamp}] `:""}${rank!=""?`${rank}§r§f `:""}§r§f${name!=""?`${nameFormatting}${nameb}§r§f ${separatorFormatting}`:`${separatorFormatting}`}>>§r §f${messageFormatting}${message}`
+        }else if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="style_4"){
+            rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
+            .map(t=>"[§r§f"+t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length)+"§r§7]").join(" ");
+            if(rank==""){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
+            messageOutput=`§r§7${showDimension?`[${dimension}] `:""}${timestamp!=""?`[${timestamp}]`:""}${rank!=""?` ${rank}`:""}§r§7${name!=""?` ${nameFormatting}${nameb}§r§7`:""}§l ${separatorFormatting}>§r§l §r§f${messageFormatting}${message}`
+        }else if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="style_5"){
+            rank = "[§r§f"+player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
+            .map(t=>t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length)).join("§r§f,")+"§r§f]";
+            if(rank=="[§r§f§r§f]"){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
+            messageOutput=`§r§f${showDimension?`[${dimension}] `:""}s${timestamp!=""?`[${timestamp}] `:""}${rank!=""?`${rank}`:""}§r§7${name!=""?` ${nameFormatting}${nameb}§r§7`:""}${separatorFormatting}:§r §f${messageFormatting}${message}`
+        }
+        try{eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendBeforeModifiedMessageSend")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendBeforeEventDebugErrors")){currentplayer.sendMessage((e + " " + e.stack))}})}
+        if(world.getDynamicProperty("allowCustomChatMessagesMuting") != true){
+            p.sendMessage(messageOutput); 
+        }else{
+            p.runCommandAsync(`/tellraw @s ${JSON.stringify({"rawtext":[{"text":messageOutput}]})}`); 
+        }
+    })
+    }/*
     if(messageTimeStampEnabled){
         if (player.hasTag("doNotSendChatMessages")) { return; } else {
             if(world.getDynamicProperty("allowCustomChatMessagesMuting") != true){
-                if(world.getDynamicProperty("allowCustomChatMessagesEscapeCharacters") != true){
+                if(world.getDynamicProperty("autoEscapeChatMessages") != true){
                     world.getAllPlayers().forEach(p=>p.sendMessage("["+new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString()+"]" + rank + name + messageFormatting + newMessage)); 
                 }else{
                     world.getAllPlayers().forEach(p=>world.sendMessage({rawtext: [{text: String("["+new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString()+"]" + rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})); 
                 }
             }else{
-                if(world.getDynamicProperty("allowCustomChatMessagesEscapeCharacters") != true){
+                if(world.getDynamicProperty("autoEscapeChatMessages") != true){
                     world.getAllPlayers().forEach(p=>p.runCommandAsync(`/tellraw @s ${JSON.stringify({"rawtext":[{"text":String("["+new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString()+"]" + rank + name + messageFormatting + newMessage)}]})}`)); 
                 }else{
                     world.getAllPlayers().forEach(p=>p.runCommandAsync(`/tellraw @s ${JSON.stringify({"rawtext":[{"text":String("["+new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString()+"]" + rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})}`)); 
@@ -8870,20 +10298,20 @@ export function chatSend(params: {returnBeforeChatSend: boolean|undefined, playe
     }else{
         if (player.hasTag("doNotSendChatMessages")) { return; } else {
             if(world.getDynamicProperty("allowCustomChatMessagesMuting") != true){
-                if(world.getDynamicProperty("allowCustomChatMessagesEscapeCharacters") != true){
+                if(world.getDynamicProperty("autoEscapeChatMessages") != true){
                     world.sendMessage(rank + name + messageFormatting + newMessage); 
                 }else{
                     world.sendMessage({rawtext: [{text: String(rank + name + messageFormatting + newMessage)}]}); 
                 }
             }else{
-                if(world.getDynamicProperty("allowCustomChatMessagesEscapeCharacters") != true){
+                if(world.getDynamicProperty("autoEscapeChatMessages") != true){
                     world.getDimension("overworld").runCommandAsync(`/tellraw @a ${JSON.stringify({"rawtext":[{"text":String(rank + name + messageFormatting + newMessage)}]})}`); 
                 }else{
                     world.getDimension("overworld").runCommandAsync(`/tellraw @a ${JSON.stringify({"rawtext":[{"text":String(rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})}`); 
                 }
             }
         }
-    }
+    }*/
 }
 export function evaluateSelectors(selector: string, options?: {source?: Block|Entity|Player, rotation?: Vector2, viewDirection?: Vector3, location?: Vector3|DimensionLocation, dimension?: Dimension, indirect?: number|boolean, asDimension?: number|boolean, asWorld?: number|boolean, inAllDimensions?: number|boolean, enableJ?: boolean, enableI?: boolean}){
     if(!!selector.trimStart().replaceAll("\\", "").match(/^(@[aeprs]\s*\[|@[aeprs]\s+)/)){
@@ -8945,13 +10373,427 @@ function JSONify(obj: object){
   return o;
 }
 
-export function evaluateParameters(commandstring: string, parameters: ({type: "presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates"|"blockPattern", maxLength?: number}|{type: "Vectors", vectorCount?: number, maxLength?: number}|string|"string"|"presetText")[]) {
+type ZeroToNineCharacters = "0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"
+type LowercaseLetter = "a"|"b"|"c"|"d"|"e"|"f"|"g"|"h"|"i"|"j"|"k"|"l"|"m"|"n"|"o"|"p"|"q"|"r"|"s"|"t"|"u"|"v"|"w"|"x"|"y"|"z"
+type UppercaseLetter = "A"|"B"|"C"|"D"|"E"|"F"|"G"|"H"|"I"|"J"|"K"|"L"|"M"|"N"|"O"|"P"|"Q"|"R"|"S"|"T"|"U"|"V"|"W"|"X"|"Y"|"Z"
+export type flagsMatcherTextA = ZeroToNineCharacters|LowercaseLetter|UppercaseLetter|"!"|"@"|"#"|"$"|"%"|"^"|"&"|"*"|"<"|">"|","|"."|"~";
+const teststssts = true;
+export type flagsMatcherTextB<T extends string> = T extends flagsMatcherTextA ? T : T extends `${flagsMatcherTextA}${infer R}` ? flagsMatcherTextB<R> : never;
+export type flagsMatcherTextC<T extends string> = T extends flagsMatcherTextA ? string : T extends `${flagsMatcherTextA}${infer R}` ? flagsMatcherTextC<R> : never;
+//function a<T extends string>(t: flagsMatcherTextC<T>, v: T): asserts t is flagsMatcherTextC<typeof v> {return void undefined};
+//a("a", "$123!")
+export type evaluateParametersTypeMap = {
+    presetText: string
+    number: number
+    boolean: boolean|undefined
+    neboolean: boolean|undefined
+    string: string|undefined
+    "non-booleanString": string|undefined
+    json: any
+    Vector: string|undefined
+    Vector1: string|undefined
+    Vector2: string|undefined
+    Vector3: string|undefined
+    Vector4: string|undefined
+    Vector5: string|undefined
+    Vector6: string|undefined
+    Vector7: string|undefined
+    Vector8: string|undefined
+    Vectors: string|undefined
+    targetSelector: string|undefined
+    blockStates: {[id: string]: string|number|boolean|undefined}|undefined
+    blockPattern: BlockPattern|undefined
+    block: {id: string, states?: string}|undefined
+}
+type evaluateParametersTypeMapper<Tuple extends [...any[]]> = {
+    [Index in keyof Tuple]: Tuple[Index] extends 
+    "presetText" ? string|undefined : 
+    Tuple[Index] extends "number" ? number|undefined : 
+    Tuple[Index] extends "boolean" ? boolean|undefined : 
+    Tuple[Index] extends "neboolean" ? boolean|undefined : 
+    Tuple[Index] extends "string" ? string|undefined : 
+    Tuple[Index] extends "non-booleanString" ? string|undefined : 
+    Tuple[Index] extends "json" ? any|undefined : 
+    Tuple[Index] extends "Vector" ? string|undefined : 
+    Tuple[Index] extends "Vector1" ? string|undefined : 
+    Tuple[Index] extends "Vector2" ? string|undefined : 
+    Tuple[Index] extends "Vector3" ? string|undefined : 
+    Tuple[Index] extends "Vector4" ? string|undefined : 
+    Tuple[Index] extends "Vector5" ? string|undefined : 
+    Tuple[Index] extends "Vector6" ? string|undefined : 
+    Tuple[Index] extends "Vector7" ? string|undefined : 
+    Tuple[Index] extends "Vector8" ? string|undefined : 
+    Tuple[Index] extends "Vectors" ? string|undefined : 
+    Tuple[Index] extends "targetSelector" ? string|undefined : 
+    Tuple[Index] extends "blockStates" ? {[id: string]: string|number|boolean}|undefined : 
+    Tuple[Index] extends "blockPattern" ? BlockPattern|undefined : 
+    Tuple[Index] extends "dimension" ? Dimension|undefined : 
+    Tuple[Index] extends `-${string}` ? string : 
+    Tuple[Index] extends `f-${string}` ? {"0"?: boolean, "1"?: boolean, "2"?: boolean, "3"?: boolean, "4"?: boolean, "5"?: boolean, "6"?: boolean, "7"?: boolean, "8"?: boolean, "9"?: boolean, "a"?: boolean, "b"?: boolean, "c"?: boolean, "d"?: boolean, "e"?: boolean, "f"?: boolean, "g"?: boolean, "h"?: boolean, "i"?: boolean, "j"?: boolean, "k"?: boolean, "l"?: boolean, "m"?: boolean, "n"?: boolean, "o"?: boolean, "p"?: boolean, "q"?: boolean, "r"?: boolean, "s"?: boolean, "t"?: boolean, "u"?: boolean, "v"?: boolean, "w"?: boolean, "x"?: boolean, "y"?: boolean, "z"?: boolean, "A"?: boolean, "B"?: boolean, "C"?: boolean, "D"?: boolean, "E"?: boolean, "F"?: boolean, "G"?: boolean, "H"?: boolean, "I"?: boolean, "J"?: boolean, "K"?: boolean, "L"?: boolean, "M"?: boolean, "N"?: boolean, "O"?: boolean, "P"?: boolean, "Q"?: boolean, "R"?: boolean, "S"?: boolean, "T"?: boolean, "U"?: boolean, "V"?: boolean, "W"?: boolean, "X"?: boolean, "Y"?: boolean, "Z"?: boolean, "!"?: boolean, "@"?: boolean, "#"?: boolean, "$"?: boolean, "%"?: boolean, "^"?: boolean, "&"?: boolean, "*"?: boolean, "<"?: boolean, ">"?: boolean, ","?: boolean, "."?: boolean, "~"?: boolean} : 
+    Tuple[Index] extends {type: "number"} ? number|undefined : 
+    Tuple[Index] extends {type: "boolean"} ? boolean|undefined : 
+    Tuple[Index] extends {type: "neboolean"} ? boolean|undefined : 
+    Tuple[Index] extends {type: "string"} ? string|undefined : 
+    Tuple[Index] extends {type: "non-booleanString"} ? string|undefined : 
+    Tuple[Index] extends {type: "json"} ? any|undefined : 
+    Tuple[Index] extends {type: "Vector"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector1"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector2"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector3"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector4"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector5"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector6"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector7"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vector8"} ? string|undefined : 
+    Tuple[Index] extends {type: "Vectors"} ? string|undefined : 
+    Tuple[Index] extends {type: "targetSelector"} ? string|undefined : 
+    Tuple[Index] extends {type: "blockStates"} ? {[id: string]: string|number|boolean}|undefined : 
+    Tuple[Index] extends {type: "blockPattern"} ? BlockPattern|undefined : 
+    Tuple[Index] extends {type: "dimension"} ? Dimension|undefined : 
+    Tuple[Index] extends {type: `-${string}`} ? string : 
+    Tuple[Index] extends {type: `f-${string}`} ? {"0"?: boolean, "1"?: boolean, "2"?: boolean, "3"?: boolean, "4"?: boolean, "5"?: boolean, "6"?: boolean, "7"?: boolean, "8"?: boolean, "9"?: boolean, "a"?: boolean, "b"?: boolean, "c"?: boolean, "d"?: boolean, "e"?: boolean, "f"?: boolean, "g"?: boolean, "h"?: boolean, "i"?: boolean, "j"?: boolean, "k"?: boolean, "l"?: boolean, "m"?: boolean, "n"?: boolean, "o"?: boolean, "p"?: boolean, "q"?: boolean, "r"?: boolean, "s"?: boolean, "t"?: boolean, "u"?: boolean, "v"?: boolean, "w"?: boolean, "x"?: boolean, "y"?: boolean, "z"?: boolean, "A"?: boolean, "B"?: boolean, "C"?: boolean, "D"?: boolean, "E"?: boolean, "F"?: boolean, "G"?: boolean, "H"?: boolean, "I"?: boolean, "J"?: boolean, "K"?: boolean, "L"?: boolean, "M"?: boolean, "N"?: boolean, "O"?: boolean, "P"?: boolean, "Q"?: boolean, "R"?: boolean, "S"?: boolean, "T"?: boolean, "U"?: boolean, "V"?: boolean, "W"?: boolean, "X"?: boolean, "Y"?: boolean, "Z"?: boolean, "!"?: boolean, "@"?: boolean, "#"?: boolean, "$"?: boolean, "%"?: boolean, "^"?: boolean, "&"?: boolean, "*"?: boolean, "<"?: boolean, ">"?: boolean, ","?: boolean, "."?: boolean, "~"?: boolean} : 
+    any|undefined;
+} & {length: Tuple['length']};
+export type evaluateParametersParameterTypes = "presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"Vectors"|"targetSelector"|"blockStates"|"blockPattern"|"block"|"dimension"|`-${string}`|`f-${string}`
+export type evaluateParametersParameter = {type: "presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates"|"blockPattern"|"block"|"dimension"|`-${string}`|`f-${string}`, maxLength?: number}|{type: "Vectors", vectorCount?: number, maxLength?: number}|"presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates"|"blockPattern"|"block"|"dimension"|`-${string}`|`f-${string}`
+
+export function evaluateParameters<T extends evaluateParametersParameter[]|[evaluateParametersParameter]>(commandstring: string, parameters: T): {
+    params: T,
+    extra: string,
+    args: {
+        [Index in keyof T]: T[Index] extends 
+        "presetText" ? string|undefined : 
+        T[Index] extends "number" ? number|undefined : 
+        T[Index] extends "boolean" ? boolean|undefined : 
+        T[Index] extends "neboolean" ? boolean|undefined : 
+        T[Index] extends "string" ? string|undefined : 
+        T[Index] extends "non-booleanString" ? string|undefined : 
+        T[Index] extends "json" ? any|undefined : 
+        T[Index] extends "Vector" ? string|undefined : 
+        T[Index] extends "Vector1" ? string|undefined : 
+        T[Index] extends "Vector2" ? string|undefined : 
+        T[Index] extends "Vector3" ? string|undefined : 
+        T[Index] extends "Vector4" ? string|undefined : 
+        T[Index] extends "Vector5" ? string|undefined : 
+        T[Index] extends "Vector6" ? string|undefined : 
+        T[Index] extends "Vector7" ? string|undefined : 
+        T[Index] extends "Vector8" ? string|undefined : 
+        T[Index] extends "Vectors" ? string|undefined : 
+        T[Index] extends "targetSelector" ? string|undefined : 
+        T[Index] extends "blockStates" ? {[id: string]: string|number|boolean}|undefined : 
+        T[Index] extends "blockPattern" ? BlockPattern|undefined : 
+        T[Index] extends "block" ? {id: string, states?: {[id: string]: string|number|boolean}}|undefined : 
+        T[Index] extends "dimension" ? Dimension|undefined : 
+        T[Index] extends `-${string}` ? string : 
+        T[Index] extends `f-${string}` ? {"0"?: boolean, "1"?: boolean, "2"?: boolean, "3"?: boolean, "4"?: boolean, "5"?: boolean, "6"?: boolean, "7"?: boolean, "8"?: boolean, "9"?: boolean, "a"?: boolean, "b"?: boolean, "c"?: boolean, "d"?: boolean, "e"?: boolean, "f"?: boolean, "g"?: boolean, "h"?: boolean, "i"?: boolean, "j"?: boolean, "k"?: boolean, "l"?: boolean, "m"?: boolean, "n"?: boolean, "o"?: boolean, "p"?: boolean, "q"?: boolean, "r"?: boolean, "s"?: boolean, "t"?: boolean, "u"?: boolean, "v"?: boolean, "w"?: boolean, "x"?: boolean, "y"?: boolean, "z"?: boolean, "A"?: boolean, "B"?: boolean, "C"?: boolean, "D"?: boolean, "E"?: boolean, "F"?: boolean, "G"?: boolean, "H"?: boolean, "I"?: boolean, "J"?: boolean, "K"?: boolean, "L"?: boolean, "M"?: boolean, "N"?: boolean, "O"?: boolean, "P"?: boolean, "Q"?: boolean, "R"?: boolean, "S"?: boolean, "T"?: boolean, "U"?: boolean, "V"?: boolean, "W"?: boolean, "X"?: boolean, "Y"?: boolean, "Z"?: boolean, "!"?: boolean, "@"?: boolean, "#"?: boolean, "$"?: boolean, "%"?: boolean, "^"?: boolean, "&"?: boolean, "*"?: boolean, "<"?: boolean, ">"?: boolean, ","?: boolean, "."?: boolean, "~"?: boolean} : 
+        T[Index] extends {type: "number"} ? number|undefined : 
+        T[Index] extends {type: "boolean"} ? boolean|undefined : 
+        T[Index] extends {type: "neboolean"} ? boolean|undefined : 
+        T[Index] extends {type: "string"} ? string|undefined : 
+        T[Index] extends {type: "presetText"} ? string|undefined : 
+        T[Index] extends {type: "non-booleanString"} ? string|undefined : 
+        T[Index] extends {type: "json"} ? any|undefined : 
+        T[Index] extends {type: "Vector"} ? string|undefined : 
+        T[Index] extends {type: "Vector1"} ? string|undefined : 
+        T[Index] extends {type: "Vector2"} ? string|undefined : 
+        T[Index] extends {type: "Vector3"} ? string|undefined : 
+        T[Index] extends {type: "Vector4"} ? string|undefined : 
+        T[Index] extends {type: "Vector5"} ? string|undefined : 
+        T[Index] extends {type: "Vector6"} ? string|undefined : 
+        T[Index] extends {type: "Vector7"} ? string|undefined : 
+        T[Index] extends {type: "Vector8"} ? string|undefined : 
+        T[Index] extends {type: "Vectors"} ? string|undefined : 
+        T[Index] extends {type: "targetSelector"} ? string|undefined : 
+        T[Index] extends {type: "blockStates"} ? {[id: string]: string|number|boolean}|undefined : 
+        T[Index] extends {type: "blockPattern"} ? BlockPattern|undefined : 
+        T[Index] extends {type: "block"} ? {id: string, states?: string}|undefined : 
+        T[Index] extends {type: "dimension"} ? Dimension|undefined : 
+        T[Index] extends {type: `-${string}`} ? string : 
+        T[Index] extends {type: `f-${string}`} ? {"0"?: boolean, "1"?: boolean, "2"?: boolean, "3"?: boolean, "4"?: boolean, "5"?: boolean, "6"?: boolean, "7"?: boolean, "8"?: boolean, "9"?: boolean, "a"?: boolean, "b"?: boolean, "c"?: boolean, "d"?: boolean, "e"?: boolean, "f"?: boolean, "g"?: boolean, "h"?: boolean, "i"?: boolean, "j"?: boolean, "k"?: boolean, "l"?: boolean, "m"?: boolean, "n"?: boolean, "o"?: boolean, "p"?: boolean, "q"?: boolean, "r"?: boolean, "s"?: boolean, "t"?: boolean, "u"?: boolean, "v"?: boolean, "w"?: boolean, "x"?: boolean, "y"?: boolean, "z"?: boolean, "A"?: boolean, "B"?: boolean, "C"?: boolean, "D"?: boolean, "E"?: boolean, "F"?: boolean, "G"?: boolean, "H"?: boolean, "I"?: boolean, "J"?: boolean, "K"?: boolean, "L"?: boolean, "M"?: boolean, "N"?: boolean, "O"?: boolean, "P"?: boolean, "Q"?: boolean, "R"?: boolean, "S"?: boolean, "T"?: boolean, "U"?: boolean, "V"?: boolean, "W"?: boolean, "X"?: boolean, "Y"?: boolean, "Z"?: boolean, "!"?: boolean, "@"?: boolean, "#"?: boolean, "$"?: boolean, "%"?: boolean, "^"?: boolean, "&"?: boolean, "*"?: boolean, "<"?: boolean, ">"?: boolean, ","?: boolean, "."?: boolean, "~"?: boolean} : 
+        any|undefined;
+      },
+    err: [Error, any][]
+} {
     let argumentsa = [] as any[]
     let ea = [] as [Error, any][]
-    let paramEval = commandstring/*
+    let paramEval = commandstring as string/*
     let parametersb = []
     if(typeof parameters[0] == "string"){parametersb = parameters.map(v=>({type: v}))}else{parametersb = parameters}*/
-    parameters.map(v=>(typeof v == "string"?(v=="Vectors"?{type: v, vectorCount: 3, maxLength: undefined} as {type: "Vectors", vectorCount?: number, maxLength?: number}:{type: v, vectorCount: undefined, maxLength: undefined} as {type: "Vectors", vectorCount?: number, maxLength?: number}):v?.type=="Vectors"?v:v)).forEach((p, i) => {if(paramEval.trim()==""){return}else{
+    parameters.map(v=>(typeof v == "string"?(v as any=="Vectors"?{type: v, vectorCount: 3, maxLength: undefined} as unknown as {type: "Vectors", vectorCount?: number, maxLength?: number}:{type: v, vectorCount: undefined, maxLength: undefined}):v?.type=="Vectors"?v as {type: "Vectors", vectorCount?: number, maxLength?: number}:v as unknown as {type: typeof v, vectorCount?: number, maxLength?: number})).forEach((p, i) => {switch(true){
+        case paramEval.trim()=="": 
+        {return}
+        break;
+        case p.type == "presetText": {
+            argumentsa.push(paramEval.trimStart().split(" ")[0]);
+            paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
+        }
+        break;
+        case p.type == "number": {
+            argumentsa.push(Number(paramEval.trimStart().split(" ")[0]));
+            paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
+        }
+        break;
+        case p.type == "boolean": {
+            argumentsa.push(paramEval.trimStart().split(" ")[0]?.trim?.()==""?undefined:Boolean(JSON.parse(paramEval.trimStart().split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
+            paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
+        }
+        break;
+        case p.type == "neboolean": {
+            try{argumentsa.push(paramEval.trimStart().split(" ")[0]?.trim?.()==""?undefined:Boolean(JSON.parse(paramEval.trimStart().split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
+            paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");}catch{argumentsa.push(undefined)}
+        }
+        break;
+        case p.type == "string": {
+            if (paramEval.trimStart().startsWith("\"")) {
+                let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
+                try {
+                    argumentsa.push(value?.v);
+                } catch (e) {
+                    ea.push([e, e.stack])
+                };
+            } else {
+                argumentsa.push(paramEval.trimStart().split(" ")[0]);
+                paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
+            }
+        }
+        break;
+        case p.type == "non-booleanString": {
+            if (["true", "false", "t", "f", "1", "0"].includes(paramEval.trimStart().split(" ")[0].toLowerCase())) {
+                argumentsa.push(undefined);
+            }else if (paramEval.trimStart().startsWith("\"")) {
+                let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
+                try {
+                    argumentsa.push(value?.v);
+                } catch (e) {
+                    ea.push([e, e.stack])
+                };
+            } else {
+                argumentsa.push(paramEval.trimStart().split(" ")[0]);
+                paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
+            }//1870//7018
+        }
+        break;
+        case !!(p.type as string).match(/^-[a-zA-Z0-9!@#$%^&*<>,.~]+$/): {
+            if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(1).split("").join("|")})+(?=$|\\s)`))) {
+                let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(1).split("").join("|")})+(?=$|\\s)`))[0]
+                paramEval = paramEval.trimStart().slice(paramEval.trimStart().indexOf(value)+value.length) ?? "";
+                try {
+                    argumentsa.push(value);
+                }
+                catch (e) {
+                    argumentsa.push("");
+                    ea.push([e, e.stack]);
+                }
+                ;
+            }
+            else {
+                argumentsa.push("");
+            }
+        }
+        break;
+        case !!(p.type as string).match(/^f-[a-zA-Z0-9!@#$%^&*<>,.~]+$/): {
+            if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(2).split("").join("|")})+(?=$|\\s)`))) {
+                let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(2).split("").join("|")})+(?=$|\\s)`))[0]
+                paramEval = paramEval.trimStart().slice(paramEval.trimStart().indexOf(value)+value.length) ?? "";
+                try {
+                    argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, value.includes(v)])));
+                }
+                catch (e) {
+                    argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, false])));
+                    ea.push([e, e.stack]);
+                }
+                ;
+            }
+            else {
+                argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, false])));
+            }
+        }
+        break;
+        case p.type == "json": {
+            let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+            paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
+            try {
+                argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
+            } catch (e) {
+                ea.push([e, e.stack])
+            };
+        }
+        break;
+        case p.type == "blockStates": {
+            if(paramEval.indexOf("[")==-1&&paramEval.indexOf("{")==-1){
+                argumentsa.push(undefined);
+            }else if((paramEval.indexOf("[")==-1?Infinity:paramEval.indexOf("["))<(paramEval.indexOf("{")==-1?Infinity:paramEval.indexOf("{"))){
+                let value = getParametersFromString(paramEval.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}")).resultsincludingunmodified[0];
+                paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
+                try {
+                    argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
+                } catch (e) {
+                    ea.push([e, e.stack])
+                };
+            }else{
+                let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
+                paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
+                try {
+                    argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
+                } catch (e) {
+                    ea.push([e, e.stack])
+                };
+            }
+        }
+        break;
+        case p.type == "blockPattern": {
+            const ep = BlockPattern.extractWRaw(paramEval.trimStart());
+            paramEval = paramEval.slice(paramEval.indexOf(ep.raw)+ep.raw.length) ?? "";
+            try {
+                argumentsa.push(ep.parsed);
+            } catch (e) {
+                ea.push([e, e.stack])
+            };
+        }
+        break;
+        case p.type == "block": {
+            const ep = parseBlockMatcherType(paramEval.trimStart());
+            paramEval = paramEval.slice(paramEval.indexOf(ep.raw)+ep.raw.length) ?? "";
+            try {
+                argumentsa.push(ep.block);
+            } catch (e) {
+                ea.push([e, e.stack])
+            };
+        }
+        break;
+        case p.type == "targetSelector": {
+            if(!paramEval.trimStart().startsWith("@")){
+                if (paramEval.trimStart().startsWith("\"")) {
+                    let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                    paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
+                    paramEval = paramEval.slice(+(paramEval[0]==" ")) ?? "";
+                    try {
+                        argumentsa.push(!!!value?.v?undefined:('"'+value?.v+'"'));
+                    } catch (e) {
+                        ea.push([e, e.stack])
+                    };
+                } else {
+                    argumentsa.push(paramEval.trimStart().split(" ")[0]);
+                    paramEval = paramEval.trimStart().split(" ").slice(1).join(" ").trimStart();
+                }
+            }else{
+                let value = extractSelectors(paramEval)[0];
+                paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
+                try {
+                    argumentsa.push(value);
+                } catch (e) {
+                    ea.push([e, e.stack])
+                };
+            }
+        }
+        break;
+        case p.type == "Vector"||(p?.type ?? p) == "Vector1": {
+            let value = paramEval.match(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*]([\-\+]?\d+(\.\d+)?)?|((?<=\s)|^)[\-\+]?\d+(\.\d+)?)(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g)?.[0];
+            paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
+            if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
+            try {
+                argumentsa.push(value);
+            } catch (e) {
+                ea.push([e, e.stack])
+            };
+        }
+        break;
+        case !!(p.type as string).match(/^Vector[2-8]$/): {
+            let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${(p.type as string).slice(6)}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+            paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
+            if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
+            try {
+                argumentsa.push(value);
+            } catch (e) {
+                ea.push([e, e.stack])
+            };
+        }
+        break;
+        case p.type == "Vectors": {
+            let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.vectorCount??3}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+            paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
+            if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
+            try {
+                argumentsa.push(value);
+            } catch (e) {
+                ea.push([e, e.stack])
+            };
+        }
+        break;
+    }});
+    return {
+        params: parameters,
+        extra: paramEval,
+        args: argumentsa as any,
+        err: ea
+    }
+}
+/**
+ * @deprecated
+ */
+export function evaluateParametersOldB<T extends evaluateParametersParameter[]|[evaluateParametersParameter]>(commandstring: string, parameters: T): {
+    params: T,
+    extra: string,
+    args: {
+        [Index in keyof T]: T[Index] extends 
+        "presetText" ? string|undefined : 
+        T[Index] extends "number" ? number|undefined : 
+        T[Index] extends "boolean" ? boolean|undefined : 
+        T[Index] extends "neboolean" ? boolean|undefined : 
+        T[Index] extends "string" ? string|undefined : 
+        T[Index] extends "non-booleanString" ? string|undefined : 
+        T[Index] extends "json" ? any|undefined : 
+        T[Index] extends "Vector" ? string|undefined : 
+        T[Index] extends "Vector1" ? string|undefined : 
+        T[Index] extends "Vector2" ? string|undefined : 
+        T[Index] extends "Vector3" ? string|undefined : 
+        T[Index] extends "Vector4" ? string|undefined : 
+        T[Index] extends "Vector5" ? string|undefined : 
+        T[Index] extends "Vector6" ? string|undefined : 
+        T[Index] extends "Vector7" ? string|undefined : 
+        T[Index] extends "Vector8" ? string|undefined : 
+        T[Index] extends "Vectors" ? string|undefined : 
+        T[Index] extends "targetSelector" ? string|undefined : 
+        T[Index] extends "blockStates" ? {[id: string]: string|number|boolean}|undefined : 
+        T[Index] extends "blockPattern" ? BlockPattern|undefined : 
+        T[Index] extends "dimension" ? Dimension|undefined : 
+        T[Index] extends `-${string}` ? string : 
+        T[Index] extends `f-${string}` ? {"0"?: boolean, "1"?: boolean, "2"?: boolean, "3"?: boolean, "4"?: boolean, "5"?: boolean, "6"?: boolean, "7"?: boolean, "8"?: boolean, "9"?: boolean, "a"?: boolean, "b"?: boolean, "c"?: boolean, "d"?: boolean, "e"?: boolean, "f"?: boolean, "g"?: boolean, "h"?: boolean, "i"?: boolean, "j"?: boolean, "k"?: boolean, "l"?: boolean, "m"?: boolean, "n"?: boolean, "o"?: boolean, "p"?: boolean, "q"?: boolean, "r"?: boolean, "s"?: boolean, "t"?: boolean, "u"?: boolean, "v"?: boolean, "w"?: boolean, "x"?: boolean, "y"?: boolean, "z"?: boolean, "A"?: boolean, "B"?: boolean, "C"?: boolean, "D"?: boolean, "E"?: boolean, "F"?: boolean, "G"?: boolean, "H"?: boolean, "I"?: boolean, "J"?: boolean, "K"?: boolean, "L"?: boolean, "M"?: boolean, "N"?: boolean, "O"?: boolean, "P"?: boolean, "Q"?: boolean, "R"?: boolean, "S"?: boolean, "T"?: boolean, "U"?: boolean, "V"?: boolean, "W"?: boolean, "X"?: boolean, "Y"?: boolean, "Z"?: boolean, "!"?: boolean, "@"?: boolean, "#"?: boolean, "$"?: boolean, "%"?: boolean, "^"?: boolean, "&"?: boolean, "*"?: boolean, "<"?: boolean, ">"?: boolean, ","?: boolean, "."?: boolean, "~"?: boolean} : 
+        T[Index] extends {type: "number"} ? number|undefined : 
+        T[Index] extends {type: "boolean"} ? boolean|undefined : 
+        T[Index] extends {type: "neboolean"} ? boolean|undefined : 
+        T[Index] extends {type: "string"} ? string|undefined : 
+        T[Index] extends {type: "presetText"} ? string|undefined : 
+        T[Index] extends {type: "non-booleanString"} ? string|undefined : 
+        T[Index] extends {type: "json"} ? any|undefined : 
+        T[Index] extends {type: "Vector"} ? string|undefined : 
+        T[Index] extends {type: "Vector1"} ? string|undefined : 
+        T[Index] extends {type: "Vector2"} ? string|undefined : 
+        T[Index] extends {type: "Vector3"} ? string|undefined : 
+        T[Index] extends {type: "Vector4"} ? string|undefined : 
+        T[Index] extends {type: "Vector5"} ? string|undefined : 
+        T[Index] extends {type: "Vector6"} ? string|undefined : 
+        T[Index] extends {type: "Vector7"} ? string|undefined : 
+        T[Index] extends {type: "Vector8"} ? string|undefined : 
+        T[Index] extends {type: "Vectors"} ? string|undefined : 
+        T[Index] extends {type: "targetSelector"} ? string|undefined : 
+        T[Index] extends {type: "blockStates"} ? {[id: string]: string|number|boolean}|undefined : 
+        T[Index] extends {type: "blockPattern"} ? BlockPattern|undefined : 
+        T[Index] extends {type: "dimension"} ? Dimension|undefined : 
+        T[Index] extends {type: `-${string}`} ? string : 
+        T[Index] extends {type: `f-${string}`} ? {"0"?: boolean, "1"?: boolean, "2"?: boolean, "3"?: boolean, "4"?: boolean, "5"?: boolean, "6"?: boolean, "7"?: boolean, "8"?: boolean, "9"?: boolean, "a"?: boolean, "b"?: boolean, "c"?: boolean, "d"?: boolean, "e"?: boolean, "f"?: boolean, "g"?: boolean, "h"?: boolean, "i"?: boolean, "j"?: boolean, "k"?: boolean, "l"?: boolean, "m"?: boolean, "n"?: boolean, "o"?: boolean, "p"?: boolean, "q"?: boolean, "r"?: boolean, "s"?: boolean, "t"?: boolean, "u"?: boolean, "v"?: boolean, "w"?: boolean, "x"?: boolean, "y"?: boolean, "z"?: boolean, "A"?: boolean, "B"?: boolean, "C"?: boolean, "D"?: boolean, "E"?: boolean, "F"?: boolean, "G"?: boolean, "H"?: boolean, "I"?: boolean, "J"?: boolean, "K"?: boolean, "L"?: boolean, "M"?: boolean, "N"?: boolean, "O"?: boolean, "P"?: boolean, "Q"?: boolean, "R"?: boolean, "S"?: boolean, "T"?: boolean, "U"?: boolean, "V"?: boolean, "W"?: boolean, "X"?: boolean, "Y"?: boolean, "Z"?: boolean, "!"?: boolean, "@"?: boolean, "#"?: boolean, "$"?: boolean, "%"?: boolean, "^"?: boolean, "&"?: boolean, "*"?: boolean, "<"?: boolean, ">"?: boolean, ","?: boolean, "."?: boolean, "~"?: boolean} : 
+        any|undefined;
+      },
+    err: [Error, any][]
+} {
+    let argumentsa = [] as any[]
+    let ea = [] as [Error, any][]
+    let paramEval = commandstring as string/*
+    let parametersb = []
+    if(typeof parameters[0] == "string"){parametersb = parameters.map(v=>({type: v}))}else{parametersb = parameters}*/
+    parameters.map(v=>(typeof v == "string"?(v as any=="Vectors"?{type: v, vectorCount: 3, maxLength: undefined} as unknown as {type: "Vectors", vectorCount?: number, maxLength?: number}:{type: v, vectorCount: undefined, maxLength: undefined}):v?.type=="Vectors"?v as {type: "Vectors", vectorCount?: number, maxLength?: number}:v as unknown as {type: typeof v, vectorCount?: number, maxLength?: number})).forEach((p, i) => {if(paramEval.trim()==""){return}else{
         if (p.type == "presetText") {
             argumentsa.push(paramEval.trimStart().split(" ")[0]);
             paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
@@ -8998,14 +10840,15 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
                                     paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                                 }//1870//7018
                             } else {
-                                if (!!p.type.match(/^-[a-zA-Z0-9]+$/)) {
-                                    if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${p.type.slice(1).split("").join("|")})+(?=$|\\s)`))) {
-                                        let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${p.type.slice(1).split("").join("|")})+(?=$|\\s)`))[0]
+                                if (!!(p.type as string).match(/^-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                                    if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(1).split("").join("|")})+(?=$|\\s)`))) {
+                                        let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(1).split("").join("|")})+(?=$|\\s)`))[0]
                                         paramEval = paramEval.trimStart().slice(paramEval.trimStart().indexOf(value)+value.length) ?? "";
                                         try {
                                             argumentsa.push(value);
                                         }
                                         catch (e) {
+                                            argumentsa.push("");
                                             ea.push([e, e.stack]);
                                         }
                                         ;
@@ -9015,82 +10858,90 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
                                     }
                                 }
                                 else {
-                                    if (p.type == "json") {
-                                        let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
-                                        paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
-                                        try {
-                                            argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
-                                        } catch (e) {
-                                            ea.push([e, e.stack])
-                                        };
-                                    } else {
-                                        if (p.type == "blockStates") {
-                                            if(paramEval.indexOf("[")==-1&&paramEval.indexOf("{")==-1){
-                                                argumentsa.push(undefined);
-                                            }else if((paramEval.indexOf("[")==-1?Infinity:paramEval.indexOf("["))<(paramEval.indexOf("{")==-1?Infinity:paramEval.indexOf("{"))){
-                                                let value = getParametersFromString(paramEval.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}")).resultsincludingunmodified[0];
-                                                paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
-                                                try {
-                                                    argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
-                                                } catch (e) {
-                                                    ea.push([e, e.stack])
-                                                };
-                                            }else{
-                                                let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
-                                                paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
-                                                try {
-                                                    argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
-                                                } catch (e) {
-                                                    ea.push([e, e.stack])
-                                                };
+                                if (!!(p.type as string).match(/^f-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                                        if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(2).split("").join("|")})+(?=$|\\s)`))) {
+                                            let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(2).split("").join("|")})+(?=$|\\s)`))[0]
+                                            paramEval = paramEval.trimStart().slice(paramEval.trimStart().indexOf(value)+value.length) ?? "";
+                                            try {
+                                                argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, value.includes(v)])));
                                             }
+                                            catch (e) {
+                                                argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, false])));
+                                                ea.push([e, e.stack]);
+                                            }
+                                            ;
+                                        }
+                                        else {
+                                            argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, false])));
+                                        }
+                                    }
+                                    else {
+                                        if (p.type == "json") {
+                                            let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                            paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
+                                            try {
+                                                argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
+                                            } catch (e) {
+                                                ea.push([e, e.stack])
+                                            };
                                         } else {
-                                            if (p.type == "blockPattern") {
-                                                const ep = BlockPattern.extractWRaw(paramEval.trimStart());
-                                                paramEval = paramEval.slice(paramEval.indexOf(ep.raw)+ep.raw.length) ?? "";
-                                                try {
-                                                    argumentsa.push(ep.parsed);
-                                                } catch (e) {
-                                                    ea.push([e, e.stack])
-                                                };
+                                            if (p.type == "blockStates") {
+                                                if(paramEval.indexOf("[")==-1&&paramEval.indexOf("{")==-1){
+                                                    argumentsa.push(undefined);
+                                                }else if((paramEval.indexOf("[")==-1?Infinity:paramEval.indexOf("["))<(paramEval.indexOf("{")==-1?Infinity:paramEval.indexOf("{"))){
+                                                    let value = getParametersFromString(paramEval.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}")).resultsincludingunmodified[0];
+                                                    paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
+                                                    try {
+                                                        argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
+                                                    } catch (e) {
+                                                        ea.push([e, e.stack])
+                                                    };
+                                                }else{
+                                                    let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
+                                                    paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
+                                                    try {
+                                                        argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
+                                                    } catch (e) {
+                                                        ea.push([e, e.stack])
+                                                    };
+                                                }
                                             } else {
-                                                if (p.type == "targetSelector") {
-                                                    if(!paramEval.trimStart().startsWith("@")){
-                                                        if (paramEval.trimStart().startsWith("\"")) {
-                                                            let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
-                                                            paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
-                                                            paramEval = paramEval.slice(+(paramEval[0]==" ")) ?? "";
+                                                if (p.type == "blockPattern") {
+                                                    const ep = BlockPattern.extractWRaw(paramEval.trimStart());
+                                                    paramEval = paramEval.slice(paramEval.indexOf(ep.raw)+ep.raw.length) ?? "";
+                                                    try {
+                                                        argumentsa.push(ep.parsed);
+                                                    } catch (e) {
+                                                        ea.push([e, e.stack])
+                                                    };
+                                                } else {
+                                                    if (p.type == "targetSelector") {
+                                                        if(!paramEval.trimStart().startsWith("@")){
+                                                            if (paramEval.trimStart().startsWith("\"")) {
+                                                                let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                                                paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
+                                                                paramEval = paramEval.slice(+(paramEval[0]==" ")) ?? "";
+                                                                try {
+                                                                    argumentsa.push(!!!value?.v?undefined:('"'+value?.v+'"'));
+                                                                } catch (e) {
+                                                                    ea.push([e, e.stack])
+                                                                };
+                                                            } else {
+                                                                argumentsa.push(paramEval.split(" ")[0]);
+                                                                return paramEval.split(" ").slice(1).join(" ");
+                                                            }
+                                                        }else{
+                                                            let value = extractSelectors(paramEval)[0];
+                                                            paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                             try {
-                                                                argumentsa.push(!!!value?.v?undefined:('"'+value?.v+'"'));
+                                                                argumentsa.push(value);
                                                             } catch (e) {
                                                                 ea.push([e, e.stack])
                                                             };
-                                                        } else {
-                                                            argumentsa.push(paramEval.split(" ")[0]);
-                                                            return paramEval.split(" ").slice(1).join(" ");
                                                         }
-                                                    }else{
-                                                        let value = extractSelectors(paramEval)[0];
-                                                        paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
-                                                        try {
-                                                            argumentsa.push(value);
-                                                        } catch (e) {
-                                                            ea.push([e, e.stack])
-                                                        };
-                                                    }
-                                                } else {
-                                                    if (p.type == "Vector"||(p?.type ?? p) == "Vector1") {
-                                                        let value = paramEval.match(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*]([\-\+]?\d+(\.\d+)?)?|((?<=\s)|^)[\-\+]?\d+(\.\d+)?)(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g)?.[0];
-                                                        paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
-                                                        if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
-                                                        try {
-                                                            argumentsa.push(value);
-                                                        } catch (e) {
-                                                            ea.push([e, e.stack])
-                                                        };
                                                     } else {
-                                                        if (!!p.type.match(/^Vector[2-8]$/)) {
-                                                            let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.type.slice(6)}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                        if (p.type == "Vector"||(p?.type ?? p) == "Vector1") {
+                                                            let value = paramEval.match(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*]([\-\+]?\d+(\.\d+)?)?|((?<=\s)|^)[\-\+]?\d+(\.\d+)?)(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g)?.[0];
                                                             paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                             if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
                                                             try {
@@ -9099,8 +10950,8 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
                                                                 ea.push([e, e.stack])
                                                             };
                                                         } else {
-                                                            if (p.type == "Vectors") {
-                                                                let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.vectorCount??3}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                            if (!!(p.type as string).match(/^Vector[2-8]$/)) {
+                                                                let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${(p.type as string).slice(6)}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
                                                                 paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                                 if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
                                                                 try {
@@ -9108,7 +10959,18 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
                                                                 } catch (e) {
                                                                     ea.push([e, e.stack])
                                                                 };
-                                                            } else {}
+                                                            } else {
+                                                                if (p.type == "Vectors") {
+                                                                    let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.vectorCount??3}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
+                                                                    if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
+                                                                    try {
+                                                                        argumentsa.push(value);
+                                                                    } catch (e) {
+                                                                        ea.push([e, e.stack])
+                                                                    };
+                                                                } else {}
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -9126,10 +10988,13 @@ export function evaluateParameters(commandstring: string, parameters: ({type: "p
     return {
         params: parameters,
         extra: paramEval,
-        args: argumentsa,
+        args: argumentsa as any,
         err: ea
     }
 }
+/**
+ * @deprecated
+ */
 export function evaluateParametersOld(parameters: string[], paramEvalA: string){
     let paramEval = paramEvalA
     let args: any[]

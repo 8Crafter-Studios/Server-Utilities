@@ -1,5 +1,5 @@
 import { EquipmentSlot, type Enchantment, type Vector3, Dimension, type Vector2, type DimensionLocation, GameMode, world, Player, system } from "@minecraft/server";
-import { format_version } from "Main";
+import { format_version, config, tryget } from "Main";
 import { ban } from "./ban";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
@@ -34,7 +34,7 @@ playersave
 spawnprot
 mcMath
 
-export const player_save_format_version = "1.2.0";
+export const player_save_format_version = "1.3.0";
 export interface savedItem { 
     id?: string
     count: number
@@ -52,6 +52,7 @@ export interface savedPlayerData {
     items?: {inventory: savedItem[]|undefined, equipment: savedItem[]|undefined, ender_chest: savedItem[]|undefined}
     properties?: [id: string|undefined, value: string|number|Boolean|Vector3|undefined][]
     lastOnline: number
+    firstJoined?: number
     location?: Vector3
     dimension?: Dimension|string
     rotation?: Vector2
@@ -72,6 +73,7 @@ export class savedPlayer {
     items?: {inventory: savedItem[]|undefined, equipment: savedItem[]|undefined, ender_chest: savedItem[]|undefined}
     properties?: [id: string|undefined, value: string|number|Boolean|Vector3|undefined][]
     lastOnline: number
+    firstJoined: number
     location?: Vector3
     dimension?: Dimension|string
     rotation?: Vector2
@@ -96,6 +98,7 @@ export class savedPlayer {
         this.gameMode = data.gameMode; 
         this.properties = data.properties; 
         this.lastOnline = data.lastOnline; 
+        this.firstJoined = data.firstJoined??data.lastOnline??Date.now();
         this.location = data.location; 
         this.dimension = data.dimension; 
         this.rotation = data.rotation; 
@@ -114,7 +117,7 @@ export class savedPlayer {
     static getSavedPlayerIds(){return world.getDynamicPropertyIds().filter((s)=>(s.startsWith("player:")))}/*
 saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playerName}`, `${Number(ban.removeAfterBanExpires)}||${ban.unbanDate.valueOf()}||${ban.banDate.valueOf()}||${ban.originalPlayerId}||${ban.bannedById}||${ban.bannedByName.replaceAll("|", "\\|")}||${ban.reason}`)}else{if(ban.type=="id"){world.setDynamicProperty(`idBan:${ban.playerId}`, `${Number(ban.removeAfterBanExpires)}||${ban.unbanDate.valueOf()}||${ban.banDate.valueOf()}||${ban.originalPlayerName.replaceAll("|", "\\|")}||${ban.bannedById}||${ban.bannedByName.replaceAll("|", "\\|")}||${ban.reason}`)}else{}}}*/
 static savePlayerData(savedPlayerData: savedPlayerData){savedPlayerData.saveId = savedPlayerData.saveId??"player:"+savedPlayerData.id; savedPlayerData.format_version = savedPlayerData.format_version ?? format_version; savedPlayerData.player_save_format_version = savedPlayerData.player_save_format_version ?? format_version; world.setDynamicProperty(savedPlayerData.saveId??`player:${savedPlayerData.id}`, JSON.stringify(savedPlayerData)); return savedPlayerData.saveId??`player:${savedPlayerData.id}`}
-static savePlayer(player: Player){let savedPlayerData: savedPlayerData; savedPlayerData = {name: player.name, nameTag: player.nameTag, id: player.id, isOp: player.isOp(), tags: player.getTags(), items: {inventory: [], equipment: [], ender_chest: []}, selectedSlotIndex: player.selectedSlotIndex, format_version: format_version, player_save_format_version: player_save_format_version, lastOnline: Date.now(), location: player.location, dimension: player.dimension, rotation: player.getRotation(), gameMode: player.getGameMode(), spawnPoint: player.getSpawnPoint()}; savedPlayerData.saveId = savedPlayerData.saveId??"player:"+savedPlayerData.id; savedPlayerData.format_version = savedPlayerData.format_version ?? format_version; 
+static savePlayer(player: Player){let savedPlayerData: savedPlayerData; savedPlayerData = {name: player.name, nameTag: player.nameTag, id: player.id, isOp: player.isOp(), tags: player.getTags(), items: {inventory: [], equipment: [], ender_chest: []}, selectedSlotIndex: player.selectedSlotIndex, format_version: format_version, player_save_format_version: player_save_format_version, lastOnline: Date.now(), firstJoined: tryget(()=>(this.getSavedPlayer("player:"+player.id).firstJoined))??Date.now(), location: player.location, dimension: player.dimension, rotation: player.getRotation(), gameMode: player.getGameMode(), spawnPoint: player.getSpawnPoint()}; savedPlayerData.saveId = savedPlayerData.saveId??"player:"+savedPlayerData.id; savedPlayerData.format_version = savedPlayerData.format_version ?? format_version; 
 for(let i = 0; i < player.getComponent("inventory").inventorySize; i++){if (player.getComponent("inventory").container.getItem(Number(i)) !== undefined) {
     savedPlayerData.items.inventory.push({id: player.getComponent("inventory").container.getItem(Number(i)).typeId, slot: i, enchants: ((player.getComponent("inventory").container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments().length!=0)?player.getComponent("inventory").container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments():undefined), name: player.getComponent("inventory").container.getItem(Number(i))?.nameTag, count: player.getComponent("inventory").container.getItem(Number(i)).amount})}else{savedPlayerData.items.inventory.push({id: "", slot: i, count: 0})}}; 
     savedPlayerData.items.inventory.push({id: player.getComponent("equippable").getEquipment(EquipmentSlot.Head)?.typeId ?? "", slot: "Head", enchants: ((player.getComponent("equippable").getEquipment(EquipmentSlot.Head)?.getComponent("enchantable")?.getEnchantments().length!=0)?player.getComponent("equippable").getEquipment(EquipmentSlot.Head)?.getComponent("enchantable")?.getEnchantments():undefined), name: player.getComponent("equippable").getEquipment(EquipmentSlot.Head)?.nameTag, count: player.getComponent("equippable").getEquipment(EquipmentSlot.Head)?.amount ?? 0}); 
@@ -128,4 +131,4 @@ static getSavedPlayer(savedPlayerId: string){let playerString = String(world.get
 static getSavedPlayers(){let players: savedPlayer[]; players = []; savedPlayer.getSavedPlayerIds().forEach((b)=>{players.push(savedPlayer.getSavedPlayer(b))}); return players}
 static getSavedPlayersAlphabeticalOrder(){let players: savedPlayer[]; players = []; savedPlayer.getSavedPlayerIds().forEach((b)=>{players.push(savedPlayer.getSavedPlayer(b))}); return players.sort((a, b)=>1-(2*Number([String(a.name.toLowerCase()), String(b.name.toLowerCase())].sort()[0]==String(a.name.toLowerCase()))))}
 }
-system.runInterval(()=>{if(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true){world.getAllPlayers().forEach((p)=>{savedPlayer.savePlayer(p)})}}, 5)
+import("Main").then(v=>system.runInterval(()=>{if(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true){world.getAllPlayers().forEach((p)=>{savedPlayer.savePlayer(p)})}}, v.config.playerDataRefreshRate??5))

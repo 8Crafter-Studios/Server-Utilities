@@ -1,6 +1,6 @@
 import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, GameRules, GameRule } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version, srun, dimensionTypeDisplayFormatting } from "Main";
+import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version, srun, dimensionTypeDisplayFormatting, config } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -21,7 +21,7 @@ import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";
-import { chatCommands, chatMessage, chatSend, command, commandSettings, command_settings_format_version, commands, commands_format_version, config, dimensions, evaluateParameters, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
+import { chatCommands, chatMessage, chatSend, command, commandSettings, command_settings_format_version, commands, commands_format_version, dimensions, evaluateParameters, executeCommandPlayerW, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -308,7 +308,8 @@ export function customFormListSelectionMenu(player) {
     });
 }
 ;
-export function mainMenu(sourceEntity) {
+export function mainMenu(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData();
     let players = world.getPlayers();
     form.title("Main Menu");
@@ -539,17 +540,22 @@ export function mainMenu(sourceEntity) {
         console.error(e, e.stack);
     });
 }
-export function settings(sourceEntity) {
+export function settings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData();
     let players = world.getPlayers();
     form.title("Settings");
     form.body("Choose menu to open. ");
-    form.button("Global Settings", "textures/ui/settings_glyph_color_2x");
-    form.button("Eval Auto Execute Settings", "textures/ui/settings_glyph_color_2x");
-    form.button("Personal Settings", "textures/ui/settings_glyph_color_2x");
+    form.button("Global Settings", "textures/ui/worldsIcon");
+    form.button("Chat Ranks Settings", "textures/ui/message");
+    form.button("Script Settings", "textures/ui/debug_glyph_color");
+    form.button("UI Settings", "textures/ui/feedIcon");
+    form.button("Eval Auto Execute Settings", "textures/ui/automation_glyph_color");
+    form.button("Personal Settings", "textures/ui/profile_glyph_color");
     form.button("Notifications Settings", "textures/ui/icon_bell");
     form.button("Home System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
-    form.button("RTP System Settings [§cExperimental§r]", "textures/items/ender_pearl");
+    form.button("TPA System Settings [§cExperimental§r]", "textures/items/ender_pearl");
+    form.button("Manage Game Rules", "textures/ui/controller_glyph_color");
     form.button("Back", "textures/ui/arrow_left"); /*
     form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
     forceShow(form, sourceEntity).then(ra => {
@@ -563,21 +569,33 @@ export function settings(sourceEntity) {
                 globalSettings(sourceEntity);
                 break;
             case 1:
-                evalAutoScriptSettings(sourceEntity);
+                chatRanksSettings(sourceEntity);
                 break;
             case 2:
-                personalSettings(sourceEntity);
+                scriptSettings(sourceEntity);
                 break;
             case 3:
-                notificationsSettings(sourceEntity);
+                uiSettings(sourceEntity);
                 break;
             case 4:
-                homeSystemSettings(sourceEntity);
+                evalAutoScriptSettings(sourceEntity);
                 break;
             case 5:
-                rtpSettings(sourceEntity);
+                personalSettings(sourceEntity);
                 break;
             case 6:
+                notificationsSettings(sourceEntity);
+                break;
+            case 7:
+                homeSystemSettings(sourceEntity);
+                break;
+            case 8:
+                tpaSettings(sourceEntity);
+                break;
+            case 9:
+                manageGameRulesUI(sourceEntity);
+                break;
+            case 10:
                 mainMenu(sourceEntity);
                 break;
             default:
@@ -586,7 +604,8 @@ export function settings(sourceEntity) {
         console.error(e, e.stack);
     });
 }
-export function moderationSettings(sourceEntity) {
+export function moderationSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData();
     let players = world.getPlayers();
     form.title("Moderation");
@@ -625,7 +644,8 @@ export function moderationSettings(sourceEntity) {
         console.error(e, e.stack);
     });
 }
-export function manageBans(sourceEntity, backMenuFunction = mainMenu) {
+export function manageBans(sourceEntitya, backMenuFunction = mainMenu) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form6 = new ActionFormData;
     form6.title("Manage Bans");
     ban.getValidBans().idBans.forEach((p) => { form6.button(`${p.playerId}\nValid`, "textures/ui/online"); });
@@ -715,7 +735,8 @@ export function manageBans(sourceEntity, backMenuFunction = mainMenu) {
         ;
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
-export function globalSettings(sourceEntity) {
+export function globalSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     "andexdbSettings:autoEscapeChatMessages";
     "andexdbSettings:autoURIEscapeChatMessages";
@@ -724,58 +745,172 @@ export function globalSettings(sourceEntity) {
     form2.textField("§l§fchatCommandPrefix§r§f\nThis is what you type before a chat command, the default is \\. ", "string", String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"));
     form2.textField("§l§fvalidChatCommandPrefixes§r§f\nList of valid prefixes for chat commands, use this if you have other add-ons with chat commands in them active, messages that start with any of these will not be sent and will not be modified by this add-on so it will work for you other packs, default is blank", "Comma-Separated List of Strings", String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? ""));
     form2.textField("§l§fchatRankPrefix§r§f\nPrefix for chat ranks, default is rank:", "string", String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"));
-    form2.textField("§l§fchatSudoPrefix§r§f\nPrefix for custom chat names, default is sudo:", "string", String(world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:"));
+    form2.textField("§l§fchatSudoPrefix§r§f\nPrefix for custom chat names, default is sudo:", "string", String(world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")); /*
     form2.textField("§l§frankDisplayPrefix§r§f\nPrefix that appears before chat ranks in chat messages, default is \"[\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "["));
     form2.textField("§l§frankDisplaySuffix§r§f\nSuffix that appears after chat ranks in chat messages, default is \"\uF019r\uF019f]\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "§r§f]"));
     form2.textField("§l§frankDisplaySeparator§r§f\nSeparator that appears between ranks, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "));
     form2.textField("§l§fnameDisplayPrefix§r§f\nPrefix that appears before player's names in chat messages, default is \"<\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<"));
     form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after player's names in chat messages, default is \"\uF019r\uF019f>\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"));
-    form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
+    form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));*/
     form2.textField("§l§fgametestStructureDefaultSpawnLocation§r§f\nThe default spawn locations for the gametest structure, this is used when spawning in no ai entities or spawning in simulated player", "x, y, z", Object.values(world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {}).join(", "));
     form2.dropdown("§l§finvalidChatCommandAction§r§f\nWhat to do when a chat command is typed that does not exist, or that the player does not have permission to use. ", ["Do Nothing", "Send Message", "Cancel Message", "Warn Player"], Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 0));
-    form2.toggle("§l§fchatCommandsEnbaled§r§f\nSets whether or not to enable the chat commands, default is true", Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") ?? true));
-    form2.toggle("§l§fdisableCustomChatMessages§r§f\nDisables the chat ranks and custom chat names, default is false", Boolean(world.getDynamicProperty("andexdbSettings:disableCustomChatMessages") ?? false));
-    form2.toggle("§l§fallowCustomChatMessagesMuting§r§f\nAllows the chat mute button to work on the custom chat messages by using the /tellraw command instead of the world.sendMessage() function, a side-effect of this is that it will cause a 1 tick delay in chat messages, default is false", Boolean(world.getDynamicProperty("andexdbSettings:allowCustomChatMessagesMuting") ?? false));
+    form2.toggle("§l§fchatCommandsEnbaled§r§f\nSets whether or not to enable the chat commands, default is true", Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") ?? true)); /*
     form2.toggle("§l§fautoEscapeChatMessages§r§f\nEvaluates escape codes in the chat automatically, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") ?? false));
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
-    form2.toggle("§l§fchatDisplayTimeStamp§r§f\nSets whether or not to put a timestamp before every chat message, default is false", config.chatDisplayTimeStamp);
+    form2.toggle("§l§fchatDisplayTimeStamp§r§f\nSets whether or not to put a timestamp before every chat message, default is false", config.chatDisplayTimeStamp);*/
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
-            return; /*
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, gametestStructureDefaultSpawnLocation, invalidChatCommandAction, chatCommandsEnbaled, disableCustomChatMessages, allowCustomChatMessagesMuting, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes, chatDisplayTimeStamp, autoSavePlayerData, bepl, beppb, aebe, aepl] = t.formValues;
+        let [chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix /*, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator*/, gametestStructureDefaultSpawnLocation, invalidChatCommandAction, chatCommandsEnbaled /*, disableCustomChatMessages, allowCustomChatMessagesMuting*/ /*, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes*/ /*, chatDisplayTimeStamp*/, autoSavePlayerData, bepl, beppb, aebe, aepl] = t.formValues;
         world.setDynamicProperty("andexdbSettings:chatCommandPrefix", chatCommandPrefix);
         world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", validChatCommandPrefixes);
         world.setDynamicProperty("andexdbSettings:chatRankPrefix", chatRankPrefix);
-        world.setDynamicProperty("andexdbSettings:chatSudoPrefix", chatSudoPrefix);
-        world.setDynamicProperty("andexdbSettings:rankDisplayPrefix", rankDisplayPrefix);
-        world.setDynamicProperty("andexdbSettings:rankDisplaySuffix", rankDisplaySuffix);
-        world.setDynamicProperty("andexdbSettings:rankDisplaySeparator", rankDisplaySeparator);
-        world.setDynamicProperty("andexdbSettings:nameDisplayPrefix", nameDisplayPrefix);
-        world.setDynamicProperty("andexdbSettings:nameDisplaySuffix", nameDisplaySuffix);
-        world.setDynamicProperty("andexdbSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator);
+        world.setDynamicProperty("andexdbSettings:chatSudoPrefix", chatSudoPrefix); /*
+        world.setDynamicProperty("andexdbSettings:rankDisplayPrefix", rankDisplayPrefix)
+        world.setDynamicProperty("andexdbSettings:rankDisplaySuffix", rankDisplaySuffix)
+        world.setDynamicProperty("andexdbSettings:rankDisplaySeparator", rankDisplaySeparator)
+        world.setDynamicProperty("andexdbSettings:nameDisplayPrefix", nameDisplayPrefix)
+        world.setDynamicProperty("andexdbSettings:nameDisplaySuffix", nameDisplaySuffix)
+        world.setDynamicProperty("andexdbSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator)*/
         if (String(gametestStructureDefaultSpawnLocation) != "") {
             world.setDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation", { x: Number(String(gametestStructureDefaultSpawnLocation).split(", ")[0]), y: Number(String(gametestStructureDefaultSpawnLocation).split(", ")[1]), z: Number(String(gametestStructureDefaultSpawnLocation).split(", ")[2]) });
         }
-        world.setDynamicProperty("andexdbSettings:chatCommandsEnbaled", chatCommandsEnbaled);
+        world.setDynamicProperty("andexdbSettings:chatCommandsEnbaled", chatCommandsEnbaled); /*
+        world.setDynamicProperty("andexdbSettings:disableCustomChatMessages", disableCustomChatMessages)*/
+        world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction); /*
+        world.setDynamicProperty("andexdbSettings:allowCustomChatMessagesMuting", allowCustomChatMessagesMuting)
+        world.setDynamicProperty("andexdbSettings:autoEscapeChatMessages", autoEscapeChatMessages)
+        world.setDynamicProperty("andexdbSettings:autoURIEscapeChatMessages", autoURIEscapeChatMessages)
+        world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes)
+        world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStamp)*/
+        world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData);
+        settings(sourceEntity);
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export const rankModes = { "custom_simple": "Custom(Simple)", "custom_advanced": "Custom(Advanced)", "style_1": "Style 1", "style_2": "Style 2", "style_3": "Style 3", "style_4": "Style 4", "style_5": "Style 5" };
+export const rankModesArray = Object.values(rankModes);
+export const rankModesArrayB = Object.keys(rankModes);
+export function chatRanksSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form2 = new ModalFormData();
+    form2.title("Chat Ranks Settings");
+    //⌠⌡÷≈≡±≥≤»
+    form2.dropdown("§l§fRank Style/Mode§r§f\nCustom(Simple): Allows for simple customizations to the rank and message formatting.\nCustom(Advanced): Allows for complete control over the rank and message formatting.\nStyle 1: \"§r§f[10:09:00 AM] [§bRank§f] [§cOther Rank§f] <Steve> Hi\nStyle 2: \"§r§8[§f10:09:00 AM§8] [§bRank§8] [§cOther Rank§8] §fSteve§8 » §fHi\nStyle 3: \"§r§8[§f10:09:00 AM§8] [§bRank§8] [§cOther Rank§8] §fSteve >> Hi\nStyle 4: \"§r§7[10:09:00 AM] [§bRank§7] [§cOther Rank§7] §7Steve§l > §r§fHi\"\nStyle 5: \"§r§f[10:09:00 AM] [§bRank§f,§cOther Rank§f] §7Steve: §fHi\"\nDefault is Custom(Simple).", rankModesArray, rankModesArray.indexOf(rankModes[String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")]));
+    form2.textField("§l§frankDisplayPrefix§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fPrefix that appears before chat ranks in chat messages, default is \"[\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "["));
+    form2.textField("§l§frankDisplaySuffix§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fSuffix that appears after chat ranks in chat messages, default is \"\uF019r\uF019f]\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "§r§f]"));
+    form2.textField("§l§fnameDisplayPrefix§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fPrefix that appears before player's names in chat messages, default is \"<\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<"));
+    form2.textField("§l§fnameDisplaySuffix§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fSuffix that appears after player's names in chat messages, default is \"\uF019r\uF019f>\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"));
+    form2.textField("§l§fchatNameAndMessageSeparator§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fSeparator that appears between player's names and player's chat messages, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
+    form2.textField("§l§frankDisplaySeparator§r§f\n§r§o§qOnly applies to Custom(Simple) and Custom(Advanced) mode.\n§r§fSeparator that appears between ranks, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "));
+    form2.textField("§l§fRank Template String§r§f\n§r§o§2Only applies to Custom(Advanced) mode.\n§r§fThe format for the chat ranks, it is a javascript template string, for example \"[${rank}\uF019r\uF019f]\", default is \"[${rank}\uF019r\uF019f]\"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]"));
+    form2.textField("§l§fMessage Template String§r§f\n§r§o§2Only applies to Custom(Advanced) mode.\n§r§fThe format for the chat message, it is a javascript template string, for example \"\uF019r\uF019f${timestampenabled?`[${timestamp}]`:\"\"}${ranks}\uF019r\uF019f${(ranks!=\"\")?\" \":\"\"}<${name}\uF019r\uF019f> \", default is \"\uF019r\uF019f${timestampenabled?`[${timestamp}]`:\"\"}${ranks}\uF019r\uF019f${(ranks!=\"\")?\" \":\"\"}<${name}\uF019r\uF019f> \"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ?? "§r§f${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r§f${(ranks!=\"\")?\" \":\"\"}<${name}§r§f> ${message}"));
+    form2.textField("§l§fDefault Rank Template String For Players With No Rank§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fThe default chat rank for players who do not have any chat ranks, it is a javascript template string, for example \"[\uF019bMember\uF019r\uF019f]\", default is \"\"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? ""));
+    form2.textField("§l§fDefault Message Formatting§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fThe default format for the message portion of the chat message to use when the player does not have any messageFormatting: or messageColor: tags, it is just a string of format codes, such as \"\uF019r\uF019l\uF019b\", leaving this empty will make the message use the default message formatting of the selected rank style/mode, default is \"\"", "string", String(world.getDynamicProperty("andexdbSettings:defaultMessageFormatting") ?? ""));
+    form2.textField("§l§fDefault Name Formatting§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fThe default format for the name of the player sending the chat message to use when the player does not have any nameFormatting: or nameColor: tags, it is just a string of format codes, such as \"\uF019r\uF019l\uF019b\", leaving this empty will make the message use the default name formatting of the selected rank style/mode, default is \"\"", "string", String(world.getDynamicProperty("andexdbSettings:defaultNameFormatting") ?? ""));
+    form2.textField("§l§fDefault Separator Formatting§r§f\n§r§o§9Only applies to rank styles 2-4.\n§r§fThe default format for the separator between the name of the player and the message portion of the chat message to use when the player does not have any separatorFormatting: or separatorColor: tags, it is just a string of format codes, such as \"\uF019r\uF019l\uF019b\", leaving this empty will make the message use the default separator formatting of the selected rank style/mode, default is \"\"", "string", String(world.getDynamicProperty("andexdbSettings:defaultSeparatorFormatting") ?? ""));
+    form2.toggle("§l§fdisableCustomChatMessages§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fDisables the chat ranks and custom chat names, default is false", Boolean(world.getDynamicProperty("andexdbSettings:disableCustomChatMessages") ?? false));
+    form2.toggle("§l§fallowCustomChatMessagesMuting§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fAllows the chat mute button to work on the custom chat messages by using the /tellraw command instead of the world.sendMessage() function, a side-effect of this is that it will cause a 1 tick delay in chat messages, default is false", Boolean(world.getDynamicProperty("andexdbSettings:allowCustomChatMessagesMuting") ?? false));
+    form2.toggle("§l§fautoEscapeChatMessages§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fEvaluates escape codes in the chat automatically, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") ?? false));
+    form2.toggle("§l§fautoURIEscapeChatMessages§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
+    form2.toggle("§l§fallowChatEscapeCodes§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
+    form2.toggle("§l§fchatDisplayTimeStamp§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fSets whether or not to put a timestamp before every chat message, default is false", config.chatDisplayTimeStamp);
+    form2.toggle("§l§fshowRanksOnPlayerNameTags§r§f\nSets whether or not to show player's ranks on their name tag, default is false", config.showRanksOnPlayerNameTags);
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(to => {
+        let t = to;
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+        let [rankMode, rankDisplayPrefix, rankDisplaySuffix, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, rankDisplaySeparator, rankTemplateString, messageTemplateString, defaultRankTemplateString, defaultMessageFormatting, defaultNameFormatting, defaultSeparatorFormatting, disableCustomChatMessages, allowCustomChatMessagesMuting, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes, chatDisplayTimeStamp, showRanksOnPlayerNameTags] = t.formValues;
+        world.setDynamicProperty("andexdbSettings:rankMode", Object.entries(rankModes).find(v => v[1] == rankModesArray[rankMode])[0]);
+        world.setDynamicProperty("andexdbSettings:rankDisplayPrefix", rankDisplayPrefix);
+        world.setDynamicProperty("andexdbSettings:rankDisplaySuffix", rankDisplaySuffix);
+        world.setDynamicProperty("andexdbSettings:nameDisplayPrefix", nameDisplayPrefix);
+        world.setDynamicProperty("andexdbSettings:nameDisplaySuffix", nameDisplaySuffix);
+        world.setDynamicProperty("andexdbSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator);
+        world.setDynamicProperty("andexdbSettings:rankDisplaySeparator", rankDisplaySeparator);
+        world.setDynamicProperty("andexdbSettings:rankTemplateString", rankTemplateString);
+        world.setDynamicProperty("andexdbSettings:messageTemplateString", messageTemplateString);
+        world.setDynamicProperty("andexdbSettings:defaultRankTemplateString", defaultRankTemplateString);
+        world.setDynamicProperty("andexdbSettings:defaultMessageFormatting", defaultMessageFormatting);
+        world.setDynamicProperty("andexdbSettings:defaultNameFormatting", defaultNameFormatting);
+        world.setDynamicProperty("andexdbSettings:defaultSeparatorFormatting", defaultSeparatorFormatting);
         world.setDynamicProperty("andexdbSettings:disableCustomChatMessages", disableCustomChatMessages);
-        world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction);
         world.setDynamicProperty("andexdbSettings:allowCustomChatMessagesMuting", allowCustomChatMessagesMuting);
         world.setDynamicProperty("andexdbSettings:autoEscapeChatMessages", autoEscapeChatMessages);
         world.setDynamicProperty("andexdbSettings:autoURIEscapeChatMessages", autoURIEscapeChatMessages);
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes);
         world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStamp);
-        world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData);
+        config.showRanksOnPlayerNameTags = showRanksOnPlayerNameTags;
+        settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
 }
-export function homeSystemSettings(sourceEntity) {
+export function scriptSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form2 = new ModalFormData();
+    form2.title("Script Settings");
+    form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 5", "integer from 1-1000", String(config.playerDataRefreshRate));
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(to => {
+        let t = to;
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+        let [playerDataRefreshRate] = t.formValues;
+        config.playerDataRefreshRate = Number(playerDataRefreshRate);
+        settings(sourceEntity);
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function uiSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form2 = new ModalFormData();
+    "andexdbSettings:autoEscapeChatMessages";
+    "andexdbSettings:autoURIEscapeChatMessages";
+    "andexdbSettings:allowChatEscapeCodes";
+    form2.title("UI Settings");
+    form2.textField("§l§fmaxPlayersPerManagePlayersPage§r§f\nThe maximum number of players to display at once on the manage players menu, the default is 10", "integer from 1-1000", String(config.maxPlayersPerManagePlayersPage));
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(to => {
+        let t = to;
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+        let [maxPlayersPerManagePlayersPage] = t.formValues;
+        config.maxPlayersPerManagePlayersPage = Number(maxPlayersPerManagePlayersPage);
+        settings(sourceEntity);
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function homeSystemSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     form2.title("Home System Settings [§cExperimental§r]");
     form2.toggle("§l§fHome System Enabled§r§f", config.homeSystemEnabled);
@@ -783,37 +918,47 @@ export function homeSystemSettings(sourceEntity) {
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
-            return; /*
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [homeSystemEnabled, maxHomesPerPlayer] = t.formValues;
         config.homeSystemEnabled = homeSystemEnabled;
         config.maxHomesPerPlayer = String(maxHomesPerPlayer).toLowerCase() == "infinity" ? Infinity : Number(maxHomesPerPlayer);
+        settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
 }
-export function rtpSettings(sourceEntity) {
+export function tpaSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
-    form2.title("RTP System Settings [§cExperimental§r]");
-    form2.toggle("§l§fEnable RTP System", config.rtpSystemEnabled);
+    form2.title("TPA System Settings [§cExperimental§r]");
+    form2.toggle("§l§fEnable TPA System", config.tpaSystemEnabled);
     //form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.maxHomesPerPlayer));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
-            return; /*
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [rtpSystemEnabled] = t.formValues;
-        config.rtpSystemEnabled = rtpSystemEnabled;
+        let [tpaSystemEnabled] = t.formValues;
+        config.tpaSystemEnabled = tpaSystemEnabled;
         //config.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
+        settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
 }
-export function notificationsSettings(sourceEntity) {
+export function notificationsSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     form2.title("Notifications Settings");
     form2.toggle("§l§fGet notified when players run chat commands§r§f", sourceEntity.hasTag("getAllChatCommands"));
@@ -821,18 +966,23 @@ export function notificationsSettings(sourceEntity) {
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
-            return; /*
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [getAllChatCommands, getGameRuleChangeNotifications] = t.formValues;
         Boolean(getAllChatCommands) ? sourceEntity.addTag("getAllChatCommands") : sourceEntity.removeTag("getAllChatCommands");
         Boolean(getGameRuleChangeNotifications) ? sourceEntity.addTag("getGameRuleChangeNotifications") : sourceEntity.removeTag("getGameRuleChangeNotifications");
+        settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
 }
-export function antispamSettings(sourceEntity) {
+export function antispamSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     form2.title("Anti-Spam Settings [§cExperimental§r]");
     form2.toggle("§l§fAnti-Spam Enabled§r§f", config.antispamEnabled);
@@ -857,7 +1007,8 @@ export function antispamSettings(sourceEntity) {
         console.error(e, e.stack);
     });
 }
-export function personalSettings(sourceEntity) {
+export function personalSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     "andexdbSettings:autoEscapeChatMessages";
     "andexdbSettings:autoURIEscapeChatMessages";
@@ -889,8 +1040,11 @@ export function personalSettings(sourceEntity) {
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
-            return; /*
+        if (t.canceled) {
+            settings(sourceEntity);
+            return;
+        }
+        ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, debugStickUseCooldown, debugStickHoldDuration] = t.formValues;
@@ -917,11 +1071,13 @@ export function personalSettings(sourceEntity) {
         world.setDynamicProperty("andexdbSettings:autoURIEscapeChatMessages", autoURIEscapeChatMessages)
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes)
         world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData)*/
+        settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
 }
-export function evalAutoScriptSettings(sourceEntity) {
+export function evalAutoScriptSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     let players = world.getAllPlayers();
     let targetList = [players[0].nameTag];
@@ -955,8 +1111,11 @@ export function evalAutoScriptSettings(sourceEntity) {
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
-        if (t.canceled)
+        if (t.canceled) {
+            settings(sourceEntity);
             return;
+        }
+        ;
         let [becs, beddete, beea, beer, bee, beide, beiu, beiuo, bepa, bepbb, bepiwb, bepiwe, bepl, beppb, aebe, aepl, aeed] = t.formValues;
         world.setDynamicProperty("evalBeforeEvents:chatSend", becs);
         world.setDynamicProperty("evalBeforeEvents:dataDrivenEntityTrggerEvent", beddete);
@@ -975,11 +1134,13 @@ export function evalAutoScriptSettings(sourceEntity) {
         world.setDynamicProperty("evalAfterEvents:blockExplode", aebe);
         world.setDynamicProperty("evalAfterEvents:playerLeave", aepl);
         world.setDynamicProperty("evalAfterEvents:entityDie", aeed);
+        settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
 }
-export function manageGameRulesUI(sourceEntity) {
+export function manageGameRulesUI(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     const ruleNames = Object.getOwnPropertyNames(mcServer.GameRules.prototype).filter(r => r != "constructor").sort((a, b) => -+(typeof world.gameRules[a] != typeof world.gameRules[b]) * ((2 * +(typeof world.gameRules[a] == "number")) - 1));
     const ruleValues = world.gameRules;
@@ -1009,7 +1170,8 @@ export function manageGameRulesUI(sourceEntity) {
         console.error(e, e.stack);
     });
 }
-export function scriptEvalRunWindow(sourceEntity) {
+export function scriptEvalRunWindow(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData();
     form.title("Script Evaluate Run Window");
     form.textField("Script", "JavaScript");
@@ -1056,7 +1218,8 @@ export function customFormUIEditor(sourceEntity: Entity|Player){
 }).catch(e => {
     console.error(e, e.stack);
 });}*/
-export function terminal(sourceEntity) {
+export function terminal(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     system.run(() => {
         let form = new ModalFormData();
         form.title("Command Runner / Terminal");
@@ -1086,7 +1249,8 @@ catch(e) {
 console.error(e, e.stack);
 };*/
 }
-export function chatMessageNoCensor(sourceEntity, bypassChatInputRequests = false) {
+export function chatMessageNoCensor(sourceEntitya, bypassChatInputRequests = false) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     system.run(() => {
         let form = new ModalFormData();
         let playerList = world.getAllPlayers();
@@ -1114,7 +1278,8 @@ catch(e) {
 console.error(e, e.stack);
 };*/
 }
-export function chatSendNoCensor(sourceEntity) {
+export function chatSendNoCensor(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     system.run(() => {
         let form = new ModalFormData();
         let playerList = world.getAllPlayers();
@@ -1142,7 +1307,8 @@ catch(e) {
 console.error(e, e.stack);
 };*/
 }
-export function chatCommandRunner(sourceEntity) {
+export function chatCommandRunner(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     system.run(() => {
         let form = new ModalFormData();
         let playerList = world.getAllPlayers();
@@ -1158,7 +1324,7 @@ export function chatCommandRunner(sourceEntity) {
             // This will assign every input their own variable
             let [message, asPlayer] = r.formValues; /*
             console.warn(r.formValues);*/
-            chatCommands({ returnBeforeChatSend: false, player: playerList[asPlayer] ?? sourceEntity, newMessage: message, event: { cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity }, eventData: { cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity } });
+            chatCommands({ returnBeforeChatSend: false, player: playerList[asPlayer] ?? sourceEntity, newMessage: message, event: { cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity }, eventData: { cancel: false, message: message, sender: playerList[asPlayer] ?? sourceEntity }, fromExecute: true });
             // Do something
         }).catch(e => {
             console.error(e, e.stack);
@@ -1170,7 +1336,8 @@ catch(e) {
 console.error(e, e.stack);
 };*/
 }
-export function mapArtGenerator(sourceEntity) {
+export function mapArtGenerator(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     srun(() => {
         let form = new ModalFormData();
         form.title("Map Art Generator [§cExperimental§r]");
@@ -1210,7 +1377,8 @@ catch(e) {
 console.error(e, e.stack);
 };*/
 }
-export function mapArtGeneratorB(sourceEntity) {
+export function mapArtGeneratorB(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     srun(() => {
         let form = new ModalFormData();
         form.title("Map Art Generator [§cExperimental§r]");
@@ -1245,7 +1413,8 @@ console.error(e, e.stack);
 };*/
 }
 //evaluateParameters("{a: \"a\", \"b\": \"b\"}", [{type: "json"}])
-export function nbtStructureLoader(sourceEntity) {
+export function nbtStructureLoader(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     srun(() => {
         let form = new ModalFormData();
         form.title("Java NBT Structure Loader [§cExperimental§r]");
@@ -1280,7 +1449,8 @@ catch(e) {
 console.error(e, e.stack);
 };*/
 }
-export function playerController(sourceEntity, message = "") {
+export function playerController(sourceEntitya, message = "") {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     let playerList = world.getPlayers();
     let targetList = [playerList[0].nameTag];
@@ -1659,7 +1829,8 @@ export function playerController(sourceEntity, message = "") {
         });
     }
 }
-export function inventoryController(sourceEntity) {
+export function inventoryController(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     let players = world.getAllPlayers();
     let targetList = [players[0].nameTag];
@@ -2274,8 +2445,11 @@ export function inventoryController(sourceEntity) {
         console.error(e, e.stack);
     });
 }
-export function entityController(sourceEntity) { }
-export function editorStick(sourceEntity, message = "") {
+export function entityController(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+}
+export function editorStick(sourceEntitya, message = "") {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData();
     let playerList = world.getPlayers();
     let block = sourceEntity.getBlockFromViewDirection();
@@ -2664,7 +2838,8 @@ export function editorStick(sourceEntity, message = "") {
         console.error(e, e.stack);
     });
 }
-export function editorStickMenuB(sourceEntity) {
+export function editorStickMenuB(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData();
     let playerList = world.getPlayers();
     form.textField("Block Dimension", "Block Dimension", String(sourceEntity.dimension.id));
@@ -2683,8 +2858,24 @@ export function editorStickMenuB(sourceEntity) {
         console.error(e, e.stack);
     });
 }
-export function editorStickMenuC(sourceEntity) { }
-export function editorStickB(sourceEntity, dimensionLocation) {
+export function editorStickMenuC(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form = new ModalFormData();
+    let playerList = world.getPlayers();
+    form.toggle("includeLiquidBlocks", true);
+    form.toggle("includePassableBlocks", true);
+    form.textField("maxDistance ( Optional )", "maxDistance ( Optional )");
+    forceShow(form, sourceEntity).then(r => {
+        if (r.canceled)
+            return;
+        let [includeLiquidBlocks, includePassableBlocks, maxDistance] = r.formValues;
+        editorStickC(sourceEntitya, includeLiquidBlocks, includePassableBlocks, maxDistance == "" ? undefined : Number(maxDistance));
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function editorStickB(sourceEntitya, dimensionLocation) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData();
     let playerList = world.getPlayers(); /*
     let block = sourceEntity.getBlockFromViewDirection({includeLiquidBlocks: true, includePassableBlocks: true})*/
@@ -2999,24 +3190,354 @@ export function editorStickB(sourceEntity, dimensionLocation) {
         console.error(e, e.stack);
     });
 }
-export function editorStickC(sourceEntity) { } /*
+export function editorStickC(sourceEntitya, includeLiquidBlocks = false, includePassableBlocks = false, maxDistance = undefined) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form = new ModalFormData(); /*
+    console.warn(maxDistance)*/
+    let block = sourceEntitya.dimension.getBlockFromRay(sourceEntitya.location, sourceEntitya.getViewDirection(), { includeLiquidBlocks: includeLiquidBlocks, includePassableBlocks: includePassableBlocks, maxDistance: maxDistance });
+    let block2 = block.block;
+    form.title("Editor Stick C");
+    let blockStatesFullList; /*
+    try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]); } catch(e){console.error(e, e.stack);}
+    try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]).split(","); } catch(e){console.error(e, e.stack);}*/
+    try {
+        BlockPermutation.resolve("minecraft:bedrock", block2.permutation.getAllStates());
+    }
+    catch (e) {
+        if (String(e).includes("Error: Failed to resolve block \"minecraft:bedrock\" with properties")) {
+            blockStatesFullList = "§r§b" + String(e).slice(68, String(e).length - 2).split(",").join("\n§b").split("\":").join("\": §a") + "§r§f";
+        }
+        else {
+            blockStatesFullList = "§r§cThis block has no block states. §f";
+        }
+    } /*
+    for (const index in block.block.permutation.getAllStates()) {*/ /*
+        console.warn(index);*/ /*
+    if (Number(index) != 0) {*/ /*
+        try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()[index]]).split(","); } catch(e){console.error(e, e.stack);}
+        try {blockStatesFullList } catch(e){console.error(e, e.stack);}*/ /*
+}*/ /*
+    console.warn(targetList);*/ /*
+}*/
+    try {
+        form.textField("x: " + block2.x + "\ny: " + block2.y + "\nz: " + block2.z + "\ndimension: " + block2.dimension.id + "\ndistance: " + mcMath.Vector3Utils.distance(sourceEntity.location, block2.location) + "\ngetRedstonePower: " + block2.getRedstonePower() + "\nblockFace: " + block.face + "\nblockFaceLocation: { x: " + block.faceLocation.x + ", y: " + block.faceLocation.y + ", z: " + block.faceLocation.z + " }\nsetType", "Block Type", block2.typeId);
+    }
+    catch (e) {
+        console.error(e, e.stack);
+        form.textField("setType\nERROR: NO BLOCK SELECTED", "Block Type", "minecraft:air");
+    } /*Error: Failed To resolve block "minecraft:bedrock" with properties */
+    form.toggle("setType Enabled", false);
+    try {
+        form.textField("List Of Block Properties: " + blockStatesFullList /*(BlockPermutation.resolve("minecraft:bedrock", block.block.permutation.getAllStates()))*/ + "\nBlock Property Identifier", "bool_state, num_state, str_state");
+    }
+    catch (e) {
+        console.error(e, e.type /*e.stack*/);
+        console.warn("test: " + String(e).slice(67) /*e.stack*/);
+        form.textField("Block Property Identifier", "bool_state, num_state, str_state");
+    }
+    form.textField("Block Property Value", "true, 1, \"North\"");
+    form.toggle("setProperty Enabled", false); /*
+    try {console.warn(block.block.permutation.getAllStates()) } catch(e){console.error(e, e.stack);}
+    try {console.warn(block.block.permutation.getAllStates()[0]) } catch(e){console.error(e, e.stack);}
+    try {console.warn(block.block.permutation.getAllStates()[0][0]) } catch(e){console.error(e, e.stack);}*/
+    /*form.dropdown("Block Permutation To Set", block.getTags())*/ /*
+    form.slider("Selected Slot", 0, 56, 1)*/
+    form.toggle("isWaterlogged", block2.isWaterlogged); /*
+    form.toggle("Clear Velocity", false)*/
+    form.toggle("Debug", false);
+    form.toggle("setWaterContainerProperties Enabled", false);
+    try {
+        if (block2.getComponent("waterContainer") != undefined) {
+            form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("waterContainer").getCustomColor().red}\n§aGreen: §g${block2.getComponent("waterContainer").getCustomColor().green}\n§bBlue: §g${block2.getComponent("waterContainer").getCustomColor().blue}\n§dAlpha: §g${block2.getComponent("waterContainer").getCustomColor().alpha}\nFill Level: §g${block2.getComponent("waterContainer").fillLevel}`, `red, green, blue, alpha, fill level`, `${block2.getComponent("waterContainer").getCustomColor().red}, ${block2.getComponent("waterContainer").getCustomColor().green}, ${block2.getComponent("waterContainer").getCustomColor().blue}, ${block2.getComponent("waterContainer").getCustomColor().alpha}, ${block2.getComponent("waterContainer").fillLevel}`);
+        }
+        else {
+            form.textField(`§4Cauldron Water RGBA Color`, `§4Unavailable`);
+        }
+    }
+    catch {
+        form.textField(`§4Cauldron Water RGBA Color/Fill Level`, `§4Unavailable`);
+    }
+    form.toggle("setSnowContainerProperties Enabled", false);
+    if (block2.getComponent("snowContainer") != undefined) {
+        form.textField(`Cauldron Snow Fill Level\nFill Level: §g${block2.getComponent("snowContainer").fillLevel}`, `${block2.getComponent("snowContainer").fillLevel}`, `${block2.getComponent("snowContainer").fillLevel}`);
+    }
+    else {
+        form.textField(`§4Cauldron Snow Fill Level`, `§r§4Unavailable`);
+    }
+    form.toggle("setLavaContainerProperties Enabled", false);
+    if (block2.getComponent("lavaContainer") != undefined) {
+        form.textField(`Cauldron Lava Fill Level\nFill Level: §g${block2.getComponent("lavaContainer").fillLevel}`, `${block2.getComponent("lavaContainer").fillLevel}`, `${block2.getComponent("lavaContainer").fillLevel}`);
+    }
+    else {
+        form.textField(`§4Cauldron Lava Fill Level`, `§r§4Unavailable`);
+    }
+    form.toggle("setPotionContainerProperties Enabled", false);
+    if (block2.getComponent("potionContainer") != undefined) {
+        form.textField(`Cauldron Potion Type Contents/Fill Level\nFill Level: §g${block2.getComponent("potionContainer").fillLevel}`, `item type, fill level`, `item type, ${block2.getComponent("potionContainer").fillLevel}`);
+    }
+    else {
+        form.textField(`§4Cauldron Potion Type Contents/Fill Level`, `§r§4Unavailable`);
+    }
+    form.toggle("setSignFrontRawText Enabled", false);
+    if (block2.getComponent("sign") != undefined) {
+        form.textField(`Sign Front RawText\nRawText: §g${JSON.stringify(block2.getComponent("sign").getRawText(SignSide.Front))}`, `{rawtext: [{text|translate|rawtext|score|with: value, ...}]}`, JSON.stringify(block2.getComponent("sign").getRawText(SignSide.Front)));
+    }
+    else {
+        form.textField(`§4Sign Front RawText`, `§r§4Unavailable`);
+    }
+    form.toggle("setSignBackRawText Enabled", false);
+    if (block2.getComponent("sign") != undefined) {
+        form.textField(`Sign Back RawText\nRawText: §g${JSON.stringify(block2.getComponent("sign").getRawText(SignSide.Back))}`, `{rawtext: [{text|translate|rawtext|score|with: value, ...}]}`, JSON.stringify(block2.getComponent("sign").getRawText(SignSide.Back)));
+    }
+    else {
+        form.textField(`§4Sign Back RawText`, `§r§4Unavailable`);
+    }
+    form.toggle("setSignFrontText Enabled", false);
+    if (block2.getComponent("sign") != undefined) {
+        form.textField(`Sign Front Text\nRawText: §g${block2.getComponent("sign").getText(SignSide.Front)}`, `text`, block2.getComponent("sign").getText(SignSide.Front));
+    }
+    else {
+        form.textField(`§4Sign Front Text`, `§r§4Unavailable`);
+    }
+    form.toggle("setSignBackText Enabled", false);
+    if (block2.getComponent("sign") != undefined) {
+        form.textField(`Sign Back Text\Text: §g${block2.getComponent("sign").getText(SignSide.Back)}`, `text`, block2.getComponent("sign").getText(SignSide.Back));
+    }
+    else {
+        form.textField(`§4Sign Back Text`, `§r§4Unavailable`);
+    }
+    form.toggle("setSignFrontTextColor Enabled", false);
+    if (block2.getComponent("sign") != undefined) {
+        form.textField(`Sign Front Text Color\Text: §g${block2.getComponent("sign").getTextDyeColor(SignSide.Front)}`, `dye color`, block2.getComponent("sign").getTextDyeColor(SignSide.Front));
+    }
+    else {
+        form.textField(`§4Sign Front Text Color`, `§r§4Unavailable`);
+    }
+    form.toggle("setSignBackTextColor Enabled", false);
+    if (block2.getComponent("sign") != undefined) {
+        form.textField(`Sign Back Text Color\Text: §g${block2.getComponent("sign").getTextDyeColor(SignSide.Back)}`, `dye color`, block2.getComponent("sign").getTextDyeColor(SignSide.Back));
+    }
+    else {
+        form.textField(`§4Sign Back Text Color`, `§r§4Unavailable`);
+    }
+    form.toggle("setSignIsWaxed", block2.getComponent("sign")?.isWaxed);
+    forceShow(form, sourceEntity).then(r => {
+        if (r.canceled)
+            return;
+        let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*, selectedSlotIndex*/, isWaterlogged /*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
+        let blockPropertyValue2;
+        blockPropertyValue2 = "";
+        let blockPropertyValueArray;
+        blockPropertyValueArray = String(blockPropertyValue).split(", ");
+        let blockPropertyValueLength = String(blockPropertyIdentifier).split(", ").length;
+        if (waterContainerEnabled && block2.getComponent("waterContainer") != undefined) {
+            block2.getComponent("waterContainer").setCustomColor({ red: Number(String(waterContainer).split(", ")[0]), green: Number(String(waterContainer).split(", ")[1]), blue: Number(String(waterContainer).split(", ")[2]), alpha: Number(String(waterContainer).split(", ")[3]) });
+            block2.getComponent("waterContainer").fillLevel = Number(String(waterContainer).split(", ")[4]);
+        }
+        if (snowContainerEnabled && block2.getComponent("snowContainer") != undefined) {
+            block2.getComponent("snowContainer").fillLevel = Number(String(snowContainer).split(", ")[0]);
+        }
+        if (lavaContainerEnabled && block2.getComponent("lavaContainer") != undefined) {
+            block2.getComponent("lavaContainer").fillLevel = Number(String(lavaContainer).split(", ")[0]);
+        }
+        if (potionContainerEnabled && block2.getComponent("potionContainer") != undefined) {
+            block2.getComponent("potionContainer").fillLevel = Number(String(potionContainer).split(", ")[1]);
+            block2.getComponent("potionContainer").setPotionType(new ItemStack(String(String(potionContainer).split(", ")[0]), 255));
+        }
+        if (signFrontRawTextEnabled && block2.getComponent("sign") != undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) { /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/
+            block2.getComponent("sign").setText(JSON.parse(String(signFrontRawText)), SignSide.Front);
+        }
+        if (signBackRawTextEnabled && block2.getComponent("sign") != undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) { /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/
+            block2.getComponent("sign").setText(JSON.parse(String(signBackRawText)), SignSide.Back);
+        }
+        if (signFrontTextEnabled && block2.getComponent("sign") != undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) { /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/
+            block2.getComponent("sign").setText(String(signFrontText).replaceAll("\\n", "\n"), SignSide.Front);
+        }
+        if (signBackTextEnabled && block2.getComponent("sign") != undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) { /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/
+            block2.getComponent("sign").setText(String(signBackText).replaceAll("\\n", "\n"), SignSide.Back);
+        }
+        if (block2.getComponent("sign") != undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) { /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/
+            block2.getComponent("sign").setWaxed(Boolean(setSignIsWaxed));
+        }
+        DyeColor.Blue; //make it save this DyeColor in the imports from @minecraft/server. 
+        if (signFrontTextColorEnabled && block2.getComponent("sign") != undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) { /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/
+            block2.getComponent("sign").setTextDyeColor(eval(`DyeColor.${signFrontTextColor}`), SignSide.Back);
+        }
+        if (signBackTextColorEnabled && block2.getComponent("sign") != undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) { /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/
+            block2.getComponent("sign").setTextDyeColor(eval(`DyeColor.${signBackTextColor}`), SignSide.Front);
+        }
+        for (let index in blockPropertyValueArray) { /*
+            console.warn(blockPropertyValueArray)*/ /*
+        console.warn(blockPropertyValueArray[index])*/
+            if (String(blockPropertyValueArray[index]).startsWith("\"") && String(blockPropertyValueArray[index]).endsWith("\"")) {
+                console.warn("string");
+                blockPropertyValueArray[index] = String(blockPropertyValueArray[index]).slice(1, (String(blockPropertyValueArray[index]).length - 1)); /*
+                console.warn(blockPropertyValueArray[index])*/
+            }
+            else {
+                if ((String(blockPropertyValueArray[index]).startsWith("\"") == false) && (String(blockPropertyValueArray[index]).endsWith("\"") == false) && ("0123456789.".includes(String(blockPropertyValueArray[index]).charAt(0)))) {
+                    blockPropertyValueArray[index] = Number(blockPropertyValueArray[index]);
+                }
+                else {
+                    if ((String(blockPropertyValueArray[index]).startsWith("\"") == false) && (String(blockPropertyValueArray[index]).endsWith("\"") == false) && ((String(blockPropertyValueArray[index]) == "false") || (String(blockPropertyValueArray[index]) == "true"))) {
+                        blockPropertyValueArray[index] = Boolean(blockPropertyValueArray[index]);
+                    }
+                    else {
+                        if ((String(blockPropertyValueArray[index]).startsWith("\"") == false) && (String(blockPropertyValueArray[index]).endsWith("\"") == false) && ((String(blockPropertyValueArray[index]) == "false") || (String(blockPropertyValueArray[index]) == "true") || (blockPropertyValueArray[index] == false) || (blockPropertyValueArray[index] == true))) {
+                            blockPropertyValueArray[index] = String(blockPropertyValueArray[index]); /*
+                            console.warn("other")*/
+                        }
+                    }
+                }
+            }
+        }
+        ; /*
+    if (String(blockPropertyValue).startsWith("\"") && String(blockPropertyValue).endsWith("\"")) {
+        blockPropertyValue2 = String(blockPropertyValue).slice(2, (String(blockPropertyValue).length - 3))
+    } else {
+    if ((String(blockPropertyValue).startsWith("\"") == false) && (String(blockPropertyValue).endsWith("\"") == false) && ("0123456789.".includes(String(blockPropertyValue).charAt(0)))) {
+        blockPropertyValue2 = Number(blockPropertyValue)
+    } else {
+    if ((String(blockPropertyValue).startsWith("\"") == false) && (String(blockPropertyValue).endsWith("\"") == false) && ((String(blockPropertyValue) == "false") || (String(blockPropertyValue) == "true"))) {
+        blockPropertyValue2 = Boolean(blockPropertyValue)
+    } else {
+        if ((String(blockPropertyValue).startsWith("\"") == false) && (String(blockPropertyValue).endsWith("\"") == false) && ((String(blockPropertyValue) == "false") || (String(blockPropertyValue) == "true") || (blockPropertyValue == false) || (blockPropertyValue == true))) {
+            blockPropertyValue2 = String(blockPropertyValue)
+        }}}}*/
+        if (setTypeEnabled == true) {
+            try {
+                block2.setType(BlockTypes.get(String(setType)) /*String(setType)*/);
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+        }
+        ; /*
+        try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier)]: blockPropertyValue2 })) } catch ( e ) { console.error(e, e.stack) }*/
+        if (setPropertyEnabled == true) {
+            switch (blockPropertyValueLength) {
+                case 1:
+                    try {
+                        block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0] }) /*block2.permutation.clone().withState(String(blockPropertyIdentifier), blockPropertyValue2).clone().getAllStates()*/);
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    break;
+                case 2:
+                    try {
+                        block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1] }));
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    break;
+                case 3:
+                    try {
+                        block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2] }));
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    break;
+                case 4:
+                    try {
+                        block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3] }));
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    break;
+                case 5:
+                    try {
+                        block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]]: blockPropertyValueArray[4] }));
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    break;
+                case 6:
+                    try {
+                        block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]]: blockPropertyValueArray[5] }));
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    break;
+                case 7:
+                    try {
+                        block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]]: blockPropertyValueArray[5], [String(blockPropertyIdentifier).split(", ")[6]]: blockPropertyValueArray[6] }));
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    break;
+                case 8:
+                    try {
+                        block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]]: blockPropertyValueArray[5], [String(blockPropertyIdentifier).split(", ")[6]]: blockPropertyValueArray[6], [String(blockPropertyIdentifier).split(", ")[7]]: blockPropertyValueArray[7] }));
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    break;
+                case 9:
+                    try {
+                        block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]]: blockPropertyValueArray[5], [String(blockPropertyIdentifier).split(", ")[6]]: blockPropertyValueArray[6], [String(blockPropertyIdentifier).split(", ")[7]]: blockPropertyValueArray[7], [String(blockPropertyIdentifier).split(", ")[8]]: blockPropertyValueArray[8] }));
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    break;
+                case 10:
+                    try {
+                        block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]]: blockPropertyValueArray[5], [String(blockPropertyIdentifier).split(", ")[6]]: blockPropertyValueArray[6], [String(blockPropertyIdentifier).split(", ")[7]]: blockPropertyValueArray[7], [String(blockPropertyIdentifier).split(", ")[8]]: blockPropertyValueArray[8], [String(blockPropertyIdentifier).split(", ")[9]]: blockPropertyValueArray[9] }));
+                    }
+                    catch (e) {
+                        console.error(e, e.stack);
+                    }
+                    break;
+                default:
+                    break; /*
+                break;*/
+            }
+        }
+        ;
+        try {
+            block2.setWaterlogged(Boolean(isWaterlogged));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        } /*
+        GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
+          
+            test.setBlockType("minecraft:redstone_repeater", test.relativeBlockLocation({ x: 2313, y: 64, z: 10944}));
+          
+          })
+            .maxTicks(400)
+            .structureName("gametests:mediumglass");*/ /*
+    sourceEntity.runCommand("/gametest run gametests:mediumglass")*/
+        /*BlockType.arguments({id: "minecraft:grass"})*/
+        // Do something
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+} /*
 export function evalAutoScriptSettings(sourceEntity: Entity|Player){}*/
-export function managePlayers(sourceEntity, pagen = 0) {
+export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = config.maxPlayersPerManagePlayersPage ?? 10) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData;
     const page = Math.max(0, pagen);
     const numsavedplayers = savedPlayer.getSavedPlayers().length;
     const numonlinesavedplayers = savedPlayer.getSavedPlayers().filter(_ => _.isOnline).length;
     const numofflinesavedplayers = savedPlayer.getSavedPlayers().filter(_ => !_.isOnline).length;
-    form.title(`Manage Players ${Math.min(numsavedplayers, (page * 50) + 1)}-${Math.min(numsavedplayers, (page + 1) * 50)} of ${numsavedplayers}`);
-    const numpages = Math.ceil(numsavedplayers / 50);
-    form.button((page != 0) ? "§7" : "" + "Previous Page", "textures/ui/arrow_left");
-    form.button((page < (numpages - 1)) ? "§7" : "" + "Next Page", "textures/ui/arrow_right");
-    let onlinePlayers = savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_ => _.isOnline).slice(page * 50, (page + 1) * 50);
-    onlinePlayers.forEach((p) => { form.button(`${p.name}\n${ban.testForBannedPlayer(p) ? "Banned" : "Online"}`, "textures/ui/online"); });
-    let offlinePlayers = savedPlayer.getSavedPlayers().filter(_ => !_.isOnline).sort((a, b) => (b.lastOnline - a.lastOnline)).sort((a, b) => 1 - (2 * Number(Number(a.isBanned) > Number(b.isBanned)))).slice((page * 50) + Math.min(50, Math.max(0, numonlinesavedplayers - (page * 50))), (page + 1) * 50);
-    offlinePlayers.forEach((p) => { form.button(`${p.name}\n${ban.testForBannedPlayer(p) ? "Banned" : "Online: " + new Date(Number(p.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString()}`, p.isBanned ? "textures/ui/Ping_Offline_Red_Dark" : "textures/ui/offline"); });
-    const numplayersonpage = onlinePlayers.length + offlinePlayers.length;
-    let players = onlinePlayers.concat(offlinePlayers);
+    form.title(`Manage Players ${Math.min(numsavedplayers, (page * maxplayersperpage) + 1)}-${Math.min(numsavedplayers, (page + 1) * maxplayersperpage)} of ${numsavedplayers}`);
+    const numpages = Math.ceil(numsavedplayers / maxplayersperpage);
+    form.button(((page != 0) ? "§0" : "§8") + "Previous Page", "textures/ui/arrow_left");
+    form.button(((page < (numpages - 1)) ? "§0" : "§8") + "Next Page", "textures/ui/arrow_right");
+    let displayPlayers = [...savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_ => _.isOnline), ...savedPlayer.getSavedPlayers().filter(_ => (!_.isOnline) && (_.isBanned)).sort((a, b) => (b.lastOnline - a.lastOnline)), ...savedPlayer.getSavedPlayers().filter(_ => (!_.isOnline) && (!_.isBanned)).sort((a, b) => (b.lastOnline - a.lastOnline))].slice(page * maxplayersperpage, (page + 1) * maxplayersperpage);
+    displayPlayers.forEach((p) => { form.button(`${p.name}\n${ban.testForBannedPlayer(p) ? "Banned" : p.isOnline ? "Online" : "Online: " + new Date(Number(p.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString()}`, p.isOnline ? "textures/ui/online" : p.isBanned ? "textures/ui/Ping_Offline_Red_Dark" : "textures/ui/offline"); });
+    const numplayersonpage = displayPlayers.length;
+    let players = displayPlayers;
     form.button("Manage Bans");
     form.button("Back");
     forceShow(form, sourceEntity).then(ra => {
@@ -3307,7 +3828,8 @@ export function managePlayers(sourceEntity, pagen = 0) {
 export function getAllBuiltInCommandsCategories() { let set = new Set(); commands.map(v => v.category).forEach(v => typeof v == "string" ? set.add(v) : v.forEach(v => set.add(v))); return [...set]; }
 export const commandCategories = ["items", "misc", "invsee", "players", "containers/inventories", "entities", "warps", "world", "uis", "dangerous", "Entity Scale Add-On", "built-in", "custom", "all"];
 export const commandCategoriesDisplay = [{ name: "Items", icon: "" }, { name: "Misc" }, { name: "Invsee" }, { name: "Players" }, { name: "Containers/Inventories" }, { name: "Entities" }, { name: "Warps" }, { name: "World" }, { name: "UIs" }, { name: "§4Dangerous" }, { name: "§6Entity Scale Add-On" }, { name: "All Built-In" }, { name: "Custom" }, { name: "All" }];
-export function manageCommands(sourceEntity) {
+export function manageCommands(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData;
     form.title("Manage Commands");
     let defaultCommands = command.getDefaultCommands();
@@ -3342,6 +3864,7 @@ export function manageCommands(sourceEntity) {
                 forceShow(formB, sourceEntity).then(ra => {
                     let r = ra;
                     if (r.canceled) {
+                        manageCommands(sourceEntity);
                         return;
                     }
                     ;
@@ -3361,6 +3884,7 @@ export function manageCommands(sourceEntity) {
                             forceShow(form5, sourceEntity).then(ha => {
                                 let h = ha;
                                 if (h.canceled) {
+                                    manageCommands(sourceEntity);
                                     return;
                                 }
                                 ;
@@ -3413,6 +3937,7 @@ export function manageCommands(sourceEntity) {
                             forceShow(form2, sourceEntity).then(ga => {
                                 let g = ga;
                                 if (g.canceled) {
+                                    manageCommands(sourceEntity);
                                     return;
                                 }
                                 ;
@@ -3529,6 +4054,7 @@ export function manageCommands(sourceEntity) {
                                         forceShow(form7, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
+                                                manageCommands(sourceEntity);
                                                 return;
                                             }
                                             ;
@@ -3545,6 +4071,7 @@ export function manageCommands(sourceEntity) {
                                         forceShow(form4, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
+                                                manageCommands(sourceEntity);
                                                 return;
                                             }
                                             ;
@@ -3562,6 +4089,7 @@ export function manageCommands(sourceEntity) {
                                         forceShow(form6, sourceEntity).then(ha => {
                                             let h = ha;
                                             if (h.canceled) {
+                                                manageCommands(sourceEntity);
                                                 return;
                                             }
                                             ;
@@ -3583,7 +4111,8 @@ export function manageCommands(sourceEntity) {
 }
 //1320
 //2013
-export async function onlinePlayerSelector(sourceEntity, backFunction = mainMenu, ...functionargs) {
+export async function onlinePlayerSelector(sourceEntitya, backFunction = mainMenu, ...functionargs) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData;
     form.title("Select Player");
     let playerslist = world.getAllPlayers();
@@ -3604,7 +4133,8 @@ export async function onlinePlayerSelector(sourceEntity, backFunction = mainMenu
         }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
-export async function itemSelector(sourceEntity, targetPlayer, backFunction = mainMenu, ...functionargs) {
+export async function itemSelector(sourceEntitya, targetPlayer, backFunction = mainMenu, ...functionargs) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData;
     form.title("Select Item");
     let itemsList = [];
@@ -3640,7 +4170,8 @@ export async function itemSelector(sourceEntity, targetPlayer, backFunction = ma
         }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
-export async function itemEditorTypeSelection(sourceEntity, targetPlayer, item, selectionItems, backFunction = mainMenu, ...functionargs) {
+export async function itemEditorTypeSelection(sourceEntitya, targetPlayer, item, selectionItems, backFunction = mainMenu, ...functionargs) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData;
     form.title("§eItem Editor §f[§cAlpha§f]");
     form.button((!item.item.hasItem() ? "§c" : "") + "Edit Item" /*, "textures/ui/online"*/);
@@ -3698,7 +4229,8 @@ export async function itemEditorTypeSelection(sourceEntity, targetPlayer, item, 
         return result;
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
-export async function itemEditor(sourceEntity, targetPlayer, item) {
+export async function itemEditor(sourceEntitya, targetPlayer, item) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData;
     form.title("Edit Item");
     form.textField("Item Name (escape characters such as \\n are allowed)", "string", !!!item.nameTag ? undefined : item.nameTag);
@@ -3801,7 +4333,8 @@ export async function itemEditor(sourceEntity, targetPlayer, item) {
         return result;
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
-export function itemDynamicPropertyEditor(sourceEntity, item) {
+export function itemDynamicPropertyEditor(sourceEntitya, item) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let formb = new ActionFormData;
     formb.title("Item Dynamic Property Editor");
     formb.button("Add Property");
@@ -3840,7 +4373,8 @@ export function itemDynamicPropertyEditor(sourceEntity, item) {
         }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
-export function itemCodePropertyEditor(sourceEntity, item) {
+export function itemCodePropertyEditor(sourceEntitya, item) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData;
     form.title("Code Editor");
     form.textField("Item Use Code", "JavaScript", String(item.getDynamicProperty("code")));
@@ -3871,7 +4405,8 @@ export function itemCodePropertyEditor(sourceEntity, item) {
         }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
-export function newItemInSlot(sourceEntity, item) {
+export function newItemInSlot(sourceEntitya, item) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData;
     form.title("New Item");
     form.textField("Item Type", "Item Id", "minecraft:grass_block");
@@ -3892,7 +4427,8 @@ export function newItemInSlot(sourceEntity, item) {
         }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
-export function createExplosion(sourceEntity, parameterDefaults) {
+export function createExplosion(sourceEntitya, parameterDefaults) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData;
     form.title("Create Explosion");
     form.textField("x", "number", String(parameterDefaults?.x ?? sourceEntity.location.x));

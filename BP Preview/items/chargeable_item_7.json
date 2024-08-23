@@ -47,7 +47,7 @@
 			"minecraft:use_modifiers": {
 				"movement_modifier": 1
 			}, 
-			"minecraft:damage": -1, 
+			//"minecraft:damage": -1, 
                     	"minecraft:allow_off_hand": true,
                     	"minecraft:enchantable": {
 		                "slot": "all", // Can be any of the enchant slot listed below

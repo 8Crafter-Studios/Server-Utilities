@@ -7974,7 +7974,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                 system.run(() => { let ta; try {
                                     let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         if (replacemode) {
@@ -8002,7 +8002,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     try {
                                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                         system.runTimeout(() => {
                                             try {
                                                 let startTime = Date.now();
@@ -8606,7 +8606,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 system.run(() => { let ta; try {
                                     let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         if (replacemode) {
@@ -8634,7 +8634,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                     try {
                                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                         system.runTimeout(() => {
                                             try {
                                                 let startTime = Date.now();
@@ -9725,7 +9725,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, hointegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -9744,7 +9744,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, ointegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -9763,7 +9763,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -9782,7 +9782,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -9801,7 +9801,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -9820,7 +9820,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -9839,7 +9839,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, { matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1] }, undefined, creplacemode);
@@ -9861,7 +9861,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -9883,7 +9883,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -9905,7 +9905,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -9927,7 +9927,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -9949,7 +9949,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -9971,7 +9971,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -9993,7 +9993,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -10015,7 +10015,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, { matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1] }, undefined, treplacemode, tintegrity);
@@ -10037,7 +10037,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10059,7 +10059,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10081,7 +10081,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10103,7 +10103,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10125,7 +10125,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10147,7 +10147,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10169,7 +10169,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10194,7 +10194,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         if (replacemode) {
@@ -10291,7 +10291,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     system.run(() => { let ta; try {
                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
                             let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
@@ -10357,7 +10357,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     system.run(() => { let ta; try {
                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
                             let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
@@ -10423,7 +10423,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     system.run(() => { let ta; try {
                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
                             let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
@@ -10489,7 +10489,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     system.run(() => { let ta; try {
                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
                             let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
@@ -10555,7 +10555,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     system.run(() => { let ta; try {
                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
                             let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
@@ -12896,7 +12896,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 system.run(() => { let ta; try {
                                     let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         if (replacemode) {
@@ -12924,7 +12924,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                     try {
                                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                         system.runTimeout(() => {
                                             try {
                                                 let startTime = Date.now();
@@ -14017,7 +14017,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, hointegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -14036,7 +14036,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, ointegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -14055,7 +14055,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -14074,7 +14074,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -14093,7 +14093,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -14112,7 +14112,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -14131,7 +14131,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, { matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1] }, undefined, creplacemode);
@@ -14153,7 +14153,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14175,7 +14175,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14197,7 +14197,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14219,7 +14219,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14241,7 +14241,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14263,7 +14263,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14285,7 +14285,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14307,7 +14307,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, { matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1] }, undefined, treplacemode, tintegrity);
@@ -14329,7 +14329,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14351,7 +14351,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14373,7 +14373,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14395,7 +14395,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14417,7 +14417,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14439,7 +14439,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14461,7 +14461,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14486,7 +14486,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         if (replacemode) {

@@ -1617,7 +1617,7 @@ catch (e) {
 export async function generateTickingAreaFillCoordinatesC(center, area, dimension, spawnEntityCallback = (l, e, i) => { try {
     let name = `generateTickingAreaFillCoordinates${Date.now()}EntityTickingArea${i}`;
     l.dimension.runCommand(`summon andexdb:tickingarea_6 ${name} ${vTStr(l)}`);
-    e.push(l.dimension.getEntitiesAtBlockLocation(l).find(v => v.typeId == "andexdb:tickingarea" && v.nameTag == name));
+    e.push(l.dimension.getEntitiesAtBlockLocation(l).find(v => v.typeId == "andexdb:tickingarea_6" && v.nameTag == name));
 }
 catch (e) {
     console.warn(e, e.stack);
