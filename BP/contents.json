@@ -94,6 +94,9 @@
          "path" : "recipes/smithing_table/604minecraft;donkey_spawn_egg.json"
       },
       {
+         "path" : "entities/tickingarea_4.json"
+      },
+      {
          "path" : "items/brush_1.json"
       },
       {
@@ -193,19 +196,25 @@
          "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-cameraPresets.d.ts"
       },
       {
-         "path" : "structures/SmallMobTests/fence_post.mcstructure"
-      },
-      {
-         "path" : "recipes/smithing_table/1217minecraft;magma_cube_spawn_egg.json"
-      },
-      {
          "path" : "structures/PathFindingTests/carpet_walk_around.mcstructure"
       },
       {
          "path" : "LICENSE.txt"
       },
       {
+         "path" : "structures/SmallMobTests/fence_post.mcstructure"
+      },
+      {
+         "path" : "recipes/smithing_table/1217minecraft;magma_cube_spawn_egg.json"
+      },
+      {
          "path" : "recipes/smithing_table/1354minecraft;orange_stained_glass_pane.json"
+      },
+      {
+         "path" : "recipes/smithing_table/99minecraft;arrow.58.json"
+      },
+      {
+         "path" : "entities/tickingarea_2.json"
       },
       {
          "path" : "items/chargeable_item_5.json"
@@ -526,21 +535,6 @@
          "path" : "recipes/smithing_table/1174minecraft;lingering_potion.34.json"
       },
       {
-         "path" : "recipes/smithing_table/1122minecraft;light_gray_wool.json"
-      },
-      {
-         "path" : "recipes/smithing_table/465minecraft;copper_grate.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1441minecraft;porkchop.json"
-      },
-      {
-         "path" : "recipes/smithing_table/505minecraft;crossbow.json"
-      },
-      {
-         "path" : "items/entity_debug_stick.json"
-      },
-      {
          "path" : "items/command_runner.json"
       },
       {
@@ -548,6 +542,54 @@
       },
       {
          "path" : "dialogue/scene.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1473minecraft;potion.27.json"
+      },
+      {
+         "path" : "entities/tickingarea_3.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1864minecraft;warped_button.json"
+      },
+      {
+         "path" : "recipes/smithing_table/639minecraft;element_112.json"
+      },
+      {
+         "path" : "items/chargeable_item_4.json"
+      },
+      {
+         "path" : "entities/tickingarea_5.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1548minecraft;red_candle.json"
+      },
+      {
+         "path" : "items/chargeable_item_2.json"
+      },
+      {
+         "path" : "entities/tickingarea_6.json"
+      },
+      {
+         "path" : "recipes/smithing_table/663minecraft;element_28.json"
+      },
+      {
+         "path" : "items/chargeable_item_1.json"
+      },
+      {
+         "path" : "items/player_debug_stick.json"
+      },
+      {
+         "path" : "recipes/smithing_table/859minecraft;glass.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1496minecraft;powder_snow_bucket.json"
+      },
+      {
+         "path" : "structures/VibrationTests/event_sculk_touch_wool.mcstructure"
+      },
+      {
+         "path" : "items/brush_3.json"
       },
       {
          "path" : "structures/SculkTests/charge_merging.mcstructure"
@@ -574,27 +616,6 @@
          "path" : "items/brush_3 - Copy.json"
       },
       {
-         "path" : "recipes/smithing_table/663minecraft;element_28.json"
-      },
-      {
-         "path" : "items/chargeable_item_1.json"
-      },
-      {
-         "path" : "items/player_debug_stick.json"
-      },
-      {
-         "path" : "recipes/smithing_table/859minecraft;glass.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1496minecraft;powder_snow_bucket.json"
-      },
-      {
-         "path" : "structures/VibrationTests/event_sculk_touch_wool.mcstructure"
-      },
-      {
-         "path" : "items/brush_3.json"
-      },
-      {
          "path" : "recipes/smithing_table/1951minecraft;white_stained_glass.json"
       },
       {
@@ -611,24 +632,6 @@
       },
       {
          "path" : "recipes/smithing_table/1909minecraft;waxed_oxidized_copper.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1548minecraft;red_candle.json"
-      },
-      {
-         "path" : "items/chargeable_item_2.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1473minecraft;potion.27.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1864minecraft;warped_button.json"
-      },
-      {
-         "path" : "recipes/smithing_table/639minecraft;element_112.json"
-      },
-      {
-         "path" : "items/chargeable_item_4.json"
       },
       {
          "path" : "recipes/smithing_table/831minecraft;fire_charge.json"
@@ -680,6 +683,21 @@
       },
       {
          "path" : "items/diamond_downgrade_smithing_template.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1122minecraft;light_gray_wool.json"
+      },
+      {
+         "path" : "recipes/smithing_table/465minecraft;copper_grate.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1441minecraft;porkchop.json"
+      },
+      {
+         "path" : "recipes/smithing_table/505minecraft;crossbow.json"
+      },
+      {
+         "path" : "items/entity_debug_stick.json"
       },
       {
          "path" : "items/inventory_controller.json"
@@ -772,10 +790,10 @@
          "path" : "recipes/smithing_table/7minecraft;acacia_hanging_sign.json"
       },
       {
-         "path" : "manifest.json"
+         "path" : "recipes/smithing_table/1218minecraft;mangrove_boat.json"
       },
       {
-         "path" : "recipes/smithing_table/1218minecraft;mangrove_boat.json"
+         "path" : "manifest.json"
       },
       {
          "path" : "recipes/smithing_table/1303minecraft;nether_sprouts.json"
@@ -970,13 +988,13 @@
          "path" : "recipes/smithing_table/1075minecraft;leather_helmet.json"
       },
       {
-         "path" : "recipes/smithing_table/1677minecraft;splash_potion.7.json"
-      },
-      {
          "path" : "node_modules/@minecraft/math/dist/minecraft-math.js"
       },
       {
          "path" : "node_modules/@minecraft/math/lib/types/math-beta.d.ts"
+      },
+      {
+         "path" : "recipes/smithing_table/1677minecraft;splash_potion.7.json"
       },
       {
          "path" : "recipes/smithing_table/1047minecraft;jungle_fence_gate.json"
@@ -1505,9 +1523,6 @@
       },
       {
          "path" : "recipes/smithing_table/284minecraft;brown_concrete_powder.json"
-      },
-      {
-         "path" : "recipes/smithing_table/803minecraft;eye_armor_trim_smithing_template.json"
       },
       {
          "path" : "node_modules/react-dom/umd/react-dom-server-legacy.browser.production.min.js"
@@ -2071,16 +2086,16 @@
          "path" : "recipes/smithing_table/1478minecraft;potion.32.json"
       },
       {
-         "path" : "structures/PistonTests/quasiconnectivity.mcstructure"
-      },
-      {
-         "path" : "recipes/smithing_table/1216minecraft;magma_cream.json"
-      },
-      {
          "path" : "structures/MultifaceTests/spread_on_flat_ceiling.mcstructure"
       },
       {
          "path" : "recipes/smithing_table/1128minecraft;lime_candle_cake.json"
+      },
+      {
+         "path" : "structures/PistonTests/quasiconnectivity.mcstructure"
+      },
+      {
+         "path" : "recipes/smithing_table/1216minecraft;magma_cream.json"
       },
       {
          "path" : "node_modules/react-dom/README.md"
@@ -2617,18 +2632,6 @@
          "path" : "recipes/smithing_table/30minecraft;andesite.json"
       },
       {
-         "path" : "recipes/smithing_table/1065minecraft;lapis_lazuli.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1963minecraft;wolf_spawn_egg.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1344minecraft;ominous_trial_key.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1214minecraft;magenta_wool.json"
-      },
-      {
          "path" : "structures/RedstoneTests/itemframe_override_bedrock.mcstructure"
       },
       {
@@ -2642,6 +2645,18 @@
       },
       {
          "path" : "recipes/smithing_table/113minecraft;arrow.72.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1065minecraft;lapis_lazuli.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1963minecraft;wolf_spawn_egg.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1344minecraft;ominous_trial_key.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1214minecraft;magenta_wool.json"
       },
       {
          "path" : "recipes/smithing_table/1258minecraft;mooshroom_spawn_egg.json"
@@ -3025,13 +3040,13 @@
          "path" : "recipes/smithing_table/1985minecraft;yellow_glazed_terracotta.json"
       },
       {
-         "path" : "recipes/smithing_table/167minecraft;basalt.json"
+         "path" : "recipes/smithing_table/1609minecraft;shaper_armor_trim_smithing_template.json"
       },
       {
          "path" : "recipes/smithing_table/1136minecraft;lime_stained_glass_pane.json"
       },
       {
-         "path" : "recipes/smithing_table/1609minecraft;shaper_armor_trim_smithing_template.json"
+         "path" : "recipes/smithing_table/167minecraft;basalt.json"
       },
       {
          "path" : "recipes/smithing_table/1140minecraft;lingering_potion.json"
@@ -3379,13 +3394,10 @@
          "path" : "recipes/smithing_table/574minecraft;deepslate_iron_ore.json"
       },
       {
-         "path" : "recipes/smithing_table/1223minecraft;mangrove_fence.json"
-      },
-      {
          "path" : "recipes/smithing_table/804minecraft;farmland.json"
       },
       {
-         "path" : "recipes/smithing_table/801minecraft;exposed_cut_copper_stairs.json"
+         "path" : "recipes/smithing_table/1223minecraft;mangrove_fence.json"
       },
       {
          "path" : "recipes/smithing_table/1224minecraft;mangrove_fence_gate.json"
@@ -3431,15 +3443,6 @@
       },
       {
          "path" : "recipes/smithing_table/1237minecraft;mangrove_wall_sign.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1880minecraft;warped_standing_sign.json"
-      },
-      {
-         "path" : "structures/DoorTests/door_maze.mcstructure"
-      },
-      {
-         "path" : "recipes/smithing_table/1676minecraft;splash_potion.6.json"
       },
       {
          "path" : "recipes/smithing_table/1238minecraft;mangrove_wood.json"
@@ -3991,13 +3994,13 @@
          "path" : "recipes/smithing_table/1358minecraft;oxeye_daisy.json"
       },
       {
-         "path" : "recipes/smithing_table/1359minecraft;oxidized_chiseled_copper.json"
+         "path" : "recipes/smithing_table/1772minecraft;stripped_acacia_log.json"
       },
       {
          "path" : "recipes/smithing_table/802minecraft;exposed_double_cut_copper_slab.json"
       },
       {
-         "path" : "recipes/smithing_table/1772minecraft;stripped_acacia_log.json"
+         "path" : "recipes/smithing_table/1359minecraft;oxidized_chiseled_copper.json"
       },
       {
          "path" : "recipes/smithing_table/135minecraft;balloon.12.json"
@@ -4114,10 +4117,10 @@
          "path" : "recipes/smithing_table/13minecraft;acacia_sign.json"
       },
       {
-         "path" : "recipes/smithing_table/1679minecraft;splash_potion.9.json"
+         "path" : "recipes/smithing_table/1671minecraft;splash_potion.1.json"
       },
       {
-         "path" : "recipes/smithing_table/1671minecraft;splash_potion.1.json"
+         "path" : "recipes/smithing_table/1679minecraft;splash_potion.9.json"
       },
       {
          "path" : "recipes/smithing_table/1970minecraft;wooden_pickaxe.json"
@@ -4799,6 +4802,15 @@
       },
       {
          "path" : "recipes/smithing_table/373minecraft;clock.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1880minecraft;warped_standing_sign.json"
+      },
+      {
+         "path" : "structures/DoorTests/door_maze.mcstructure"
+      },
+      {
+         "path" : "recipes/smithing_table/1676minecraft;splash_potion.6.json"
       },
       {
          "path" : "recipes/smithing_table/1678minecraft;splash_potion.8.json"
@@ -6907,6 +6919,12 @@
          "path" : "recipes/smithing_table/800minecraft;exposed_cut_copper_slab.json"
       },
       {
+         "path" : "recipes/smithing_table/801minecraft;exposed_cut_copper_stairs.json"
+      },
+      {
+         "path" : "recipes/smithing_table/803minecraft;eye_armor_trim_smithing_template.json"
+      },
+      {
          "path" : "recipes/smithing_table/805minecraft;feather.json"
       },
       {
@@ -7340,9 +7358,6 @@
       },
       {
          "path" : "recipes/smithing_table/999minecraft;iron_hoe.json"
-      },
-      {
-         "path" : "recipes/smithing_table/99minecraft;arrow.58.json"
       },
       {
          "path" : "recipes/smithing_table/diamond_downgrade/38diamond_leggings.json"

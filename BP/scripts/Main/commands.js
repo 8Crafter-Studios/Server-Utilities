@@ -1,5 +1,5 @@
 import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType, EnchantmentTypes, StructureSaveMode, EntityTypes, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject /*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, formatTime } from "../Main";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject /*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, formatTime, SemVerString } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
@@ -48,7 +48,7 @@ export function idGenerator() {
     idGeneratorIndex = (idGeneratorIndex + 1) % 32767;
     return id;
 }
-export const commands_format_version = "22.0.0-rc.1";
+export const commands_format_version = "25.0.0-rc.73";
 // @ts-expect-error
 [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]]((!![] + [])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + ([][[]] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+!+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+!+[]]] + (![] + [+[]] + ([] + [])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]])[!+[] + !+[] + [+[]]] + (![] + [])[!+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][(!![] + [])[!+[] + !+[] + !+[]] + ([][[]] + [])[+!+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([![]] + [][[]])[+!+[] + [+[]]] + (!![] + [])[!+[] + !+[] + !+[]] + (![] + [])[!+[] + !+[] + !+[]]]() + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (![] + [])[!+[] + !+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]]((!![] + [])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + ([][[]] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+!+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+!+[]]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]]((!![] + [])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + ([][[]] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+!+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+!+[]]] + (!![] + [])[!+[] + !+[] + !+[]] + (![] + [])[!+[] + !+[] + !+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (![] + [])[+!+[]] + (+(!+[] + !+[] + [+!+[]] + [+!+[]]))[(!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([] + [])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]][([][[]] + [])[+!+[]] + (![] + [])[+!+[]] + ((+[])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]] + [])[+!+[] + [+!+[]]] + (!![] + [])[!+[] + !+[] + !+[]]]](!+[] + !+[] + !+[] + [+!+[]])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]])()([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[(![] + [])[!+[] + !+[] + !+[]] + (![] + [])[!+[] + !+[]] + ([![]] + [][[]])[+!+[] + [+[]]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[!+[] + !+[] + !+[]]]((+((+(+!+[] + [+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + [!+[] + !+[]] + [+[]]) + [])[+!+[]] + [+[] + [+[]] + [+[]] + [+[]] + [+[]] + [+[]] + [+!+[]]]) + [])[!+[] + !+[]] + [+!+[]]) + (![] + [])[+!+[]] + (!![] + [])[+[]] + (!![] + [])[!+[] + !+[] + !+[]])()())[!+[] + !+[] + !+[] + [+[]]] + (+(+!+[] + [+[]] + [+!+[]]))[(!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([] + [])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]][([][[]] + [])[+!+[]] + (![] + [])[+!+[]] + ((+[])[([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]] + [])[+!+[] + [+!+[]]] + (!![] + [])[!+[] + !+[] + !+[]]]](!+[] + !+[] + [+!+[]])[+!+[]] + ([![]] + [][[]])[+!+[] + [+[]]] + (![] + [])[!+[] + !+[] + !+[]])()[(!![] + [])[+[]] + (![] + [])[+[]] + (![] + [])[!+[] + !+[] + !+[]] + (![] + [])[+!+[]]] = [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + ([][[]] + [])[+!+[]] + (![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+[]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + (!![] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+[]]] + (!![] + [])[+!+[]]]((![] + [])[+[]], (!![] + [])[+!+[]] + (!![] + [])[!+[] + !+[] + !+[]] + (!![] + [])[+[]] + ([][[]] + [])[+[]] + (!![] + [])[+!+[]] + ([][[]] + [])[+!+[]] + (+[![]] + [][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]])[+!+[] + [+!+[]]] + '[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+([]+{})[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[+!+[]+[!+[]+!+[]+!+[]]]+(![]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]]+![]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]])()[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]()+[])[!+[]+!+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+","+"\\""+(+[![]]+[][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]())[+!+[]+[+!+[]]]+([][[]]+[])[+!+[]]+([][[]]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(+(+!+[]+[+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[!+[]+!+[]+!+[]+!+[]])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+"\\""+([+[]]+![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[!+[]+!+[]+[+[]]])([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(![]+[])[+[]])(f))');
 // @ts-expect-error
@@ -856,6 +856,7 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "jumpto", escregexp: { v: "^jumpto$" }, aliases: [{ commandName: "j", escregexp: { v: "^j$" } }], formats: [{ format: "jumpto" }], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:jumpto" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "align", escregexp: { v: "^align$" }, formats: [{ format: "align" }], command_version: "1.0.0", description: "", category: ["world", "players"], commandSettingsId: "built-inCommandSettings:align" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "aligncenter", escregexp: { v: "^aligncenter$" }, formats: [{ format: "aligncenter" }], command_version: "1.0.0", description: "", category: ["world", "players"], commandSettingsId: "built-inCommandSettings:aligncenter" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "spawn", escregexp: { v: "^spawn$" }, formats: [{ format: "spawn" }], command_version: "1.0.0", description: "", category: ["world", "players", "warps", "misc"], commandSettingsId: "built-inCommandSettings:spawn" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "execute", escregexp: { v: "^execute$" }, formats: [{ format: "execute" }], command_version: "1.0.0", description: "", category: ["system"], commandSettingsId: "built-inCommandSettings:execute" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "getworldspawnpoint", escregexp: { v: "^getworldspawnpoint$" }, aliases: [{ commandName: "getworldspawn", escregexp: { v: "^getworldspawn$" } }, { commandName: "getwsp", escregexp: { v: "^getwsp$" } }, { commandName: "getws", escregexp: { v: "^getws$" } }, { commandName: "gwsp", escregexp: { v: "^gwsp$" } }, { commandName: "gws", escregexp: { v: "^gws$" } }], formats: [{ format: "getworldspawnpoint" }], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:getworldspawnpoint" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "findtransformdvindex", escregexp: { v: "^findtransformdvindex$" }, formats: [{ format: "findtransformdvindex" }], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:findtransformdvindex" },
@@ -877,7 +878,7 @@ export const commands = [
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "tps", escregexp: { v: "^tps$" }, formats: [{ format: "tps" }], command_version: "1.0.0", description: "", category: ["Entity Scale Add-On", "system", "world"], commandSettingsId: "built-inCommandSettings:tps" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineinforaw", escregexp: { v: "^offlineinforaw$" }, formats: [{ format: "" }], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineinforaw" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineuuidinforaw", escregexp: { v: "^offlineuuidinforaw$" }, formats: [{ format: "" }], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineuuidinforaw" },
-    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineinfourl", escregexp: { v: "^offlineinfourl$" }, formats: [{ format: "" }], command_version: "0.0.1-alph.2a", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineinfourl" },
+    { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineinfourl", escregexp: { v: "^offlineinfourl$" }, formats: [{ format: "" }], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineinfourl" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineuuidinfourl", escregexp: { v: "^offlineuuidinfourl$" }, formats: [{ format: "" }], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineuuidinfourl" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineinfoescaped", escregexp: { v: "^offlineinfoescaped$" }, formats: [{ format: "" }], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineinfoescaped" },
     { type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineuuidinfoescaped", escregexp: { v: "^offlineuuidinfoescaped$" }, formats: [{ format: "" }], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineuuidinfoescaped" },
@@ -929,6 +930,8 @@ export class command {
         this.category = command.category ?? commandtest?.category;
         this.categories = sOSATSA(command.category ?? commandtest?.category ?? []);
     }
+    get isHidden() { return false; }
+    get releaseStage() { return tryget(() => SemVerString.fromString(String(this.command_version)).pre_release_stage); }
     get regexp() { return new RegExp(this?.escregexp?.v ?? "", this?.escregexp?.f); }
     get currentregexp() { return new RegExp(this?.currentescregexp?.v ?? "", this?.currentescregexp?.f); }
     get aliases() { return this.type == "built-in" ? commands.find(v => v.commandName == this.commandName)?.aliases?.map?.(v => (() => { let vb = v; vb.regexp = new RegExp(vb?.escregexp?.v ?? "", vb?.escregexp?.f); vb.aliasTo = this.commandName; return vb; })()) : undefined; }
@@ -1097,8 +1100,8 @@ export class commandSettings {
     get description(){return this?.parsed?.description ?? true}*/
     get settings_version() { return this?.parsed?.settings_version ?? command_settings_format_version; }
     get isSaved() { return world.getDynamicProperty(this.commandSettingsId) != undefined; }
-    toJSON() { return Object.assign(this.defaultSettings ?? {}, { type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version }); }
-    save(settings) { world.setDynamicProperty(this.commandSettingsId, JSONStringify(Object.assign(this.defaultSettings ?? { type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version }, settings ?? {}))); }
+    toJSON() { return Object.assign(JSONParse(JSONStringify(this.defaultSettings ?? {})), { type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version }); }
+    save(settings) { world.setDynamicProperty(this.commandSettingsId, JSONStringify(Object.assign(JSONParse(JSONStringify(this.defaultSettings ?? { type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version })), settings ?? {}))); }
     remove() { world.setDynamicProperty(this.commandSettingsId); }
 }
 export class executeCommandPlayerW {
@@ -1294,7 +1297,7 @@ export class HomeSystem {
     static get maxHomesPerPlayer() { return gwdp("homeSystemSettings:maxHomesPerPlayer") == -1 ? Infinity : Number(gwdp("homeSystemSettings:maxHomesPerPlayer") ?? Infinity); }
     static set maxHomesPerPlayer(maxHomes) { swdp("homeSystemSettings:maxHomesPerPlayer", maxHomes == Infinity ? -1 : maxHomes); }
 }
-HomeSystem.home_format_version = "0.0.1-indev.1";
+HomeSystem.home_format_version = "0.7.0-beta.72";
 export class Home {
     constructor(home) {
         this.location = home.location;
@@ -2001,6 +2004,8 @@ export const OtherEquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest, Equ
 export const dimensions = [world.getDimension("overworld"), world.getDimension("nether"), world.getDimension("the_end")];
 export const dimensionsb = { "minecraft:overworld": world.getDimension("overworld"), "minecraft:nether": world.getDimension("nether"), "minecraft:the_end": world.getDimension("the_end") };
 export const dimensionsc = { "overworld": world.getDimension("overworld"), "nether": world.getDimension("nether"), "the_end": world.getDimension("the_end") };
+export const dimensionsd = ["minecraft:overworld", "minecraft:nether", "minecraft:the_end"];
+export const dimensionse = ["overworld", "nether", "the_end"];
 export const overworld = world.getDimension("overworld");
 export const nether = world.getDimension("nether");
 export const the_end = world.getDimension("the_end");
@@ -2506,13 +2511,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
     "gms": `${command.dp}gms`,
     "gohome": `${command.dp}gohome <homeName: text>`,
     "h#": `${command.dp}h<presetId: float> <containerRow: float>`,
-    "heal": `${command.dp}heal [targets: targetSelector]`,
-    "health": `${command.dp}health <health: number> [targets: targetSelector]`,
+    "heal": `${command.dp}heal [targets: target]`,
+    "health": `${command.dp}health <health: number> [targets: target]`,
     "home": `${command.dp}home <mode: set|remove|go|warp|teleport> <homeName: text>
 ${command.dp}home clear
 ${command.dp}home removeall
 ${command.dp}home list`,
-    "hset": `${command.dp}hset <presetID: flaot> [dimensionId: string] [x: float] [y: float] [z: float]`,
+    "hset": `${command.dp}hset <presetID: float> [dimensionId: string] [x: float] [y: float] [z: float]`,
     "idtfill": `${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
@@ -3356,21 +3361,114 @@ p: despawn players
 r: despawn armor stands
 t: allow despawning of name tagged entities
 v: despawn vehicles`,
-    "cut": `m: cut to memory instead of storage
+    "\\\\cut": `m: cut to memory instead of storage
 e: don't include entities
 b: don't include blocks`,
-    "copy": `m: copy to memory instead of storage
+    "\\\\copy": `m: copy to memory instead of storage
 e: don't include entities
 b: don't include blocks`,
-    "paste": `w: waterlog structure
+    "\\\\paste": `w: waterlog structure
 e: don't include entities
 b: don't include blocks
 x: mirror structure x axis
 z: mirror structure z axis`,
-    "undo": `k: don't remove the undo save point after finishing the undo
+    "\\\\undo": `k: don't remove the undo save point after finishing the undo
 t: spawn in a ticking area before running the undo command`
 };
-export function getCommandHelpPage(commandName) { let cmd = command.get(commandName, "built-in"); return (!!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName]) ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.` : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map(v => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing").split("\n").join("§r\n- ")}${!!!commandflags[cmd.currentCommandName] ? "" : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}`; }
+export function getCommandHelpPage(commandName, player) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
+    return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
+        ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
+            .split("\n")
+            .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
+            ? ""
+            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            ? ""
+            : "\nVersion: " + cmd.formatting_code + cmd.command_version}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            ? "§cDISABLED"
+            : "§aENABLED"}${!!player
+            ? cmd.testCanPlayerUseCommand(player)
+                ? ""
+                : "\n§cYou do not have permission to use this command!"
+            : ""}`;
+}
+export function getCommandHelpPageExtra(commandName, player) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
+    return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
+        ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
+            .split("\n")
+            .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
+            ? ""
+            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            ? ""
+            : "\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
+            ? ""
+            : "§r§f\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings.defaultSettings
+            ? ""
+            : "§r§f\nDefault Required Tags: " + JSON.stringify(cmd.settings.defaultSettings.requiredTags)}${!!!cmd.settings.requiredTags
+            ? ""
+            : "§r§f\nRequired Tags: " + JSON.stringify(cmd.settings.requiredTags)}${!!!cmd.settings.requiresOp
+            ? ""
+            : "§r§f\nRequires OP: " + JSON.stringify(cmd.settings.requiresOp)}${!!!cmd.settings.requiredPermissionLevel
+            ? ""
+            : "§r§f\nRequired Permission Level: " + JSON.stringify(cmd.settings.requiredPermissionLevel)}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            ? "§cDISABLED"
+            : "§aENABLED"}${!!player
+            ? cmd.testCanPlayerUseCommand(player)
+                ? ""
+                : "\n§cYou do not have permission to use this command!"
+            : ""}`;
+}
+export function getCommandHelpPageDebug(commandName, player) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
+    return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
+        ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
+            .split("\n")
+            .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
+            ? ""
+            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            ? ""
+            : "\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
+            ? ""
+            : "§r§f\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings?.defaultSettings
+            ? ""
+            : "§r§f\nBuilt-In Raw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings.defaultSettings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}${!!!cmd.settings
+            ? ""
+            : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            ? "§cDISABLED"
+            : "§aENABLED"}${!!player
+            ? cmd.testCanPlayerUseCommand(player)
+                ? ""
+                : "\n§cYou do not have permission to use this command!"
+            : ""}`;
+}
+export function getCommandHelpPageCustomDebug(commandName, player) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "custom");
+    return !cmd.settings.isSaved
+        ? `§cError: Unknown custom command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it.`
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
+            .split("\n")
+            .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
+            ? ""
+            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            ? ""
+            : "\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
+            ? ""
+            : "§r§f\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings
+            ? ""
+            : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}${!!!cmd
+            ? ""
+            : "§r§f\nRaw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            ? "§cDISABLED"
+            : "§aENABLED"}${!!player
+            ? cmd.testCanPlayerUseCommand(player)
+                ? ""
+                : "\n§cYou do not have permission to use this command!"
+            : ""}`;
+}
 export var fillmodetypeenum;
 (function (fillmodetypeenum) {
     fillmodetypeenum[""] = "";
@@ -5439,16 +5537,34 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                 eventData.cancel = true;
                 switch (switchTestB.split(" ").slice(0, 2).join(" ").toLowerCase()) {
                     case "help":
-                        eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help cmd <command: CommandName>\n.help command <command: CommandName>\n.help chatcommands\n.help chatcommandsb\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>\n.help jsfunction <JavaScriptFunctionVariableConstantOrClassName: string>\n.help itemjsonformat\n.help itemjsonformatcmpr\n.help itemjsonformatsimplified§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n" + (world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))));
+                        eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help cmd <command: CommandName>\n.help command <command: CommandName>\n.help cmdextra <command: CommandName>\n.help commandextra <command: CommandName>\n.help cmddebug <command: CommandName>\n.help commanddebug <command: CommandName>\n.help customcmddebug <command: CommandName>\n.help customcommanddebug <command: CommandName>\n.help chatcommands\n.help chatcommandsb\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>\n.help jsfunction <JavaScriptFunctionVariableConstantOrClassName: string>\n.help itemjsonformat\n.help itemjsonformatcmpr\n.help itemjsonformatsimplified§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n" + (world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))));
                         break;
                     case "help scriptevent":
                         eventData.sender.sendMessage("§2/scriptevent Syntax§f\n/scriptevent andexdb:debugStick <message: string>\n/scriptevent andexdb:spawnSimulatedPlayer [playerName: string]|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]");
                         break;
                     case "help cmd":
-                        eventData.sender.sendMessage(getCommandHelpPage(switchTestB.split(" ").slice(2).join(" ")));
+                        eventData.sender.sendMessage(getCommandHelpPage(switchTestB.split(" ").slice(2).join(" "), player));
                         break;
                     case "help command":
-                        eventData.sender.sendMessage(getCommandHelpPage(switchTestB.split(" ").slice(2).join(" ")));
+                        eventData.sender.sendMessage(getCommandHelpPage(switchTestB.split(" ").slice(2).join(" "), player));
+                        break;
+                    case "help cmdextra":
+                        eventData.sender.sendMessage(getCommandHelpPageExtra(switchTestB.split(" ").slice(2).join(" "), player));
+                        break;
+                    case "help commandextra":
+                        eventData.sender.sendMessage(getCommandHelpPageExtra(switchTestB.split(" ").slice(2).join(" "), player));
+                        break;
+                    case "help cmddebug":
+                        eventData.sender.sendMessage(getCommandHelpPageDebug(switchTestB.split(" ").slice(2).join(" "), player));
+                        break;
+                    case "help commanddebug":
+                        eventData.sender.sendMessage(getCommandHelpPageDebug(switchTestB.split(" ").slice(2).join(" "), player));
+                        break;
+                    case "help customcmddebug":
+                        eventData.sender.sendMessage(getCommandHelpPageCustomDebug(switchTestB.split(" ").slice(2).join(" "), player));
+                        break;
+                    case "help customcommanddebug":
+                        eventData.sender.sendMessage(getCommandHelpPageCustomDebug(switchTestB.split(" ").slice(2).join(" "), player));
                         break;
                     case "help chatcommands":
                         eventData.sender.sendMessage(`§2Chat Commands List§r
@@ -7122,6 +7238,17 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     }
                 }
                 break;
+            case !!switchTest.match(/^spawn$/):
+                {
+                    eventData.cancel = true;
+                    if (!!config.spawnCommandLocation.x) {
+                        player.sendMessage("§cError: This command cannot be used becuase no spawn teleport location has been set. It can be enabled at \"Main Menu>Settings>Global Settings>spawnCommandLocation\"");
+                    }
+                    else {
+                        srun(() => player.teleport(config.spawnCommandLocation, { dimension: config.spawnCommandLocation.dimension }));
+                    }
+                }
+                break;
             case !!switchTest.match(/^tpa$/):
                 {
                     eventData.cancel = true;
@@ -7208,6 +7335,34 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 }
                 break;
             case !!switchTest.match(/^heal$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+                        if (switchTestB.split(/\s+/g)[1]?.trim() == "~") {
+                            args[1] = player.name;
+                        }
+                        if ((switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
+                            args[1] = player.name;
+                        }
+                        let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
+                        if (targets.length == 0) {
+                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                        }
+                        else
+                            targets.forEach(target => {
+                                try {
+                                    target.getComponent("health").resetToMaxValue();
+                                    player.sendMessage(`Healed ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")}. Health is now ${target.getComponent("health").effectiveMax}. `);
+                                }
+                                catch (e) {
+                                    player.sendMessage("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
+                                }
+                            });
+                    });
+                }
+                break;
+            case !!switchTest.match(/^setplayernametag$/):
                 {
                     eventData.cancel = true;
                     system.run(() => {
@@ -7960,7 +8115,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                         let lastblockname = args[10];
                         let lastblockstates = args[11];
                         let replacemode = args[12] ?? false;
-                        let matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : (lastblockname == "keep" || mode == "keep") ? ["air"] : [lastblockname, lastblockstates]);
+                        let matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : (lastblockname == "keep" || mode == "keep") ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]);
                         let cmatchingblock = ((clastblockname ?? "") == "" ? [undefined, undefined] : (clastblockname == "keep") ? ["air"] : [clastblockname, clastblockstates]);
                         let ccmatchingblock = ((cclastblockname ?? "") == "" ? [undefined, undefined] : (cclastblockname == "keep") ? ["air"] : [cclastblockname, cclastblockstates]);
                         let hsmatchingblock = ((hslastblockname ?? "") == "" ? [undefined, undefined] : (hslastblockname == "keep") ? ["air"] : [hslastblockname, hslastblockstates]);
@@ -7974,14 +8129,14 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                 system.run(() => { let ta; try {
                                     let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         if (replacemode) {
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -8002,7 +8157,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     try {
                                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                         system.runTimeout(() => {
                                             try {
                                                 let startTime = Date.now();
@@ -8010,7 +8165,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                                     clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                                 }
                                                 ;
-                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                                 let endTime = Date.now();
                                                 player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                             }
@@ -8060,7 +8215,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                     }
                                     ;
-                                    let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                    let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                     let endTime = Date.now();
                                     player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
@@ -8082,7 +8237,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                             case "walls":
                                 system.run(() => { try {
                                     let startTime = Date.now();
-                                    let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                    let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                     let endTime = Date.now();
                                     player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
@@ -8093,7 +8248,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                             case "hollow":
                                 system.run(() => { try {
                                     let startTime = Date.now();
-                                    let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                    let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                     let endTime = Date.now();
                                     player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
@@ -8104,7 +8259,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                             case "outline":
                                 system.run(() => { try {
                                     let startTime = Date.now();
-                                    let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                    let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                     let endTime = Date.now();
                                     player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
@@ -8115,7 +8270,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                             case "pillars":
                                 system.run(() => { try {
                                     let startTime = Date.now();
-                                    let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                    let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                     let endTime = Date.now();
                                     player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
@@ -8385,7 +8540,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                     }
                                     ;
-                                    let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                    let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                     let endTime = Date.now();
                                     player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
@@ -8592,7 +8747,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                         let lastblockname = args[10];
                         let lastblockstates = args[11];
                         let replacemode = args[12] ?? false;
-                        let matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : (lastblockname == "keep" || mode == "keep") ? ["air"] : [lastblockname, lastblockstates]);
+                        let matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : (lastblockname == "keep" || mode == "keep") ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]);
                         let cmatchingblock = ((clastblockname ?? "") == "" ? [undefined, undefined] : (clastblockname == "keep") ? ["air"] : [clastblockname, clastblockstates]);
                         let ccmatchingblock = ((cclastblockname ?? "") == "" ? [undefined, undefined] : (cclastblockname == "keep") ? ["air"] : [cclastblockname, cclastblockstates]);
                         let hsmatchingblock = ((hslastblockname ?? "") == "" ? [undefined, undefined] : (hslastblockname == "keep") ? ["air"] : [hslastblockname, hslastblockstates]);
@@ -8606,14 +8761,14 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 system.run(() => { let ta; try {
                                     let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         if (replacemode) {
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -8634,7 +8789,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                     try {
                                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                         system.runTimeout(() => {
                                             try {
                                                 let startTime = Date.now();
@@ -8642,7 +8797,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                                     clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                                 }
                                                 ;
-                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                                 let endTime = Date.now();
                                                 player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                             }
@@ -8709,7 +8864,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -8747,7 +8902,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -8766,7 +8921,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -8785,7 +8940,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -8804,7 +8959,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -9274,7 +9429,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -9493,7 +9648,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         let lastblockname = args[11];
                         let lastblockstates = args[12];
                         let replacemode = args[13] ?? false;
-                        let matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : (lastblockname == "keep" || mode == "keep") ? ["air"] : [lastblockname, lastblockstates]);
+                        let matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : (lastblockname == "keep" || mode == "keep") ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]);
                         let cmatchingblock = ((clastblockname ?? "") == "" ? [undefined, undefined] : (clastblockname == "keep") ? ["air"] : [clastblockname, clastblockstates]);
                         let ccmatchingblock = ((cclastblockname ?? "") == "" ? [undefined, undefined] : (cclastblockname == "keep") ? ["air"] : [cclastblockname, cclastblockstates]);
                         let hsmatchingblock = ((hslastblockname ?? "") == "" ? [undefined, undefined] : (hslastblockname == "keep") ? ["air"] : [hslastblockname, hslastblockstates]);
@@ -9507,7 +9662,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9523,7 +9678,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "replace":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[13] ?? true, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[13] ?? true, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9581,7 +9736,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "fill":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9613,7 +9768,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "walls":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9629,7 +9784,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "hollow":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9645,7 +9800,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "outline":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9662,7 +9817,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -9725,7 +9880,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, hointegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -9744,7 +9899,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, ointegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -9763,7 +9918,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -9782,7 +9937,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -9801,7 +9956,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -9820,7 +9975,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -9839,7 +9994,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, { matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1] }, undefined, creplacemode);
@@ -9861,7 +10016,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -9883,7 +10038,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -9905,7 +10060,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -9927,7 +10082,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -9949,7 +10104,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -9971,7 +10126,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -9993,7 +10148,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -10015,7 +10170,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, { matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1] }, undefined, treplacemode, tintegrity);
@@ -10037,7 +10192,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10059,7 +10214,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10081,7 +10236,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10103,7 +10258,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10125,7 +10280,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10147,7 +10302,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10169,7 +10324,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -10194,14 +10349,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 system.run(() => { let ta; try {
                                     let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         if (replacemode) {
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -10234,11 +10389,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
                     let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? [] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    let matchingblock = lastblockname == "" ? [] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     srun(() => { try {
                         let startTime = Date.now();
-                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
@@ -10260,11 +10415,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
                     let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? [] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    let matchingblock = lastblockname == "" ? [] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     srun(() => { try {
                         let startTime = Date.now();
-                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
@@ -10286,15 +10441,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
                     let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? [] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    let matchingblock = lastblockname == "" ? [] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     system.run(() => { let ta; try {
                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
-                            let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                            let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
                             player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
@@ -10323,11 +10478,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
                     let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     system.run(() => { try {
                         let startTime = Date.now();
-                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
@@ -10352,15 +10507,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = argsa.extra.trimStart().startsWith("{") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ")[0] : argsa.extra.trimStart().startsWith("[") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : argsa.extra.trimStart().split(" ")[0];
                     let somethingtest = argsa.extra.trimStart().startsWith("{") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : argsa.extra.trimStart().startsWith("[") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : argsa.extra.trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates];
+                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates];
                     console.warn(JSONStringify({ coordinatesa, coordinatesb, firstblockname, argsaextra, args /*, firstblocknameindex, reststringaftercoordinates*/, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock }));
                     system.run(() => { let ta; try {
                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
-                            let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                            let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
                             player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
@@ -10389,11 +10544,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
                     let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     system.run(() => { try {
                         let startTime = Date.now();
-                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
@@ -10418,15 +10573,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = argsa.extra.trimStart().startsWith("{") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ")[0] : argsa.extra.trimStart().startsWith("[") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : argsa.extra.trimStart().split(" ")[0];
                     let somethingtest = argsa.extra.trimStart().startsWith("{") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : argsa.extra.trimStart().startsWith("[") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : argsa.extra.trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates];
+                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates];
                     console.warn(JSONStringify({ coordinatesa, coordinatesb, firstblockname, argsaextra, args /*, firstblocknameindex, reststringaftercoordinates*/, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock }));
                     system.run(() => { let ta; try {
                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
-                            let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                            let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
                             player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
@@ -10455,11 +10610,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
                     let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     system.run(() => { try {
                         let startTime = Date.now();
-                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
@@ -10484,15 +10639,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = argsa.extra.trimStart().startsWith("{") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ")[0] : argsa.extra.trimStart().startsWith("[") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : argsa.extra.trimStart().split(" ")[0];
                     let somethingtest = argsa.extra.trimStart().startsWith("{") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : argsa.extra.trimStart().startsWith("[") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : argsa.extra.trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates];
+                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates];
                     console.warn(JSONStringify({ coordinatesa, coordinatesb, firstblockname, argsaextra, args /*, firstblocknameindex, reststringaftercoordinates*/, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock }));
                     system.run(() => { let ta; try {
                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
-                            let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                            let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
                             player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
@@ -10521,11 +10676,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
                     let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     system.run(() => { try {
                         let startTime = Date.now();
-                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
@@ -10550,15 +10705,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = argsa.extra.trimStart().startsWith("{") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ")[0] : argsa.extra.trimStart().startsWith("[") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : argsa.extra.trimStart().split(" ")[0];
                     let somethingtest = argsa.extra.trimStart().startsWith("{") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : argsa.extra.trimStart().startsWith("[") ? argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : argsa.extra.trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates];
+                    let matchingblock = lastblockname == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates];
                     console.warn(JSONStringify({ coordinatesa, coordinatesb, firstblockname, argsaextra, args /*, firstblocknameindex, reststringaftercoordinates*/, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock }));
                     system.run(() => { let ta; try {
                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                         system.runTimeout(() => { try {
                             let startTime = Date.now();
-                            let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                            let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
                             player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
@@ -10587,7 +10742,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
                     let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     try {
                         system.run(() => { player.sendMessage("IFill Command Started, to cancel type in " + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "stopgen " + system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], false, (a, timea, timeb, totalTime, player) => { player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${totalTime} ms`); }, player))); });
@@ -10610,7 +10765,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
                     let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     try {
                         system.run(() => { player.sendMessage("IOFill Generator/Job Started, to cancel type in " + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "stopgen " + system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], false, (a, timea, timeb, totalTime, player) => { player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${totalTime} ms`); }, player))); });
@@ -10646,7 +10801,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
                     let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     try {
                         system.run(() => { let a = system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], true, (a) => { player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled`); })); });
@@ -10669,7 +10824,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0] : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0];
                     let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[") ? reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim() : reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim();
                     let lastblockstates = somethingtest.startsWith("{") ? JSONParse(extractJSONStrings(somethingtest, false)[0]) : somethingtest.startsWith("[") ? JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]) : undefined;
-                    let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]; /*
+                    let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     try {
                         system.run(() => { let a = fillBlocksC(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], true); player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled`); });
@@ -11725,7 +11880,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const firstblockpattern = args[2];
                     const lastblockname = args[3]?.id;
                     const lastblockstates = args[3]?.states;
-                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]);
+                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]);
                     const coordinatesa = player.getDynamicProperty("pos1");
                     const coordinatesb = player.getDynamicProperty("pos2");
                     const ca = { x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z) };
@@ -11745,14 +11900,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(ca, cb) }); return a; })(), dimensiona).then(tac => {
                                         ta = tac;
                                         try {
-                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
                                             player.sendMessage("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11794,7 +11949,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(ca, cb) }); return a; })(), dimensiona).then(tac => {
                                         ta = tac;
                                         try {
-                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
                                             player.sendMessage("§c" + e + " " + e.stack);
@@ -11844,7 +11999,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(ca, cb) }); return a; })(), dimensiona).then(tac => {
                                         ta = tac;
                                         try {
-                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
                                             player.sendMessage("§c" + e + " " + e.stack);
@@ -11891,7 +12046,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(ca, cb) }); return a; })(), dimensiona).then(tac => {
                                         ta = tac;
                                         try {
-                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
                                             perror(player, e);
@@ -11938,7 +12093,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(ca, cb) }); return a; })(), dimensiona).then(tac => {
                                         ta = tac;
                                         try {
-                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
                                             perror(player, e);
@@ -11984,7 +12139,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const args = evaluateParameters(switchTestB, ["presetText", "f-c", "block"]).args;
                     const lastblockname = args[2]?.id;
                     const lastblockstates = args[2]?.states;
-                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]);
+                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]);
                     const coordinatesa = player.getDynamicProperty("pos1");
                     const coordinatesb = player.getDynamicProperty("pos2");
                     const ca = { x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z) };
@@ -12005,14 +12160,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(ca, cb) }); return a; })(), dimensiona).then(tac => {
                                         ta = tac;
                                         try {
-                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
                                             player.sendMessage("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHFGB(ca, cb, dimensiona, () => airpermutation, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHFGB(ca, cb, dimensiona, () => airpermutation, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12037,7 +12192,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const firstblockpattern = args[2];
                     const lastblockname = args[3]?.id;
                     const lastblockstates = args[3]?.states;
-                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]);
+                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]);
                     const coordinatesa = player.getDynamicProperty("pos1");
                     const coordinatesb = player.getDynamicProperty("pos2");
                     const ca = { x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z) };
@@ -12057,14 +12212,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(ca, cb) }); return a; })(), dimensiona).then(tac => {
                                         ta = tac;
                                         try {
-                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
                                             player.sendMessage("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHWFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHWFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12090,7 +12245,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const firstblockpattern = args[3];
                     const lastblockname = args[4]?.id;
                     const lastblockstates = args[4]?.states;
-                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]);
+                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]);
                     const coordinatesa = roundVector3ToMiddleOfBlock(player.getDynamicProperty("pos1"));
                     const coordinatesb = roundVector3ToMiddleOfBlock(player.getDynamicProperty("pos2"));
                     const ca = { x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z) };
@@ -12110,14 +12265,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius)))) }); return a; })(), dimensiona).then(tac => {
                                         ta = tac;
                                         try {
-                                            undoClipboard.save(dimensiona, { from: Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), to: Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                            undoClipboard.save(dimensiona, { from: Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), to: Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
                                             player.sendMessage("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHSGB(coordinatesa, radius - 0.5, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHSGB(coordinatesa, radius - 0.5, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12144,7 +12299,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const firstblockpattern = args[4];
                     const lastblockname = args[5]?.id;
                     const lastblockstates = args[5]?.states;
-                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]);
+                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]);
                     const coordinatesa = roundVector3ToMiddleOfBlock(player.getDynamicProperty("pos1"));
                     const coordinatesb = roundVector3ToMiddleOfBlock(player.getDynamicProperty("pos2"));
                     const ca = { x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z) };
@@ -12164,14 +12319,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius)))) }); return a; })(), dimensiona).then(tac => {
                                         ta = tac;
                                         try {
-                                            undoClipboard.save(dimensiona, { from: Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), to: Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                            undoClipboard.save(dimensiona, { from: Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), to: Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
                                             player.sendMessage("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHHSGB(coordinatesa, radius - 0.5, thickness, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHHSGB(coordinatesa, radius - 0.5, thickness, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12198,7 +12353,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const firstblockpattern = args[4];
                     const lastblockname = args[5]?.id;
                     const lastblockstates = args[5]?.states;
-                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates]);
+                    const matchingblock = ((lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]);
                     const coordinatesa = roundVector3ToMiddleOfBlockFloorY(player.getDynamicProperty("pos1"));
                     const coordinatesb = roundVector3ToMiddleOfBlockFloorY(player.getDynamicProperty("pos2"));
                     const ca = { x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z) };
@@ -12218,14 +12373,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(Vector.subtract(coordinatesa, { x: Math.abs(radius), y: 0, z: Math.abs(radius) }), Vector.add(coordinatesa, { x: Math.abs(radius), y: height, z: Math.abs(radius) })) }); return a; })(), dimensiona).then(tac => {
                                         ta = tac;
                                         try {
-                                            undoClipboard.save(dimensiona, { from: Vector.subtract(coordinatesa, { x: Math.abs(radius), y: 0, z: Math.abs(radius) }), to: Vector.add(coordinatesa, { x: Math.abs(radius), y: height, z: Math.abs(radius) }) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                            undoClipboard.save(dimensiona, { from: Vector.subtract(coordinatesa, { x: Math.abs(radius), y: 0, z: Math.abs(radius) }), to: Vector.add(coordinatesa, { x: Math.abs(radius), y: height, z: Math.abs(radius) }) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
                                             player.sendMessage("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHCGB(coordinatesa, radius, height, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHCGB(coordinatesa, radius, height, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12381,7 +12536,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             ta = tac;
                                             try {
                                                 try {
-                                                    undoClipboard.save(dimensiona, { from: ca, to: Vector.add(cb, { x: 0, y: height * args[1], z: 0 }) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                                    undoClipboard.save(dimensiona, { from: ca, to: Vector.add(cb, { x: 0, y: height * args[1], z: 0 }) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                                 }
                                                 catch (e) {
                                                     player.sendMessage("§c" + e + " " + e.stack);
@@ -12432,7 +12587,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             else {
                                 system.run(() => {
                                     try {
-                                        undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                        undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                     }
                                     catch (e) {
                                         player.sendMessage("§c" + e + " " + e.stack);
@@ -12537,7 +12692,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 else {
                                     try {
                                         try {
-                                            undoClipboard.save(dimensiona, { from: ca, to: Vector.add(ca, blockClipboard.saveSize) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
+                                            undoClipboard.save(dimensiona, { from: ca, to: Vector.add(ca, blockClipboard.saveSize) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
                                             player.sendMessage("§c" + e + " " + e.stack);
@@ -12882,7 +13037,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                         let lastblockname = args[4];
                         let lastblockstates = args[5];
                         let replacemode = args[6] ?? false;
-                        let matchingblock = (lastblockname ?? "") == "" ? [undefined, undefined] : (lastblockname == "keep" || mode == "keep") ? ["air"] : [lastblockname, lastblockstates];
+                        let matchingblock = (lastblockname ?? "") == "" ? [undefined, undefined] : (lastblockname == "keep" || mode == "keep") ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates];
                         let cmatchingblock = (clastblockname ?? "") == "" ? [undefined, undefined] : (clastblockname == "keep") ? ["air"] : [clastblockname, clastblockstates];
                         let ccmatchingblock = (cclastblockname ?? "") == "" ? [undefined, undefined] : (cclastblockname == "keep") ? ["air"] : [cclastblockname, cclastblockstates];
                         let hsmatchingblock = (hslastblockname ?? "") == "" ? [undefined, undefined] : (hslastblockname == "keep") ? ["air"] : [hslastblockname, hslastblockstates];
@@ -12896,14 +13051,14 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 system.run(() => { let ta; try {
                                     let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         if (replacemode) {
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -12924,7 +13079,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                     try {
                                         let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                         system.runTimeout(() => {
                                             try {
                                                 let startTime = Date.now();
@@ -12932,7 +13087,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                                     clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                                 }
                                                 ;
-                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                                 let endTime = Date.now();
                                                 player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                             }
@@ -12999,7 +13154,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -13037,7 +13192,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -13056,7 +13211,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -13075,7 +13230,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -13094,7 +13249,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -13564,7 +13719,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -13785,7 +13940,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         let lastblockname = args[5];
                         let lastblockstates = args[6];
                         let replacemode = args[7] ?? false;
-                        let matchingblock = (lastblockname ?? "") == "" ? [undefined, undefined] : (lastblockname == "keep" || mode == "keep") ? ["air"] : [lastblockname, lastblockstates];
+                        let matchingblock = (lastblockname ?? "") == "" ? [undefined, undefined] : (lastblockname == "keep" || mode == "keep") ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates];
                         let cmatchingblock = (clastblockname ?? "") == "" ? [undefined, undefined] : (clastblockname == "keep") ? ["air"] : [clastblockname, clastblockstates];
                         let ccmatchingblock = (cclastblockname ?? "") == "" ? [undefined, undefined] : (cclastblockname == "keep") ? ["air"] : [cclastblockname, cclastblockstates];
                         let hsmatchingblock = (hslastblockname ?? "") == "" ? [undefined, undefined] : (hslastblockname == "keep") ? ["air"] : [hslastblockname, hslastblockstates];
@@ -13799,7 +13954,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13815,7 +13970,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "replace":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[7] ?? true, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[7] ?? true, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13873,7 +14028,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "fill":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13905,7 +14060,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "walls":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13921,7 +14076,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "hollow":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13937,7 +14092,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "outline":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13954,7 +14109,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
                                         let startTime = Date.now();
-                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] }, undefined, replacemode);
+                                        let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -14017,7 +14172,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, hointegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -14036,7 +14191,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, ointegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -14055,7 +14210,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -14074,7 +14229,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -14093,7 +14248,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -14112,7 +14267,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
@@ -14131,7 +14286,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, { matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1] }, undefined, creplacemode);
@@ -14153,7 +14308,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14175,7 +14330,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14197,7 +14352,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14219,7 +14374,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14241,7 +14396,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14263,7 +14418,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14285,7 +14440,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
@@ -14307,7 +14462,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, { matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1] }, undefined, treplacemode, tintegrity);
@@ -14329,7 +14484,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14351,7 +14506,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14373,7 +14528,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14395,7 +14550,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14417,7 +14572,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14439,7 +14594,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14461,7 +14616,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     ;
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea"); /*console.warn(ta, location); */
+                                    ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
@@ -14486,14 +14641,14 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 system.run(() => { let ta; try {
                                     let location = { x: (coordinatesa.x + coordinatesb.x) / 2, y: (coordinatesa.y + coordinatesb.y) / 2, z: (coordinatesa.z + coordinatesb.z) / 2 };
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(location));
-                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea");
+                                    ta = player.dimension.getEntitiesAtBlockLocation(location).find(v => v.typeId == "andexdb:tickingarea_6");
                                     system.runTimeout(() => { try {
                                         let startTime = Date.now();
                                         if (replacemode) {
                                             clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block"));
                                         }
                                         ;
-                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1] });
+                                        let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
                                         player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
@@ -14967,7 +15122,7 @@ ${command.dp}snapshot list`);
                     const firstblockstates = args[4];
                     const lastblockname = args[5];
                     const lastblockstates = args[6];
-                    const matchingblock = (lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [lastblockname, lastblockstates];
+                    const matchingblock = (lastblockname ?? "") == "" ? [undefined, undefined] : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates];
                     const coordinatesa = mcMath.Vector3Utils.add(player.location, { x: -args[2], y: -args[2], z: -args[2] });
                     const coordinatesb = mcMath.Vector3Utils.add(player.location, { x: args[2], y: args[2], z: args[2] });
                     const blocktypes = BlockTypes.getAll();

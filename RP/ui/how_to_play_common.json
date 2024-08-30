@@ -1,0 +1,191 @@
+/********************************************************
++*   (c) Mojang. All rights reserved                       *
++*   (c) Microsoft. All rights reserved.                   *
++*********************************************************/
+
+{
+  "namespace": "how_to_play_common",/*
+
+  "how_to_play_content": {
+		"modifications": [
+			{
+				"array_name": "controls",
+				"operation": "insert_front",
+				"value": [
+          { "andexdb_help_menu_screen@how_to_play.andexdb_help_menu_screen": {} }
+				]
+			}
+		]*//*,
+    "type": "panel",
+    "anchor_from": "top_middle",
+    "anchor_to": "top_middle",
+    "controls": [
+      { "selector_area@how_to_play_common.selector_area": {} },
+      { "content_area@how_to_play_common.content_area_wrapper": {} },
+      { "section_divider@how_to_play_common.section_divider": {} }
+    ]*//*
+  }*/
+
+  "toggle_button_control_b": {
+    "type": "panel",
+    "layer": 2,
+    "controls": [
+      {
+        "tab_button_text": {
+          "type": "label",
+          "anchor_from": "left_middle",
+          "anchor_to": "left_middle",
+          "size": [ "100% - 10px", "default" ],
+          "max_size": [ "100% - 14px", "100% - 4px" ],
+          "offset": [ 10, 0 ],
+          "text": "$button_text",
+          "layer": 3,
+          "color": "$text_color",
+          "alpha": "$content_alpha"
+        }
+      }
+    ]
+  },
+
+  "subsection_title": {
+      "type": "stack_panel",
+      "orientation": "vertical",
+      "size": [ "100%", "100%c + 10px" ],
+      "$text|default": "hi1234as subsection title",
+      "controls": [
+        {
+          "spacer_0": {
+            "type": "panel",
+            "size": [ "100%", 4 ]
+          }
+        },
+        {
+          "sizer_0": {
+            "type": "panel",
+            "size": [ "100%", "100%c" ],
+            "controls": [
+              {
+                "title": {
+                  "type": "label",
+                  "color": "$main_header_text_color",
+                  "text_alignment": "center",
+                  "anchor_from": "center",
+                  "anchor_to": "center",
+                  "layer": 3,
+                  "text": "$text"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "spacer_1": {
+            "type": "panel",
+            "size": [ "100%", 2 ]
+          }
+        },
+        {
+          "sizer_1": {
+            "type": "panel",
+            "size": [ "100%", "100%c" ],
+            "controls": [
+              {
+                "section_divider": {
+                  "type": "image",
+                  "size": [ "100% - 4px", 1 ],
+                  "anchor_from": "center",
+                  "anchor_to": "center",
+                  "layer": 3,
+                  "texture": "textures/ui/list_item_divider_line_light"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+
+  "toggle_button_control_c": {
+    "type": "panel",
+    "$glyph_offset|default": [ 5, 0 ],
+    "$glyph_anchor_from|default": "left_middle",
+    "$glyph_anchor_to|default": "left_middle",
+    "$button_label_offset|default": [ 34, 0 ],
+    "layer": 2,
+    "controls": [
+      {
+        "glyph": {
+          "type": "image",
+          "anchor_from": "$glyph_anchor_from",
+          "anchor_to": "$glyph_anchor_to",
+          "offset": "$glyph_offset",
+          "texture": "$glyph_texture",
+          "size": "$glyph_size",
+          "layer": 3,
+          "color": "$glyph_color",
+          "alpha": "$content_alpha",
+
+          "$glyph_bindings|default": [],
+          "bindings": "$glyph_bindings"
+        }
+      },
+      {
+        "glyph_color": {
+          "type": "image",
+          "anchor_from": "$glyph_anchor_from",
+          "anchor_to": "$glyph_anchor_to",
+          "offset": "$glyph_offset",
+          "texture": "$glyph_color_texture",
+          "size": "$glyph_size",
+          "layer": 4,
+          "alpha": "$content_alpha",
+
+          "$glyph_color_bindings|default": [],
+          "bindings": "$glyph_color_bindings"
+        }
+      },
+      {
+        "progress_loading_bars@progress.progress_loading_bars": {
+          "anchor_from": "left_middle",
+          "anchor_to": "left_middle",
+          "color": "$glyph_color",
+          "offset": [ 5, 0 ],
+          "layer": 5,
+          "size": "$glyph_size",
+          "visible": false,
+          "$glyph_progress_bindings|default": [],
+          "bindings": "$glyph_progress_bindings"
+        }
+      },
+      {
+        "tab_button_text": {
+          "type": "label",
+          "anchor_from": "left_middle",
+          "anchor_to": "left_middle",
+          "size": [ "100% - 38px", "default" ],
+          "max_size": [ "100% - 38px", "100% - 4px" ],
+          "offset": "$button_label_offset",
+          "text": "$button_text",
+          "layer": 3,
+          "color": "$text_color",
+          "alpha": "$content_alpha",
+
+          "$button_text_binding_type|default": "none",
+          "$button_text_grid_collection_name|default": "",
+          "$button_text_binding_condition|default": "none",
+
+          "bindings": [
+            {
+              "binding_type": "$button_text_binding_type",
+              "binding_condition": "$button_text_binding_condition",
+              "binding_collection_name": "$button_text_grid_collection_name",
+              "binding_name": "$button_text",
+              "binding_name_override": "$button_text"
+            }
+          ]
+        }
+      }
+    ]
+  }
+
+}

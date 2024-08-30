@@ -7235,6 +7235,34 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     });
                 }
                 break;
+            case !!switchTest.match(/^setplayernametag$/):
+                {
+                    eventData.cancel = true;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+                        if (switchTestB.split(/\s+/g)[1]?.trim() == "~") {
+                            args[1] = player.name;
+                        }
+                        if ((switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
+                            args[1] = player.name;
+                        }
+                        let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
+                        if (targets.length == 0) {
+                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                        }
+                        else
+                            targets.forEach(target => {
+                                try {
+                                    target.getComponent("health").resetToMaxValue();
+                                    player.sendMessage(`Healed ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")}. Health is now ${target.getComponent("health").effectiveMax}. `);
+                                }
+                                catch (e) {
+                                    player.sendMessage("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
+                                }
+                            });
+                    });
+                }
+                break;
             case !!switchTest.match(/^maxhealth$/):
                 {
                     eventData.cancel = true;

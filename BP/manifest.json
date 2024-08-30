@@ -1,37 +1,37 @@
 {
     "format_version": 2,
     "header": {
-        "description": "v.1.18.1-development.27 8Crafter's Debug Sticks BP by 8Crafter. \n§bhttps://sites.google.com/view/8craftermods/home\n§chttps://youtube.com/@8crafter",
-        "name": "v.1.18.1-development.27 8Crafter's Debug Sticks BP by 8Crafter. ",
+        "description": "v.1.20.0-development.1 8Crafter's Debug Sticks BP by 8Crafter. \n§bhttps://sites.google.com/view/8craftermods/home\n§chttps://youtube.com/@8crafter",
+        "name": "v.1.20.0-development.1 8Crafter's Debug Sticks BP by 8Crafter. ",
         "uuid": "53170125-3e79-4659-9bba-e49eb90b6ded",
-        "version": [ 1, 18, 99 ],
+        "version": [ 1, 20, 99 ],
         "min_engine_version": [ 1, 20, 40 ]
     },
     "capabilities": [ "script_eval" ],
     "modules": [
         {
-            "description": "v.1.18.1-development.27 8Crafter's Debug Sticks BP by 8Crafter. ",
+            "description": "v.1.20.0-development.1 8Crafter's Debug Sticks BP by 8Crafter. ",
             "type": "data",
             "uuid": "715e0f88-d0a1-4304-8c96-49bbd2b98257",
-            "version": [ 1, 18, 99 ]
+            "version": [ 1, 20, 99 ]
         },
         {
           "description": "System scripts && Vanilla gameplay tests 4 (0.4.0-alpha)",
           "type": "script",
           "language": "javascript",
           "uuid": "df6d1955-6175-46b0-be8b-fa11fde32b13",
-          "version": [ 1, 18, 99 ],
+          "version": [ 1, 20, 99 ],
           "entry": "scripts/Main.js"
         }
     ],
 "dependencies": [
         {
             "uuid": "5869846f-2019-4442-8e81-d3a75c5e003f",
-            "version": [ 1, 18, 99 ]
+            "version": [ 1, 20, 99 ]
         },
         {
           "module_name": "@minecraft/server",
-          "version": "1.12.0-beta"
+          "version": "1.14.0-beta"
         },
         {
           "module_name": "@minecraft/server-gametest",
@@ -39,7 +39,7 @@
         },
         {
           "module_name": "@minecraft/server-ui",
-          "version": "1.2.0-beta"
+          "version": "1.3.0-beta"
         }/*,
         {
             "module_name": "@minecraft/common",

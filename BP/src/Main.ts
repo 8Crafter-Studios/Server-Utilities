@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.18.2-development.27";
+export const format_version = "1.20.0-development.67";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -50,11 +50,11 @@ import "@minecraft/math.js";
 export const mainmetaimport = import.meta
 export const subscribedEvents = {} as {[eventName: string]: Function}
 
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError } from "@minecraft/server";
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector, dirmap, diroffsetmap, diroffsetothersmap, generateMinecraftConeBG } from "Main/coordinates";
-import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput, BlockPattern, dimensions, testBlockForMatch, overworld, executeCommandPlayerW, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, nether, the_end } from "Main/commands";
+import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput, BlockPattern, dimensions, testBlockForMatch, overworld, executeCommandPlayerW, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, nether, the_end, dimensionsb } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
@@ -156,6 +156,10 @@ export class config{
     static set maxHomesPerManageHomesPage(maxHomesPerManageHomesPage: number|undefined){world.setDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage", maxHomesPerManageHomesPage??10)}
     static get artificialLagMS(){return Number(world.getDynamicProperty("andexdbSettings:artificialLagMS") ?? 0)}
     static set artificialLagMS(artificialLagMS: number|undefined){world.setDynamicProperty("andexdbSettings:artificialLagMS", artificialLagMS??0)}
+    static get undoClipboardMode(){return String(world.getDynamicProperty("andexdbSettings:undoClipboardMode") ?? StructureSaveMode.Memory) as StructureSaveMode}
+    static set undoClipboardMode(undoClipboardMode: StructureSaveMode|undefined){world.setDynamicProperty("andexdbSettings:undoClipboardMode", undoClipboardMode??StructureSaveMode.Memory)}
+    static get spawnCommandLocation(){const v = tryget(()=>JSON.parse(String(world.getDynamicProperty("andexdbSettings:spawnCommandLocation") ?? '{x: null, y: null, z: null, dimension: "overworld"}')))??{x: null, y: null, z: null, dimension: "overworld"}; return tryget(()=>({x: v.x, y: v.y, z: v.z, dimension: dimensionsb[String(v.dimension)]??overworld}))??{x: null, y: null, z: null, dimension: overworld} as DimensionLocation|{x: null, y: null, z: null, dimension: Dimension}}
+    static set spawnCommandLocation(spawnCommandLocation: DimensionLocation|{x: null, y: null, z: null, dimension: Dimension}|undefined){world.setDynamicProperty("andexdbSettings:spawnCommandLocation", JSON.stringify({x: spawnCommandLocation.x, y: spawnCommandLocation.y, z: spawnCommandLocation.z, dimension: spawnCommandLocation.dimension??overworld}))}
     static reset(){}
 }
 export class worldPlayers {/*
@@ -265,6 +269,74 @@ export class worldPlayers {/*
         return new WorldPosition(block?.location, fdcb[Number(block?.permutation?.getState("facing_direction") ?? block?.permutation?.getState("minecraft:facing_direction") ?? 3) ?? 3] ?? {x: 0, y: 0}, block?.dimension, undefined, block)
     }*/
 }; 
+/**
+ * @since 1.20.0-development.63
+ */
+export class SemVerString{
+    major: number
+    minor: number
+    patch: number
+    private pre_release_stage_internal: string
+    private pre_release_version_internal: string
+    build: string
+    constructor(major: number, minor: number, patch: number, pre_release?: string, build?: string/*, SemVerVersion*/){
+        if(!!!pre_release){}else if(typeof pre_release != "string"){
+            throw(new TypeError(`Native type conversion failed. Function argument [3] expected type string but got type ${typeof pre_release} instead`))
+        }else if(!!!pre_release.match(/^(?:(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?$/)){
+            throw(new TypeError(`Invalid pre-release version: ${JSON.stringify(pre_release)}. Pre-release string must match the following regex expression: /^(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*$/`))
+        }
+        if(!!!build){}else if(typeof build != "string"){
+            throw(new TypeError(`Native type conversion failed. Function argument [4] expected type string but got type ${typeof build} instead`))
+        }else if(!!!build.match(/^([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/)){
+            throw(new TypeError(`Invalid build version: ${JSON.stringify(build)}. Pre-release string must match the following regex expression: /^[0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*$/`))
+        }
+        this.major=major
+        this.minor=minor
+        this.patch=patch
+        this.pre_release_stage_internal=pre_release==""?undefined:pre_release.match(SemVerString.pre_release_regex).groups.pre_release_phase
+        this.pre_release_version_internal=pre_release==""?undefined:pre_release.match(SemVerString.pre_release_regex).groups.pre_release_version
+        this.build=build==""?undefined:build
+    }
+    get pre_release(){return this.pre_release_stage_internal+this.pre_release_version_internal}
+    set pre_release(pre_release: string){
+        if(!!!pre_release){}else if(typeof pre_release != "string"){
+            throw(new TypeError(`Native type conversion failed. Function argument [0] expected type string but got type ${typeof pre_release} instead`))
+        }else if(!!!pre_release.match(/^(?:(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?$/)){
+            throw(new TypeError(`Invalid pre-release version: ${JSON.stringify(pre_release)}. Pre-release string must match the following regex expression: /^(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*$/`))
+        }
+        this.pre_release_stage_internal=pre_release==""?undefined:pre_release.match(SemVerString.pre_release_regex).groups.pre_release_phase
+        this.pre_release_version_internal=pre_release==""?undefined:pre_release.match(SemVerString.pre_release_regex).groups.pre_release_version
+    }
+    get pre_release_stage(){return this.pre_release_stage_internal}
+    set pre_release_stage(pre_release_stage: string){
+        if(!!!pre_release_stage){}else if(typeof pre_release_stage != "string"){
+            throw(new TypeError(`Native type conversion failed. Function argument [0] expected type string but got type ${typeof pre_release_stage} instead`))
+        }else if(!!!pre_release_stage.match(/^(?:(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))?$/)){
+            throw(new TypeError(`Invalid pre-release stage: ${JSON.stringify(pre_release_stage)}. Pre-release stage string must match the following regex expression: /^(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)$/`))
+        }
+        this.pre_release_stage_internal=pre_release_stage==""?undefined:pre_release_stage
+    }
+    get pre_release_version(){return this.pre_release_version_internal}
+    set pre_release_version(pre_release_version: string){
+        if(!!!pre_release_version){}else if(typeof pre_release_version != "string"){
+            throw(new TypeError(`Native type conversion failed. Function argument [0] expected type string but got type ${typeof pre_release_version} instead`))
+        }else if(!!!pre_release_version.match(/^(?:(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?$/)){
+            throw(new TypeError(`Invalid pre-release stage: ${JSON.stringify(pre_release_version)}. Pre-release stage string must match the following regex expression: /^(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*$/`))
+        }
+        this.pre_release_version_internal=pre_release_version==""?undefined:pre_release_version
+    }
+    get raw(){return `${!!this.major?this.major+".":""}${!!this.minor?this.minor+".":""}${!!this.patch?this.patch:""}${!!this.pre_release_stage?`-${this.pre_release_stage}${!!this.pre_release_version_internal?this.pre_release_version_internal:""}`:(!!this.pre_release_version_internal?"-"+this.pre_release_version_internal:"")}${!!this.build?"+"+this.build:""}`}
+    toString(){return this.raw}
+    toPrimitive(){return this.raw}
+    toJSON(){return {major: this.major, minor: this.minor, patch: this.patch, pre_release_stage: this.pre_release_stage_internal, pre_release_version: this.pre_release_version_internal, build: this.build, type: "SemVerString"}}
+    static pre_release_regex = /^(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))$/
+    static build_regex = /^([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/
+    static semver_regex = /^(?<base>(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*))(?:-(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)))?(?:\+(?<build>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
+    static fromJSON(json: {major: number; minor: number; patch: number; pre_release_stage: string; pre_release_version: string; build: string; type: string; }){return new SemVerString(Number(json.major), Number(json.minor), Number(json.patch), json.pre_release_stage+json.pre_release_version, json.build)}
+    static fromString(string: string){const json = string.match(SemVerString.semver_regex).groups; return new SemVerString(Number(json.major), Number(json.minor), Number(json.patch), json.pre_release_stage+json.pre_release_version, json.build)}
+}
+export function SemVerValidator(string: string){return !!string.match(SemVerString.semver_regex)}
+export function SemVerMatcher(string: string){return string.match(SemVerString.semver_regex)}
 
 /*let sourceEntity = Entity.prototype*//*
 targetSelectorAllListD("@e[c=2]", `${player.location.x} ${player.location.y} ${player.location.z}`, player.dimension).find((e)=>(player != e.getComponent("projectile").owner))*//*
@@ -291,464 +363,11 @@ export function roundPlaceNumberObject(object: Object, place: number = Number(wo
     Object.entries(object).forEach((k, i)=>{if(typeof(k[1]) == "number"){newObject.push([k[0], Number(k[1].toFixed(place))])}else{newObject.push(k)}})
     return Object.fromEntries(newObject)
 }/*
-/execute as @e [type=andexsa:custom_arrow] at @s run /scriptevent andexdb:scriptEval let sl = sourceEntity.location; let ol = sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2", "npc", "armor_stand"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location; let d = {x: ol.x-sl.x, y: ol.y-sl.y, z: ol.z-sl.z}; eval("if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.x)*Number(d.x!=0)*d.x, y: Math.abs(1/d.x)*Number(d.y!=0)*d.y, z: Math.abs(1/d.x)*Number(d.z!=0)*d.z})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.y)*Number(d.x!=0)*d.x, y: Math.abs(1/d.y)*Number(d.y!=0)*d.y, z: Math.abs(1/d.y)*Number(d.z!=0)*d.z})}else{sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.z)*Number(d.x!=0)*d.x, y: Math.abs(1/d.z)*Number(d.y!=0)*d.y, z: Math.abs(1/d.z)*Number(d.z!=0)*d.z})}}}; ");*/
-export function arrayModifierOld(array: any[], callbackfn: (value: any, index: number, array: any[])=>any){array.forEach((v, i, a)=>{array[i]=callbackfn(v, i, a)}); return array}
-export function arrayModifier<T>(sourcearray: T[], callbackfn: (value: T, index: number, array: T[])=>any, overwrite: boolean = false){
-    if (overwrite) {
-        sourcearray.forEach((v, i, a) => {
-            sourcearray[i] = callbackfn(v, i, a)
-        });
-        return sourcearray
-    } else {
-        let newarray: any[];
-        newarray = []
-        sourcearray.forEach((v, i, a) => {
-            newarray[i] = callbackfn(v, i, a)
-        });
-        return newarray
-    }
-};/*
+/execute as @e [type=andexsa:custom_arrow] at @s run /scriptevent andexdb:scriptEval let sl = sourceEntity.location; let ol = sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2", "npc", "armor_stand"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location; let d = {x: ol.x-sl.x, y: ol.y-sl.y, z: ol.z-sl.z}; eval("if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.x)*Number(d.x!=0)*d.x, y: Math.abs(1/d.x)*Number(d.y!=0)*d.y, z: Math.abs(1/d.x)*Number(d.z!=0)*d.z})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.y)*Number(d.x!=0)*d.x, y: Math.abs(1/d.y)*Number(d.y!=0)*d.y, z: Math.abs(1/d.y)*Number(d.z!=0)*d.z})}else{sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.z)*Number(d.x!=0)*d.x, y: Math.abs(1/d.z)*Number(d.y!=0)*d.y, z: Math.abs(1/d.z)*Number(d.z!=0)*d.z})}}}; ");*//*
 import("Main").then(a=>{Object.entries(a)})*/
-export function getArrayElementProperty(array: any[], property: string){array.forEach((v, i, a)=>{array[i]=eval(`v.${property}`)}); return array}
-export function combineObjects(obj1: object, obj2: object){return Object.fromEntries(Object.entries(obj1).concat(Object.entries(obj2)))}
-export function generateCUID(classid?: string){let CUID = Number(world.getDynamicProperty("cuidCounter:"+(classid??"default"))??0) + 1; world.setDynamicProperty("cuidCounter:"+(classid??"default"), CUID); return CUID}
-export function getCUIDClasses(){return world.getDynamicPropertyIds().filter(s=>s.startsWith("cuidCounter:"))}
-export function generateAIID(classid?: string){let AIID = Number(world.getDynamicProperty("aiidCounter:"+(classid??"default"))??0) + 1; world.setDynamicProperty("aiidCounter:"+(classid??"default"), AIID); return AIID}
-export function getAIIDClasses(){return world.getDynamicPropertyIds().filter(s=>s.startsWith("aiidCounter:"))}
-export function generateTUID(){return toBase(Date.now())}
-export function toBase(num, radix = 10, keysa =  radix>62?"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/":"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/") { // only i64 numbers
-/*  var keys = ['0', '1', 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];*/
-var keys = keysa.split(""); 
-if (radix == 1) return keys[0].repeat(num) 
-  if (!(radix >= 2 && radix <= keys.length)) throw new RangeError("toBase() radix argument must be between 2 and " + keys.length)
-
-  if (num < 0) var isNegative = true
-  if (isNaN(num = Math.abs(+num))) return NaN
-
-  let output = [];
-  do {
-    let index = num % radix;
-    output.unshift(keys[index]);
-    num = Math.trunc(num / radix);
-  } while (num != 0);
-  if (isNegative??false) output.unshift('-')
-  return output.join("");
-} 
-export function fromBaseToBase(num, base = 10, radix = 10, keysa =  radix>62?"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/":"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/") { // only i64 numbers
-/*  var keys = ['0', '1', 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];*/
-var keys = keysa.split(""); 
-num = (base==10)?num:parseInt(num, base)
-if (radix == 1) return keys[0].repeat(num)
-  if (!(radix >= 2 && radix <= keys.length)) throw new RangeError("fromBaseToBase() radix argument must be between 2 and " + keys.length)
-
-  if (num < 0) var isNegative = true
-  if (isNaN(num = Math.abs(+num))) return NaN
-
-  let output = [];
-  do {
-    let index = num % radix;
-    output.unshift(keys[index]);
-    num = Math.trunc(num / radix);
-  } while (num != 0);
-  if (isNegative) output.unshift('-')
-  return output.join("");
-} 
-export function twoWayModulo(number: number, modulo: number){if(number<0){return modulo+(number%modulo)}else{return number%modulo}}
-export function clamp24HoursTo12Hours(hours: number){return twoWayModulo(hours-1, 12)+1}
-/**
- * Formats a date object to a time string formatted as 12:37:01 PM. 
- * @since 1.18.2-development.3
- * @version 1.0.1
- */
-export function formatTime(date: Date, timeZoneOffset: number = 0){const dateb = new Date(date.valueOf()+(timeZoneOffset*3600000)); return `${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")} ${dateb.getUTCHours()>11?"P":"A"}M`}
-/**
- * Formats a date object to a date time string formatted as 07/21/2024, 12:37:01 PM. 
- * @since 1.18.2-development.10
- * @version 1.0.1
- */
-export function formatDateTime(date: Date, timeZoneOffset: number = 0){const dateb = new Date(date.valueOf()+(timeZoneOffset*3600000)); return `${dateb.getUTCMonth().toString().padStart(2, "0")}/${dateb.getUTCDay().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()} ${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")} ${dateb.getUTCHours()>11?"P":"A"}M`}
-/**
- * Better Version of JSON.parse() that is able to read undefined, NaN, Infinity, and -Infinity values. 
- * @param {string} text A valid JSON string (with undefined, NaN, Infinity, and -Infinity values allowed). 
- * @param {boolean} keepUndefined Whether or not to include undefined variables when parsing, defaults to true. 
- * @returns {any} The parsed JSON data. 
- */
-export function JSONParseOld(text: string, keepUndefined: boolean = true){let g = []; let h = []; let a = JSON.parse(text.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"'), function(k, v) {
-   if (v === '{{Infinity}}') return Infinity;
-   else if (v === '{{-Infinity}}') return -Infinity;
-   else if (v === '{{NaN}}') return NaN;
-   else if (v === '{{undefined}}') {g.push(k); if(keepUndefined){return v}else{undefined}};
-   h.push(k); 
-   return v;
-   }); g.forEach((v, i)=>{let b = Object.entries(a); b[b.findIndex(b=>b[0]==v)]=[v, undefined]; a=Object.fromEntries(b)}); {let b = Object.entries(a); b.filter(b=>!!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)).forEach((v, i)=>{console.log(v, i); b[b.findIndex(b=>b[0]==v[0])]=[v[0], String(v[1]).replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}')]; a=Object.fromEntries(b)})}; return a; }
-/**
- * Better Version of JSON.stringify() that is able to save undefined, NaN, Infinity, and -Infinity values. 
- * @param {any} value A JavaScript value, usually an object or array, to be converted (with undefined, NaN, Infinity, and -Infinity values allowed). 
- * @param {boolean} keepUndefined Whether or not to include undefined variables when stringifying, defaults to false. 
- * @param {string|number} space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
- * @returns {any} The JSON string. 
- */
-export function JSONStringifyOld(value: any, keepUndefined: boolean = false, space?: string|number){return JSON.stringify(value, function(k, v) {
-    if (v === Infinity) return "{{Infinity}}";
-    else if (v === -Infinity) return "{{-Infinity}}";
-    else if (Number.isNaN(v)) return "{{NaN}}";
-    else if (v === undefined && keepUndefined) return "{{undefined}}";
-    if(String(v).match(/^{{(Infinity|NaN|-Infinity|undefined)}}$/)){v=v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}')}
-    return v;
-    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"'); }
-export function JSONParse(JSONString: string, keepUndefined: boolean = true) {
-    let g = [];
-    let h = [];
-    if(JSONString==undefined){let nothing; return nothing}
-    if(JSONString=="undefined"){return undefined}
-    if(JSONString=="Infinity"){return Infinity}
-    if(JSONString=="-Infinity"){return -Infinity}
-    if(JSONString=="NaN"){return NaN}
-    if(JSONString=="null"){return null}
-    let a = JSON.parse(JSONString.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"').replace(/(?<=(?:[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\[)[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*),(?:\s*)|[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*)\[(?:\s*)))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,\]](?:\s*))/g, '"{{$1}}"').replace(/^(Infinity|NaN|-Infinity|undefined)$/g, '"{{$1}}"'), function(k, v) {
-        if (v === '{{Infinity}}') return Infinity;
-        else if (v === '{{-Infinity}}') return -Infinity;
-        else if (v === '{{NaN}}') return NaN;
-        else if (v === '{{undefined}}') {
-            g.push(k);
-            if (keepUndefined) {
-                return v
-            } else {
-                undefined
-            }
-        };
-        h.push(k);
-        return v;
-    });
-
-    function recursiveFind(a) {
-        if (a instanceof Array) {
-            let b = a;
-            b.forEach((v, i) => {
-                if (v instanceof Array || v instanceof Object) {
-                    b[i] = recursiveFind(v);
-                    return
-                };
-                if (String(v) == "{{undefined}}") {
-                    b[i] = undefined;
-                    return
-                };
-            });
-            a = b;
-
-            {
-                let b = a;
-                !!b.forEach((va, i) => {
-                    if (String(va).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)) {
-                        b[i] = va.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}');
-                    }
-                    a = b
-                })
-            };
-        } else if (a instanceof Object) {
-            let b = Object.entries(a);
-            b.forEach((v, i) => {
-                if (v[1] instanceof Object || v[1] instanceof Array) {
-                    b[i] = [v[0], recursiveFind(v[1])];
-                    return
-                };
-                if (String(v[1]) == "{{undefined}}") {
-                    b[i] = [v[0], undefined];
-                    return
-                };
-            });
-            a = Object.fromEntries(b);
-            {
-                let b = Object.entries(a);
-                b.filter(b => !!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)).forEach((v, i) => {
-                    b[b.findIndex(b => b[0] == v[0])] = [v[0], (v[1] as any).replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}')];
-                    a = Object.fromEntries(b)
-                })
-            };
-        } else if (typeof a === "string") {
-            if (a == "{{undefined}}") {
-                a = undefined
-            } else {
-                if (a.match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)) {
-                    a = a.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}');
-                }
-            }
-        };
-        return a
-    }
-    a = recursiveFind(a);
-    return a;
-};
-
-export function objectify(object: Object|any[]){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=objectify(v[1])}else if(v[1] instanceof Object){entries[i][1]=objectify(v[1])}}); return Object.fromEntries(entries)}; 
-export function arrayify(object: Object|any[]){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=arrayify(v[1])}else if(v[1] instanceof Object){entries[i][1]=arrayify(v[1])}}); return entries}; 
-export function stringify(object: Object|any[], entriesmode: boolean|1|0 = 0, escapedarrayorobjecttag: boolean|1|0 = 0, objectifyinfinity: boolean|1|0 = 0, objectifynan: boolean|1|0 = 0, objectifyundefined: boolean|1|0 = 0, objectifynull: boolean|1|0 = 0, recursivemode: boolean|1|0 = 0){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1)}else if(v[1] instanceof Object){entries[i][1]=stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1)}else if(v[1] instanceof Function){entries[i][1]={escval: (v[1] as Function).toString()}}else if(v[1] == Infinity&&Boolean(objectifyinfinity)){entries[i][1]={escval: "Infinity"}}else if(v[1] == -Infinity&&Boolean(objectifyinfinity)){entries[i][1]={escval: "-Infinity"}}else if(Number.isNaN(v[1])&&Boolean(objectifynan)){entries[i][1]={escval: "NaN"}}else if(v[1] == undefined&&Boolean(objectifyundefined)){entries[i][1]={escval: "undefined"}}else if(v[1] == null&&Boolean(objectifynull)){entries[i][1]={escval: "null"}}}); return recursivemode?((Boolean(escapedarrayorobjecttag)&&(((object instanceof Array)&&!Boolean(entriesmode))||((object instanceof Object)&&Boolean(entriesmode))))?(Boolean(entriesmode)?{escobj: entries}:{escarray: Object.fromEntries(entries)}):(Boolean(entriesmode)?entries:Object.fromEntries(entries))):JSONStringify(Boolean(entriesmode)?entries:Object.fromEntries(entries), true)}; 
-
-export function mainEval(x: string){return eval(x)}
-export function indirectMainEval(x: string){return eval?.(x)}
-export function mainRun(x: (...args)=>any, ...args){return x(...args)}
-export function JSONStringify(JSONObject: Object, keepUndefined: boolean = false, space?: string|number) {
-    if(JSONObject==undefined){return keepUndefined?"undefined":""}
-    return JSON.stringify(JSONObject, function(k, v) {
-        if (v === Infinity) return "{{Infinity}}";
-        else if (v === -Infinity) return "{{-Infinity}}";
-        else if (Number.isNaN(v)) return "{{NaN}}";
-        else if (v === undefined && keepUndefined) return "{{undefined}}";
-        else if (typeof v === "function") return {function: v.toString()};
-        if (String(v).match(/^{{(Infinity|NaN|-Infinity|undefined)}}$/)) {
-            v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}')
-        }
-        return v;
-    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
-};
-
-export function getParametersFromString(string: string) {
-    function arrayModifier<T>(sourcearray: T[], callbackfn: (value: T, index: number, array: T[])=>any, overwrite: boolean = false){
-        if (overwrite) {
-            sourcearray.forEach((v, i, a) => {
-                sourcearray[i] = callbackfn(v, i, a)
-            });
-            return sourcearray
-        } else {
-            let newarray: any[];
-            newarray = []
-            sourcearray.forEach((v, i, a) => {
-                newarray[i] = callbackfn(v, i, a)
-            });
-            return newarray
-        }
-    };
-    const getStringsFromString = (ce: string) => {
-        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/gis));
-        cd.forEach((v, i)=>(cd[i] as any).indices=[[v?.index, v?.index+v[0]?.length]])
-        let cc = [];
-        cc.push({t: "non-json", v: ce.substring(0, (cd[0] as any)?.indices[0][0])});
-        cd.forEach((v, i) => {
-            cc.push({t: "json", v: v[0]});
-            cc.push({t: "non-json", v: ce.substring((v as any)?.indices[0][1], (cd[i + 1] as any)?.indices[0][0] ?? ce.length)})
-        });
-        return cc
-    };
-    let rawdata = extractJSONStrings(string)
-    let a = rawdata;
-    let b = string;
-    let c = [] as {t: string, v: string}[];
-    c.push(...getStringsFromString(b.substring(0, a[0]?.indices[0][0])));
-    a.forEach((v, i) => {
-        c.push({t: "json", v: v[0]});
-        c.push(...getStringsFromString(b.substring(v?.indices[0][1], a[i + 1]?.indices[0][0] ?? b.length)))
-    });
-    let e = [] as {i: number, v: Error}[];
-    let d = arrayModifier(c, (cb, i) => arrayModifier((cb.t == "json" ? [cb.v] : String(cb.v).trimStart().trimEnd().split(/\x20+?/g)), v => {
-        if ((v as any) instanceof Function) {
-            return {s: v, v: v.toString()}
-        } else {
-            try {
-                return {s: v, v: JSONParse(String(v))}
-            } catch (f) { 
-                e.push({i: i, v: f as Error});
-                return {s: v, v: String(v)}
-            }
-        }
-    }), false) as {s: string, v: any}[][];
-    let f = [] as any[];
-    arrayModifier(d, d => arrayModifier(d, d => d.v)).forEach(d => f.push(...d));
-    let h = [] as {s: string, v: any}[];
-    d.forEach(d => h.push(...d));
-    return {
-        rawdata: a as any[]|RegExpMatchArray[],
-        input: b,
-        resultAndTypeList: c,
-        separatedResultList: arrayModifier(d, d => arrayModifier(d, d => d.v)) as {s: string, v: any}[],
-        errors: e,
-        unfilteredresults: f,
-        results: f.filter(f => f != ""),
-        unfilteredresultsincludingunmodified: h,
-        resultsincludingunmodified: h.filter(h => h.v != "")
-    }
-}
-
-export function getParametersFromExtractedJSON(rawdata: RegExpMatchArray[]) {
-    function arrayModifier<T>(sourcearray: T[], callbackfn: (value: T, index: number, array: T[])=>any, overwrite: boolean = false){
-        if (overwrite) {
-            sourcearray.forEach((v, i, a) => {
-                sourcearray[i] = callbackfn(v, i, a)
-            });
-            return sourcearray
-        } else {
-            let newarray: any[];
-            newarray = []
-            newarray.forEach((v, i, a) => {
-                newarray[i] = callbackfn(v, i, a)
-            });
-            return newarray
-        }
-    };
-    const getStringsFromString = (ce: string) => {
-        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/gis));
-        cd.forEach((v, i)=>cd[i]=Object.assign(cd[i], {indices: [[v?.index, v?.index+v[0]?.length]]}))
-        let cc = [] as {t: "json"|"non-json", v: string}[];
-        cc.push({
-            t: "non-json",
-            v: ce.substring(0, (cd[0] as any)?.indices[0][0])
-        });
-        cd.forEach((v, i) => {
-            cc.push({
-                t: "json",
-                v: v[0]
-            });
-            cc.push({
-                t: "non-json",
-                v: ce.substring((v as any)?.indices[0][1], (cd[0] as any)[i + 1]?.indices[0][0] ?? ce.length)
-            })
-        });
-        return cc
-    }
-    let a = rawdata;
-    let b = rawdata[0].input;
-    let c = [];
-    c.push(...getStringsFromString(b.substring(0, (a[0] as any)?.indices[0][0])));
-    a.forEach((v, i) => {
-        c.push({t: "json", v: v[0]});
-        c.push(...getStringsFromString(b.substring((v as any)?.indices[0][1], (a[i + 1] as any)?.indices[0][0] ?? b.length)))
-    })
-    c
-    let e = [];
-    let d = arrayModifier(c, (cb, i) => arrayModifier((cb.t == "json" ? [cb.v] : String(cb.v).trimStart().trimEnd().split(/\x20+?/g)), v => {
-        if (v instanceof Function) {
-            return {s: v, v: v.toString()}
-        } else {
-            try {
-                return {s: v, v: JSONParse(String(v))}
-            } catch (f) {
-                e.push({i: i, v: f});
-                return {s: v, v: String(v)}
-            }
-        }
-    }), false) as {s: string, v: any}[][];
-    let f = [];
-    arrayModifier(d, d => arrayModifier(d, d => d.v)).forEach(d => f.push(...d));
-    let h = [];
-    d.forEach(d => h.push(...d));
-    return {
-        input: a,
-        originalinput: b,
-        resultAndTypeList: c,
-        separatedResultList: d,
-        errors: e,
-        unfilteredresults: f,
-        results: f.filter(f => f != ""),
-        unfilteredresultsincludingunmodified: h,
-        resultsincludingunmodified: h.filter(f => f.v != "")
-    }
-}
-
-export function extractJSONStrings(inputString: string, includeOtherResultData: boolean = true) {
-    const jsonStringArray = [];
-    let currentIndex = 0;
-    let inquotes = false
-
-    while (currentIndex < inputString.length) {
-        let currentChar = inputString[currentIndex];
-        if (inputString[currentIndex] == "\"" && !!inputString.slice(0, currentIndex + 1).match(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))"$/g)) {
-            inquotes = !inquotes
-        }
-
-        // Find potential start of JSON string
-        if ((currentChar === '{' || currentChar === '[') && !inquotes) {
-            let jsonString = '';
-            let openBrackets = 0;
-            let closeBrackets = 0;
-
-            // Iterate until balanced brackets are found
-            for (let i = currentIndex; i < inputString.length; i++) {
-                jsonString += inputString[i];
-                if ((inputString[i] === '{' || inputString[i] === '[') && !inquotes) {
-                    openBrackets++;
-                } else if ((inputString[i] === '}' || inputString[i] === ']') && !inquotes) {
-                    closeBrackets++;
-                }
-                if (inputString[i] == "\"" && !!inputString.slice(0, i + 1).match(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))"$/g)) {
-                    inquotes = !inquotes
-                }
-
-                // If brackets are balanced, attempt to parse JSON
-                if (openBrackets === closeBrackets) {
-                    try {
-                        JSONParse(jsonString); // Attempt to parse JSON
-                        jsonStringArray.push(includeOtherResultData ? (() => {
-                            let atest = Array.from((" ".repeat(currentIndex) + inputString.slice(currentIndex))?.matchAll(new RegExp("")?.compile("" + escapeRegExp(jsonString) + "", `g`)))[0];
-                            (atest as any).indices=[[atest?.index, atest?.index+atest[0]?.length]]
-                            try {
-                                (atest as any).value = JSONParse(atest[0])
-                            } catch (e) {
-                                (atest as any).value = atest[0]
-                            };
-                            try{(atest as any).modifiedinput = structuredClone(atest.input)}catch(e){(atest as any).modifiedinput = atest.input};
-                            atest.input = inputString;
-                            (atest as any).evaluationindex = currentIndex;
-                            return atest
-                        })() : jsonString); // Convert string into RegExp match data, then push valid JSON string to array. 
-                        currentIndex = i;
-                        break;
-                    } catch (error) {
-                        // Invalid JSON, continue searching
-                    }
-                }
-            }
-        }
-
-        currentIndex++;
-    }
-
-    return jsonStringArray;
-}
-export function customModulo(dividend: number, min: number, max: number, inclusive: number|boolean = false) {
-    inclusive = Number(inclusive)
-    max += inclusive;
-    if (min >= max) {
-        throw new Error('Invalid range: min value must be less than max value');
-    }
-
-    if (!Number.isFinite(dividend)) {
-        return dividend;
-    }
-
-    if (dividend < min) {
-        const range = max - min;
-        return customModulo(dividend + range, min, max);
-    }
-
-    if (dividend >= max) {
-        const range = max - min;
-        return customModulo(dividend - range, min, max);
-    }
-
-    return dividend;
-}
-export function escapeRegExp(string: string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-};
-export function jsonFromString(str: string, useBetterJSONParse: boolean = true) {
-    const regex = /([{\["]{1}([,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]|".*?")+[}\]"]{1}|["]{1}(([^(")]|\\")*)+(?<!\\)["]){1}/gis;
-    const matches = str.match(regex);
-    if(useBetterJSONParse)return matches.map((m) => JSONParse(m));
-    else
-    return matches.map((m) => JSON.parse(m));
-}
-export function cinfo(...data: any[]){console.info(data)}; 
-export function clog(...data: any[]){console.log(data)}; 
-export function cwarn(...data: any[]){console.warn(data)}; 
-export function cerror(...data: any[]){console.error(data)}; 
-export function asend(value: any){world.sendMessage(String(value))}; 
-export function bsend(value: any){world.sendMessage(JSONStringify(value, true))}; 
-export function csend(value: any){world.sendMessage(JSON.stringify(value))}; 
-export function psend(player: Player|executeCommandPlayerW, value: string){player.sendMessage(value)}; 
-export function pasend(player: Player|executeCommandPlayerW, value: any){player.sendMessage(String(value))}; 
-export function pbsend(player: Player|executeCommandPlayerW, value: any){player.sendMessage(JSONStringify(value, true))}; 
-export function pcsend(player: Player|executeCommandPlayerW, value: any){player.sendMessage(JSON.stringify(value))}; 
-export function perror(player: Player|executeCommandPlayerW, error: Error, prefix: string = "§c"){player.sendMessage(prefix+error+" "+error.stack)}; 
-export function splitTextByMaxProperyLength(string: string){let length = string.length/32767; let substringlist: string[]; substringlist = []; for(let i = 0; i < Math.ceil(length); i++){substringlist.push(string.slice((i-1)*32767, i==Math.ceil(length)?string.length:i*32767))}; return substringlist}; 
+export function scanForBlockType(from: Vector3, to: Vector3, dimension: Dimension, block: string, returnMode?: ""|"Vector3"|"Block"){let blockType = BlockTypes.get(block).id; if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>dimension.getBlock(v).typeId==blockType)}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>v.typeId==blockType)}}; 
+export function scanForContainerBlocks(from: Vector3, to: Vector3, dimension: Dimension, returnMode?: ""|"Vector3"|"Block"){if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>!!dimension.getBlock(v).getComponent("inventory"))}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>!!v.getComponent("inventory"))}}; 
+export function clearAllContainerBlocks(blocks: Block[]){blocks.forEach(v=>cmds.clearContainer(v.getComponent("inventory").container)); return blocks}; 
 /**
  * @deprecated
  */
@@ -3032,9 +2651,6 @@ export async function fillBlocksHOFGB(begin: Vector3, end: Vector3, dimension: D
         a()
     })
 }; 
-export function scanForBlockType(from: Vector3, to: Vector3, dimension: Dimension, block: string, returnMode?: ""|"Vector3"|"Block"){let blockType = BlockTypes.get(block).id; if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>dimension.getBlock(v).typeId==blockType)}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>v.typeId==blockType)}}; 
-export function scanForContainerBlocks(from: Vector3, to: Vector3, dimension: Dimension, returnMode?: ""|"Vector3"|"Block"){if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>!!dimension.getBlock(v).getComponent("inventory"))}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>!!v.getComponent("inventory"))}}; 
-export function clearAllContainerBlocks(blocks: Block[]){blocks.forEach(v=>cmds.clearContainer(v.getComponent("inventory").container)); return blocks}; 
 /**
  * @deprecated
  */
@@ -3379,6 +2995,9 @@ let c = a as BlockStates
 c*/
 /*convertToCompoundBlockVolume(String(world.getDynamicProperty("noPistonExtensionAreas")))*//*
 let b = a[Number(world.getAllPlayers()[0].getDynamicProperty("debugStickPropertyIndex"))]*/
+export function cullNull<T extends any[]>(array: T){return array.filter(v=>v!==null)}
+export function cullUndefined<T extends any[]>(array: T){return array.filter(v=>v!==undefined)}
+export function cullEmpty<T extends any[]>(array: T){return array.filter(v=>!!v)}
 export class interactable_blockb{id: string = ""; delay: number = 0; holdDuration?: number = 0}; 
 export let interactable_block: interactable_blockb[]
 interactable_block = []
@@ -3943,7 +3562,11 @@ if(event.itemStack?.typeId=="andexdb:entity_debug_stick"){
                         playerTargetB.getViewDirection().y, 
                         playerTargetB.getViewDirection().z) + 
                     ", §bselectedSlotIndex§a: " + (playerTargetB as Player).selectedSlotIndex + 
-                    spawnPointAllCoordinates
+                    (!!playerTargetB.getComponent("projectile")?
+                        "§a, §bprojectile§a: §9{ §3airInertia§a: §c" + playerTargetB.getComponent("projectile").airInertia + 
+                        "§a, §bprojectile§a: §3catchFireOnHurt§a: §g" + playerTargetB.getComponent("projectile").catchFireOnHurt + 
+                        "§a, §bprojectile§a: §3catchFireOnHurt§a: §g" + playerTargetB.getComponent("projectile").critParticlesOnProjectileHurt
+                    :"")
                 )
 }
 });

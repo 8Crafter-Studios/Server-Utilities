@@ -1,6 +1,9 @@
 {
    "content" : [
       {
+         "path" : "textures/ui/help/installation/select_realm_active_world_edit_world_button_arrow.png"
+      },
+      {
          "path" : "textures/particles/xz_axis_particle_pos1.png"
       },
       {
@@ -8,6 +11,9 @@
       },
       {
          "path" : ".mcattributes"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_default.png"
       },
       {
          "path" : ".zip"
@@ -64,6 +70,12 @@
          "path" : "particles/custom_item_texture_billboard.particle.json"
       },
       {
+         "path" : "textures/ui/help/installation/required_experimental_toggles.png"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_hover.png"
+      },
+      {
          "path" : "textures/items/diamond_green_down_arrow_transform_template.png"
       },
       {
@@ -85,6 +97,9 @@
          "path" : "particles/green_cube.json"
       },
       {
+         "path" : "ui/how_to_play_screen.json"
+      },
+      {
          "path" : "texts/en_US.lang"
       },
       {
@@ -95,6 +110,9 @@
       },
       {
          "path" : "textures/blocks/friction_block_2.png"
+      },
+      {
+         "path" : "textures/ui/help/installation/realm_game_settings_replace_world_button_arrow.png"
       },
       {
          "path" : "textures/blocks/gray_outline_block_texture.png"
@@ -124,6 +142,9 @@
          "path" : "ui/settings_screen.json"
       },
       {
+         "path" : "textures/ui/button_borderless_light_blue_pressed.json"
+      },
+      {
          "path" : "textures/items/wide_brush.png"
       },
       {
@@ -131,6 +152,30 @@
       },
       {
          "path" : "textures/terrain_texture.json"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_default.json"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_hover_pressed.png"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_hover.json"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_hover_pressed.json"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_pressed.png"
+      },
+      {
+         "path" : "textures/ui/help/installation/edit_realm_button_arrow.png"
+      },
+      {
+         "path" : "textures/ui/help/installation/education_edition_toggle.png"
+      },
+      {
+         "path" : "ui/how_to_play_common.json"
       }
    ],
    "version" : 1

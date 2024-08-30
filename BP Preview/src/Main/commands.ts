@@ -1220,7 +1220,7 @@ export class executeCommandPlayer extends executeCommandPlayerW {
 }
 export class HomeSystem{
     constructor(){}
-    static home_format_version = "0.0.1-indev.1"
+    static home_format_version = "0.7.0-beta.72"
     static getHomes(homeIds: string[]){let homes = [] as Home[]; homeIds.forEach(c=>homes.push(Home.get(c))); return homes}
     static getAllHomes(){let homes = [] as Home[]; this.getHomeIds().forEach(c=>homes.push(Home.get(c))); return homes}
     static getHomeIds(){return world.getDynamicPropertyIds().filter(v=>v.startsWith("home:"))}
@@ -2297,13 +2297,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 "gms": `${command.dp}gms`,
 "gohome": `${command.dp}gohome <homeName: text>`,
 "h#": `${command.dp}h<presetId: float> <containerRow: float>`,
-"heal": `${command.dp}heal [targets: targetSelector]`,
-"health": `${command.dp}health <health: number> [targets: targetSelector]`,
+"heal": `${command.dp}heal [targets: target]`,
+"health": `${command.dp}health <health: number> [targets: target]`,
 "home": `${command.dp}home <mode: set|remove|go|warp|teleport> <homeName: text>
 ${command.dp}home clear
 ${command.dp}home removeall
 ${command.dp}home list`,
-"hset": `${command.dp}hset <presetID: flaot> [dimensionId: string] [x: float] [y: float] [z: float]`,
+"hset": `${command.dp}hset <presetID: float> [dimensionId: string] [x: float] [y: float] [z: float]`,
 "idtfill": `${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
@@ -6106,6 +6106,24 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         }
         break; 
         case !!switchTest.match(/^heal$/): {
+            eventData.cancel = true;
+            system.run(()=>{
+                let args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args
+                if(switchTestB.split(/\s+/g)[1]?.trim()=="~"){args[1] = player.name}
+                if((switchTestB.split(/\s+/g)[1]??"").trim()==""){args[1] = player.name}
+                let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player)
+                if(targets.length==0){
+                    player.sendMessage(`§cError: No players matching the specified target selector were found. `)
+                }else targets.forEach(target=>{
+                    try{
+                        target.getComponent("health").resetToMaxValue()
+                        player.sendMessage(`Healed ${(target as Player)?.name??tryget(()=>target.nameTag==""?undefined:target.nameTag)??(target.typeId+"<"+target.id+">")}. Health is now ${target.getComponent("health").effectiveMax}. `)
+                    }catch(e){player.sendMessage("§c"+e+" "+e.stack+"\nfor entity "+target.typeId+"<"+target.id+">")}
+                })
+            })
+        }
+        break; 
+        case !!switchTest.match(/^setplayernametag$/): {
             eventData.cancel = true;
             system.run(()=>{
                 let args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args

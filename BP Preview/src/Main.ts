@@ -3945,7 +3945,11 @@ if(event.itemStack?.typeId=="andexdb:entity_debug_stick"){
                         playerTargetB.getViewDirection().y, 
                         playerTargetB.getViewDirection().z) + 
                     ", §bselectedSlotIndex§a: " + (playerTargetB as Player).selectedSlotIndex + 
-                    spawnPointAllCoordinates
+                    (!!playerTargetB.getComponent("projectile")?
+                        "§a, §bprojectile§a: §9{ §3airInertia§a: §c" + playerTargetB.getComponent("projectile").airInertia + 
+                        "§a, §bprojectile§a: §3catchFireOnHurt§a: §g" + playerTargetB.getComponent("projectile").catchFireOnHurt + 
+                        "§a, §bprojectile§a: §3catchFireOnHurt§a: §g" + playerTargetB.getComponent("projectile").critParticlesOnProjectileHurt
+                    :"")
                 )
 }
 });

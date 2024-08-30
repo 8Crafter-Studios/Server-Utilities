@@ -1,5 +1,5 @@
 import { Block, Dimension, type DimensionLocation, DimensionType, Player, type Vector2, type Vector3, world, Entity, system, BlockVolume, CompoundBlockVolume, type BoundingBox, BoundingBoxUtils, Direction, StructureSaveMode, type StructurePlaceOptions, type StructureCreateOptions, Structure, BlockPermutation } from "@minecraft/server";
-import { targetSelectorAllListC, targetSelectorAllListE, format_version, tryget } from "../Main";
+import { targetSelectorAllListC, targetSelectorAllListE, format_version, tryget, config } from "../Main";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -431,7 +431,7 @@ export class undoClipboard {
         world.setDynamicProperty(`andexdb:undoclipboardd;${saveTime}`, dimension.id)
         world.setDynamicProperty(`andexdb:undoclipboards;${saveTime}`, ((v: Vector3)=>({x: Math.abs(v.x), y: Math.abs(v.y), z: Math.abs(v.z)}))(Vector.subtract(area.to, area.from)))
 		for (const range of splitArea(area, sizeLimits)) {
-    			this.saveRange(dimension, range as any, saveTime, options);
+    			this.saveRange(dimension, range as any, saveTime, {saveMode: options?.saveMode??config.undoClipboardMode, includeBlocks: options?.includeBlocks, includeEntities: options?.includeEntities});
 		}
 	}
 	static undo(saveTime=this.saveTimes, options?: StructurePlaceOptions, clearSave: boolean=true, sizes: Vector3 = { x: 64, y: 128, z: 64 }){
@@ -1342,7 +1342,7 @@ export function generateTickingAreaFillCoordinatesB(area: CompoundBlockVolume, d
     }
     return locations
 }
-export async function generateTickingAreaFillCoordinatesC(center: Vector3, area: CompoundBlockVolume, dimension: Dimension, spawnEntityCallback: (location: DimensionLocation, locations: Entity[], index: number)=>any = (l, e, i)=>{try{let name = `generateTickingAreaFillCoordinates${Date.now()}EntityTickingArea${i}`; l.dimension.runCommand(`summon andexdb:tickingarea_6 ${name} ${vTStr(l)}`); e.push(l.dimension.getEntitiesAtBlockLocation(l).find(v=>v.typeId=="andexdb:tickingarea"&&v.nameTag==name))}catch(e){console.warn(e, e.stack)}}) {
+export async function generateTickingAreaFillCoordinatesC(center: Vector3, area: CompoundBlockVolume, dimension: Dimension, spawnEntityCallback: (location: DimensionLocation, locations: Entity[], index: number)=>any = (l, e, i)=>{try{let name = `generateTickingAreaFillCoordinates${Date.now()}EntityTickingArea${i}`; l.dimension.runCommand(`summon andexdb:tickingarea_6 ${name} ${vTStr(l)}`); e.push(l.dimension.getEntitiesAtBlockLocation(l).find(v=>v.typeId=="andexdb:tickingarea_6"&&v.nameTag==name))}catch(e){console.warn(e, e.stack)}}) {
     const locations = generateTickingAreaFillCoordinates(area, dimension).sort((a, b) => getDistance(a, center) - getDistance(b, center))
     const entities = [] as Entity[]
     //${se}let b = new CompoundBlockVolume(); b.pushVolume({volume: new BlockVolume(Vector.one, Vector.multiply(Vector.one, 20)), action: 0}); bsend(b.getBlockLocationIterator()?.next()?.value); 

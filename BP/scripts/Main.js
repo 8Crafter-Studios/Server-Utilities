@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.18.2-development.27";
+export const format_version = "1.20.0-development.67";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -49,11 +49,11 @@ import "Main/spawn_protection.js";
 import "@minecraft/math.js";
 export const mainmetaimport = import.meta;
 export const subscribedEvents = {};
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError } from "@minecraft/server";
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector, dirmap, diroffsetmap, diroffsetothersmap, generateMinecraftConeBG } from "Main/coordinates";
-import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput, BlockPattern, dimensions, testBlockForMatch, overworld, executeCommandPlayerW, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList } from "Main/commands";
+import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput, BlockPattern, dimensions, testBlockForMatch, overworld, executeCommandPlayerW, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, nether, the_end, dimensionsb } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
@@ -165,6 +165,10 @@ export class config {
     static set maxHomesPerManageHomesPage(maxHomesPerManageHomesPage) { world.setDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage", maxHomesPerManageHomesPage ?? 10); }
     static get artificialLagMS() { return Number(world.getDynamicProperty("andexdbSettings:artificialLagMS") ?? 0); }
     static set artificialLagMS(artificialLagMS) { world.setDynamicProperty("andexdbSettings:artificialLagMS", artificialLagMS ?? 0); }
+    static get undoClipboardMode() { return String(world.getDynamicProperty("andexdbSettings:undoClipboardMode") ?? StructureSaveMode.Memory); }
+    static set undoClipboardMode(undoClipboardMode) { world.setDynamicProperty("andexdbSettings:undoClipboardMode", undoClipboardMode ?? StructureSaveMode.Memory); }
+    static get spawnCommandLocation() { const v = tryget(() => JSON.parse(String(world.getDynamicProperty("andexdbSettings:spawnCommandLocation") ?? '{x: null, y: null, z: null, dimension: "overworld"}'))) ?? { x: null, y: null, z: null, dimension: "overworld" }; return tryget(() => ({ x: v.x, y: v.y, z: v.z, dimension: dimensionsb[String(v.dimension)] ?? overworld })) ?? { x: null, y: null, z: null, dimension: overworld }; }
+    static set spawnCommandLocation(spawnCommandLocation) { world.setDynamicProperty("andexdbSettings:spawnCommandLocation", JSON.stringify({ x: spawnCommandLocation.x, y: spawnCommandLocation.y, z: spawnCommandLocation.z, dimension: spawnCommandLocation.dimension ?? overworld })); }
     static reset() { }
 }
 export class worldPlayers {
@@ -259,6 +263,105 @@ export class worldPlayers {
     }*/
 }
 ;
+/**
+ * @since 1.20.0-development.67
+ * An error having to do with SemVer strings.
+ */
+export class SemVerError extends Error {
+    constructor(message) {
+        super(message);
+    }
+}
+/**
+ * @since 1.20.0-development.67
+ * An error for when a SemVer string is unable to be parsed.
+ */
+export class SemVerParseError extends Error {
+    constructor(message) {
+        super(message);
+    }
+}
+/**
+ * @since 1.20.0-development.67
+ * An error for when a SemVer string with the wrong pre-release phase is recieved.
+ */
+export class SemVerPhaseError extends Error {
+    constructor(message) {
+        super(message);
+    }
+}
+/**
+ * @since 1.20.0-development.63
+ */
+export class SemVerString {
+    constructor(major, minor, patch, pre_release, build /*, SemVerVersion*/) {
+        if (!!!pre_release) { }
+        else if (typeof pre_release != "string") {
+            throw (new TypeError(`Native type conversion failed. Function argument [3] expected type string but got type ${typeof pre_release} instead`));
+        }
+        else if (!!!pre_release.match(/^(?:(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?$/)) {
+            throw (new TypeError(`Invalid pre-release version: ${JSON.stringify(pre_release)}. Pre-release string must match the following regex expression: /^(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*$/`));
+        }
+        if (!!!build) { }
+        else if (typeof build != "string") {
+            throw (new TypeError(`Native type conversion failed. Function argument [4] expected type string but got type ${typeof build} instead`));
+        }
+        else if (!!!build.match(/^([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/)) {
+            throw (new TypeError(`Invalid build version: ${JSON.stringify(build)}. Pre-release string must match the following regex expression: /^[0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*$/`));
+        }
+        this.major = major;
+        this.minor = minor;
+        this.patch = patch;
+        this.pre_release_stage_internal = pre_release == "" ? undefined : pre_release.match(SemVerString.pre_release_regex).groups.pre_release_phase;
+        this.pre_release_version_internal = pre_release == "" ? undefined : pre_release.match(SemVerString.pre_release_regex).groups.pre_release_version;
+        this.build = build == "" ? undefined : build;
+    }
+    get pre_release() { return this.pre_release_stage_internal + this.pre_release_version_internal; }
+    set pre_release(pre_release) {
+        if (!!!pre_release) { }
+        else if (typeof pre_release != "string") {
+            throw (new TypeError(`Native type conversion failed. Function argument [0] expected type string but got type ${typeof pre_release} instead`));
+        }
+        else if (!!!pre_release.match(/^(?:(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?$/)) {
+            throw (new TypeError(`Invalid pre-release version: ${JSON.stringify(pre_release)}. Pre-release string must match the following regex expression: /^(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*$/`));
+        }
+        this.pre_release_stage_internal = pre_release == "" ? undefined : pre_release.match(SemVerString.pre_release_regex).groups.pre_release_phase;
+        this.pre_release_version_internal = pre_release == "" ? undefined : pre_release.match(SemVerString.pre_release_regex).groups.pre_release_version;
+    }
+    get pre_release_stage() { return this.pre_release_stage_internal; }
+    set pre_release_stage(pre_release_stage) {
+        if (!!!pre_release_stage) { }
+        else if (typeof pre_release_stage != "string") {
+            throw (new TypeError(`Native type conversion failed. Function argument [0] expected type string but got type ${typeof pre_release_stage} instead`));
+        }
+        else if (!!!pre_release_stage.match(/^(?:(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))?$/)) {
+            throw (new TypeError(`Invalid pre-release stage: ${JSON.stringify(pre_release_stage)}. Pre-release stage string must match the following regex expression: /^(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)$/`));
+        }
+        this.pre_release_stage_internal = pre_release_stage == "" ? undefined : pre_release_stage;
+    }
+    get pre_release_version() { return this.pre_release_version_internal; }
+    set pre_release_version(pre_release_version) {
+        if (!!!pre_release_version) { }
+        else if (typeof pre_release_version != "string") {
+            throw (new TypeError(`Native type conversion failed. Function argument [0] expected type string but got type ${typeof pre_release_version} instead`));
+        }
+        else if (!!!pre_release_version.match(/^(?:(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?$/)) {
+            throw (new TypeError(`Invalid pre-release stage: ${JSON.stringify(pre_release_version)}. Pre-release stage string must match the following regex expression: /^(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*$/`));
+        }
+        this.pre_release_version_internal = pre_release_version == "" ? undefined : pre_release_version;
+    }
+    get raw() { return `${!!this.major ? this.major + "." : ""}${!!this.minor ? this.minor + "." : ""}${!!this.patch ? this.patch : ""}${!!this.pre_release_stage ? `-${this.pre_release_stage}${!!this.pre_release_version_internal ? this.pre_release_version_internal : ""}` : (!!this.pre_release_version_internal ? "-" + this.pre_release_version_internal : "")}${!!this.build ? "+" + this.build : ""}`; }
+    toString() { return this.raw; }
+    toPrimitive() { return this.raw; }
+    toJSON() { return { major: this.major, minor: this.minor, patch: this.patch, pre_release_stage: this.pre_release_stage_internal, pre_release_version: this.pre_release_version_internal, build: this.build, type: "SemVerString" }; }
+    static fromJSON(json) { return new SemVerString(Number(json.major), Number(json.minor), Number(json.patch), json.pre_release_stage + json.pre_release_version, json.build); }
+    static fromString(string) { const json = string.match(SemVerString.semver_regex).groups; return new SemVerString(Number(json.major), Number(json.minor), Number(json.patch), json.pre_release_stage + json.pre_release_version, json.build); }
+}
+SemVerString.pre_release_regex = /^(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))$/;
+SemVerString.build_regex = /^([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/;
+SemVerString.semver_regex = /^(?<base>(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*))(?:-(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)))?(?:\+(?<build>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
+export function SemVerValidator(string) { return !!string.match(SemVerString.semver_regex); }
+export function SemVerMatcher(string) { return string.match(SemVerString.semver_regex); }
 /*let sourceEntity = Entity.prototype*/ /*
 targetSelectorAllListD("@e[c=2]", `${player.location.x} ${player.location.y} ${player.location.z}`, player.dimension).find((e)=>(player != e.getComponent("projectile").owner))*/ /*
 targetSelectorAllListD("@e[c=2]", `${sourceEntity.location.x} ${sourceEntity.location.y} ${sourceEntity.location.z}`, sourceEntity.dimension).find((e)=>(sourceEntity.getComponent("projectile").owner != e)).location*/ /*
@@ -4540,6 +4643,9 @@ let c = a as BlockStates
 c*/
 /*convertToCompoundBlockVolume(String(world.getDynamicProperty("noPistonExtensionAreas")))*/ /*
 let b = a[Number(world.getAllPlayers()[0].getDynamicProperty("debugStickPropertyIndex"))]*/
+export function cullNull(array) { return array.filter(v => v !== null); }
+export function cullUndefined(array) { return array.filter(v => v !== undefined); }
+export function cullEmpty(array) { return array.filter(v => !!v); }
 export class interactable_blockb {
     constructor() {
         this.id = "";
@@ -5375,7 +5481,11 @@ world.beforeEvents.playerInteractWithEntity.subscribe(event => {
                 playerTargetB.getViewDirection().y,
                 playerTargetB.getViewDirection().z) +
             ", §bselectedSlotIndex§a: " + playerTargetB.selectedSlotIndex +
-            spawnPointAllCoordinates);
+            (!!playerTargetB.getComponent("projectile") ?
+                "§a, §bprojectile§a: §9{ §3airInertia§a: §c" + playerTargetB.getComponent("projectile").airInertia +
+                    "§a, §bprojectile§a: §3catchFireOnHurt§a: §g" + playerTargetB.getComponent("projectile").catchFireOnHurt +
+                    "§a, §bprojectile§a: §3catchFireOnHurt§a: §g" + playerTargetB.getComponent("projectile").critParticlesOnProjectileHurt
+                : ""));
     }
 });
 world.beforeEvents.playerLeave.subscribe(event => {

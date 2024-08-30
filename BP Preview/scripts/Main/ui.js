@@ -1,4 +1,4 @@
-import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, GameRules, GameRule } from "@minecraft/server";
+import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, GameRules, GameRule, StructureSaveMode } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
 import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version, srun, dimensionTypeDisplayFormatting, config } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
@@ -867,6 +867,7 @@ export function scriptSettings(sourceEntitya) {
     let form2 = new ModalFormData();
     form2.title("Script Settings");
     form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 5", "integer from 1-1000", String(config.playerDataRefreshRate));
+    form2.dropdown("§l§fundoClipboardMode§r§f\nWhether to save undo history in memory or to the world files, memory will cause clipboard history to be cleared undo restarting the world/realm/server, the default is Memory", ["Memory", "World"], ["Memory", "World"].indexOf(String(config.undoClipboardMode)));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -877,8 +878,9 @@ export function scriptSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [playerDataRefreshRate] = t.formValues;
+        let [playerDataRefreshRate, undoClipboardMode] = t.formValues;
         config.playerDataRefreshRate = Number(playerDataRefreshRate);
+        config.undoClipboardMode = (["Memory", "World"][Number(undoClipboardMode)] ?? "Memory");
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -957,12 +959,50 @@ export function tpaSettings(sourceEntitya) {
         console.error(e, e.stack);
     });
 }
+export class PlayerNotifications {
+    constructor(player) { this.player = player; }
+    get getAllChatCommands() { return this.player.hasTag("getAllChatCommands"); }
+    set getAllChatCommands(value) { value ? this.player.addTag("getAllChatCommands") : this.player.removeTag("getAllChatCommands"); }
+    get getAllChatCommandsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getAllChatCommandsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getAllChatCommandsNotificationSound(value) { this.player.setDynamicProperty("getAllChatCommandsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getGameRuleChangeNotifications() { return this.player.hasTag("getGameRuleChangeNotifications"); }
+    set getGameRuleChangeNotifications(value) { value ? this.player.addTag("getGameRuleChangeNotifications") : this.player.removeTag("getGameRuleChangeNotifications"); }
+    get getGameRuleChangeNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getGameRuleChangeNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getGameRuleChangeNotificationsNotificationSound(value) { this.player.setDynamicProperty("getGameRuleChangeNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getBlockExplodeNotifications() { return this.player.hasTag("getBlockExplodeNotifications"); }
+    set getBlockExplodeNotifications(value) { value ? this.player.addTag("getBlockExplodeNotifications") : this.player.removeTag("getBlockExplodeNotifications"); }
+    get getBlockExplodeNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getBlockExplodeNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getBlockExplodeNotificationsNotificationSound(value) { this.player.setDynamicProperty("getBlockExplodeNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getButtonPushNotifications() { return this.player.hasTag("getButtonPushNotifications"); }
+    set getButtonPushNotifications(value) { value ? this.player.addTag("getButtonPushNotifications") : this.player.removeTag("getButtonPushNotifications"); }
+    get getButtonPushNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getButtonPushNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getButtonPushNotificationsNotificationSound(value) { this.player.setDynamicProperty("getButtonPushNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getEffectAddNotifications() { return this.player.hasTag("getEffectAddNotifications"); }
+    set getEffectAddNotifications(value) { value ? this.player.addTag("getEffectAddNotifications") : this.player.removeTag("getEffectAddNotifications"); }
+    get getEffectAddNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getEffectAddNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getEffectAddNotificationsNotificationSound(value) { this.player.setDynamicProperty("getEffectAddNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+}
 export function notificationsSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
+    const noti = new PlayerNotifications(sourceEntity);
     form2.title("Notifications Settings");
-    form2.toggle("§l§fGet notified when players run chat commands§r§f", sourceEntity.hasTag("getAllChatCommands"));
-    form2.toggle("§l§fGet notified when a game rule is changed§r§f", sourceEntity.hasTag("getGameRuleChangeNotifications"));
+    form2.toggle("§l§fGet notified when players run chat commands§r§f", noti.getAllChatCommands);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getAllChatCommandsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getAllChatCommandsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getAllChatCommandsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when a game rule is changed§r§f", noti.getGameRuleChangeNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getGameRuleChangeNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getGameRuleChangeNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getGameRuleChangeNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when a block explodes§r§f", noti.getBlockExplodeNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getBlockExplodeNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getBlockExplodeNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getBlockExplodeNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when a button is pushed§r§f", noti.getButtonPushNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getButtonPushNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getButtonPushNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getButtonPushNotificationsNotificationSound.pitch));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -973,9 +1013,31 @@ export function notificationsSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [getAllChatCommands, getGameRuleChangeNotifications] = t.formValues;
-        Boolean(getAllChatCommands) ? sourceEntity.addTag("getAllChatCommands") : sourceEntity.removeTag("getAllChatCommands");
-        Boolean(getGameRuleChangeNotifications) ? sourceEntity.addTag("getGameRuleChangeNotifications") : sourceEntity.removeTag("getGameRuleChangeNotifications");
+        let [getAllChatCommands, getAllChatCommandsSoundID, getAllChatCommandsVolume, getAllChatCommandsPitch, getGameRuleChangeNotifications, getGameRuleChangeNotificationsSoundID, getGameRuleChangeNotificationsVolume, getGameRuleChangeNotificationsPitch, getBlockExplodeNotifications, getBlockExplodeNotificationsSoundID, getBlockExplodeNotificationsVolume, getBlockExplodeNotificationsPitch, getButtonPushNotifications, getButtonPushNotificationsSoundID, getButtonPushNotificationsVolume, getButtonPushNotificationsPitch] = t.formValues;
+        noti.getAllChatCommands = Boolean(getAllChatCommands);
+        noti.getAllChatCommandsNotificationSound = {
+            soundId: String(getAllChatCommandsSoundID == "" ? "none" : getAllChatCommandsSoundID),
+            volume: Number.isNaN(Number(getAllChatCommandsVolume)) ? 1 : Math.min(Math.max(Number(getAllChatCommandsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getAllChatCommandsPitch)) ? 1 : Math.min(Math.max(Number(getAllChatCommandsPitch), 0), 255)
+        };
+        noti.getGameRuleChangeNotifications = Boolean(getGameRuleChangeNotifications);
+        noti.getGameRuleChangeNotificationsNotificationSound = {
+            soundId: String(getGameRuleChangeNotificationsSoundID == "" ? "none" : getGameRuleChangeNotificationsSoundID),
+            volume: Number.isNaN(Number(getGameRuleChangeNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getGameRuleChangeNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getGameRuleChangeNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getGameRuleChangeNotificationsPitch), 0), 255)
+        };
+        noti.getBlockExplodeNotifications = Boolean(getBlockExplodeNotifications);
+        noti.getBlockExplodeNotificationsNotificationSound = {
+            soundId: String(getBlockExplodeNotificationsSoundID == "" ? "none" : getBlockExplodeNotificationsSoundID),
+            volume: Number.isNaN(Number(getBlockExplodeNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getBlockExplodeNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getBlockExplodeNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getBlockExplodeNotificationsPitch), 0), 255)
+        };
+        noti.getButtonPushNotifications = Boolean(getButtonPushNotifications);
+        noti.getButtonPushNotificationsNotificationSound = {
+            soundId: String(getButtonPushNotificationsSoundID == "" ? "none" : getButtonPushNotificationsSoundID),
+            volume: Number.isNaN(Number(getButtonPushNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getButtonPushNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getButtonPushNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getButtonPushNotificationsPitch), 0), 255)
+        };
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);

@@ -1,5 +1,5 @@
 import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume, BoundingBoxUtils, Direction, StructureSaveMode, Structure, BlockPermutation } from "@minecraft/server";
-import { targetSelectorAllListC, targetSelectorAllListE, format_version, tryget } from "../Main";
+import { targetSelectorAllListC, targetSelectorAllListE, format_version, tryget, config } from "../Main";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -497,7 +497,7 @@ export class undoClipboard {
         world.setDynamicProperty(`andexdb:undoclipboardd;${saveTime}`, dimension.id);
         world.setDynamicProperty(`andexdb:undoclipboards;${saveTime}`, ((v) => ({ x: Math.abs(v.x), y: Math.abs(v.y), z: Math.abs(v.z) }))(Vector.subtract(area.to, area.from)));
         for (const range of splitArea(area, sizeLimits)) {
-            this.saveRange(dimension, range, saveTime, options);
+            this.saveRange(dimension, range, saveTime, { saveMode: options?.saveMode ?? config.undoClipboardMode, includeBlocks: options?.includeBlocks, includeEntities: options?.includeEntities });
         }
     }
     static undo(saveTime = this.saveTimes, options, clearSave = true, sizes = { x: 64, y: 128, z: 64 }) {
@@ -1617,7 +1617,7 @@ catch (e) {
 export async function generateTickingAreaFillCoordinatesC(center, area, dimension, spawnEntityCallback = (l, e, i) => { try {
     let name = `generateTickingAreaFillCoordinates${Date.now()}EntityTickingArea${i}`;
     l.dimension.runCommand(`summon andexdb:tickingarea_6 ${name} ${vTStr(l)}`);
-    e.push(l.dimension.getEntitiesAtBlockLocation(l).find(v => v.typeId == "andexdb:tickingarea" && v.nameTag == name));
+    e.push(l.dimension.getEntitiesAtBlockLocation(l).find(v => v.typeId == "andexdb:tickingarea_6" && v.nameTag == name));
 }
 catch (e) {
     console.warn(e, e.stack);

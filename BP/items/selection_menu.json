@@ -1,5 +1,5 @@
 {
-	"format_version": "1.16.100",
+	"format_version": "1.20.50",
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:selection_menu",
@@ -14,7 +14,7 @@
 			},
 			"minecraft:interact_button": "Open Main Menu", 
 			"minecraft:hover_text_color": "light_purple", 
-			"minecraft:foil": true,/*
+			"minecraft:glint": true,/*
 			"minecraft:render_offsets": {
 				"main_hand": {
 					"first_person": {*//*

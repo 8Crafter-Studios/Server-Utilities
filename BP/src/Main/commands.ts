@@ -1,5 +1,5 @@
 import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, type BlockComponentTypeMap } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, formatTime } from "../Main";
+import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, formatTime, SemVerString } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
@@ -41,7 +41,6 @@ playersave
 spawnprot
 mcMath
 export const disconnectingPlayers = [] as string[]
-export const currentlyRequestedChatInput = {} as {[playerId: string]: {anyInput: {[id: string]: {time: number, request?: string|RawMessage|(string|RawMessage)[], input?: string, id?: string}}, conditionalInput: {[id: string]: {time: number, request?: string|RawMessage|(string|RawMessage)[], input?: string, id?: string, conditions: (player: Player, message: string, event: ChatSendBeforeEvent)=>boolean, expireTime: number, expireConditions?: (requestObject: {[k: string]: any})=>boolean}}}}
 export let idGeneratorIndex = 0
 export function idGenerator() {
     let id = "id"+idGeneratorIndex+"Time"+Date.now()
@@ -49,7 +48,7 @@ export function idGenerator() {
     return id
 }
 
-export const commands_format_version = "25.0.0-rc.73";
+export const commands_format_version = "30.0.0-rc.73";
     // @ts-expect-error
         [][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(![]+[+[]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[+!+[]]+(+(!+[]+!+[]+[+!+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[+!+[]])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]])()([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[(![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]]((+((+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+[+[]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+!+[]]])+[])[!+[]+!+[]]+[+!+[]])+(![]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]])()())[!+[]+!+[]+!+[]+[+[]]]+(+(+!+[]+[+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+[+!+[]])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]+!+[]])()[(!![]+[])[+[]]+(![]+[])[+[]]+(![]+[])[!+[]+!+[]+!+[]]+(![]+[])[+!+[]]] = [][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+'[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+([]+{})[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[+!+[]+[!+[]+!+[]+!+[]]]+(![]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]]+![]+(![]+[+[]])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]])()[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]()+[])[!+[]+!+[]]+(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+","+"\\""+(+[![]]+[][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]())[+!+[]+[+!+[]]]+([][[]]+[])[+!+[]]+([][[]]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(+(+!+[]+[+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[!+[]+!+[]+!+[]+!+[]])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+"\\""+([+[]]+![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[!+[]+!+[]+[+[]]])([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+[]],(!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(![]+[])[+[]])(f))')
     // @ts-expect-error
@@ -588,318 +587,5169 @@ export const commands_format_version = "25.0.0-rc.73";
             [])[+!+[]]+(!![]+[])[+[]]])[!+[]+!+[]+[+[]]])(b))))
 export type evaluateParametersArgumentTypes = "presetText"|"number"|"boolean"|"string"|"json"
 export const commands = [
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "give", escregexp: {v: "^give$"}, formats: [{format: "give <item: itemType> <amount: int>"}], command_version: "1.0.0", description: "This command can give you items of any type, even ones that normally require an nbt editor to obtain. ", category: ["items"], commandSettingsId: "built-inCommandSettings:give"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "giveb", escregexp: {v: "^giveb$"}, formats: [{format: "giveb <item: itemType> <amount: int>"}], command_version: "1.0.0", description: "This command can give you items of any type, even ones that normally require an nbt editor to obtain, with any stack size up to 255, in your next unoccupied inventory slot. ", category: ["items"], commandSettingsId: "built-inCommandSettings:giveb"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "givec", escregexp: {v: "^givec$"}, formats: [{format: "givec <itemJSON: itemJSON>"}], command_version: "2.0.0", description: "This command can give you items of any type with lots of properties already set on it through the item JSON, even ones that normally require an nbt editor to obtain, with any stack size up to 255, in your next unoccupied inventory slot. ", category: ["items"], commandSettingsId: "built-inCommandSettings:givec"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "setitem", escregexp: {v: "^setitem$"}, formats: [{format: "setitem <item: itemType> <amount: int> <slot: int>"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:setitem"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "setitemb", escregexp: {v: "^setitemb$"}, formats: [{format: "setitemb <itemJSON: itemJSON> [slot: int] [playerTargets: targetSelector]"}], command_version: "2.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:setitemb"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "item", escregexp: {v: "^item$"}, formats: [{format: "item lore <loreArray: escapableStringJSON>"}, {format: "item lorene <loreArray: JSON>"}, {format: "item name <name: escapableString>"}, {format: "item json <itemJSON: itemJSON>"}, {format: "item jsonb <itemJSON: itemJSON>"}, {format: "item count <itemCount: int>"}, {format: "item amount <itemAmount: int>"}, {format: "item property..."}, {format: ["item slot <inventorySlotNumber: int|~> lore <loreArray: escapableStringJSON>", "item slot <inventorySlotNumber: int|~> lorene <loreArray: JSON>", "item slot <inventorySlotNumber: int|~> name <name: escapableString>", "item slot <inventorySlotNumber: int|~> json <itemJSON: itemJSON>", "item slot <inventorySlotNumber: int|~> jsonb <itemJSON: itemJSON>"]}, {format: "§citem components..."}], command_version: "1.5.1", description: "", category: ["items"], commandSettingsId: "built-inCommandSettings:item"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "invsee", escregexp: {v: "^invsee$"}, formats: [{format: "invsee <target: targetSelector>"}], command_version: "1.6.0", description: "", category: ["invsee"], commandSettingsId: "built-inCommandSettings:invsee"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "invseep", escregexp: {v: "^invseep$"}, formats: [{format: "invseep <target: targetSelector>"}], command_version: "1.6.0", description: "", category: ["invsee"], commandSettingsId: "built-inCommandSettings:invseep"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "offlineinfo", escregexp: {v: "^offlineinfo$"}, formats: [{format: "offlineinfo <player: playerName>"}], command_version: "1.1.0", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineinfo"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "offlineuuidinfo", escregexp: {v: "^offlineuuidinfo$"}, formats: [{format: "offlineuuidinfo <playerUUID: UUID>"}], command_version: "1.1.0", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineuuidinfo"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "offlineinvsee", escregexp: {v: "^offlineinvsee$"}, formats: [{format: "offlineinvsee <player: playerName>"}], command_version: "1.2.0", description: "", category: ["players", "invsee"], commandSettingsId: "built-inCommandSettings:offlineinvsee"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "offlineuuidinvsee", escregexp: {v: "^offlineuuidinvsee$"}, formats: [{format: "offlineuuidinvsee <playerUUID: UUID>"}], command_version: "1.2.0", description: "", category: ["players", "invsee"], commandSettingsId: "built-inCommandSettings:offlineuuidinvsee"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "binvsee", escregexp: {v: "^binvsee$"}, formats: [{format: "binvsee <dimension: dimensionId|~> <blockLocation: x y z>"}], command_version: "4.1.0", description: "Invsees into a block. ", category: ["invsee"], commandSettingsId: "built-inCommandSettings:binvsee"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "einvsee", escregexp: {v: "^einvsee$"}, formats: [{format: "einvsee <targetSelector: targetSelector>"}], command_version: "1.6.0", description: "Invsees into and entity's inventory and equipment slots. ", category: ["invsee"], commandSettingsId: "built-inCommandSettings:einvsee"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "einvseeb", escregexp: {v: "^einvseeb$"}, formats: [{format: "einvseeb <targetSelector: targetSelector>"}], command_version: "1.6.0", description: "The original version of the \\einvsee command that does not scan equipment slots. ", category: ["invsee"], commandSettingsId: "built-inCommandSettings:einvseeb"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "invseeuuidmode", escregexp: {v: "^invseeuuidmode$"}, formats: [{format: "invseeuuidmode <entityUUID: UUID>"}], command_version: "1.2.0", description: "Invsees into he entity matching the inputted UUID. ", category: ["invsee"], commandSettingsId: "built-inCommandSettings:invseeuuidmode"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "h#", escregexp: {v: "^h(\\d*)$"}, formats: [{format: "h<presetId: float> <containerRow: float>"}], command_version: "1.0.0-beta.1", description: "Swaps your hotbar with the specified hotbar preset. ", category: ["containers/inventories"], commandSettingsId: "built-inCommandSettings:h#"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "hset", escregexp: {v: "^hset$"}, formats: [{format: "hset <presetId: float> [dimensionId: string] [x: float] [y: float] [z: float]"}], command_version: "1.0.0-beta.10", description: "Sets the specified hotbar preset to the specified location. ", category: ["containers/inventories"], commandSettingsId: "built-inCommandSettings:hset"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gmc", escregexp: {v: "^gmc$"}, formats: [{format: "gmc"}], command_version: "1.0.0", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:gmc"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gms", escregexp: {v: "^gms$"}, formats: [{format: "gms"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:gms"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gma", escregexp: {v: "^gma$"}, formats: [{format: "gma"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:gma"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gmd", escregexp: {v: "^gmd$"}, formats: [{format: "gmd"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:gmd"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gmp", escregexp: {v: "^gmp$"}, formats: [{format: "gmp"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:gmp"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gmr", escregexp: {v: "^gmr$"}, formats: [{format: "gmr"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:gmr"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "enderchest", escregexp: {v: "^enderchest$"}, formats: [{format: "enderchest"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:enderchest"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "getuuid", escregexp: {v: "^getuuid$"}, formats: [{format: "getuuid <targetSelector: targetSelector>"}], command_version: "1.0.0", description: "", category: ["entities"], commandSettingsId: "built-inCommandSettings:getuuid"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warpset", escregexp: {v: "^warpset$"}, formats: [{format: "warpset <dimension: dimension|~> <x: float|~> <y: float|~> <z: float|~> <name: escapableString>"}], command_version: "1.1.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:warpset"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warp", escregexp: {v: "^warp$"}, formats: [{format: "warp <warpName: escapableString>"}], command_version: "1.1.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:warp"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warpremove", escregexp: {v: "^warpremove$"}, formats: [{format: "warpremove <warpName: escapableString>"}], command_version: "1.0.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:warpremove"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warpreset", escregexp: {v: "^warpreset$"}, formats: [{format: "warpreset"}], command_version: "1.0.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:warpreset"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warplist", escregexp: {v: "^warplist$"}, formats: [{format: "warlist"}], command_version: "1.0.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:warplist"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warplistdetails", escregexp: {v: "^warplistdetails$"}, formats: [{format: "warplistdetails"}], command_version: "1.0.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:warplistdetails"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "warplistrawdata", escregexp: {v: "^warplistrawdata$"}, formats: [{format: "warplistrawdata"}], command_version: "1.0.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:warplistrawdata"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wset", escregexp: {v: "^wset$"}, formats: [{format: "wset <dimension: dimension|~> <x: float|~> <y: float|~> <z: float|~> <name: escapableString>"}], command_version: "1.1.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:wset"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "w", escregexp: {v: "^w$"}, formats: [{format: "w <wName: escapableString>"}], command_version: "1.1.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:w"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wremove", escregexp: {v: "^wremove$"}, formats: [{format: "wremove <wName: escapableString>"}], command_version: "1.0.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:wremove"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wreset", escregexp: {v: "^wreset$"}, formats: [{format: "wreset"}], command_version: "1.0.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:wreset"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wlist", escregexp: {v: "^wlist$"}, formats: [{format: "wlist"}], command_version: "1.0.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:wlist"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wlistdetails", escregexp: {v: "^wlistdetails$"}, formats: [{format: "wlistdetails"}], command_version: "1.0.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:wlistdetails"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "wlistrawdata", escregexp: {v: "^wlistrawdata$"}, formats: [{format: "wlistrawdata"}], command_version: "1.0.0", description: "", category: ["warps"], commandSettingsId: "built-inCommandSettings:wlistrawdata"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "run", escregexp: {v: "^run$"}, formats: [{format: "run <tickDelay: int>=1> <command: command>"}], command_version: "1.0.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:run"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "eval", escregexp: {v: "^eval$"}, formats: [{format: "eval <script: JavaScript>"}], command_version: "1.1.0", description: "", category: ["misc"], commandSettingsId: "built-inCommandSettings:eval"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "top", escregexp: {v: "^top$"}, formats: [{format: "top"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:top"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "up", escregexp: {v: "^up$"}, formats: [{format: "up [placeGlass: boolean]"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:up"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "thru", escregexp: {v: "^thru$"}, formats: [{format: "thru"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:thru"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "vthru", escregexp: {v: "^vthru$"}, formats: [{format: "vthru"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:vthru"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "phase", escregexp: {v: "^phase$"}, formats: [{format: "phase"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:phase"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "printlayers", escregexp: {v: "^printlayers$"}, formats: [{format: "printlayers"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:printlayers"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "managescriptautoeval", escregexp: {v: "^managescriptautoeval$"}, formats: [{format: "managescriptautoeval"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:managescriptautoeval"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "mainmenu", escregexp: {v: "^mainmenu$"}, aliases: [{commandName: "menu", escregexp: {v: "^menu$"}}, {commandName: "mm", escregexp: {v: "^mm$"}}], formats: [{format: "mainmenu"}], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:mainmenu"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "terminal", escregexp: {v: "^terminal$"}, aliases: [{commandName: "cmdrunner", escregexp: {v: "^cmdrunner$"}}], formats: [{format: "terminal"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:terminal"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "managecommands", escregexp: {v: "^managecommands$"}, aliases: [{commandName: "mngcmds", escregexp: {v: "^mngcmds$"}}], formats: [{format: "managecommands"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:managecommands"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "manageplayers", escregexp: {v: "^manageplayers$"}, aliases: [{commandName: "mngplyrs", escregexp: {v: "^mngplyrs$"}}], formats: [{format: "manageplayers"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:manageplayers"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "settings", escregexp: {v: "^settings$"}, formats: [{format: "settings"}], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:settings"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "notificationsettings", escregexp: {v: "^notificationsettings$"}, aliases: [{commandName: "notificationssettings", escregexp: {v: "^notificationssettings$"}}], formats: [{format: "notificationsettings"}], command_version: "2.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:notificationsettings"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "editorstick", escregexp: {v: "^editorstick$"}, formats: [{format: "editorstick"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:editorstick"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "editorstickb", escregexp: {v: "^editorstickb$"}, formats: [{format: "editorstickb"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:editorstickb"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "editorstickc", escregexp: {v: "^editorstickc$"}, formats: [{format: "editorstickc"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:editorstickc"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "messageui", escregexp: {v: "^messageui$"}, aliases: [{commandName: "msgui", escregexp: {v: "^msgui$"}}], formats: [{format: "messageui"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:messageui"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "chatsendui", escregexp: {v: "^chatsendui$"}, aliases: [{commandName: "chtsndui", escregexp: {v: "^chtsndui$"}}, {commandName: "chtsendui", escregexp: {v: "^chtsendui$"}}, {commandName: "sendui", escregexp: {v: "^sendui$"}}], formats: [{format: "chatsendui"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:chatsendui"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "chatcommandui", escregexp: {v: "^chatcommandui$"}, aliases: [{commandName: "chtcmdui", escregexp: {v: "^chtcmdui$"}}, {commandName: "cmdui", escregexp: {v: "^cmdui$"}}, {commandName: "commandui", escregexp: {v: "^commandui$"}}], formats: [{format: "chatcommandui"}], command_version: "1.0.0", description: "", category: ["uis"], commandSettingsId: "built-inCommandSettings:chatcommandui"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "datapickblock", escregexp: {v: "^datapickblock$"}, aliases: [{commandName: "dpb", escregexp: {v: "^dpb$"}}], formats: [{format: "datapickblock"}], command_version: "1.0.0", category: ["world"], description: "", commandSettingsId: "built-inCommandSettings:datapickblock"},
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "createexplosion", escregexp: {v: "^createexplosion$"}, formats: [{format: "createexplosion <location: x y z> <dimension: string> [radius: float] [allowUnderwater: bool] [breaksBlocks: bool] [causesFire: bool] [source: targetSelector]"}], command_version: "1.0.0-rc.57", description: "Creates an explosion. ", category: ["world"], commandSettingsId: "built-inCommandSettings:createexplosion"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "fill", escregexp: {v: "^fill$"}, formats: [{format: "fill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "fill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "1.1.0-rc.9", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain. ", category: ["world"], commandSettingsId: "built-inCommandSettings:fill"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "ifill", escregexp: {v: "^ifill$"}, formats: [{format: "ifill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "ifill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "31.0.1-beta.99", description: "Better version of the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. ", category: ["world"], commandSettingsId: "built-inCommandSettings:ifill"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "itfill", escregexp: {v: "^itfill$"}, formats: [
-        "itfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <tileName: Block> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <tileName: Block> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <tileName: Block> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <tileName: Block> [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: skygrid|inverseskygrid> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: skygrid|inverseskygrid> <reaplceTileName: Block> [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: skygrid|inverseskygrid> [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: skygrid|inverseskygrid> [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Block> <mode: skygrid|inverseskygrid> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Block> <mode: skygrid|inverseskygrid> <reaplceTileName: Block> [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Block> <mode: skygrid|inverseskygrid> [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> <tileName: Block> [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> clear [clearContainers: boolean]", 
-        "itfill <from: x y z> <to: x y z> drain", 
-        "itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]", 
-        "itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> hollowovoid [clearContainers: boolean]"
-], command_version: "29.0.1-beta.99", description: "Same as the \\ifill command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ", category: ["world"], commandSettingsId: "built-inCommandSettings:itfill"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "idtfill", escregexp: {v: "^idtfill$"}, formats: [
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: skygrid|inverseskygrid> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: skygrid|inverseskygrid> <reaplceTileName: Block> [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: skygrid|inverseskygrid> [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: skygrid|inverseskygrid> [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <skygridSize: float> <tileName: Block> <mode: skygrid|inverseskygrid> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <skygridSize: float> <tileName: Block> <mode: skygrid|inverseskygrid> <reaplceTileName: Block> [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <skygridSize: float> <tileName: Block> <mode: skygrid|inverseskygrid> [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> clear [clearContainers: boolean]", 
-        "idtfill <from: x y z> <to: x y z> <integrity: float> drain", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <thickness: float> <tileName: Block> <mode: hollowsphere|dome> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <tileName: Block> <blockStates: block states> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]", 
-        "idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]", 
-        "idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]", 
-        "idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> hollowovoid [clearContainers: boolean]"
-], command_version: "30.0.1-beta.99", description: "Same as the \\itfill command except for the fact that it allows you to specify the integrity of the fill. ", category: ["world"], commandSettingsId: "built-inCommandSettings:idtfill"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "iwalls", escregexp: {v: "^iwalls$"}, formats: [{format: "iwalls <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "iwalls <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "6.0.0-beta.11", description: "Same as the \\ifill command except for the fact that it only fills the walls of the specified area. ", category: ["world"], commandSettingsId: "built-inCommandSettings:iwalls"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "itwalls", escregexp: {v: "^itwalls$"}, formats: [{format: "itwalls <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "itwalls <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "7.0.0-beta.11", description: "Same as the \\iwalls command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ", category: ["world"], commandSettingsId: "built-inCommandSettings:itwalls"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "ihollow", escregexp: {v: "^ihollow$"}, formats: [{format: "ihollow <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "ihollow <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "6.0.0-beta.11", description: "Same as the \\ifill command except for the fact that it only fills the sides of the specified area. ", category: ["world"], commandSettingsId: "built-inCommandSettings:ihollow"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "ithollow", escregexp: {v: "^ithollow$"}, formats: [{format: "ithollow <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "ithollow <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "7.0.0-beta.11", description: "Same as the \\ihollow command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ", category: ["world"], commandSettingsId: "built-inCommandSettings:ithollow"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "ioutline", escregexp: {v: "^ioutline$"}, formats: [{format: "ioutline <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "ioutline <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "6.0.0-beta.11", description: "Same as the \\ifill command except for the fact that it only fills the outline of the specified area. ", category: ["world"], commandSettingsId: "built-inCommandSettings:ioutline"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "itoutline", escregexp: {v: "^itoutline$"}, formats: [{format: "itoutline <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "itoutline <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "7.0.0-beta.11", description: "Same as the \\ioutline command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ", category: ["world"], commandSettingsId: "built-inCommandSettings:itoutline"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "ipillars", escregexp: {v: "^ipillars$"}, formats: [{format: "ipillars <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "ipillars <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "6.0.0-beta.11", description: "Same as the \\ifill command except for the fact that it only fills the pillars of the specified area. ", category: ["world"], commandSettingsId: "built-inCommandSettings:ipillars"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "itpillars", escregexp: {v: "^itpillars$"}, formats: [{format: "itpillars <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "itpillars <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "7.0.0-beta.11", description: "Same as the \\ipillars command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ", category: ["world"], commandSettingsId: "built-inCommandSettings:itpillars"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "igfill", escregexp: {v: "^igfill$"}, formats: [{format: "igfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "igfill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "4.0.1-beta.99", description: "This is a version of the \\ifill command that uses a generator function so it does not cause as much lag, but it is VERY slow. Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. ", category: ["world"], commandSettingsId: "built-inCommandSettings:igfill"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "iogfill", escregexp: {v: "^iogfill$"}, formats: [{format: "iogfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "iogfill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "4.1.1-beta.17", description: "This is a version of the \\ifill command that uses a generator function so it does not cause as much lag, but it is VERY slow. Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. Same as \\igfill except for the fact that it always resets any non-specified block states to the defaults instead of keeping them as what they were if possible. ", category: ["world"], commandSettingsId: "built-inCommandSettings:iogfill"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "ifillb", escregexp: {v: "^ifillb$"}, formats: [{format: "ifillb <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}, {format: "ifillb <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"}], command_version: "1.0.1-beta.27", description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. Original version of the \\ifill command, only allows for matching exact block states but is much quicker. ", category: ["world"], commandSettingsId: "built-inCommandSettings:ifillb"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "stopgen", escregexp: {v: "^stopgen$"}, formats: [{format: "stopgen <generatorId: int>"}], command_version: "1.0.0", description: "Stops generator functions such as the \\igfill and \\iogfill commands. ", category: ["misc"], commandSettingsId: "built-inCommandSettings:stopgen"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "cloneitem", escregexp: {v: "^cloneitem$"}, formats: [{format: "cloneitem <toPlayer: playerName>"}], command_version: "0.1.9-beta.1", description: "", category: ["items"], commandSettingsId: "built-inCommandSettings:cloneitem"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "copyitem", escregexp: {v: "^copyitem$"}, formats: [{format: "copyitem <slot: int|\"head\"|\"chest\"|\"legs\"|\"feet\"|\"mainhand\"|\"offhand\"> <toPlayer: playerName>"}], command_version: "0.1.4-beta.1", description: "", category: ["items"], commandSettingsId: "built-inCommandSettings:copyitem"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "dupeitem", escregexp: {v: "^dupeitem$"}, formats: [{format: "dupeitem"}], command_version: "0.1.1-beta.1", description: "", category: ["items"], commandSettingsId: "built-inCommandSettings:dupeitem"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "transferitem", escregexp: {v: "^transferitem$"}, formats: [{format: "transferitem <toPlayer: playerName>"}], command_version: "0.1.1-beta.1", description: "", category: ["items"], commandSettingsId: "built-inCommandSettings:transferitem"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "shuffleinventory", escregexp: {v: "^shuffleinventory$"}, aliases: [{commandName: "invshuffle", escregexp: {v: "^invshuffle$"}}], formats: [{format: "shuffleinventory [player: string|~]"}], command_version: "0.2.2-beta.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:shuffleinventory"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapitems", escregexp: {v: "^swapitems$"}, formats: [{format: "swapitems <slot: number|~> <otherSlot: number|~> <otherPlayer: playerName>"}], command_version: "0.1.1-beta.1", description: "", category: ["items"], commandSettingsId: "built-inCommandSettings:swapitems"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "clear", escregexp: {v: "^clear$"}, formats: [{format: "clear <target: string> [itemType: Item]"}], command_version: "0.0.1-indev.1", category: ["players"], description: "", commandSettingsId: "built-inCommandSettings:clear"},
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "takeitem", escregexp: {v: "^takeitem$"}, formats: [{format: "takeitem <fromSlot: number|~> <fromPlayer: playerName>"}], command_version: "0.1.1-beta.1", description: "", category: ["items"], commandSettingsId: "built-inCommandSettings:takeitem"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventories", escregexp: {v: "^swapinventories$"}, aliases: [{commandName: "invswap", escregexp: {v: "^invswap$"}}], formats: [{format: "swapinventories <player1: string|~> <player2: string|~>"}], command_version: "0.2.1-beta.1", description: "Swaps the inventory, offhand, hotbar, and armor of two specified players. ", category: ["players"], commandSettingsId: "built-inCommandSettings:swapinventories"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "swapinventoriesb", escregexp: {v: "^swapinventoriesb$"}, aliases: [{commandName: "invswapb", escregexp: {v: "^invswapb$"}}], formats: [{format: "swapinventoriesb <player1: string|~> <player2: string|~>"}], command_version: "0.2.1-beta.1", description: "Swaps the inventory and hotbar of two specified players. ", category: ["players"], commandSettingsId: "built-inCommandSettings:swapinventoriesb"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitems", escregexp: {v: "^compressitems$"}, formats: [{format: "compressitems [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "1.0.0-rc.5", description: "Compresses your items into chest(s) and gives you those chest(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitems"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemsshulker", escregexp: {v: "^compressitemsshulker$"}, formats: [{format: "compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "1.0.0", description: "Compresses your items into shulker box(es) and gives you those shulker box(es) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemsshulker"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainer", escregexp: {v: "^compressitemscontainer$"}, formats: [{format: "compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "1.0.0", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemscontainer"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "compressitemscontainerb", escregexp: {v: "^compressitemscontainerb$"}, formats: [{format: "compressitemscontainerb [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"}], command_version: "0.0.1-alpha.76", description: "Compresses your items into container(s) and gives you those container(s) as items. ", category: ["players", "containers/inventories", "items"], commandSettingsId: "built-inCommandSettings:compressitemscontainerb"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "scanenderchest", escregexp: {v: "^scanenderchest$"}, aliases: [{commandName: "ecinvsee", escregexp: {v: "^ecinvsee$"}}, {commandName: "scnendchest", escregexp: {v: "^scnendchest$"}}], formats: [{format: "scanenderchest [targets: targetSelector|~]"}], command_version: "0.2.0-beta.17", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchest"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "scanenderchestc", escregexp: {v: "^scanenderchestc$"}, aliases: [{commandName: "ecinvseec", escregexp: {v: "^ecinvseec$"}}, {commandName: "scnendchestc", escregexp: {v: "^scnendchestc$"}}], formats: [{format: "scanenderchestc [target: string|~]"}], command_version: "0.3.0-beta.36", description: "", category: ["players", "containers/inventories", "invsee"], commandSettingsId: "built-inCommandSettings:scanenderchestc"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "clearenderchestslot", escregexp: {v: "^clearenderchestslot$"}, formats: [{format: "clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.2.0-beta.37", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:clearenderchestslot"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "clearenderchest", escregexp: {v: "^clearenderchest$"}, formats: [{format: "clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.1.0-beta.1", description: "", category: ["players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:clearenderchest"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "filljunk", escregexp: {v: "^filljunk$"}, aliases: [{commandName: "invfilljunk", escregexp: {v: "^invfilljunk$"}}], formats: [{format: "filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.9.0-alpha.21", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:filljunk"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "fillrandom", escregexp: {v: "^fillrandom$"}, aliases: [{commandName: "invfillrandom", escregexp: {v: "^invfillrandom$"}}], formats: [{format: "fillrandom [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "1.0.0-rc.77", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillrandom"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillop", escregexp: {v: "^fillop$"}, aliases: [{commandName: "invfillop", escregexp: {v: "^invfillop$"}}], formats: [{format: "fillop [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.9.0-alpha.21", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillop"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillillegal", escregexp: {v: "^fillillegal$"}, aliases: [{commandName: "invfillillegal", escregexp: {v: "^invfillillegal$"}}], formats: [{format: "fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"}], command_version: "0.9.0-alpha.21", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillillegal"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "fillinventory", escregexp: {v: "^fillinventory$"}, aliases: [{commandName: "invfill", escregexp: {v: "^invfill$"}}], formats: [{format: "fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]"}], command_version: "1.0.0-beta.17", description: "", category: ["items", "players", "containers/inventories"], commandSettingsId: "built-inCommandSettings:fillinventory"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands", "canUseDangerousCommands"], formatting_code: "§r§4", commandName: "chunkban", escregexp: {v: "^chunkban$"}, formats: [{format: "chunkban [slot: int|~] [loopCount: int] [target: string|~]"}], command_version: "0.0.1-beta.72", description: "", category: ["dangerous"], commandSettingsId: "built-inCommandSettings:chunkban"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "rank", escregexp: {v: "^rank$"}, formats: [{format: "rank <players: targetSelector> <mode: add|remove> <tag: string>"}, {format: "rank <players: targetSelector> clear"}], command_version: "1.0.0", description: "Adds, removes, or clears ranks from a player. ", category: ["players"], commandSettingsId: "built-inCommandSettings:rank"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "ignite", escregexp: {v: "^ignite$"}, formats: [{format: "ignite [radius: number]"}], command_version: "2.3.0-beta.17", description: "Ignites air blocks in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:ignite"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "extinguish", escregexp: {v: "^extinguish$"}, aliases: [{commandName: "ext", escregexp: {v: "^ext$"}}, {commandName: "ex", escregexp: {v: "^ex$"}}, {commandName: "remfire", escregexp: {v: "^remfire$"}}], formats: [{format: "extinguish [radius: number]"}], command_version: "2.2.0-beta.10", description: "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:extinguish"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "remexp", escregexp: {v: "^remexp$"}, formats: [{format: "remexp [radius: number]"}], command_version: "2.3.0", description: "Removes explosive blocks and entities in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:remexp"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "remexpne", escregexp: {v: "^remexpne$"}, formats: [{format: "remexpne [radius: number]"}], command_version: "2.3.0", description: "Removes explosive blocks in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:remexpne"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "drain", escregexp: {v: "^drain$"}, formats: [{format: "drain [radius: number]"}], command_version: "2.3.0", description: "Drains liquids in the specified radius, the radius defaults to 10 if not specified. ", category: ["world"], commandSettingsId: "built-inCommandSettings:drain"},
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "summon", escregexp: {v: "^summon$"}, formats: [{format: "summon"}], command_version: "1.0.0", description: "", category: ["entities"], commandSettingsId: "built-inCommandSettings:summon"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "spawnitem", escregexp: {v: "^spawnitem$"}, formats: [{format: "spawnitem"}], command_version: "1.0.0", description: "", category: ["entities", "items"], commandSettingsId: "built-inCommandSettings:spawnitem"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "heal", escregexp: {v: "^heal$"}, formats: [{format: "heal"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:heal"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "health", escregexp: {v: "^health$"}, formats: [{format: "health"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:health"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "maxhealth", escregexp: {v: "^maxhealth$"}, formats: [{format: "maxhealth"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:maxhealth"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "minhealth", escregexp: {v: "^minhealth$"}, formats: [{format: "minhealth"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:minhealth"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "defaulthealth", escregexp: {v: "^defaulthealth$"}, aliases: [{commandName: "dfthlth", escregexp: {v: "^dfthlth$"}}, {commandName: "dflthlth", escregexp: {v: "^dflthlth$"}}, {commandName: "dfthealth", escregexp: {v: "^dfthealth$"}}, {commandName: "dflthealth", escregexp: {v: "^dfthealth$"}}], formats: [{format: "defaulthealth"}], command_version: "1.0.0", description: "", category: ["players", "entities"], commandSettingsId: "built-inCommandSettings:defaulthealth"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "liststructures", escregexp: {v: "^liststructures$"}, aliases: [{commandName: "getstructures", escregexp: {v: "^getstructures$"}}], formats: [{format: "liststructures"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "blocks"], commandSettingsId: "built-inCommandSettings:liststructures"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "structure", escregexp: {v: "^structure$"}, formats: [{format: "structure"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "blocks"], commandSettingsId: "built-inCommandSettings:structure"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "version", escregexp: {v: "^version$"}, aliases: [{commandName: "ver", escregexp: {v: "^ver$"}}], formats: [{format: "version"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:version"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listbans", escregexp: {v: "^listbans$"}, aliases: [{commandName: "getbans", escregexp: {v: "^getbans$"}}], formats: [{format: "listbans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listbans"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listidbans", escregexp: {v: "^listidbans$"}, aliases: [{commandName: "getidbans", escregexp: {v: "^getidbans$"}}], formats: [{format: "listidbans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listidbans"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "listnamebans", escregexp: {v: "^listnamebans$"}, aliases: [{commandName: "getnamebans", escregexp: {v: "^getnamebans$"}}], formats: [{format: "listnamebans"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:listnamebans"}, 
-    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "timezone", escregexp: {v: "^timezone$"}, aliases: [{commandName: "tz", escregexp: {v: "^tz$"}}], formats: [{format: "timezone [UTCOffsetInHours: float]"}], command_version: "1.0.0", description: "", category: ["system", "world", "server"], commandSettingsId: "built-inCommandSettings:timezone"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\cut", escregexp: {v: "^\\\\cut$"}, formats: [{format: "\\cut"}], command_version: "3.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\cut"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\copy", escregexp: {v: "^\\\\copy$"}, formats: [{format: "\\copy"}], command_version: "3.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\copy"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\paste", escregexp: {v: "^\\\\paste$"}, formats: [{format: "\\paste"}], command_version: "3.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\paste"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\undo", escregexp: {v: "^\\\\undo$"}, formats: [{format: "\\undo"}], command_version: "3.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\undo"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\replace", escregexp: {v: "^\\\\replace$"}, formats: [{format: "\\replace"}], command_version: "2.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\replace"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\remove", escregexp: {v: "^\\\\remove$"}, formats: [{format: "\\remove"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\remove"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\set", escregexp: {v: "^\\\\set$"}, formats: [{format: "\\set"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\set"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\seti", escregexp: {v: "^\\\\seti$"}, formats: [{format: "\\seti"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\seti"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\flood", escregexp: {v: "^\\\\flood$"}, formats: [{format: "\\flood"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\flood"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\drain", escregexp: {v: "^\\\\drain$"}, formats: [{format: "\\drain"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\drain"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generate", escregexp: {v: "^\\\\generate$"}, formats: [{format: "\\generate"}], command_version: "2.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generate"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generatef", escregexp: {v: "^\\\\generatef$"}, formats: [{format: "\\generatef"}], command_version: "2.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatef"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\generatejs", escregexp: {v: "^\\\\generatejs$"}, formats: [{format: "\\generatejs"}], command_version: "0.0.1-alpha", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatejs"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generatecallback", escregexp: {v: "^\\\\generatecallback$"}, formats: [{format: "\\generatecallback"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generatecallback"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\generates", escregexp: {v: "^\\\\generates$"}, formats: [{format: "\\generates"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\generates"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\sphere", escregexp: {v: "^\\\\sphere$"}, formats: [{format: "\\sphere"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\sphere"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\hsphere", escregexp: {v: "^\\\\hsphere$"}, formats: [{format: "\\hsphere"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hsphere"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§e", commandName: "\\\\cone", escregexp: {v: "^\\\\cone$"}, formats: [{format: "\\cone"}], command_version: "1.0.0-beta.57", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\cone"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\hcone", escregexp: {v: "^\\\\hcone$"}, formats: [{format: "\\hcone"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hcone"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\cyl", escregexp: {v: "^\\\\cyl$"}, formats: [{format: "\\cyl"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\cyl"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\hcyl", escregexp: {v: "^\\\\hcyl$"}, formats: [{format: "\\hcyl"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hcyl"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\cube", escregexp: {v: "^\\\\cube$"}, formats: [{format: "\\cube"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\cube"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\hcube", escregexp: {v: "^\\\\hcube$"}, formats: [{format: "\\hcube"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hcube"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\walls", escregexp: {v: "^\\\\walls$"}, formats: [{format: "\\walls"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\walls"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\floor", escregexp: {v: "^\\\\floor$"}, formats: [{format: "\\floor"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\floor"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\ceil", escregexp: {v: "^\\\\ceil$"}, formats: [{format: "\\ceil"}], command_version: "0.0.1-alpha.1", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\ceil"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\stack", escregexp: {v: "^\\\\stack$"}, formats: [{format: "\\stack"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\stack"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\pos1", escregexp: {v: "^\\\\pos1$"}, formats: [{format: "\\\\pos1"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\pos1"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\pos2", escregexp: {v: "^\\\\pos2$"}, formats: [{format: "\\\\pos2"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\pos2"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\hpos1", escregexp: {v: "^\\\\hpos1$"}, formats: [{format: "\\\\hpos1"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hpos1"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\hpos2", escregexp: {v: "^\\\\hpos2$"}, formats: [{format: "\\\\hpos2"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\hpos2"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\chunk", escregexp: {v: "^\\\\chunk$"}, formats: [{format: "\\\\chunk"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\chunk"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\shift", escregexp: {v: "^\\\\shift$"}, formats: [{format: "\\\\shift"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\shift"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\offset", escregexp: {v: "^\\\\offset$"}, formats: [{format: "\\\\offset"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\offset"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\move", escregexp: {v: "^\\\\move$"}, formats: [{format: "\\\\move"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\move"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\omove", escregexp: {v: "^\\\\omove$"}, formats: [{format: "\\\\omove"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\omove"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\smove", escregexp: {v: "^\\\\smove$"}, formats: [{format: "\\\\smove"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\smove"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\selectmode", escregexp: {v: "^\\\\selectmode$"}, formats: [{format: "\\\\selectmode [default|noliquid|nopassable|noliquidnopassable]"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\selectmode"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\protectarea", escregexp: {v: "^\\\\protectarea$"}, formats: [{format: "\\\\protectarea"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\protectarea"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\backuparea", escregexp: {v: "^\\\\backuparea$"}, formats: [{format: "\\\\backuparea"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\backuparea"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "\\\\itfill", escregexp: {v: "^\\\\itfill$"}, formats: [{format: "\\\\itfill"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\itfill"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "\\\\idtfill", escregexp: {v: "^\\\\idtfill$"}, formats: [{format: "\\\\idtfill"}], command_version: "0.0.1-alpha.2", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:\\idtfill"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "snapshot", escregexp: {v: "^snapshot$"}, formats: [{format: "snapshot"}], command_version: "1.0.0", description: "", category: ["system", "world", "server", "worldedit"], commandSettingsId: "built-inCommandSettings:snapshot"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "butcher", escregexp: {v: "^butcher$"}, aliases: [{commandName: "but", escregexp: {v: "^but$"}}], formats: [{format: "butcher"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:butcher"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "butcherdespawn", escregexp: {v: "^butcherdespawn$"}, aliases: [{commandName: "butdes", escregexp: {v: "^butdes$"}}], formats: [{format: "butcherdespawn"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:butcherdespawn"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "remove", escregexp: {v: "^remove$"}, aliases: [{commandName: "rem", escregexp: {v: "^rem$"}}, {commandName: "rement", escregexp: {v: "^rement$"}}], formats: [{format: "remove"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:remove"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "brush", escregexp: {v: "^brush$"}, aliases: [{commandName: "br", escregexp: {v: "^br$"}}, {commandName: "\\\\brush", escregexp: {v: "^\\\\brush$"}}, {commandName: "\\\\br", escregexp: {v: "^\\\\br$"}}], formats: [{format: "brush"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:brush"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "selectioninfo", escregexp: {v: "^selectioninfo$"}, aliases: [{commandName: "selinfo", escregexp: {v: "^selinfo$"}}, {commandName: "seli", escregexp: {v: "^seli$"}}], formats: [{format: "selectioninfo"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:selectioninfo"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "chunkinfo", escregexp: {v: "^chunkinfo$"}, formats: [{format: "chunkinfo"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:chunkinfo"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "replacenear", escregexp: {v: "^replacenear$"}, formats: [{format: "replacenear"}], command_version: "1.0.0", description: "", category: ["world", "worldedit"], commandSettingsId: "built-inCommandSettings:replacenear"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "jumpto", escregexp: {v: "^jumpto$"}, aliases: [{commandName: "j", escregexp: {v: "^j$"}}], formats: [{format: "jumpto"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:jumpto"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "align", escregexp: {v: "^align$"}, formats: [{format: "align"}], command_version: "1.0.0", description: "", category: ["world", "players"], commandSettingsId: "built-inCommandSettings:align"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "aligncenter", escregexp: {v: "^aligncenter$"}, formats: [{format: "aligncenter"}], command_version: "1.0.0", description: "", category: ["world", "players"], commandSettingsId: "built-inCommandSettings:aligncenter"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "execute", escregexp: {v: "^execute$"}, formats: [{format: "execute"}], command_version: "1.0.0", description: "", category: ["system"], commandSettingsId: "built-inCommandSettings:execute"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "getworldspawnpoint", escregexp: {v: "^getworldspawnpoint$"}, aliases: [{commandName: "getworldspawn", escregexp: {v: "^getworldspawn$"}}, {commandName: "getwsp", escregexp: {v: "^getwsp$"}}, {commandName: "getws", escregexp: {v: "^getws$"}}, {commandName: "gwsp", escregexp: {v: "^gwsp$"}}, {commandName: "gws", escregexp: {v: "^gws$"}}], formats: [{format: "getworldspawnpoint"}], command_version: "1.0.0", description: "", category: ["world"], commandSettingsId: "built-inCommandSettings:getworldspawnpoint"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "findtransformdvindex", escregexp: {v: "^findtransformdvindex$"}, formats: [{format: "findtransformdvindex"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:findtransformdvindex"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "gettransformst", escregexp: {v: "^gettransformst$"}, formats: [{format: "gettransformst"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:gettransformst"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "transformresultatdvindex", escregexp: {v: "^transformresultatdvindex$"}, formats: [{format: "transformresultatdvindex"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:transformresultatdvindex"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "removeotheritemenchantments", escregexp: {v: "^removeotheritemenchantments$"}, aliases: [{commandName: "remotheritemenchants", escregexp: {v: "^remotheritemenchants$"}}, {commandName: "roie", escregexp: {v: "^roie$"}}], formats: [{format: "removeotheritemenchantments"}], command_version: "1.0.0", description: "", category: ["server", "items"], commandSettingsId: "built-inCommandSettings:removeotheritemenchantments"}, 
-    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "home", escregexp: {v: "^home$"}, formats: [{format: "home"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:home"}, 
-    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "gohome", escregexp: {v: "^gohome$"}, formats: [{format: "gohome"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:gohome"}, 
-    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "tpa", escregexp: {v: "^tpa$"}, formats: [{format: "tpa <player: targetSelector|playerName>"}], command_version: "1.0.0", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpa"}, 
-    {type: "built-in", requiredTags: [], formatting_code: "§r§c", commandName: "tpaccept", escregexp: {v: "^tpaccept$"}, formats: [{format: "tpaccept [player: targetSelector|playerName]"}, {format: "tpdeny all"}], command_version: "0.0.1-alpha", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpaccept"}, 
-    {type: "built-in", requiredTags: [], formatting_code: "§r§c", commandName: "tpdeny", escregexp: {v: "^tpdeny$"}, formats: [{format: "tpdeny [player: targetSelector|playerName]"}, {format: "tpdeny all"}], command_version: "0.0.1-alpha", description: "", category: ["players", "warps"], commandSettingsId: "built-inCommandSettings:tpdeny"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§f", commandName: "kick", escregexp: {v: "^kick$"}, formats: [{format: "kick <players: targetSelector> [reason: string]"}], command_version: "1.0.0", description: "", category: ["system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:kick"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "disconnect", escregexp: {v: "^disconnect$"}, aliases: [{commandName: "boot", escregexp: {v: "^boot$"}}], formats: [{format: "disconnect <players: targetSelector>"}], command_version: "1.0.0", description: "", category: ["Entity Scale Add-On", "system", "world", "players", "server"], commandSettingsId: "built-inCommandSettings:disconnect"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "morph", escregexp: {v: "^morph$"}, formats: [{format: ""}], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:morph"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "tint", escregexp: {v: "^tint$"}, formats: [{format: "tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: targetSelector]"}], command_version: "1.0.4", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:tint"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "scale", escregexp: {v: "^scale$"}, formats: [{format: ""}], command_version: "1.0.1", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:scale"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "visualscale", escregexp: {v: "^visualscale$"}, formats: [{format: ""}], command_version: "1.0.0-beta", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:visualscale"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "visualscaleenabled", escregexp: {v: "^visualscaleenabled$"}, formats: [{format: ""}], command_version: "1.0.0-beta", description: "", category: ["Entity Scale Add-On"], commandSettingsId: "built-inCommandSettings:visualscaleenabled"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§6", commandName: "tps", escregexp: {v: "^tps$"}, formats: [{format: "tps"}], command_version: "1.0.0", description: "", category: ["Entity Scale Add-On", "system", "world"], commandSettingsId: "built-inCommandSettings:tps"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineinforaw", escregexp: {v: "^offlineinforaw$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineinforaw"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineuuidinforaw", escregexp: {v: "^offlineuuidinforaw$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineuuidinforaw"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineinfourl", escregexp: {v: "^offlineinfourl$"}, formats: [{format: ""}], command_version: "0.0.1-alph.2a", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineinfourl"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineuuidinfourl", escregexp: {v: "^offlineuuidinfourl$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineuuidinfourl"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineinfoescaped", escregexp: {v: "^offlineinfoescaped$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineinfoescaped"}, 
-    {type: "built-in", requiredTags: ["canUseChatCommands"], formatting_code: "§r§c", commandName: "offlineuuidinfoescaped", escregexp: {v: "^offlineuuidinfoescaped$"}, formats: [{format: ""}], command_version: "0.0.1-alpha.2", description: "", category: ["players"], commandSettingsId: "built-inCommandSettings:offlineuuidinfoescaped"}, 
-    {type: "built-in", requiredTags: [], formatting_code: "§r§f", commandName: "help", escregexp: {v: "^help$"}, formats: [{format: "help"}, {format: "help chatcommands", description: "lists the available chat commands and their main formats"}, {format: "help javascriptfunctions", description: "lists all available javascript functions, constants, variables, and classes"}, {format: "help jsfunction <jsObjectId: string>", description: "gets the source code of a specific javascript function, constant, variable, or class"}], command_version: "1.5.2", category: ["misc"], description: "", commandSettingsId: "built-inCommandSettings:help"}
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\backuparea",
+        "escregexp": {
+            "v": "^\\\\backuparea$"
+        },
+        "formats": [
+            {
+                "format": "\\\\backuparea"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\backuparea"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "\\\\ceil",
+        "escregexp": {
+            "v": "^\\\\ceil$"
+        },
+        "formats": [
+            {
+                "format": "\\ceil"
+            }
+        ],
+        "command_version": "0.0.1-alpha.1",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\ceil"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\chunk",
+        "escregexp": {
+            "v": "^\\\\chunk$"
+        },
+        "formats": [
+            {
+                "format": "\\\\chunk"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\chunk"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "\\\\cone",
+        "escregexp": {
+            "v": "^\\\\cone$"
+        },
+        "formats": [
+            {
+                "format": "\\cone"
+            }
+        ],
+        "command_version": "1.0.0-beta.57",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\cone"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\copy",
+        "escregexp": {
+            "v": "^\\\\copy$"
+        },
+        "formats": [
+            {
+                "format": "\\copy"
+            }
+        ],
+        "command_version": "3.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\copy"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "\\\\cube",
+        "escregexp": {
+            "v": "^\\\\cube$"
+        },
+        "formats": [
+            {
+                "format": "\\cube"
+            }
+        ],
+        "command_version": "0.0.1-alpha.1",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\cube"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\cut",
+        "escregexp": {
+            "v": "^\\\\cut$"
+        },
+        "formats": [
+            {
+                "format": "\\cut"
+            }
+        ],
+        "command_version": "3.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\cut"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "\\\\cyl",
+        "escregexp": {
+            "v": "^\\\\cyl$"
+        },
+        "formats": [
+            {
+                "format": "\\cyl"
+            }
+        ],
+        "command_version": "0.0.1-alpha.1",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\cyl"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\drain",
+        "escregexp": {
+            "v": "^\\\\drain$"
+        },
+        "formats": [
+            {
+                "format": "\\drain"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\drain"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\flood",
+        "escregexp": {
+            "v": "^\\\\flood$"
+        },
+        "formats": [
+            {
+                "format": "\\flood"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\flood"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "\\\\floor",
+        "escregexp": {
+            "v": "^\\\\floor$"
+        },
+        "formats": [
+            {
+                "format": "\\floor"
+            }
+        ],
+        "command_version": "0.0.1-alpha.1",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\floor"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\generate",
+        "escregexp": {
+            "v": "^\\\\generate$"
+        },
+        "formats": [
+            {
+                "format": "\\generate"
+            }
+        ],
+        "command_version": "2.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\generate"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\generatecallback",
+        "escregexp": {
+            "v": "^\\\\generatecallback$"
+        },
+        "formats": [
+            {
+                "format": "\\generatecallback"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\generatecallback"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\generatef",
+        "escregexp": {
+            "v": "^\\\\generatef$"
+        },
+        "formats": [
+            {
+                "format": "\\generatef"
+            }
+        ],
+        "command_version": "2.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\generatef"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "\\\\generatejs",
+        "escregexp": {
+            "v": "^\\\\generatejs$"
+        },
+        "formats": [
+            {
+                "format": "\\generatejs"
+            }
+        ],
+        "command_version": "0.0.1-alpha",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\generatejs"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\generates",
+        "escregexp": {
+            "v": "^\\\\generates$"
+        },
+        "formats": [
+            {
+                "format": "\\generates"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\generates"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "\\\\hcone",
+        "escregexp": {
+            "v": "^\\\\hcone$"
+        },
+        "formats": [
+            {
+                "format": "\\hcone"
+            }
+        ],
+        "command_version": "0.0.1-alpha.1",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\hcone"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "\\\\hcube",
+        "escregexp": {
+            "v": "^\\\\hcube$"
+        },
+        "formats": [
+            {
+                "format": "\\hcube"
+            }
+        ],
+        "command_version": "0.0.1-alpha.1",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\hcube"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "\\\\hcyl",
+        "escregexp": {
+            "v": "^\\\\hcyl$"
+        },
+        "formats": [
+            {
+                "format": "\\hcyl"
+            }
+        ],
+        "command_version": "0.0.1-alpha.1",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\hcyl"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\hpos1",
+        "escregexp": {
+            "v": "^\\\\hpos1$"
+        },
+        "formats": [
+            {
+                "format": "\\\\hpos1"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\hpos1"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\hpos2",
+        "escregexp": {
+            "v": "^\\\\hpos2$"
+        },
+        "formats": [
+            {
+                "format": "\\\\hpos2"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\hpos2"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\hsphere",
+        "escregexp": {
+            "v": "^\\\\hsphere$"
+        },
+        "formats": [
+            {
+                "format": "\\hsphere"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\hsphere"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "\\\\idtfill",
+        "escregexp": {
+            "v": "^\\\\idtfill$"
+        },
+        "formats": [
+            {
+                "format": "\\\\idtfill"
+            }
+        ],
+        "command_version": "0.0.1-alpha.2",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\idtfill"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\itfill",
+        "escregexp": {
+            "v": "^\\\\itfill$"
+        },
+        "formats": [
+            {
+                "format": "\\\\itfill"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\itfill"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\move",
+        "escregexp": {
+            "v": "^\\\\move$"
+        },
+        "formats": [
+            {
+                "format": "\\\\move"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\move"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\offset",
+        "escregexp": {
+            "v": "^\\\\offset$"
+        },
+        "formats": [
+            {
+                "format": "\\\\offset"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\offset"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\omove",
+        "escregexp": {
+            "v": "^\\\\omove$"
+        },
+        "formats": [
+            {
+                "format": "\\\\omove"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\omove"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\paste",
+        "escregexp": {
+            "v": "^\\\\paste$"
+        },
+        "formats": [
+            {
+                "format": "\\paste"
+            }
+        ],
+        "command_version": "3.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\paste"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\pos1",
+        "escregexp": {
+            "v": "^\\\\pos1$"
+        },
+        "formats": [
+            {
+                "format": "\\\\pos1"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\pos1"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\pos2",
+        "escregexp": {
+            "v": "^\\\\pos2$"
+        },
+        "formats": [
+            {
+                "format": "\\\\pos2"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\pos2"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\protectarea",
+        "escregexp": {
+            "v": "^\\\\protectarea$"
+        },
+        "formats": [
+            {
+                "format": "\\\\protectarea"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\protectarea"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\remove",
+        "escregexp": {
+            "v": "^\\\\remove$"
+        },
+        "formats": [
+            {
+                "format": "\\remove"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\remove"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\replace",
+        "escregexp": {
+            "v": "^\\\\replace$"
+        },
+        "formats": [
+            {
+                "format": "\\replace"
+            }
+        ],
+        "command_version": "2.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\replace"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\selectmode",
+        "escregexp": {
+            "v": "^\\\\selectmode$"
+        },
+        "formats": [
+            {
+                "format": "\\\\selectmode [default|noliquid|nopassable|noliquidnopassable]"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\selectmode"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\set",
+        "escregexp": {
+            "v": "^\\\\set$"
+        },
+        "formats": [
+            {
+                "format": "\\set"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\set"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\seti",
+        "escregexp": {
+            "v": "^\\\\seti$"
+        },
+        "formats": [
+            {
+                "format": "\\seti"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\seti"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\shift",
+        "escregexp": {
+            "v": "^\\\\shift$"
+        },
+        "formats": [
+            {
+                "format": "\\\\shift"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\shift"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\smove",
+        "escregexp": {
+            "v": "^\\\\smove$"
+        },
+        "formats": [
+            {
+                "format": "\\\\smove"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\smove"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\sphere",
+        "escregexp": {
+            "v": "^\\\\sphere$"
+        },
+        "formats": [
+            {
+                "format": "\\sphere"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\sphere"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\stack",
+        "escregexp": {
+            "v": "^\\\\stack$"
+        },
+        "formats": [
+            {
+                "format": "\\stack"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\stack"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "\\\\undo",
+        "escregexp": {
+            "v": "^\\\\undo$"
+        },
+        "formats": [
+            {
+                "format": "\\undo"
+            }
+        ],
+        "command_version": "3.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\undo"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "\\\\walls",
+        "escregexp": {
+            "v": "^\\\\walls$"
+        },
+        "formats": [
+            {
+                "format": "\\walls"
+            }
+        ],
+        "command_version": "0.0.1-alpha.1",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:\\walls"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "align",
+        "escregexp": {
+            "v": "^align$"
+        },
+        "formats": [
+            {
+                "format": "align"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world",
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:align"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "aligncenter",
+        "escregexp": {
+            "v": "^aligncenter$"
+        },
+        "formats": [
+            {
+                "format": "aligncenter"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world",
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:aligncenter"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "binvsee",
+        "escregexp": {
+            "v": "^binvsee$"
+        },
+        "formats": [
+            {
+                "format": "binvsee <dimension: dimensionId|~> <blockLocation: x y z>"
+            }
+        ],
+        "command_version": "4.1.0",
+        "description": "Invsees into a block. ",
+        "category": [
+            "invsee"
+        ],
+        "commandSettingsId": "built-inCommandSettings:binvsee"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "brush",
+        "escregexp": {
+            "v": "^brush$"
+        },
+        "aliases": [
+            {
+                "commandName": "br",
+                "escregexp": {
+                    "v": "^br$"
+                }
+            },
+            {
+                "commandName": "\\\\brush",
+                "escregexp": {
+                    "v": "^\\\\brush$"
+                }
+            },
+            {
+                "commandName": "\\\\br",
+                "escregexp": {
+                    "v": "^\\\\br$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "brush"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:brush"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "butcher",
+        "escregexp": {
+            "v": "^butcher$"
+        },
+        "aliases": [
+            {
+                "commandName": "but",
+                "escregexp": {
+                    "v": "^but$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "butcher"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:butcher"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "butcherdespawn",
+        "escregexp": {
+            "v": "^butcherdespawn$"
+        },
+        "aliases": [
+            {
+                "commandName": "butdes",
+                "escregexp": {
+                    "v": "^butdes$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "butcherdespawn"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:butcherdespawn"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "chatcommandui",
+        "escregexp": {
+            "v": "^chatcommandui$"
+        },
+        "aliases": [
+            {
+                "commandName": "chtcmdui",
+                "escregexp": {
+                    "v": "^chtcmdui$"
+                }
+            },
+            {
+                "commandName": "cmdui",
+                "escregexp": {
+                    "v": "^cmdui$"
+                }
+            },
+            {
+                "commandName": "commandui",
+                "escregexp": {
+                    "v": "^commandui$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "chatcommandui"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:chatcommandui"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "chatsendui",
+        "escregexp": {
+            "v": "^chatsendui$"
+        },
+        "aliases": [
+            {
+                "commandName": "chtsndui",
+                "escregexp": {
+                    "v": "^chtsndui$"
+                }
+            },
+            {
+                "commandName": "chtsendui",
+                "escregexp": {
+                    "v": "^chtsendui$"
+                }
+            },
+            {
+                "commandName": "sendui",
+                "escregexp": {
+                    "v": "^sendui$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "chatsendui"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:chatsendui"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands",
+            "canUseDangerousCommands"
+        ],
+        "formatting_code": "§r§4",
+        "commandName": "chunkban",
+        "escregexp": {
+            "v": "^chunkban$"
+        },
+        "formats": [
+            {
+                "format": "chunkban [slot: int|~] [loopCount: int] [target: string|~]"
+            }
+        ],
+        "command_version": "0.0.1-beta.72",
+        "description": "",
+        "category": [
+            "dangerous"
+        ],
+        "commandSettingsId": "built-inCommandSettings:chunkban"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "chunkinfo",
+        "escregexp": {
+            "v": "^chunkinfo$"
+        },
+        "formats": [
+            {
+                "format": "chunkinfo"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:chunkinfo"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "clear",
+        "escregexp": {
+            "v": "^clear$"
+        },
+        "formats": [
+            {
+                "format": "clear <target: string> [itemType: Item]"
+            }
+        ],
+        "command_version": "0.0.1-indev.1",
+        "category": [
+            "players"
+        ],
+        "description": "",
+        "commandSettingsId": "built-inCommandSettings:clear"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "clearenderchest",
+        "escregexp": {
+            "v": "^clearenderchest$"
+        },
+        "formats": [
+            {
+                "format": "clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"
+            }
+        ],
+        "command_version": "0.1.0-beta.1",
+        "description": "",
+        "category": [
+            "players",
+            "containers/inventories"
+        ],
+        "commandSettingsId": "built-inCommandSettings:clearenderchest"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "clearenderchestslot",
+        "escregexp": {
+            "v": "^clearenderchestslot$"
+        },
+        "formats": [
+            {
+                "format": "clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"
+            }
+        ],
+        "command_version": "0.2.0-beta.37",
+        "description": "",
+        "category": [
+            "players",
+            "containers/inventories"
+        ],
+        "commandSettingsId": "built-inCommandSettings:clearenderchestslot"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "cloneitem",
+        "escregexp": {
+            "v": "^cloneitem$"
+        },
+        "formats": [
+            {
+                "format": "cloneitem <toPlayer: playerName>"
+            }
+        ],
+        "command_version": "0.1.9-beta.1",
+        "description": "",
+        "category": [
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:cloneitem"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "compressitems",
+        "escregexp": {
+            "v": "^compressitems$"
+        },
+        "formats": [
+            {
+                "format": "compressitems [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"
+            }
+        ],
+        "command_version": "1.0.0-rc.5",
+        "description": "Compresses your items into chest(s) and gives you those chest(s) as items. ",
+        "category": [
+            "players",
+            "containers/inventories",
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:compressitems"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "compressitemscontainer",
+        "escregexp": {
+            "v": "^compressitemscontainer$"
+        },
+        "formats": [
+            {
+                "format": "compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "Compresses your items into container(s) and gives you those container(s) as items. ",
+        "category": [
+            "players",
+            "containers/inventories",
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:compressitemscontainer"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "compressitemscontainerb",
+        "escregexp": {
+            "v": "^compressitemscontainerb$"
+        },
+        "formats": [
+            {
+                "format": "compressitemscontainerb [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"
+            }
+        ],
+        "command_version": "0.0.1-alpha.76",
+        "description": "Compresses your items into container(s) and gives you those container(s) as items. ",
+        "category": [
+            "players",
+            "containers/inventories",
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:compressitemscontainerb"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "compressitemsshulker",
+        "escregexp": {
+            "v": "^compressitemsshulker$"
+        },
+        "formats": [
+            {
+                "format": "compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "Compresses your items into shulker box(es) and gives you those shulker box(es) as items. ",
+        "category": [
+            "players",
+            "containers/inventories",
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:compressitemsshulker"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "copyitem",
+        "escregexp": {
+            "v": "^copyitem$"
+        },
+        "formats": [
+            {
+                "format": "copyitem <slot: int|\"head\"|\"chest\"|\"legs\"|\"feet\"|\"mainhand\"|\"offhand\"> <toPlayer: playerName>"
+            }
+        ],
+        "command_version": "0.1.4-beta.1",
+        "description": "",
+        "category": [
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:copyitem"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "createexplosion",
+        "escregexp": {
+            "v": "^createexplosion$"
+        },
+        "formats": [
+            {
+                "format": "createexplosion <location: x y z> <dimension: string> [radius: float] [allowUnderwater: bool] [breaksBlocks: bool] [causesFire: bool] [source: targetSelector]"
+            }
+        ],
+        "command_version": "1.0.0-rc.57",
+        "description": "Creates an explosion. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:createexplosion"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "datapickblock",
+        "escregexp": {
+            "v": "^datapickblock$"
+        },
+        "aliases": [
+            {
+                "commandName": "dpb",
+                "escregexp": {
+                    "v": "^dpb$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "datapickblock"
+            }
+        ],
+        "command_version": "1.0.0",
+        "category": [
+            "world"
+        ],
+        "description": "",
+        "commandSettingsId": "built-inCommandSettings:datapickblock"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "defaulthealth",
+        "escregexp": {
+            "v": "^defaulthealth$"
+        },
+        "aliases": [
+            {
+                "commandName": "dfthlth",
+                "escregexp": {
+                    "v": "^dfthlth$"
+                }
+            },
+            {
+                "commandName": "dflthlth",
+                "escregexp": {
+                    "v": "^dflthlth$"
+                }
+            },
+            {
+                "commandName": "dfthealth",
+                "escregexp": {
+                    "v": "^dfthealth$"
+                }
+            },
+            {
+                "commandName": "dflthealth",
+                "escregexp": {
+                    "v": "^dfthealth$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "defaulthealth"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "players",
+            "entities"
+        ],
+        "commandSettingsId": "built-inCommandSettings:defaulthealth"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§6",
+        "commandName": "disconnect",
+        "escregexp": {
+            "v": "^disconnect$"
+        },
+        "aliases": [
+            {
+                "commandName": "boot",
+                "escregexp": {
+                    "v": "^boot$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "disconnect <players: targetSelector>"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "Entity Scale Add-On",
+            "system",
+            "world",
+            "players",
+            "server"
+        ],
+        "commandSettingsId": "built-inCommandSettings:disconnect"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "drain",
+        "escregexp": {
+            "v": "^drain$"
+        },
+        "formats": [
+            {
+                "format": "drain [radius: number]"
+            }
+        ],
+        "command_version": "2.3.0",
+        "description": "Drains liquids in the specified radius, the radius defaults to 10 if not specified. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:drain"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "dupeitem",
+        "escregexp": {
+            "v": "^dupeitem$"
+        },
+        "formats": [
+            {
+                "format": "dupeitem"
+            }
+        ],
+        "command_version": "0.1.1-beta.1",
+        "description": "",
+        "category": [
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:dupeitem"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "editorstick",
+        "escregexp": {
+            "v": "^editorstick$"
+        },
+        "formats": [
+            {
+                "format": "editorstick"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:editorstick"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "editorstickb",
+        "escregexp": {
+            "v": "^editorstickb$"
+        },
+        "formats": [
+            {
+                "format": "editorstickb"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:editorstickb"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "editorstickc",
+        "escregexp": {
+            "v": "^editorstickc$"
+        },
+        "formats": [
+            {
+                "format": "editorstickc"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:editorstickc"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "einvsee",
+        "escregexp": {
+            "v": "^einvsee$"
+        },
+        "formats": [
+            {
+                "format": "einvsee <targetSelector: targetSelector>"
+            }
+        ],
+        "command_version": "1.6.0",
+        "description": "Invsees into and entity's inventory and equipment slots. ",
+        "category": [
+            "invsee"
+        ],
+        "commandSettingsId": "built-inCommandSettings:einvsee"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "einvseeb",
+        "escregexp": {
+            "v": "^einvseeb$"
+        },
+        "formats": [
+            {
+                "format": "einvseeb <targetSelector: targetSelector>"
+            }
+        ],
+        "command_version": "1.6.0",
+        "description": "The original version of the \\einvsee command that does not scan equipment slots. ",
+        "category": [
+            "invsee"
+        ],
+        "commandSettingsId": "built-inCommandSettings:einvseeb"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "enderchest",
+        "escregexp": {
+            "v": "^enderchest$"
+        },
+        "formats": [
+            {
+                "format": "enderchest"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "misc"
+        ],
+        "commandSettingsId": "built-inCommandSettings:enderchest"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "eval",
+        "escregexp": {
+            "v": "^eval$"
+        },
+        "formats": [
+            {
+                "format": "eval <script: JavaScript>"
+            }
+        ],
+        "command_version": "1.1.0",
+        "description": "",
+        "category": [
+            "misc"
+        ],
+        "commandSettingsId": "built-inCommandSettings:eval"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "execute",
+        "escregexp": {
+            "v": "^execute$"
+        },
+        "formats": [
+            {
+                "format": "execute"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system"
+        ],
+        "commandSettingsId": "built-inCommandSettings:execute"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "extinguish",
+        "escregexp": {
+            "v": "^extinguish$"
+        },
+        "aliases": [
+            {
+                "commandName": "ext",
+                "escregexp": {
+                    "v": "^ext$"
+                }
+            },
+            {
+                "commandName": "ex",
+                "escregexp": {
+                    "v": "^ex$"
+                }
+            },
+            {
+                "commandName": "remfire",
+                "escregexp": {
+                    "v": "^remfire$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "extinguish [radius: number]"
+            }
+        ],
+        "command_version": "2.2.0-beta.10",
+        "description": "Extinguishes fire in the specified radius, the radius default to 10 if not specified. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:extinguish"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "fill",
+        "escregexp": {
+            "v": "^fill$"
+        },
+        "formats": [
+            {
+                "format": "fill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "fill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "1.1.0-rc.9",
+        "description": "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:fill"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "fillillegal",
+        "escregexp": {
+            "v": "^fillillegal$"
+        },
+        "aliases": [
+            {
+                "commandName": "invfillillegal",
+                "escregexp": {
+                    "v": "^invfillillegal$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"
+            }
+        ],
+        "command_version": "0.9.0-alpha.21",
+        "description": "",
+        "category": [
+            "items",
+            "players",
+            "containers/inventories"
+        ],
+        "commandSettingsId": "built-inCommandSettings:fillillegal"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "fillinventory",
+        "escregexp": {
+            "v": "^fillinventory$"
+        },
+        "aliases": [
+            {
+                "commandName": "invfill",
+                "escregexp": {
+                    "v": "^invfill$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]"
+            }
+        ],
+        "command_version": "1.0.0-beta.17",
+        "description": "",
+        "category": [
+            "items",
+            "players",
+            "containers/inventories"
+        ],
+        "commandSettingsId": "built-inCommandSettings:fillinventory"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "filljunk",
+        "escregexp": {
+            "v": "^filljunk$"
+        },
+        "aliases": [
+            {
+                "commandName": "invfilljunk",
+                "escregexp": {
+                    "v": "^invfilljunk$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"
+            }
+        ],
+        "command_version": "0.9.0-alpha.21",
+        "description": "",
+        "category": [
+            "items",
+            "players",
+            "containers/inventories"
+        ],
+        "commandSettingsId": "built-inCommandSettings:filljunk"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "fillop",
+        "escregexp": {
+            "v": "^fillop$"
+        },
+        "aliases": [
+            {
+                "commandName": "invfillop",
+                "escregexp": {
+                    "v": "^invfillop$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "fillop [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"
+            }
+        ],
+        "command_version": "0.9.0-alpha.21",
+        "description": "",
+        "category": [
+            "items",
+            "players",
+            "containers/inventories"
+        ],
+        "commandSettingsId": "built-inCommandSettings:fillop"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "fillrandom",
+        "escregexp": {
+            "v": "^fillrandom$"
+        },
+        "aliases": [
+            {
+                "commandName": "invfillrandom",
+                "escregexp": {
+                    "v": "^invfillrandom$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "fillrandom [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]"
+            }
+        ],
+        "command_version": "1.0.0-rc.77",
+        "description": "",
+        "category": [
+            "items",
+            "players",
+            "containers/inventories"
+        ],
+        "commandSettingsId": "built-inCommandSettings:fillrandom"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "findtransformdvindex",
+        "escregexp": {
+            "v": "^findtransformdvindex$"
+        },
+        "formats": [
+            {
+                "format": "findtransformdvindex"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "server",
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:findtransformdvindex"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "gettransformst",
+        "escregexp": {
+            "v": "^gettransformst$"
+        },
+        "formats": [
+            {
+                "format": "gettransformst"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "server",
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:gettransformst"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "getuuid",
+        "escregexp": {
+            "v": "^getuuid$"
+        },
+        "formats": [
+            {
+                "format": "getuuid <targetSelector: targetSelector>"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "entities"
+        ],
+        "commandSettingsId": "built-inCommandSettings:getuuid"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "getworldspawnpoint",
+        "escregexp": {
+            "v": "^getworldspawnpoint$"
+        },
+        "aliases": [
+            {
+                "commandName": "getworldspawn",
+                "escregexp": {
+                    "v": "^getworldspawn$"
+                }
+            },
+            {
+                "commandName": "getwsp",
+                "escregexp": {
+                    "v": "^getwsp$"
+                }
+            },
+            {
+                "commandName": "getws",
+                "escregexp": {
+                    "v": "^getws$"
+                }
+            },
+            {
+                "commandName": "gwsp",
+                "escregexp": {
+                    "v": "^gwsp$"
+                }
+            },
+            {
+                "commandName": "gws",
+                "escregexp": {
+                    "v": "^gws$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "getworldspawnpoint"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:getworldspawnpoint"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "give",
+        "escregexp": {
+            "v": "^give$"
+        },
+        "formats": [
+            {
+                "format": "give <item: itemType> <amount: int>"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "This command can give you items of any type, even ones that normally require an nbt editor to obtain. ",
+        "category": [
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:give"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "giveb",
+        "escregexp": {
+            "v": "^giveb$"
+        },
+        "formats": [
+            {
+                "format": "giveb <item: itemType> <amount: int>"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "This command can give you items of any type, even ones that normally require an nbt editor to obtain, with any stack size up to 255, in your next unoccupied inventory slot. ",
+        "category": [
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:giveb"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "givec",
+        "escregexp": {
+            "v": "^givec$"
+        },
+        "formats": [
+            {
+                "format": "givec <itemJSON: itemJSON>"
+            }
+        ],
+        "command_version": "2.0.0",
+        "description": "This command can give you items of any type with lots of properties already set on it through the item JSON, even ones that normally require an nbt editor to obtain, with any stack size up to 255, in your next unoccupied inventory slot. ",
+        "category": [
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:givec"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "gma",
+        "escregexp": {
+            "v": "^gma$"
+        },
+        "formats": [
+            {
+                "format": "gma"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "misc"
+        ],
+        "commandSettingsId": "built-inCommandSettings:gma"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "gmc",
+        "escregexp": {
+            "v": "^gmc$"
+        },
+        "formats": [
+            {
+                "format": "gmc"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:gmc"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "gmd",
+        "escregexp": {
+            "v": "^gmd$"
+        },
+        "formats": [
+            {
+                "format": "gmd"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "misc"
+        ],
+        "commandSettingsId": "built-inCommandSettings:gmd"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "gmp",
+        "escregexp": {
+            "v": "^gmp$"
+        },
+        "formats": [
+            {
+                "format": "gmp"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "misc"
+        ],
+        "commandSettingsId": "built-inCommandSettings:gmp"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "gmr",
+        "escregexp": {
+            "v": "^gmr$"
+        },
+        "formats": [
+            {
+                "format": "gmr"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "misc"
+        ],
+        "commandSettingsId": "built-inCommandSettings:gmr"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "gms",
+        "escregexp": {
+            "v": "^gms$"
+        },
+        "formats": [
+            {
+                "format": "gms"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "misc"
+        ],
+        "commandSettingsId": "built-inCommandSettings:gms"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [],
+        "formatting_code": "§r§f",
+        "commandName": "gohome",
+        "escregexp": {
+            "v": "^gohome$"
+        },
+        "formats": [
+            {
+                "format": "gohome"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "players",
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:gohome"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "h#",
+        "escregexp": {
+            "v": "^h(\\d*)$"
+        },
+        "formats": [
+            {
+                "format": "h<presetId: float> <containerRow: float>"
+            }
+        ],
+        "command_version": "1.0.0-beta.1",
+        "description": "Swaps your hotbar with the specified hotbar preset. ",
+        "category": [
+            "containers/inventories"
+        ],
+        "commandSettingsId": "built-inCommandSettings:h#"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "heal",
+        "escregexp": {
+            "v": "^heal$"
+        },
+        "formats": [
+            {
+                "format": "heal"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "players",
+            "entities"
+        ],
+        "commandSettingsId": "built-inCommandSettings:heal"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "health",
+        "escregexp": {
+            "v": "^health$"
+        },
+        "formats": [
+            {
+                "format": "health"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "players",
+            "entities"
+        ],
+        "commandSettingsId": "built-inCommandSettings:health"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [],
+        "formatting_code": "§r§f",
+        "commandName": "help",
+        "escregexp": {
+            "v": "^help$"
+        },
+        "formats": [
+            {
+                "format": "help"
+            },
+            {
+                "format": "help chatcommands",
+                "description": "lists the available chat commands and their main formats"
+            },
+            {
+                "format": "help javascriptfunctions",
+                "description": "lists all available javascript functions, constants, variables, and classes"
+            },
+            {
+                "format": "help jsfunction <jsObjectId: string>",
+                "description": "gets the source code of a specific javascript function, constant, variable, or class"
+            }
+        ],
+        "command_version": "1.5.2",
+        "category": [
+            "misc"
+        ],
+        "description": "",
+        "commandSettingsId": "built-inCommandSettings:help"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [],
+        "formatting_code": "§r§f",
+        "commandName": "home",
+        "escregexp": {
+            "v": "^home$"
+        },
+        "formats": [
+            {
+                "format": "home"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "players",
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:home"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "hset",
+        "escregexp": {
+            "v": "^hset$"
+        },
+        "formats": [
+            {
+                "format": "hset <presetId: float> [dimensionId: string] [x: float] [y: float] [z: float]"
+            }
+        ],
+        "command_version": "1.0.0-beta.10",
+        "description": "Sets the specified hotbar preset to the specified location. ",
+        "category": [
+            "containers/inventories"
+        ],
+        "commandSettingsId": "built-inCommandSettings:hset"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "idtfill",
+        "escregexp": {
+            "v": "^idtfill$"
+        },
+        "formats": [
+            "Too many to list. Use the \\help command to see the syntax."
+        ],
+        "command_version": "30.0.1-beta.99",
+        "description": "Same as the \\itfill command except for the fact that it allows you to specify the integrity of the fill. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:idtfill"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "ifill",
+        "escregexp": {
+            "v": "^ifill$"
+        },
+        "formats": [
+            {
+                "format": "ifill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "ifill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "31.0.1-beta.99",
+        "description": "Better version of the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:ifill"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "ifillb",
+        "escregexp": {
+            "v": "^ifillb$"
+        },
+        "formats": [
+            {
+                "format": "ifillb <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "ifillb <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "1.0.1-beta.27",
+        "description": "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. Original version of the \\ifill command, only allows for matching exact block states but is much quicker. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:ifillb"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "igfill",
+        "escregexp": {
+            "v": "^igfill$"
+        },
+        "formats": [
+            {
+                "format": "igfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "igfill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "4.0.1-beta.99",
+        "description": "This is a version of the \\ifill command that uses a generator function so it does not cause as much lag, but it is VERY slow. Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:igfill"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "ignite",
+        "escregexp": {
+            "v": "^ignite$"
+        },
+        "formats": [
+            {
+                "format": "ignite [radius: number]"
+            }
+        ],
+        "command_version": "2.3.0-beta.17",
+        "description": "Ignites air blocks in the specified radius, the radius defaults to 10 if not specified. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:ignite"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "ihollow",
+        "escregexp": {
+            "v": "^ihollow$"
+        },
+        "formats": [
+            {
+                "format": "ihollow <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "ihollow <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "6.0.0-beta.11",
+        "description": "Same as the \\ifill command except for the fact that it only fills the sides of the specified area. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:ihollow"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "invsee",
+        "escregexp": {
+            "v": "^invsee$"
+        },
+        "formats": [
+            {
+                "format": "invsee <target: targetSelector>"
+            }
+        ],
+        "command_version": "1.6.0",
+        "description": "",
+        "category": [
+            "invsee"
+        ],
+        "commandSettingsId": "built-inCommandSettings:invsee"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "invseep",
+        "escregexp": {
+            "v": "^invseep$"
+        },
+        "formats": [
+            {
+                "format": "invseep <target: targetSelector>"
+            }
+        ],
+        "command_version": "1.6.0",
+        "description": "",
+        "category": [
+            "invsee"
+        ],
+        "commandSettingsId": "built-inCommandSettings:invseep"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "invseeuuidmode",
+        "escregexp": {
+            "v": "^invseeuuidmode$"
+        },
+        "formats": [
+            {
+                "format": "invseeuuidmode <entityUUID: UUID>"
+            }
+        ],
+        "command_version": "1.2.0",
+        "description": "Invsees into he entity matching the inputted UUID. ",
+        "category": [
+            "invsee"
+        ],
+        "commandSettingsId": "built-inCommandSettings:invseeuuidmode"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "iogfill",
+        "escregexp": {
+            "v": "^iogfill$"
+        },
+        "formats": [
+            {
+                "format": "iogfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "iogfill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "4.1.1-beta.17",
+        "description": "This is a version of the \\ifill command that uses a generator function so it does not cause as much lag, but it is VERY slow. Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. Same as \\igfill except for the fact that it always resets any non-specified block states to the defaults instead of keeping them as what they were if possible. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:iogfill"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "ioutline",
+        "escregexp": {
+            "v": "^ioutline$"
+        },
+        "formats": [
+            {
+                "format": "ioutline <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "ioutline <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "6.0.0-beta.11",
+        "description": "Same as the \\ifill command except for the fact that it only fills the outline of the specified area. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:ioutline"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "ipillars",
+        "escregexp": {
+            "v": "^ipillars$"
+        },
+        "formats": [
+            {
+                "format": "ipillars <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "ipillars <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "6.0.0-beta.11",
+        "description": "Same as the \\ifill command except for the fact that it only fills the pillars of the specified area. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:ipillars"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "item",
+        "escregexp": {
+            "v": "^item$"
+        },
+        "formats": [
+            {
+                "format": "item lore <loreArray: escapableStringJSON>"
+            },
+            {
+                "format": "item lorene <loreArray: JSON>"
+            },
+            {
+                "format": "item name <name: escapableString>"
+            },
+            {
+                "format": "item json <itemJSON: itemJSON>"
+            },
+            {
+                "format": "item jsonb <itemJSON: itemJSON>"
+            },
+            {
+                "format": "item count <itemCount: int>"
+            },
+            {
+                "format": "item amount <itemAmount: int>"
+            },
+            {
+                "format": "item property..."
+            },
+            {
+                "format": [
+                    "item slot <inventorySlotNumber: int|~> lore <loreArray: escapableStringJSON>",
+                    "item slot <inventorySlotNumber: int|~> lorene <loreArray: JSON>",
+                    "item slot <inventorySlotNumber: int|~> name <name: escapableString>",
+                    "item slot <inventorySlotNumber: int|~> json <itemJSON: itemJSON>",
+                    "item slot <inventorySlotNumber: int|~> jsonb <itemJSON: itemJSON>"
+                ]
+            },
+            {
+                "format": "§citem components..."
+            }
+        ],
+        "command_version": "1.5.1",
+        "description": "",
+        "category": [
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:item"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "itfill",
+        "escregexp": {
+            "v": "^itfill$"
+        },
+        "formats": [
+            "Too many to list. Use the \\help command to see the syntax."
+        ],
+        "command_version": "29.0.1-beta.99",
+        "description": "Same as the \\ifill command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:itfill"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "ithollow",
+        "escregexp": {
+            "v": "^ithollow$"
+        },
+        "formats": [
+            {
+                "format": "ithollow <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "ithollow <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "7.0.0-beta.11",
+        "description": "Same as the \\ihollow command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:ithollow"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "itoutline",
+        "escregexp": {
+            "v": "^itoutline$"
+        },
+        "formats": [
+            {
+                "format": "itoutline <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "itoutline <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "7.0.0-beta.11",
+        "description": "Same as the \\ioutline command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:itoutline"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "itpillars",
+        "escregexp": {
+            "v": "^itpillars$"
+        },
+        "formats": [
+            {
+                "format": "itpillars <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "itpillars <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "7.0.0-beta.11",
+        "description": "Same as the \\ipillars command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:itpillars"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "itwalls",
+        "escregexp": {
+            "v": "^itwalls$"
+        },
+        "formats": [
+            {
+                "format": "itwalls <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "itwalls <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "7.0.0-beta.11",
+        "description": "Same as the \\iwalls command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:itwalls"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "iwalls",
+        "escregexp": {
+            "v": "^iwalls$"
+        },
+        "formats": [
+            {
+                "format": "iwalls <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states|JSON|Array> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            },
+            {
+                "format": "iwalls <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
+            }
+        ],
+        "command_version": "6.0.0-beta.11",
+        "description": "Same as the \\ifill command except for the fact that it only fills the walls of the specified area. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:iwalls"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "jumpto",
+        "escregexp": {
+            "v": "^jumpto$"
+        },
+        "aliases": [
+            {
+                "commandName": "j",
+                "escregexp": {
+                    "v": "^j$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "jumpto"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:jumpto"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "kick",
+        "escregexp": {
+            "v": "^kick$"
+        },
+        "formats": [
+            {
+                "format": "kick <players: targetSelector> [reason: string]"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "players",
+            "server"
+        ],
+        "commandSettingsId": "built-inCommandSettings:kick"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "listbans",
+        "escregexp": {
+            "v": "^listbans$"
+        },
+        "aliases": [
+            {
+                "commandName": "getbans",
+                "escregexp": {
+                    "v": "^getbans$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "listbans"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server"
+        ],
+        "commandSettingsId": "built-inCommandSettings:listbans"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "listidbans",
+        "escregexp": {
+            "v": "^listidbans$"
+        },
+        "aliases": [
+            {
+                "commandName": "getidbans",
+                "escregexp": {
+                    "v": "^getidbans$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "listidbans"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server"
+        ],
+        "commandSettingsId": "built-inCommandSettings:listidbans"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "listnamebans",
+        "escregexp": {
+            "v": "^listnamebans$"
+        },
+        "aliases": [
+            {
+                "commandName": "getnamebans",
+                "escregexp": {
+                    "v": "^getnamebans$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "listnamebans"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server"
+        ],
+        "commandSettingsId": "built-inCommandSettings:listnamebans"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "liststructures",
+        "escregexp": {
+            "v": "^liststructures$"
+        },
+        "aliases": [
+            {
+                "commandName": "getstructures",
+                "escregexp": {
+                    "v": "^getstructures$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "liststructures"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "blocks"
+        ],
+        "commandSettingsId": "built-inCommandSettings:liststructures"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "mainmenu",
+        "escregexp": {
+            "v": "^mainmenu$"
+        },
+        "aliases": [
+            {
+                "commandName": "menu",
+                "escregexp": {
+                    "v": "^menu$"
+                }
+            },
+            {
+                "commandName": "mm",
+                "escregexp": {
+                    "v": "^mm$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "mainmenu"
+            }
+        ],
+        "command_version": "2.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:mainmenu"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "managecommands",
+        "escregexp": {
+            "v": "^managecommands$"
+        },
+        "aliases": [
+            {
+                "commandName": "mngcmds",
+                "escregexp": {
+                    "v": "^mngcmds$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "managecommands"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:managecommands"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "manageplayers",
+        "escregexp": {
+            "v": "^manageplayers$"
+        },
+        "aliases": [
+            {
+                "commandName": "mngplyrs",
+                "escregexp": {
+                    "v": "^mngplyrs$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "manageplayers"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:manageplayers"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "managescriptautoeval",
+        "escregexp": {
+            "v": "^managescriptautoeval$"
+        },
+        "formats": [
+            {
+                "format": "managescriptautoeval"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:managescriptautoeval"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "maxhealth",
+        "escregexp": {
+            "v": "^maxhealth$"
+        },
+        "formats": [
+            {
+                "format": "maxhealth"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "players",
+            "entities"
+        ],
+        "commandSettingsId": "built-inCommandSettings:maxhealth"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "messageui",
+        "escregexp": {
+            "v": "^messageui$"
+        },
+        "aliases": [
+            {
+                "commandName": "msgui",
+                "escregexp": {
+                    "v": "^msgui$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "messageui"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:messageui"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "minhealth",
+        "escregexp": {
+            "v": "^minhealth$"
+        },
+        "formats": [
+            {
+                "format": "minhealth"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "players",
+            "entities"
+        ],
+        "commandSettingsId": "built-inCommandSettings:minhealth"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§6",
+        "commandName": "morph",
+        "escregexp": {
+            "v": "^morph$"
+        },
+        "formats": [
+            {
+                "format": ""
+            }
+        ],
+        "command_version": "1.0.1",
+        "description": "",
+        "category": [
+            "Entity Scale Add-On"
+        ],
+        "commandSettingsId": "built-inCommandSettings:morph"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "notificationsettings",
+        "escregexp": {
+            "v": "^notificationsettings$"
+        },
+        "aliases": [
+            {
+                "commandName": "notificationssettings",
+                "escregexp": {
+                    "v": "^notificationssettings$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "notificationsettings"
+            }
+        ],
+        "command_version": "2.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:notificationsettings"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "offlineinfo",
+        "escregexp": {
+            "v": "^offlineinfo$"
+        },
+        "formats": [
+            {
+                "format": "offlineinfo <player: playerName>"
+            }
+        ],
+        "command_version": "1.1.0",
+        "description": "",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:offlineinfo"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "offlineinfoescaped",
+        "escregexp": {
+            "v": "^offlineinfoescaped$"
+        },
+        "formats": [
+            {
+                "format": ""
+            }
+        ],
+        "command_version": "0.0.1-alpha.2",
+        "description": "",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:offlineinfoescaped"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "offlineinforaw",
+        "escregexp": {
+            "v": "^offlineinforaw$"
+        },
+        "formats": [
+            {
+                "format": ""
+            }
+        ],
+        "command_version": "0.0.1-alpha.2",
+        "description": "",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:offlineinforaw"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "offlineinfourl",
+        "escregexp": {
+            "v": "^offlineinfourl$"
+        },
+        "formats": [
+            {
+                "format": ""
+            }
+        ],
+        "command_version": "0.0.1-alpha.2",
+        "description": "",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:offlineinfourl"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "offlineinvsee",
+        "escregexp": {
+            "v": "^offlineinvsee$"
+        },
+        "formats": [
+            {
+                "format": "offlineinvsee <player: playerName>"
+            }
+        ],
+        "command_version": "1.2.0",
+        "description": "",
+        "category": [
+            "players",
+            "invsee"
+        ],
+        "commandSettingsId": "built-inCommandSettings:offlineinvsee"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "offlineuuidinfo",
+        "escregexp": {
+            "v": "^offlineuuidinfo$"
+        },
+        "formats": [
+            {
+                "format": "offlineuuidinfo <playerUUID: UUID>"
+            }
+        ],
+        "command_version": "1.1.0",
+        "description": "",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:offlineuuidinfo"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "offlineuuidinfoescaped",
+        "escregexp": {
+            "v": "^offlineuuidinfoescaped$"
+        },
+        "formats": [
+            {
+                "format": ""
+            }
+        ],
+        "command_version": "0.0.1-alpha.2",
+        "description": "",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:offlineuuidinfoescaped"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "offlineuuidinforaw",
+        "escregexp": {
+            "v": "^offlineuuidinforaw$"
+        },
+        "formats": [
+            {
+                "format": ""
+            }
+        ],
+        "command_version": "0.0.1-alpha.2",
+        "description": "",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:offlineuuidinforaw"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§c",
+        "commandName": "offlineuuidinfourl",
+        "escregexp": {
+            "v": "^offlineuuidinfourl$"
+        },
+        "formats": [
+            {
+                "format": ""
+            }
+        ],
+        "command_version": "0.0.1-alpha.2",
+        "description": "",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:offlineuuidinfourl"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "offlineuuidinvsee",
+        "escregexp": {
+            "v": "^offlineuuidinvsee$"
+        },
+        "formats": [
+            {
+                "format": "offlineuuidinvsee <playerUUID: UUID>"
+            }
+        ],
+        "command_version": "1.2.0",
+        "description": "",
+        "category": [
+            "players",
+            "invsee"
+        ],
+        "commandSettingsId": "built-inCommandSettings:offlineuuidinvsee"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "phase",
+        "escregexp": {
+            "v": "^phase$"
+        },
+        "formats": [
+            {
+                "format": "phase"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:phase"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "printlayers",
+        "escregexp": {
+            "v": "^printlayers$"
+        },
+        "formats": [
+            {
+                "format": "printlayers"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:printlayers"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "rank",
+        "escregexp": {
+            "v": "^rank$"
+        },
+        "formats": [
+            {
+                "format": "rank <players: targetSelector> <mode: add|remove> <tag: string>"
+            },
+            {
+                "format": "rank <players: targetSelector> clear"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "Adds, removes, or clears ranks from a player. ",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:rank"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "remexp",
+        "escregexp": {
+            "v": "^remexp$"
+        },
+        "formats": [
+            {
+                "format": "remexp [radius: number]"
+            }
+        ],
+        "command_version": "2.3.0",
+        "description": "Removes explosive blocks and entities in the specified radius, the radius defaults to 10 if not specified. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:remexp"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "remexpne",
+        "escregexp": {
+            "v": "^remexpne$"
+        },
+        "formats": [
+            {
+                "format": "remexpne [radius: number]"
+            }
+        ],
+        "command_version": "2.3.0",
+        "description": "Removes explosive blocks in the specified radius, the radius defaults to 10 if not specified. ",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:remexpne"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "remove",
+        "escregexp": {
+            "v": "^remove$"
+        },
+        "aliases": [
+            {
+                "commandName": "rem",
+                "escregexp": {
+                    "v": "^rem$"
+                }
+            },
+            {
+                "commandName": "rement",
+                "escregexp": {
+                    "v": "^rement$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "remove"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:remove"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "removeotheritemenchantments",
+        "escregexp": {
+            "v": "^removeotheritemenchantments$"
+        },
+        "aliases": [
+            {
+                "commandName": "remotheritemenchants",
+                "escregexp": {
+                    "v": "^remotheritemenchants$"
+                }
+            },
+            {
+                "commandName": "roie",
+                "escregexp": {
+                    "v": "^roie$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "removeotheritemenchantments"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "server",
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:removeotheritemenchantments"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "replacenear",
+        "escregexp": {
+            "v": "^replacenear$"
+        },
+        "formats": [
+            {
+                "format": "replacenear"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:replacenear"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "run",
+        "escregexp": {
+            "v": "^run$"
+        },
+        "formats": [
+            {
+                "format": "run <tickDelay: int>=1> <command: command>"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "misc"
+        ],
+        "commandSettingsId": "built-inCommandSettings:run"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§6",
+        "commandName": "scale",
+        "escregexp": {
+            "v": "^scale$"
+        },
+        "formats": [
+            {
+                "format": ""
+            }
+        ],
+        "command_version": "1.0.1",
+        "description": "",
+        "category": [
+            "Entity Scale Add-On"
+        ],
+        "commandSettingsId": "built-inCommandSettings:scale"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "scanenderchest",
+        "escregexp": {
+            "v": "^scanenderchest$"
+        },
+        "aliases": [
+            {
+                "commandName": "ecinvsee",
+                "escregexp": {
+                    "v": "^ecinvsee$"
+                }
+            },
+            {
+                "commandName": "scnendchest",
+                "escregexp": {
+                    "v": "^scnendchest$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "scanenderchest [targets: targetSelector|~]"
+            }
+        ],
+        "command_version": "0.2.0-beta.17",
+        "description": "",
+        "category": [
+            "players",
+            "containers/inventories",
+            "invsee"
+        ],
+        "commandSettingsId": "built-inCommandSettings:scanenderchest"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "scanenderchestc",
+        "escregexp": {
+            "v": "^scanenderchestc$"
+        },
+        "aliases": [
+            {
+                "commandName": "ecinvseec",
+                "escregexp": {
+                    "v": "^ecinvseec$"
+                }
+            },
+            {
+                "commandName": "scnendchestc",
+                "escregexp": {
+                    "v": "^scnendchestc$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "scanenderchestc [target: string|~]"
+            }
+        ],
+        "command_version": "0.3.0-beta.36",
+        "description": "",
+        "category": [
+            "players",
+            "containers/inventories",
+            "invsee"
+        ],
+        "commandSettingsId": "built-inCommandSettings:scanenderchestc"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "selectioninfo",
+        "escregexp": {
+            "v": "^selectioninfo$"
+        },
+        "aliases": [
+            {
+                "commandName": "selinfo",
+                "escregexp": {
+                    "v": "^selinfo$"
+                }
+            },
+            {
+                "commandName": "seli",
+                "escregexp": {
+                    "v": "^seli$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "selectioninfo"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:selectioninfo"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "setitem",
+        "escregexp": {
+            "v": "^setitem$"
+        },
+        "formats": [
+            {
+                "format": "setitem <item: itemType> <amount: int> <slot: int>"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "misc"
+        ],
+        "commandSettingsId": "built-inCommandSettings:setitem"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "setitemb",
+        "escregexp": {
+            "v": "^setitemb$"
+        },
+        "formats": [
+            {
+                "format": "setitemb <itemJSON: itemJSON> [slot: int] [playerTargets: targetSelector]"
+            }
+        ],
+        "command_version": "2.0.0",
+        "description": "",
+        "category": [
+            "misc"
+        ],
+        "commandSettingsId": "built-inCommandSettings:setitemb"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "settings",
+        "escregexp": {
+            "v": "^settings$"
+        },
+        "formats": [
+            {
+                "format": "settings"
+            }
+        ],
+        "command_version": "2.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:settings"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "shuffleinventory",
+        "escregexp": {
+            "v": "^shuffleinventory$"
+        },
+        "aliases": [
+            {
+                "commandName": "invshuffle",
+                "escregexp": {
+                    "v": "^invshuffle$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "shuffleinventory [player: string|~]"
+            }
+        ],
+        "command_version": "0.2.2-beta.2",
+        "description": "",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:shuffleinventory"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "snapshot",
+        "escregexp": {
+            "v": "^snapshot$"
+        },
+        "formats": [
+            {
+                "format": "snapshot"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "worldedit"
+        ],
+        "commandSettingsId": "built-inCommandSettings:snapshot"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "spawn",
+        "escregexp": {
+            "v": "^spawn$"
+        },
+        "formats": [
+            {
+                "format": "spawn"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world",
+            "players",
+            "warps",
+            "misc"
+        ],
+        "commandSettingsId": "built-inCommandSettings:spawn"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "spawnitem",
+        "escregexp": {
+            "v": "^spawnitem$"
+        },
+        "formats": [
+            {
+                "format": "spawnitem"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "entities",
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:spawnitem"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "stopgen",
+        "escregexp": {
+            "v": "^stopgen$"
+        },
+        "formats": [
+            {
+                "format": "stopgen <generatorId: int>"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "Stops generator functions such as the \\igfill and \\iogfill commands. ",
+        "category": [
+            "misc"
+        ],
+        "commandSettingsId": "built-inCommandSettings:stopgen"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "structure",
+        "escregexp": {
+            "v": "^structure$"
+        },
+        "formats": [
+            {
+                "format": "structure"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server",
+            "blocks"
+        ],
+        "commandSettingsId": "built-inCommandSettings:structure"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "summon",
+        "escregexp": {
+            "v": "^summon$"
+        },
+        "formats": [
+            {
+                "format": "summon"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "entities"
+        ],
+        "commandSettingsId": "built-inCommandSettings:summon"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "swapinventories",
+        "escregexp": {
+            "v": "^swapinventories$"
+        },
+        "aliases": [
+            {
+                "commandName": "invswap",
+                "escregexp": {
+                    "v": "^invswap$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "swapinventories <player1: string|~> <player2: string|~>"
+            }
+        ],
+        "command_version": "0.2.1-beta.1",
+        "description": "Swaps the inventory, offhand, hotbar, and armor of two specified players. ",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:swapinventories"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "swapinventoriesb",
+        "escregexp": {
+            "v": "^swapinventoriesb$"
+        },
+        "aliases": [
+            {
+                "commandName": "invswapb",
+                "escregexp": {
+                    "v": "^invswapb$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "swapinventoriesb <player1: string|~> <player2: string|~>"
+            }
+        ],
+        "command_version": "0.2.1-beta.1",
+        "description": "Swaps the inventory and hotbar of two specified players. ",
+        "category": [
+            "players"
+        ],
+        "commandSettingsId": "built-inCommandSettings:swapinventoriesb"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "swapitems",
+        "escregexp": {
+            "v": "^swapitems$"
+        },
+        "formats": [
+            {
+                "format": "swapitems <slot: number|~> <otherSlot: number|~> <otherPlayer: playerName>"
+            }
+        ],
+        "command_version": "0.1.1-beta.1",
+        "description": "",
+        "category": [
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:swapitems"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "takeitem",
+        "escregexp": {
+            "v": "^takeitem$"
+        },
+        "formats": [
+            {
+                "format": "takeitem <fromSlot: number|~> <fromPlayer: playerName>"
+            }
+        ],
+        "command_version": "0.1.1-beta.1",
+        "description": "",
+        "category": [
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:takeitem"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "terminal",
+        "escregexp": {
+            "v": "^terminal$"
+        },
+        "aliases": [
+            {
+                "commandName": "cmdrunner",
+                "escregexp": {
+                    "v": "^cmdrunner$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "terminal"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "uis"
+        ],
+        "commandSettingsId": "built-inCommandSettings:terminal"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "thru",
+        "escregexp": {
+            "v": "^thru$"
+        },
+        "formats": [
+            {
+                "format": "thru"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:thru"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [],
+        "formatting_code": "§r§f",
+        "commandName": "timezone",
+        "escregexp": {
+            "v": "^timezone$"
+        },
+        "aliases": [
+            {
+                "commandName": "tz",
+                "escregexp": {
+                    "v": "^tz$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "timezone [UTCOffsetInHours: float]"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server"
+        ],
+        "commandSettingsId": "built-inCommandSettings:timezone"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§6",
+        "commandName": "tint",
+        "escregexp": {
+            "v": "^tint$"
+        },
+        "formats": [
+            {
+                "format": "tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: targetSelector]"
+            }
+        ],
+        "command_version": "1.0.4",
+        "description": "",
+        "category": [
+            "Entity Scale Add-On"
+        ],
+        "commandSettingsId": "built-inCommandSettings:tint"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "top",
+        "escregexp": {
+            "v": "^top$"
+        },
+        "formats": [
+            {
+                "format": "top"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:top"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [],
+        "formatting_code": "§r§f",
+        "commandName": "tpa",
+        "escregexp": {
+            "v": "^tpa$"
+        },
+        "formats": [
+            {
+                "format": "tpa <player: targetSelector|playerName>"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "players",
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:tpa"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [],
+        "formatting_code": "§r§c",
+        "commandName": "tpaccept",
+        "escregexp": {
+            "v": "^tpaccept$"
+        },
+        "formats": [
+            {
+                "format": "tpaccept [player: targetSelector|playerName]"
+            },
+            {
+                "format": "tpdeny all"
+            }
+        ],
+        "command_version": "0.0.1-alpha",
+        "description": "",
+        "category": [
+            "players",
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:tpaccept"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [],
+        "formatting_code": "§r§c",
+        "commandName": "tpdeny",
+        "escregexp": {
+            "v": "^tpdeny$"
+        },
+        "formats": [
+            {
+                "format": "tpdeny [player: targetSelector|playerName]"
+            },
+            {
+                "format": "tpdeny all"
+            }
+        ],
+        "command_version": "0.0.1-alpha",
+        "description": "",
+        "category": [
+            "players",
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:tpdeny"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§6",
+        "commandName": "tps",
+        "escregexp": {
+            "v": "^tps$"
+        },
+        "formats": [
+            {
+                "format": "tps"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "Entity Scale Add-On",
+            "system",
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:tps"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§e",
+        "commandName": "transferitem",
+        "escregexp": {
+            "v": "^transferitem$"
+        },
+        "formats": [
+            {
+                "format": "transferitem <toPlayer: playerName>"
+            }
+        ],
+        "command_version": "0.1.1-beta.1",
+        "description": "",
+        "category": [
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:transferitem"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "transformresultatdvindex",
+        "escregexp": {
+            "v": "^transformresultatdvindex$"
+        },
+        "formats": [
+            {
+                "format": "transformresultatdvindex"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "server",
+            "items"
+        ],
+        "commandSettingsId": "built-inCommandSettings:transformresultatdvindex"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "up",
+        "escregexp": {
+            "v": "^up$"
+        },
+        "formats": [
+            {
+                "format": "up [placeGlass: boolean]"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:up"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "version",
+        "escregexp": {
+            "v": "^version$"
+        },
+        "aliases": [
+            {
+                "commandName": "ver",
+                "escregexp": {
+                    "v": "^ver$"
+                }
+            }
+        ],
+        "formats": [
+            {
+                "format": "version"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "system",
+            "world",
+            "server"
+        ],
+        "commandSettingsId": "built-inCommandSettings:version"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§6",
+        "commandName": "visualscale",
+        "escregexp": {
+            "v": "^visualscale$"
+        },
+        "formats": [
+            {
+                "format": ""
+            }
+        ],
+        "command_version": "1.0.0-beta",
+        "description": "",
+        "category": [
+            "Entity Scale Add-On"
+        ],
+        "commandSettingsId": "built-inCommandSettings:visualscale"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§6",
+        "commandName": "visualscaleenabled",
+        "escregexp": {
+            "v": "^visualscaleenabled$"
+        },
+        "formats": [
+            {
+                "format": ""
+            }
+        ],
+        "command_version": "1.0.0-beta",
+        "description": "",
+        "category": [
+            "Entity Scale Add-On"
+        ],
+        "commandSettingsId": "built-inCommandSettings:visualscaleenabled"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "vthru",
+        "escregexp": {
+            "v": "^vthru$"
+        },
+        "formats": [
+            {
+                "format": "vthru"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "world"
+        ],
+        "commandSettingsId": "built-inCommandSettings:vthru"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "w",
+        "escregexp": {
+            "v": "^w$"
+        },
+        "formats": [
+            {
+                "format": "w <wName: escapableString>"
+            }
+        ],
+        "command_version": "1.1.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:w"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "warp",
+        "escregexp": {
+            "v": "^warp$"
+        },
+        "formats": [
+            {
+                "format": "warp <warpName: escapableString>"
+            }
+        ],
+        "command_version": "1.1.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:warp"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "warplist",
+        "escregexp": {
+            "v": "^warplist$"
+        },
+        "formats": [
+            {
+                "format": "warlist"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:warplist"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "warplistdetails",
+        "escregexp": {
+            "v": "^warplistdetails$"
+        },
+        "formats": [
+            {
+                "format": "warplistdetails"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:warplistdetails"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "warplistrawdata",
+        "escregexp": {
+            "v": "^warplistrawdata$"
+        },
+        "formats": [
+            {
+                "format": "warplistrawdata"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:warplistrawdata"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "warpremove",
+        "escregexp": {
+            "v": "^warpremove$"
+        },
+        "formats": [
+            {
+                "format": "warpremove <warpName: escapableString>"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:warpremove"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "warpreset",
+        "escregexp": {
+            "v": "^warpreset$"
+        },
+        "formats": [
+            {
+                "format": "warpreset"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:warpreset"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "warpset",
+        "escregexp": {
+            "v": "^warpset$"
+        },
+        "formats": [
+            {
+                "format": "warpset <dimension: dimension|~> <x: float|~> <y: float|~> <z: float|~> <name: escapableString>"
+            }
+        ],
+        "command_version": "1.1.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:warpset"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "wlist",
+        "escregexp": {
+            "v": "^wlist$"
+        },
+        "formats": [
+            {
+                "format": "wlist"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:wlist"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "wlistdetails",
+        "escregexp": {
+            "v": "^wlistdetails$"
+        },
+        "formats": [
+            {
+                "format": "wlistdetails"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:wlistdetails"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "wlistrawdata",
+        "escregexp": {
+            "v": "^wlistrawdata$"
+        },
+        "formats": [
+            {
+                "format": "wlistrawdata"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:wlistrawdata"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "wremove",
+        "escregexp": {
+            "v": "^wremove$"
+        },
+        "formats": [
+            {
+                "format": "wremove <wName: escapableString>"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:wremove"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "wreset",
+        "escregexp": {
+            "v": "^wreset$"
+        },
+        "formats": [
+            {
+                "format": "wreset"
+            }
+        ],
+        "command_version": "1.0.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:wreset"
+    },
+    {
+        "type": "built-in",
+        "requiredTags": [
+            "canUseChatCommands"
+        ],
+        "formatting_code": "§r§f",
+        "commandName": "wset",
+        "escregexp": {
+            "v": "^wset$"
+        },
+        "formats": [
+            {
+                "format": "wset <dimension: dimension|~> <x: float|~> <y: float|~> <z: float|~> <name: escapableString>"
+            }
+        ],
+        "command_version": "1.1.0",
+        "description": "",
+        "category": [
+            "warps"
+        ],
+        "commandSettingsId": "built-inCommandSettings:wset"
+    }
 ] as {type: "built-in"|"custom"|"unknown"; requiredTags: string[]; formatting_code: string; commandName: string; escregexp: {v: string; f?: string; }; formats: command_formats_type_list; command_version: string; description: string; commandSettingsId: string; aliases?: {commandName: string, escregexp?: {v?: string, f?: string}}[]; category?: string|string[]; }[]/*
 export let abcdefgh = escapeRegExp.arguments*/
 export type command_formats_type_list = (string|string[]|command_formats_type_list|{format: string|command_formats_type_list, description?: string})[]|string|{format: string|command_formats_type_list, description?: string}
@@ -951,6 +5801,8 @@ export class command{
         this.category = command.category??commandtest?.category; 
         this.categories = sOSATSA(command.category??commandtest?.category??[]); 
     }
+    get isHidden(){return false}
+    get releaseStage(){return tryget(()=>SemVerString.fromString(String(this.command_version)).pre_release_stage)}
     get regexp(){return new RegExp(this?.escregexp?.v ?? "", this?.escregexp?.f)}
     get currentregexp(){return new RegExp(this?.currentescregexp?.v ?? "", this?.currentescregexp?.f)}
     get aliases(){return this.type=="built-in"?commands.find(v=>v.commandName==this.commandName)?.aliases?.map?.(v=>(()=>{let vb = v as {commandName: string, escregexp?: {v: string, f?: string}, regexp?: RegExp, aliasTo?: string}; vb.regexp = new RegExp(vb?.escregexp?.v ?? "", vb?.escregexp?.f); vb.aliasTo = this.commandName; return vb})()) as {commandName: string, escregexp?: {v: string, f?: string}, regexp: RegExp, aliasTo?: string}[]:undefined}
@@ -985,7 +5837,7 @@ static executeOnBannedPlayers(callbackfn: (player: Player, index: Number, array:
 static get defaultPrefix(){return String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}
 static get dp(){return String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}
 }
-export const command_settings_format_version = "1.0.0-alpha.1"
+export const command_settings_format_version = "2.0.0-beta.1"
 export class commandSettings{
     type: "built-in"|"custom"|"unknown"
     commandName: string
@@ -1013,7 +5865,7 @@ export class commandSettings{
     get description(){return this?.parsed?.description ?? true}*/
     get settings_version(){return this?.parsed?.settings_version ?? command_settings_format_version}
     get isSaved(){return world.getDynamicProperty(this.commandSettingsId) != undefined}
-    toJSON(){return Object.assign(this.defaultSettings??{}, {type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version})}
+    toJSON(){return Object.assign(JSONParse(JSONStringify(this.defaultSettings??{})), {type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version})}
     save(settings?: {
         type: "built-in" | "custom" | "unknown";
         commandName: string;
@@ -1024,7 +5876,7 @@ export class commandSettings{
         requiredPermissionLevel: string | number;
         requiresOp: boolean;
         settings_version: any;
-    }|Object){world.setDynamicProperty(this.commandSettingsId, JSONStringify(Object.assign(this.defaultSettings??{type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version}, settings??{})))}
+    }|Object){world.setDynamicProperty(this.commandSettingsId, JSONStringify(Object.assign(JSONParse(JSONStringify(this.defaultSettings??{type: this.type, commandName: this.commandName, customCommandId: this.customCommandId, commandSettingsId: this.commandSettingsId, enabled: this.enabled, requiredTags: this.requiredTags, requiredPermissionLevel: this.requiredPermissionLevel, requiresOp: this.requiresOp, settings_version: this.settings_version})), settings??{})))}
     remove(){world.setDynamicProperty(this.commandSettingsId)}
 }
 //((a: RawMessage)=>{})({rawtext: [{"text": "TPS IS: "}, {"score": {objective: "tps", name: "tps"}}, {"text": "a"}]})
@@ -1220,7 +6072,7 @@ export class executeCommandPlayer extends executeCommandPlayerW {
 }
 export class HomeSystem{
     constructor(){}
-    static home_format_version = "0.0.1-indev.1"
+    static home_format_version = "0.7.0-beta.72"
     static getHomes(homeIds: string[]){let homes = [] as Home[]; homeIds.forEach(c=>homes.push(Home.get(c))); return homes}
     static getAllHomes(){let homes = [] as Home[]; this.getHomeIds().forEach(c=>homes.push(Home.get(c))); return homes}
     static getHomeIds(){return world.getDynamicPropertyIds().filter(v=>v.startsWith("home:"))}
@@ -1548,151 +6400,9 @@ export function selectWeightedElement(items: {[k: string]: any}[], weightProp: s
 }
 export function testForObjectExtension(a: object, b: object){return Object.entries(b).every(v=>Object.keys(a).includes(v[0])?Object.entries(a).find(c=>c[0]==v[0])[1]==v[1]:false)}
 //((a: Player)=>{})(new executeCommandPlayer(getPlayer("Andexter8")))
-export const patternList = {
-    rainbow: ['§4', '§c', '§g', '§e', '§a', '§2', '§b', '§3', '§5', '§d', '§3', '§b', '§2', '§a', '§e', '§g', '§c', '§4'],
-	blue: ['§1', '§9', '§3', '§b', '§3', '§9', '§1'],
-	yellow: ['§6', '§g', '§e', '§g', '§6'],
-	black: ['§0', '§8', '§7', '§f', '§7', '§8', '§0'],
-	gray: ['§8', '§7', '§f', '§7', '§8'],
-	purple: ['§5', '§u', '§d', '§u', '§5'],
-}
-export const patternFunctionList = {
-    rainbow: (ib: number)=>patternList.rainbow[ib%patternList.rainbow.length], 
-    randomrainbow: (ib: number, offset: number)=>patternList.rainbow[(ib+offset)%patternList.rainbow.length], 
-    shuffledrainbow: ()=>patternList.rainbow[Math.floor(Math.random()*patternList.rainbow.length)], 
-    bluegradient: (ib: number)=>patternList.blue[ib%patternList.blue.length], 
-    randombluegradient: (ib: number, offset: number)=>patternList.blue[(ib+offset)%patternList.blue.length], 
-    shuffledbluegradient: ()=>patternList.blue[Math.floor(Math.random()*patternList.blue.length)], 
-    yellowgradient: (ib: number)=>patternList.yellow[ib%patternList.yellow.length], 
-    randomyellowgradient: (ib: number, offset: number)=>patternList.yellow[(ib+offset)%patternList.yellow.length], 
-    shuffledyellowgradient: ()=>patternList.yellow[Math.floor(Math.random()*patternList.yellow.length)], 
-    blackgradient: (ib: number)=>patternList.black[ib%patternList.black.length], 
-    randomblackgradient: (ib: number, offset: number)=>patternList.black[(ib+offset)%patternList.black.length], 
-    shuffledblackgradient: ()=>patternList.black[Math.floor(Math.random()*patternList.black.length)], 
-    graygradient: (ib: number)=>patternList.gray[ib%patternList.gray.length], 
-    randomgraygradient: (ib: number, offset: number)=>patternList.gray[(ib+offset)%patternList.gray.length], 
-    shuffledgraygradient: ()=>patternList.gray[Math.floor(Math.random()*patternList.gray.length)], 
-    purplegradient: (ib: number)=>patternList.purple[ib%patternList.purple.length], 
-    randompurplegradient: (ib: number, offset: number)=>patternList.purple[(ib+offset)%patternList.purple.length], 
-    shuffledpurplegradient: ()=>patternList.purple[Math.floor(Math.random()*patternList.purple.length)]
-}
-export const patternColors = [
-	'aqua',
-	'darkpurple',
-	'darkgreen',
-	'darkred',
-	'gold',
-	'darkgray',
-	'yellow',
-	'white',
-	'red',
-	'minecoingold',
-	'green',
-	'lightpurple',
-	'gray',
-	'darkblue',
-	'darkaqua',
-	'blue',
-	'black',
-	'bluedarkgrey',
-	'mediumpurple',
-	'darkorange',
-	'mediumgreen',
-	'mediumcyan',
-	'beige',
-	'darkbrown',
-	'meduimred',
-	'brown',
-	'§0',
-	'§1',
-	'§2',
-	'§3',
-	'§4',
-	'§5',
-	'§6',
-	'§7',
-	'§8',
-	'§9',
-	'§a',
-	'§b',
-	'§c',
-	'§d',
-	'§e',
-	'§f',
-	'§g',
-	'§t',
-	'§u',
-	'§p',
-	'§q',
-	'§s',
-	'§h',
-	'§j',
-	'§m',
-	'§n',
-]
-export const patternColorsMap = {
-	'aqua': '§b',
-	'darkpurple': '§5',
-	'darkgreen': '§3',
-	'darkred': '§4',
-	'gold': '§6',
-	'darkgray': '§8',
-	'yellow': '§e',
-	'white': '§f',
-	'red': '§',
-	'minecoingold': '§g',
-	'green': '§a',
-	'lightpurple': '§d',
-	'gray': '§7',
-	'darkblue': '§1',
-	'darkaqua': '§3',
-	'blue': '§9',
-	'black': '§0',
-	'bluedarkgrey': '§t',
-	'mediumpurple': '§u',
-	'darkorange': '§p',
-	'mediumgreen': '§q',
-	'mediumcyan': '§s',
-	'beige': '§h',
-	'darkbrown': '§j',
-	'meduimred': '§m',
-	'brown': '§n',
-	'§0': '§0',
-	'§1': '§1',
-	'§2': '§2',
-	'§3': '§3',
-	'§4': '§4',
-	'§5': '§5',
-	'§6': '§6',
-	'§7': '§7',
-	'§8': '§8',
-	'§9': '§9',
-	'§a': '§a',
-	'§b': '§b',
-	'§c': '§c',
-	'§d': '§d',
-	'§e': '§e',
-	'§f': '§f',
-	'§g': '§g',
-	'§t': '§t',
-	'§u': '§u',
-	'§p': '§p',
-	'§q': '§q',
-	'§s': '§s',
-	'§h': '§h',
-	'§j': '§j',
-	'§m': '§m',
-	'§n': '§n',
-}
 //world.scoreboard.getObjective("mobdamage").addScore(Player.prototype.scoreboardIdentity, 1)
 //world.afterEvents.entityDie.subscribe(event=>{if(event.damageSource?.damagingEntity?.typeId=="minecraft:player"&&((tryget(()=>{let entity = overworld.spawnEntity(event.deadEntity?.typeId, world.getDefaultSpawnLocation()); let r = tryget(()=>entity.runCommand("/execute if entity @s[family=monster] run /scriptevent andexdb:none").successCount); entity.remove(); return r})??0)!=0)){world.scoreboard.getObjective("mobdamage").addScore(event.damageSource.damagingEntity, 1)}else if(event.deadEntity?.typeId=="minecraft:player"){world.scoreboard.getObjective("mobdamage").setScore(event.deadEntity, 0)}})
 //world.afterEvents.entityHurt.subscribe(event=>{if(event.hurtEntity.typeId=="minecraft:player"&&((tryget(()=>event.damageSource.damagingEntity.runCommand("/execute if entity @s[family=monster] run /scriptevent andexdb:none").successCount)??0)!=0)){event.hurtEntity.applyDamage((tryget(()=>world.scoreboard.getObjective("mobdamage").getScore(event.hurtEntity))??0)/20)}})
-export function evaluateChatColorType(text: string, type: string){
-    let ib = -1n; 
-//    let value = "hi§r§btest s§# a zs§# x vc §r§ksazx"; 
-    let stop = false; 
-    return text.split("").map((v, i, a)=>{if(a[i-1]=="§"&&v=="!"){stop = true; return v}else if(a[i-1]=="§"&&v=="?"){stop = !stop; return v}else if(a[i-1]=="§"&&v=="#"){stop = false; return v}else if(a[i-1]=="§"||v=="§"||v==" "||stop){return v}else{ib++; return patternFunctionList[type](Number(ib), Math.floor(Math.random()*patternList.rainbow.length))+v}}).join("")}
-export function send(message: string){world.sendMessage(message)}; 
 export class TimeoutError extends Error {
     constructor(message?: string) {
         // Need to pass `options` as the second parameter to install the "cause" property.
@@ -1706,95 +6416,13 @@ export class ExpireError extends Error {
     }
 }
 export type playerobject = Player & executeCommandPlayer
-export async function requestChatInput(player: Player, requestMessage?: string|RawMessage|(string|RawMessage)[]){
-    let id = idGenerator()
-    !!requestMessage?player.sendMessage(requestMessage):undefined
-    !!!currentlyRequestedChatInput[player.id]?currentlyRequestedChatInput[player.id]={anyInput: {[id]: {time: Date.now(), id: id, request: requestMessage}}, conditionalInput: {}}:currentlyRequestedChatInput[player.id].anyInput[id]={time: Date.now(), id: id, request: requestMessage}
-    return new Promise((resolve: (value: string) => void, reject: (error: Error) => void) => {
-        function a(){if(!player.isValid()){delete currentlyRequestedChatInput[player.id]; reject(new ReferenceError("The player that the input was requested from is no longer valid, most likely the have left the game.")); return}; if(!!!currentlyRequestedChatInput[player.id].anyInput[id].input){system.run(() => {
-           a()
-        })}else{let input = currentlyRequestedChatInput[player.id].anyInput[id].input as string; delete currentlyRequestedChatInput[player.id].anyInput[id]; resolve(input)}}
-        a()
-    })
-}
-export async function requestConditionalChatInput(player: Player, conditions: (player: Player, message: string, event: ChatSendBeforeEvent)=>boolean = ()=>true, options: {requestMessage?: string|RawMessage|(string|RawMessage)[], expireMs?: number, expireConditions?: (requestObject: {time: number, request?: string|RawMessage|(string|RawMessage)[], input?: string, id?: string, conditions: (player: Player, message: string, event: ChatSendBeforeEvent)=>boolean, [k: string]: any})=>boolean} = {}){
-    let id = idGenerator()
-    const expireTime = Date.now()+(options.expireMs??Infinity)
-    !!options.requestMessage?player.sendMessage(options.requestMessage):undefined
-    !!!currentlyRequestedChatInput[player.id]?currentlyRequestedChatInput[player.id]={anyInput: {}, conditionalInput: {[id]: {time: Date.now(), id: id, request: options.requestMessage, conditions: conditions??(()=>true), expireTime: expireTime, expireConditions: options.expireConditions??(()=>false)}}}:currentlyRequestedChatInput[player.id].conditionalInput[id]={time: Date.now(), id: id, request: options.requestMessage, conditions: conditions??(()=>true), expireTime: Date.now()+(options.expireMs??Infinity), expireConditions: options.expireConditions??(()=>false)}
-    return new Promise((resolve: (value: string) => any, reject: (error: Error) => any) => {
-        function a(){
-            if(!player.isValid()){
-                delete currentlyRequestedChatInput[player.id]; 
-                reject(new ReferenceError("The player that the input was requested from is no longer valid, most likely the have left the game.")); 
-                return
-            }; 
-            if(!!!currentlyRequestedChatInput[player.id].conditionalInput[id].input){
-                if(Date.now()>(currentlyRequestedChatInput[player.id].conditionalInput[id].expireTime??Infinity)){
-                    delete currentlyRequestedChatInput[player.id].conditionalInput[id]; 
-                    reject(new TimeoutError("The request timed out.")); 
-                    return
-                }else if(!!options.expireConditions?currentlyRequestedChatInput[player.id].conditionalInput[id].expireConditions(currentlyRequestedChatInput[player.id].conditionalInput[id])??false:false){
-                    delete currentlyRequestedChatInput[player.id].conditionalInput[id]; 
-                    reject(new ExpireError("The request expired.")); 
-                    return
-                }else {
-                    system.run(() => {
-                        a()
-                    })
-                }
-            }else{
-                let input = currentlyRequestedChatInput[player.id].conditionalInput[id].input as string; 
-                delete currentlyRequestedChatInput[player.id].conditionalInput[id]; 
-                resolve(input)
-            }}
-        a()
-    })
-}
-export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputRequests = false){
-    if(!bypassChatInputRequests&&Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput??{}).length!=0){currentlyRequestedChatInput[eventData.sender.id].anyInput[Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput??{}).sort((a, b) => currentlyRequestedChatInput[eventData.sender.id].anyInput[a].time - currentlyRequestedChatInput[eventData.sender.id].anyInput[b].time)[0]].input=eventData.message; eventData.cancel=true; return}
-    if(!bypassChatInputRequests&&Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.conditionalInput??{}).filter(r=>!!currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions?currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions(eventData.sender, eventData.message, eventData):true).length!=0){currentlyRequestedChatInput[eventData.sender.id].conditionalInput[Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.conditionalInput??{}).filter(r=>!!currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions?currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions(eventData.sender, eventData.message, eventData):true).sort((a, b) => currentlyRequestedChatInput[eventData.sender.id].conditionalInput[a].time - currentlyRequestedChatInput[eventData.sender.id].conditionalInput[b].time)[0]].input=eventData.message; eventData.cancel=true; return}
-    let runreturn: boolean; runreturn = false; 
-    let returnBeforeChatSend: boolean; returnBeforeChatSend = false; 
-    let returnBeforeChatCommandsOrChatSend: boolean; returnBeforeChatCommandsOrChatSend = false; 
-    let event = eventData
-	const player = eventData.sender
-    let sendToPlayers = eventData.targets
-    try{eval(String(world.getDynamicProperty("evalBeforeEvents:chatSend")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendBeforeEventDebugErrors")){currentplayer.sendMessage((e + " " + e.stack))}})}
-    ///scriptevent andexdb:scriptEval world.setDynamicProperty("evalBeforeEvents:chatSend", `if(!(event.message.includes("${se}")&&player.hasTag("canUseScriptEval"))&&!player.hasTag("canBypassAntiSpam")){if(!!globalThis["lastChatMessage"+player.id]){if(globalThis["lastChatMessage"+player.id]==event.message&&((Date.now()-(globalThis["lastChatTime"+player.id]??0))<10000)){globalThis["msgAmountOfSpam"+player.id]=(globalThis["msgAmountOfSpam"+player.id]??0)+1; if(globalThis["msgAmountOfSpam"+player.id]\>\=4){returnBeforeChatCommandsOrChatSend=true; returnBeforeChatSend=true; runreturn=true; event.cancel=true; player.sendMessage("§cStop Spamming")}}else{globalThis["lastChatMessage"+player.id]=event.message; globalThis["msgAmountOfSpam"+player.id]=0}}else{globalThis["lastChatMessage"+player.id]=event.message}; globalThis["lastChatTime"+player.id]=Date.now(); }`)
-    ///scriptevent andexdb:scriptEval world.setDynamicProperty("evalBeforeEvents:chatSend", `if(!player.hasTag("canBypassAntiSpam")){if(!!globalThis["lastChatMessage"+player.id]){if(globalThis["lastChatMessage"+player.id]==event.message&&((Date.now()-(globalThis["lastChatTime"+player.id]??0))<10000)){globalThis["msgAmountOfSpam"+player.id]=(globalThis["msgAmountOfSpam"+player.id]??0)+1; if(globalThis["msgAmountOfSpam"+player.id]\>\=4){returnBeforeChatCommandsOrChatSend=true; returnBeforeChatSend=true; runreturn=true; event.cancel=true; player.sendMessage("§cStop Spamming")}}else{globalThis["lastChatMessage"+player.id]=event.message; globalThis["msgAmountOfSpam"+player.id]=0}}else{globalThis["lastChatMessage"+player.id]=event.message}; globalThis["lastChatTime"+player.id]=Date.now(); }`)
-    let newMessage = eventData.message
-    let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0]
-    let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
-    let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!switchTest.match((command.get(v.commandName, "built-in").regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!command.get(v.commandName, "built-in")?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))/*
-    let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&!!switchTest.match(command.get(v.commandName, "built-in").regexp)))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
-    try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatMessages"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("chatMessageNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + player.name + "]: " + newMessage); }catch{}})}catch{}
-    if(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(true)}
-    if(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(false, false, 0, true)}
-    if(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") != false){
-    if(newMessage.includes("${ea}")){newMessage = newMessage.replace("${ea}", ""); newMessage = newMessage.escapeCharacters(true)}
-    if(newMessage.includes("${eu}")){newMessage = newMessage.replace("${eu}", ""); newMessage = newMessage.escapeCharacters(false, true, 0, false, false, false, false, false, false)}
-    if(newMessage.includes("${ei}")){newMessage = newMessage.replace("${ei}", ""); newMessage = newMessage.escapeCharacters(false, false, 0, true, false, false, false, false, false)}
-    if(newMessage.includes("${eg}")){newMessage = newMessage.replace("${eg}", ""); newMessage = newMessage.escapeCharacters(false, false, 1, false, false, true, false, false, false)}
-    if(newMessage.includes("${ex}")){newMessage = newMessage.replace("${ex}", ""); newMessage = newMessage.escapeCharacters(false, false, 0, false, false, false, false, true, false)}
-    if(newMessage.includes("${escapeall}")){newMessage = newMessage.replace("${escapeall}", ""); newMessage = newMessage.escapeCharacters(true)}
-    if(newMessage.includes("${escapeunicode}")){newMessage = newMessage.replace("${escapeunicode}", ""); newMessage = newMessage.escapeCharacters(false, true, 0, false, false, false, false, false, false)}
-    if(newMessage.includes("${escapeuri}")){newMessage = newMessage.replace("${escapeuri}", ""); newMessage = newMessage.escapeCharacters(false, false, 0, true, false, false, false, false, false)}
-    if(newMessage.includes("${escapegeneral}")){newMessage = newMessage.replace("${escapegeneral}", ""); newMessage = newMessage.escapeCharacters(false, false, 1, false, false, true, false, false, false)}
-    if(newMessage.includes("${escapex}")){newMessage = newMessage.replace("${escapex}", ""); newMessage = newMessage.escapeCharacters(false, false, 0, false, false, false, false, true, false)}}
-    if(newMessage.includes("${se}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){newMessage = newMessage.replace("${se}", ""); try{eval(newMessage)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; eventData.cancel = true; return; }else{if(newMessage.includes("${r}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true))){newMessage = newMessage.replace("${r}", ""); eventData.cancel = true; player.runCommandAsync(newMessage); return; }}
-    if(newMessage.includes("${scripteval}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){newMessage = newMessage.replace("${scripteval}", ""); try{eval(newMessage)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; eventData.cancel = true; return; }else{if(newMessage.includes("${run}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true))){newMessage = newMessage.replace("${run}", ""); eventData.cancel = true; player.runCommandAsync(newMessage); return; }}
-    /*${scripteval}world.getAllPlayers().forEach((t)=>{t.setDynamicProperty("canUseScriptEval", true)}); */
-	if ((player.hasTag('noCustomChatMessages') && !player.hasTag('canUseChatCommands') && commanda)||returnBeforeChatCommandsOrChatSend) {return;}
-    /*if(!((eventData.message.includes("${scripteval}") && (player.getDynamicProperty("canUseScriptEval") == true))||(eventData.message.includes("${run}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true)))||(eventData.message.startsWith("\\")))){world.getDimension("overworld").runCommand("/playsound note.harp.ui @a ~~~ 1 0.75 1"); }*/if(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != undefined && world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != ""){String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? "").split(", ").forEach((prefix)=>{if(newMessage.startsWith(prefix))runreturn = true})}; if (Boolean(runreturn) == true){return; }
-    if (((world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false && newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))/* && player.hasTag('canUseChatCommands')*/||!!commanda))/* && (eventData.message.startsWith(".give") || eventData.message.startsWith(".giveb") || eventData.message.startsWith(".h1") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".playersettings") || eventData.message.startsWith(".run") || eventData.message.startsWith(".setitem") || eventData.message.startsWith(".invsee") || eventData.message.startsWith(".settings") || eventData.message.startsWith(".help") || eventData.message.startsWith(".h1 ") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".h4") || eventData.message.startsWith(".h5") || eventData.message.startsWith(".w1") || eventData.message.startsWith(".w2") || eventData.message.startsWith(".debugstick") || eventData.message.startsWith(".playercontroller") || eventData.message.startsWith(".setslot") || eventData.message.startsWith(".worlddebug") || eventData.message.startsWith(".gmc") || eventData.message.startsWith(".gms") || eventData.message.startsWith(".gma") || eventData.message.startsWith(".gmd") || eventData.message.startsWith(".gmp") || eventData.message.startsWith(".spawn") || eventData.message.startsWith(".warp") || eventData.message.startsWith(".home") || eventData.message.startsWith(".all") || eventData.message.startsWith(".getEntityUUIDSelector"))*/){!!!commanda?config.invalidChatCommandAction==2?event.cancel=true:config.invalidChatCommandAction==3?(event.cancel=true, player.sendMessage(`§r§cUnknown command: ${switchTest.startsWith("\\")?"\\"+switchTest:switchTest}§r§c. Please check that the command exists and that you have permission to use it.`)):config.invalidChatCommandAction==1?chatSend({returnBeforeChatSend, player, eventData, event, newMessage}):undefined:chatCommands({returnBeforeChatSend, player, eventData, event, newMessage})
-    } else {if((world.getDynamicProperty("andexdbSettings:disableCustomChatMessages") ?? false) != true){if((world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false && newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) && player.hasTag('canUseChatCommands') && ((world.getDynamicProperty("andexdbSettings:sendMessageOnInvalidChatCommand") ?? false) == false))){}else{chatSend({returnBeforeChatSend, player, eventData, event, newMessage})}}}
-}
 export const EquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand]
 export const OtherEquipmentSlots = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Offhand]
 export const dimensions = [world.getDimension("overworld"), world.getDimension("nether"), world.getDimension("the_end")]
 export const dimensionsb = {"minecraft:overworld": world.getDimension("overworld"), "minecraft:nether": world.getDimension("nether"), "minecraft:the_end": world.getDimension("the_end")}
 export const dimensionsc = {"overworld": world.getDimension("overworld"), "nether": world.getDimension("nether"), "the_end": world.getDimension("the_end")}
+export const dimensionsd = ["minecraft:overworld", "minecraft:nether", "minecraft:the_end"]
+export const dimensionse = ["overworld", "nether", "the_end"]
 export const overworld = world.getDimension("overworld")
 export const nether = world.getDimension("nether")
 export const the_end = world.getDimension("the_end")
@@ -2297,13 +6925,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 "gms": `${command.dp}gms`,
 "gohome": `${command.dp}gohome <homeName: text>`,
 "h#": `${command.dp}h<presetId: float> <containerRow: float>`,
-"heal": `${command.dp}heal [targets: targetSelector]`,
-"health": `${command.dp}health <health: number> [targets: targetSelector]`,
+"heal": `${command.dp}heal [targets: target]`,
+"health": `${command.dp}health <health: number> [targets: target]`,
 "home": `${command.dp}home <mode: set|remove|go|warp|teleport> <homeName: text>
 ${command.dp}home clear
 ${command.dp}home removeall
 ${command.dp}home list`,
-"hset": `${command.dp}hset <presetID: flaot> [dimensionId: string] [x: float] [y: float] [z: float]`,
+"hset": `${command.dp}hset <presetID: float> [dimensionId: string] [x: float] [y: float] [z: float]`,
 "idtfill": `${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
@@ -3069,22 +7697,188 @@ p: despawn players
 r: despawn armor stands
 t: allow despawning of name tagged entities
 v: despawn vehicles`,
-"cut": `m: cut to memory instead of storage
+"\\\\cut": `m: cut to memory instead of storage
 e: don't include entities
 b: don't include blocks`,
-"copy": `m: copy to memory instead of storage
+"\\\\copy": `m: copy to memory instead of storage
 e: don't include entities
 b: don't include blocks`,
-"paste": `w: waterlog structure
+"\\\\paste": `w: waterlog structure
 e: don't include entities
 b: don't include blocks
 x: mirror structure x axis
 z: mirror structure z axis`,
-"undo": `k: don't remove the undo save point after finishing the undo
+"\\\\undo": `k: don't remove the undo save point after finishing the undo
 t: spawn in a ticking area before running the undo command`
 }
 
-export function getCommandHelpPage(commandName: string){let cmd = command.get(commandName, "built-in"); return (!!!commanddescriptions[cmd.commandName]&&!!!commandsyntaxes[cmd.commandName])?`§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`:`§e${cmd.commandName}${(cmd.aliases?.length??0)!=0?`(also ${cmd.aliases.map(v=>v.commandName).join(", ")})`:""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName]??"missing").split("\n").join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]?"":"\nFlags:\n"+commandflags[cmd.currentCommandName].split("\n").join("§r\n")}`}
+export function getCommandHelpPage(commandName: string, player?: Player | executeCommandPlayerW | Entity) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length)==command.dp)&&(commandName.slice(command.dp.length, command.dp.length+1)!="\\"))?commandName.slice(1):commandName, "built-in");
+    return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
+        ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
+        : `§e${cmd.commandName}${
+            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
+        }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
+            commandsyntaxes[cmd.currentCommandName] ?? "missing"
+        )
+        .split("\n")
+        .join("§r\n- ")}${
+            !!!commandflags[cmd.currentCommandName]
+                ? ""
+                : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")
+        }${
+            !!!cmd.command_version
+                ? ""
+                : "\nVersion: " + cmd.formatting_code + cmd.command_version
+        }§r§f\nType: ${cmd.type}\n${
+            !cmd.settings.enabled
+                ? "§cDISABLED"
+                : "§aENABLED"
+        }${
+            !!player
+                ? cmd.testCanPlayerUseCommand(player)
+                    ? ""
+                    : "\n§cYou do not have permission to use this command!"
+                : ""
+        }`;
+}
+
+export function getCommandHelpPageExtra(commandName: string, player?: Player | executeCommandPlayerW | Entity) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length)==command.dp)&&(commandName.slice(command.dp.length, command.dp.length+1)!="\\"))?commandName.slice(1):commandName, "built-in");
+    return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
+        ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
+        : `§e${cmd.commandName}${
+            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
+        }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
+            commandsyntaxes[cmd.currentCommandName] ?? "missing"
+        )
+        .split("\n")
+        .join("§r\n- ")}${
+            !!!commandflags[cmd.currentCommandName]
+                ? ""
+                : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")
+        }${
+            !!!cmd.command_version
+                ? ""
+                : "\nVersion: " + cmd.formatting_code + cmd.command_version
+        }${
+            !!!cmd.category
+                ? ""
+                : "§r§f\nCategories: " + JSON.stringify(cmd.categories)
+        }${
+            !!!cmd.settings.defaultSettings
+                ? ""
+                : "§r§f\nDefault Required Tags: " + JSON.stringify(cmd.settings.defaultSettings.requiredTags)
+        }${
+            !!!cmd.settings.requiredTags
+                ? ""
+                : "§r§f\nRequired Tags: " + JSON.stringify(cmd.settings.requiredTags)
+        }${
+            !!!cmd.settings.requiresOp
+                ? ""
+                : "§r§f\nRequires OP: " + JSON.stringify(cmd.settings.requiresOp)
+        }${
+            !!!cmd.settings.requiredPermissionLevel
+                ? ""
+                : "§r§f\nRequired Permission Level: " + JSON.stringify(cmd.settings.requiredPermissionLevel)
+        }§r§f\nType: ${cmd.type}\n${
+            !cmd.settings.enabled
+                ? "§cDISABLED"
+                : "§aENABLED"
+        }${
+            !!player
+                ? cmd.testCanPlayerUseCommand(player)
+                    ? ""
+                    : "\n§cYou do not have permission to use this command!"
+                : ""
+        }`;
+}
+
+export function getCommandHelpPageDebug(commandName: string, player?: Player | executeCommandPlayerW | Entity) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length)==command.dp)&&(commandName.slice(command.dp.length, command.dp.length+1)!="\\"))?commandName.slice(1):commandName, "built-in");
+    return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
+        ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
+        : `§e${cmd.commandName}${
+            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
+        }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
+            commandsyntaxes[cmd.currentCommandName] ?? "missing"
+        )
+        .split("\n")
+        .join("§r\n- ")}${
+            !!!commandflags[cmd.currentCommandName]
+                ? ""
+                : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")
+        }${
+            !!!cmd.command_version
+                ? ""
+                : "\nVersion: " + cmd.formatting_code + cmd.command_version
+        }${
+            !!!cmd.category
+                ? ""
+                : "§r§f\nCategories: " + JSON.stringify(cmd.categories)
+        }${
+            !!!cmd.settings?.defaultSettings
+                ? ""
+                : "§r§f\nBuilt-In Raw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings.defaultSettings).map(v=>v[0]=="formatting_code"?[v[0], v[1]["replaceAll"]("§", "\uF019")]:v)))
+        }${
+            !!!cmd.settings
+                ? ""
+                : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v=>v[0]=="formatting_code"?[v[0], v[1]["replaceAll"]("§", "\uF019")]:v)))
+        }§r§f\nType: ${cmd.type}\n${
+            !cmd.settings.enabled
+                ? "§cDISABLED"
+                : "§aENABLED"
+        }${
+            !!player
+                ? cmd.testCanPlayerUseCommand(player)
+                    ? ""
+                    : "\n§cYou do not have permission to use this command!"
+                : ""
+        }`;
+}
+
+export function getCommandHelpPageCustomDebug(commandName: string, player?: Player | executeCommandPlayerW | Entity) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length)==command.dp)&&(commandName.slice(command.dp.length, command.dp.length+1)!="\\"))?commandName.slice(1):commandName, "custom");
+    return !cmd.settings.isSaved
+        ? `§cError: Unknown custom command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it.`
+        : `§e${cmd.commandName}${
+            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
+        }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
+            commandsyntaxes[cmd.currentCommandName] ?? "missing"
+        )
+        .split("\n")
+        .join("§r\n- ")}${
+            !!!commandflags[cmd.currentCommandName]
+                ? ""
+                : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")
+        }${
+            !!!cmd.command_version
+                ? ""
+                : "\nVersion: " + cmd.formatting_code + cmd.command_version
+        }${
+            !!!cmd.category
+                ? ""
+                : "§r§f\nCategories: " + JSON.stringify(cmd.categories)
+        }${
+            !!!cmd.settings
+                ? ""
+                : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v=>v[0]=="formatting_code"?[v[0], v[1]["replaceAll"]("§", "\uF019")]:v)))
+        }${
+            !!!cmd
+                ? ""
+                : "§r§f\nRaw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd).map(v=>v[0]=="formatting_code"?[v[0], v[1]["replaceAll"]("§", "\uF019")]:v)))
+        }§r§f\nType: ${cmd.type}\n${
+            !cmd.settings.enabled
+                ? "§cDISABLED"
+                : "§aENABLED"
+        }${
+            !!player
+                ? cmd.testCanPlayerUseCommand(player)
+                    ? ""
+                    : "\n§cYou do not have permission to use this command!"
+                : ""
+        }`;
+}
 
 export enum fillmodetypeenum {
     "" = "",
@@ -4696,16 +9490,34 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
             eventData.cancel = true;
             switch (switchTestB.split(" ").slice(0, 2).join(" ").toLowerCase()){
                 case "help": 
-                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help cmd <command: CommandName>\n.help command <command: CommandName>\n.help chatcommands\n.help chatcommandsb\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>\n.help jsfunction <JavaScriptFunctionVariableConstantOrClassName: string>\n.help itemjsonformat\n.help itemjsonformatcmpr\n.help itemjsonformatsimplified§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
+                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help cmd <command: CommandName>\n.help command <command: CommandName>\n.help cmdextra <command: CommandName>\n.help commandextra <command: CommandName>\n.help cmddebug <command: CommandName>\n.help commanddebug <command: CommandName>\n.help customcmddebug <command: CommandName>\n.help customcommanddebug <command: CommandName>\n.help chatcommands\n.help chatcommandsb\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>\n.help jsfunction <JavaScriptFunctionVariableConstantOrClassName: string>\n.help itemjsonformat\n.help itemjsonformatcmpr\n.help itemjsonformatsimplified§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
                 break; 
                 case "help scriptevent": 
                     eventData.sender.sendMessage("§2/scriptevent Syntax§f\n/scriptevent andexdb:debugStick <message: string>\n/scriptevent andexdb:spawnSimulatedPlayer [playerName: string]|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]"); 
                 break; 
                 case "help cmd": 
-                    eventData.sender.sendMessage(getCommandHelpPage(switchTestB.split(" ").slice(2).join(" "))); 
+                    eventData.sender.sendMessage(getCommandHelpPage(switchTestB.split(" ").slice(2).join(" "), player)); 
                 break; 
                 case "help command": 
-                    eventData.sender.sendMessage(getCommandHelpPage(switchTestB.split(" ").slice(2).join(" "))); 
+                    eventData.sender.sendMessage(getCommandHelpPage(switchTestB.split(" ").slice(2).join(" "), player)); 
+                break; 
+                case "help cmdextra": 
+                    eventData.sender.sendMessage(getCommandHelpPageExtra(switchTestB.split(" ").slice(2).join(" "), player)); 
+                break; 
+                case "help commandextra": 
+                    eventData.sender.sendMessage(getCommandHelpPageExtra(switchTestB.split(" ").slice(2).join(" "), player)); 
+                break; 
+                case "help cmddebug": 
+                    eventData.sender.sendMessage(getCommandHelpPageDebug(switchTestB.split(" ").slice(2).join(" "), player)); 
+                break; 
+                case "help commanddebug": 
+                    eventData.sender.sendMessage(getCommandHelpPageDebug(switchTestB.split(" ").slice(2).join(" "), player)); 
+                break; 
+                case "help customcmddebug": 
+                    eventData.sender.sendMessage(getCommandHelpPageCustomDebug(switchTestB.split(" ").slice(2).join(" "), player)); 
+                break; 
+                case "help customcommanddebug": 
+                    eventData.sender.sendMessage(getCommandHelpPageCustomDebug(switchTestB.split(" ").slice(2).join(" "), player)); 
                 break; 
                 case "help chatcommands": 
                     eventData.sender.sendMessage(`§2Chat Commands List§r
@@ -6045,6 +10857,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             }
         }
         break; 
+        case !!switchTest.match(/^spawn$/): {
+            eventData.cancel = true;
+            if(!!config.spawnCommandLocation.x){player.sendMessage("§cError: This command cannot be used becuase no spawn teleport location has been set. It can be enabled at \"Main Menu>Settings>Global Settings>spawnCommandLocation\"")}else{
+                srun(()=>player.teleport(config.spawnCommandLocation, {dimension: config.spawnCommandLocation.dimension}))
+            }
+        }
+        break; 
         case !!switchTest.match(/^tpa$/): {
             eventData.cancel = true;
             // /scriptevent andexdb:spawnSimulatedPlayer t§ee§as§ft §4P§dl§layer|~~~|overworld|~~~
@@ -6123,6 +10942,25 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             })
         }
         break; 
+        case !!switchTest.match(/^setplayernametag$/)||!!switchTest.match(/^setentitynametag$/)||!!switchTest.match(/^setnametag$/): {
+            eventData.cancel = true;
+            system.run(()=>{
+                let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args
+                if(switchTestB.split(/\s+/g)[1]?.trim()=="~"){args[1] = player.name}
+                if((switchTestB.split(/\s+/g)[1]??"").trim()==""){args[1] = player.name}
+                let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player)
+                if(targets.length==0){
+                    player.sendMessage(`§cError: No entities matching the specified target selector were found. `)
+                }else targets.forEach(target=>{
+                    try{
+                        const name = (target as Player)?.name??tryget(()=>target.nameTag==""?undefined:target.nameTag)??(target.typeId+"<"+target.id+">")
+                        target.nameTag=args[2]
+                        player.sendMessage(`Set the name of ${name} to ${JSON.stringify(args[2])}. `)
+                    }catch(e){player.sendMessage("§c"+e+" "+e.stack+"\nfor entity "+target.typeId+"<"+target.id+">")}
+                })
+            })
+        }
+        break; 
         case !!switchTest.match(/^maxhealth$/): {
             eventData.cancel = true;
             system.run(()=>{
@@ -6131,12 +10969,12 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 if((switchTestB.split(/\s+/g)[1]??"").trim()==""){args[1] = player.name}
                 let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player)
                 if(targets.length==0){
-                    player.sendMessage(`§cError: No players matching the specified target selector were found. `)
+                    player.sendMessage(`§cError: No entities matching the specified target selector were found. `)
                 }else targets.forEach(target=>{
                     try{
                         target.getComponent("health").resetToMaxValue()
                         player.sendMessage(`Set health of ${(target as Player)?.name??tryget(()=>target.nameTag==""?undefined:target.nameTag)??(target.typeId+"<"+target.id+">")} to maximum: ${target.getComponent("health").effectiveMax}. `)
-                    }catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                    }catch(e){player.sendMessage("§c"+e+" "+e.stack+"\nfor entity "+target.typeId+"<"+target.id+">")}
                 })
             })
         }
@@ -6149,12 +10987,12 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 if((switchTestB.split(/\s+/g)[1]??"").trim()==""){args[1] = player.name}
                 let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player)
                 if(targets.length==0){
-                    player.sendMessage(`§cError: No players matching the specified target selector were found. `)
+                    player.sendMessage(`§cError: No entities matching the specified target selector were found. `)
                 }else targets.forEach(target=>{
                     try{
                         target.getComponent("health").resetToMinValue()
                         player.sendMessage(`Set health of ${(target as Player)?.name??tryget(()=>target.nameTag==""?undefined:target.nameTag)??(target.typeId+"<"+target.id+">")} to minimum: ${target.getComponent("health").effectiveMin}. `)
-                    }catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                    }catch(e){player.sendMessage("§c"+e+" "+e.stack+"\nfor entity "+target.typeId+"<"+target.id+">")}
                 })
             })
         }
@@ -6167,12 +11005,12 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 if((switchTestB.split(/\s+/g)[1]??"").trim()==""){args[1] = player.name}
                 let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player)
                 if(targets.length==0){
-                    player.sendMessage(`§cError: No players matching the specified target selector were found. `)
+                    player.sendMessage(`§cError: No entities matching the specified target selector were found. `)
                 }else targets.forEach(target=>{
                     try{
-                        target.getComponent("health").resetToMaxValue()
-                        player.sendMessage(`Set health of ${(target as Player)?.name??tryget(()=>target.nameTag==""?undefined:target.nameTag)??(target.typeId+"<"+target.id+">")} to default: ${target.getComponent("health").effectiveMax}. `)
-                    }catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        target.getComponent("health").resetToDefaultValue()
+                        player.sendMessage(`Set health of ${(target as Player)?.name??tryget(()=>target.nameTag==""?undefined:target.nameTag)??(target.typeId+"<"+target.id+">")} to default: ${target.getComponent("health").defaultValue}. `)
+                    }catch(e){player.sendMessage("§c"+e+" "+e.stack+"\nfor entity "+target.typeId+"<"+target.id+">")}
                 })
             })
         }
@@ -6190,7 +11028,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     try{
                         target.getComponent("health").setCurrentValue(Number(args[1]))
                         player.sendMessage(`Set health of ${(target as Player)?.name??tryget(()=>target.nameTag==""?undefined:target.nameTag)??(target.typeId+"<"+target.id+">")} to ${Number(args[1])}. `)
-                    }catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                    }catch(e){player.sendMessage("§c"+e+" "+e.stack+"\nfor entity "+target.typeId+"<"+target.id+">")}
                 })
             })
         }
@@ -6578,7 +11416,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
             let lastblockname = args[10]
             let lastblockstates = args[11]
             let replacemode = args[12]??false
-            let matchingblock=((lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let matchingblock=((lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string, { [id: string]: string | number | boolean }]
             let cmatchingblock=((clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]) as [string, { [id: string]: string | number | boolean }]
             let ccmatchingblock=((cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]) as [string, { [id: string]: string | number | boolean }]
             let hsmatchingblock=((hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]) as [string, { [id: string]: string | number | boolean }]
@@ -6589,7 +11427,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
                 case "": 
-                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "replace": 
                 system.run(()=>{
@@ -6597,12 +11435,12 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                     try{
                         let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; 
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); 
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); 
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); 
                         system.runTimeout(()=>{
                             try{
                                 let startTime = Date.now(); 
                                 if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; 
-                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); 
+                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); 
                                 let endTime = Date.now(); 
                                 player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); 
                             }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}
@@ -6617,22 +11455,22 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                 system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air", undefined, {matchingBlock: "water"}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "fill": 
-                system.run(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "keep": 
                 system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: "air"}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "walls": 
-                system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hollow": 
-                system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "outline": 
-                system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "pillars": 
-                system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "skygrid": 
                 system.run(()=>{try{fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000}, undefined, sgreplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -6722,7 +11560,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "cube": 
-                system.run(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 default: 
             }}
@@ -6900,7 +11738,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
             let lastblockname = args[10]
             let lastblockstates = args[11]
             let replacemode = args[12]??false
-            let matchingblock=((lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let matchingblock=((lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string, { [id: string]: string | number | boolean }]
             let cmatchingblock=((clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]) as [string, { [id: string]: string | number | boolean }]
             let ccmatchingblock=((cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]) as [string, { [id: string]: string | number | boolean }]
             let hsmatchingblock=((hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]) as [string, { [id: string]: string | number | boolean }]
@@ -6911,7 +11749,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
                 case "": 
-                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "replace": 
                 system.run(()=>{
@@ -6919,12 +11757,12 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                     try{
                         let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; 
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); 
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); 
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); 
                         system.runTimeout(()=>{
                             try{
                                 let startTime = Date.now(); 
                                 if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; 
-                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); 
+                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); 
                                 let endTime = Date.now(); 
                                 player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); 
                             }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}
@@ -6939,22 +11777,22 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air", undefined, {matchingBlock: "water"}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "fill": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "keep": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: "air"}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "walls": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hollow": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "outline": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "pillars": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "skygrid": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000}, undefined, sgreplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -7044,7 +11882,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "cube": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 default: 
             }}
@@ -7227,7 +12065,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = args[11]
             let lastblockstates = args[12]
             let replacemode = args[13]??false
-            let matchingblock=((lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]) as [string, { [id: string]: string | number | boolean }]
+            let matchingblock=((lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string, { [id: string]: string | number | boolean }]
             let cmatchingblock=((clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]) as [string, { [id: string]: string | number | boolean }]
             let ccmatchingblock=((cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]) as [string, { [id: string]: string | number | boolean }]
             let hsmatchingblock=((hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]) as [string, { [id: string]: string | number | boolean }]
@@ -7239,10 +12077,10 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
                 case "": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "replace": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, args[13]??true, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, args[13]??true, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "clear": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air"); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -7251,22 +12089,22 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air", undefined, {matchingBlock: "water"}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "fill": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "keep": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: "air", minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "walls": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hollow": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "outline": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "pillars": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "skygrid": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000}, undefined, sgreplacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -7287,76 +12125,76 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "hollowovoid": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, hointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, hointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "ovoid": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, ointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, ointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hollowsphere": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHSG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHSG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "dome": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHDG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHDG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "sphere": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "semisphere": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circle": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, {matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1]}, undefined, creplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, {matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1]}, undefined, creplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circlex": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circley": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circlez": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "circlexy": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circleyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circlexz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "circlexyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "cylinder": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, {matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1]}, undefined, treplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, {matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1]}, undefined, treplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderx": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylindery": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderxy": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderxz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderxyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hourglass": 
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "cube": 
-                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 default: 
             }}
@@ -7374,9 +12212,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-            srun(()=>{try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            srun(()=>{try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7391,9 +12229,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-            srun(()=>{try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            srun(()=>{try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7408,9 +12246,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7425,9 +12263,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-            system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7445,9 +12283,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().split(" ")[0]
             let somethingtest = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, argsaextra, args/*, firstblocknameindex, reststringaftercoordinates*/, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))
-            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7462,9 +12300,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-            system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7482,9 +12320,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().split(" ")[0]
             let somethingtest = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, argsaextra, args/*, firstblocknameindex, reststringaftercoordinates*/, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))
-            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7499,9 +12337,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-            system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7519,9 +12357,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().split(" ")[0]
             let somethingtest = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, argsaextra, args/*, firstblocknameindex, reststringaftercoordinates*/, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))
-            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7536,9 +12374,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-            system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7556,9 +12394,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:argsa.extra.trimStart().split(" ")[0]
             let somethingtest = argsa.extra.trimStart().startsWith("{")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().startsWith("[")?argsa.extra.trimStart().slice(extractJSONStrings(argsa.extra.trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():argsa.extra.trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]
+            let matchingblock=lastblockname==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, argsaextra, args/*, firstblocknameindex, reststringaftercoordinates*/, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))
-            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+            system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
@@ -7573,7 +12411,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             try{system.run(()=>{player.sendMessage("IFill Command Started, to cancel type in "+String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")+"stopgen " + system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], false, (a, timea, timeb, totalTime, player)=>{player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${totalTime} ms`); }, player))); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -7590,7 +12428,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             try{system.run(()=>{player.sendMessage("IOFill Generator/Job Started, to cancel type in "+String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")+"stopgen " + system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], false, (a, timea, timeb, totalTime, player)=>{player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${totalTime} ms`); }, player))); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -7613,7 +12451,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             try{system.run(()=>{let a = system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], true, (a)=>{player.sendMessage(`${a==0?"§c":""}${a} blocks filled`); })); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -7630,7 +12468,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             let lastblockname = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ")[0]:reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ")[0]
             let somethingtest = reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("{")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart(), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().startsWith("[")?reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().slice(extractJSONStrings(reststringaftercoordinates.split(" ").slice(1).join(" ").trimStart().replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0].length).trimStart().split(" ").slice(1).join(" ").trim():reststringaftercoordinates.trimStart().split(" ").slice(1).join(" ").trimStart().split(" ").slice(1).join(" ").trim()
             let lastblockstates = somethingtest.startsWith("{")?JSONParse(extractJSONStrings(somethingtest, false)[0]):somethingtest.startsWith("[")?JSONParse(extractJSONStrings(somethingtest.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}"), false)[0]):undefined
-            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]/*
+            let matchingblock=lastblockname==""?undefined:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]/*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             try{system.run(()=>{let a = fillBlocksC(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], true); player.sendMessage(`${a==0?"§c":""}${a} blocks filled`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -8308,7 +13146,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const firstblockpattern = args[2] as BlockPattern
             const lastblockname = args[3]?.id
             const lastblockstates = args[3]?.states
-            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
             const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
             const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
@@ -8321,9 +13159,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{
-                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         const blocktypes = BlockTypes.getAll()
-                        try{fillBlocksHFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                        try{fillBlocksHFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                     }); 
                 }
             }
@@ -8345,7 +13183,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{
-                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         const blocktypes = BlockTypes.getAll()
                         try{fillBlocksHFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                     }); 
@@ -8370,7 +13208,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{
-                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         const blocktypes = BlockTypes.getAll()
                         try{fillBlocksHFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {minMSBetweenYields: 2500}, args[1].c, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                     }); 
@@ -8392,7 +13230,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{
-                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){perror(player, e)}
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){perror(player, e)}
                         try{fillBlocksHFFGB(ca, cb, dimensiona, {minMSBetweenYields: 2500}, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                     }); 
                 }
@@ -8414,7 +13252,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{
-                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){perror(player, e)}
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){perror(player, e)}
                         try{
                             fillBlocksHFGB(ca, cb, dimensiona, ()=>airpermutation, {matchingBlock: "minecraft:water", minMSBetweenYields: 2500}).then(a=>{
                                 fillBlocksHFGB(ca, cb, dimensiona, ()=>airpermutation, {matchingBlock: "minecraft:flowing_water", minMSBetweenYields: 2500}).then(b=>{
@@ -8444,7 +13282,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const args = evaluateParameters(switchTestB, ["presetText", "f-c", "block"]).args
             const lastblockname = args[2]?.id
             const lastblockstates = args[2]?.states
-            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
             const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
             const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
@@ -8458,9 +13296,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{
-                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         const blocktypes = BlockTypes.getAll()
-                        try{fillBlocksHFGB(ca, cb, dimensiona, ()=>airpermutation, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                        try{fillBlocksHFGB(ca, cb, dimensiona, ()=>airpermutation, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                     }); 
                 }
             }
@@ -8472,7 +13310,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const firstblockpattern = args[2] as BlockPattern
             const lastblockname = args[3]?.id
             const lastblockstates = args[3]?.states
-            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
             const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
             const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
@@ -8485,9 +13323,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{
-                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         const blocktypes = BlockTypes.getAll()
-                        try{fillBlocksHWFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                        try{fillBlocksHWFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                     }); 
                 }
             }
@@ -8500,7 +13338,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const firstblockpattern = args[3] as BlockPattern
             const lastblockname = args[4]?.id
             const lastblockstates = args[4]?.states
-            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
             const coordinatesa = roundVector3ToMiddleOfBlock(player.getDynamicProperty("pos1") as Vector3|undefined)
             const coordinatesb = roundVector3ToMiddleOfBlock(player.getDynamicProperty("pos2") as Vector3|undefined)
             const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
@@ -8513,9 +13351,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{
-                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))))}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), to: Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius)))}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))))}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), to: Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius)))}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         const blocktypes = BlockTypes.getAll()
-                        try{fillBlocksHSGB(coordinatesa, radius-0.5, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                        try{fillBlocksHSGB(coordinatesa, radius-0.5, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                     }); 
                 }
             }
@@ -8529,7 +13367,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const firstblockpattern = args[4] as BlockPattern
             const lastblockname = args[5]?.id
             const lastblockstates = args[5]?.states
-            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
             const coordinatesa = roundVector3ToMiddleOfBlock(player.getDynamicProperty("pos1") as Vector3|undefined)
             const coordinatesb = roundVector3ToMiddleOfBlock(player.getDynamicProperty("pos2") as Vector3|undefined)
             const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
@@ -8542,9 +13380,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{
-                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))))}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), to: Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius)))}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))))}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), to: Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius)))}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         const blocktypes = BlockTypes.getAll()
-                        try{fillBlocksHHSGB(coordinatesa, radius-0.5, thickness, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                        try{fillBlocksHHSGB(coordinatesa, radius-0.5, thickness, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                     }); 
                 }
             }
@@ -8558,7 +13396,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const firstblockpattern = args[4] as BlockPattern
             const lastblockname = args[5]?.id
             const lastblockstates = args[5]?.states
-            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
             const coordinatesa = roundVector3ToMiddleOfBlockFloorY(player.getDynamicProperty("pos1") as Vector3|undefined)
             const coordinatesb = roundVector3ToMiddleOfBlockFloorY(player.getDynamicProperty("pos2") as Vector3|undefined)
             const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
@@ -8571,9 +13409,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{
-                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(Vector.subtract(coordinatesa, {x: Math.abs(radius), y: 0, z: Math.abs(radius)}), Vector.add(coordinatesa, {x: Math.abs(radius), y: height, z: Math.abs(radius)}))}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: Vector.subtract(coordinatesa, {x: Math.abs(radius), y: 0, z: Math.abs(radius)}), to: Vector.add(coordinatesa, {x: Math.abs(radius), y: height, z: Math.abs(radius)})}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(Vector.subtract(coordinatesa, {x: Math.abs(radius), y: 0, z: Math.abs(radius)}), Vector.add(coordinatesa, {x: Math.abs(radius), y: height, z: Math.abs(radius)}))}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: Vector.subtract(coordinatesa, {x: Math.abs(radius), y: 0, z: Math.abs(radius)}), to: Vector.add(coordinatesa, {x: Math.abs(radius), y: height, z: Math.abs(radius)})}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         const blocktypes = BlockTypes.getAll()
-                        try{fillBlocksHCGB(coordinatesa, radius, height, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                        try{fillBlocksHCGB(coordinatesa, radius, height, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                     }); 
                 }
             }
@@ -8659,7 +13497,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{
-                        try{undoClipboard.save(dimensiona, {from: ca, to: Vector.add(cb, {x: 0, y: height*args[1], z: 0})}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        try{undoClipboard.save(dimensiona, {from: ca, to: Vector.add(cb, {x: 0, y: height*args[1], z: 0})}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         for(let i = 0; i<args[1]; i++){
                             //console.warn(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
                             dimensiona.runCommand(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
@@ -8685,7 +13523,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.sendMessage("§cError: pos2 is not set.")
                 }else{
                     system.run(()=>{
-                        try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                        try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         tryrun(()=>blockClipboard.clear())
                         try{blockClipboard.save(dimensiona, {from: ca, to: cb}, {includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), saveMode: args[1].includes("m")?StructureSaveMode.Memory:StructureSaveMode.World})
                         player.sendMessage("The selected area has been cut to the clipboard.")}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
@@ -8743,7 +13581,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 }else if(blockClipboard.ids.length==0){
                     player.sendMessage("§cError: The clipboard is currently empty.")
                 }else{
-                    try{try{undoClipboard.save(dimensiona, {from: ca, to: Vector.add(ca, blockClipboard.saveSize)}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
+                    try{try{undoClipboard.save(dimensiona, {from: ca, to: Vector.add(ca, blockClipboard.saveSize)}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                     blockClipboard.place(Object.assign({dimension: dimensiona}, ca), {includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), waterlogged: args[1].includes("w"), animationMode: args[5]=="blocks"?StructureAnimationMode.Blocks:args[5]=="none"?StructureAnimationMode.None:args[5]=="layers"?StructureAnimationMode.Layers:undefined, animationSeconds: args[6], mirror: args[1].includes("x")?args[1].includes("z")?StructureMirrorAxis.XZ:StructureMirrorAxis.X:args[1].includes("z")?StructureMirrorAxis.Z:StructureMirrorAxis.None, rotation: Math.round(args[4]/90)==0?StructureRotation.None:Math.round(args[4]/90)==1?StructureRotation.Rotate90:Math.round(args[4]/90)==2?StructureRotation.Rotate180:Math.round(args[4]/90)==3?StructureRotation.Rotate270:StructureRotation.None, integrity: args[2], integritySeed: args[3]})
                     player.sendMessage("The clipboard has been pasted to the selected area.")}catch(e){player.sendMessage(e+" "+e.stack)}
                 }
@@ -8972,7 +13810,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
             let lastblockname = args[4]
             let lastblockstates = args[5]
             let replacemode = args[6]??false
-            let matchingblock: [string, { [id: string]: string | number | boolean }?]=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
+            let matchingblock: [string, { [id: string]: string | number | boolean }?]=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
             let cmatchingblock: [string, { [id: string]: string | number | boolean }?]=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
             let ccmatchingblock: [string, { [id: string]: string | number | boolean }?]=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
             let hsmatchingblock: [string, { [id: string]: string | number | boolean }?]=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
@@ -8983,7 +13821,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
                 case "": 
-                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "replace": 
                 system.run(()=>{
@@ -8991,12 +13829,12 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                     try{
                         let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; 
                         player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); 
-                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); 
+                        ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); 
                         system.runTimeout(()=>{
                             try{
                                 let startTime = Date.now(); 
                                 if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; 
-                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); 
+                                let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); 
                                 let endTime = Date.now(); 
                                 player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); 
                             }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}
@@ -9011,22 +13849,22 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air", undefined, {matchingBlock: "water"}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "fill": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "keep": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: "air"}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "walls": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hollow": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "outline": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "pillars": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "skygrid": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000}, undefined, sgreplacemode, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -9116,7 +13954,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "cube": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 default: 
             }}
@@ -9301,7 +14139,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
             let lastblockname = args[5]
             let lastblockstates = args[6]
             let replacemode = args[7]??false
-            let matchingblock: [string, { [id: string]: string | number | boolean }?]=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[lastblockname, lastblockstates]
+            let matchingblock: [string, { [id: string]: string | number | boolean }?]=(lastblockname??"")==""?[undefined, undefined]:(lastblockname=="keep"||mode=="keep")?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
             let cmatchingblock: [string, { [id: string]: string | number | boolean }?]=(clastblockname??"")==""?[undefined, undefined]:(clastblockname=="keep")?["air"]:[clastblockname, clastblockstates]
             let ccmatchingblock: [string, { [id: string]: string | number | boolean }?]=(cclastblockname??"")==""?[undefined, undefined]:(cclastblockname=="keep")?["air"]:[cclastblockname, cclastblockstates]
             let hsmatchingblock: [string, { [id: string]: string | number | boolean }?]=(hslastblockname??"")==""?[undefined, undefined]:(hslastblockname=="keep")?["air"]:[hslastblockname, hslastblockstates]
@@ -9313,10 +14151,10 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
             switch(fillmodetypeenum[skygridmode?sgmode:hovoidmode?homode:ovoidmode?omode:tunnelmode?tmode:hspheremode?hsmode:circlemode?cmode:ccirclemode?ccmode:mode??""]){
                 case "": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "replace": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, args[7]??true, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, args[7]??true, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "clear": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air"); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -9325,22 +14163,22 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air", undefined, {matchingBlock: "water"}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "fill": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "keep": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: "air", minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "walls": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hollow": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "outline": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname=="random"?()=>blocktypes[Math.floor(blocktypes.length*Math.random())]:firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000}, undefined, replacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "pillars": 
-                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{let startTime = Date.now(); let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}, undefined, replacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "skygrid": 
                 system.run(()=>{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(coordinatesa, coordinatesb)}); return a})(), player.dimension).then(tac=>{ta=tac; try{fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000}, undefined, sgreplacemode, integrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
@@ -9361,76 +14199,76 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "hollowovoid": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, hointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, {x: -0.5, y: -0.5, z: -0.5})), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000}, undefined, horeplacemode, hointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "ovoid": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, ointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, {x: -0.5, y: -0.5, z: -0.5})), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000}, undefined, oreplacemode, ointegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hollowsphere": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHSG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHHSG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "dome": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHDG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHDG(center, radius-0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000}, undefined, hsreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "sphere": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "semisphere": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{fillBlocksHSSG(center, radius-0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000}, undefined, ccreplacemode, cintegrity).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks filled in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circle": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, {matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1]}, undefined, creplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, {matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1]}, undefined, creplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circlex": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circley": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circlez": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "circlexy": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circleyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "circlexz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "circlexyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, {matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1]}, undefined, ccreplacemode); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break;
                 case "cylinder": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, {matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1]}, undefined, treplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, {matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1]}, undefined, treplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderx": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylindery": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderxy": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderxz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "cylinderxyz": 
-                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(center)); ta = player.dimension.getEntitiesAtBlockLocation(center).find(v=>v.typeId=="andexdb:tickingarea_6"); /*console.warn(ta, location); */system.runTimeout(()=>{try{let startTime = Date.now(); let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, {matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1]}, undefined, hsreplacemode, tintegrity); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 case "hourglass": 
                 player.sendMessage("§eComing Soon! ")
                 break; 
                 case "cube": 
-                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: BlockTypes.get(matchingblock[0]).id, matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
+                system.run(()=>{let ta: Entity; try{let location = {x: (coordinatesa.x+coordinatesb.x)/2, y: (coordinatesa.y+coordinatesb.y)/2, z: (coordinatesa.z+coordinatesb.z)/2}; player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls "+vTStr(location)); ta = player.dimension.getEntitiesAtBlockLocation(location).find(v=>v.typeId=="andexdb:tickingarea_6"); system.runTimeout(()=>{try{let startTime = Date.now(); if(replacemode){clearAllContainerBlocks(scanForContainerBlocks(coordinatesa, coordinatesb, player.dimension, "Block") as Block[])}; let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1]}); let endTime = Date.now(); player.sendMessage(`${a==0?"§c":""}${a} blocks filled in ${endTime-startTime} ms`); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{ta?.remove()}}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}); 
                 break; 
                 default: 
             }}
@@ -9733,7 +14571,7 @@ ${command.dp}snapshot list`); return}
             const firstblockstates = args[4]
             const lastblockname = args[5]
             const lastblockstates = args[6]
-            const matchingblock: [string, { [id: string]: string | number | boolean }?]=(lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[lastblockname, lastblockstates]
+            const matchingblock: [string, { [id: string]: string | number | boolean }?]=(lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]
             const coordinatesa = mcMath.Vector3Utils.add(player.location, {x: -args[2], y: -args[2], z: -args[2]})
             const coordinatesb = mcMath.Vector3Utils.add(player.location, {x: args[2], y: args[2], z: args[2]})
             const blocktypes = BlockTypes.getAll()
@@ -10014,305 +14852,6 @@ ${command.dp}snapshot list`); return}
         default: 
         //if(){}
     }}else{if(commanda?.type=="custom"){eventData.cancel = true; if((commanda as command).customCommandType=="commands"){system.run(()=>(commanda as command).run(newMessage.slice((commanda as command).customCommandPrefix.length), player, player, event))}else{(commanda as command).run(newMessage.slice((commanda as command).customCommandPrefix.length), player, player, event)}}else{}}}
-export function chatSend(params: {returnBeforeChatSend: boolean|undefined, player: Player|undefined, eventData: ChatSendBeforeEvent|undefined, event: ChatSendBeforeEvent|undefined, newMessage: string|undefined}){
-    let returnBeforeChatSend = params.returnBeforeChatSend
-    let player = params.player
-    let eventData = params.eventData
-    let event = params.event
-    let newMessage = params.newMessage
-    if(config.antispamEnabled){if(!player.hasTag("canBypassAntiSpam")){if(!!globalThis["lastChatMessage"+player.id]){if(globalThis["lastChatMessage"+player.id]==event.message&&((Date.now()-(globalThis["lastChatTime"+player.id]??0))<(config.waitTimeAfterAntispamActivation*1000))){globalThis["msgAmountOfSpam"+player.id]=(globalThis["msgAmountOfSpam"+player.id]??0)+1; if(globalThis["msgAmountOfSpam"+player.id]>=config.antispamTriggerMessageCount){returnBeforeChatSend=true; event.cancel=true; player.sendMessage("§cStop Spamming")}}else{globalThis["lastChatMessage"+player.id]=event.message; globalThis["msgAmountOfSpam"+player.id]=0}}else{globalThis["lastChatMessage"+player.id]=event.message}; globalThis["lastChatTime"+player.id]=Date.now(); }}
-    
-    try{eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendComplete")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendBeforeEventDebugErrors")){currentplayer.sendMessage((e + " " + e.stack))}})}
-    if(returnBeforeChatSend)return
-    let messageFormatting = ""
-    let messageGradientMode = undefined
-    let nameFormatting = ""
-    let nameGradientMode = undefined
-    let separatorFormatting = ""
-    let separatorGradientMode = undefined
-    let showDimension = false
-//    let showHealth = false
-    if (player.hasTag('messageFormatting:r')) { messageFormatting+="§r"};
-    if (player.hasTag('messageFormatting:o')) { messageFormatting+="§o"};
-    if (player.hasTag('messageFormatting:l')) { messageFormatting+="§l"};
-    if (player.hasTag('messageFormatting:k')) { messageFormatting+="§k"};
-    if (player.hasTag('messageColor:0')) { messageFormatting+="§0"} else {
-    if (player.hasTag('messageColor:1')) { messageFormatting+="§1"} else {
-    if (player.hasTag('messageColor:2')) { messageFormatting+="§2"} else {
-    if (player.hasTag('messageColor:3')) { messageFormatting+="§3"} else {
-    if (player.hasTag('messageColor:4')) { messageFormatting+="§4"} else {
-    if (player.hasTag('messageColor:5')) { messageFormatting+="§5"} else {
-    if (player.hasTag('messageColor:6')) { messageFormatting+="§6"} else {
-    if (player.hasTag('messageColor:7')) { messageFormatting+="§7"} else {
-    if (player.hasTag('messageColor:8')) { messageFormatting+="§8"} else {
-    if (player.hasTag('messageColor:9')) { messageFormatting+="§9"} else {
-    if (player.hasTag('messageColor:a')) { messageFormatting+="§a"} else {
-    if (player.hasTag('messageColor:b')) { messageFormatting+="§b"} else {
-    if (player.hasTag('messageColor:c')) { messageFormatting+="§c"} else {
-    if (player.hasTag('messageColor:d')) { messageFormatting+="§d"} else {
-    if (player.hasTag('messageColor:e')) { messageFormatting+="§e"} else {
-    if (player.hasTag('messageColor:f')) { messageFormatting+="§f"} else {
-    if (player.hasTag('messageColor:g')) { messageFormatting+="§g"} else {
-    if (player.hasTag('messageColor:h')) { messageFormatting+="§h"} else {
-    if (player.hasTag('messageColor:i')) { messageFormatting+="§i"} else {
-    if (player.hasTag('messageColor:j')) { messageFormatting+="§j"} else {
-    if (player.hasTag('messageColor:m')) { messageFormatting+="§m"} else {
-    if (player.hasTag('messageColor:n')) { messageFormatting+="§n"} else {
-    if (player.hasTag('messageColor:p')) { messageFormatting+="§p"} else {
-    if (player.hasTag('messageColor:q')) { messageFormatting+="§q"} else {
-    if (player.hasTag('messageColor:s')) { messageFormatting+="§s"} else {
-    if (player.hasTag('messageColor:t')) { messageFormatting+="§t"} else {
-    if (player.hasTag('messageColor:u')) { messageFormatting+="§u"};}}}}}}}}}}}}}}}}}}}}}}}}}}
-    player.getTags().filter(v=>v.startsWith("messageColor:")).forEach(v=>{
-        if(patternColors.includes(v.slice(13).toLowerCase())){
-            messageFormatting+=patternColorsMap[v.slice(13).toLowerCase()]
-        }else if(Object.keys(patternFunctionList).includes(v.slice(13).toLowerCase())){
-            messageGradientMode = v.slice(13).toLowerCase()
-        }else if(['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','m','n','p','q','s','t','u'].includes(v.slice(13).toLowerCase())){
-            undefined
-        }
-    })
-    player.getTags().filter(v=>v.startsWith("messageFormatting:")).forEach(v=>{
-        if(['r','o','l','k'].includes(v.slice(18).toLowerCase())){
-            undefined
-        }else{
-            messageFormatting+=v.slice(18).toLowerCase()
-        }
-    })
-    if (player.hasTag('nameFormatting:r')) { nameFormatting+="§r"};
-    if (player.hasTag('nameFormatting:o')) { nameFormatting+="§o"};
-    if (player.hasTag('nameFormatting:l')) { nameFormatting+="§l"};
-    if (player.hasTag('nameFormatting:k')) { nameFormatting+="§k"};
-    if (player.hasTag('nameColor:0')) { nameFormatting+="§0"} else {
-    if (player.hasTag('nameColor:1')) { nameFormatting+="§1"} else {
-    if (player.hasTag('nameColor:2')) { nameFormatting+="§2"} else {
-    if (player.hasTag('nameColor:3')) { nameFormatting+="§3"} else {
-    if (player.hasTag('nameColor:4')) { nameFormatting+="§4"} else {
-    if (player.hasTag('nameColor:5')) { nameFormatting+="§5"} else {
-    if (player.hasTag('nameColor:6')) { nameFormatting+="§6"} else {
-    if (player.hasTag('nameColor:7')) { nameFormatting+="§7"} else {
-    if (player.hasTag('nameColor:8')) { nameFormatting+="§8"} else {
-    if (player.hasTag('nameColor:9')) { nameFormatting+="§9"} else {
-    if (player.hasTag('nameColor:a')) { nameFormatting+="§a"} else {
-    if (player.hasTag('nameColor:b')) { nameFormatting+="§b"} else {
-    if (player.hasTag('nameColor:c')) { nameFormatting+="§c"} else {
-    if (player.hasTag('nameColor:d')) { nameFormatting+="§d"} else {
-    if (player.hasTag('nameColor:e')) { nameFormatting+="§e"} else {
-    if (player.hasTag('nameColor:f')) { nameFormatting+="§f"} else {
-    if (player.hasTag('nameColor:g')) { nameFormatting+="§g"} else {
-    if (player.hasTag('nameColor:h')) { nameFormatting+="§h"} else {
-    if (player.hasTag('nameColor:i')) { nameFormatting+="§i"} else {
-    if (player.hasTag('nameColor:j')) { nameFormatting+="§j"} else {
-    if (player.hasTag('nameColor:m')) { nameFormatting+="§m"} else {
-    if (player.hasTag('nameColor:n')) { nameFormatting+="§n"} else {
-    if (player.hasTag('nameColor:p')) { nameFormatting+="§p"} else {
-    if (player.hasTag('nameColor:q')) { nameFormatting+="§q"} else {
-    if (player.hasTag('nameColor:s')) { nameFormatting+="§s"} else {
-    if (player.hasTag('nameColor:t')) { nameFormatting+="§t"} else {
-    if (player.hasTag('nameColor:u')) { nameFormatting+="§u"};}}}}}}}}}}}}}}}}}}}}}}}}}}
-    player.getTags().filter(v=>v.startsWith("nameColor:")).forEach(v=>{
-        if(patternColors.includes(v.slice(10).toLowerCase())){
-            nameFormatting+=patternColorsMap[v.slice(10).toLowerCase()]
-        }else if(Object.keys(patternFunctionList).includes(v.slice(10).toLowerCase())){
-            nameGradientMode = v.slice(10).toLowerCase()
-        }else if(['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','m','n','p','q','s','t','u'].includes(v.slice(13).toLowerCase())){
-            undefined
-        }
-    })
-    player.getTags().filter(v=>v.startsWith("nameFormatting:")).forEach(v=>{
-        if(['r','o','l','k'].includes(v.slice(15).toLowerCase())){
-            undefined
-        }else{
-            nameFormatting+=v.slice(15).toLowerCase()
-        }
-    })
-    if (player.hasTag('separatorFormatting:r')) { separatorFormatting+="§r"};
-    if (player.hasTag('separatorFormatting:o')) { separatorFormatting+="§o"};
-    if (player.hasTag('separatorFormatting:l')) { separatorFormatting+="§l"};
-    if (player.hasTag('separatorFormatting:k')) { separatorFormatting+="§k"};
-    if (player.hasTag('separatorColor:0')) { separatorFormatting+="§0"} else {
-    if (player.hasTag('separatorColor:1')) { separatorFormatting+="§1"} else {
-    if (player.hasTag('separatorColor:2')) { separatorFormatting+="§2"} else {
-    if (player.hasTag('separatorColor:3')) { separatorFormatting+="§3"} else {
-    if (player.hasTag('separatorColor:4')) { separatorFormatting+="§4"} else {
-    if (player.hasTag('separatorColor:5')) { separatorFormatting+="§5"} else {
-    if (player.hasTag('separatorColor:6')) { separatorFormatting+="§6"} else {
-    if (player.hasTag('separatorColor:7')) { separatorFormatting+="§7"} else {
-    if (player.hasTag('separatorColor:8')) { separatorFormatting+="§8"} else {
-    if (player.hasTag('separatorColor:9')) { separatorFormatting+="§9"} else {
-    if (player.hasTag('separatorColor:a')) { separatorFormatting+="§a"} else {
-    if (player.hasTag('separatorColor:b')) { separatorFormatting+="§b"} else {
-    if (player.hasTag('separatorColor:c')) { separatorFormatting+="§c"} else {
-    if (player.hasTag('separatorColor:d')) { separatorFormatting+="§d"} else {
-    if (player.hasTag('separatorColor:e')) { separatorFormatting+="§e"} else {
-    if (player.hasTag('separatorColor:f')) { separatorFormatting+="§f"} else {
-    if (player.hasTag('separatorColor:g')) { separatorFormatting+="§g"} else {
-    if (player.hasTag('separatorColor:h')) { separatorFormatting+="§h"} else {
-    if (player.hasTag('separatorColor:i')) { separatorFormatting+="§i"} else {
-    if (player.hasTag('separatorColor:j')) { separatorFormatting+="§j"} else {
-    if (player.hasTag('separatorColor:m')) { separatorFormatting+="§m"} else {
-    if (player.hasTag('separatorColor:n')) { separatorFormatting+="§n"} else {
-    if (player.hasTag('separatorColor:p')) { separatorFormatting+="§p"} else {
-    if (player.hasTag('separatorColor:q')) { separatorFormatting+="§q"} else {
-    if (player.hasTag('separatorColor:s')) { separatorFormatting+="§s"} else {
-    if (player.hasTag('separatorColor:t')) { separatorFormatting+="§t"} else {
-    if (player.hasTag('separatorColor:u')) { separatorFormatting+="§u"};}}}}}}}}}}}}}}}}}}}}}}}}}}
-    player.getTags().filter(v=>v.startsWith("separatorColor:")).forEach(v=>{
-        if(patternColors.includes(v.slice(15).toLowerCase())){
-            separatorFormatting+=patternColorsMap[v.slice(15).toLowerCase()]
-        }else if(Object.keys(patternFunctionList).includes(v.slice(15).toLowerCase())){
-            separatorGradientMode = v.slice(15).toLowerCase()
-        }else if(['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','m','n','p','q','s','t','u'].includes(v.slice(13).toLowerCase())){
-            undefined
-        }
-    })
-    player.getTags().filter(v=>v.startsWith("separatorFormatting:")).forEach(v=>{
-        if(['r','o','l','k'].includes(v.slice(20).toLowerCase())){
-            undefined
-        }else{
-            separatorFormatting+=v.slice(20).toLowerCase()
-        }
-    })
-    if (player.hasTag('config:dimension')) { showDimension=true};
-    if (player.hasTag('config:chatdimension')) { showDimension=true};
-    if(messageFormatting==""){messageFormatting=String(player.getDynamicProperty("andexdbPersonalSettings:defaultMessageFormatting") ?? world.getDynamicProperty("andexdbSettings:defaultMessageFormatting") ?? "")}
-    if(nameFormatting==""){nameFormatting=String(player.getDynamicProperty("andexdbPersonalSettings:defaultNameFormatting") ?? world.getDynamicProperty("andexdbSettings:defaultNameFormatting") ?? "")}
-    if(separatorFormatting==""){separatorFormatting=String(player.getDynamicProperty("andexdbPersonalSettings:defaultSeparatorFormatting") ?? world.getDynamicProperty("andexdbSettings:defaultSeparatorFormatting") ?? "")}
-    let rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-        .map(t=>String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "[")+
-        t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + 
-        String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "]"))
-        .join(String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "));
-    let name = !!player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))?
-        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + 
-        (!!nameGradientMode?
-            evaluateChatColorType(
-                player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
-                .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length), nameGradientMode
-            ):
-            player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
-            .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length)
-        ) + 
-        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"):
-        player.hasTag("chatHideNameTag")?"":
-        player.hasTag("chatUseNameTag")?String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + 
-        (!!nameGradientMode?evaluateChatColorType(player.nameTag, nameGradientMode):player.nameTag) + 
-        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"):
-        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + 
-        (!!nameGradientMode?evaluateChatColorType(player.name, nameGradientMode):player.name) + 
-        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>")
-    let nameb = !!player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))?
-        (!!nameGradientMode?
-            evaluateChatColorType(
-                player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
-                .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length), nameGradientMode
-            ):
-            player.getTags().find(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
-            .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length)
-        ):
-        player.hasTag("chatHideNameTag")?"":
-        player.hasTag("chatUseNameTag")?(!!nameGradientMode?evaluateChatColorType(player.nameTag, nameGradientMode):player.nameTag):
-        (!!nameGradientMode?evaluateChatColorType(player.name, nameGradientMode):player.name)
-    name.length!=0?name+=String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "):undefined/*
-    let rankMode = 0
-    for (let index in player.getTags()) {
-            if (player.getTags()[Number(index)].startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"))) { rank = (rank + String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "[") + player.getTags()[Number(index)].slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "]")) }
-            if (player.getTags()[Number(index)] == ("chatHideNameTag")) { name = ""; rankMode = 1 } else {
-            if (player.getTags()[Number(index)].startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")) && rankMode !== 1) { name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + player.getTags()[Number(index)].slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length) + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "); rankMode = 2 } else {
-            if (player.getTags()[Number(index)] == ("chatUseNameTag") && rankMode !== 1 && rankMode !== 2) { name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<") + player.nameTag + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? ">") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "); rankMode = 3 } } }
-    }*/
-    try{eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendBeforeModifiedMessageEval")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendBeforeEventDebugErrors")){currentplayer.sendMessage((e + " " + e.stack))}})}
-    eventData.cancel = true;
-    //╙
-    if (player.hasTag("doNotSendChatMessages")) { return; } else {
-    world.getAllPlayers().forEach(p=>{
-        let messageTimeStampEnabled = (player.hasTag("chatDisplayTimeStamp")||p.hasTag("chatDisplayTimeStamps")||((world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false)&&!player.hasTag("hideChatDisplayTimeStamp")&&!p.hasTag("hideChatDisplayTimeStamps")))
-        let timestampenabled = messageTimeStampEnabled
-        let timestamp = messageTimeStampEnabled?formatTime(new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000))):""
-        let dimension = dimensionTypeDisplayFormattingE[player.dimension.id]
-        let namec = name
-        let message = (world.getDynamicProperty("autoEscapeChatMessages") == true)?newMessage.escapeCharacters(true):newMessage
-        if(!!messageGradientMode){
-            message=evaluateChatColorType(message, messageGradientMode)
-        }
-        let messageOutput = ""
-        if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="custom_simple"){
-            if(rank==""){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
-            messageOutput = (showDimension?"["+dimension+"]"+String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "):"") + (timestampenabled?"["+timestamp+"]"+String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "):"") + rank + nameFormatting + name + messageFormatting + message
-        }else if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="custom_advanced"){rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-            .map((t, index, array)=>{let rank = t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length); let tags = player.getTags(); return eval(`\`${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]")}\``)/*Function("rank, tags", `return ${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]")}`)(rank, player.getTags())*/}).join(String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
-            if(rank==""){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
-            const ranks = rank
-            let name = nameb
-            messageOutput=eval(`\`${String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ?? "§r§f${showDimension?`[${dimension}] `:\"\"}${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r§f${(ranks!=\"\")?\" \":\"\"}<${name}§r§f> ${message}")}\``)
-        }else if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="style_1"){
-            rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-            .map(t=>"[§r§f"+t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length)+"§r§f]").join(" ");
-            if(rank==""){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
-            messageOutput=`§r§f${showDimension?`[${dimension}] `:""}${timestamp!=""?`[${timestamp}] `:""}${rank!=""?`${rank}§r§f `:""}${name!=""?`<${nameFormatting}${nameb}§r§f> `:""}${messageFormatting}${message}`
-        }else if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="style_2"){
-            rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-            .map(t=>"[§r§f"+t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length)+"§r§8]").join(" ");
-            if(rank==""){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
-            messageOutput=`§r§8${showDimension?`[${dimension}] `:""}${timestamp!=""?`[${timestamp}] `:""}${rank!=""?`${rank}§r `:""}${name!=""?`§r§f${nameFormatting}${nameb}§r§8 ${separatorFormatting}`:`§r§8${separatorFormatting}`}»§r §f${messageFormatting}${message}`
-        }else if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="style_3"){
-            rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-            .map(t=>"[§r§f"+t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length)+"§r§8]").join(" ");
-            if(rank==""){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
-            messageOutput=`§r§8${showDimension?`[${dimension}] `:""}${timestamp!=""?`[${timestamp}] `:""}${rank!=""?`${rank}§r§f `:""}§r§f${name!=""?`${nameFormatting}${nameb}§r§f ${separatorFormatting}`:`${separatorFormatting}`}>>§r §f${messageFormatting}${message}`
-        }else if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="style_4"){
-            rank = player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-            .map(t=>"[§r§f"+t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length)+"§r§7]").join(" ");
-            if(rank==""){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
-            messageOutput=`§r§7${showDimension?`[${dimension}] `:""}${timestamp!=""?`[${timestamp}]`:""}${rank!=""?` ${rank}`:""}§r§7${name!=""?` ${nameFormatting}${nameb}§r§7`:""}§l ${separatorFormatting}>§r§l §r§f${messageFormatting}${message}`
-        }else if(String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")=="style_5"){
-            rank = "[§r§f"+player.getTags().filter(t=>t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-            .map(t=>t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length)).join("§r§f,")+"§r§f]";
-            if(rank=="[§r§f§r§f]"){let tags = player.getTags(); rank=eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``)}
-            messageOutput=`§r§f${showDimension?`[${dimension}] `:""}s${timestamp!=""?`[${timestamp}] `:""}${rank!=""?`${rank}`:""}§r§7${name!=""?` ${nameFormatting}${nameb}§r§7`:""}${separatorFormatting}:§r §f${messageFormatting}${message}`
-        }
-        try{eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendBeforeModifiedMessageSend")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendBeforeEventDebugErrors")){currentplayer.sendMessage((e + " " + e.stack))}})}
-        if(world.getDynamicProperty("allowCustomChatMessagesMuting") != true){
-            p.sendMessage(messageOutput); 
-        }else{
-            p.runCommandAsync(`/tellraw @s ${JSON.stringify({"rawtext":[{"text":messageOutput}]})}`); 
-        }
-    })
-    }/*
-    if(messageTimeStampEnabled){
-        if (player.hasTag("doNotSendChatMessages")) { return; } else {
-            if(world.getDynamicProperty("allowCustomChatMessagesMuting") != true){
-                if(world.getDynamicProperty("autoEscapeChatMessages") != true){
-                    world.getAllPlayers().forEach(p=>p.sendMessage("["+new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString()+"]" + rank + name + messageFormatting + newMessage)); 
-                }else{
-                    world.getAllPlayers().forEach(p=>world.sendMessage({rawtext: [{text: String("["+new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString()+"]" + rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})); 
-                }
-            }else{
-                if(world.getDynamicProperty("autoEscapeChatMessages") != true){
-                    world.getAllPlayers().forEach(p=>p.runCommandAsync(`/tellraw @s ${JSON.stringify({"rawtext":[{"text":String("["+new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString()+"]" + rank + name + messageFormatting + newMessage)}]})}`)); 
-                }else{
-                    world.getAllPlayers().forEach(p=>p.runCommandAsync(`/tellraw @s ${JSON.stringify({"rawtext":[{"text":String("["+new Date(Date.now()+(Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleTimeString()+"]" + rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})}`)); 
-                }
-            }
-        }
-    }else{
-        if (player.hasTag("doNotSendChatMessages")) { return; } else {
-            if(world.getDynamicProperty("allowCustomChatMessagesMuting") != true){
-                if(world.getDynamicProperty("autoEscapeChatMessages") != true){
-                    world.sendMessage(rank + name + messageFormatting + newMessage); 
-                }else{
-                    world.sendMessage({rawtext: [{text: String(rank + name + messageFormatting + newMessage)}]}); 
-                }
-            }else{
-                if(world.getDynamicProperty("autoEscapeChatMessages") != true){
-                    world.getDimension("overworld").runCommandAsync(`/tellraw @a ${JSON.stringify({"rawtext":[{"text":String(rank + name + messageFormatting + newMessage)}]})}`); 
-                }else{
-                    world.getDimension("overworld").runCommandAsync(`/tellraw @a ${JSON.stringify({"rawtext":[{"text":String(rank + name + messageFormatting + newMessage.escapeCharacters(true))}]})}`); 
-                }
-            }
-        }
-    }*/
-}
 export function evaluateSelectors(selector: string, options?: {source?: Block|Entity|Player, rotation?: Vector2, viewDirection?: Vector3, location?: Vector3|DimensionLocation, dimension?: Dimension, indirect?: number|boolean, asDimension?: number|boolean, asWorld?: number|boolean, inAllDimensions?: number|boolean, enableJ?: boolean, enableI?: boolean}){
     if(!!selector.trimStart().replaceAll("\\", "").match(/^(@[aeprs]\s*\[|@[aeprs]\s+)/)){
         return (!!options)?!!options?.source?!(options.source instanceof Block)?targetSelectorAllListC(selector, "", (options.location??options.source.location).x+" "+(options.location??options.source.location).y+" "+(options.location??options.source.location).z, options.source):targetSelectorAllListD(selector, (options.location??options.source.location).x+" "+(options.location??options.source.location).y+" "+(options.location??options.source.location).z, options.dimension??(options.location as DimensionLocation)?.dimension):(!!options.dimension??(options.location as DimensionLocation)?.dimension)?targetSelectorAllListE(selector, ((options.location??{x: 0, y: 0, z: 0}).x+" "+(options.location??{x: 0, y: 0, z: 0}).y+" "+(options.location??{x: 0, y: 0, z: 0}).z)):targetSelectorAllListD(selector, ((options.location??{x: 0, y: 0, z: 0}).x+" "+(options.location??{x: 0, y: 0, z: 0}).y+" "+(options.location??{x: 0, y: 0, z: 0}).z), options.dimension??(options.location as DimensionLocation)?.dimension):targetSelectorAllListE(selector, "0 0 0")
