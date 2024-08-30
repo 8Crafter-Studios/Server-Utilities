@@ -1,11 +1,13 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, type BlockComponentTypeMap } from "@minecraft/server";
-import { targetSelectorB, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListE, targetSelector, getTopSolidBlock, arrayModifier, arrayToElementList, getAIIDClasses, getArrayElementProperty, debugAction, generateAIID, targetSelectorAllListD, toBase, fromBaseToBase, interactable_block, interactable_blockb, combineObjects, customFormUIElement, getCUIDClasses, strToCustomFormUIElement, generateCUID, fixedPositionNumberObject/*,format_version*/, getUICustomForm, generateTUID, JSONParse, JSONStringify, roundPlaceNumberObject, worldPlayers, timeZones, getParametersFromString, arrayModifierOld, customModulo, escapeRegExp, extractJSONStrings, getParametersFromExtractedJSON, jsonFromString, JSONParseOld, JSONStringifyOld, arrayify, objectify, stringify, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, asend, bsend, csend, shootEntity, shootEntityB, shootProjectile, shootProjectileB, splitTextByMaxProperyLength, catchtry, cerror, cinfo, clog, cwarn, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, psend, pasend, pbsend, pcsend, tryget, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, tryrun, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, perror, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, formatTime, SemVerString } from "../Main";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, type BlockComponentTypeMap, EntityType, EntityProjectileComponent } from "@minecraft/server";
+import { getTopSolidBlock, arrayToElementList, debugAction, interactable_block, interactable_blockb, customFormUIElement, strToCustomFormUIElement/*,format_version*/, getUICustomForm, worldPlayers, timeZones, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, SemVerString, crashEnabled, SemVerMatcher, SemVerValidator, dimensions, dimensionsb, dimensionsc, dimensionsd, dimensionse, fillBlocksHHFGB, fillBlocksHISGGB, fillBlocksHOFGB, fillBlocksHSGGB, flatPath, getGroundSolidBlock, getNextTopSolidBlockAbovePosition, getNextTopSolidBlockBelowPosition, getPathInObject, nether, overworld, scanForBlockType, subscribedEvents, tempSavedVariables, the_end, v3Multiply, fillBlocksE, fillBlocksF } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
+import { cmdutilsmetaimport,targetSelector,targetSelectorAllListB,targetSelectorAllListC,targetSelectorAllListD,targetSelectorAllListE,targetSelectorB } from "./command_utilities";
+import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
@@ -27,7 +29,8 @@ import *  as utils from "./utilities";
 import *  as errors from "./errors";
 import mcMath from "@minecraft/math.js";
 import { uiManager, UIManager } from "@minecraft/server-ui";
-export const cmdutilsmetaimport = import.meta
+import type { executeCommandPlayerW } from "./commands";
+export const utilsmetaimport = import.meta
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer
 mcServerUi/*
@@ -88,6 +91,18 @@ if (radix == 1) return keys[0].repeat(num)
   if (isNegative) output.unshift('-')
   return output.join("");
 } 
+export function fixedPositionNumberObject(object: Object, decimals: number = Number(world.getDynamicProperty("scriptPrecision") ?? 5)) { 
+    let newObject: [string, any][]
+    newObject = []
+    Object.entries(object).forEach((k, i)=>{if(typeof(k[1]) == "number"){newObject.push([k[0], k[1].toFixed(decimals)])}else{newObject.push(k)}})
+    return Object.fromEntries(newObject)
+}
+export function roundPlaceNumberObject(object: Object, place: number = Number(world.getDynamicProperty("scriptPrecision") ?? 5)) { 
+    let newObject: [string, any][]
+    newObject = []
+    Object.entries(object).forEach((k, i)=>{if(typeof(k[1]) == "number"){newObject.push([k[0], Number(k[1].toFixed(place))])}else{newObject.push(k)}})
+    return Object.fromEntries(newObject)
+}
 /**
  * @deprecated
  */
@@ -236,29 +251,6 @@ export function JSONParse(JSONString: string, keepUndefined: boolean = true) {
     a = recursiveFind(a);
     return a;
 };
-
-export function objectify(object: Object|any[]){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=objectify(v[1])}else if(v[1] instanceof Object){entries[i][1]=objectify(v[1])}}); return Object.fromEntries(entries)}; 
-export function arrayify(object: Object|any[]){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=arrayify(v[1])}else if(v[1] instanceof Object){entries[i][1]=arrayify(v[1])}}); return entries}; 
-export function stringify(object: Object|any[], entriesmode: boolean|1|0 = 0, escapedarrayorobjecttag: boolean|1|0 = 0, objectifyinfinity: boolean|1|0 = 0, objectifynan: boolean|1|0 = 0, objectifyundefined: boolean|1|0 = 0, objectifynull: boolean|1|0 = 0, recursivemode: boolean|1|0 = 0){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1)}else if(v[1] instanceof Object){entries[i][1]=stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1)}else if(v[1] instanceof Function){entries[i][1]={escval: (v[1] as Function).toString()}}else if(v[1] == Infinity&&Boolean(objectifyinfinity)){entries[i][1]={escval: "Infinity"}}else if(v[1] == -Infinity&&Boolean(objectifyinfinity)){entries[i][1]={escval: "-Infinity"}}else if(Number.isNaN(v[1])&&Boolean(objectifynan)){entries[i][1]={escval: "NaN"}}else if(v[1] == undefined&&Boolean(objectifyundefined)){entries[i][1]={escval: "undefined"}}else if(v[1] == null&&Boolean(objectifynull)){entries[i][1]={escval: "null"}}}); return recursivemode?((Boolean(escapedarrayorobjecttag)&&(((object instanceof Array)&&!Boolean(entriesmode))||((object instanceof Object)&&Boolean(entriesmode))))?(Boolean(entriesmode)?{escobj: entries}:{escarray: Object.fromEntries(entries)}):(Boolean(entriesmode)?entries:Object.fromEntries(entries))):JSONStringify(Boolean(entriesmode)?entries:Object.fromEntries(entries), true)}; 
-
-export function cinfo(...data: any[]){console.info(data)}; 
-export function clog(...data: any[]){console.log(data)}; 
-export function cwarn(...data: any[]){console.warn(data)}; 
-export function cerror(...data: any[]){console.error(data)}; 
-export function send(message: string){world.sendMessage(message)}; 
-export function asend(value: any){world.sendMessage(String(value))}; 
-export function bsend(value: any){world.sendMessage(JSONStringify(value, true))}; 
-export function csend(value: any){world.sendMessage(JSON.stringify(value))}; 
-export function psend(player: Player|executeCommandPlayerW, value: string){player.sendMessage(value)}; 
-export function pasend(player: Player|executeCommandPlayerW, value: any){player.sendMessage(String(value))}; 
-export function pbsend(player: Player|executeCommandPlayerW, value: any){player.sendMessage(JSONStringify(value, true))}; 
-export function pcsend(player: Player|executeCommandPlayerW, value: any){player.sendMessage(JSON.stringify(value))}; 
-export function perror(player: Player|executeCommandPlayerW, error: Error, prefix: string = "§c"){player.sendMessage(prefix+error+" "+error.stack)}; 
-export function splitTextByMaxProperyLength(string: string){let length = string.length/32767; let substringlist: string[]; substringlist = []; for(let i = 0; i < Math.ceil(length); i++){substringlist.push(string.slice((i-1)*32767, i==Math.ceil(length)?string.length:i*32767))}; return substringlist}; 
-
-export function mainEval(x: string){return eval(x)}
-export function indirectMainEval(x: string){return eval?.(x)}
-export function mainRun(x: (...args)=>any, ...args){return x(...args)}
 export function JSONStringify(JSONObject: Object, keepUndefined: boolean = false, space?: string|number) {
     if(JSONObject==undefined){return keepUndefined?"undefined":""}
     return JSON.stringify(JSONObject, function(k, v) {
@@ -273,6 +265,42 @@ export function JSONStringify(JSONObject: Object, keepUndefined: boolean = false
         return v;
     }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
 };
+
+export function objectify(object: Object|any[]){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=objectify(v[1])}else if(v[1] instanceof Object){entries[i][1]=objectify(v[1])}}); return Object.fromEntries(entries)}; 
+export function arrayify(object: Object|any[]){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=arrayify(v[1])}else if(v[1] instanceof Object){entries[i][1]=arrayify(v[1])}}); return entries}; 
+export function stringify(object: Object|any[], entriesmode: boolean|1|0 = 0, escapedarrayorobjecttag: boolean|1|0 = 0, objectifyinfinity: boolean|1|0 = 0, objectifynan: boolean|1|0 = 0, objectifyundefined: boolean|1|0 = 0, objectifynull: boolean|1|0 = 0, recursivemode: boolean|1|0 = 0){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1)}else if(v[1] instanceof Object){entries[i][1]=stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1)}else if(v[1] instanceof Function){entries[i][1]={escval: (v[1] as Function).toString()}}else if(v[1] == Infinity&&Boolean(objectifyinfinity)){entries[i][1]={escval: "Infinity"}}else if(v[1] == -Infinity&&Boolean(objectifyinfinity)){entries[i][1]={escval: "-Infinity"}}else if(Number.isNaN(v[1])&&Boolean(objectifynan)){entries[i][1]={escval: "NaN"}}else if(v[1] == undefined&&Boolean(objectifyundefined)){entries[i][1]={escval: "undefined"}}else if(v[1] == null&&Boolean(objectifynull)){entries[i][1]={escval: "null"}}}); return recursivemode?((Boolean(escapedarrayorobjecttag)&&(((object instanceof Array)&&!Boolean(entriesmode))||((object instanceof Object)&&Boolean(entriesmode))))?(Boolean(entriesmode)?{escobj: entries}:{escarray: Object.fromEntries(entries)}):(Boolean(entriesmode)?entries:Object.fromEntries(entries))):JSONStringify(Boolean(entriesmode)?entries:Object.fromEntries(entries), true)}; 
+
+export function cullNull<T extends any[]>(array: T){return array.filter(v=>v!==null)}
+export function cullUndefined<T extends any[]>(array: T){return array.filter(v=>v!==undefined)}
+export function cullEmpty<T extends any[]>(array: T){return array.filter(v=>!!v)}
+export function shuffle<a>(array: a[]) {
+    var m = array.length, t, i;
+    while (m) {
+      i = Math.floor(Math.random() * m--);
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+    return array as a[]
+}
+
+export function tryget<T>(callbackfn: ()=>T){try{return callbackfn() as T}catch{}}
+export function tryrun(callbackfn: ()=>any){try{callbackfn()}catch{}}
+export function catchtry(trycallbackfn: ()=>any, catchcallbackfn: (e: Error)=>any = (e)=>console.error(e, e.stack), finallycallbackfn: (v)=>any = (v)=>{return v}){let v: any; v = undefined; try{v = trycallbackfn()}catch(e){v = catchcallbackfn(e)??v}finally{return finallycallbackfn(v)??v}}; 
+export function cinfo(...data: any[]){console.info(data)}; 
+export function clog(...data: any[]){console.log(data)}; 
+export function cwarn(...data: any[]){console.warn(data)}; 
+export function cerror(...data: any[]){console.error(data)}; 
+export function send(message: string){world.sendMessage(message)}; 
+export function asend(value: any){world.sendMessage(String(value))}; 
+export function bsend(value: any){world.sendMessage(JSONStringify(value, true))}; 
+export function csend(value: any){world.sendMessage(JSON.stringify(value))}; 
+export function psend(player: Player|executeCommandPlayerW, value: string){player.sendMessage(value)}; 
+export function pasend(player: Player|executeCommandPlayerW, value: any){player.sendMessage(String(value))}; 
+export function pbsend(player: Player|executeCommandPlayerW, value: any){player.sendMessage(JSONStringify(value, true))}; 
+export function pcsend(player: Player|executeCommandPlayerW, value: any){player.sendMessage(JSON.stringify(value))}; 
+export function perror(player: Player|executeCommandPlayerW, error: Error, prefix: string = "§c"){player.sendMessage(prefix+error+" "+error.stack)}; 
+export function splitTextByMaxProperyLength(string: string){let length = string.length/32767; let substringlist: string[]; substringlist = []; for(let i = 0; i < Math.ceil(length); i++){substringlist.push(string.slice((i-1)*32767, i==Math.ceil(length)?string.length:i*32767))}; return substringlist}; 
 
 export function getParametersFromString(string: string) {
     function arrayModifier<T>(sourcearray: T[], callbackfn: (value: T, index: number, array: T[])=>any, overwrite: boolean = false){
@@ -508,3 +536,8 @@ export function jsonFromString(str: string, useBetterJSONParse: boolean = true) 
     else
     return matches.map((m) => JSON.parse(m));
 }
+
+export function shootProjectile(entityType: string|EntityType, location: DimensionLocation, velocity: Vector3, shootOptions: mcServer.ProjectileShootOptions = {}, setProjectileComponentPropertiesCallbackFn: (EntityProjectileComponent: EntityProjectileComponent)=>any = (a)=>{}){let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try{setProjectileComponentPropertiesCallbackFn(entityProjectileComponent)}catch(e){console.error(e, e.stack)}; entityProjectileComponent?.shoot(velocity, shootOptions)}; 
+export function shootEntity(entityType: string|EntityType, location: DimensionLocation, velocity: Vector3, setProjectileComponentPropertiesCallbackFn: (entity: Entity)=>any = (a)=>{}){let entity = location.dimension.spawnEntity(String(entityType), location); try{setProjectileComponentPropertiesCallbackFn(entity)}catch(e){console.error(e, e.stack)}; entity.applyImpulse(velocity)}; 
+export function shootProjectileB(entityType: string|EntityType, location: DimensionLocation, rotation: Vector2, power: number, shootOptions: mcServer.ProjectileShootOptions = {}, setProjectileComponentPropertiesCallbackFn: (entityProjectileComponent: EntityProjectileComponent)=>any = (a)=>{}){let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try{setProjectileComponentPropertiesCallbackFn(entityProjectileComponent)}catch(e){console.error(e, e.stack)}; entityProjectileComponent?.shoot(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation), shootOptions)}; 
+export function shootEntityB(entityType: string|EntityType, location: DimensionLocation, rotation: Vector2, power: number, setProjectileComponentPropertiesCallbackFn: (entity: Entity)=>any = (a)=>{}){let entity = location.dimension.spawnEntity(String(entityType), location); try{setProjectileComponentPropertiesCallbackFn(entity)}catch(e){console.error(e, e.stack)}; entity.applyImpulse(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation))}; 

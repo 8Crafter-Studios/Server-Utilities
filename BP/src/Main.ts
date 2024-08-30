@@ -46,6 +46,12 @@ import "Main/ban.js";
 import "Main/ui.js";
 import "Main/player_save.js";
 import "Main/spawn_protection.js";
+import "Main/chat";
+import "Main/command_utilities";
+import "Main/commands_documentation";
+import "Main/commands_list";
+import "Main/errors";
+import "Main/utilities";
 import "@minecraft/math.js";
 export const mainmetaimport = import.meta
 export const subscribedEvents = {} as {[eventName: string]: Function}
@@ -54,7 +60,7 @@ import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, Minec
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector, dirmap, diroffsetmap, diroffsetothersmap, generateMinecraftConeBG } from "Main/coordinates";
-import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput, BlockPattern, dimensions, testBlockForMatch, overworld, executeCommandPlayerW, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, nether, the_end, dimensionsb } from "Main/commands";
+import { commands_format_version, chatCommands, evaluateParameters, evaluateParametersOld, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, BlockPattern, testBlockForMatch, executeCommandPlayerW } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
@@ -77,6 +83,9 @@ import *  as spawnprot from "Main/spawn_protection";
 import mcMath from "@minecraft/math.js";/*
 import { disableWatchdog } from "@minecraft/debug-utilities";*/
 import { listoftransformrecipes } from "transformrecipes";
+import { chatMessage, patternColors, patternColorsMap, patternFunctionList, evaluateChatColorType, chatSend } from "Main/chat";
+import { targetSelectorAllListE, targetSelectorB, targetSelectorAllListC, clearContainer } from "Main/command_utilities";
+import { tryget, customModulo, psend, JSONStringify } from "Main/utilities";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -98,6 +107,9 @@ mcMath
 globalThis.scriptStartTick=system.currentTick
 export let crashEnabled = false
 export let tempSavedVariables = []
+export function mainEval(x: string){return eval(x)}
+export function indirectMainEval(x: string){return eval?.(x)}
+export function mainRun(x: (...args)=>any, ...args){return x(...args)}
 
 export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]/*
 disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
@@ -350,24 +362,12 @@ export function flatPath(directoryObject: {[k: string]: any}, startingPath: stri
     function flatPathObject(o: {[k: string]: any}, currentPath: string[] = ["input"]): {path: string[], name: string, index?: number, arrayindex?: number, objectindex?: number, [k: string]: any}[]{return [{path: currentPath, name: currentPath[currentPath.length-1]}, Object.entries(o).flatMap((v, i)=>v[1] instanceof Array?flatPathArray(v[1], [...currentPath, v[0]])[0]:typeof v[1] == "object"?(v[1] as any)?.notPathable==true?{path:[...currentPath, v[0]], name: v[0], index: i, objectindex: i, notPathable: true}:flatPathObject(v[1], [...currentPath, v[0]]):{path: [...currentPath, v[0]], name: v[0], index: i, objectindex: i})] as {path: string[], name: string, index?: number, arrayindex?: number, objectindex?: number, [k: string]: any}[]}
     return flatPathObject(directoryObject, startingPath)
 }
-export function getPathInObject(directoryObject: {[k: string]: any}|any[], path: string[] = ["input"]){let a: any; a = directoryObject; path.slice(1).forEach(v=>a = a[v]); return a}
-export function fixedPositionNumberObject(object: Object, decimals: number = Number(world.getDynamicProperty("scriptPrecision") ?? 5)) { 
-    let newObject: [string, any][]
-    newObject = []
-    Object.entries(object).forEach((k, i)=>{if(typeof(k[1]) == "number"){newObject.push([k[0], k[1].toFixed(decimals)])}else{newObject.push(k)}})
-    return Object.fromEntries(newObject)
-}
-export function roundPlaceNumberObject(object: Object, place: number = Number(world.getDynamicProperty("scriptPrecision") ?? 5)) { 
-    let newObject: [string, any][]
-    newObject = []
-    Object.entries(object).forEach((k, i)=>{if(typeof(k[1]) == "number"){newObject.push([k[0], Number(k[1].toFixed(place))])}else{newObject.push(k)}})
-    return Object.fromEntries(newObject)
-}/*
+export function getPathInObject(directoryObject: {[k: string]: any}|any[], path: string[] = ["input"]){let a: any; a = directoryObject; path.slice(1).forEach(v=>a = a[v]); return a}/*
 /execute as @e [type=andexsa:custom_arrow] at @s run /scriptevent andexdb:scriptEval let sl = sourceEntity.location; let ol = sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2", "npc", "armor_stand"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location; let d = {x: ol.x-sl.x, y: ol.y-sl.y, z: ol.z-sl.z}; eval("if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.x)*Number(d.x!=0)*d.x, y: Math.abs(1/d.x)*Number(d.y!=0)*d.y, z: Math.abs(1/d.x)*Number(d.z!=0)*d.z})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.y)*Number(d.x!=0)*d.x, y: Math.abs(1/d.y)*Number(d.y!=0)*d.y, z: Math.abs(1/d.y)*Number(d.z!=0)*d.z})}else{sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.z)*Number(d.x!=0)*d.x, y: Math.abs(1/d.z)*Number(d.y!=0)*d.y, z: Math.abs(1/d.z)*Number(d.z!=0)*d.z})}}}; ");*//*
 import("Main").then(a=>{Object.entries(a)})*/
 export function scanForBlockType(from: Vector3, to: Vector3, dimension: Dimension, block: string, returnMode?: ""|"Vector3"|"Block"){let blockType = BlockTypes.get(block).id; if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>dimension.getBlock(v).typeId==blockType)}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>v.typeId==blockType)}}; 
 export function scanForContainerBlocks(from: Vector3, to: Vector3, dimension: Dimension, returnMode?: ""|"Vector3"|"Block"){if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>!!dimension.getBlock(v).getComponent("inventory"))}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>!!v.getComponent("inventory"))}}; 
-export function clearAllContainerBlocks(blocks: Block[]){blocks.forEach(v=>cmds.clearContainer(v.getComponent("inventory").container)); return blocks}; 
+export function clearAllContainerBlocks(blocks: Block[]){blocks.forEach(v=>clearContainer(v.getComponent("inventory").container)); return blocks}; 
 /**
  * @deprecated
  */
@@ -2977,27 +2977,17 @@ export function fillBlocksD(from: Vector3, to: Vector3, dimension: Dimension, bl
  * @deprecated
  */
 export async function fillBlocksE(from: Vector3, to: Vector3, dimension: Dimension, block: string = "air", blockStates?: Record<string, string | number | boolean>, matchingBlock?: string, matchingBlockStates?: Record<string, string | number | boolean>, overrideAllBlockStates: boolean = false){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))}); subArray.forEach(v=>{Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))}); let counter = 0; mainArray.forEach(v=>system.run(()=>counter+=fillBlocksC(v.from, v.to, dimension, block, blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates))); return counter}; 
-export function catchtry(trycallbackfn: ()=>any, catchcallbackfn: (e: Error)=>any = (e)=>console.error(e, e.stack), finallycallbackfn: (v)=>any = (v)=>{return v}){let v: any; v = undefined; try{v = trycallbackfn()}catch(e){v = catchcallbackfn(e)??v}finally{return finallycallbackfn(v)??v}}; 
 export function gwdp(propertyId: string){return world.getDynamicProperty(propertyId)}; 
 export function swdp(propertyId: string, newValue?: string|number|boolean|undefined){return world.setDynamicProperty(propertyId, newValue)}; 
 export function gedp(entity: Entity|Player, propertyId: string){return entity.getDynamicProperty(propertyId)}; 
 export function sedp(entity: Entity|Player, propertyId: string, newValue?: string|number|boolean|undefined){return entity.setDynamicProperty(propertyId, newValue)}; 
 export function gidp(item: ItemStack|ContainerSlot, propertyId: string){return item.getDynamicProperty(propertyId)}; 
-export function sidp(item: ItemStack|ContainerSlot, entity: Entity|Player, propertyId: string, newValue?: string|number|boolean|undefined){return item.setDynamicProperty(propertyId, newValue)}; 
-export function shootProjectile(entityType: string|EntityType, location: DimensionLocation, velocity: Vector3, shootOptions: mcServer.ProjectileShootOptions = {}, setProjectileComponentPropertiesCallbackFn: (EntityProjectileComponent: EntityProjectileComponent)=>any = (a)=>{}){let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try{setProjectileComponentPropertiesCallbackFn(entityProjectileComponent)}catch(e){console.error(e, e.stack)}; entityProjectileComponent?.shoot(velocity, shootOptions)}; 
-export function shootEntity(entityType: string|EntityType, location: DimensionLocation, velocity: Vector3, setProjectileComponentPropertiesCallbackFn: (entity: Entity)=>any = (a)=>{}){let entity = location.dimension.spawnEntity(String(entityType), location); try{setProjectileComponentPropertiesCallbackFn(entity)}catch(e){console.error(e, e.stack)}; entity.applyImpulse(velocity)}; 
-export function shootProjectileB(entityType: string|EntityType, location: DimensionLocation, rotation: Vector2, power: number, shootOptions: mcServer.ProjectileShootOptions = {}, setProjectileComponentPropertiesCallbackFn: (entityProjectileComponent: EntityProjectileComponent)=>any = (a)=>{}){let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try{setProjectileComponentPropertiesCallbackFn(entityProjectileComponent)}catch(e){console.error(e, e.stack)}; entityProjectileComponent?.shoot(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation), shootOptions)}; 
-export function shootEntityB(entityType: string|EntityType, location: DimensionLocation, rotation: Vector2, power: number, setProjectileComponentPropertiesCallbackFn: (entity: Entity)=>any = (a)=>{}){let entity = location.dimension.spawnEntity(String(entityType), location); try{setProjectileComponentPropertiesCallbackFn(entity)}catch(e){console.error(e, e.stack)}; entity.applyImpulse(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation))}; 
-export function targetSelector(selector: string, filters: string, UUID: number){let scoreboardUUID = Math.round((Math.random()*100+50)); world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score)=>(score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return Number((selectedEntityUUIDValue))}
-export function targetSelectorB(selector: string, filters: string, UUID: number){let scoreboardUUID = Math.round((Math.random()*100+50)); world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score)=>(score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return world.getDimension(DimensionTypes.getAll().find((dimension)=>(world.getDimension(dimension.typeId).getEntities().find((entity)=>(entity.id == selectedEntityUUIDValue)))).typeId).getEntities().find((entity)=>(entity.id == selectedEntityUUIDValue))}/*
+export function sidp(item: ItemStack|ContainerSlot, entity: Entity|Player, propertyId: string, newValue?: string|number|boolean|undefined){return item.setDynamicProperty(propertyId, newValue)}; /*
 let a = world.getDimension("the_end").getBlock({x: 0, y: 0, z: 0}).permutation
 let c = a as BlockStates
 c*/
 /*convertToCompoundBlockVolume(String(world.getDynamicProperty("noPistonExtensionAreas")))*//*
 let b = a[Number(world.getAllPlayers()[0].getDynamicProperty("debugStickPropertyIndex"))]*/
-export function cullNull<T extends any[]>(array: T){return array.filter(v=>v!==null)}
-export function cullUndefined<T extends any[]>(array: T){return array.filter(v=>v!==undefined)}
-export function cullEmpty<T extends any[]>(array: T){return array.filter(v=>!!v)}
 export class interactable_blockb{id: string = ""; delay: number = 0; holdDuration?: number = 0}; 
 export let interactable_block: interactable_blockb[]
 interactable_block = []
@@ -3020,10 +3010,6 @@ export function getUICustomForm(optionsids: string, codeids: string){
     f.forEach((felement, i)=>{f[i] = felement.split("|").slice(1).join("|"); eb[i] = felement.split("|").slice(1).join("|"); }); let fb = f.join(""); return {optionPropertyIds: c, optionPropertyValues: cb, optionElements: d, codeIds: e, codeValues: eb, code: fb}}; /*
     world.getAllPlayers().forEach((pi, ia)=>{console.warn(pi.getComponent("inventory").inventorySize); for(let i = 0; i<pi.getComponent("inventory").inventorySize; i++){let item = pi.getComponent("inventory").container.getSlot(i); console.warn(i); if(item.typeId == "minecraft:skull"){world.getAllPlayers().forEach((pn)=>{if(item.nameTag == `§r§f${pn.name}'s Head§§`){item.setLore([`§r§aLocation: ${JSON.stringify(pn.location)}`, `Velocity: ${JSON.stringify(pn.getVelocity())}`, `Rotation: ${JSON.stringify(pn.getRotation())}`, `View Direction: ${JSON.stringify(pn.getViewDirection())}`, `Sleeping: ${pn.isSleeping}`, `Sneaking: ${pn.isSneaking}`, `Sprinting: ${pn.isSprinting}`, `Swimming: ${pn.isSwimming}`])}})}}})
     world.getAllPlayers().forEach((pi, ia)=>{console.warn(pi.getComponent("inventory").inventorySize); for(let i = 0; i<pi.getComponent("inventory").inventorySize; i++){let item = pi.getComponent("inventory").container.getSlot(i); console.warn(i); }})*/
-export function targetSelectorAllListB(selector: string, filters: string, UUID: number){let scoreboardUUID = Math.round((Math.random()*1000+500)); world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntity: Entity[]; for(let i in world.scoreboard.getObjective("andexdbDebug").getScores()){selectedEntity.push((world.scoreboard.getObjective("andexdbDebug").getScores().filter((score)=>(score.score == scoreboardUUID)))[i].participant.getEntity()); }world.getAllPlayers().find((currentlySelectedPlayerEntity)=>(Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return selectedEntity}
-export function targetSelectorAllListC(selector: string, filters: string, position: string, sourceEntityCommandExecution?: Entity|Player){let scoreboardUUID = Math.round((Math.random()*1000+500)); if(sourceEntityCommandExecution == undefined){world.getAllPlayers()[0].runCommand("/execute positioned " + position + " as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); }else{sourceEntityCommandExecution.runCommand("/execute positioned " + position + " as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); }let selectedEntity: Entity[]; selectedEntity = []; for(let i in world.scoreboard.getObjective("andexdbDebug").getScores()){try{selectedEntity.push((world.scoreboard.getObjective("andexdbDebug").getScores().filter((score)=>(score.score == scoreboardUUID)))[i].participant.getEntity()); }catch(e){}}if (sourceEntityCommandExecution == undefined){world.getAllPlayers()[0].runCommand("/execute positioned " + position + " as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); }else{sourceEntityCommandExecution.runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); }return selectedEntity}
-export function targetSelectorAllListD(selector: string, position: string, dimension: Dimension = world.getDimension("overworld")){let scoreboardUUID = Math.round((Math.random()*1000+500)); dimension.runCommand("/execute positioned " + position + " as " + selector + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntity: Entity[]; selectedEntity = []; for(let i in world.scoreboard.getObjective("andexdbDebug").getScores()){try{selectedEntity.push((world.scoreboard.getObjective("andexdbDebug").getScores().filter((score)=>(score.score == scoreboardUUID)))[i].participant.getEntity()); }catch(e){}}; dimension.runCommand("/execute as " + selector + " at @s run /scoreboard players set @s andexdbDebug 0"); return selectedEntity; }
-export function targetSelectorAllListE(selector: string, position: string){let scoreboardUUID = Math.round((Math.random()*1000+500)); DimensionTypes.getAll().forEach((dt)=>{let dimension = world.getDimension(dt.typeId); dimension.runCommand("/execute positioned " + position + " as " + selector + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); }); let selectedEntity: Entity[]; selectedEntity = []; for(let i in world.scoreboard.getObjective("andexdbDebug").getScores()){try{selectedEntity.push((world.scoreboard.getObjective("andexdbDebug").getScores().filter((score)=>(score.score == scoreboardUUID)))[i].participant.getEntity()); }catch(e){}}; DimensionTypes.getAll().forEach((dt)=>{let dimension = world.getDimension(dt.typeId); dimension.runCommand("/execute as " + selector + " at @s run /scoreboard players set @s andexdbDebug 0"); }); return selectedEntity; }
 export function debugActionb(block: Block, player: Player, mode: number, direction?: number){
     if(player.getDynamicProperty("debugStickSelectedBlock") != block.typeId){
         player.setDynamicProperty("debugStickSelectedBlock", block.typeId); 
@@ -3457,13 +3443,19 @@ world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(event => {
           console.warn(event.dimension);*//*
       }
   });*///removed in minecraft 1.20.60 >:(
-    export const dimensionTypeDisplayFormatting = {"minecraft:overworld": "the overworld", "overworld": "the overworld", "minecraft:nether": "the nether", "nether": "the nether", "minecraft:the_end": "the end", "the_end": "the end"}
-    export const dimensionTypeDisplayFormattingB = {"minecraft:overworld": "overworld", "overworld": "overworld", "minecraft:nether": "nether", "nether": "nether", "minecraft:the_end": "the end", "the_end": "the end"}
-    export const dimensionTypeDisplayFormattingC = {"minecraft:overworld": "The Overworld", "overworld": "The Overworld", "minecraft:nether": "The Nether", "nether": "The Nether", "minecraft:the_end": "The End", "the_end": "The End"}
-    export const dimensionTypeDisplayFormattingD = {"minecraft:overworld": "Overworld", "overworld": "Overworld", "minecraft:nether": "Nether", "nether": "Nether", "minecraft:the_end": "The End", "the_end": "The End"}
-    export const dimensionTypeDisplayFormattingE = {"minecraft:overworld": "§aOverworld", "overworld": "§aOverworld", "minecraft:nether": "§cNether", "nether": "§cNether", "minecraft:the_end": "§dThe End", "the_end": "§dThe End"}
-    export function tryget<T>(callbackfn: ()=>T){try{return callbackfn() as T}catch{}}
-    export function tryrun(callbackfn: ()=>any){try{callbackfn()}catch{}}
+export const dimensionTypeDisplayFormatting = {"minecraft:overworld": "the overworld", "overworld": "the overworld", "minecraft:nether": "the nether", "nether": "the nether", "minecraft:the_end": "the end", "the_end": "the end"}
+export const dimensionTypeDisplayFormattingB = {"minecraft:overworld": "overworld", "overworld": "overworld", "minecraft:nether": "nether", "nether": "nether", "minecraft:the_end": "the end", "the_end": "the end"}
+export const dimensionTypeDisplayFormattingC = {"minecraft:overworld": "The Overworld", "overworld": "The Overworld", "minecraft:nether": "The Nether", "nether": "The Nether", "minecraft:the_end": "The End", "the_end": "The End"}
+export const dimensionTypeDisplayFormattingD = {"minecraft:overworld": "Overworld", "overworld": "Overworld", "minecraft:nether": "Nether", "nether": "Nether", "minecraft:the_end": "The End", "the_end": "The End"}
+export const dimensionTypeDisplayFormattingE = {"minecraft:overworld": "§aOverworld", "overworld": "§aOverworld", "minecraft:nether": "§cNether", "nether": "§cNether", "minecraft:the_end": "§dThe End", "the_end": "§dThe End"}
+export const dimensions = [world.getDimension("overworld"), world.getDimension("nether"), world.getDimension("the_end")]
+export const dimensionsb = {"minecraft:overworld": world.getDimension("overworld"), "minecraft:nether": world.getDimension("nether"), "minecraft:the_end": world.getDimension("the_end")}
+export const dimensionsc = {"overworld": world.getDimension("overworld"), "nether": world.getDimension("nether"), "the_end": world.getDimension("the_end")}
+export const dimensionsd = ["minecraft:overworld", "minecraft:nether", "minecraft:the_end"]
+export const dimensionse = ["overworld", "nether", "the_end"]
+export const overworld = world.getDimension("overworld")
+export const nether = world.getDimension("nether")
+export const the_end = world.getDimension("the_end")
 subscribedEvents.beforeEffectAdd = world.beforeEvents.effectAdd.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalBeforeEvents:effectAdd")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("effectAddBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
