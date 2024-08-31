@@ -26,6 +26,7 @@ import *  as spawnprot from "./spawn_protection";
 import *  as chat from "./chat";
 import *  as cmdutils from "./command_utilities";
 import *  as utils from "./utilities";
+import *  as errors from "./errors";
 import mcMath from "@minecraft/math.js";
 import { uiManager, UIManager } from "@minecraft/server-ui";
 import { chatCommands, command, idGenerator } from "./commands";
@@ -47,6 +48,11 @@ bans
 uis
 playersave
 spawnprot
+transformrecipes
+chat
+cmdutils
+utils
+errors
 mcMath
 export const currentlyRequestedChatInput = {} as {[playerId: string]: {anyInput: {[id: string]: {time: number, request?: string|RawMessage|(string|RawMessage)[], input?: string, id?: string}}, conditionalInput: {[id: string]: {time: number, request?: string|RawMessage|(string|RawMessage)[], input?: string, id?: string, conditions: (player: Player, message: string, event: ChatSendBeforeEvent)=>boolean, expireTime: number, expireConditions?: (requestObject: {[k: string]: any})=>boolean}}}}
 export const patternList = {

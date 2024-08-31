@@ -26,6 +26,7 @@ import *  as spawnprot from "./spawn_protection";
 import *  as chat from "./chat";
 import *  as cmdutils from "./command_utilities";
 import *  as utils from "./utilities";
+import *  as errors from "./errors";
 import mcMath from "@minecraft/math.js";
 import { uiManager, UIManager } from "@minecraft/server-ui";
 import { getEntityById, getPlayer, type executeCommandPlayerW } from "./commands";

@@ -1,231 +1,231 @@
 import { Player, world, Entity } from "@minecraft/server";
 import { command, executeCommandPlayerW } from "./commands";
-
-export enum commanddescriptions {
-//"ban" = "Bans a player. ",
-"align" = "Centers you on the x and z axis on the block you are currently at. ",
-"aligncenter" = "Centers you on the x, y, and z axis on the block you are currently at. ",
-"binvsee" = "Displays the contents of the specified block's inventory. ",
-"chatcommandui" = "Opens up a menu where you can type a chat command to run with no character limits. ",
-"chatsendui" = "Opens up a menu where you can type a chat message to send with no character limits. ",
-"chunkinfo" = "Displays info about the current chunk. ",
-"clear" = "Clears a player's inventory. ",
-"clearenderchest" = "Clears a player's ender chest. ",
-"clearenderchestslot" = "Clears a slot of a player's ender chest. ",
-"cloneitem" = "Clones the item in your hand to the specified player's inventory. ",
-"cmdui" = "Opens up a menu where you can type a chat command to run with no character limits. ",
-"compressitems" = "Compresses your inventory into 2 chests and inserts those chests into your inventory. ",
-"compressitemsshulker" = "Compresses your inventory into 2 shulker boxes and inserts those shulker boxes into your inventory. ",
-"compressitemscontainer" = "Compresses your inventory into a specified container type and inserts those containers into your inventory. ",
-"copyitem" = "Copies the item in your hand to the specified slot of the specified player's inventory. ",
-"createexplosion" = "Creates an explosion. ",
-"datapickblock" = "Pick Blocks the block that your are looking at while copying the nbt data of the block as well, just like using the pick block button while holding CTRL on your keyboard. ",
-"defaulthealth" = "Sets the health of entities to their default health values. ",
-"drain" = "Drains liquids in the specified radius. ",
-"dupeitem" = "Duplicates teh item in your hand. ",
-"einvsee" = "Displays the contents of the specified entity's inventory. ",
-"einvseeb" = "The original version of the \\einvsee command that does not scan equipment slots. ",
-"ecinvsee" = "Scans a player's ender chest and displays the contents of it. ",
-"ecinvseec" = "Scans a player's ender chest and displays the contents of it. ",
-"enderchest" = "Spawns an ender chest where you are standing. ",
-"eval" = "Runs the specified JavaScript Script/ScriptAPI Code. ",
-"execute" = "Executes a command on behalf of one or more entities. ",
-"extinguish" = "Extinguishes fire in the specified radius. ",
-"fill" = "Fills all or parts of a reigon with a specific block, can use any block type including NBT Editor only ones. ",
-"fillillegal" = "Fills a player's inventory with illegal items. ",
-"fillinventory" = "Fills a player's inventory with items based on the provided itemJSON. ",
-"filljunk" = "Fills a player's inventory with junk items. ",
-"fillop" = "Fills a player's inventory with op items. ",
-"fillrandom" = "Fills a player's inventory with random items. ",
-"give" = "Gives you a specified amount of an item of a specified type. ",
-"giveb" = "Gives you an item stack with a specified type and stack size in your next empty inventory slot. ",
-"givec" = "Gives you an item stack based on the provided itemJSON in your next empty inventory slot. ",
-"getuuid" = "Gets the UUID of the specified entity. ",
-"gma" = "Sets your gamemode to adventure. ",
-"gmc" = "Sets your gamemode to creative. ",
-"gmd" = "Sets your gamemode to default. ",
-"gmp" = "Sets your gamemode to spectator. ",
-"gmr" = "Sets your gamemode to a random gamemode. ",
-"gms" = "Sets your gamemode to survival. ",
-"gohome" = "Warps to a home. ",
-"h#" = "Swaps your hotbar with the specified hotbar preset. ",
-"heal" = "Heals entities. ",
-"health" = "Modifies the health of entities. ",
-"home" = "Sets/Removes/Warps to a home. ",
-"hset" = "Sets a hotbar preset. ",
-"idtfill" = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. ",
-"ifill" = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ",
-"ifillb" = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ",
-"ifillc" = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ",
-"ifilld" = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ",
-"igfill" = "Fills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. ",
-"ignite" = "Ignites blocks in the specified radius. ",
-"invfillillegal" = "Fills a player's inventory with illegal items. ",
-"invfill" = "Fills a player's inventory with items based on the provided itemJSON. ",
-"invfilljunk" = "Fills a player's inventory with junk items. ",
-"invfillop" = "Fills a player's inventory with op items. ",
-"invfillrandom" = "Fills a player's inventory with random items. ",
-"invsee" = "Displays the contents of the specified player's inventory. ",
-"invseep" = "Displays the contents of the specified player's inventory, including the dynamic properties set on the items. ",
-"invseeuuidmode" = "Displays the contents of the inventory of the entity with the specified UUID. ",
-"invshuffle" = "Shuffles the inventory of the specified player",
-"invswap" = "Swaps the inventories of 2 players. ",
-"invswapb" = "Swaps the inventories of 2 players. ",
-"iogfill" = "Fills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. ",
-"item" = "Super advanced item modification command. ",
-"itfill" = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. ",
-"itfillc" = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. ",
-"kick" = "Kicks one or more players from the server. ",
-"listbans" = "Lists all bans. ",
-"listidbans" = "Lists all id bans. ",
-"listnamebans" = "Lists all name bans. ",
-"liststructures" = "Lists all saved structures. ",
-"mainmenu" = "Opens up the main menu. ",
-//"managebans" = "Opens up the manage bans menu. ",
-"managecommands" = "Opens up the commands editor menu. ",
-"manageplayers" = "Opens up the manage players menu. ",
-"managescriptautoeval" = "Opens up the Script Auto Eval settings menu. ",
-"maxhealth" = "Heals entities. ",
-"menu" = "Opens up the main menu. ",
-"messageui" = "Opens up a menu where you can type a chat message or command to send or run with no character limits. ",
-"minhealth" = "Sets the health of entities to their minimum health values. ",
-"mm" = "Opens up the main menu. ",
-"mngcmds" = "Opens up the commands editor menu. ",
-"mngplyrs" = "Opens up the manage players menu. ",
-//"money" = "Used for the money system [§r§1Indev§r]. ",
-//"notificationsettings" = "Opens up the notifications settings menu. ",
-//"notificationssettings" = "Opens up the notifications settings menu. ",
-"offlineinfo" = "Displays the saved player data of the specified player. ",
-"offlineuuidinfo" = "Displays the saved player data of the player with the specified UUID. ",
-"offlineinvsee" = "Displays the saved contents of the specified player's inventory. ",
-"offlineuuidinvsee" = "Displays the saved contents of the inventory of the player with the specified UUID. ",
-//"permaban" = "Permanently bans a player. ",
-"printlayers" = "Displays a list of all the blocks at your specified x and z coordinates. ",
-"rank" = "Manages ranks stored in players. ",
-"remexp" = "Removes explosive blocks in the specified radius. ",
-"replacenear" = "Replaces blocks of the specified type with another specified block type in the specified radius. ",
-"run" = "Runs the specified command. ",
-"scanenderchest" = "Scans a player's ender chest and displays the contents of it. ",
-"scanenderchestc" = "Scans a player's ender chest and displays the contents of it. ",
-"scnendchst" = "Scans a player's ender chest and displays the contents of it. ",
-"scnendchstc" = "Scans a player's ender chest and displays the contents of it. ",
-"selectioninfo" = "Displays info about the current selection. ",
-"selinfo" = "Displays info about the current selection. ",
-"seli" = "Displays info about the current selection. ",
-"sendui" = "Opens up a menu where you can type a chat message to send with no character limits. ",
-"setitem" = "Replaces the item stack in the specified inventory slot with an item stack with a specified type and stack size. ",
-"setitemb" = "Replaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. ",
-"settings" = "Opens up the settings menu. ",
-"shuffleinventory" = "Shuffles the inventory of the specified player. ",
-"structure" = "Manages structures. ",
-"summon" = "Summons entities. ",
-"swapinventories" = "Swaps the inventories of 2 players. ",
-"swapinventoriesb" = "Swaps the inventories of 2 players. ",
-"swapitems" = "Swaps an item in a slot of one player's inventory with another slot of another player's inventory. ",
-"takeitem" = "Steals an item from another player's inventory and puts it into yoru inventory. ",
-//"tempban" = "Temporarily bans a player. ",
-"terminal" = "Opens up the command runner/terminal menu. ",
-"timezone" = "Sets your timezone to the specific UTC offset in hours. ",
-"thru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at. ",
-"vthru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at, even if it would put you into the void. ",
-"top" = "Teleports on top of the highest solid block at your x and z coordinates. ",
-"tpa" = "Requests to teleport to the specified player. ",
-"tpaccept" = "Accepts a player's teleport request. ",
-"tpdeny" = "Denies a player's teleport request. ",
-"transferitem" = "Transfers the item in your hand to the specified player's inventory. ",
-"tz" = "Sets your timezone to the specific UTC offset in hours. ",
-//"unban" = "Unbans a player. ",
-"up" = "Teleports up the specified number of blocks and places glass below you if placeGlass is not set to false. ",
-"version" = "Displays the format version of the add-on. ",
-"warp" = "Warps to the specified global warp. ",
-"warplist" = "Lists all global warps. ",
-"warplistdetails" = "Lists all global warps with more details. ",
-"warplistrawdata" = "Lists the raw data of the global warps. ",
-"warpremove" = "Removes the specified global warp. ",
-"warpreset" = "Removes all global warps. ",
-"warpset" = "Sets a global warp. ",
-"w" = "Warps to the specified private warp. ",
-"wlist" = "Lists all private warps. ",
-"wlistdetails" = "Lists all private warps with more details. ",
-"wlistrawdata" = "Lists the raw data of the private warps. ",
-"wremove" = "Removes the specified private warp. ",
-"wreset" = "Removes all private warps. ",
-"wset" = "Sets a private warp. ",
-"chunkban" = "Fills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. ",
-"transformresultatdvindex" = "Displays what item a smithing table enchanted book combined with a enchantment transfer smithing template of the specified data value would turn in to. ",
-"gettransformst" = "Gives you an enchantment transfer smithing template with the data value needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. ",
-"findtransformdvindex" = "Displays the data value of enchantment transfer smithing template needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. ",
-"roie" = "Removes all enchantment types from an item except for the item types specified. ",
-"remotheritemenchants" = "Removes all enchantment types from an item except for the item types specified. ",
-"removeotheritemenchantments" = "Removes all enchantment types from an item except for the item types specified. ",
-"butcher" = "Kill all or nearby mobs. ",
-"butcherdespawn" = "Despawn all or nearby mobs. ",
-"brush" = "Sets the held item as the specified brush type or unbinds the brush from the held item. ",
-"snapshot" = "Manages backups and backup areas. ",
-"\\\\cut" = "Cuts the selected area to the clipboard. ",
-"\\\\copy" = "Copies the selected area to the clipboard. ",
-"\\\\paste" = "Pastes the clipboard to the selected area. ",
-"\\\\undo" = "Undoes the last action (from history). ",
-"\\\\pos1" = "Sets the pos1 location of the selected area for use in other worldedit commands. ",
-"\\\\pos2" = "Sets the pos2 location of the selected area for use in other worldedit commands. ",
-"\\\\protectarea" = "Sets the selected area as a protected area. ",
-"\\\\backuparea" = "Creates a new backup area convering the entire selected area. ",
-"\\\\hpos1" = "Sets the pos1 location of the selected area to the block that you are looking at for use in other worldedit commands. ",
-"\\\\hpos2" = "Sets the pos2 location of the selected area to the block that you are looking at for use in other worldedit commands. ",
-"\\\\chunk" = "Sets the pos1 and pos2 locations of the selected area to contain the entire chunk that you are currently in for use in other worldedit commands. ",
-"\\\\generate" = "Generates a 3d shape according to a formula in the selected area, in [-sr] the s modifier will prevent the math equation parser from replacing single equal signs with double equal signs and the r modifier will prevent that as well as any other modifications so that it is run as pure javascript, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\generatef" = "Generates a 3d shape according to a formula in the selected area, this one does not allow access to custom variables which will prevent being able to run scripts using this, this one is much more limited than \\\\generate so it is only reccommended if you are restricting the \\\\generate command from a player to prevent script execution, in [-sr] the s modifier will prevent the math equation parser from replacing single equal signs with double equal signs and the r modifier will prevent that as well as any other modifications so that it is run as pure javascript, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\generatejs" = "Generates a 3d shape according to the outputs of a JavaScript function in the selected area. ",
-"\\\\generatecallback" = "Executes the specified callback JavaScript function for each block in the selected area. ",
-"\\\\generates" = "Generates a 3d shape with the specified step according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\generate2d" = "Generates a 2d shape according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, cx: center relative x, cy: center relative y, cz: center relative z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\generates2d" = "Generates a 2d shape with the specified step according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, cx: center relative x, cy: center relative y, cz: center relative z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
-"\\\\stack" = "Stacks the specified number of copies of the step area on top of the selected area. ",
-"\\\\selectmode" = "Sets the selection mode for the item you are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. ",
-"\\\\replace" = "Replaces the blocks between the selected area with the selected block type. ",
-"\\\\walls" = "Replaces the walls of the selected area with the selected block type. ",
-"\\\\set" = "Sets the blocks between the selected area to the selected block type. ",
-"\\\\seti" = "Sets the blocks between the selected area to the selected block type with the specified integrity. ",
-"\\\\flood" = "Floods the blocks between the selected area. ",
-"\\\\remove" = "Remove the blocks in the selected area. ",
-"\\\\sphere" = "Generates a sphere in the selected area. ",
-"\\\\hsphere" = "Generates a hollow sphere in the selected area. ",
-"\\\\cone" = "Generates a cone in the selected area. ",
-"disconnect" = "Disconnects a player from the server. ",
-"morph" = "Morphs into the morph with the specified ID. ",
-"scale" = "Sets your scale value to the specified amount. ",
-"tint" = "Tints the specified player's skin the specified color, or makes it glow, and optionally adjusts the opacity of their skin. ",
-"tps" = "Displays the TPS. ",
-"visualscale" = "Sets your visual scale (the one that does not actually change your hitbox size) to the specified amount. ",
-"visualscaleenabled" = "Enables or diables your visual scaling. "
-}
+export var commanddescriptions;
+(function (commanddescriptions) {
+    //"ban" = "Bans a player. ",
+    commanddescriptions["align"] = "Centers you on the x and z axis on the block you are currently at. ";
+    commanddescriptions["aligncenter"] = "Centers you on the x, y, and z axis on the block you are currently at. ";
+    commanddescriptions["binvsee"] = "Displays the contents of the specified block's inventory. ";
+    commanddescriptions["chatcommandui"] = "Opens up a menu where you can type a chat command to run with no character limits. ";
+    commanddescriptions["chatsendui"] = "Opens up a menu where you can type a chat message to send with no character limits. ";
+    commanddescriptions["chunkinfo"] = "Displays info about the current chunk. ";
+    commanddescriptions["clear"] = "Clears a player's inventory. ";
+    commanddescriptions["clearenderchest"] = "Clears a player's ender chest. ";
+    commanddescriptions["clearenderchestslot"] = "Clears a slot of a player's ender chest. ";
+    commanddescriptions["cloneitem"] = "Clones the item in your hand to the specified player's inventory. ";
+    commanddescriptions["cmdui"] = "Opens up a menu where you can type a chat command to run with no character limits. ";
+    commanddescriptions["compressitems"] = "Compresses your inventory into 2 chests and inserts those chests into your inventory. ";
+    commanddescriptions["compressitemsshulker"] = "Compresses your inventory into 2 shulker boxes and inserts those shulker boxes into your inventory. ";
+    commanddescriptions["compressitemscontainer"] = "Compresses your inventory into a specified container type and inserts those containers into your inventory. ";
+    commanddescriptions["copyitem"] = "Copies the item in your hand to the specified slot of the specified player's inventory. ";
+    commanddescriptions["createexplosion"] = "Creates an explosion. ";
+    commanddescriptions["datapickblock"] = "Pick Blocks the block that your are looking at while copying the nbt data of the block as well, just like using the pick block button while holding CTRL on your keyboard. ";
+    commanddescriptions["defaulthealth"] = "Sets the health of entities to their default health values. ";
+    commanddescriptions["drain"] = "Drains liquids in the specified radius. ";
+    commanddescriptions["dupeitem"] = "Duplicates teh item in your hand. ";
+    commanddescriptions["einvsee"] = "Displays the contents of the specified entity's inventory. ";
+    commanddescriptions["einvseeb"] = "The original version of the \\einvsee command that does not scan equipment slots. ";
+    commanddescriptions["ecinvsee"] = "Scans a player's ender chest and displays the contents of it. ";
+    commanddescriptions["ecinvseec"] = "Scans a player's ender chest and displays the contents of it. ";
+    commanddescriptions["enderchest"] = "Spawns an ender chest where you are standing. ";
+    commanddescriptions["eval"] = "Runs the specified JavaScript Script/ScriptAPI Code. ";
+    commanddescriptions["execute"] = "Executes a command on behalf of one or more entities. ";
+    commanddescriptions["extinguish"] = "Extinguishes fire in the specified radius. ";
+    commanddescriptions["fill"] = "Fills all or parts of a reigon with a specific block, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["fillillegal"] = "Fills a player's inventory with illegal items. ";
+    commanddescriptions["fillinventory"] = "Fills a player's inventory with items based on the provided itemJSON. ";
+    commanddescriptions["filljunk"] = "Fills a player's inventory with junk items. ";
+    commanddescriptions["fillop"] = "Fills a player's inventory with op items. ";
+    commanddescriptions["fillrandom"] = "Fills a player's inventory with random items. ";
+    commanddescriptions["give"] = "Gives you a specified amount of an item of a specified type. ";
+    commanddescriptions["giveb"] = "Gives you an item stack with a specified type and stack size in your next empty inventory slot. ";
+    commanddescriptions["givec"] = "Gives you an item stack based on the provided itemJSON in your next empty inventory slot. ";
+    commanddescriptions["getuuid"] = "Gets the UUID of the specified entity. ";
+    commanddescriptions["gma"] = "Sets your gamemode to adventure. ";
+    commanddescriptions["gmc"] = "Sets your gamemode to creative. ";
+    commanddescriptions["gmd"] = "Sets your gamemode to default. ";
+    commanddescriptions["gmp"] = "Sets your gamemode to spectator. ";
+    commanddescriptions["gmr"] = "Sets your gamemode to a random gamemode. ";
+    commanddescriptions["gms"] = "Sets your gamemode to survival. ";
+    commanddescriptions["gohome"] = "Warps to a home. ";
+    commanddescriptions["h#"] = "Swaps your hotbar with the specified hotbar preset. ";
+    commanddescriptions["heal"] = "Heals entities. ";
+    commanddescriptions["health"] = "Modifies the health of entities. ";
+    commanddescriptions["home"] = "Sets/Removes/Warps to a home. ";
+    commanddescriptions["hset"] = "Sets a hotbar preset. ";
+    commanddescriptions["idtfill"] = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["ifill"] = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["ifillb"] = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["ifillc"] = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["ifilld"] = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["igfill"] = "Fills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["ignite"] = "Ignites blocks in the specified radius. ";
+    commanddescriptions["invfillillegal"] = "Fills a player's inventory with illegal items. ";
+    commanddescriptions["invfill"] = "Fills a player's inventory with items based on the provided itemJSON. ";
+    commanddescriptions["invfilljunk"] = "Fills a player's inventory with junk items. ";
+    commanddescriptions["invfillop"] = "Fills a player's inventory with op items. ";
+    commanddescriptions["invfillrandom"] = "Fills a player's inventory with random items. ";
+    commanddescriptions["invsee"] = "Displays the contents of the specified player's inventory. ";
+    commanddescriptions["invseep"] = "Displays the contents of the specified player's inventory, including the dynamic properties set on the items. ";
+    commanddescriptions["invseeuuidmode"] = "Displays the contents of the inventory of the entity with the specified UUID. ";
+    commanddescriptions["invshuffle"] = "Shuffles the inventory of the specified player";
+    commanddescriptions["invswap"] = "Swaps the inventories of 2 players. ";
+    commanddescriptions["invswapb"] = "Swaps the inventories of 2 players. ";
+    commanddescriptions["iogfill"] = "Fills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["item"] = "Super advanced item modification command. ";
+    commanddescriptions["itfill"] = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["itfillc"] = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["kick"] = "Kicks one or more players from the server. ";
+    commanddescriptions["listbans"] = "Lists all bans. ";
+    commanddescriptions["listidbans"] = "Lists all id bans. ";
+    commanddescriptions["listnamebans"] = "Lists all name bans. ";
+    commanddescriptions["liststructures"] = "Lists all saved structures. ";
+    commanddescriptions["mainmenu"] = "Opens up the main menu. ";
+    //"managebans" = "Opens up the manage bans menu. ",
+    commanddescriptions["managecommands"] = "Opens up the commands editor menu. ";
+    commanddescriptions["manageplayers"] = "Opens up the manage players menu. ";
+    commanddescriptions["managescriptautoeval"] = "Opens up the Script Auto Eval settings menu. ";
+    commanddescriptions["maxhealth"] = "Heals entities. ";
+    commanddescriptions["menu"] = "Opens up the main menu. ";
+    commanddescriptions["messageui"] = "Opens up a menu where you can type a chat message or command to send or run with no character limits. ";
+    commanddescriptions["minhealth"] = "Sets the health of entities to their minimum health values. ";
+    commanddescriptions["mm"] = "Opens up the main menu. ";
+    commanddescriptions["mngcmds"] = "Opens up the commands editor menu. ";
+    commanddescriptions["mngplyrs"] = "Opens up the manage players menu. ";
+    //"money" = "Used for the money system [§r§1Indev§r]. ",
+    //"notificationsettings" = "Opens up the notifications settings menu. ",
+    //"notificationssettings" = "Opens up the notifications settings menu. ",
+    commanddescriptions["offlineinfo"] = "Displays the saved player data of the specified player. ";
+    commanddescriptions["offlineuuidinfo"] = "Displays the saved player data of the player with the specified UUID. ";
+    commanddescriptions["offlineinvsee"] = "Displays the saved contents of the specified player's inventory. ";
+    commanddescriptions["offlineuuidinvsee"] = "Displays the saved contents of the inventory of the player with the specified UUID. ";
+    //"permaban" = "Permanently bans a player. ",
+    commanddescriptions["printlayers"] = "Displays a list of all the blocks at your specified x and z coordinates. ";
+    commanddescriptions["rank"] = "Manages ranks stored in players. ";
+    commanddescriptions["remexp"] = "Removes explosive blocks in the specified radius. ";
+    commanddescriptions["replacenear"] = "Replaces blocks of the specified type with another specified block type in the specified radius. ";
+    commanddescriptions["run"] = "Runs the specified command. ";
+    commanddescriptions["scanenderchest"] = "Scans a player's ender chest and displays the contents of it. ";
+    commanddescriptions["scanenderchestc"] = "Scans a player's ender chest and displays the contents of it. ";
+    commanddescriptions["scnendchst"] = "Scans a player's ender chest and displays the contents of it. ";
+    commanddescriptions["scnendchstc"] = "Scans a player's ender chest and displays the contents of it. ";
+    commanddescriptions["selectioninfo"] = "Displays info about the current selection. ";
+    commanddescriptions["selinfo"] = "Displays info about the current selection. ";
+    commanddescriptions["seli"] = "Displays info about the current selection. ";
+    commanddescriptions["sendui"] = "Opens up a menu where you can type a chat message to send with no character limits. ";
+    commanddescriptions["setitem"] = "Replaces the item stack in the specified inventory slot with an item stack with a specified type and stack size. ";
+    commanddescriptions["setitemb"] = "Replaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. ";
+    commanddescriptions["settings"] = "Opens up the settings menu. ";
+    commanddescriptions["shuffleinventory"] = "Shuffles the inventory of the specified player. ";
+    commanddescriptions["structure"] = "Manages structures. ";
+    commanddescriptions["summon"] = "Summons entities. ";
+    commanddescriptions["swapinventories"] = "Swaps the inventories of 2 players. ";
+    commanddescriptions["swapinventoriesb"] = "Swaps the inventories of 2 players. ";
+    commanddescriptions["swapitems"] = "Swaps an item in a slot of one player's inventory with another slot of another player's inventory. ";
+    commanddescriptions["takeitem"] = "Steals an item from another player's inventory and puts it into yoru inventory. ";
+    //"tempban" = "Temporarily bans a player. ",
+    commanddescriptions["terminal"] = "Opens up the command runner/terminal menu. ";
+    commanddescriptions["timezone"] = "Sets your timezone to the specific UTC offset in hours. ";
+    commanddescriptions["thru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at. ";
+    commanddescriptions["vthru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at, even if it would put you into the void. ";
+    commanddescriptions["top"] = "Teleports on top of the highest solid block at your x and z coordinates. ";
+    commanddescriptions["tpa"] = "Requests to teleport to the specified player. ";
+    commanddescriptions["tpaccept"] = "Accepts a player's teleport request. ";
+    commanddescriptions["tpdeny"] = "Denies a player's teleport request. ";
+    commanddescriptions["transferitem"] = "Transfers the item in your hand to the specified player's inventory. ";
+    commanddescriptions["tz"] = "Sets your timezone to the specific UTC offset in hours. ";
+    //"unban" = "Unbans a player. ",
+    commanddescriptions["up"] = "Teleports up the specified number of blocks and places glass below you if placeGlass is not set to false. ";
+    commanddescriptions["version"] = "Displays the format version of the add-on. ";
+    commanddescriptions["warp"] = "Warps to the specified global warp. ";
+    commanddescriptions["warplist"] = "Lists all global warps. ";
+    commanddescriptions["warplistdetails"] = "Lists all global warps with more details. ";
+    commanddescriptions["warplistrawdata"] = "Lists the raw data of the global warps. ";
+    commanddescriptions["warpremove"] = "Removes the specified global warp. ";
+    commanddescriptions["warpreset"] = "Removes all global warps. ";
+    commanddescriptions["warpset"] = "Sets a global warp. ";
+    commanddescriptions["w"] = "Warps to the specified private warp. ";
+    commanddescriptions["wlist"] = "Lists all private warps. ";
+    commanddescriptions["wlistdetails"] = "Lists all private warps with more details. ";
+    commanddescriptions["wlistrawdata"] = "Lists the raw data of the private warps. ";
+    commanddescriptions["wremove"] = "Removes the specified private warp. ";
+    commanddescriptions["wreset"] = "Removes all private warps. ";
+    commanddescriptions["wset"] = "Sets a private warp. ";
+    commanddescriptions["chunkban"] = "Fills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. ";
+    commanddescriptions["transformresultatdvindex"] = "Displays what item a smithing table enchanted book combined with a enchantment transfer smithing template of the specified data value would turn in to. ";
+    commanddescriptions["gettransformst"] = "Gives you an enchantment transfer smithing template with the data value needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. ";
+    commanddescriptions["findtransformdvindex"] = "Displays the data value of enchantment transfer smithing template needed to combine with a smithing table enchanted book in a smithing table to turn the smithing table enchanted book into the specified item type and data value. ";
+    commanddescriptions["roie"] = "Removes all enchantment types from an item except for the item types specified. ";
+    commanddescriptions["remotheritemenchants"] = "Removes all enchantment types from an item except for the item types specified. ";
+    commanddescriptions["removeotheritemenchantments"] = "Removes all enchantment types from an item except for the item types specified. ";
+    commanddescriptions["butcher"] = "Kill all or nearby mobs. ";
+    commanddescriptions["butcherdespawn"] = "Despawn all or nearby mobs. ";
+    commanddescriptions["brush"] = "Sets the held item as the specified brush type or unbinds the brush from the held item. ";
+    commanddescriptions["snapshot"] = "Manages backups and backup areas. ";
+    commanddescriptions["\\\\cut"] = "Cuts the selected area to the clipboard. ";
+    commanddescriptions["\\\\copy"] = "Copies the selected area to the clipboard. ";
+    commanddescriptions["\\\\paste"] = "Pastes the clipboard to the selected area. ";
+    commanddescriptions["\\\\undo"] = "Undoes the last action (from history). ";
+    commanddescriptions["\\\\pos1"] = "Sets the pos1 location of the selected area for use in other worldedit commands. ";
+    commanddescriptions["\\\\pos2"] = "Sets the pos2 location of the selected area for use in other worldedit commands. ";
+    commanddescriptions["\\\\protectarea"] = "Sets the selected area as a protected area. ";
+    commanddescriptions["\\\\backuparea"] = "Creates a new backup area convering the entire selected area. ";
+    commanddescriptions["\\\\hpos1"] = "Sets the pos1 location of the selected area to the block that you are looking at for use in other worldedit commands. ";
+    commanddescriptions["\\\\hpos2"] = "Sets the pos2 location of the selected area to the block that you are looking at for use in other worldedit commands. ";
+    commanddescriptions["\\\\chunk"] = "Sets the pos1 and pos2 locations of the selected area to contain the entire chunk that you are currently in for use in other worldedit commands. ";
+    commanddescriptions["\\\\generate"] = "Generates a 3d shape according to a formula in the selected area, in [-sr] the s modifier will prevent the math equation parser from replacing single equal signs with double equal signs and the r modifier will prevent that as well as any other modifications so that it is run as pure javascript, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ";
+    commanddescriptions["\\\\generatef"] = "Generates a 3d shape according to a formula in the selected area, this one does not allow access to custom variables which will prevent being able to run scripts using this, this one is much more limited than \\\\generate so it is only reccommended if you are restricting the \\\\generate command from a player to prevent script execution, in [-sr] the s modifier will prevent the math equation parser from replacing single equal signs with double equal signs and the r modifier will prevent that as well as any other modifications so that it is run as pure javascript, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ";
+    commanddescriptions["\\\\generatejs"] = "Generates a 3d shape according to the outputs of a JavaScript function in the selected area. ";
+    commanddescriptions["\\\\generatecallback"] = "Executes the specified callback JavaScript function for each block in the selected area. ";
+    commanddescriptions["\\\\generates"] = "Generates a 3d shape with the specified step according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ";
+    commanddescriptions["\\\\generate2d"] = "Generates a 2d shape according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, cx: center relative x, cy: center relative y, cz: center relative z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ";
+    commanddescriptions["\\\\generates2d"] = "Generates a 2d shape with the specified step according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, cx: center relative x, cy: center relative y, cz: center relative z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ";
+    commanddescriptions["\\\\stack"] = "Stacks the specified number of copies of the step area on top of the selected area. ";
+    commanddescriptions["\\\\selectmode"] = "Sets the selection mode for the item you are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. ";
+    commanddescriptions["\\\\replace"] = "Replaces the blocks between the selected area with the selected block type. ";
+    commanddescriptions["\\\\walls"] = "Replaces the walls of the selected area with the selected block type. ";
+    commanddescriptions["\\\\set"] = "Sets the blocks between the selected area to the selected block type. ";
+    commanddescriptions["\\\\seti"] = "Sets the blocks between the selected area to the selected block type with the specified integrity. ";
+    commanddescriptions["\\\\flood"] = "Floods the blocks between the selected area. ";
+    commanddescriptions["\\\\remove"] = "Remove the blocks in the selected area. ";
+    commanddescriptions["\\\\sphere"] = "Generates a sphere in the selected area. ";
+    commanddescriptions["\\\\hsphere"] = "Generates a hollow sphere in the selected area. ";
+    commanddescriptions["\\\\cone"] = "Generates a cone in the selected area. ";
+    commanddescriptions["disconnect"] = "Disconnects a player from the server. ";
+    commanddescriptions["morph"] = "Morphs into the morph with the specified ID. ";
+    commanddescriptions["scale"] = "Sets your scale value to the specified amount. ";
+    commanddescriptions["tint"] = "Tints the specified player's skin the specified color, or makes it glow, and optionally adjusts the opacity of their skin. ";
+    commanddescriptions["tps"] = "Displays the TPS. ";
+    commanddescriptions["visualscale"] = "Sets your visual scale (the one that does not actually change your hitbox size) to the specified amount. ";
+    commanddescriptions["visualscaleenabled"] = "Enables or diables your visual scaling. ";
+})(commanddescriptions || (commanddescriptions = {}));
 export const commandsyntaxes = {
-"align": `${command.dp}align`,
-"aligncenter": `${command.dp}aligncenter`,
-"binvsee": `${command.dp}binvsee <dimension: dimension|~> <block: x y z>`,
-"chatcommandui": `${command.dp}chatcommandui`,
-"chatsendui": `${command.dp}chatsendui`,
-"clear": `§cThis command is still unfinished! `,
-"clearenderchest": `clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"clearenderchestslot": `clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"cloneitem": `${command.dp}cloneitem [toPlayer: targetSelector|~]`,
-"cmdui": `${command.dp}cmdui`,
-"compressitems": `${command.dp}compressitems [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
-"compressitemsshulker": `${command.dp}compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
-"compressitemscontainer": `${command.dp}compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
-"compressitemscontainerb": `${command.dp}compressitemscontainerb [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
-"copyitem": `${command.dp}copyitem [toSlot: int|head|chest|legs|feet|mainhand|offhand|~] [toPlayer: targetSelector|~]`,
-"createexplosion": `${command.dp}createexplosion <location: x y z> [dimension: string] [radius: float] [allowUnderwater: bool] [breaksBlocks: bool] [causesFire: bool] [source: targetSelector]`,
-"datapickblock": `${command.dp}datapickblock`,
-"drain": `${command.dp}drain [radius: number]`,
-"dupeitem": `${command.dp}dupeitem [slot: int|head|chest|legs|feet|mainhand|offhand|~]`,
-"einvsee": `${command.dp}einvsee <targetSelector: targetSelector>`,
-"ecinvsee": `ecinvsee [target: string|~]`,
-"ecinvseec": `ecinvseec [target: string|~]`,
-"enderchest": `${command.dp}enderchest`,
-"eval": `${command.dp}eval <ScriptAPICode: JavaScript>`,
-"ext": `${command.dp}ext [radius: number]`,
-"execute": `${command.dp}execute ...
+    "align": `${command.dp}align`,
+    "aligncenter": `${command.dp}aligncenter`,
+    "binvsee": `${command.dp}binvsee <dimension: dimension|~> <block: x y z>`,
+    "chatcommandui": `${command.dp}chatcommandui`,
+    "chatsendui": `${command.dp}chatsendui`,
+    "clear": `§cThis command is still unfinished! `,
+    "clearenderchest": `clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
+    "clearenderchestslot": `clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
+    "cloneitem": `${command.dp}cloneitem [toPlayer: targetSelector|~]`,
+    "cmdui": `${command.dp}cmdui`,
+    "compressitems": `${command.dp}compressitems [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
+    "compressitemsshulker": `${command.dp}compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
+    "compressitemscontainer": `${command.dp}compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
+    "compressitemscontainerb": `${command.dp}compressitemscontainerb [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
+    "copyitem": `${command.dp}copyitem [toSlot: int|head|chest|legs|feet|mainhand|offhand|~] [toPlayer: targetSelector|~]`,
+    "createexplosion": `${command.dp}createexplosion <location: x y z> [dimension: string] [radius: float] [allowUnderwater: bool] [breaksBlocks: bool] [causesFire: bool] [source: targetSelector]`,
+    "datapickblock": `${command.dp}datapickblock`,
+    "drain": `${command.dp}drain [radius: number]`,
+    "dupeitem": `${command.dp}dupeitem [slot: int|head|chest|legs|feet|mainhand|offhand|~]`,
+    "einvsee": `${command.dp}einvsee <targetSelector: targetSelector>`,
+    "ecinvsee": `ecinvsee [target: string|~]`,
+    "ecinvseec": `ecinvseec [target: string|~]`,
+    "enderchest": `${command.dp}enderchest`,
+    "eval": `${command.dp}eval <ScriptAPICode: JavaScript>`,
+    "ext": `${command.dp}ext [radius: number]`,
+    "execute": `${command.dp}execute ...
 ${command.dp}... align <axes: string> ...
 ${command.dp}... anchored <eyes|feet> ...
 ${command.dp}... as <origin: target> ...
@@ -242,16 +242,16 @@ ${command.dp}... matchdimension <origin: target> ...
 ${command.dp}... if block <position: x y z> <block: Block> <blockStates: block states> ...
 ${command.dp}... if entity <target: target> ...
 ${command.dp}... run <command: command>`,
-"extinguish": `${command.dp}extinguish [radius: number]`,
-"fill": `${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
-"fillillegal": `${command.dp}fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"fillinventory": `${command.dp}fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]`,
-"filljunk": `${command.dp}filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"fillop": `${command.dp}fillop [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"fillrandom": `${command.dp}fillrandom [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"give": `${command.dp}give <item: itemType> <amount: int>`,
-"giveb": `${command.dp}giveb <item: itemType> <stackSize: int(1-255)>`,
-"givec": `${command.dp}givec <itemJSON: itemJSON>
+    "extinguish": `${command.dp}extinguish [radius: number]`,
+    "fill": `${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
+    "fillillegal": `${command.dp}fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
+    "fillinventory": `${command.dp}fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]`,
+    "filljunk": `${command.dp}filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
+    "fillop": `${command.dp}fillop [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
+    "fillrandom": `${command.dp}fillrandom [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
+    "give": `${command.dp}give <item: itemType> <amount: int>`,
+    "giveb": `${command.dp}giveb <item: itemType> <stackSize: int(1-255)>`,
+    "givec": `${command.dp}givec <itemJSON: itemJSON>
 simplified itemJSON format (type "${command.dp}help itemJSONFormat" to see full format options): 
 {
     "name"?: string,
@@ -309,26 +309,26 @@ examples:
 stack of 255 sharpness 1 wooden swords: {"minecraft:components": {"enchantable": {"add": {"level": 1, "type": "sharpness"}}}, "id": "wooden_sword", "count": 255}
 sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept on death with the name "§4Storage Hog Axe§r" and the lore "§eTakes\\nUp\\nYour\\nInventory§r" (with the \\n as line break characters) that says lol in the chat and damages the user when used: {"minecraft:components": {"enchantable": {"add": [{"level": 1, "type": "sharpness"}, {"type": "fortune", "level": 3}, {"type": "efficiency", "level": 5}]}}, "id": "iron_axe", "count": 72, "keepondeath": true, "lockMode": "inventory", "name": "§r§4Storage Hog Axe§r§f", "lore": ["§r§eTakes\\nUp§r§f","§r§eYour\\nInventory§r§f"], "dynamicProperties": {"code": "world.sendMessage('lol'); event.source.runCommandAsync(\\"/damage @s 1 thorns entity @s\\")"}}
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`,
-"getbans": `${command.dp}getbans`,
-"getidbans": `${command.dp}getidbans`,
-"getnamebans": `${command.dp}getnamebans`,
-"getuuid": `${command.dp}getuuid <target: target>`,
-"gma": `${command.dp}gma`,
-"gmc": `${command.dp}gmc`,
-"gmd": `${command.dp}gmd`,
-"gmp": `${command.dp}gmp`,
-"gmr": `${command.dp}gmr`,
-"gms": `${command.dp}gms`,
-"gohome": `${command.dp}gohome <homeName: text>`,
-"h#": `${command.dp}h<presetId: float> <containerRow: float>`,
-"heal": `${command.dp}heal [targets: target]`,
-"health": `${command.dp}health <health: number> [targets: target]`,
-"home": `${command.dp}home <mode: set|remove|go|warp|teleport> <homeName: text>
+    "getbans": `${command.dp}getbans`,
+    "getidbans": `${command.dp}getidbans`,
+    "getnamebans": `${command.dp}getnamebans`,
+    "getuuid": `${command.dp}getuuid <target: target>`,
+    "gma": `${command.dp}gma`,
+    "gmc": `${command.dp}gmc`,
+    "gmd": `${command.dp}gmd`,
+    "gmp": `${command.dp}gmp`,
+    "gmr": `${command.dp}gmr`,
+    "gms": `${command.dp}gms`,
+    "gohome": `${command.dp}gohome <homeName: text>`,
+    "h#": `${command.dp}h<presetId: float> <containerRow: float>`,
+    "heal": `${command.dp}heal [targets: target]`,
+    "health": `${command.dp}health <health: number> [targets: target]`,
+    "home": `${command.dp}home <mode: set|remove|go|warp|teleport> <homeName: text>
 ${command.dp}home clear
 ${command.dp}home removeall
 ${command.dp}home list`,
-"hset": `${command.dp}hset <presetID: float> [dimensionId: string] [x: float] [y: float] [z: float]`,
-"idtfill": `${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+    "hset": `${command.dp}hset <presetID: float> [dimensionId: string] [x: float] [y: float] [z: float]`,
+    "idtfill": `${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> [clearContainers: boolean]
@@ -382,7 +382,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
 ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> hollowovoid [clearContainers: boolean]`,
-"ifill": `${command.dp}ifill <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+    "ifill": `${command.dp}ifill <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}ifill <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}ifill <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
 ${command.dp}ifill <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [clearContainers: boolean]
@@ -412,24 +412,24 @@ ${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: x|y|z|
 ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> {blockStates: block states} hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> {blockStates: block states} hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> {blockStates: block states} hollowovoid [clearContainers: boolean]`,
-"ifillb": `${command.dp}ifillb <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
-"ifillc": `${command.dp}ifillc <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
-"ifilld": `${command.dp}ifillc <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
-"igfill": `${command.dp}igfill <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
-"ignite": `${command.dp}ignite [radius: number]`,
-"invfillillegal": `${command.dp}fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"invfill": `${command.dp}fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]`,
-"invfilljunk": `${command.dp}filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"invfillop": `${command.dp}fillop [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"invfillrandom": `${command.dp}fillrandom [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"invsee": `${command.dp}invsee <playerTarget: targetSelector>`,
-"invseep": `${command.dp}invseep <playerTarget: targetSelector>`,
-"invseeuuidmode": `${command.dp}invseeuuidmode <entityUUID: int>`,
-"invshuffle": `${command.dp}invshuffle <playerTarget: targetSelector|~>`,
-"invswap": `${command.dp}invswap [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
-"invswapb": `${command.dp}invswapb [player: playerName|~] [otherPlayer: playerName|~]`,
-"iogfill": `${command.dp}iogfill <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}iogfill <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
-"item": `${command.dp}item <mode: lore|lorene> <lore: JSON>
+    "ifillb": `${command.dp}ifillb <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
+    "ifillc": `${command.dp}ifillc <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
+    "ifilld": `${command.dp}ifillc <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
+    "igfill": `${command.dp}igfill <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
+    "ignite": `${command.dp}ignite [radius: number]`,
+    "invfillillegal": `${command.dp}fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
+    "invfill": `${command.dp}fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]`,
+    "invfilljunk": `${command.dp}filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
+    "invfillop": `${command.dp}fillop [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
+    "invfillrandom": `${command.dp}fillrandom [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
+    "invsee": `${command.dp}invsee <playerTarget: targetSelector>`,
+    "invseep": `${command.dp}invseep <playerTarget: targetSelector>`,
+    "invseeuuidmode": `${command.dp}invseeuuidmode <entityUUID: int>`,
+    "invshuffle": `${command.dp}invshuffle <playerTarget: targetSelector|~>`,
+    "invswap": `${command.dp}invswap [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
+    "invswapb": `${command.dp}invswapb [player: playerName|~] [otherPlayer: playerName|~]`,
+    "iogfill": `${command.dp}iogfill <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}iogfill <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
+    "item": `${command.dp}item <mode: lore|lorene> <lore: JSON>
 ${command.dp}item <mode: canplaceon|candestroy> <blockTypes: string[]>
 ${command.dp}item name <name: text>
 ${command.dp}item count <count: int(1-255)>
@@ -466,7 +466,7 @@ ${command.dp}item slot <slot: int> enchantment add <enchantment: {"level": numbe
 ${command.dp}item slot <slot: int> enchantment addlist <enchantment: {"level": number, "type": string}[]>
 ${command.dp}item slot <slot: int> enchantment <mode: remove|get|testfor> <enchantmentId: string>
 ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`,
-"itfill": `${command.dp}itfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+    "itfill": `${command.dp}itfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}itfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}itfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
 ${command.dp}itfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> [clearContainers: boolean]
@@ -520,42 +520,42 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> hollowovoid [clearContainers: boolean]`,
-"itfillc": `${command.dp}itfillc <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}itfillc <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
-"j": `${command.dp}j`,
-"jumpto": `${command.dp}jumpto`,
-"kick": `${command.dp}kick <players: targetSelector> [reason: string]`,
-"liststructures": `${command.dp}liststructures`,
-"listbans": `${command.dp}listbans`,
-"listidbans": `${command.dp}listidbans`,
-"listnamebans": `${command.dp}listnamebans`,
-"mainmenu": `${command.dp}mainmenu`,
-"managecommands": `${command.dp}managecommands`,
-"manageplayers": `${command.dp}manageplayers`,
-"managescriptautoeval": `${command.dp}managescriptautoeval`,
-"maxhealth": `${command.dp}maxhealth [targets: targetSelector]`,
-"menu": `${command.dp}menu`,
-"messageui": `${command.dp}messageui`,
-"minhealth": `${command.dp}minhealth [targets: targetSelector]`,
-"mngcmds": `${command.dp}mngcmds`,
-"mngplyrs": `${command.dp}mngplyrs`,
-"mm": `${command.dp}mm`,
-"msgui": `${command.dp}msgui`,
-"offlineinfo": `${command.dp}offlineinfo <playerName: string>`,
-"offlineuuidinfo": `${command.dp}offlineuuidinfo <playerUUID: int>`,
-"offlineinvsee": `${command.dp}offlineinvsee <playerName: string>`,
-"offlineuuidinvsee": `${command.dp}offlineuuidinvsee <playerUUID: int>`,
-"printlayers": `${command.dp}printlayers`,
-"rank": `${command.dp}rank <players: targetSelector> <mode: add|remove> <tag: string>\n${command.dp}rank <players: targetSelector> clear`,
-"remexp": `${command.dp}remexp [radius: number]`,
-"replacenear": `${command.dp}repalcenear <radius: number> <replaceTileName: Block> <replaceBlockStates: block states> <tileName: Block> <blockStates: block states>`,
-"run": `${command.dp}run <delayTicks: int> <command: command>`,
-"scanenderchest": `${command.dp}scanenderchest [targets: targetSelector|~]`,
-"scanenderchestc": `${command.dp}scanenderchestc [target: string|~]`,
-"scnendchst": `${command.dp}scnendchst [targets: targetSelector|~]`,
-"scnendchstc": `${command.dp}scnendchstc [target: string|~]`,
-"sendui": `${command.dp}sendui`,
-"setitem": `${command.dp}setitem <item: itemType> <amount: int> <slot: int>`,
-"setitemb": `${command.dp}setitemb <itemJSON: itemJSON> <slot: int>
+    "itfillc": `${command.dp}itfillc <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}itfillc <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
+    "j": `${command.dp}j`,
+    "jumpto": `${command.dp}jumpto`,
+    "kick": `${command.dp}kick <players: targetSelector> [reason: string]`,
+    "liststructures": `${command.dp}liststructures`,
+    "listbans": `${command.dp}listbans`,
+    "listidbans": `${command.dp}listidbans`,
+    "listnamebans": `${command.dp}listnamebans`,
+    "mainmenu": `${command.dp}mainmenu`,
+    "managecommands": `${command.dp}managecommands`,
+    "manageplayers": `${command.dp}manageplayers`,
+    "managescriptautoeval": `${command.dp}managescriptautoeval`,
+    "maxhealth": `${command.dp}maxhealth [targets: targetSelector]`,
+    "menu": `${command.dp}menu`,
+    "messageui": `${command.dp}messageui`,
+    "minhealth": `${command.dp}minhealth [targets: targetSelector]`,
+    "mngcmds": `${command.dp}mngcmds`,
+    "mngplyrs": `${command.dp}mngplyrs`,
+    "mm": `${command.dp}mm`,
+    "msgui": `${command.dp}msgui`,
+    "offlineinfo": `${command.dp}offlineinfo <playerName: string>`,
+    "offlineuuidinfo": `${command.dp}offlineuuidinfo <playerUUID: int>`,
+    "offlineinvsee": `${command.dp}offlineinvsee <playerName: string>`,
+    "offlineuuidinvsee": `${command.dp}offlineuuidinvsee <playerUUID: int>`,
+    "printlayers": `${command.dp}printlayers`,
+    "rank": `${command.dp}rank <players: targetSelector> <mode: add|remove> <tag: string>\n${command.dp}rank <players: targetSelector> clear`,
+    "remexp": `${command.dp}remexp [radius: number]`,
+    "replacenear": `${command.dp}repalcenear <radius: number> <replaceTileName: Block> <replaceBlockStates: block states> <tileName: Block> <blockStates: block states>`,
+    "run": `${command.dp}run <delayTicks: int> <command: command>`,
+    "scanenderchest": `${command.dp}scanenderchest [targets: targetSelector|~]`,
+    "scanenderchestc": `${command.dp}scanenderchestc [target: string|~]`,
+    "scnendchst": `${command.dp}scnendchst [targets: targetSelector|~]`,
+    "scnendchstc": `${command.dp}scnendchstc [target: string|~]`,
+    "sendui": `${command.dp}sendui`,
+    "setitem": `${command.dp}setitem <item: itemType> <amount: int> <slot: int>`,
+    "setitemb": `${command.dp}setitemb <itemJSON: itemJSON> <slot: int>
 simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
 {
     "name"?: string,
@@ -613,9 +613,9 @@ examples:
 stack of 255 sharpness 1 wooden swords: {"minecraft:components": {"enchantable": {"add": {"level": 1, "type": "sharpness"}}}, "id": "wooden_sword", "count": 255}
 sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept on death with the name "§4Storage Hog Axe§r" and the lore "§eTakes\\nUp\\nYour\\nInventory§r" (with the \\n as line break characters) that says lol in the chat and damages the user when used: {"minecraft:components": {"enchantable": {"add": [{"level": 1, "type": "sharpness"}, {"type": "fortune", "level": 3}, {"type": "efficiency", "level": 5}]}}, "id": "iron_axe", "count": 72, "keepondeath": true, "lockMode": "inventory", "name": "§r§4Storage Hog Axe§r§f", "lore": ["§r§eTakes\\nUp§r§f","§r§eYour\\nInventory§r§f"], "dynamicProperties": {"code": "world.sendMessage('lol'); event.source.runCommandAsync(\\"/damage @s 1 thorns entity @s\\")"}}
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`,
-"settings": `${command.dp}settings`,
-"shuffleinventory": `${command.dp}shuffleinventory <playerTarget: targetSelector|~>`,
-"structure": `${command.dp}structure createempty <structureName: string> <sizeX: float> <sizeY: float> <sizeZ: float> [saveMode: memory|disk]
+    "settings": `${command.dp}settings`,
+    "shuffleinventory": `${command.dp}shuffleinventory <playerTarget: targetSelector|~>`,
+    "structure": `${command.dp}structure createempty <structureName: string> <sizeX: float> <sizeY: float> <sizeZ: float> [saveMode: memory|disk]
 ${command.dp}structure save <structureName: string> <from: x y z> <to: x y z> [saveMode: world|memory] [includeEntities: Boolean] [includeBlocks: Boolean]
 ${command.dp}structure load <structureName: string> <to: x y z> [rotation: 0|90|190|270] [mirror: none|x|z|xz] [includeEntities: Boolean] [includeBlocks: Boolean] [waterlogged: Boolean] [integrity: float] [integritySeed: string] [animationMode: none|blocks|layers] [animationSeconds: float]
 ${command.dp}structure delete <structureName: string>
@@ -627,56 +627,56 @@ ${command.dp}structure movetomemory <structureName: string>
 ${command.dp}structure removeair <structureName: string>
 ${command.dp}structure removeall
 ${command.dp}structure list`,
-"summon": `${command.dp}summon <spawnCount: int> <entity: EntityType<[spawnEvent]>> [spawnPos: x y z] [yRot: value] [xRot: value] [persistent: bool] [nameTag: string]
+    "summon": `${command.dp}summon <spawnCount: int> <entity: EntityType<[spawnEvent]>> [spawnPos: x y z] [yRot: value] [xRot: value] [persistent: bool] [nameTag: string]
 ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn"`,
-"swapinventories": `${command.dp}swapinventories [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
-"swapinventoriesb": `${command.dp}swapinventoriesb [player: playerName|~] [otherPlayer: playerName|~]`,
-"swapitems": `${command.dp}swapitems [slot: int|head|chest|legs|feet|mainhand|offhand|~] [otherSlot: int|head|chest|legs|feet|mainhand|offhand|~] [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
-"takeitem": `${command.dp}takeitem <fromSlot: int|head|chest|legs|feet|mainhand|offhand|~> <fromPlayer: targetSelector|~>`,
-"terminal": `${command.dp}terminal`,
-"transferitem": `${command.dp}transferitem <transferItemToPlayer: targetSelector>`,
-"thru": `${command.dp}thru`,
-"timezone": `${command.dp}timezone [UTCOffsetInHours: float]`,
-"top": `${command.dp}top`,
-"tpa": `${command.dp}tpa <player: targetSelector|playerName|string>`,
-"tpaccept": `${command.dp}tpaccept [player: targetSelector|playerName|string]`,
-"tpdeny": `${command.dp}tpdeny [player: targetSelector|playerName|string]`,
-"tz": `${command.dp}tz [UTCOffsetInHours: float]`,
-"up": `${command.dp}up [placeGlass: bool]`,
-"ver": `${command.dp}ver`,
-"version": `${command.dp}version`,
-"warp": `${command.dp}warp <name: escapableString>`,
-"warplist": `${command.dp}warplist`,
-"warplistdetails": `${command.dp}warplistdetails`,
-"warplistrawdata": `${command.dp}warplistrawdata`,
-"warpremove": `${command.dp}warpremove <name: escapableString>`,
-"warpreset": `${command.dp}warpreset`,
-"warpset": `${command.dp}warpset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
-"w": `${command.dp}w <name: escapableString>`,
-"wlist": `${command.dp}wlist`,
-"wlistdetails": `${command.dp}wlistdetails`,
-"wlistrawdata": `${command.dp}wlistrawdata`,
-"wremove": `${command.dp}wremove <name: escapableString>`,
-"wreset": `${command.dp}wreset`,
-"wset": `${command.dp}wset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
-"transformresultatdvindex": `${command.dp}transformresultatdvindex [data: int]`,
-"gettransformsteb": `${command.dp}gettransformsteb [itemName: string] [data: int]`,
-"findtransformdvindex": `${command.dp}findtransformdvindex [itemName: string] [data: int]`,
-"roie": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
-"remotheritemenchants": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
-"removeotheritemenchantments": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
-"brush": `${command.dp}brush [-l] none
+    "swapinventories": `${command.dp}swapinventories [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
+    "swapinventoriesb": `${command.dp}swapinventoriesb [player: playerName|~] [otherPlayer: playerName|~]`,
+    "swapitems": `${command.dp}swapitems [slot: int|head|chest|legs|feet|mainhand|offhand|~] [otherSlot: int|head|chest|legs|feet|mainhand|offhand|~] [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
+    "takeitem": `${command.dp}takeitem <fromSlot: int|head|chest|legs|feet|mainhand|offhand|~> <fromPlayer: targetSelector|~>`,
+    "terminal": `${command.dp}terminal`,
+    "transferitem": `${command.dp}transferitem <transferItemToPlayer: targetSelector>`,
+    "thru": `${command.dp}thru`,
+    "timezone": `${command.dp}timezone [UTCOffsetInHours: float]`,
+    "top": `${command.dp}top`,
+    "tpa": `${command.dp}tpa <player: targetSelector|playerName|string>`,
+    "tpaccept": `${command.dp}tpaccept [player: targetSelector|playerName|string]`,
+    "tpdeny": `${command.dp}tpdeny [player: targetSelector|playerName|string]`,
+    "tz": `${command.dp}tz [UTCOffsetInHours: float]`,
+    "up": `${command.dp}up [placeGlass: bool]`,
+    "ver": `${command.dp}ver`,
+    "version": `${command.dp}version`,
+    "warp": `${command.dp}warp <name: escapableString>`,
+    "warplist": `${command.dp}warplist`,
+    "warplistdetails": `${command.dp}warplistdetails`,
+    "warplistrawdata": `${command.dp}warplistrawdata`,
+    "warpremove": `${command.dp}warpremove <name: escapableString>`,
+    "warpreset": `${command.dp}warpreset`,
+    "warpset": `${command.dp}warpset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
+    "w": `${command.dp}w <name: escapableString>`,
+    "wlist": `${command.dp}wlist`,
+    "wlistdetails": `${command.dp}wlistdetails`,
+    "wlistrawdata": `${command.dp}wlistrawdata`,
+    "wremove": `${command.dp}wremove <name: escapableString>`,
+    "wreset": `${command.dp}wreset`,
+    "wset": `${command.dp}wset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
+    "transformresultatdvindex": `${command.dp}transformresultatdvindex [data: int]`,
+    "gettransformsteb": `${command.dp}gettransformsteb [itemName: string] [data: int]`,
+    "findtransformdvindex": `${command.dp}findtransformdvindex [itemName: string] [data: int]`,
+    "roie": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
+    "remotheritemenchants": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
+    "removeotheritemenchantments": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
+    "brush": `${command.dp}brush [-l] none
 ${command.dp}brush [-l] <brushType: sphere|cube|square> [-h] <blockPattern: BlockPattern> [radius: float]
 ${command.dp}brush [-l] <brushType: splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface> [-h] <blockPattern: BlockPattern> [radius: float] [decay: float]
 ${command.dp}brush [-l] <brushType: raise|lower> <shape: sphere|cube§c|squarex|squarey|squarez§r> [radius: float]
 ${command.dp}brush [-l] <brushType: extinguish|ex|remexp> [radius: float]`,
-"butcher": `${command.dp}butcher [-abfgnprtwipceh] [radius: float]`,
-"butcherdespawn": `${command.dp}butcherdespawn [-abfgnprtwipceh] [radius: float]`,
-"chunkinfo": `${command.dp}chunkinfo`,
-"selectioninfo": `${command.dp}selectioninfo`,
-"selinfo": `${command.dp}selinfo`,
-"seli": `${command.dp}seli`,
-"snapshot": `${command.dp}snapshot backup <areaId: string>
+    "butcher": `${command.dp}butcher [-abfgnprtwipceh] [radius: float]`,
+    "butcherdespawn": `${command.dp}butcherdespawn [-abfgnprtwipceh] [radius: float]`,
+    "chunkinfo": `${command.dp}chunkinfo`,
+    "selectioninfo": `${command.dp}selectioninfo`,
+    "selinfo": `${command.dp}selinfo`,
+    "seli": `${command.dp}seli`,
+    "snapshot": `${command.dp}snapshot backup <areaId: string>
 ${command.dp}snapshot rollback <areaId: string> [backupIndex: number]
 ${command.dp}snapshot deletebackup <areaId: string> [backupIndex: number]
 ${command.dp}snapshot clearbackups <areaId: string>
@@ -685,41 +685,41 @@ ${command.dp}snapshot clearareas
 ${command.dp}snapshot listbackups <areaId: string>
 ${command.dp}snapshot listareas
 ${command.dp}snapshot list`,
-"\\\\cut": `${command.dp}\\cut [-meb]`,
-"\\\\copy": `${command.dp}\\copy [-meb]`,
-"\\\\paste": `${command.dp}\\paste [-webxz] [integrity: float] [integritySeed: string] [rotation: 0|90|180|270] [animationMode: none|blocks|layers] [animationSeconds: float]`,
-"\\\\undo": `${command.dp}\\undo [-kt]`,
-"\\\\protectarea": `${command.dp}\\protectarea <areaType: string> <name: string> [mode: 0|1(default=0)] [icon_path: string]`,
-"\\\\backuparea": `${command.dp}\\backuparea <id: string>`,
-"\\\\pos1": `${command.dp}\\pos1 [location: x y z]`,
-"\\\\pos2": `${command.dp}\\pos2 [location: x y z]`,
-"\\\\hpos1": `${command.dp}\\hpos1`,
-"\\\\hpos2": `${command.dp}\\hpos2`,
-"\\\\chunk": `${command.dp}\\chunk`,
-"\\\\sphere": `${command.dp}\\sphere <radius: float> <blockPattern: BlockPattern> [mask: mask]`,
-"\\\\hsphere": `${command.dp}\\hsphere <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: mask]`,
-"\\\\cone": `${command.dp}\\cone <radius: float> <blockPattern: BlockPattern> [mask: mask]`,
-"\\\\hcone": `${command.dp}\\hcone <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: mask]`,
-"\\\\remove": `${command.dp}\\remove`,
-"\\\\walls": `${command.dp}\\walls <blockPattern: BlockPattern> [mask: mask]`,
-"\\\\set": `${command.dp}\\set <blockPattern: BlockPattern>`,
-"\\\\seti": `${command.dp}\\seti <integrity: number> <blockPattern: BlockPattern>`,
-"\\\\flood": `${command.dp}\\flood`,
-"\\\\drain": `${command.dp}\\drain`,
-"\\\\generate": `${command.dp}\\generate [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
-"\\\\generatef": `${command.dp}\\generatek [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
-"\\\\generatejs": `${command.dp}\\generatejs <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
-"\\\\generatecallback": `${command.dp}\\generatecallback <blockPattern: BlockPattern> <callback: (dimensionLocation, worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>any>`,
-"\\\\generates": `${command.dp}\\generates <step: float> <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
-"\\\\generate2d": `${command.dp}\\generate2d [-sr] <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
-"\\\\generatek2d": `${command.dp}\\generate2d [-sr] <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
-"\\\\generatejs2d": `${command.dp}\\generatejs2d <axis: x|y|z> <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, rotationRelativeX, rotationRelativeY, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
-"\\\\generatecallback2d": `${command.dp}\\generatecallback2d <axis: x|y|z> <blockPattern: BlockPattern> <callback: (dimensionLocation, worldX, worldY, worldZ, relativeX, relativeY, relativeZ, rotationRelativeX, rotationRelativeY, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>any>`,
-"\\\\generates2d": `${command.dp}\\generates2d <step: float> <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
-"\\\\stack": `${command.dp}\\stack [stackCount: int]`,
-"\\\\selectmode": `${command.dp}\\selectmode [default|noliquid|nopassable|noliquidnopassable]`,
-"\\\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [mask: mask]`,
-"\\\\idtfill": `${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+    "\\\\cut": `${command.dp}\\cut [-meb]`,
+    "\\\\copy": `${command.dp}\\copy [-meb]`,
+    "\\\\paste": `${command.dp}\\paste [-webxz] [integrity: float] [integritySeed: string] [rotation: 0|90|180|270] [animationMode: none|blocks|layers] [animationSeconds: float]`,
+    "\\\\undo": `${command.dp}\\undo [-kt]`,
+    "\\\\protectarea": `${command.dp}\\protectarea <areaType: string> <name: string> [mode: 0|1(default=0)] [icon_path: string]`,
+    "\\\\backuparea": `${command.dp}\\backuparea <id: string>`,
+    "\\\\pos1": `${command.dp}\\pos1 [location: x y z]`,
+    "\\\\pos2": `${command.dp}\\pos2 [location: x y z]`,
+    "\\\\hpos1": `${command.dp}\\hpos1`,
+    "\\\\hpos2": `${command.dp}\\hpos2`,
+    "\\\\chunk": `${command.dp}\\chunk`,
+    "\\\\sphere": `${command.dp}\\sphere <radius: float> <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\hsphere": `${command.dp}\\hsphere <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\cone": `${command.dp}\\cone <radius: float> <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\hcone": `${command.dp}\\hcone <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\remove": `${command.dp}\\remove`,
+    "\\\\walls": `${command.dp}\\walls <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\set": `${command.dp}\\set <blockPattern: BlockPattern>`,
+    "\\\\seti": `${command.dp}\\seti <integrity: number> <blockPattern: BlockPattern>`,
+    "\\\\flood": `${command.dp}\\flood`,
+    "\\\\drain": `${command.dp}\\drain`,
+    "\\\\generate": `${command.dp}\\generate [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
+    "\\\\generatef": `${command.dp}\\generatek [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
+    "\\\\generatejs": `${command.dp}\\generatejs <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
+    "\\\\generatecallback": `${command.dp}\\generatecallback <blockPattern: BlockPattern> <callback: (dimensionLocation, worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>any>`,
+    "\\\\generates": `${command.dp}\\generates <step: float> <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
+    "\\\\generate2d": `${command.dp}\\generate2d [-sr] <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
+    "\\\\generatek2d": `${command.dp}\\generate2d [-sr] <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
+    "\\\\generatejs2d": `${command.dp}\\generatejs2d <axis: x|y|z> <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, rotationRelativeX, rotationRelativeY, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
+    "\\\\generatecallback2d": `${command.dp}\\generatecallback2d <axis: x|y|z> <blockPattern: BlockPattern> <callback: (dimensionLocation, worldX, worldY, worldZ, relativeX, relativeY, relativeZ, rotationRelativeX, rotationRelativeY, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>any>`,
+    "\\\\generates2d": `${command.dp}\\generates2d <step: float> <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
+    "\\\\stack": `${command.dp}\\stack [stackCount: int]`,
+    "\\\\selectmode": `${command.dp}\\selectmode [default|noliquid|nopassable|noliquidnopassable]`,
+    "\\\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\idtfill": `${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block|random> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block|random> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block|random> <blockStates: block states> [clearContainers: boolean]
@@ -773,7 +773,7 @@ ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <ti
 ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> hollowovoid [clearContainers: boolean]`,
-"\\\\itfill": `${command.dp}\\itfill <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+    "\\\\itfill": `${command.dp}\\itfill <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\itfill <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\itfill <tileName: Block> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
 ${command.dp}\\itfill <tileName: Block> <blockStates: block states> [clearContainers: boolean]
@@ -827,16 +827,16 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> <bloc
 ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollowovoid [clearContainers: boolean]`,
-"disconnect": `${command.dp}disconnect <players: targetSelector>`,
-"morph": `${command.dp}morph <morphId: int>`,
-"scale": `${command.dp}scale <scale: float>`,
-"tint": `${command.dp}tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: targetSelector]`,
-"tps": `${command.dp}tps`,
-"visualscale": `${command.dp}visualscale <visualscale: float>`,
-"visualscaleenabled": `${command.dp}visualscaleenabled <visualscaleenabled: bool>`
-}
+    "disconnect": `${command.dp}disconnect <players: targetSelector>`,
+    "morph": `${command.dp}morph <morphId: int>`,
+    "scale": `${command.dp}scale <scale: float>`,
+    "tint": `${command.dp}tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: targetSelector]`,
+    "tps": `${command.dp}tps`,
+    "visualscale": `${command.dp}visualscale <visualscale: float>`,
+    "visualscaleenabled": `${command.dp}visualscaleenabled <visualscaleenabled: bool>`
+};
 export const commandflags = {
-"butcher": `No Flags: Kill items and experience orbs.
+    "butcher": `No Flags: Kill items and experience orbs.
 a: kill animals
 b: kill ambient mobs
 c: kill cloned players
@@ -851,7 +851,7 @@ p: kill players
 r: kill armor stands
 t: allow killing of name tagged entities
 v: kill vehicles`,
-"butcherdespawn": `No Flags: Kill items and experience orbs.
+    "butcherdespawn": `No Flags: Kill items and experience orbs.
 a: despawn animals
 b: despawn ambient mobs
 c: despawn cloned players
@@ -866,20 +866,20 @@ p: despawn players
 r: despawn armor stands
 t: allow despawning of name tagged entities
 v: despawn vehicles`,
-"\\\\cut": `m: cut to memory instead of storage
+    "\\\\cut": `m: cut to memory instead of storage
 e: don't include entities
 b: don't include blocks`,
-"\\\\copy": `m: copy to memory instead of storage
+    "\\\\copy": `m: copy to memory instead of storage
 e: don't include entities
 b: don't include blocks`,
-"\\\\paste": `w: waterlog structure
+    "\\\\paste": `w: waterlog structure
 e: don't include entities
 b: don't include blocks
 x: mirror structure x axis
 z: mirror structure z axis`,
-"\\\\undo": `k: don't remove the undo save point after finishing the undo
+    "\\\\undo": `k: don't remove the undo save point after finishing the undo
 t: spawn in a ticking area before running the undo command`
-}
+};
 export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .align - §oCenters you on the x and z axis on the block you are currently at. §r
 .aligncenter - §oCenters you on the x, y, and z axis on the block you are currently at. §r
@@ -1068,172 +1068,99 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .tint - §oTints the specified player's skin the specified color, or makes it glow, and optionally adjusts the opacity of their skin. §r§6
 .tps - §oDisplays the TPS. §r§6
 .visualscale - §oSets your visual scale (the one that does not actually change your hitbox size) to the specified amount. §r§6
-.visualscaleenabled - §oEnables or diables your visual scaling. `
-
-export function getCommandHelpPage(commandName: string, player?: Player | executeCommandPlayerW | Entity) {
-    let cmd = command.get(((commandName.slice(0, command.dp.length)==command.dp)&&(commandName.slice(command.dp.length, command.dp.length+1)!="\\"))?commandName.slice(1):commandName, "built-in");
+.visualscaleenabled - §oEnables or diables your visual scaling. `;
+export function getCommandHelpPage(commandName, player) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
     return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
-        : `§e${cmd.commandName}${
-            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
-        }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
-            commandsyntaxes[cmd.currentCommandName] ?? "missing"
-        )
-        .split("\n")
-        .join("§r\n- ")}${
-            !!!commandflags[cmd.currentCommandName]
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
+            .split("\n")
+            .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
+            ? ""
+            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            ? ""
+            : "\nVersion: " + cmd.formatting_code + cmd.command_version}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            ? "§cDISABLED"
+            : "§aENABLED"}${!!player
+            ? cmd.testCanPlayerUseCommand(player)
                 ? ""
-                : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")
-        }${
-            !!!cmd.command_version
-                ? ""
-                : "\nVersion: " + cmd.formatting_code + cmd.command_version
-        }§r§f\nType: ${cmd.type}\n${
-            !cmd.settings.enabled
-                ? "§cDISABLED"
-                : "§aENABLED"
-        }${
-            !!player
-                ? cmd.testCanPlayerUseCommand(player)
-                    ? ""
-                    : "\n§cYou do not have permission to use this command!"
-                : ""
-        }`;
+                : "\n§cYou do not have permission to use this command!"
+            : ""}`;
 }
-
-export function getCommandHelpPageExtra(commandName: string, player?: Player | executeCommandPlayerW | Entity) {
-    let cmd = command.get(((commandName.slice(0, command.dp.length)==command.dp)&&(commandName.slice(command.dp.length, command.dp.length+1)!="\\"))?commandName.slice(1):commandName, "built-in");
+export function getCommandHelpPageExtra(commandName, player) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
     return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
-        : `§e${cmd.commandName}${
-            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
-        }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
-            commandsyntaxes[cmd.currentCommandName] ?? "missing"
-        )
-        .split("\n")
-        .join("§r\n- ")}${
-            !!!commandflags[cmd.currentCommandName]
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
+            .split("\n")
+            .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
+            ? ""
+            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            ? ""
+            : "\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
+            ? ""
+            : "§r§f\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings.defaultSettings
+            ? ""
+            : "§r§f\nDefault Required Tags: " + JSON.stringify(cmd.settings.defaultSettings.requiredTags)}${!!!cmd.settings.requiredTags
+            ? ""
+            : "§r§f\nRequired Tags: " + JSON.stringify(cmd.settings.requiredTags)}${!!!cmd.settings.requiresOp
+            ? ""
+            : "§r§f\nRequires OP: " + JSON.stringify(cmd.settings.requiresOp)}${!!!cmd.settings.requiredPermissionLevel
+            ? ""
+            : "§r§f\nRequired Permission Level: " + JSON.stringify(cmd.settings.requiredPermissionLevel)}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            ? "§cDISABLED"
+            : "§aENABLED"}${!!player
+            ? cmd.testCanPlayerUseCommand(player)
                 ? ""
-                : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")
-        }${
-            !!!cmd.command_version
-                ? ""
-                : "\nVersion: " + cmd.formatting_code + cmd.command_version
-        }${
-            !!!cmd.category
-                ? ""
-                : "§r§f\nCategories: " + JSON.stringify(cmd.categories)
-        }${
-            !!!cmd.settings.defaultSettings
-                ? ""
-                : "§r§f\nDefault Required Tags: " + JSON.stringify(cmd.settings.defaultSettings.requiredTags)
-        }${
-            !!!cmd.settings.requiredTags
-                ? ""
-                : "§r§f\nRequired Tags: " + JSON.stringify(cmd.settings.requiredTags)
-        }${
-            !!!cmd.settings.requiresOp
-                ? ""
-                : "§r§f\nRequires OP: " + JSON.stringify(cmd.settings.requiresOp)
-        }${
-            !!!cmd.settings.requiredPermissionLevel
-                ? ""
-                : "§r§f\nRequired Permission Level: " + JSON.stringify(cmd.settings.requiredPermissionLevel)
-        }§r§f\nType: ${cmd.type}\n${
-            !cmd.settings.enabled
-                ? "§cDISABLED"
-                : "§aENABLED"
-        }${
-            !!player
-                ? cmd.testCanPlayerUseCommand(player)
-                    ? ""
-                    : "\n§cYou do not have permission to use this command!"
-                : ""
-        }`;
+                : "\n§cYou do not have permission to use this command!"
+            : ""}`;
 }
-
-export function getCommandHelpPageDebug(commandName: string, player?: Player | executeCommandPlayerW | Entity) {
-    let cmd = command.get(((commandName.slice(0, command.dp.length)==command.dp)&&(commandName.slice(command.dp.length, command.dp.length+1)!="\\"))?commandName.slice(1):commandName, "built-in");
+export function getCommandHelpPageDebug(commandName, player) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
     return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
-        : `§e${cmd.commandName}${
-            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
-        }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
-            commandsyntaxes[cmd.currentCommandName] ?? "missing"
-        )
-        .split("\n")
-        .join("§r\n- ")}${
-            !!!commandflags[cmd.currentCommandName]
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
+            .split("\n")
+            .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
+            ? ""
+            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            ? ""
+            : "\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
+            ? ""
+            : "§r§f\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings?.defaultSettings
+            ? ""
+            : "§r§f\nBuilt-In Raw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings.defaultSettings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}${!!!cmd.settings
+            ? ""
+            : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            ? "§cDISABLED"
+            : "§aENABLED"}${!!player
+            ? cmd.testCanPlayerUseCommand(player)
                 ? ""
-                : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")
-        }${
-            !!!cmd.command_version
-                ? ""
-                : "\nVersion: " + cmd.formatting_code + cmd.command_version
-        }${
-            !!!cmd.category
-                ? ""
-                : "§r§f\nCategories: " + JSON.stringify(cmd.categories)
-        }${
-            !!!cmd.settings?.defaultSettings
-                ? ""
-                : "§r§f\nBuilt-In Raw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings.defaultSettings).map(v=>v[0]=="formatting_code"?[v[0], v[1]["replaceAll"]("§", "\uF019")]:v)))
-        }${
-            !!!cmd.settings
-                ? ""
-                : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v=>v[0]=="formatting_code"?[v[0], v[1]["replaceAll"]("§", "\uF019")]:v)))
-        }§r§f\nType: ${cmd.type}\n${
-            !cmd.settings.enabled
-                ? "§cDISABLED"
-                : "§aENABLED"
-        }${
-            !!player
-                ? cmd.testCanPlayerUseCommand(player)
-                    ? ""
-                    : "\n§cYou do not have permission to use this command!"
-                : ""
-        }`;
+                : "\n§cYou do not have permission to use this command!"
+            : ""}`;
 }
-
-export function getCommandHelpPageCustomDebug(commandName: string, player?: Player | executeCommandPlayerW | Entity) {
-    let cmd = command.get(((commandName.slice(0, command.dp.length)==command.dp)&&(commandName.slice(command.dp.length, command.dp.length+1)!="\\"))?commandName.slice(1):commandName, "custom");
+export function getCommandHelpPageCustomDebug(commandName, player) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "custom");
     return !cmd.settings.isSaved
         ? `§cError: Unknown custom command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it.`
-        : `§e${cmd.commandName}${
-            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
-        }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
-            commandsyntaxes[cmd.currentCommandName] ?? "missing"
-        )
-        .split("\n")
-        .join("§r\n- ")}${
-            !!!commandflags[cmd.currentCommandName]
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
+            .split("\n")
+            .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
+            ? ""
+            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            ? ""
+            : "\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
+            ? ""
+            : "§r§f\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings
+            ? ""
+            : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}${!!!cmd
+            ? ""
+            : "§r§f\nRaw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            ? "§cDISABLED"
+            : "§aENABLED"}${!!player
+            ? cmd.testCanPlayerUseCommand(player)
                 ? ""
-                : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")
-        }${
-            !!!cmd.command_version
-                ? ""
-                : "\nVersion: " + cmd.formatting_code + cmd.command_version
-        }${
-            !!!cmd.category
-                ? ""
-                : "§r§f\nCategories: " + JSON.stringify(cmd.categories)
-        }${
-            !!!cmd.settings
-                ? ""
-                : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v=>v[0]=="formatting_code"?[v[0], v[1]["replaceAll"]("§", "\uF019")]:v)))
-        }${
-            !!!cmd
-                ? ""
-                : "§r§f\nRaw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd).map(v=>v[0]=="formatting_code"?[v[0], v[1]["replaceAll"]("§", "\uF019")]:v)))
-        }§r§f\nType: ${cmd.type}\n${
-            !cmd.settings.enabled
-                ? "§cDISABLED"
-                : "§aENABLED"
-        }${
-            !!player
-                ? cmd.testCanPlayerUseCommand(player)
-                    ? ""
-                    : "\n§cYou do not have permission to use this command!"
-                : ""
-        }`;
+                : "\n§cYou do not have permission to use this command!"
+            : ""}`;
 }
+//# sourceMappingURL=commands_documentation.js.map

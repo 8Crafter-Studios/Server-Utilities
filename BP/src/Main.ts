@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.20.0-development.67";
+export const format_version = "1.20.0-development.276";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -40,18 +40,18 @@ import "SculkTests.js";
 import "VibrationTests.js";
 import "EnchantmentTests.js";*//*
 import "Eval.js";*/
-import "Main/coordinates.js";
+import "Main/commands_documentation.js";
 import "Main/commands.js";
+import "Main/coordinates.js";
 import "Main/ban.js";
 import "Main/ui.js";
 import "Main/player_save.js";
 import "Main/spawn_protection.js";
-import "Main/chat";
-import "Main/command_utilities";
-import "Main/commands_documentation";
-import "Main/commands_list";
-import "Main/errors";
-import "Main/utilities";
+import "Main/chat.js";
+import "Main/command_utilities.js";
+import "Main/commands_list.js";
+import "Main/errors.js";
+import "Main/utilities.js";
 import "@minecraft/math.js";
 export const mainmetaimport = import.meta
 export const subscribedEvents = {} as {[eventName: string]: Function}
@@ -80,6 +80,10 @@ import *  as bans from "Main/ban";
 import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
+import *  as chat from "Main/chat";
+import *  as cmdutils from "Main/command_utilities";
+import *  as utils from "Main/utilities";
+import *  as errors from "Main/errors";
 import mcMath from "@minecraft/math.js";/*
 import { disableWatchdog } from "@minecraft/debug-utilities";*/
 import { listoftransformrecipes } from "transformrecipes";
@@ -2426,7 +2430,39 @@ export async function fillBlocksHFFGB(begin: Vector3, end: Vector3, dimension: D
                     v.dimension.getBlock(v).setType("minecraft:water")
                     counter++
                 } else if(v.dimension.getBlock(v).type.canBeWaterlogged==true&&!v.dimension.getBlock(v).isWaterlogged){
-                    v.dimension.getBlock(v).setType("minecraft:water")
+                    v.dimension.getBlock(v).setWaterlogged(true)
+                    counter++
+                }
+            }catch(e){if(e instanceof TypeError||e instanceof LocationInUnloadedChunkError){generatorProgress[id].containsUnloadedChunks = true}}
+        }, undefined, integrity))
+    return new Promise((resolve: (value: {counter: number, completionData: {done: boolean; startTick: number; endTick?: number; startTime: number; endTime?: number; containsUnloadedChunks?: boolean; }}) => void, reject) => {
+        function a(){if(generatorProgress[id]?.done!==true){system.run(() => {
+           a()
+        })}else{let returns = generatorProgress[id]; delete generatorProgress[id]; resolve({counter: counter, completionData: returns})}}
+        a()
+    })
+}; 
+/**
+ * Generates a drain fill. 
+ * @async
+ * @param {Vector3} begin The location of a corner of the area to flood. 
+ * @param {Vector3} end The location of the opposite corner of the area to flood. 
+ * @param {Dimension} dimension The dimension to generate the flood fill in. 
+ * @param options Optional extra options for the fill generation execution. 
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick. 
+ * @param integrity The integrity of the flood fill generation. 
+ * @returns A promise that resolves with the details of the flood fill generation once the flood fill generation is complete. 
+ */
+export async function fillBlocksHDFGB(begin: Vector3, end: Vector3, dimension: Dimension, options?: {minMSBetweenYields?: number}, integrity: number = 100){
+    let counter = 0; 
+    const id = generatorProgressIdGenerator()
+        system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields??2000, (v)=>{
+            try{
+                if(["minecraft:water", "minecraft:flowing_water", "minecraft:lava", "minecraft:flowing_lava"].includes(v.dimension.getBlock(v).typeId)){
+                    v.dimension.getBlock(v).setType("minecraft:air")
+                    counter++
+                } else if(v.dimension.getBlock(v).type.canBeWaterlogged==true&&v.dimension.getBlock(v).isWaterlogged){
+                    v.dimension.getBlock(v).setWaterlogged(false)
                     counter++
                 }
             }catch(e){if(e instanceof TypeError||e instanceof LocationInUnloadedChunkError){generatorProgress[id].containsUnloadedChunks = true}}

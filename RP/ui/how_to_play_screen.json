@@ -269,7 +269,10 @@
       { "andexdb_items_block_entities_category@how_to_play.andexdb_topic_category": { "$category": "Items/Blocks/Entities" } },
       { "andexdb_items_button@how_to_play.andexdb_items_button": { "$toggle_group_forced_index": 911 } },
       { "andexdb_blocks_button@how_to_play.andexdb_blocks_button": { "$toggle_group_forced_index": 912 } },
-      { "andexdb_entities_button@how_to_play.andexdb_entities_button": { "$toggle_group_forced_index": 913 } }
+      { "andexdb_entities_button@how_to_play.andexdb_entities_button": { "$toggle_group_forced_index": 913 } },
+
+      { "andexdb_commands_category@how_to_play.andexdb_topic_category": { "$category": "Commands" } },
+      { "andexdb_commands_button@how_to_play.andexdb_commands_button": { "$toggle_group_forced_index": 914 } }
     ]
   },
 
@@ -432,6 +435,8 @@
       { "andexdb_items_section@how_to_play.andexdb_items_section": {} },
       { "andexdb_blocks_section@how_to_play.andexdb_blocks_section": {} },
       { "andexdb_entities_section@how_to_play.andexdb_entities_section": {} },
+      
+      { "andexdb_commands_section@how_to_play.andexdb_commands_section": {} },
       {
         "section_contents_footer@how_to_play_common.section_contents_footer": {}
       }

@@ -1,6 +1,6 @@
 import { BlockVolume, CompoundBlockVolume, Player, type Vector3, system, world, Entity } from "@minecraft/server";
 import { ActionFormData, ModalFormData, ActionFormResponse, ModalFormResponse } from "@minecraft/server-ui";
-import { format_version, tryget, tryrun } from "Main";
+import { dimensions, format_version } from "Main";
 import { forceShow, mainMenu } from "./ui";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
@@ -18,7 +18,12 @@ import *  as bans from "Main/ban";
 import *  as uis from "Main/ui";
 import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
+import *  as chat from "./chat";
+import *  as cmdutils from "./command_utilities";
+import *  as utils from "./utilities";
+import *  as errors from "./errors";
 import mcMath from "@minecraft/math.js";
+import { tryget, tryrun } from "./utilities";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -88,7 +93,7 @@ export function editAreas(player: Player, prefix: string){
     form12345.textField("Identifier Name", "myArea"); 
     form12345.textField("From", "x1, y1, z1"); 
     form12345.textField("To", "x2, y2, z2"); 
-    form12345.dropdown("Dimension", ["Overworld", "Nether", "The End"], cmds.dimensions.indexOf(player.dimension)); 
+    form12345.dropdown("Dimension", ["Overworld", "Nether", "The End"], dimensions.indexOf(player.dimension)); 
     form12345.dropdown("Mode", ["Protection", "Anti-Protection"]); 
     form12345.textField("Icon Path (Optional)", "text"); 
     form12345.submitButton("Add")

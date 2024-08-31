@@ -1,5 +1,3 @@
-import type { command_formats_type_list } from "./commands";
-
 export const commands = [
     {
         "type": "built-in",
@@ -5290,4 +5288,5 @@ export const commands = [
         ],
         "commandSettingsId": "built-inCommandSettings:wset"
     }
-] as {type: "built-in"|"custom"|"unknown"; requiredTags: string[]; formatting_code: string; commandName: string; escregexp: {v: string; f?: string; }; formats: command_formats_type_list; command_version: string; description: string; commandSettingsId: string; aliases?: {commandName: string, escregexp?: {v?: string, f?: string}}[]; category?: string|string[]; deprecated?: boolean; functional?: boolean}[]
+];
+//# sourceMappingURL=commands_list.js.map

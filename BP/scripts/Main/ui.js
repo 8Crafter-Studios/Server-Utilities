@@ -1,6 +1,6 @@
 import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, GameRules, GameRule, StructureSaveMode } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version, srun, dimensionTypeDisplayFormatting, config, cullEmpty, tryget } from "Main";
+import { getUICustomForm, format_version, srun, dimensionTypeDisplayFormatting, config, dimensionsd } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -20,8 +20,16 @@ import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
+import * as chat from "./chat";
+import * as cmdutils from "./command_utilities";
+import * as utils from "./utilities";
+import * as errors from "./errors";
 import mcMath from "@minecraft/math.js";
-import { chatCommands, chatMessage, chatSend, command, commandSettings, command_settings_format_version, commands, commands_format_version, dimensions, dimensionsb, dimensionsd, evaluateParameters, executeCommandPlayerW, generateNBTFile, generateNBTFileB, generateNBTFileD, overworld } from "Main/commands";
+import { chatCommands, command, commandSettings, command_settings_format_version, commands_format_version, evaluateParameters, executeCommandPlayerW, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
+import { chatMessage, chatSend } from "./chat";
+import { targetSelectorAllListC } from "./command_utilities";
+import { cullEmpty, JSONParse, JSONStringify, tryget } from "./utilities";
+import { commands } from "./commands_list";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -1411,7 +1419,7 @@ export function mapArtGenerator(sourceEntitya) {
         form.textField("Offset x", "integer", "0");
         form.textField("Offset z", "integer", "0");
         form.dropdown("Alignment Mode", ["Chunk Grid", "Map Grid"], 1);
-        form.dropdown("Dimension", dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.dropdown("Dimension", main.dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), main.dimensions.indexOf(sourceEntity.dimension));
         form.submitButton("Generate Map Art");
         forceShow(form, sourceEntity).then(ra => {
             let r = ra;
@@ -1428,7 +1436,7 @@ export function mapArtGenerator(sourceEntitya) {
             //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
             //console.warn(JSONStringify(Object.assign(mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from), {dimension: dimensions[dimension as number]??sourceEntity.dimension, y: (dimensions[dimension as number]??sourceEntity.dimension).heightRange.max-((newsnbta.size[1]??1) as number)})))
             //console.warn(JSONStringify(newsnbta))
-            generateNBTFileD(Object.assign(mcMath.Vector3Utils.add({ x: Number(offsetx), y: 0, z: Number(offsetz) }, coords.chunkIndexToBoundingBox({ x: (alignmentmode == 1 ? ((Math.floor((Number(chunkx) / 8) + 0.5) * 8 - 4)) : Number(chunkx)), y: (alignmentmode == 1 ? ((Math.floor((Number(chunky) / 8) + 0.5) * 8) - 4) : Number(chunky)) }).from), { dimension: dimensions[dimension] ?? sourceEntity.dimension, y: (dimensions[dimension] ?? sourceEntity.dimension).heightRange.max - (newsnbta.size[1] ?? 1) }), newsnbta, sourceEntity);
+            generateNBTFileD(Object.assign(mcMath.Vector3Utils.add({ x: Number(offsetx), y: 0, z: Number(offsetz) }, coords.chunkIndexToBoundingBox({ x: (alignmentmode == 1 ? ((Math.floor((Number(chunkx) / 8) + 0.5) * 8 - 4)) : Number(chunkx)), y: (alignmentmode == 1 ? ((Math.floor((Number(chunky) / 8) + 0.5) * 8) - 4) : Number(chunky)) }).from), { dimension: main.dimensions[dimension] ?? sourceEntity.dimension, y: (main.dimensions[dimension] ?? sourceEntity.dimension).heightRange.max - (newsnbta.size[1] ?? 1) }), newsnbta, sourceEntity);
             //console.warn(JSONStringify([mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from), coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from]))
             // Do something
         }).catch(e => {
@@ -1449,7 +1457,7 @@ export function mapArtGeneratorB(sourceEntitya) {
         form.textField("To use this generator you must first use something like cubical.xyz to convert an image to a minecraft structure, then save that structure as a .nbt file, then convert that .nbt file to SNBT format, then paste the SNBT into the text box below. \nNote: When pasting into the text box the game might freeze for a few minutes until it finishes pasting, and then it will unfreeze. \nSNBT of the .nbt file", "SNBT Data");
         form.textField("Chunk Index x", "integer", String(Math.floor(coords.getChunkIndex(sourceEntity.location).x / 8)));
         form.textField("Chunk Index y", "integer", String(Math.floor(coords.getChunkIndex(sourceEntity.location).y / 8)));
-        form.dropdown("Dimension", dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.dropdown("Dimension", main.dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), main.dimensions.indexOf(sourceEntity.dimension));
         form.submitButton("Generate Map Art");
         forceShow(form, sourceEntity).then(ra => {
             let r = ra;
@@ -1464,7 +1472,7 @@ export function mapArtGeneratorB(sourceEntitya) {
             }
             let newsnbta = JSON.parse(snbt.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*([\"\'\`funIN\-0-9\{\[])/g, '"$2":$4'));
             //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
-            generateNBTFileB(Object.assign(coords.chunkIndexToBoundingBox({ x: chunkx, y: chunky }).from, { dimension: dimensions[dimension] ?? sourceEntity.dimension, y: (dimensions[dimension] ?? sourceEntity.dimension).heightRange.max - (newsnbta.size[1] ?? 1) }), newsnbta);
+            generateNBTFileB(Object.assign(coords.chunkIndexToBoundingBox({ x: chunkx, y: chunky }).from, { dimension: main.dimensions[dimension] ?? sourceEntity.dimension, y: (main.dimensions[dimension] ?? sourceEntity.dimension).heightRange.max - (newsnbta.size[1] ?? 1) }), newsnbta);
             // Do something
         }).catch(e => {
             console.error(e, e.stack);
@@ -1486,7 +1494,7 @@ export function nbtStructureLoader(sourceEntitya) {
         form.textField("spawn position x", "integer", String(sourceEntity.location.x));
         form.textField("spawn position y", "integer", String(sourceEntity.location.y));
         form.textField("spawn position z", "integer", String(sourceEntity.location.z));
-        form.dropdown("Dimension", dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.dropdown("Dimension", main.dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), main.dimensions.indexOf(sourceEntity.dimension));
         form.submitButton("Load Java NBT Structure");
         forceShow(form, sourceEntity).then(ra => {
             let r = ra;
@@ -1501,7 +1509,7 @@ export function nbtStructureLoader(sourceEntitya) {
             }
             let newsnbta = JSON.parse(snbt.replace(/(?<=[,\{][\s\n]*?)(['"])?(?<vb>[a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*(?<vd>false|true|undefined|NULL|Infinity|-Infinity|[\-\+]?[0-9]+|"(?:[^"]|(?<=([^\\])(\\\\)*?\\)")*"|'(?:[^']|(?<=([^\\])(\\\\)*?\\)')*')(?=[\s\n]*?[,\}])/g, '"$<vb>":$<vd>'));
             //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
-            generateNBTFileD({ dimension: dimensions[dimension] ?? sourceEntity.dimension, x: (Number(x) ?? sourceEntity.location.x), y: (Number(y) ?? sourceEntity.location.y), z: (Number(z) ?? sourceEntity.location.z) }, newsnbta, sourceEntity);
+            generateNBTFileD({ dimension: main.dimensions[dimension] ?? sourceEntity.dimension, x: (Number(x) ?? sourceEntity.location.x), y: (Number(y) ?? sourceEntity.location.y), z: (Number(z) ?? sourceEntity.location.z) }, newsnbta, sourceEntity);
             // Do something
         }).catch(e => {
             console.error(e, e.stack);

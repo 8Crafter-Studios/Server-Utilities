@@ -46,6 +46,11 @@ bans
 uis
 playersave
 spawnprot
+transformrecipes
+chat
+cmdutils
+utils
+errors
 mcMath
 export function getArrayElementProperty(array: any[], property: string){array.forEach((v, i, a)=>{array[i]=eval(`v.${property}`)}); return array}
 export function combineObjects(obj1: object, obj2: object){return Object.fromEntries(Object.entries(obj1).concat(Object.entries(obj2)))}
