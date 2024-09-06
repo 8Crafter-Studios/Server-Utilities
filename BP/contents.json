@@ -199,6 +199,9 @@
          "path" : "structures/PathFindingTests/carpet_walk_around.mcstructure"
       },
       {
+         "path" : "scripts/Main/commands_list.js.map"
+      },
+      {
          "path" : "LICENSE.txt"
       },
       {
@@ -299,6 +302,9 @@
       },
       {
          "path" : "recipes/smithing_table/189minecraft;bedrock.json"
+      },
+      {
+         "path" : "scripts/Main/commands_list.js"
       },
       {
          "path" : "depricated/recipes/smithing_table/45diamond_hoe.json"
@@ -1244,15 +1250,6 @@
       },
       {
          "path" : "node_modules/@minecraft/server/README.md"
-      },
-      {
-         "path" : "recipes/smithing_table/1568minecraft;redstone.json"
-      },
-      {
-         "path" : "structures/WardenTests/warden_sniff_and_kill_player_before_mob.mcstructure"
-      },
-      {
-         "path" : "node_modules/@minecraft/server/tests.ts"
       },
       {
          "path" : "recipes/smithing_table/1200minecraft;log2.json"
@@ -2632,6 +2629,18 @@
          "path" : "recipes/smithing_table/30minecraft;andesite.json"
       },
       {
+         "path" : "recipes/smithing_table/1065minecraft;lapis_lazuli.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1963minecraft;wolf_spawn_egg.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1344minecraft;ominous_trial_key.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1214minecraft;magenta_wool.json"
+      },
+      {
          "path" : "structures/RedstoneTests/itemframe_override_bedrock.mcstructure"
       },
       {
@@ -2645,18 +2654,6 @@
       },
       {
          "path" : "recipes/smithing_table/113minecraft;arrow.72.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1065minecraft;lapis_lazuli.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1963minecraft;wolf_spawn_egg.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1344minecraft;ominous_trial_key.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1214minecraft;magenta_wool.json"
       },
       {
          "path" : "recipes/smithing_table/1258minecraft;mooshroom_spawn_egg.json"
@@ -3445,6 +3442,15 @@
          "path" : "recipes/smithing_table/1237minecraft;mangrove_wall_sign.json"
       },
       {
+         "path" : "recipes/smithing_table/1880minecraft;warped_standing_sign.json"
+      },
+      {
+         "path" : "structures/DoorTests/door_maze.mcstructure"
+      },
+      {
+         "path" : "recipes/smithing_table/1676minecraft;splash_potion.6.json"
+      },
+      {
          "path" : "recipes/smithing_table/1238minecraft;mangrove_wood.json"
       },
       {
@@ -3479,6 +3485,9 @@
       },
       {
          "path" : "recipes/smithing_table/1863minecraft;warden_spawn_egg.json"
+      },
+      {
+         "path" : "src/Main/utilities.ts"
       },
       {
          "path" : "recipes/smithing_table/1533minecraft;rabbit_foot.json"
@@ -4573,6 +4582,9 @@
          "path" : "recipes/smithing_table/1567minecraft;red_wool.json"
       },
       {
+         "path" : "recipes/smithing_table/1568minecraft;redstone.json"
+      },
+      {
          "path" : "recipes/smithing_table/1569minecraft;redstone_block.json"
       },
       {
@@ -4595,6 +4607,9 @@
       },
       {
          "path" : "recipes/smithing_table/1579minecraft;respawn_anchor.json"
+      },
+      {
+         "path" : "scripts/Main/command_utilities.js"
       },
       {
          "path" : "recipes/smithing_table/434minecraft;compound.34.json"
@@ -4802,15 +4817,6 @@
       },
       {
          "path" : "recipes/smithing_table/373minecraft;clock.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1880minecraft;warped_standing_sign.json"
-      },
-      {
-         "path" : "structures/DoorTests/door_maze.mcstructure"
-      },
-      {
-         "path" : "recipes/smithing_table/1676minecraft;splash_potion.6.json"
       },
       {
          "path" : "recipes/smithing_table/1678minecraft;splash_potion.8.json"
@@ -6109,6 +6115,9 @@
          "path" : "structures/BlockTests/dispenser_light_candles.mcstructure"
       },
       {
+         "path" : "scripts/Main/utilities.js"
+      },
+      {
          "path" : "recipes/smithing_table/374minecraft;coal.json"
       },
       {
@@ -6448,6 +6457,9 @@
          "path" : "recipes/smithing_table/530minecraft;dark_oak_hanging_sign.json"
       },
       {
+         "path" : "scripts/Main/utilities.js.map"
+      },
+      {
          "path" : "recipes/smithing_table/532minecraft;dark_oak_log.json"
       },
       {
@@ -6713,6 +6725,9 @@
       },
       {
          "path" : "recipes/smithing_table/670minecraft;element_34.json"
+      },
+      {
+         "path" : "scripts/Main/command_utilities.js.map"
       },
       {
          "path" : "recipes/smithing_table/671minecraft;element_35.json"
@@ -7342,6 +7357,9 @@
          "path" : "recipes/smithing_table/992minecraft;iron_bars.json"
       },
       {
+         "path" : "scripts/Main/chat.js.map"
+      },
+      {
          "path" : "recipes/smithing_table/993minecraft;iron_block.json"
       },
       {
@@ -7435,16 +7453,37 @@
          "path" : "scripts/ItemTests.js"
       },
       {
+         "path" : "scripts/Main/chat.js"
+      },
+      {
          "path" : "scripts/Main/commands.js"
       },
       {
          "path" : "scripts/Main/commands.js.map"
       },
       {
+         "path" : "scripts/Main/commands_documentation.js"
+      },
+      {
+         "path" : "structures/VibrationTests/event_swim_boat_still.mcstructure"
+      },
+      {
+         "path" : "scripts/Main/commands_documentation.js.map"
+      },
+      {
          "path" : "scripts/Main/coordinates.js"
       },
       {
          "path" : "scripts/Main/coordinates.js.map"
+      },
+      {
+         "path" : "scripts/Main/errors.js"
+      },
+      {
+         "path" : "src/Main/commands_documentation.ts"
+      },
+      {
+         "path" : "scripts/Main/errors.js.map"
       },
       {
          "path" : "scripts/Main/player_save.js"
@@ -7505,6 +7544,18 @@
       },
       {
          "path" : "src/Main/ban.ts"
+      },
+      {
+         "path" : "src/Main/chat.ts"
+      },
+      {
+         "path" : "src/Main/commands_list.ts"
+      },
+      {
+         "path" : "src/Main/command_utilities.ts"
+      },
+      {
+         "path" : "src/Main/errors.ts"
       },
       {
          "path" : "structures/AllayTests/allay_pickup_item.mcstructure"
@@ -8116,9 +8167,6 @@
          "path" : "structures/VibrationTests/event_splash.mcstructure"
       },
       {
-         "path" : "structures/VibrationTests/event_swim_boat_still.mcstructure"
-      },
-      {
          "path" : "structures/VibrationTests/event_swim_still.mcstructure"
       },
       {
@@ -8126,6 +8174,9 @@
       },
       {
          "path" : "structures/WardenTests/warden_path_lava.mcstructure"
+      },
+      {
+         "path" : "structures/WardenTests/warden_sniff_and_kill_player_before_mob.mcstructure"
       },
       {
          "path" : "structures/WardenTests/warden_sniff_and_kill_static_entity.mcstructure"

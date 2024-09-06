@@ -4,7 +4,7 @@ import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates,
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
-import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings } from "./ui.js";
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
 import { JSONParse, JSONParseOld, JSONStringify, JSONStringifyOld, arrayify, asend, bsend, catchtry, cerror, cinfo, clamp24HoursTo12Hours, clog, utilsmetaimport, combineObjects, csend, cullEmpty, cullNull, cullUndefined, customModulo, cwarn, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, pasend, pbsend, pcsend, perror, psend, roundPlaceNumberObject, send, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, tryget, tryrun, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
 import { cmdutilsmetaimport,targetSelector,targetSelectorAllListB,targetSelectorAllListC,targetSelectorAllListD,targetSelectorAllListE,targetSelectorB } from "./command_utilities";
@@ -257,9 +257,36 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
     let newMessage = eventData.message
     let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0]
     let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
-    let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!switchTest.match((command.get(v.commandName, "built-in").regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!command.get(v.commandName, "built-in")?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp)))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))/*
+    let commanda =
+        commands.find(
+            (v) =>
+                newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) &&
+                command.get(v.commandName, "built-in").settings.enabled &&
+                !!switchTest.match(command.get(v.commandName, "built-in").regexp) &&
+                command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)
+        ) ??
+        commands.find(
+            (v) =>
+                newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) &&
+                command.get(v.commandName, "built-in").settings.enabled &&
+                !!command.get(v.commandName, "built-in")?.aliases?.find?.((vd) => !!switchTest.match(vd.regexp)) &&
+                command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)
+        ) ??
+        command
+            .getCustomCommands()
+            .find(
+                (v) =>
+                    (v.settings.enabled &&
+                        (v.customCommandPrefix == undefined || v.customCommandPrefix == "") &&
+                        !!switchTest.match(v.regexp)) ||
+                    (v.customCommandPrefix != "" &&
+                        !!v.customCommandPrefix &&
+                        newMessage.split(" ")[0].startsWith(v.customCommandPrefix) &&
+                        !!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp) &&
+                        command.get(v.commandName, "custom").testCanPlayerUseCommand(player))
+            );/*
     let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&!!switchTest.match(command.get(v.commandName, "built-in").regexp)))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
-    try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatMessages"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("chatMessageNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + player.name + "]: " + newMessage); }catch{}})}catch{}
+    try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatMessages"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("chatMessageNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + player.name + "]: " + newMessage); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getAllChatMessagesNotificationSound.soundId, {pitch: pn.getAllChatMessagesNotificationSound.pitch, volume: pn.getAllChatMessagesNotificationSound.volume}))}catch{}})}catch{}
     if(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(true)}
     if(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(false, false, 0, true)}
     if(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") != false){

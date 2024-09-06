@@ -182,10 +182,13 @@ export var commanddescriptions;
     commanddescriptions["\\\\generates2d"] = "Generates a 2d shape with the specified step according to a formula in the selected area, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, cx: center relative x, cy: center relative y, cz: center relative z, x: center and axis relative x, y: center and axis relative y, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ";
     commanddescriptions["\\\\stack"] = "Stacks the specified number of copies of the step area on top of the selected area. ";
     commanddescriptions["\\\\selectmode"] = "Sets the selection mode for the item you are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. ";
+    commanddescriptions["\\\\itfill"] = "Fills all or parts of the selected area with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. ";
+    commanddescriptions["\\\\idtfill"] = "Fills all or parts of the selected area with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. ";
     commanddescriptions["\\\\replace"] = "Replaces the blocks between the selected area with the selected block type. ";
     commanddescriptions["\\\\walls"] = "Replaces the walls of the selected area with the selected block type. ";
     commanddescriptions["\\\\set"] = "Sets the blocks between the selected area to the selected block type. ";
     commanddescriptions["\\\\seti"] = "Sets the blocks between the selected area to the selected block type with the specified integrity. ";
+    commanddescriptions["\\\\drain"] = "Drains the blocks between the selected area. ";
     commanddescriptions["\\\\flood"] = "Floods the blocks between the selected area. ";
     commanddescriptions["\\\\remove"] = "Remove the blocks in the selected area. ";
     commanddescriptions["\\\\sphere"] = "Generates a sphere in the selected area. ";
@@ -696,23 +699,23 @@ ${command.dp}snapshot list`,
     "\\\\hpos1": `${command.dp}\\hpos1`,
     "\\\\hpos2": `${command.dp}\\hpos2`,
     "\\\\chunk": `${command.dp}\\chunk`,
-    "\\\\sphere": `${command.dp}\\sphere <radius: float> <blockPattern: BlockPattern> [mask: mask]`,
-    "\\\\hsphere": `${command.dp}\\hsphere <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: mask]`,
-    "\\\\cone": `${command.dp}\\cone <radius: float> <blockPattern: BlockPattern> [mask: mask]`,
-    "\\\\hcone": `${command.dp}\\hcone <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\sphere": `${command.dp}\\sphere <radius: float> <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
+    "\\\\hsphere": `${command.dp}\\hsphere <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
+    "\\\\cone": `${command.dp}\\cone <radius: float> <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
+    "\\\\hcone": `${command.dp}\\hcone <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
     "\\\\remove": `${command.dp}\\remove`,
-    "\\\\walls": `${command.dp}\\walls <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\walls": `${command.dp}\\walls <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
     "\\\\set": `${command.dp}\\set <blockPattern: BlockPattern>`,
     "\\\\seti": `${command.dp}\\seti <integrity: number> <blockPattern: BlockPattern>`,
     "\\\\flood": `${command.dp}\\flood`,
     "\\\\drain": `${command.dp}\\drain`,
     "\\\\generate": `${command.dp}\\generate [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
-    "\\\\generatef": `${command.dp}\\generatek [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
+    "\\\\generatef": `${command.dp}\\generatef [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
     "\\\\generatejs": `${command.dp}\\generatejs <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
     "\\\\generatecallback": `${command.dp}\\generatecallback <blockPattern: BlockPattern> <callback: (dimensionLocation, worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>any>`,
     "\\\\generates": `${command.dp}\\generates <step: float> <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
     "\\\\generate2d": `${command.dp}\\generate2d [-sr] <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
-    "\\\\generatek2d": `${command.dp}\\generate2d [-sr] <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
+    "\\\\generatef2d": `${command.dp}\\generatef2d [-sr] <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
     "\\\\generatejs2d": `${command.dp}\\generatejs2d <axis: x|y|z> <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, rotationRelativeX, rotationRelativeY, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
     "\\\\generatecallback2d": `${command.dp}\\generatecallback2d <axis: x|y|z> <blockPattern: BlockPattern> <callback: (dimensionLocation, worldX, worldY, worldZ, relativeX, relativeY, relativeZ, rotationRelativeX, rotationRelativeY, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>any>`,
     "\\\\generates2d": `${command.dp}\\generates2d <step: float> <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
@@ -878,7 +881,8 @@ b: don't include blocks
 x: mirror structure x axis
 z: mirror structure z axis`,
     "\\\\undo": `k: don't remove the undo save point after finishing the undo
-t: spawn in a ticking area before running the undo command`
+t: spawn in a ticking area before running the undo command
+h: makes the copied structure be pasted at your current location instead of the selected location`
 };
 export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .align - §oCenters you on the x and z axis on the block you are currently at. §r
@@ -905,7 +909,6 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .dupeitem - §oDuplicates teh item in your hand. §r
 .einvsee - §oDisplays the contents of the specified entity's inventory. §r
 .ecinvsee - §oScans a player's ender chest and displays the contents of it. §r
-.ecinvseec - §oScans a player's ender chest and displays the contents of it. §r
 .eval - §oRuns the specified JavaScript Script/ScriptAPI Code. §r
 .execute - §oExecutes a command on behalf of one or more entities. §r
 .extinguish - §oExtinguishes fire in the specified radius. §r
@@ -931,9 +934,6 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .hset - §oSets a hotbar preset. §r
 .idtfill - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. §r
 .ifill - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. §r
-.ifillb - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. §r
-.ifillc - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. §r
-.igfill - §oFills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. §r
 .ignite - §oIgnites blocks in the specified radius. §r
 .invfillillegal - §oFills a player's inventory with illegal items. §r
 .invfill - §oFills a player's inventory with items based on the provided itemJSON. §r
@@ -945,10 +945,8 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .invshuffle - §oShuffles the inventory of the specified player§r
 .invswap - §oSwaps the inventories of 2 players. §r
 .invswapb - §oSwaps the inventories of 2 players. §r
-.iogfill - §oFills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. §r
 .item - §oSuper advanced item modification command. §r
 .itfill - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r
-.itfillc - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r
 .kick - §oKicks one or more players from the server. §r
 .listbans - §oLists all bans. §r
 .listidbans - §oLists all id bans. §r
@@ -977,9 +975,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .roie - §oRemoves all enchantment types from an item except for the item types specified. §r
 .run - §oRuns the specified command. §r
 .scanenderchest - §oScans a player's ender chest and displays the contents of it. §r
-.scanenderchestc - §oScans a player's ender chest and displays the contents of it. §r
 .scnendchst - §oScans a player's ender chest and displays the contents of it. §r
-.scnendchstc - §oScans a player's ender chest and displays the contents of it. §r
 .sendui - §oOpens up a menu where you can type a chat message to send with no character limits. §r
 .setitem - §oReplaces the item stack in the specified inventory slot with an item stack with a specified type and stack size. §r
 .setitemb - §oReplaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. §r
@@ -1024,8 +1020,8 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .chunkban - §oFills a shulker box with the item in your first hotbar slot and put that shulker box into your first hotbar slot, and repeats this the specified number of times, this can be used to create a chunk ban. §r
 §aWorldEdit Commands: §r
 .brush - §oSets the held item as the specified brush type or unbinds the brush from the held item. §r
-.butcher - §rKill all or nearby mobs. §r
-.butcherdespawn - §rDespawn all or nearby mobs. §r
+.butcher - §oKill all or nearby mobs. §r
+.butcherdespawn - §oDespawn all or nearby mobs. §r
 .selectioninfo - §oDisplays info about the current selection. §r
 .selinfo - §oDisplays info about the current selection. §r
 .seli - §oDisplays info about the current selection. §r
@@ -1045,17 +1041,16 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .\\offset - §oOffsets the pos1 and pos2 locations of the selected area. §r
 .\\generate - §oGenerates a 3d shape according to a formula in the selected area. §r
 .\\generatef - §oGenerates a 3d shape according to a formula in the selected area. §r
-.\\generatejs - §oGenerates a 3d shape according to the outputs of a JavaScript function in the selected area. §r
-.\\generatecallback - §oExecutes the specified callback JavaScript function for each block in the selected area. §r
 .\\generates - §oGenerates a 3d shape with the specified step according to a formula in the selected area. §r
-.\\generate2d - §oGenerates a 2d shape according to a formula in the selected area. §r
-.\\generates2d - §oGenerates a 2d shape with the specified step according to a formula in the selected area. §r
 .\\stack - §oStacks the specified number of copies of the selected area on top of the selected area. §r
 .\\selectmode - §oSets the selection mode for the item your are holding, this is used to pick where to set pos1/pos2 to if the held item is a selection tool, or if the \\brush command was used to make the held item into a custom brush then it will be used to determine what block the brush will target. §r
+.\\itfill - §oFills all or parts of the selected area with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r
+.\\idtfill - §oFills all or parts of the selected area with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. §r
 .\\replace - §oReplaces the blocks between the selected area with the selected block type. §r
 .\\walls - §oReplaces the walls of the selected area with the selected block type. §r
 .\\set - §oSets the blocks between the selected area to the selected block type. §r
 .\\seti - §oSets the blocks between the selected area to the selected block type with the specified integrity. §r
+.\\drain - §oDrains the blocks between the selected area. §r
 .\\flood - §oFloods the blocks between the selected area. §r
 .\\remove - §oRemove the blocks in the selected area. §r
 .\\sphere - §oGenerates a sphere in the selected area. §r
@@ -1068,10 +1063,25 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .tint - §oTints the specified player's skin the specified color, or makes it glow, and optionally adjusts the opacity of their skin. §r§6
 .tps - §oDisplays the TPS. §r§6
 .visualscale - §oSets your visual scale (the one that does not actually change your hitbox size) to the specified amount. §r§6
-.visualscaleenabled - §oEnables or diables your visual scaling. `;
+.visualscaleenabled - §oEnables or diables your visual scaling. 
+§7Deprecated Commands: §8
+.ecinvseec - §oScans a player's ender chest and displays the contents of it. §r§8
+.ifillb - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. §r§8
+.ifillc - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. §r§8
+.igfill - §oFills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. §r§8
+.iogfill - §oFills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. §r§8
+.itfillc - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r§8
+.scanenderchestc - §oScans a player's ender chest and displays the contents of it. §r§8
+.scnendchstc - §oScans a player's ender chest and displays the contents of it. §r§8`;
+export const helpUpcomingCommandChatCommandsList = `§2Chat Commands List§r
+.\\generatejs - §oGenerates a 3d shape according to the outputs of a JavaScript function in the selected area. §r
+.\\generatecallback - §oExecutes the specified callback JavaScript function for each block in the selected area. §r
+.\\generate2d - §oGenerates a 2d shape according to a formula in the selected area. §r
+.\\generates2d - §oGenerates a 2d shape with the specified step according to a formula in the selected area. §r
+.\\hcone - §oGenerates a hollow cone in the selected area. §r`;
 export function getCommandHelpPage(commandName, player) {
     let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
-    return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
+    return (!!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version) || cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
         : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
             .split("\n")
@@ -1081,7 +1091,11 @@ export function getCommandHelpPage(commandName, player) {
             ? ""
             : "\nVersion: " + cmd.formatting_code + cmd.command_version}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
             ? "§cDISABLED"
-            : "§aENABLED"}${!!player
+            : "§aENABLED"}${!cmd.isDeprecated
+            ? ""
+            : "\n§cThis command is deprecated!"}${cmd.isFunctional
+            ? ""
+            : "\n§cThis command is not functional!"}${!!player
             ? cmd.testCanPlayerUseCommand(player)
                 ? ""
                 : "\n§cYou do not have permission to use this command!"
@@ -1089,7 +1103,7 @@ export function getCommandHelpPage(commandName, player) {
 }
 export function getCommandHelpPageExtra(commandName, player) {
     let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
-    return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
+    return (!!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version) || cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
         : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
             .split("\n")
@@ -1109,7 +1123,11 @@ export function getCommandHelpPageExtra(commandName, player) {
             ? ""
             : "§r§f\nRequired Permission Level: " + JSON.stringify(cmd.settings.requiredPermissionLevel)}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
             ? "§cDISABLED"
-            : "§aENABLED"}${!!player
+            : "§aENABLED"}${!cmd.isDeprecated
+            ? ""
+            : "\n§cThis command is deprecated!"}${cmd.isFunctional
+            ? ""
+            : "\n§cThis command is not functional!"}${!!player
             ? cmd.testCanPlayerUseCommand(player)
                 ? ""
                 : "\n§cYou do not have permission to use this command!"
@@ -1117,7 +1135,7 @@ export function getCommandHelpPageExtra(commandName, player) {
 }
 export function getCommandHelpPageDebug(commandName, player) {
     let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
-    return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
+    return (!!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version) || cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
         : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
             .split("\n")
@@ -1133,7 +1151,39 @@ export function getCommandHelpPageDebug(commandName, player) {
             ? ""
             : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
             ? "§cDISABLED"
-            : "§aENABLED"}${!!player
+            : "§aENABLED"}${!cmd.isDeprecated
+            ? ""
+            : "\n§cThis command is deprecated!"}${cmd.isFunctional
+            ? ""
+            : "\n§cThis command is not functional!"}${!!player
+            ? cmd.testCanPlayerUseCommand(player)
+                ? ""
+                : "\n§cYou do not have permission to use this command!"
+            : ""}`;
+}
+export function getCommandHelpPageDebugPlus(commandName, player) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
+    return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version
+        ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
+            .split("\n")
+            .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
+            ? ""
+            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            ? ""
+            : "\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
+            ? ""
+            : "§r§f\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings?.defaultSettings
+            ? ""
+            : "§r§f\nBuilt-In Raw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings.defaultSettings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}${!!!cmd.settings
+            ? ""
+            : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            ? "§cDISABLED"
+            : "§aENABLED"}${!cmd.isDeprecated
+            ? ""
+            : "\n§cThis command is deprecated!"}${cmd.isFunctional
+            ? ""
+            : "\n§cThis command is not functional!"}${!!player
             ? cmd.testCanPlayerUseCommand(player)
                 ? ""
                 : "\n§cYou do not have permission to use this command!"

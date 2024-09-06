@@ -1,10 +1,10 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, type BlockComponentTypeMap } from "@minecraft/server";
-import { getTopSolidBlock, arrayToElementList, debugAction, interactable_block, interactable_blockb, customFormUIElement, strToCustomFormUIElement/*,format_version*/, getUICustomForm, worldPlayers, timeZones, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, SemVerString, crashEnabled, SemVerMatcher, SemVerValidator, dimensions, dimensionsb, dimensionsc, dimensionsd, dimensionse, fillBlocksHHFGB, fillBlocksHISGGB, fillBlocksHOFGB, fillBlocksHSGGB, flatPath, getGroundSolidBlock, getNextTopSolidBlockAbovePosition, getNextTopSolidBlockBelowPosition, getPathInObject, nether, overworld, scanForBlockType, subscribedEvents, tempSavedVariables, the_end, v3Multiply, fillBlocksE, fillBlocksF, fillBlocksHDFGB } from "../Main";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, type BlockComponentTypeMap, EntityComponentTypes } from "@minecraft/server";
+import { getTopSolidBlock, arrayToElementList, debugAction, interactable_block, interactable_blockb, customFormUIElement, strToCustomFormUIElement/*,format_version*/, getUICustomForm, worldPlayers, timeZones, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, SemVerString, crashEnabled, SemVerMatcher, SemVerValidator, dimensions, dimensionsb, dimensionsc, dimensionsd, dimensionse, fillBlocksHHFGB, fillBlocksHISGGB, fillBlocksHOFGB, fillBlocksHSGGB, flatPath, getGroundSolidBlock, getNextTopSolidBlockAbovePosition, getNextTopSolidBlockBelowPosition, getPathInObject, nether, overworld, scanForBlockType, subscribedEvents, tempSavedVariables, the_end, v3Multiply, fillBlocksE, fillBlocksF, fillBlocksHDFGB, fillBlocksHFGBM } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
-import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings } from "./ui.js";
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
 import { JSONParse, JSONParseOld, JSONStringify, JSONStringifyOld, arrayify, asend, bsend, catchtry, cerror, cinfo, clamp24HoursTo12Hours, clog, utilsmetaimport, combineObjects, csend, cullEmpty, cullNull, cullUndefined, customModulo, cwarn, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, pasend, pbsend, pcsend, perror, psend, roundPlaceNumberObject, send, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, tryget, tryrun, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
@@ -34,7 +34,7 @@ import mcMath from "@minecraft/math.js";
 import { uiManager, UIManager } from "@minecraft/server-ui";
 import { commands } from "./commands_list";
 import { ExpireError, TimeoutError } from "./errors";
-import { getCommandHelpPage, getCommandHelpPageExtra, getCommandHelpPageDebug, getCommandHelpPageCustomDebug, helpCommandChatCommandsList } from "./commands_documentation";
+import { getCommandHelpPage, getCommandHelpPageExtra, getCommandHelpPageDebug, getCommandHelpPageCustomDebug, helpCommandChatCommandsList, getCommandHelpPageDebugPlus } from "./commands_documentation";
 export const cmdsmetaimport = import.meta
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer
@@ -651,7 +651,9 @@ export class command{
         this.category = command.category??commandtest?.category; 
         this.categories = sOSATSA(command.category??commandtest?.category??[]); 
     }
-    get isHidden(){return false}
+    get isHidden(){return this?.settings?.defaultSettings?.hidden??false}
+    get isDeprecated(){return this?.settings?.defaultSettings?.deprecated??false}
+    get isFunctional(){return this.type=="custom"?true:this?.settings?.defaultSettings?.functional??false}
     get releaseStage(){return tryget(()=>SemVerString.fromString(String(this.command_version)).pre_release_stage)}
     get regexp(){return new RegExp(this?.escregexp?.v ?? "", this?.escregexp?.f)}
     get currentregexp(){return new RegExp(this?.currentescregexp?.v ?? "", this?.currentescregexp?.f)}
@@ -694,7 +696,7 @@ export class commandSettings{
     customCommandId?: string
     commandSettingsId: string
     command?: command
-    defaultSettings?: {type: "built-in"|"custom"|"unknown"; requiredTags: string[]; formatting_code: string; commandName: string; escregexp: {v: string; }; formats: command_formats_type_list; command_version: string; description: string; commandSettingsId: string; }
+    defaultSettings?: {type: "built-in"|"custom"|"unknown"; requiredTags: string[]; formatting_code: string; commandName: string; escregexp: {v: string; }; formats: command_formats_type_list; command_version: string; description: string; commandSettingsId: string; deprecated?: boolean; functional?: boolean; hidden?: boolean; enabled?: boolean; }
     constructor(commandSettingsId: string, command?: command) {
         this.type = commandSettingsId.startsWith("built-inCommandSettings:")?"built-in":commandSettingsId.startsWith("customCommandSettings:")?"custom":"unknown"; 
         this.commandName = commandSettingsId.startsWith("built-inCommandSettings:")?commandSettingsId.slice(24):commandSettingsId.startsWith("customCommandSettings:")?commandSettingsId.slice(22):commandSettingsId; 
@@ -704,7 +706,7 @@ export class commandSettings{
         this.defaultSettings = (this.type=="built-in"||this.type=="unknown")?commands.find(v=>v.commandName==this.commandName):undefined
     }
     get parsed(){return JSONParse(String(world.getDynamicProperty(this.commandSettingsId)))}
-    get enabled(){return this?.parsed?.enabled as boolean ?? true}
+    get enabled(){return this?.parsed?.enabled as boolean ?? this?.defaultSettings?.enabled ?? true}
     set enabled(enabled){this.enabled = enabled}
     get requiredTags(){return this?.parsed?.requiredTags as string[] ?? ["canUseChatCommands"]}
     set requiredTags(requiredTags){this.requiredTags = requiredTags}
@@ -834,9 +836,9 @@ export class executeCommandPlayerW{
     get isSleeping(){return this.player?.isSleeping}
     get isSprinting(){return this.player?.isSprinting}
     get isSwimming(){return this.player?.isSwimming}
-    get fallDistance(){return this.player?.fallDistance}
+    //get fallDistance(){return this.player?.fallDistance} Removed in 1.21.20 sadly. >:(
     get scoreboardIdentity(){return this.player?.scoreboardIdentity}
-    get lifetimeState(){return this.player?.lifetimeState}
+    //get lifetimeState(){return this.player?.lifetimeState} Removed in 1.21.20 sadly. >:(
     get level(){return this.player?.level}
     get onScreenDisplay(){return this.player?.onScreenDisplay}
     get selectedSlotIndex(){return this.player?.selectedSlotIndex}
@@ -1085,7 +1087,7 @@ function extractCustomPatternTypes(str: string) {
                     const keyValuePairs = statesStr.split(',');
                     keyValuePairs.forEach(pair => {
                         const keyValue = pair.trim().split('=');
-                        const key = keyValue[0].trim();
+                        const key = keyValue[0].trim().slice(1, -1);
                         let value = keyValue[1].trim() as any;
                         // Convert value to number or boolean if possible
                         if (!isNaN(value)) {
@@ -1152,7 +1154,7 @@ function extractCustomPatternType(str: string) {
                     const keyValuePairs = statesStr.split(',');
                     keyValuePairs.forEach(pair => {
                         const keyValue = pair.trim().split('=');
-                        const key = keyValue[0].trim();
+                        const key = keyValue[0].trim().slice(1, -1);
                         let value = keyValue[1].trim() as any;
                         // Convert value to number or boolean if possible
                         if (!isNaN(value)) {
@@ -1195,6 +1197,130 @@ export class BlockPattern{
     static extractAll(str: string, mode?: "random"|"sequence"): BlockPattern[]{return extractCustomPatternTypes(str).map(v=>new BlockPattern(v, mode??v.mode))}
     static extractAllWRaw(str: string, mode?: "random"|"sequence"): {raw: string[], parsed: BlockPattern[]}{return {raw: str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v=>new BlockPattern(v, mode??v.mode))}}
 }
+export class BlockMask{
+    private blocksList: {type: string, states?: {[id: string]: string|number|boolean}, get raw(): string, get rawns(): string}[] = []
+    private hasStates: boolean
+    private blockTypeIds: string[]
+    get blocks(): {type: string, states?: {[id: string]: string|number|boolean}, get raw(): string, get rawns(): string}[]{return this.blocksList}
+    set blocks(blocks: {type: string, states?: {[id: string]: string|number|boolean}}[]){this.blocksList=blocks.map(v=>({type: v.type, states: v.states, get raw(){return `${this.type}${!!this.states?`${JSON.stringify(this.states)}`:""}`}, get rawns(){return `${this.type}`}})); this.hasStates=!!blocks.find(v=>!!v.states); [...new Set(this.blockTypeIds=blocks.map(v=>v.type))]}
+    get includesStates(){return this.hasStates}
+    get blockTypes(){return this.blockTypeIds}
+    evaluateIds(){this.blocksList=cullEmpty(this.blocksList.map(v=>(v.type=="none"?undefined:v.type=="any"?undefined:{type: v.type=="keep"?"minecraft:air":tryget(()=>BlockTypes.get(v.type).id)??v.type, states: v.states, get raw(){return `${this.type}${!!this.states?`${JSON.stringify(this.states)}`:""}`}, get rawns(){return `${this.type}`}})))}
+    constructor(blocks: {type: string, states?: {[id: string]: string|number|boolean}}[] = []){this.blocksList = blocks.map(v=>({type: v.type, states: v.states, get raw(){return `${this.type}${!!this.states?`${JSON.stringify(this.states)}`:""}`}, get rawns(){return `${this.type}`}})); this.hasStates=!!blocks.find(v=>!!v.states); [...new Set(this.blockTypeIds=blocks.map(v=>v.type))]}
+    push(...blocks: {type: string, states?: {[id: string]: string|number|boolean}}[]){this.hasStates=this.hasStates||!!blocks.find(v=>!!v.states); [...new Set(this.blockTypeIds=[...this.blocksList, ...blocks].map(v=>v.type))]; return this.blocksList.push(...blocks.map(v=>({type: v.type, states: v.states, get raw(){return `${this.type}${!!this.states?`${JSON.stringify(this.states)}`:""}`}, get rawns(){return `${this.type}`}})))}
+    static parse(){}
+    static extractRaw(str: string): string|null{return str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]}
+    static extract(str: string, extraIdParsingEnabled: boolean = true): BlockMask{return new BlockMask(extraIdParsingEnabled?cullEmpty(extractCustomMaskType(str).map(v=>(v.type=="none"?undefined:v.type=="any"?undefined:{type: v.type=="keep"?"air":v.type, states: v.states}))):extractCustomMaskType(str))}
+    static extractWRaw(str: string, extraIdParsingEnabled: boolean = true): {raw: string, parsed: BlockMask}{return {raw: str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0], parsed: new BlockMask(extraIdParsingEnabled?cullEmpty(extractCustomMaskType(str).map(v=>(v.type=="none"?undefined:v.type=="any"?undefined:{type: v.type=="keep"?"air":v.type, states: v.states}))):extractCustomMaskType(str))}}
+    static extractAllRaw(str: string): string[]|null{return str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g)}
+    static extractAll(str: string, extraIdParsingEnabled: boolean = true): BlockMask[]{return extractCustomMaskTypes(str).map(v=>new BlockMask(v))}
+    static extractAllWRaw(str: string, extraIdParsingEnabled: boolean = true): {raw: string[], parsed: BlockMask[]}{return {raw: str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomMaskTypes(str).map(v=>new BlockMask(extraIdParsingEnabled?cullEmpty(v.map(v=>(v.type=="none"?undefined:v.type=="any"?undefined:{type: v.type=="keep"?"air":v.type, states: v.states}))):extraIdParsingEnabled?extractCustomMaskType(str).map(v=>(v.type=="none"?undefined:v.type=="any"?undefined:{type: v.type=="keep"?"air":v.type, states: v.states})):v))}}
+}
+function extractCustomMaskType(str: string) {
+    const maskTypes = [] as { type: string, states?: Record<string, string|number|boolean> }[];
+    const regex = /(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
+    const regexb = /([rs]:)?(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
+    const matches = str.match(regex)[0].match(regexb);
+    if (matches) {
+        matches.forEach((match, index) => {
+            let type = match.trim();
+            let states = null;
+
+            // Extract states if present
+            const statesMatch = type.match(/[\[\{]([^\]\}]*)[\]\}]/);
+            if (!!statesMatch) {
+                const statesStr = statesMatch[1];
+                try {
+                    states = JSON.parse(statesMatch[0].replace(/'/g, '"'));
+                } catch (error) {
+                    // States couldn't be parsed as JSON, parse as key-value pairs
+                    states = {};
+                    const keyValuePairs = statesStr.split(',');
+                    keyValuePairs.forEach(pair => {
+                        const keyValue = pair.trim().split('=');
+                        const key = keyValue[0].trim().slice(1, -1);
+                        let value = keyValue[1].trim() as any;
+                        // Convert value to number or boolean if possible
+                        if (!isNaN(value)) {
+                            value = parseFloat(value);
+                        } else if (value.toLowerCase() === 'true') {
+                            value = true;
+                        } else if (value.toLowerCase() === 'false') {
+                            value = false;
+                        }
+                        states[key] = value;
+                    });
+                }
+                // Remove states from the type
+                type = type.replace(/[\[\{][^\]\}]*[\]\}]/, '').trim();
+            }
+
+            // Extract chance if present
+            const stringMatch = type.match(/^["']([^"]+)["']$/);
+            if (!!stringMatch) {
+                type = stringMatch[1].trim()/*.escapeCharactersB()*/;
+            }
+
+            maskTypes.push({ type: tryget(()=>BlockTypes.get(type).id)??type, states });
+        });
+    }
+    return maskTypes as { type: string, states?: Record<string, string|number|boolean>}[];
+}
+function extractCustomMaskTypes(str: string) {
+    const patterns = [] as ({ type: string, states?: Record<string, string|number|boolean> }[])[];;
+    const regex = /(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g;
+    const regexb = /([rs]:)?(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
+    const matchesa = str.match(regex);
+    matchesa.forEach(m=>{
+    const matches = m.match(regexb);
+    if (matches) {
+        const patternTypes = [] as { type: string, states?: Record<string, string|number|boolean> }[];
+        matches.forEach((match, index) => {
+            let type = match.trim();
+            let states: Record<string, string|number|boolean> = null;
+
+            // Extract states if present
+            const statesMatch = type.match(/[\[\{]([^\]\}]*)[\]\}]/);
+            if (!!statesMatch) {
+                const statesStr = statesMatch[1];
+                try {
+                    states = JSON.parse(statesMatch[0].replace(/'/g, '"'));
+                } catch (error) {
+                    // States couldn't be parsed as JSON, parse as key-value pairs
+                    states = {};
+                    const keyValuePairs = statesStr.split(',');
+                    keyValuePairs.forEach(pair => {
+                        const keyValue = pair.trim().split('=');
+                        const key = keyValue[0].trim().slice(1, -1);
+                        let value = keyValue[1].trim() as any;
+                        // Convert value to number or boolean if possible
+                        if (!isNaN(value)) {
+                            value = parseFloat(value);
+                        } else if (value.toLowerCase() === 'true') {
+                            value = true;
+                        } else if (value.toLowerCase() === 'false') {
+                            value = false;
+                        }
+                        states[key] = value;
+                    });
+                }
+                // Remove states from the type
+                type = type.replace(/[\[\{][^\]\}]*[\]\}]/, '').trim();
+            }
+
+            // Extract chance if present
+            const stringMatch = type.match(/^["']([^"]+)["']$/);
+            if (!!stringMatch) {
+                type = stringMatch[1].trim()/*.escapeCharactersB()*/;
+            }
+
+            patternTypes.push({ type: tryget(()=>BlockTypes.get(type).id)??type, states });
+        });
+        patterns.push(patternTypes)
+    }
+    })
+    return patterns;
+}
 export function parseBlockMatcherType(matcher: string){
     let raw = matcher.trim().match(/(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\s])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[\s]|$)/)[0]
     let type: string = raw.trim()
@@ -1232,10 +1358,49 @@ export function parseBlockMatcherType(matcher: string){
     if (!!stringMatch) {
         type = stringMatch[1].trim()/*.escapeCharactersB()*/;
     }
-    return {raw: raw, block: {id: type, states: states}}
+    return {raw: raw, block: {id: tryget(()=>BlockTypes.get(type).id)??type, states: states}}
 }
-export function testBlockForMatch(block: Block, matches: {id: string, states?: {[id: string]: string|number|boolean}}){
-    return (block.typeId==matches.id)&&(testForObjectExtension(block.permutation.getAllStates()??{}, Object.fromEntries(Object.entries(matches.states??{}).filter(v=>!!(Object.entries(BlockPermutation.resolve(block.typeId).getAllStates()).find(s=>v[0]==s[0]))))))
+export function testBlockForMatch(block: Block, matches: {id: string, states?: {[id: string]: string|number|boolean}}|{id: string, states?: {[id: string]: string|number|boolean}}[]){
+    if(matches instanceof Array){
+        if(!!matches.find(v=>v.id=="isAir")){return block.isAir}
+        if(!!matches.find(v=>v.id=="isWaterlogged")){return block.isWaterlogged}
+        if(!!matches.find(v=>v.id=="isLiquid")){return block.isLiquid}
+        if(!!matches.find(v=>v.id=="isSolid")){return block.isSolid}
+        if(!!matches.find(v=>v.id=="isValid")){return block.isValid}
+        if(!!matches.find(v=>v.id=="true")){return true}
+        if(!!matches.find(v=>v.id=="false")){return false}
+        return (matches.map(v=>v.id).includes(block.typeId))&&!!matches.find(matches=>(testForObjectExtension(block.permutation.getAllStates()??{}, Object.fromEntries(Object.entries(matches.states??{}).filter(v=>!!(Object.entries(BlockPermutation.resolve(block.typeId).getAllStates()).find(s=>v[0]==s[0])))))))
+    }else{
+        if(matches.id=="isAir"){return block.isAir}
+        if(matches.id=="isWaterlogged"){return block.isWaterlogged}
+        if(matches.id=="isLiquid"){return block.isLiquid}
+        if(matches.id=="isSolid"){return block.isSolid}
+        if(matches.id=="isValid"){return block.isValid}
+        if(matches.id=="true"){return true}
+        if(matches.id=="false"){return false}
+        return (block.typeId==matches.id)&&(testForObjectExtension(block.permutation.getAllStates()??{}, Object.fromEntries(Object.entries(matches.states??{}).filter(v=>!!(Object.entries(BlockPermutation.resolve(block.typeId).getAllStates()).find(s=>v[0]==s[0]))))))
+    }
+}
+export function testBlockForMatchToMask(block: Block, matches: {type: string, states?: {[id: string]: string|number|boolean}}|{type: string, states?: {[id: string]: string|number|boolean}}[]){
+    if(matches instanceof Array){
+        if(!!matches.find(v=>v.type=="isAir")){return block.isAir}
+        if(!!matches.find(v=>v.type=="isWaterlogged")){return block.isWaterlogged}
+        if(!!matches.find(v=>v.type=="isLiquid")){return block.isLiquid}
+        if(!!matches.find(v=>v.type=="isSolid")){return block.isSolid}
+        if(!!matches.find(v=>v.type=="isValid")){return block.isValid}
+        if(!!matches.find(v=>v.type=="true")){return true}
+        if(!!matches.find(v=>v.type=="false")){return false}
+        return (matches.map(v=>v.type).includes(block.typeId))&&!!matches.find(matches=>(testForObjectExtension(block.permutation.getAllStates()??{}, Object.fromEntries(Object.entries(matches.states??{}).filter(v=>!!(Object.entries(BlockPermutation.resolve(block.typeId).getAllStates()).find(s=>v[0]==s[0])))))))
+    }else{
+        if(matches.type=="isAir"){return block.isAir}
+        if(matches.type=="isWaterlogged"){return block.isWaterlogged}
+        if(matches.type=="isLiquid"){return block.isLiquid}
+        if(matches.type=="isSolid"){return block.isSolid}
+        if(matches.type=="isValid"){return block.isValid}
+        if(matches.type=="true"){return true}
+        if(matches.type=="false"){return false}
+        return (block.typeId==matches.type)&&(testForObjectExtension(block.permutation.getAllStates()??{}, Object.fromEntries(Object.entries(matches.states??{}).filter(v=>!!(Object.entries(BlockPermutation.resolve(block.typeId).getAllStates()).find(s=>v[0]==s[0]))))))
+    }
 }
 export function selectWeightedElement(items: {[k: string]: any}[], weightProp: string = "weight") {
     let total = items.reduce((acc, item) => acc + (item[weightProp]??1), 0);
@@ -1393,6 +1558,62 @@ export async function generateNBTFileD(location: DimensionLocation, nbt: any, pl
         }catch(e){player.sendMessage("§c" + e + e.stack)}
 }catch(e){player.sendMessage("§c" + e + e.stack)}/*finally{tac.forEach(tab=>tab?.remove())}}, (e)=>{player.sendMessage(e+" "+e.stack)}); */
 }
+
+export function parseSNBT(snbt: string) {
+    // Helper function to parse a value based on its suffix (if present)
+    function parseValue(key: string, value: any) {
+        if (typeof value !== "string") {
+            return value; // Return the value as is if it's not a string
+        }
+
+        value = value.trim();
+
+        // Check if value starts with a digit (or negative sign) and ends with a valid suffix
+        if (/^-?\d+(\.\d+)?b$/.test(value)) {  // Byte as integer
+            return parseInt(value.slice(0, -1), 10);
+        } else if (/^-?\d+(\.\d+)?s$/.test(value)) {  // Short as integer
+            return parseInt(value.slice(0, -1), 10);
+        } else if (/^-?\d+(\.\d+)?l$/.test(value)) {  // Long as BigInt
+            return BigInt(value.slice(0, -1));
+        } else if (/^-?\d+(\.\d+)?i$/.test(value)) {  // Int as BigInt
+            return BigInt(value.slice(0, -1));
+        } else if (/^-?\d+(\.\d+)?f$/.test(value)) {  // Float as number
+            return parseFloat(value.slice(0, -1));
+        } else if (/^-?\d+(\.\d+)?d$/.test(value)) {  // Double as number
+            return parseFloat(value.slice(0, -1));
+        } else if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+            return JSON.parse(value.replace(/'/g, '"')); // Properly parse inner JSON strings
+        } else if (value === 'true' || value === 'false') {  // Boolean
+            return value === 'true';
+        } else if (!isNaN(Number(value)) && !isNaN(parseFloat(value))) {  // Regular number
+            return Number(value);
+        } else {  // Default to a string if no other match
+            return value;
+        }
+    }
+
+    // Preprocess the SNBT string to be valid JSON-compatible
+    function preprocessSNBT(snbt: string) {
+        return snbt
+            .replace(/([{,])\s*([a-zA-Z0-9_]+)\s*:/g, '$1"$2":')  // Quote keys
+            .replace(/(?<=")([0-9.+-]+[bslidf])(?=")\b/g, '\\"$1\\"')            // Quote 
+            .replace(/(?<!")([0-9.+-]+[bslidf])(?!\\")\b/g, '"$1"')            // Quote values with suffixes
+            .replace(/'([^']*?)'/g, (match, p1) => `"${p1.replace(/"/g, '\\"')}"`) // Replace single quotes and escape inner double quotes
+            .replace(/([{,])\s*([a-zA-Z0-9_]+)\s*{/g, '$1"$2":{') // Quote nested object keys
+            .replace(/:\s*([{[])/g, ': $1')                       // Add space after colons before nested objects or arrays
+            .replace(/([{,])\s*([a-zA-Z0-9_.]+)\s*:/g, '$1"$2":') // Quote all object keys
+            // Handle unquoted strings in arrays by quoting them
+            .replace(/:\s*\[([^\]]*)\]/g, (match, p1) => ':[' + p1.replace(/([^",\s]+)(?=[,\]])/g, '"$1"').replace(/""/g, '"') + ']');
+    }
+
+    const jsonCompatibleString = preprocessSNBT(snbt);
+
+    // Parse JSON with custom reviver to handle SNBT-specific types
+    return JSON.parse(jsonCompatibleString, parseValue);
+}
+
+
+export function SNBTToJSONifiedNBTData(snbt: string){return JSON.parse((snbt as string).replace(/(?<=[,\{][\s\n]*?)(['"])?(?<vb>[a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*(?<vd>false|true|undefined|NULL|Infinity|-Infinity|[\-\+]?[0-9]+|"(?:[^"]|(?<=([^\\])(\\\\)*?\\)")*"|'(?:[^']|(?<=([^\\])(\\\\)*?\\)')*')(?=[\s\n]*?[,\}])/g, '"$<vb>":$<vd>'))}
 
 export function parseJSONifiedNBTData(nbt){
     function parseObject(object){
@@ -1647,7 +1868,7 @@ export async function cycleRGB(callback: (current: {r: number, g: number, b: num
     async function nextNB(current: {r: number, g: number, b: number}){if(cancel()){return}else if(current.b<=0){callback(current); await waitTick(); nextG(current)}else{current.b-=step; callback(current); await waitTick(); nextNB(current)}}
     nextR({r: 0, g: 0, b: 256})
 }
-export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, player: Player|executeCommandPlayerW|undefined, eventData: ChatSendBeforeEvent, event: ChatSendBeforeEvent|undefined, newMessage: string|undefined, fromExecute?: boolean}){
+export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, player: Player|executeCommandPlayerW|undefined, eventData: ChatSendBeforeEvent, event: ChatSendBeforeEvent|undefined, newMessage: string|undefined, fromExecute?: boolean, silentCMD?: boolean, isBultIn?: boolean, isCustom?: boolean}){
     let returnBeforeChatSend = params.returnBeforeChatSend??false
     let playerab = params.player??params.eventData?.sender??params.event?.sender
     let playera = playerab instanceof executeCommandPlayerW ? playerab : new executeCommandPlayerW(playerab)
@@ -1657,14 +1878,23 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
     let eventData = !!params.eventData?{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}:{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}
     let event = !!params.event?{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}:{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}
     let newMessage = params.newMessage??params.eventData?.message??params.event?.message
-    try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatCommands"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("commandNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + (player.name??(player.nameTag!=""?player.nameTag+"<"+player.id+">":player.typeId+"<"+player.id+">")) + "]: " + newMessage); }catch{}})}catch{}
+    if(params.silentCMD!=true){try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatCommands"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("commandNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + (player.name??(player.nameTag!=""?player.nameTag+"<"+player.id+">":player.typeId+"<"+player.id+">")) + "]: " + newMessage); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getAllChatCommandsNotificationSound.soundId, {pitch: pn.getAllChatCommandsNotificationSound.pitch, volume: pn.getAllChatCommandsNotificationSound.volume}))}catch{}})}catch{}}
     function hotbarSwap(row: number, preset: number){
         let inventorye = player.getComponent("inventory") as EntityInventoryComponent
         let inventoryblock = world.getDimension(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[0]).getBlock({x: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[1]), y: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[2]), z: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[3])}).getComponent("inventory") as BlockInventoryComponent
         system.run(()=>{try{for(let i = 0; i < 9; i++){inventorye.container.swapItems(i, i+((row-1)*9), inventoryblock.container)}; /*; eventData.sender.sendMessage(String("l" + slotsArray))*/}catch(e){eventData.sender.sendMessage("§c" + e + " " + e.stack)}})}
         let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0]
         let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
-        let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!switchTest.match((command.get(v.commandName, "built-in").regexp)))))&&(params.fromExecute||command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!command.get(v.commandName, "built-in")?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp)))))&&(params.fromExecute||command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(params.fromExecute||command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))/*
+        let commanda = undefined
+        if(params.isBultIn==true){
+            commanda={type: "built-in"}
+        }else if(newMessage.startsWith(config.chatCommandPrefix)){
+            commanda = commands.filter(cmd=>!!switchTest.match(new RegExp(cmd?.escregexp?.v ?? "", this?.escregexp?.f))).find(v=>{let cmd = command.get(v.commandName, "built-in"); if(cmd.settings.enabled){return (params.fromExecute||cmd.testCanPlayerUseCommand(player))}else{return false}})
+            ??commands.filter(cmd=>(cmd?.aliases??[]).length!=0).find(v=>{let cmd = command.get(v.commandName, "built-in"); if((cmd.settings.enabled&&(!!cmd?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp))))){return (params.fromExecute||cmd.testCanPlayerUseCommand(player))}else{return false}})
+            ??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(params.fromExecute||command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))
+        }else if(true){
+            commanda = command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(params.fromExecute||command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))
+        }/*
         let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!(switchTest.match((command.get(v.commandName, "built-in").regexp))))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
     if(commanda?.type=="built-in"){switch (true){
         case !!switchTest.match(/^give$/): 
@@ -2173,6 +2403,14 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                     let candestroy = JSONParse(command.split(" ").slice(2).join(" ")) as string[]
                     system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setCanDestroy(candestroy)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                 break;
+                case "item keepondeath":
+                    let keepondeath = argsa.extra.trim().toLowerCase()
+                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).keepOnDeath = Boolean(JSON.parse(keepondeath))}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                break;
+                case "item lockmode":
+                    let lockmode = argsa.extra.trim().toLowerCase()
+                    system.run(()=>{try{player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).lockMode = lockmode as ItemLockMode}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                break;
                 case "item name":
                     let name = argsa.extra.escapeCharactersB(true);
                     if (name.e != undefined) {
@@ -2183,7 +2421,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                 case "item remove":
                     system.run(()=>{try{player.getComponent("inventory").container.setItem(player.selectedSlotIndex)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                 break;
-                case "new":
+                case "item new":
                     system.run(()=>{let argsc = evaluateParameters(argsa.extra.trim(), ["string", "number"]).args; try{player.getComponent("inventory").container.setItem(player.selectedSlotIndex, new ItemStack(String((argsc[0]??"")==""?"air":argsc[0]), Number((argsc[1]??"")==""?1:argsc[1])))}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
                 break;
                 case "item json":
@@ -2306,6 +2544,14 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                         case "candestroy":
                             let candestroy = JSONParse(command.split(" ").slice(4).join(" ")) as string[]
                             system.run(()=>{try{slot.setCanDestroy(candestroy)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                        break;
+                        case "keepondeath":
+                            let keepondeath = argsb.extra.trim().toLowerCase()
+                            system.run(()=>{try{slot.keepOnDeath = Boolean(JSON.parse(keepondeath))}catch(e){console.error(e, e.stack); player.sendError(e)}})
+                        break;
+                        case "lockmode":
+                            let lockmode = argsb.extra.trim().toLowerCase()
+                            system.run(()=>{try{slot.lockMode = lockmode as ItemLockMode}catch(e){console.error(e, e.stack); player.sendError(e)}})
                         break;
                         case "name":
                             let name = command.split(" ").slice(4).join(" ").escapeCharactersB(true);
@@ -2562,7 +2808,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
             eventData.cancel = true;
             switch (switchTestB.split(" ").slice(0, 2).join(" ").toLowerCase()){
                 case "help": 
-                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help cmd <command: CommandName>\n.help command <command: CommandName>\n.help cmdextra <command: CommandName>\n.help commandextra <command: CommandName>\n.help cmddebug <command: CommandName>\n.help commanddebug <command: CommandName>\n.help customcmddebug <command: CommandName>\n.help customcommanddebug <command: CommandName>\n.help chatcommands\n.help chatcommandsb\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>\n.help jsfunction <JavaScriptFunctionVariableConstantOrClassName: string>\n.help itemjsonformat\n.help itemjsonformatcmpr\n.help itemjsonformatsimplified§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
+                    eventData.sender.sendMessage("§2Help Chat Command Syntax§f\n.help scriptevent\n.help cmd <command: CommandName>\n.help command <command: CommandName>\n.help cmdextra <command: CommandName>\n.help commandextra <command: CommandName>\n.help cmddebug <command: CommandName>\n.help commanddebug <command: CommandName>\n.help cmddebugplus <command: CommandName>\n.help commanddebugplus <command: CommandName>\n.help customcmddebug <command: CommandName>\n.help customcommanddebug <command: CommandName>\n.help chatcommands\n.help chatcommandsb\n.help javascriptfunctions\n.help js <JavaScriptFunctionVariableConstantOrClassName: string>\n.help jsfunction <JavaScriptFunctionVariableConstantOrClassName: string>\n.help itemjsonformat\n.help itemjsonformatcmpr\n.help itemjsonformatsimplified§c\n.help entityevents\n.help items\n.help tags\n.help debugsticks".replaceAll("\n.", ("\n"+(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")))); 
                 break; 
                 case "help scriptevent": 
                     eventData.sender.sendMessage("§2/scriptevent Syntax§f\n/scriptevent andexdb:debugStick <message: string>\n/scriptevent andexdb:spawnSimulatedPlayer [playerName: string]|[location: location]|[dimensionId: string]|[gametestStructureSpawnLocation: location]"); 
@@ -2584,6 +2830,12 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                 break; 
                 case "help commanddebug": 
                     eventData.sender.sendMessage(getCommandHelpPageDebug(switchTestB.split(" ").slice(2).join(" "), player)); 
+                break; 
+                case "help cmddebugplus": 
+                    eventData.sender.sendMessage(getCommandHelpPageDebugPlus(switchTestB.split(" ").slice(2).join(" "), player)); 
+                break; 
+                case "help commanddebugplus": 
+                    eventData.sender.sendMessage(getCommandHelpPageDebugPlus(switchTestB.split(" ").slice(2).join(" "), player)); 
                 break; 
                 case "help customcmddebug": 
                     eventData.sender.sendMessage(getCommandHelpPageCustomDebug(switchTestB.split(" ").slice(2).join(" "), player)); 
@@ -3336,7 +3588,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^getuuid$/): 
             eventData.cancel = true;
-            try{system.runTimeout(()=>{eventData.sender.sendMessage(String(targetSelector(switchTestB, "", Number(eventData.sender.id))))}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{system.runTimeout(()=>{eventData.sender.sendMessage(String(targetSelector(switchTestB.split(" ").slice(1).join(" "), "", Number(eventData.sender.id))))}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
             
         break; 
         case !!switchTest.match(/^run$/): 
@@ -6027,11 +6279,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
         break; 
         case !!switchTest.match(/^\\replace$/): {
             eventData.cancel = true;
-            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "blockPattern", "block"]).args
+            const args = evaluateParameters(switchTestB, ["presetText", "f-c", "blockPattern", "blockMask"]).args
             const firstblockpattern = args[2] as BlockPattern
-            const lastblockname = args[3]?.id
-            const lastblockstates = args[3]?.states
-            const matchingblock=((lastblockname??"")==""?[undefined, undefined]:lastblockname=="keep"?["air"]:[BlockTypes.get(lastblockname).id, lastblockstates]) as [string|undefined, Record<string, string | number | boolean>|undefined]
+            const mask = args[3]
             const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
             const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
             const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
@@ -6046,7 +6296,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     system.run(()=>{
                         let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(ca, cb)}); return a})(), dimensiona).then(tac=>{ta=tac; try{undoClipboard.save(dimensiona, {from: ca, to: cb}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){player.sendMessage("§c"+e+" "+e.stack)}
                         const blocktypes = BlockTypes.getAll()
-                        try{fillBlocksHFGB(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                        try{fillBlocksHFGBM(ca, cb, dimensiona, (l, i)=>{const b = firstblockpattern.generateBlock(i); return b.type=="random"?BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length*Math.random())].id):BlockPermutation.resolve(b.type, b.states)}, {blockMask: mask, minMSBetweenYields: 2500}, args[1].c, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                     }); 
                 }
             }
@@ -6448,7 +6698,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
         case !!switchTest.match(/^\\paste$/): {try{
             eventData.cancel = true;
             system.run(()=>{try{
-                const args = evaluateParameters(switchTestB, ["presetText", "-webxz", "number", "string", "number", "string", "number"]).args as [commandText: string, flags: string, integrity: number, integritySeed: string, rotation: number, animationMode: "none"|"blocks"|"layers", animationSeconds: number]
+                const args = evaluateParameters(switchTestB, ["presetText", "-webxzh", "number", "string", "number", "string", "number"]).args as [commandText: string, flags: string, integrity: number, integritySeed: string, rotation: number, animationMode: "none"|"blocks"|"layers", animationSeconds: number]
                 //console.warn(JSON.stringify(args[1]))
                 args[1]??="";
                 args[2]??=1;
@@ -6457,8 +6707,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 args[5]??="none";
                 args[5]=args[5].toLowerCase() as "none"|"blocks"|"layers";
                 args[6]??=0;
-                const coordinatesa = player.getDynamicProperty("pos1") as Vector3|undefined
-                const coordinatesb = player.getDynamicProperty("pos2") as Vector3|undefined
+                const coordinatesa = args[1].includes("h")?player.location:player.getDynamicProperty("pos1") as Vector3|undefined
+                const coordinatesb = args[1].includes("h")?player.location:player.getDynamicProperty("pos2") as Vector3|undefined
                 const ca = {x: Math.min(coordinatesa.x, coordinatesb.x), y: Math.min(coordinatesa.y, coordinatesb.y), z: Math.min(coordinatesa.z, coordinatesb.z)}
                 //const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
                 const dimensiona = world.getDimension((player.getDynamicProperty("posD")??player.dimension.id) as string) as Dimension|undefined
@@ -6480,7 +6730,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             eventData.cancel = true;
             const args = evaluateParameters(switchTestB, ["presetText", "f-kt"]).args;
             system.run(()=>{try{
-                if(undoClipboard.ids.length==0){player.sendMessage("§cNothing to undo. ")}else if(!(args[1]?.t??false)){try{if(undoClipboard.undo(undefined, undefined, !(args[1]?.k??false))==0){player.sendMessage("§cNothing to undo. ")}else{player.sendMessage("Successfully reverted the area. ")}}catch(e){player.sendMessage(e+" "+e.stack)}}else{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(world.getDynamicProperty(`andexdb:undoclipboard;${undoClipboard.saveTimes}`) as Vector3, Vector.add(world.getDynamicProperty(`andexdb:undoclipboard;${undoClipboard.saveTimes}`) as Vector3, undoClipboard.saveSize(undoClipboard.saveTimes)))}); return a})(), dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${undoClipboard.saveTimes}`))]??dimensionsb["minecraft:overworld"]).then(tac=>{ta=tac; try{if(undoClipboard.undo(undefined, undefined, !(args[1]?.k??false))==0){player.sendMessage("§cNothing to undo. ")}else{player.sendMessage("Successfully reverted the area. ")}}catch(e){player.sendMessage(e+" "+e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}
+                if(undoClipboard.ids.length==0){player.sendMessage("§cNothing to undo. ")}else if(!(args[1]?.t??false)){try{if(undoClipboard.undo(undefined, undefined, !(args[1]?.k??false))==0){player.sendMessage("§cNothing to undo. ")}else{player.sendMessage("Successfully reverted the area. ")}}catch(e){player.sendMessage(e+" "+e.stack)}}else{let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(world.getDynamicProperty(`andexdb:undoclipboard;${undoClipboard.newestSaveTime}`) as Vector3, Vector.add(world.getDynamicProperty(`andexdb:undoclipboard;${undoClipboard.newestSaveTime}`) as Vector3, undoClipboard.saveSize(undoClipboard.newestSaveTime)))}); return a})(), dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${undoClipboard.newestSaveTime}`))]??dimensionsb["minecraft:overworld"]).then(tac=>{ta=tac; try{if(undoClipboard.undo(undefined, undefined, !(args[1]?.k??false))==0){player.sendMessage("§cNothing to undo. ")}else{player.sendMessage("Successfully reverted the area. ")}}catch(e){player.sendMessage(e+" "+e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}}
             }catch(e){perror(player, e)}}); 
         }catch(e){perror(player, e)}}
         break; 
@@ -7598,7 +7848,203 @@ ${command.dp}snapshot list`); return}
             let from = {x: froma.x, y: froma.y, z: froma.z}
             let toa = mcMath.Vector3Utils.add(player.location, {x: radius, y: radius, z: radius})
             let to = {x: toa.x, y: toa.y, z: toa.z}
-            try{system.run(()=>{let a = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "water"}); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "lava"}); let c = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_water"}); let d = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_lava"}); player.sendMessage(`${a+b+c+d==0?"§c":""}${a+b+c+d} liquids removed in radius of ${radius}`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            system.run(()=>{
+                let ta: Entity[]; try{generateTickingAreaFillCoordinatesC(player.location, (()=>{let a = new CompoundBlockVolume(); a.pushVolume({volume: new BlockVolume(from, to)}); return a})(), player.dimension).then(tac=>{ta=tac; try{undoClipboard.save(player.dimension, {from: from, to: to}, Date.now(), {includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode})}catch(e){perror(player, e)}
+                try{
+                    fillBlocksHDFGB(from, to, player.dimension, {minMSBetweenYields: 2500}, 100).then(a=>{player.sendMessage(`${a.counter==0?"§c":""}${a.counter} blocks replaced in ${a.completionData.endTime-a.completionData.startTime} ms over ${a.completionData.endTick-a.completionData.startTick} tick${(a.completionData.endTick-a.completionData.startTick)==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not drained because they were in unloaded chunks. ":""}`); }, (e)=>{eventData.sender.sendMessage("§c" + e + e.stack)})}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}finally{tac.forEach(tab=>tab?.remove())}}); 
+                }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            }); 
+            //try{system.run(()=>{let a = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "water"}); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "lava"}); let c = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_water"}); let d = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_lava"}); player.sendMessage(`${a+b+c+d==0?"§c":""}${a+b+c+d} liquids removed in radius of ${radius}`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        }
+        break; 
+        case !!switchTest.match(/^attribute$/): {
+            eventData.cancel = true;
+            let argsa = evaluateParameters(switchTestB, ["presetText", "targetSelector", "presetText", "presetText"])
+            let targets = targetSelectorAllListC(argsa.args[0], "", vTStr(player.location), player)
+            srun(()=>{
+                switch(argsa.args[3]){
+                    case "get":{
+                                targets.forEach(target=>{
+                                    try{
+                                        let directory = {
+                                            Components: {},
+                                            get ["minecraft:generic.air"](){return target.getComponent("breathable").airSupply},
+                                            set ["minecraft:generic.air"](airSupply: number){target.getComponent("breathable").airSupply=airSupply},
+                                            get ["minecraft:generic.is_sneaking"](){return target.isSneaking},
+                                            set ["minecraft:generic.is_sneaking"](isSneaking: boolean){target.isSneaking=isSneaking},
+                                            get ["minecraft:generic.max_health"](){return target.getComponent("health").effectiveMax},
+                                            get ["minecraft:generic.min_health"](){return target.getComponent("health").effectiveMin},
+                                            get ["minecraft:generic.default_health"](){return target.getComponent("health").defaultValue},
+                                            get ["minecraft:generic.health"](){return target.getComponent("health").currentValue},
+                                            set ["minecraft:generic.health"](currentValue: number){target.getComponent("health").setCurrentValue(currentValue)},
+                                            get ["minecraft:generic.max_lava_movement_speed"](){return target.getComponent("lava_movement").effectiveMax},
+                                            get ["minecraft:generic.min_lava_movement_speed"](){return target.getComponent("lava_movement").effectiveMin},
+                                            get ["minecraft:generic.default_lava_movement_speed"](){return target.getComponent("lava_movement").defaultValue},
+                                            get ["minecraft:generic.lava_movement_speed"](){return target.getComponent("lava_movement").currentValue},
+                                            set ["minecraft:generic.lava_movement_speed"](currentValue: number){target.getComponent("lava_movement").setCurrentValue(currentValue)},
+                                            get ["minecraft:generic.max_water_movement_speed"](){return target.getComponent("underwater_movement").effectiveMax},
+                                            get ["minecraft:generic.min_water_movement_speed"](){return target.getComponent("underwater_movement").effectiveMin},
+                                            get ["minecraft:generic.default_water_movement_speed"](){return target.getComponent("underwater_movement").defaultValue},
+                                            get ["minecraft:generic.water_movement_speed"](){return target.getComponent("underwater_movement").currentValue},
+                                            set ["minecraft:generic.water_movement_speed"](currentValue: number){target.getComponent("underwater_movement").setCurrentValue(currentValue)},
+                                            get ["minecraft:generic.max_movement_speed"](){return target.getComponent("health").effectiveMax},
+                                            get ["minecraft:generic.min_movement_speed"](){return target.getComponent("health").effectiveMin},
+                                            get ["minecraft:generic.default_movement_speed"](){return target.getComponent("health").defaultValue},
+                                            get ["minecraft:generic.movement_speed"](){return target.getComponent("health").currentValue},
+                                            set ["minecraft:generic.movement_speed"](currentValue: number){target.getComponent("health").setCurrentValue(currentValue)},
+                                            get ["minecraft:generic.flying_speed"](){return target.getComponent("flying_speed").value},
+                                            set ["minecraft:generic.flying_speed"](value: number){target.getComponent("flying_speed").value=value},
+                                            get ["minecraft:generic.scale"](){return target.getComponent("scale").value},
+                                            set ["minecraft:generic.scale"](value: number){target.getComponent("scale").value=value}
+                                        }
+                                        pbsend(player, directory[argsa.args[1]])
+                                    }catch(e){player.sendError(e)}
+                                })
+                        }
+                    break;
+                    default:
+                    break;
+                }
+            })
+        }
+        break; 
+        case !!switchTest.match(/^data$/): {
+            eventData.cancel = true;
+            let argsa = evaluateParameters(switchTestB, ["presetText", "presetText", "presetText"])
+            srun(()=>{
+                switch(argsa.args[1]){
+                    case "get":
+                        switch(argsa.args[2]){
+                            case "block":
+                            break;
+                            case "entity":
+                                let argsb = evaluateParameters(argsa.extra, ["targetSelector"])
+                                let targets = targetSelectorAllListC(argsb.args[0], "", vTStr(player.location), player)
+                                //([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*)
+                                let path = argsb.extra.trim().match(/(?:\[(\d+)\]|\["((?:[^"]|(?<!(?:(?:[^\\]\\)(?:\\\\)*))")*)"\]|(?<=\.)([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*)|^([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*))/ug)
+                                targets.forEach(target=>{
+                                    try{
+                                        let directory = {
+                                            Components: {},
+                                            get Air(){return target.getComponent("breathable").airSupply},
+                                            set Air(airSupply: number){target.getComponent("breathable").airSupply=airSupply}
+                                        }
+                                        Object.keys(EntityComponentTypes).forEach(v=>Object.assign(directory.Components, {get [v](){return target.getComponent(EntityComponentTypes[v])}}))
+                                        path.forEach(v=>{directory=directory[v]})
+                                        pbsend(player, directory)
+                                    }catch(e){player.sendError(e)}
+                                })
+                            break;
+                            case "storage":
+                            break;
+                            default:
+                            break;
+                        }
+                    break;
+                    case "getdir":
+                        switch(argsa.args[2]){
+                            case "block":
+                            break;
+                            case "entity":
+                                let argsb = evaluateParameters(argsa.extra, ["targetSelector"])
+                                let targets = targetSelectorAllListC(argsb.args[0], "", vTStr(player.location), player)
+                                //([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*)
+                                let path = argsb.extra.trim().match(/(?:\[(\d+)\]|\["((?:[^"]|(?<!(?:(?:[^\\]\\)(?:\\\\)*))")*)"\]|(?<=\.)([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*)|^([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*))/ug)
+                                targets.forEach(target=>{
+                                    try{
+                                        let directory = {Components: {}}
+                                        Object.keys(EntityComponentTypes).forEach(v=>Object.assign(directory.Components, {get [v](){return target.getComponent(EntityComponentTypes[v])}}))
+                                        path.forEach(v=>{directory=directory[v]})
+                                        pbsend(player, Object.getOwnPropertyNames(directory))
+                                    }catch(e){player.sendError(e)}
+                                })
+                            break;
+                            case "storage":
+                            break;
+                            default:
+                            break;
+                        }
+                    break;
+                    case "getdes":
+                        switch(argsa.args[2]){
+                            case "block":
+                            break;
+                            case "entity":
+                                let argsb = evaluateParameters(argsa.extra, ["targetSelector"])
+                                let targets = targetSelectorAllListC(argsb.args[0], "", vTStr(player.location), player)
+                                //([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*)
+                                let path = argsb.extra.trim().match(/(?:\[(\d+)\]|\["((?:[^"]|(?<!(?:(?:[^\\]\\)(?:\\\\)*))")*)"\]|(?<=\.)([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*)|^([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*))/ug)
+                                targets.forEach(target=>{
+                                    try{
+                                        let directory = {Components: {}}
+                                        Object.keys(EntityComponentTypes).forEach(v=>Object.assign(directory.Components, {get [v](){return target.getComponent(EntityComponentTypes[v])}}))
+                                        path.forEach(v=>{directory=directory[v]})
+                                        pbsend(player, Object.getOwnPropertyDescriptors(directory))
+                                    }catch(e){player.sendError(e)}
+                                })
+                            break;
+                            case "storage":
+                            break;
+                            default:
+                            break;
+                        }
+                    break;
+                    case "getdirb":
+                        switch(argsa.args[2]){
+                            case "block":
+                            break;
+                            case "entity":
+                                let argsb = evaluateParameters(argsa.extra, ["targetSelector"])
+                                let targets = targetSelectorAllListC(argsb.args[0], "", vTStr(player.location), player)
+                                //([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*)
+                                let path = argsb.extra.trim().match(/(?:\[(\d+)\]|\["((?:[^"]|(?<!(?:(?:[^\\]\\)(?:\\\\)*))")*)"\]|(?<=\.)([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*)|^([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*))/ug)
+                                targets.forEach(target=>{
+                                    try{
+                                        let directory = {
+                                            Components: {},
+                                            get Air(){return target.getComponent("breathable").airSupply},
+                                            set Air(airSupply: number){target.getComponent("breathable").airSupply=airSupply}
+                                        }
+                                        Object.keys(EntityComponentTypes).forEach(v=>Object.assign(directory.Components, {get [v](){return target.getComponent(EntityComponentTypes[v])}}))
+                                        path.forEach(v=>{directory=directory[v]})
+                                        pbsend(player, Object.getOwnPropertyNames(directory.constructor.prototype))
+                                    }catch(e){player.sendError(e)}
+                                })
+                            break;
+                            case "storage":
+                            break;
+                            default:
+                            break;
+                        }
+                    break;
+                    case "getdesb":
+                        switch(argsa.args[2]){
+                            case "block":
+                            break;
+                            case "entity":
+                                let argsb = evaluateParameters(argsa.extra, ["targetSelector"])
+                                let targets = targetSelectorAllListC(argsb.args[0], "", vTStr(player.location), player)
+                                //([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*)
+                                let path = argsb.extra.trim().match(/(?:\[(\d+)\]|\["((?:[^"]|(?<!(?:(?:[^\\]\\)(?:\\\\)*))")*)"\]|(?<=\.)([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*)|^([$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\u200C\u200D\p{Mn}\p{Mc}\p{Nd}\p{Pc}]*))/ug)
+                                targets.forEach(target=>{
+                                    try{
+                                        let directory = {Components: {}}
+                                        Object.keys(EntityComponentTypes).forEach(v=>Object.assign(directory.Components, {get [v](){return target.getComponent(EntityComponentTypes[v])}}))
+                                        path.forEach(v=>{directory=directory[v]})
+                                        pbsend(player, Object.getOwnPropertyDescriptors(directory.constructor.prototype))
+                                    }catch(e){player.sendError(e)}
+                                })
+                            break;
+                            case "storage":
+                            break;
+                            default:
+                            break;
+                        }
+                    break;
+                    default:
+                    break;
+                }
+            })
         }
         break; 
         case !!switchTest.match(/^execute$/): {
@@ -7919,7 +8365,7 @@ type evaluateParametersTypeMapper<Tuple extends [...any[]]> = {
     any|undefined;
 } & {length: Tuple['length']};
 export type evaluateParametersParameterTypes = "presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"Vectors"|"targetSelector"|"blockStates"|"blockPattern"|"block"|"dimension"|`-${string}`|`f-${string}`
-export type evaluateParametersParameter = {type: "presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates"|"blockPattern"|"block"|"dimension"|`-${string}`|`f-${string}`, maxLength?: number}|{type: "Vectors", vectorCount?: number, maxLength?: number}|"presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates"|"blockPattern"|"block"|"dimension"|`-${string}`|`f-${string}`
+export type evaluateParametersParameter = {type: "presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates"|"blockPattern"|"block"|"blockMask"|"dimension"|`-${string}`|`f-${string}`, maxLength?: number}|{type: "Vectors", vectorCount?: number, maxLength?: number}|"presetText"|"number"|"boolean"|"neboolean"|"string"|"non-booleanString"|"json"|"Vector"|"Vector1"|"Vector2"|"Vector3"|"Vector4"|"Vector5"|"Vector6"|"Vector7"|"Vector8"|"targetSelector"|"blockStates"|"blockPattern"|"block"|"blockMask"|"dimension"|`-${string}`|`f-${string}`
 
 export function evaluateParameters<T extends evaluateParametersParameter[]|[evaluateParametersParameter]>(commandstring: string, parameters: T): {
     params: T,
@@ -7947,6 +8393,7 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
         T[Index] extends "blockStates" ? {[id: string]: string|number|boolean}|undefined : 
         T[Index] extends "blockPattern" ? BlockPattern|undefined : 
         T[Index] extends "block" ? {id: string, states?: {[id: string]: string|number|boolean}}|undefined : 
+        T[Index] extends "blockMask" ? BlockMask|undefined : 
         T[Index] extends "dimension" ? Dimension|undefined : 
         T[Index] extends `-${string}` ? string : 
         T[Index] extends `f-${string}` ? {"0"?: boolean, "1"?: boolean, "2"?: boolean, "3"?: boolean, "4"?: boolean, "5"?: boolean, "6"?: boolean, "7"?: boolean, "8"?: boolean, "9"?: boolean, "a"?: boolean, "b"?: boolean, "c"?: boolean, "d"?: boolean, "e"?: boolean, "f"?: boolean, "g"?: boolean, "h"?: boolean, "i"?: boolean, "j"?: boolean, "k"?: boolean, "l"?: boolean, "m"?: boolean, "n"?: boolean, "o"?: boolean, "p"?: boolean, "q"?: boolean, "r"?: boolean, "s"?: boolean, "t"?: boolean, "u"?: boolean, "v"?: boolean, "w"?: boolean, "x"?: boolean, "y"?: boolean, "z"?: boolean, "A"?: boolean, "B"?: boolean, "C"?: boolean, "D"?: boolean, "E"?: boolean, "F"?: boolean, "G"?: boolean, "H"?: boolean, "I"?: boolean, "J"?: boolean, "K"?: boolean, "L"?: boolean, "M"?: boolean, "N"?: boolean, "O"?: boolean, "P"?: boolean, "Q"?: boolean, "R"?: boolean, "S"?: boolean, "T"?: boolean, "U"?: boolean, "V"?: boolean, "W"?: boolean, "X"?: boolean, "Y"?: boolean, "Z"?: boolean, "!"?: boolean, "@"?: boolean, "#"?: boolean, "$"?: boolean, "%"?: boolean, "^"?: boolean, "&"?: boolean, "*"?: boolean, "<"?: boolean, ">"?: boolean, ","?: boolean, "."?: boolean, "~"?: boolean} : 
@@ -7970,7 +8417,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
         T[Index] extends {type: "targetSelector"} ? string|undefined : 
         T[Index] extends {type: "blockStates"} ? {[id: string]: string|number|boolean}|undefined : 
         T[Index] extends {type: "blockPattern"} ? BlockPattern|undefined : 
-        T[Index] extends {type: "block"} ? {id: string, states?: string}|undefined : 
+        T[Index] extends {type: "block"} ? {id: string, states?: {[id: string]: string|number|boolean}}|undefined : 
+        T[Index] extends {type: "blockMask"} ? BlockMask|undefined : 
         T[Index] extends {type: "dimension"} ? Dimension|undefined : 
         T[Index] extends {type: `-${string}`} ? string : 
         T[Index] extends {type: `f-${string}`} ? {"0"?: boolean, "1"?: boolean, "2"?: boolean, "3"?: boolean, "4"?: boolean, "5"?: boolean, "6"?: boolean, "7"?: boolean, "8"?: boolean, "9"?: boolean, "a"?: boolean, "b"?: boolean, "c"?: boolean, "d"?: boolean, "e"?: boolean, "f"?: boolean, "g"?: boolean, "h"?: boolean, "i"?: boolean, "j"?: boolean, "k"?: boolean, "l"?: boolean, "m"?: boolean, "n"?: boolean, "o"?: boolean, "p"?: boolean, "q"?: boolean, "r"?: boolean, "s"?: boolean, "t"?: boolean, "u"?: boolean, "v"?: boolean, "w"?: boolean, "x"?: boolean, "y"?: boolean, "z"?: boolean, "A"?: boolean, "B"?: boolean, "C"?: boolean, "D"?: boolean, "E"?: boolean, "F"?: boolean, "G"?: boolean, "H"?: boolean, "I"?: boolean, "J"?: boolean, "K"?: boolean, "L"?: boolean, "M"?: boolean, "N"?: boolean, "O"?: boolean, "P"?: boolean, "Q"?: boolean, "R"?: boolean, "S"?: boolean, "T"?: boolean, "U"?: boolean, "V"?: boolean, "W"?: boolean, "X"?: boolean, "Y"?: boolean, "Z"?: boolean, "!"?: boolean, "@"?: boolean, "#"?: boolean, "$"?: boolean, "%"?: boolean, "^"?: boolean, "&"?: boolean, "*"?: boolean, "<"?: boolean, ">"?: boolean, ","?: boolean, "."?: boolean, "~"?: boolean} : 
@@ -8127,6 +8575,16 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
             };
         }
         break;
+        case p.type == "blockMask": {
+            const ep = BlockMask.extractWRaw(paramEval.trimStart());
+            paramEval = paramEval.slice(paramEval.indexOf(ep.raw)+ep.raw.length) ?? "";
+            try {
+                argumentsa.push(ep.parsed);
+            } catch (e) {
+                ea.push([e, e.stack])
+            };
+        }
+        break;
         case p.type == "targetSelector": {
             if(!paramEval.trimStart().startsWith("@")){
                 if (paramEval.trimStart().startsWith("\"")) {
@@ -8143,13 +8601,23 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
                     paramEval = paramEval.trimStart().split(" ").slice(1).join(" ").trimStart();
                 }
             }else{
-                let value = extractSelectors(paramEval)[0];
-                paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
-                try {
-                    argumentsa.push(value);
-                } catch (e) {
-                    ea.push([e, e.stack])
-                };
+                if(!!paramEval.trimStart().match(/^@[a-zA-Z]\s*[^\[]/)){
+                    let value = paramEval.trimStart().match(/^@[seapvrc]/)[0];
+                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
+                    try {
+                        argumentsa.push(value);
+                    } catch (e) {
+                        ea.push([e, e.stack])
+                    };
+                }else{
+                    let value = extractSelectors(paramEval)[0];
+                    paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
+                    try {
+                        argumentsa.push(value);
+                    } catch (e) {
+                        ea.push([e, e.stack])
+                    };
+                }
             }
         }
         break;

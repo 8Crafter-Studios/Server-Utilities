@@ -578,8 +578,12 @@ export class undoClipboard {
         return world.getDynamicPropertyIds().filter(v => v.startsWith("andexdb:undoclipboard;"));
     }
     static get saveTimes() {
-        return [...new Set(world.structureManager.getWorldStructureIds().filter(v => v.startsWith("andexdb:undoclipboard;")).map(v => Number(v.slice(22).split(",")[0])))].sort().reverse()[0];
+        return [...new Set(world.getDynamicPropertyIds().filter(v => v.startsWith("andexdb:undoclipboard;")).map(v => Number(v.slice(22))))].sort().reverse();
     }
+    static get newestSaveTime() {
+        return this.saveTimes[0];
+    }
+    static cullItemsMissingStructure() { this.saveTimes.filter(v => !!!world.structureManager.get(`andexdb:undoclipboard;${v},0,0,0`)).forEach(v => this.clearTime(v)); }
     static clear() { this.ids.forEach(v => world.structureManager.delete(v)); }
     static clearTime(timestamp) {
         this.saveIds(timestamp).forEach(v => world.structureManager.delete(v));
@@ -603,7 +607,7 @@ export class undoClipboard {
             this.saveRange(dimension, range, saveTime, { saveMode: options?.saveMode ?? config.undoClipboardMode, includeBlocks: options?.includeBlocks, includeEntities: options?.includeEntities });
         }
     }
-    static undo(saveTime = this.saveTimes, options, clearSave = true, sizes = { x: 64, y: 128, z: 64 }) {
+    static undo(saveTime = this.newestSaveTime, options, clearSave = true, sizes = { x: 64, y: 128, z: 64 }) {
         if (this.ids.length == 0) {
             return 0;
         }
@@ -615,6 +619,7 @@ export class undoClipboard {
         return 1;
     }
 }
+system.runTimeout(() => undoClipboard.cullItemsMissingStructure(), 50);
 export class AreaBackups {
     static get ids() {
         return world.getDynamicPropertyIds().filter(v => v.startsWith("areabackup:"));
