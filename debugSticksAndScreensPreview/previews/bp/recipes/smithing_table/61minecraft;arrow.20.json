@@ -1,0 +1,13 @@
+{
+"format_version": "1.17",
+"minecraft:recipe_smithing_transform": {
+    "description": {
+        "identifier": "andexdb:61minecraft:arrow.20"
+    },
+    "tags": ["smithing_table"],
+    "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 61},
+    "base": "andexdb:smithing_table_enchanted_book",
+        "addition": "minecraft:netherite_ingot",
+        "result": {"item": "minecraft:arrow", "data": 20}
+    }
+}

@@ -1,0 +1,1517 @@
+{
+  "namespace": "how_to_play",
+
+  "how_to_play_screen@how_to_play_common.screen_base": {
+    "$header_safezone_control": "common_store.store_top_bar_filler",
+    "$header_bar_control": "common_store.store_top_bar",
+    "$is_full_screen_layout": true,
+    "$fill_alpha": 1.0,
+    "$selector_stack_panel": "how_to_play.how_to_play_selector_stack_panel",
+    "$section_content_panels": "how_to_play.how_to_play_section_content_panels"/*,
+    "variables": [
+    		{
+       		"requires": "(not ($debugsticksmodeenabled))",
+          "$selector_stack_panel": "how_to_play.how_to_play_selector_stack_panel",
+          "$section_content_panels": "how_to_play.how_to_play_section_content_panels"
+        },
+    		{
+       		"requires": "($debugsticksmodeenabled)",
+          "$selector_stack_panel": "how_to_play.andexdb_how_to_play_selector_stack_panel",
+          "$section_content_panels": "how_to_play.andexdb_section_content_panels"
+        }
+    ],
+    "bindings": [
+      {
+        "binding_type": "global",
+        "source_control_name": "ToggleAndexdbHelpMenu",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "$debugsticksmodeenabled"
+      }
+    ]*/
+  },
+
+  "how_to_play_selector_stack_panel": {
+    "type": "stack_panel",
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "orientation": "vertical",
+    "$default_selector_toggle_index": 2,
+    "controls": [
+      {
+        "how_to_play_selector_pane": {
+          "type": "stack_panel",
+          "controls": [
+            // Make sure the $toggle_group_forced_index values match the respective enum values in HowToPlayScreenController.h
+            {
+              "pack_sections_toggle_buttons": {
+                "type": "stack_panel",
+                "anchor_from": "top_left",
+                "anchor_to": "top_left",
+                "controls": [
+                  { "vanilla_section_toggle_button": {
+                    "type": "panel",
+                    "anchor_from": "top_left",
+                    "anchor_to": "top_left",
+                    "size": [ "100%", "30px" ],
+                    "controls": [
+                      {
+                        "vanilla_section_toggle_button@common_toggles.light_ui_toggle": {
+                          "anchor_from": "top_left",
+                          "anchor_to": "top_left",
+                          "size": [ "100%", "30px" ],
+                
+                          "$button_type_panel|default": "how_to_play_common.toggle_button_control_b",
+                          "$checked_control": "common_toggles.toggle_checked",
+                          "$radio_toggle_group": true,
+                          "$toggle_name": "help_menu_visibility_mode",
+                          "$toggle_group_default_selected": 0,
+                          "$toggle_group_forced_index": 0,
+                          "$button_text": "Vanilla Help Menu",
+                
+                          "$toggle_tab_focus_binding_type": "global",
+                          "$toggle_tab_focus_binding_name": "#navigation_tab_focus_precedence",
+                          "$toggle_on_hover_binding_type": "global",
+                          "$toggle_on_hover_binding_name": "#toggle_on_hover",
+                
+                          "$toggle_view_binding_name": "ToggleVanillaHelpMenu",
+                          "$toggle_property_bag": {
+                            "#panel_title": "Vanilla Help Menu"
+                          },
+                          "button_mappings": [
+                            {
+                              "from_button_id": "button.menu_select",
+                              "to_button_id": "button.menu_select",
+                              "mapping_type": "pressed"
+                            },
+                            {
+                              "from_button_id": "button.back",
+                              "to_button_id": "button.menu_select",
+                              "mapping_type": "global"
+                            },
+                            {
+                              "from_button_id": "button.menu",
+                              "to_button_id": "button.menu_select",
+                              "mapping_type": "global"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }},
+                  {
+                    "andexsa_section_toggle_button": {
+                      "type": "stack_panel",
+                      "anchor_from": "top_left",
+                      "anchor_to": "top_left",
+                      "min_size": [ "100%", "0px" ],
+                      "controls": [
+                        { "moving_around_button@how_to_play.andexsa_section_toggle_button": {} }
+                      ]
+                    }
+                  },
+                  {
+                    "andexdb_section_toggle_button": {
+                      "type": "stack_panel",
+                      "anchor_from": "top_left",
+                      "anchor_to": "top_left",
+                      "min_size": [ "100%", "0px" ],
+                      "controls": [
+                        { "moving_around_button@how_to_play.andexdb_section_toggle_button": {} }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "andexdb_how_to_play_selector_pane_b": {
+                "type": "stack_panel",
+                "anchor_from": "top_left",
+                "anchor_to": "top_left",
+                "min_size": [ "100%", "0px" ],
+                "controls": [
+                  { "andexdb_how_to_play_selector_pane_b@how_to_play.andexdb_how_to_play_selector_pane_b": {} }
+                ]
+              }
+            },
+            {
+              "andexsa_how_to_play_selector_pane_b": {
+                "type": "stack_panel",
+                "anchor_from": "top_left",
+                "anchor_to": "top_left",
+                "min_size": [ "100%", "0px" ],
+                "controls": [
+                  { "andexsa_how_to_play_selector_pane_b@how_to_play.andexsa_how_to_play_selector_pane_b": {} }
+                ]
+              }
+            },
+            {
+              "vanilla_panel": {
+                "type": "stack_panel",
+                "bindings": [
+                  {
+                    "binding_type": "view",
+                    "source_control_name": "ToggleVanillaHelpMenu",
+                    "source_property_name": "#toggle_state",
+                    "target_property_name": "#visible"
+                  }
+                ],
+                "controls": [
+                  { "getting_started_category@how_to_play_common.topic_category": { "$category": "gettingStarted" } },
+                  { "moving_around_button@how_to_play.moving_around_button": { "$toggle_group_forced_index": 0 } },
+                  { "gathering_resources_button@how_to_play.gathering_resources_button": { "$toggle_group_forced_index": 1 } },
+                  { "selecting_items_button@how_to_play.selecting_items_button": { "$toggle_group_forced_index": 2 } },
+                  { "placing_blocks_button@how_to_play.placing_blocks_button": { "$toggle_group_forced_index": 3 } },
+                  { "inventory_button@how_to_play.inventory_button": { "$toggle_group_forced_index": 4 } },
+
+                  { "preparing_for_the_night_category@how_to_play_common.topic_category": { "$category": "preparingForTheNight" } },
+                  { "your_first_craft_button@how_to_play.your_first_craft_button": { "$toggle_group_forced_index": 5 } },
+                  { "recipe_book_button@how_to_play.recipe_book_button": { "$toggle_group_forced_index": 6 } },
+                  { "the_crafting_table_button@how_to_play.the_crafting_table_button": { "$toggle_group_forced_index": 7 } },
+                  { "crafting_a_tool_button@how_to_play.crafting_a_tool_button": { "$toggle_group_forced_index": 8 } },
+                  { "mining_button@how_to_play.mining_button": { "$toggle_group_forced_index": 9 } },
+
+                  { "surviving_the_first_night_category@how_to_play_common.topic_category": { "$category": "survivingTheFirstNight" } },
+                  { "nightfall_new_button@how_to_play.nightfall_new_button": { "$toggle_group_forced_index": 10 } },
+                  { "building_a_shelter_button@how_to_play.building_a_shelter_button": { "$toggle_group_forced_index": 11 } },
+                  { "death_and_respawn_button@how_to_play.death_and_respawn_button": { "$toggle_group_forced_index": 12 } },
+
+                  { "getting_settled_category@how_to_play_common.topic_category": { "$category": "gettingSettled" } },
+                  { "food_button@how_to_play.food_button": { "$toggle_group_forced_index": 13 } },
+                  { "beds_new_button@how_to_play.beds_new_button": { "$toggle_group_forced_index": 14 } },
+                  { "improved_tools_button@how_to_play.improved_tools_button": { "$toggle_group_forced_index": 15 } },
+
+                  {
+                    "education_category@how_to_play_common.topic_category": {
+                      "$category": "education",
+                      "ignored": "(not $education_edition)"
+                    }
+                  },
+                  { "world_builder_button@how_to_play.world_builder_button": { "$toggle_group_forced_index": 18 } },
+                  { "permission_blocks_button@how_to_play.permission_blocks_button": { "$toggle_group_forced_index": 17 } },
+                  { "chalkboard_button@how_to_play.chalkboard_button": { "$toggle_group_forced_index": 18 } },
+                  { "chemistry_button@how_to_play.chemistry_button": { "$toggle_group_forced_index": 19 } },
+                  { "npc_button@how_to_play.npc_button": { "$toggle_group_forced_index": 20 } },
+                  { "camera_button@how_to_play.camera_button": { "$toggle_group_forced_index": 21 } },
+                  { "portfolio_button@how_to_play.portfolio_button": { "$toggle_group_forced_index": 22 } },
+                  { "classroom_mode_button@how_to_play.classroom_mode_button": { "$toggle_group_forced_index": 23 } },
+                  { "code_builder_button@how_to_play.code_builder_button": { "$toggle_group_forced_index": 24 } },
+
+                  {
+                    "padding_1@how_to_play_common.padding": {
+                      "size": [ 0, 10 ]
+                    }
+                  },
+                  {
+                    "playing_together_button@how_to_play.playing_together_button": {
+                      "$toggle_group_forced_index": 25,
+                      "ignored": "$education_edition"
+                    }
+                  },
+                  { "encyclopedia_button@how_to_play.encyclopedia_button": { "$toggle_group_forced_index": 26 } }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+  "andexdb_topic_category": {
+    "type": "panel",
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "size": [ "100%", "16px" ],
+    "controls": [
+      {
+        "category_text": {
+          "type": "label",
+          "anchor_from": "bottom_left",
+          "anchor_to": "bottom_left",
+          "size": [ "default", "default" ],
+          "max_size": [ "100%", "100% - 4px" ],
+          "offset": [ "0px", "-3px" ],
+          "text": "$category",
+          "color": "$main_header_text_color"
+        }
+      }
+    ]
+  },
+
+  "andexdb_how_to_play_selector_pane_b": {
+    "type": "stack_panel",
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "ToggleAndexdbHelpMenu",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      // Make sure the $toggle_group_forced_index values match the respective enum values in HowToPlayScreenController.h
+      { "andexdb_installation_category@how_to_play.andexdb_topic_category": { "$category": "Installation" } },
+      { "andexdb_installation_button@how_to_play.andexdb_installation_button": { "$toggle_group_forced_index": 900 } },
+
+      { "andexdb_settings_category@how_to_play.andexdb_topic_category": { "$category": "Settings" } },
+      { "andexdb_settings_button@how_to_play.andexdb_settings_button": { "$toggle_group_forced_index": 901 } },
+      { "andexdb_global_settings_button@how_to_play.andexdb_global_settings_button": { "$toggle_group_forced_index": 902 } },
+      { "andexdb_chat_ranks_settings_button@how_to_play.andexdb_chat_ranks_settings_button": { "$toggle_group_forced_index": 903 } },
+      { "andexdb_script_settings_button@how_to_play.andexdb_script_settings_button": { "$toggle_group_forced_index": 904 } },
+      { "andexdb_ui_settings_button@how_to_play.andexdb_ui_settings_button": { "$toggle_group_forced_index": 905 } },
+      { "andexdb_eval_auto_execute_settings_button@how_to_play.andexdb_eval_auto_execute_settings_button": { "$toggle_group_forced_index": 906 } },
+      { "andexdb_personal_settings_button@how_to_play.andexdb_personal_settings_button": { "$toggle_group_forced_index": 907 } },
+      { "andexdb_notifications_settings_button@how_to_play.andexdb_notifications_settings_button": { "$toggle_group_forced_index": 908 } },
+      { "andexdb_home_system_settings_button@how_to_play.andexdb_home_system_settings_button": { "$toggle_group_forced_index": 909 } },
+      { "andexdb_tpa_system_settings_button@how_to_play.andexdb_tpa_system_settings_button": { "$toggle_group_forced_index": 910 } },
+      
+      { "andexdb_items_block_entities_category@how_to_play.andexdb_topic_category": { "$category": "Items/Blocks/Entities" } },
+      { "andexdb_items_button@how_to_play.andexdb_items_button": { "$toggle_group_forced_index": 911 } },
+      { "andexdb_blocks_button@how_to_play.andexdb_blocks_button": { "$toggle_group_forced_index": 912 } },
+      { "andexdb_entities_button@how_to_play.andexdb_entities_button": { "$toggle_group_forced_index": 913 } },
+
+      { "andexdb_commands_category@how_to_play.andexdb_topic_category": { "$category": "Commands" } },
+      { "andexdb_commands_button@how_to_play.andexdb_commands_button": { "$toggle_group_forced_index": 914 } }
+    ]
+  },
+
+  "andexdb_section_content_panels": {
+    "type": "stack_panel",
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "size": [ "100% - 5px", "100%c + 5px" ],
+    "offset": [ 2, 0 ],
+    "controls": [
+      {
+        "general_tips_sections": {
+          "type": "stack_panel",
+          "controls": [
+            {
+              "section_contents_header@how_to_play_common.section_contents_header": {}
+            },
+            { "andexdb_installation_section@how_to_play.andexdb_installation_section": {} },
+            
+            { "andexdb_global_settings_section@how_to_play.andexdb_global_settings_section": {} },
+            { "andexdb_chat_ranks_settings_section@how_to_play.andexdb_chat_ranks_settings_section": {} },
+            { "andexdb_script_settings_section@how_to_play.andexdb_script_settings_section": {} },
+            { "andexdb_ui_settings_section@how_to_play.andexdb_ui_settings_section": {} },
+            { "andexdb_eval_auto_execute_settings_section@how_to_play.andexdb_eval_auto_execute_settings_section": {} },
+            { "andexdb_personal_settings_section@how_to_play.andexdb_personal_settings_section": {} },
+            { "andexdb_notifications_settings_section@how_to_play.andexdb_notifications_settings_section": {} },
+            { "andexdb_home_system_settings_section@how_to_play.andexdb_home_system_settings_section": {} },
+            { "andexdb_tpa_system_settings_section@how_to_play.andexdb_tpa_system_settings_section": {} },
+
+            { "andexdb_items_section@how_to_play.andexdb_items_section": {} },
+            { "andexdb_blocks_section@how_to_play.andexdb_blocks_section": {} },
+            { "andexdb_entities_section@how_to_play.andexdb_entities_section": {} },
+            
+            { "inventory_section@how_to_play.inventory_section": {} },
+            {
+              "section_contents_footer@how_to_play_common.section_contents_footer": {}
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+  "how_to_play_section_content_panels": {
+    "type": "stack_panel",
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "size": [ "100% - 5px", "100%c + 5px" ],
+    "offset": [ 2, 0 ],
+    "controls": [
+      {
+        "general_tips_sections": {
+          "type": "stack_panel",
+          "controls": [
+            {
+              "vanilla_panel": {
+                "type": "stack_panel",
+                "bindings": [
+                  {
+                    "binding_type": "view",
+                    "source_control_name": "ToggleVanillaHelpMenu",
+                    "source_property_name": "#toggle_state",
+                    "target_property_name": "#visible"
+                  }
+                ],
+                "controls": [
+                  {
+                    "section_contents_header@how_to_play_common.section_contents_header": {}
+                  },
+                  { "moving_around_section@how_to_play.moving_around_section": {} },
+                  { "gathering_resources_section@how_to_play.gathering_resources_section": {} },
+                  { "selecting_items_section@how_to_play.selecting_items_section": {} },
+                  { "placing_blocks_section@how_to_play.placing_blocks_section": {} },
+                  { "inventory_section@how_to_play.inventory_section": {} },
+
+                  { "your_first_craft_section@how_to_play.your_first_craft_section": {} },
+                  { "recipe_book_section@how_to_play.recipe_book_section": {} },
+                  { "the_crafting_table_section@how_to_play.the_crafting_table_section": {} },
+                  { "crafting_a_tool_section@how_to_play.crafting_a_tool_section": {} },
+                  { "mining_section@how_to_play.mining_section": {} },
+
+                  { "nightfall_new_section@how_to_play.nightfall_new_section": {} },
+                  { "building_a_shelter_section@how_to_play.building_a_shelter_section": {} },
+                  { "death_and_respawn_section@how_to_play.death_and_respawn_section": {} },
+
+                  { "food_section@how_to_play.food_section": {} },
+                  { "beds_new_section@how_to_play.beds_new_section": {} },
+                  { "improved_tools_section@how_to_play.improved_tools_section": {} },
+
+                  { "world_builder_section@how_to_play.world_builder_section": { "ignored": "(not $education_edition)" } },
+                  { "permission_blocks_section@how_to_play.permission_blocks_section": { "ignored": "(not $education_edition)" } },
+                  { "chalkboard_section@how_to_play.chalkboard_section": { "ignored": "(not $education_edition)" } },
+                  { "chemistry_section@how_to_play.chemistry_section": { "ignored": "(not $education_edition)" } },
+                  { "npc_section@how_to_play.npc_section": { "ignored": "(not $education_edition)" } },
+                  { "camera_section@how_to_play.camera_section": { "ignored": "(not $education_edition)" } },
+                  { "portfolio_section@how_to_play.portfolio_section": { "ignored": "(not $education_edition)" } },
+                  { "classroom_mode_section@how_to_play.classroom_mode_section": { "ignored": "(not $education_edition)" } },
+                  { "code_builder_section@how_to_play.code_builder_section": { "ignored": "(not $education_edition)" } },
+
+                  { "playing_together_section@how_to_play.playing_together_section": { "ignored": "$education_edition" } },
+                  { "encyclopedia_section@how_to_play.encyclopedia_section": {} },
+                  {
+                    "section_contents_footer@how_to_play_common.section_contents_footer": {}
+                  }
+                ]
+              }
+            },
+            {
+              "andexsa_section_content_pane_b": {
+                "type": "stack_panel",
+                "anchor_from": "top_left",
+                "anchor_to": "top_left",
+                "controls": [
+                  { "andexsa_section_content_pane_b@how_to_play.andexsa_section_content_pane_b": {} }
+                ]
+              }
+            },
+            {
+              "andexdb_section_content_pane_b": {
+                "type": "stack_panel",
+                "anchor_from": "top_left",
+                "anchor_to": "top_left",
+                "controls": [
+                  { "andexdb_section_content_pane_b@how_to_play.andexdb_section_content_pane_b": {} }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "andexdb_section_content_pane_b": {
+    "type": "stack_panel",
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "ToggleAndexdbHelpMenu",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "section_contents_header@how_to_play_common.section_contents_header": {}
+      },
+      { "andexdb_installation_section@how_to_play.andexdb_installation_section": {} },
+            
+      { "andexdb_settings_section@how_to_play.andexdb_settings_section": {} },
+      { "andexdb_global_settings_section@how_to_play.andexdb_global_settings_section": {} },
+      { "andexdb_chat_ranks_settings_section@how_to_play.andexdb_chat_ranks_settings_section": {} },
+      { "andexdb_script_settings_section@how_to_play.andexdb_script_settings_section": {} },
+      { "andexdb_ui_settings_section@how_to_play.andexdb_ui_settings_section": {} },
+      { "andexdb_eval_auto_execute_settings_section@how_to_play.andexdb_eval_auto_execute_settings_section": {} },
+      { "andexdb_personal_settings_section@how_to_play.andexdb_personal_settings_section": {} },
+      { "andexdb_notifications_settings_section@how_to_play.andexdb_notifications_settings_section": {} },
+      { "andexdb_home_system_settings_section@how_to_play.andexdb_home_system_settings_section": {} },
+      { "andexdb_tpa_system_settings_section@how_to_play.andexdb_tpa_system_settings_section": {} },
+      
+      { "andexdb_items_section@how_to_play.andexdb_items_section": {} },
+      { "andexdb_blocks_section@how_to_play.andexdb_blocks_section": {} },
+      { "andexdb_entities_section@how_to_play.andexdb_entities_section": {} },
+      
+      { "andexdb_commands_section@how_to_play.andexdb_commands_section": {} },
+      {
+        "section_contents_footer@how_to_play_common.section_contents_footer": {}
+      }
+    ]
+  },
+  "andexdb_section_toggle_button": {
+    "type": "panel",
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "size": [ "100%", "30px" ],
+    "controls": [
+      {
+        "andexdb_section_toggle_button@common_toggles.light_ui_toggle": {
+          "anchor_from": "top_left",
+          "anchor_to": "top_left",
+          "size": [ "100%", "30px" ],
+
+          "$button_type_panel|default": "how_to_play_common.toggle_button_control_b",
+          "$checked_control": "common_toggles.toggle_checked",
+          "$radio_toggle_group": true,
+          "$toggle_name": "help_menu_visibility_mode",
+          "$toggle_group_default_selected": 0,
+          "$toggle_group_forced_index": 2,
+          "$button_text": "8Crafter's Debug Sticks",
+
+          "$default_texture": "textures/ui/button_borderless_light_blue_default",
+          "$hover_texture": "textures/ui/button_borderless_light_blue_hover",
+          "$pressed_texture": "textures/ui/button_borderless_light_blue_hover_pressed",
+          "$pressed_no_hover_texture": "textures/ui/button_borderless_light_blue_pressed",
+
+          "$toggle_tab_focus_binding_type": "global",
+          "$toggle_tab_focus_binding_name": "#navigation_tab_focus_precedence",
+          "$toggle_on_hover_binding_type": "global",
+          "$toggle_on_hover_binding_name": "#toggle_on_hover",
+
+          "$toggle_view_binding_name": "ToggleAndexdbHelpMenu",
+          "$toggle_property_bag": {
+            "#panel_title": "Back"
+          },
+          "button_mappings": [
+            {
+              "from_button_id": "button.menu_select",
+              "to_button_id": "button.menu_select",
+              "mapping_type": "pressed"
+            },
+            {
+              "from_button_id": "button.back",
+              "to_button_id": "button.menu_select",
+              "mapping_type": "global"
+            },
+            {
+              "from_button_id": "button.menu",
+              "to_button_id": "button.menu_select",
+              "mapping_type": "global"
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+  
+  "andexdb_help_button": {
+    "type": "panel",
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "size": [ "100%", "30px" ],
+    "controls": [
+      {
+        "andexdb_help_button@settings_common.section_toggle_base": {
+          "$toggle_view_binding_name|default": "($section_topic + '_button_toggle')",
+          "$glyph_texture|default": "textures/ui/8Crafter",
+          "$glyph_color_texture|default": "textures/items/stick",
+          "$glyph_size|default": [ 16, 16 ],
+          "$button_text|default": "menu.debugSticksGuide",
+          "$title_text|default": "menu.debugSticksGuide2",
+          "$toggle_property_bag": {
+            "#panel_title": "$title_text"
+          }
+        }
+      }
+    ]
+  },
+
+  "andexdb_installation_button@how_to_play.andexdb_help_button": {
+    "$section_topic": "andexdbInstallation",
+    "$button_text": "Installation/Setup",
+    "$title_text": "Installation/Setup"
+  },
+
+  "andexdb_installation_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbInstallation_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "§cTHIS VERSION OF THIS ADD-ON WILL ONLY WORK FOR MINECRAFT §a1.21.2x §c(ex. §a1.21.20§c or §a1.21.21§c). \nIf you are on a different version of minecraft, please update this pack to the correct version for the version of Minecraft that you are playing on. \n§eThis add-on breaks every medium-sized update (ex. 1.21.0, 1.21.20, 1.21.30, or 1.21.40) and must be updated whenever that happens. \n§bYour data will be preserved when updating the pack to a newer version. "
+        }
+      },
+      { "padding_1@how_to_play_common.padding": {} },
+      {
+        "first_setup_section_header@how_to_play_common.subsection_title": {
+          "$text": "§aAdd-On Setup§r"
+        }
+      },
+      {
+        "header_1@how_to_play_common.header": {
+          "$text": "Experimental Toggles and Other Toggles/Settings"
+        }
+      },
+      {
+        "paragraph_2_all_required_experimental_toggles@how_to_play_common.paragraph": {
+          "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \nUpcoming Creator Features\nBeta APIs\nCreator Cameras: New Third Person Presets\nCreator Cameras: Focus Target Camera"
+        }
+      },
+      {
+        "paragraph_2_other_recommended_settings@how_to_play_common.paragraph": {
+          "$text": "It is also recommended to enable the \"Education Edition\" toggle. "
+        }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+        "updating_section_header@how_to_play_common.subsection_title": {
+          "$text": "§bUpdating§r"
+        }
+      },
+      {
+        "header_2@how_to_play_common.header": {
+          "$text": "World"
+        }
+      },
+      {
+        "paragraph_3a@how_to_play_common.paragraph": {
+          "$text": "To update the add-on on a world all you have to do is: "
+        }
+      },
+      {
+        "paragraph_3b@how_to_play_common.paragraph": {
+          "$text": "1. Get the .mcaddon file for the new version. \n2. Import it into minecraft. \n3. Go on the edit world screen for the world that you want to update the add-on on. \n4. Deactivate the old version of the add-on. \n5. Activate the new version of the add-on. (Make sure that you activate the behavior pack first or else it might glitch and show taht both the resource and behavior packs are on, when only the resource pack is on, which you will see if you go to the main menu and then back into the edit world screen again.)\n6. Go back to the main menu. \n7. Go into the edit world screen again and insure that both the resource and behavior packs are active. "
+        }
+      },
+      {
+        "header_3@how_to_play_common.header": {
+          "$text": "Realm"
+        }
+      },
+      {
+        "paragraph_3a@how_to_play_common.paragraph": {
+          "$text": "To update the add-on on a realm all you have to do is: "
+        }
+      },
+      {
+        "paragraph_3b@how_to_play_common.paragraph": {
+          "$text": "1. Get the .mcaddon file for the new version. \n2. Import it into minecraft. \n3. Download the world from the realm. \n4. Go on the edit world screen for the world that you just downloaded. \n5. Deactivate the old version of the add-on. \n6. Activate the new version of the add-on. \n7. Go back to the main menu. \n8. Go into the edit world screen again and insure that both the resource and behavior packs are active. \n9. Load up the world. (This is very important, if you don't do this then the packs won't actually add when you put the world back on to the realm.)\n10. Save & Quit the world. \n11. Go to the realms settings screen. "
+        }
+      },
+      {
+        "image_1@how_to_play_common.image": {
+          "texture": "textures/ui/help/installation/edit_realm_button_arrow",
+          "size": [ "100%", "50px" ]
+        }
+      },
+      {
+        "paragraph_3c@how_to_play_common.paragraph": {
+          "$text": "\n12. Select the currently active world and click edit. "
+        }
+      },
+      {
+        "image_2@how_to_play_common.image": {
+          "texture": "textures/ui/help/installation/select_realm_active_world_edit_world_button_arrow",
+          "size": [ "100%", "200px" ]
+        }
+      },
+      {
+        "paragraph_3d@how_to_play_common.paragraph": {
+          "$text": "\n13. In the \"Game Settings\" section scroll down to the very bottom and click on replace world. "
+        }
+      },
+      {
+        "image_2@how_to_play_common.image": {
+          "texture": "textures/ui/help/installation/realm_game_settings_replace_world_button_arrow",
+          "size": [ "100%", "100px" ]
+        }
+      },
+      {
+        "paragraph_3e@how_to_play_common.paragraph": {
+          "$text": "\n14. Select the world that you just added the packs to. "
+        }
+      }
+    ]
+  },
+
+  "andexdb_items_button@how_to_play.andexdb_help_button": {
+    "$section_topic": "andexdbItems",
+    "$button_text": "Items",
+    "$title_text": "Items"
+  },
+
+  "andexdb_items_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbItems_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "howtoplay.gatheringResources.text.1"
+        }
+      },
+      { "padding_1@how_to_play_common.padding": {} },
+      {
+        "paragraph_2_keyboard@how_to_play_common.paragraph_keyboard": {
+          "$text": "howtoplay.gatheringResources.text.2.pc"
+        }
+      },
+      {
+        "paragraph_2_gamepad@how_to_play_common.paragraph_gamepad": {
+          "$text": "howtoplay.gatheringResources.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_tap@how_to_play_common.paragraph_touch_joystick_tap": {
+          "$line_padding": 3.0,
+          "$text": "howtoplay.gatheringResources.text.2.touch"
+        }
+      },
+      {
+        "paragraph_2_touch_classic_dpad@how_to_play_common.paragraph_touch_classic_dpad": {
+          "$line_padding": 3.0,
+          "$text": "howtoplay.gatheringResources.text.2.touch"
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_crosshair@how_to_play_common.paragraph_touch_joystick_crosshair": {
+          "$text": "howtoplay.gatheringResources.text.2.touch.joystick_crosshair"
+        }
+      },
+      {
+        "paragraph_2_rift_controller@how_to_play_common.paragraph_rift_controller": {
+          "$text": "howtoplay.gatheringResources.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
+          "$text": "howtoplay.gatheringResources.text.2.nottouch"
+        }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+        "paragraph_3@how_to_play_common.paragraph": {
+          "$text": "howtoplay.gatheringResources.text.3"
+        }
+      }
+    ]
+  },
+
+  "andexdb_blocks_button@how_to_play.andexdb_help_button": {
+    "$section_topic": "andexdbBlocks",
+    "$button_text": "Blocks",
+    "$title_text": "Blocks"
+  },
+
+  "andexdb_blocks_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbBlocks_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "howtoplay.selectingItems.text.1"
+        }
+      },
+      { "padding_1@how_to_play_common.padding": {} },
+      {
+        "paragraph_2_keyboard@how_to_play_common.paragraph_keyboard": {
+          "$text": "howtoplay.selectingItems.text.2.keyboard"
+        }
+      },
+      {
+        "paragraph_2_gamepad@how_to_play_common.paragraph_gamepad": {
+          "$text": "howtoplay.selectingItems.text.2.gamepad"
+        }
+      },
+      {
+        "paragraph_touch_joystick_tap@how_to_play_common.paragraph_touch_no_icons": {
+          "$text": "howtoplay.selectingItems.text.2.touch"
+        }
+      },
+      {
+        "paragraph_2_rift_controller@how_to_play_common.paragraph_rift_controller": {
+          "$text": "howtoplay.selectingItems.text.2.rift"
+        }
+      },
+      {
+        "paragraph_2_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
+          "$text": "howtoplay.selectingItems.text.2.windowsmr"
+        }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+        "paragraph_3_keyboard@how_to_play_common.paragraph_keyboard": {
+          "$text": "howtoplay.selectingItems.text.3.nottouch"
+        }
+      },
+      {
+        "paragraph_3_gamepad@how_to_play_common.paragraph_gamepad": {
+          "$text": "howtoplay.selectingItems.text.3.nottouch"
+        }
+      },
+      {
+        "paragraph_3_touch_joystick_tap@how_to_play_common.paragraph_touch_joystick_tap": {
+          "$text": "howtoplay.selectingItems.text.3.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_3_touch_classic_dpad@how_to_play_common.paragraph_touch_classic_dpad": {
+          "$text": "howtoplay.selectingItems.text.3.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_3_touch_joystick_crosshair@how_to_play_common.paragraph_touch_joystick_crosshair": {
+          "$text": "howtoplay.selectingItems.text.3.touch.joystick_crosshair"
+        }
+      },
+      {
+        "paragraph_3_rift_controller@how_to_play_common.paragraph_rift_controller": {
+          "$text": "howtoplay.selectingItems.text.3.nottouch"
+        }
+      },
+      {
+        "paragraph_3_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
+          "$text": "howtoplay.selectingItems.text.3.nottouch"
+        }
+      },
+      { "padding_3@how_to_play_common.padding": {} },
+      {
+        "header_1@how_to_play_common.header": {
+          "$text": "howtoplay.selectingItems.header.1"
+        }
+      },
+      {
+        "image_1_not_touch@how_to_play_common.image": {
+          "bindings": [
+            {
+              "binding_name": "(not #touch_being_used)",
+              "binding_name_override": "#visible"
+            }
+          ],
+          "texture": "textures/ui/selecting_items_desktop",
+          "size": [ "100%", "175px" ]
+        }
+      },
+      {
+        "image_1_touch@how_to_play_common.image": {
+          "bindings": [
+            {
+              "binding_name": "(#touch_being_used)",
+              "binding_name_override": "#visible"
+            }
+          ],
+          "texture": "textures/ui/selecting_items_mobile",
+          "size": [ "100%", "175px" ]
+        }
+      }
+    ]
+  },
+
+  "andexdb_entities_button@how_to_play.andexdb_help_button": {
+    "$section_topic": "andexdbEntities",
+    "$button_text": "Entities",
+    "$title_text": "Entities"
+  },
+
+  "andexdb_entities_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbEntities_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.1"
+        }
+      },
+      { "padding_1@how_to_play_common.padding": {} },
+      {
+        "paragraph_2_keyboard@how_to_play_common.paragraph_keyboard": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_gamepad@how_to_play_common.paragraph_gamepad": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_tap@how_to_play_common.paragraph_touch_joystick_tap": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_classic_dpad@how_to_play_common.paragraph_touch_classic_dpad": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_crosshair@how_to_play_common.paragraph_touch_joystick_crosshair": {
+          "$text": "howtoplay.placingBlocks.text.2.touch.joystick_crosshair"
+        }
+      },
+      {
+        "paragraph_2_rift_controller@how_to_play_common.paragraph_rift_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+        "paragraph_3@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.3"
+        }
+      }
+    ]
+  },
+
+  "andexdb_commands_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/settings_glyph_color_2x",
+    "$section_topic": "andexdbSettings",
+    "$button_text": "Settings",
+    "$title_text": "andexdb.settings"
+  },
+
+  "andexdb_commands_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbSettings_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "The settings menu can be accessed either through the \\mm command (you must have the canUseChatCommands tag to run it), or the andexdb:main_menu item (The main menu stick)."
+        }
+      }
+    ]
+  },
+
+  "andexdb_ban_system_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/settings_glyph_color_2x",
+    "$section_topic": "andexdbSettings",
+    "$button_text": "Settings",
+    "$title_text": "andexdb.settings"
+  },
+
+  "andexdb_ban_system_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbSettings_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "The settings menu can be accessed either through the \\mm command (you must have the canUseChatCommands tag to run it), or the andexdb:main_menu item (The main menu stick)."
+        }
+      }
+    ]
+  },
+
+  "andexdb_settings_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/settings_glyph_color_2x",
+    "$section_topic": "andexdbSettings",
+    "$button_text": "Settings",
+    "$title_text": "andexdb.settings"
+  },
+
+  "andexdb_settings_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbSettings_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "The settings menu can be accessed either through the \\mm command (you must have the canUseChatCommands tag to run it), or the andexdb:main_menu item (The main menu stick)."
+        }
+      }
+    ]
+  },
+
+  "andexdb_global_settings_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/worldsIcon",
+    "$section_topic": "andexdbGlobalSettings",
+    "$button_text": "Global Settings",
+    "$title_text": "andexdb.globalSettings"
+  },
+
+  "andexdb_global_settings_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbGlobalSettings_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "This settings section is for the main add-on settings. "
+        }
+      },
+      {
+        "paragraph_2@how_to_play_common.paragraph": {
+          "$text": "This settings section allows you to change things like the prefix for commands, valid prefixes for commands from other add-ons, the location to teleport players to then they use the \\spawn command, etc. "
+        }
+      }
+    ]
+  },
+
+  "andexdb_chat_ranks_settings_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/message",
+    "$section_topic": "andexdbChatRanksSettings",
+    "$button_text": "Chat Ranks Settings",
+    "$title_text": "andexdb.chatRanksSettings"
+  },
+
+  "andexdb_chat_ranks_settings_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbChatRanksSettings_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "This settings section allows you to customize the chat ranks. "
+        }
+      }
+    ]
+  },
+
+  "andexdb_script_settings_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/debug_glyph_color",
+    "$section_topic": "andexdbScriptSettings",
+    "$button_text": "Script Settings",
+    "$title_text": "Script Settings"
+  },
+
+  "andexdb_script_settings_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbScriptSettings_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.1"
+        }
+      },
+      { "padding_1@how_to_play_common.padding": {} },
+      {
+        "paragraph_2_keyboard@how_to_play_common.paragraph_keyboard": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_gamepad@how_to_play_common.paragraph_gamepad": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_tap@how_to_play_common.paragraph_touch_joystick_tap": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_classic_dpad@how_to_play_common.paragraph_touch_classic_dpad": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_crosshair@how_to_play_common.paragraph_touch_joystick_crosshair": {
+          "$text": "howtoplay.placingBlocks.text.2.touch.joystick_crosshair"
+        }
+      },
+      {
+        "paragraph_2_rift_controller@how_to_play_common.paragraph_rift_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+        "paragraph_3@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.3"
+        }
+      }
+    ]
+  },
+
+  "andexdb_ui_settings_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/feedIcon",
+    "$section_topic": "andexdbUISettings",
+    "$button_text": "UI Settings",
+    "$title_text": "andexdb.uiSettings"
+  },
+
+  "andexdb_ui_settings_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbUISettings_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.1"
+        }
+      },
+      { "padding_1@how_to_play_common.padding": {} },
+      {
+        "paragraph_2_keyboard@how_to_play_common.paragraph_keyboard": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_gamepad@how_to_play_common.paragraph_gamepad": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_tap@how_to_play_common.paragraph_touch_joystick_tap": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_classic_dpad@how_to_play_common.paragraph_touch_classic_dpad": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_crosshair@how_to_play_common.paragraph_touch_joystick_crosshair": {
+          "$text": "howtoplay.placingBlocks.text.2.touch.joystick_crosshair"
+        }
+      },
+      {
+        "paragraph_2_rift_controller@how_to_play_common.paragraph_rift_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+        "paragraph_3@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.3"
+        }
+      }
+    ]
+  },
+
+  "andexdb_eval_auto_execute_settings_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/automation_glyph_color",
+    "$section_topic": "andexdbEvalAutoExecuteSettings",
+    "$button_text": "Eval Auto Execute Settings",
+    "$title_text": "andexdb.evalAutoExecuteSettings"
+  },
+
+  "andexdb_eval_auto_execute_settings_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbEvalAutoExecuteSettings_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.1"
+        }
+      },
+      { "padding_1@how_to_play_common.padding": {} },
+      {
+        "paragraph_2_keyboard@how_to_play_common.paragraph_keyboard": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_gamepad@how_to_play_common.paragraph_gamepad": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_tap@how_to_play_common.paragraph_touch_joystick_tap": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_classic_dpad@how_to_play_common.paragraph_touch_classic_dpad": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_crosshair@how_to_play_common.paragraph_touch_joystick_crosshair": {
+          "$text": "howtoplay.placingBlocks.text.2.touch.joystick_crosshair"
+        }
+      },
+      {
+        "paragraph_2_rift_controller@how_to_play_common.paragraph_rift_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+        "paragraph_3@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.3"
+        }
+      }
+    ]
+  },
+
+  "andexdb_personal_settings_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/profile_glyph_color",
+    "$section_topic": "andexdbPersonalSettings",
+    "$button_text": "Personal Settings",
+    "$title_text": "andexdb.personalSettings"
+  },
+
+  "andexdb_personal_settings_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbPersonalSettings_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.1"
+        }
+      },
+      { "padding_1@how_to_play_common.padding": {} },
+      {
+        "paragraph_2_keyboard@how_to_play_common.paragraph_keyboard": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_gamepad@how_to_play_common.paragraph_gamepad": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_tap@how_to_play_common.paragraph_touch_joystick_tap": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_classic_dpad@how_to_play_common.paragraph_touch_classic_dpad": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_crosshair@how_to_play_common.paragraph_touch_joystick_crosshair": {
+          "$text": "howtoplay.placingBlocks.text.2.touch.joystick_crosshair"
+        }
+      },
+      {
+        "paragraph_2_rift_controller@how_to_play_common.paragraph_rift_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+        "paragraph_3@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.3"
+        }
+      }
+    ]
+  },
+
+  "andexdb_notifications_settings_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/icon_bell",
+    "$section_topic": "andexdbNotificationsSettings",
+    "$button_text": "Notifications Settings",
+    "$title_text": "andexdb.notificationsSettings"
+  },
+
+  "andexdb_notifications_settings_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbNotificationsSettings_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.1"
+        }
+      },
+      { "padding_1@how_to_play_common.padding": {} },
+      {
+        "paragraph_2_keyboard@how_to_play_common.paragraph_keyboard": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_gamepad@how_to_play_common.paragraph_gamepad": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_tap@how_to_play_common.paragraph_touch_joystick_tap": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_classic_dpad@how_to_play_common.paragraph_touch_classic_dpad": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_crosshair@how_to_play_common.paragraph_touch_joystick_crosshair": {
+          "$text": "howtoplay.placingBlocks.text.2.touch.joystick_crosshair"
+        }
+      },
+      {
+        "paragraph_2_rift_controller@how_to_play_common.paragraph_rift_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+        "paragraph_3@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.3"
+        }
+      }
+    ]
+  },
+
+  "andexdb_home_system_settings_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/store_home_icon",
+    "$section_topic": "andexdbHomeSystemSettings",
+    "$button_text": "Home System Settings",
+    "$title_text": "andexdb.homeSystemSettings"
+  },
+
+  "andexdb_home_system_settings_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbHomeSystemSettings_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.1"
+        }
+      },
+      { "padding_1@how_to_play_common.padding": {} },
+      {
+        "paragraph_2_keyboard@how_to_play_common.paragraph_keyboard": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_gamepad@how_to_play_common.paragraph_gamepad": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_tap@how_to_play_common.paragraph_touch_joystick_tap": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_classic_dpad@how_to_play_common.paragraph_touch_classic_dpad": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_crosshair@how_to_play_common.paragraph_touch_joystick_crosshair": {
+          "$text": "howtoplay.placingBlocks.text.2.touch.joystick_crosshair"
+        }
+      },
+      {
+        "paragraph_2_rift_controller@how_to_play_common.paragraph_rift_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+        "paragraph_3@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.3"
+        }
+      }
+    ]
+  },
+
+  "andexdb_tpa_system_settings_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/items/ender_pearl",
+    "$section_topic": "andexdbTPASystemSettings",
+    "$button_text": "TPA System Settings",
+    "$title_text": "andexdb.tpaSystemSettings"
+  },
+
+  "andexdb_tpa_system_settings_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbTPASystemSettings_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.1"
+        }
+      },
+      { "padding_1@how_to_play_common.padding": {} },
+      {
+        "paragraph_2_keyboard@how_to_play_common.paragraph_keyboard": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_gamepad@how_to_play_common.paragraph_gamepad": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_tap@how_to_play_common.paragraph_touch_joystick_tap": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_classic_dpad@how_to_play_common.paragraph_touch_classic_dpad": {
+          "$text": "howtoplay.placingBlocks.text.2.touch",
+          "$line_padding": 3.0
+        }
+      },
+      {
+        "paragraph_2_touch_joystick_crosshair@how_to_play_common.paragraph_touch_joystick_crosshair": {
+          "$text": "howtoplay.placingBlocks.text.2.touch.joystick_crosshair"
+        }
+      },
+      {
+        "paragraph_2_rift_controller@how_to_play_common.paragraph_rift_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      {
+        "paragraph_2_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
+          "$text": "howtoplay.placingBlocks.text.2.nottouch"
+        }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+        "paragraph_3@how_to_play_common.paragraph": {
+          "$text": "howtoplay.placingBlocks.text.3"
+        }
+      }
+    ]
+  }
+
+}
