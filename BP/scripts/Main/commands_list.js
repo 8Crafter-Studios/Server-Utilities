@@ -43,7 +43,7 @@ export const commands = [
                 format: "\\ceil"
             }
         ],
-        command_version: "0.0.1-alpha.1",
+        command_version: "0.0.0",
         description: "",
         category: [
             "system",
@@ -159,7 +159,7 @@ export const commands = [
                 format: "\\cube"
             }
         ],
-        command_version: "0.0.1-indev.1",
+        command_version: "0.0.0",
         description: "",
         category: [
             "system",
@@ -217,7 +217,7 @@ export const commands = [
                 format: "\\cyl"
             }
         ],
-        command_version: "0.0.1-indev.1",
+        command_version: "0.0.0",
         description: "",
         category: [
             "system",
@@ -304,7 +304,7 @@ export const commands = [
                 format: "\\floor"
             }
         ],
-        command_version: "0.0.1-alpha.1",
+        command_version: "0.0.0",
         description: "",
         category: [
             "system",
@@ -352,7 +352,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§c",
         commandName: "\\\\generatecallback",
         escregexp: {
             v: "^\\\\generatecallback$"
@@ -700,7 +700,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§c",
         commandName: "\\\\move",
         escregexp: {
             v: "^\\\\move$"
@@ -758,7 +758,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§c",
         commandName: "\\\\omove",
         escregexp: {
             v: "^\\\\omove$"
@@ -1077,7 +1077,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§c",
         commandName: "\\\\smove",
         escregexp: {
             v: "^\\\\smove$"
@@ -1193,7 +1193,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§c",
+        formatting_code: "§r§e",
         commandName: "\\\\walls",
         escregexp: {
             v: "^\\\\walls$"
@@ -1276,7 +1276,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§c",
         commandName: "attribute",
         escregexp: {
             v: "^attribute$"
@@ -1861,7 +1861,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§c",
         commandName: "data",
         escregexp: {
             v: "^data$"
@@ -2383,7 +2383,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§c",
+        formatting_code: "§r§e",
         commandName: "fillinventory",
         escregexp: {
             v: "^fillinventory$"
@@ -2934,7 +2934,7 @@ export const commands = [
                 format: "h<presetId: float> <containerRow: float>"
             }
         ],
-        command_version: "1.0.0-beta.1",
+        command_version: "1.0.0",
         description: "Swaps your hotbar with the specified hotbar preset. ",
         category: [
             "containers/inventories"
@@ -3075,7 +3075,7 @@ export const commands = [
                 format: "hset <presetId: float> [dimensionId: string] [x: float] [y: float] [z: float]"
             }
         ],
-        command_version: "1.0.0-beta.10",
+        command_version: "1.0.0",
         description: "Sets the specified hotbar preset to the specified location. ",
         category: [
             "containers/inventories"
@@ -3091,7 +3091,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§e",
         commandName: "idtfill",
         escregexp: {
             v: "^idtfill$"
@@ -3128,7 +3128,7 @@ export const commands = [
                 format: "ifill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
             }
         ],
-        command_version: "31.0.1-beta.99",
+        command_version: "32.0.1",
         description: "Better version of the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. ",
         category: [
             "world"
@@ -3144,7 +3144,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§e",
+        formatting_code: "§r§n",
         commandName: "ifillb",
         escregexp: {
             v: "^ifillb$"
@@ -3157,7 +3157,7 @@ export const commands = [
                 format: "ifillb <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
             }
         ],
-        command_version: "1.0.1-beta.27",
+        command_version: "1.28.1",
         description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. Original version of the \\ifill command, only allows for matching exact block states but is much quicker. ",
         category: [
             "world"
@@ -3173,13 +3173,13 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§e",
+        formatting_code: "§r§n",
         commandName: "ifillc",
         escregexp: {
             v: "^ifillc$"
         },
         formats: [],
-        command_version: "1.0.1-beta.27",
+        command_version: "1.28.1",
         description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. Second version of the \\ifill command. ",
         category: [
             "world"
@@ -3195,13 +3195,13 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§e",
+        formatting_code: "§r§n",
         commandName: "ifilld",
         escregexp: {
             v: "^ifilld$"
         },
         formats: [],
-        command_version: "1.0.1-beta.27",
+        command_version: "1.28.1",
         description: "Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. Third version of the \\ifill command. ",
         category: [
             "world"
@@ -3217,7 +3217,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§n",
         commandName: "igfill",
         escregexp: {
             v: "^igfill$"
@@ -3230,7 +3230,7 @@ export const commands = [
                 format: "igfill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
             }
         ],
-        command_version: "4.0.1-beta.99",
+        command_version: "4.100.1",
         description: "This is a version of the \\ifill command that uses a generator function so it does not cause as much lag, but it is VERY slow. Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. ",
         category: [
             "world"
@@ -3272,7 +3272,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§n",
         commandName: "ihollow",
         escregexp: {
             v: "^ihollow$"
@@ -3285,7 +3285,7 @@ export const commands = [
                 format: "ihollow <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
             }
         ],
-        command_version: "6.0.0-beta.11",
+        command_version: "6.12.0",
         description: "Same as the \\ifill command except for the fact that it only fills the sides of the specified area. ",
         category: [
             "world"
@@ -3379,7 +3379,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§n",
         commandName: "iogfill",
         escregexp: {
             v: "^iogfill$"
@@ -3392,7 +3392,7 @@ export const commands = [
                 format: "iogfill <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
             }
         ],
-        command_version: "4.1.1-beta.17",
+        command_version: "4.19.1",
         description: "This is a version of the \\ifill command that uses a generator function so it does not cause as much lag, but it is VERY slow. Better version fo the vanilla /fill command that can fill secret blocks types that normally require an nbt editor to obtain, and has no fill size limits. Same as \\igfill except for the fact that it always resets any non-specified block states to the defaults instead of keeping them as what they were if possible. ",
         category: [
             "world"
@@ -3408,7 +3408,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§n",
         commandName: "ioutline",
         escregexp: {
             v: "^ioutline$"
@@ -3421,7 +3421,7 @@ export const commands = [
                 format: "ioutline <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
             }
         ],
-        command_version: "6.0.0-beta.11",
+        command_version: "6.12.0",
         description: "Same as the \\ifill command except for the fact that it only fills the outline of the specified area. ",
         category: [
             "world"
@@ -3437,7 +3437,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§n",
         commandName: "ipillars",
         escregexp: {
             v: "^ipillars$"
@@ -3450,7 +3450,7 @@ export const commands = [
                 format: "ipillars <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
             }
         ],
-        command_version: "6.0.0-beta.11",
+        command_version: "6.12.0",
         description: "Same as the \\ifill command except for the fact that it only fills the pillars of the specified area. ",
         category: [
             "world"
@@ -3533,7 +3533,7 @@ export const commands = [
         formats: [
             "Too many to list. Use the \\help command to see the syntax."
         ],
-        command_version: "29.0.1-beta.99",
+        command_version: "29.100.1",
         description: "Same as the \\ifill command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ",
         category: [
             "world"
@@ -3549,7 +3549,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§n",
         commandName: "ithollow",
         escregexp: {
             v: "^ithollow$"
@@ -3562,7 +3562,7 @@ export const commands = [
                 format: "ithollow <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
             }
         ],
-        command_version: "7.0.0-beta.11",
+        command_version: "7.12.0",
         description: "Same as the \\ihollow command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ",
         category: [
             "world"
@@ -3578,7 +3578,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§n",
         commandName: "itoutline",
         escregexp: {
             v: "^itoutline$"
@@ -3591,7 +3591,7 @@ export const commands = [
                 format: "itoutline <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
             }
         ],
-        command_version: "7.0.0-beta.11",
+        command_version: "7.12.0",
         description: "Same as the \\ioutline command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ",
         category: [
             "world"
@@ -3607,7 +3607,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§n",
         commandName: "itpillars",
         escregexp: {
             v: "^itpillars$"
@@ -3620,7 +3620,7 @@ export const commands = [
                 format: "itpillars <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
             }
         ],
-        command_version: "7.0.0-beta.11",
+        command_version: "7.12.0",
         description: "Same as the \\ipillars command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ",
         category: [
             "world"
@@ -3636,7 +3636,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§n",
         commandName: "itwalls",
         escregexp: {
             v: "^itwalls$"
@@ -3649,7 +3649,7 @@ export const commands = [
                 format: "itwalls <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
             }
         ],
-        command_version: "7.0.0-beta.11",
+        command_version: "7.12.0",
         description: "Same as the \\iwalls command except for the fact that it temporarily spawns a tickingarea to load in the chunks where the blocks will be filled. ",
         category: [
             "world"
@@ -3665,7 +3665,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§n",
         commandName: "iwalls",
         escregexp: {
             v: "^iwalls$"
@@ -3678,7 +3678,7 @@ export const commands = [
                 format: "iwalls <from: x y z> <to: x y z> <tileName: Block> [replaceTileName: Block] [replaceBlockStates: block states|JSON|Array]"
             }
         ],
-        command_version: "6.0.0-beta.11",
+        command_version: "6.12.0",
         description: "Same as the \\ifill command except for the fact that it only fills the walls of the specified area. ",
         category: [
             "world"
@@ -5073,7 +5073,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§f",
+        formatting_code: "§r§c",
         commandName: "spawnitem",
         escregexp: {
             v: "^spawnitem$"
@@ -5215,7 +5215,7 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§e",
+        formatting_code: "§r§n",
         commandName: "swapinventoriesb",
         escregexp: {
             v: "^swapinventoriesb$"
@@ -5233,7 +5233,7 @@ export const commands = [
                 format: "swapinventoriesb <player1: string|~> <player2: string|~>"
             }
         ],
-        command_version: "0.2.1-beta.1",
+        command_version: "1.4.1",
         description: "Swaps the inventory and hotbar of two specified players. ",
         category: [
             "players"

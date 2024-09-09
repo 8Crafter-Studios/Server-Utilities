@@ -254,6 +254,10 @@
       { "andexdb_installation_category@how_to_play.andexdb_topic_category": { "$category": "Installation" } },
       { "andexdb_installation_button@how_to_play.andexdb_installation_button": { "$toggle_group_forced_index": 900 } },
 
+      { "andexdb_systems_category@how_to_play.andexdb_topic_category": { "$category": "Systems" } },
+      { "andexdb_ban_system_button@how_to_play.andexdb_ban_system_button": { "$toggle_group_forced_index": 915 } },
+      { "andexdb_anti_spam_system_button@how_to_play.andexdb_anti_spam_system_button": { "$toggle_group_forced_index": 916 } },
+
       { "andexdb_settings_category@how_to_play.andexdb_topic_category": { "$category": "Settings" } },
       { "andexdb_settings_button@how_to_play.andexdb_settings_button": { "$toggle_group_forced_index": 901 } },
       { "andexdb_global_settings_button@how_to_play.andexdb_global_settings_button": { "$toggle_group_forced_index": 902 } },
@@ -420,6 +424,9 @@
         "section_contents_header@how_to_play_common.section_contents_header": {}
       },
       { "andexdb_installation_section@how_to_play.andexdb_installation_section": {} },
+
+      { "andexdb_ban_systemsectionn@how_to_play.andexdb_ban_system_section": {} },
+      { "andexdb_anti_spam_system_section@how_to_play.andexdb_anti_spam_system_section": {} },
             
       { "andexdb_settings_section@how_to_play.andexdb_settings_section": {} },
       { "andexdb_global_settings_section@how_to_play.andexdb_global_settings_section": {} },
@@ -636,6 +643,8 @@
   },
 
   "andexdb_items_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/icon_recipe_item",
     "$section_topic": "andexdbItems",
     "$button_text": "Items",
     "$title_text": "Items"
@@ -651,59 +660,54 @@
       }
     ],
     "controls": [
-      {
-        "paragraph_1@how_to_play_common.paragraph": {
-          "$text": "howtoplay.gatheringResources.text.1"
-        }
-      },
       { "padding_1@how_to_play_common.padding": {} },
       {
-        "paragraph_2_keyboard@how_to_play_common.paragraph_keyboard": {
-          "$text": "howtoplay.gatheringResources.text.2.pc"
+        "first_setup_section_header@how_to_play_common.subsection_title": {
+          "$text": "§dDebug Sticks§r"
         }
       },
       {
-        "paragraph_2_gamepad@how_to_play_common.paragraph_gamepad": {
-          "$text": "howtoplay.gatheringResources.text.2.nottouch"
+        "header_1@how_to_play_common.header": {
+          "$text": "§dDebug Stick§r"
         }
       },
       {
-        "paragraph_2_touch_joystick_tap@how_to_play_common.paragraph_touch_joystick_tap": {
-          "$line_padding": 3.0,
-          "$text": "howtoplay.gatheringResources.text.2.touch"
+        "paragraph_2a@how_to_play_common.paragraph": {
+          "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \nUpcoming Creator Features\nBeta APIs\nCreator Cameras: New Third Person Presets\nCreator Cameras: Focus Target Camera"
         }
       },
       {
-        "paragraph_2_touch_classic_dpad@how_to_play_common.paragraph_touch_classic_dpad": {
-          "$line_padding": 3.0,
-          "$text": "howtoplay.gatheringResources.text.2.touch"
-        }
-      },
-      {
-        "paragraph_2_touch_joystick_crosshair@how_to_play_common.paragraph_touch_joystick_crosshair": {
-          "$text": "howtoplay.gatheringResources.text.2.touch.joystick_crosshair"
-        }
-      },
-      {
-        "paragraph_2_rift_controller@how_to_play_common.paragraph_rift_controller": {
-          "$text": "howtoplay.gatheringResources.text.2.nottouch"
-        }
-      },
-      {
-        "paragraph_2_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
-          "$text": "howtoplay.gatheringResources.text.2.nottouch"
+        "paragraph_2b@how_to_play_common.paragraph": {
+          "$text": "It is also recommended to enable the \"Education Edition\" toggle. "
         }
       },
       { "padding_2@how_to_play_common.padding": {} },
       {
-        "paragraph_3@how_to_play_common.paragraph": {
-          "$text": "howtoplay.gatheringResources.text.3"
+        "updating_section_header@how_to_play_common.subsection_title": {
+          "$text": "§bUpdating§r"
+        }
+      },
+      {
+        "header_2@how_to_play_common.header": {
+          "$text": "World"
+        }
+      },
+      {
+        "paragraph_3a@how_to_play_common.paragraph": {
+          "$text": "To update the add-on on a world all you have to do is: "
+        }
+      },
+      {
+        "paragraph_3b@how_to_play_common.paragraph": {
+          "$text": "1. Get the .mcaddon file for the new version. \n2. Import it into minecraft. \n3. Go on the edit world screen for the world that you want to update the add-on on. \n4. Deactivate the old version of the add-on. \n5. Activate the new version of the add-on. (Make sure that you activate the behavior pack first or else it might glitch and show taht both the resource and behavior packs are on, when only the resource pack is on, which you will see if you go to the main menu and then back into the edit world screen again.)\n6. Go back to the main menu. \n7. Go into the edit world screen again and insure that both the resource and behavior packs are active. "
         }
       }
     ]
   },
 
   "andexdb_blocks_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/blocks/grass_side_carried",
     "$section_topic": "andexdbBlocks",
     "$button_text": "Blocks",
     "$title_text": "Blocks"
@@ -719,109 +723,54 @@
       }
     ],
     "controls": [
-      {
-        "paragraph_1@how_to_play_common.paragraph": {
-          "$text": "howtoplay.selectingItems.text.1"
-        }
-      },
       { "padding_1@how_to_play_common.padding": {} },
       {
-        "paragraph_2_keyboard@how_to_play_common.paragraph_keyboard": {
-          "$text": "howtoplay.selectingItems.text.2.keyboard"
+        "first_setup_section_header@how_to_play_common.subsection_title": {
+          "$text": "§aAdd-On Setup§r"
         }
       },
       {
-        "paragraph_2_gamepad@how_to_play_common.paragraph_gamepad": {
-          "$text": "howtoplay.selectingItems.text.2.gamepad"
+        "header_1@how_to_play_common.header": {
+          "$text": "Experimental Toggles and Other Toggles/Settings"
         }
       },
       {
-        "paragraph_touch_joystick_tap@how_to_play_common.paragraph_touch_no_icons": {
-          "$text": "howtoplay.selectingItems.text.2.touch"
+        "paragraph_2_all_required_experimental_toggles@how_to_play_common.paragraph": {
+          "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \nUpcoming Creator Features\nBeta APIs\nCreator Cameras: New Third Person Presets\nCreator Cameras: Focus Target Camera"
         }
       },
       {
-        "paragraph_2_rift_controller@how_to_play_common.paragraph_rift_controller": {
-          "$text": "howtoplay.selectingItems.text.2.rift"
-        }
-      },
-      {
-        "paragraph_2_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
-          "$text": "howtoplay.selectingItems.text.2.windowsmr"
+        "paragraph_2_other_recommended_settings@how_to_play_common.paragraph": {
+          "$text": "It is also recommended to enable the \"Education Edition\" toggle. "
         }
       },
       { "padding_2@how_to_play_common.padding": {} },
       {
-        "paragraph_3_keyboard@how_to_play_common.paragraph_keyboard": {
-          "$text": "howtoplay.selectingItems.text.3.nottouch"
+        "updating_section_header@how_to_play_common.subsection_title": {
+          "$text": "§bUpdating§r"
         }
       },
       {
-        "paragraph_3_gamepad@how_to_play_common.paragraph_gamepad": {
-          "$text": "howtoplay.selectingItems.text.3.nottouch"
+        "header_2@how_to_play_common.header": {
+          "$text": "World"
         }
       },
       {
-        "paragraph_3_touch_joystick_tap@how_to_play_common.paragraph_touch_joystick_tap": {
-          "$text": "howtoplay.selectingItems.text.3.touch",
-          "$line_padding": 3.0
+        "paragraph_3a@how_to_play_common.paragraph": {
+          "$text": "To update the add-on on a world all you have to do is: "
         }
       },
       {
-        "paragraph_3_touch_classic_dpad@how_to_play_common.paragraph_touch_classic_dpad": {
-          "$text": "howtoplay.selectingItems.text.3.touch",
-          "$line_padding": 3.0
-        }
-      },
-      {
-        "paragraph_3_touch_joystick_crosshair@how_to_play_common.paragraph_touch_joystick_crosshair": {
-          "$text": "howtoplay.selectingItems.text.3.touch.joystick_crosshair"
-        }
-      },
-      {
-        "paragraph_3_rift_controller@how_to_play_common.paragraph_rift_controller": {
-          "$text": "howtoplay.selectingItems.text.3.nottouch"
-        }
-      },
-      {
-        "paragraph_3_windowsmr_controller@how_to_play_common.paragraph_windowsmr_controller": {
-          "$text": "howtoplay.selectingItems.text.3.nottouch"
-        }
-      },
-      { "padding_3@how_to_play_common.padding": {} },
-      {
-        "header_1@how_to_play_common.header": {
-          "$text": "howtoplay.selectingItems.header.1"
-        }
-      },
-      {
-        "image_1_not_touch@how_to_play_common.image": {
-          "bindings": [
-            {
-              "binding_name": "(not #touch_being_used)",
-              "binding_name_override": "#visible"
-            }
-          ],
-          "texture": "textures/ui/selecting_items_desktop",
-          "size": [ "100%", "175px" ]
-        }
-      },
-      {
-        "image_1_touch@how_to_play_common.image": {
-          "bindings": [
-            {
-              "binding_name": "(#touch_being_used)",
-              "binding_name_override": "#visible"
-            }
-          ],
-          "texture": "textures/ui/selecting_items_mobile",
-          "size": [ "100%", "175px" ]
+        "paragraph_3b@how_to_play_common.paragraph": {
+          "$text": "1. Get the .mcaddon file for the new version. \n2. Import it into minecraft. \n3. Go on the edit world screen for the world that you want to update the add-on on. \n4. Deactivate the old version of the add-on. \n5. Activate the new version of the add-on. (Make sure that you activate the behavior pack first or else it might glitch and show taht both the resource and behavior packs are on, when only the resource pack is on, which you will see if you go to the main menu and then back into the edit world screen again.)\n6. Go back to the main menu. \n7. Go into the edit world screen again and insure that both the resource and behavior packs are active. "
         }
       }
     ]
   },
 
   "andexdb_entities_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/icon_panda",
     "$section_topic": "andexdbEntities",
     "$button_text": "Entities",
     "$title_text": "Entities"
@@ -891,17 +840,17 @@
 
   "andexdb_commands_button@how_to_play.andexdb_help_button": {
     "$glyph_texture": "textures/ui/8Crafter",
-    "$glyph_color_texture": "textures/ui/settings_glyph_color_2x",
-    "$section_topic": "andexdbSettings",
-    "$button_text": "Settings",
-    "$title_text": "andexdb.settings"
+    "$glyph_color_texture": "textures/ui/ImpulseSquare",
+    "$section_topic": "andexdbCommands",
+    "$button_text": "Commands",
+    "$title_text": "andexdb.commands"
   },
 
   "andexdb_commands_section@how_to_play_common.main_sections": {
     "bindings": [
       {
         "binding_type": "view",
-        "source_control_name": "andexdbSettings_button_toggle",
+        "source_control_name": "andexdbCommands_button_toggle",
         "source_property_name": "#toggle_state",
         "target_property_name": "#visible"
       }
@@ -909,7 +858,7 @@
     "controls": [
       {
         "paragraph_1@how_to_play_common.paragraph": {
-          "$text": "The settings menu can be accessed either through the \\mm command (you must have the canUseChatCommands tag to run it), or the andexdb:main_menu item (The main menu stick)."
+          "$text": "This section will be filled out in a future update. "
         }
       }
     ]
@@ -917,17 +866,59 @@
 
   "andexdb_ban_system_button@how_to_play.andexdb_help_button": {
     "$glyph_texture": "textures/ui/8Crafter",
-    "$glyph_color_texture": "textures/ui/settings_glyph_color_2x",
-    "$section_topic": "andexdbSettings",
-    "$button_text": "Settings",
-    "$title_text": "andexdb.settings"
+    "$glyph_color_texture": "textures/ui/hammer_l",
+    "$section_topic": "andexdbBanSystem",
+    "$button_text": "Ban System",
+    "$title_text": "andexdb.banSystem"
   },
 
   "andexdb_ban_system_section@how_to_play_common.main_sections": {
     "bindings": [
       {
         "binding_type": "view",
-        "source_control_name": "andexdbSettings_button_toggle",
+        "source_control_name": "andexdbBanSystem_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "already_joined_section_header@how_to_play_common.subsection_title": {
+          "$text": "§aHow do I ban a player (who has joined the world before)?§r"
+        }
+      },
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "1. Open the main menu (use \"\\mm\")\n2. Go to \"Manage Players\"\n3. Go through the pages to find the player you wish to ban and click on them\n4. Click \"Manage Bans\"\n5. Enter the time and reason, and submit it"
+        }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+        "never_joined_section_header@how_to_play_common.subsection_title": {
+          "$text": "§cHow do I ban a player who has never joined the world?§r"
+        }
+      },
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "1. Open the main menu (use \"\\mm\")\n2. Scroll down and click \"Manage Bans\"\n3. Click \"Add Name Ban\"\n4. Enter the players name, put in the time and reason, and submit it"
+        }
+      }
+    ]
+  },
+
+  "andexdb_anti_spam_system_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/settings_glyph_color_2x",
+    "$section_topic": "andexdbAntiSpamSystem",
+    "$button_text": "Anti-Spam System",
+    "$title_text": "andexdb.antiSpamSystem"
+  },
+
+  "andexdb_anti_spam_system_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbAntiSpamSystem_button_toggle",
         "source_property_name": "#toggle_state",
         "target_property_name": "#visible"
       }
@@ -935,7 +926,7 @@
     "controls": [
       {
         "paragraph_1@how_to_play_common.paragraph": {
-          "$text": "The settings menu can be accessed either through the \\mm command (you must have the canUseChatCommands tag to run it), or the andexdb:main_menu item (The main menu stick)."
+          "$text": "// to-do"
         }
       }
     ]

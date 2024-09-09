@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.20.0-development.276";
+export const format_version = "1.20.0-preview.21+BULID.1";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -55,6 +55,7 @@ import "Main/utilities.js";
 import "@minecraft/math.js";
 export const mainmetaimport = import.meta
 export const subscribedEvents = {} as {[eventName: string]: Function}
+globalThis.tempVariables={}
 
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
@@ -82,6 +83,8 @@ import *  as playersave from "Main/player_save";
 import *  as spawnprot from "Main/spawn_protection";
 import *  as chat from "Main/chat";
 import *  as cmdutils from "Main/command_utilities";
+import *  as cmdslist from "Main/commands_list";
+import *  as cmdsdocs from "Main/commands_documentation";
 import *  as utils from "Main/utilities";
 import *  as errors from "Main/errors";
 import mcMath from "@minecraft/math.js";/*
@@ -164,8 +167,12 @@ export class config{
     static set tpaSystemEnabled(enabled: boolean|undefined){world.setDynamicProperty("tpaSystemSettings:tpaSystemEnabled", enabled??false)}
     static get antispamEnabled(){return Boolean(world.getDynamicProperty("antispamSettings:antispamEnabled")??false)}
     static set antispamEnabled(enabled: boolean|undefined){world.setDynamicProperty("antispamSettings:antispamEnabled", enabled??false)}
+    static get restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute(){return Boolean(world.getDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute")??false)}
+    static set restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute(restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute: boolean|undefined){world.setDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute", restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute??false)}
     static get waitTimeAfterAntispamActivation(){return isNaN(Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation")))?60:Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation") ?? 60)}
     static set waitTimeAfterAntispamActivation(waitTimeInSeconds: number|undefined){world.setDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation", waitTimeInSeconds??60)}
+    static get maxTimeBewteenMessagesToTriggerAntiSpam(){return isNaN(Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam")))?5:Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam") ?? 5)}
+    static set maxTimeBewteenMessagesToTriggerAntiSpam(maxTimeInSeconds: number|undefined){world.setDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam", maxTimeInSeconds??5)}
     static get antispamTriggerMessageCount(){return isNaN(Number(world.getDynamicProperty("antispamSettings:antispamTriggerMessageCount")))?4:Number(gwdp("antispamSettings:antispamTriggerMessageCount") ?? 4)}
     static set antispamTriggerMessageCount(messageCount: number|undefined){world.setDynamicProperty("antispamSettings:antispamTriggerMessageCount", messageCount??4)}
     static get timeZone(){return isNaN(Number(world.getDynamicProperty("andexdbSettings:timeZone")))?0:Number(world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}
@@ -176,8 +183,8 @@ export class config{
     static set chatDisplayTimeStamp(chatDisplayTimeStampEnabled: boolean|undefined){world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled??false)}
     static get showRanksOnPlayerNameTags(){return Boolean(world.getDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags") ?? false)}
     static set showRanksOnPlayerNameTags(showRanksOnPlayerNameTags: boolean|undefined){world.setDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags", showRanksOnPlayerNameTags??false)}
-    static get protectedAreasRefreshRate(){return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 1)}
-    static set protectedAreasRefreshRate(protectedAreasRefreshRate: number|undefined){world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate))?1:Math.min(1000, Math.max(1, Number(protectedAreasRefreshRate??1))))}
+    static get protectedAreasRefreshRate(){return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 20)}
+    static set protectedAreasRefreshRate(protectedAreasRefreshRate: number|undefined){world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate))?20:Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate??20))))}
     static get playerDataRefreshRate(){return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 5)}
     static set playerDataRefreshRate(playerDataRefreshRate: number|undefined){world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate))?5:Math.min(1000, Math.max(1, Number(playerDataRefreshRate??5))))}
     static get maxPlayersPerManagePlayersPage(){return Number(world.getDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage") ?? 10)}
@@ -4861,6 +4868,21 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
     }
     if (id == "andexdb:cmd") {
         chatCommands({returnBeforeChatSend: false, event: {cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator??sourceEntity??sourceBlock) as Player}, eventData: {cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator??sourceEntity??sourceBlock) as Player}, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(()=>((initiator??sourceEntity??sourceBlock) as Player).location)??{x: 0, y: 0, z: 0}, tryget(()=>((initiator??sourceEntity) as Player).getRotation())??{x: 0, y: 0}, tryget(()=>((initiator??sourceEntity??sourceBlock) as Player).dimension)??overworld, ((initiator??sourceEntity) as Player), sourceBlock))})
+    }
+    if (id == "andexdb:silentCmd") {
+        chatCommands({silentCMD: true, returnBeforeChatSend: false, event: {cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator??sourceEntity??sourceBlock) as Player}, eventData: {cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator??sourceEntity??sourceBlock) as Player}, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(()=>((initiator??sourceEntity??sourceBlock) as Player).location)??{x: 0, y: 0, z: 0}, tryget(()=>((initiator??sourceEntity) as Player).getRotation())??{x: 0, y: 0}, tryget(()=>((initiator??sourceEntity??sourceBlock) as Player).dimension)??overworld, ((initiator??sourceEntity) as Player), sourceBlock))})
+    }
+    if (id == "andexdb:silentBuiltInCmd") {
+        chatCommands({silentCMD: true, isBultIn: true, isCustom: false, returnBeforeChatSend: false, event: {cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator??sourceEntity??sourceBlock) as Player}, eventData: {cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator??sourceEntity??sourceBlock) as Player}, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(()=>((initiator??sourceEntity??sourceBlock) as Player).location)??{x: 0, y: 0, z: 0}, tryget(()=>((initiator??sourceEntity) as Player).getRotation())??{x: 0, y: 0}, tryget(()=>((initiator??sourceEntity??sourceBlock) as Player).dimension)??overworld, ((initiator??sourceEntity) as Player), sourceBlock))})
+    }
+    if (id == "andexdb:builtInCmd") {
+        chatCommands({silentCMD: false, isBultIn: true, isCustom: false, returnBeforeChatSend: false, event: {cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator??sourceEntity??sourceBlock) as Player}, eventData: {cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator??sourceEntity??sourceBlock) as Player}, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(()=>((initiator??sourceEntity??sourceBlock) as Player).location)??{x: 0, y: 0, z: 0}, tryget(()=>((initiator??sourceEntity) as Player).getRotation())??{x: 0, y: 0}, tryget(()=>((initiator??sourceEntity??sourceBlock) as Player).dimension)??overworld, ((initiator??sourceEntity) as Player), sourceBlock))})
+    }
+    if (id == "andexdb:silentCustomCmd") {
+        chatCommands({silentCMD: true, isBultIn: false, isCustom: true, returnBeforeChatSend: false, event: {cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator??sourceEntity??sourceBlock) as Player}, eventData: {cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator??sourceEntity??sourceBlock) as Player}, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(()=>((initiator??sourceEntity??sourceBlock) as Player).location)??{x: 0, y: 0, z: 0}, tryget(()=>((initiator??sourceEntity) as Player).getRotation())??{x: 0, y: 0}, tryget(()=>((initiator??sourceEntity??sourceBlock) as Player).dimension)??overworld, ((initiator??sourceEntity) as Player), sourceBlock))})
+    }
+    if (id == "andexdb:customCmd") {
+        chatCommands({silentCMD: false, isBultIn: false, isCustom: true, returnBeforeChatSend: false, event: {cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator??sourceEntity??sourceBlock) as Player}, eventData: {cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator??sourceEntity??sourceBlock) as Player}, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(()=>((initiator??sourceEntity??sourceBlock) as Player).location)??{x: 0, y: 0, z: 0}, tryget(()=>((initiator??sourceEntity) as Player).getRotation())??{x: 0, y: 0}, tryget(()=>((initiator??sourceEntity??sourceBlock) as Player).dimension)??overworld, ((initiator??sourceEntity) as Player), sourceBlock))})
     }
     if (id == "andexdb:blockExplosion") {
        const overworld = world.getDimension(String(message.split("|")[0]));

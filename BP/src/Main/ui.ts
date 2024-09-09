@@ -28,7 +28,7 @@ import mcMath from "@minecraft/math.js";
 import { chatCommands, command, commandSettings, command_settings_format_version, commands_format_version, evaluateParameters, executeCommandPlayerW, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
 import { chatMessage, chatSend } from "./chat";
 import { targetSelectorAllListC } from "./command_utilities";
-import { cullEmpty, JSONParse, JSONStringify, tryget } from "./utilities";
+import { cullEmpty, JSONParse, JSONStringify, tryget, tryrun } from "./utilities";
 import { commands } from "./commands_list";
 mcServer
 mcServerUi/*
@@ -46,7 +46,7 @@ playersave
 spawnprot
 mcMath
 
-export const ui_format_version = "1.7.0";
+export const ui_format_version = "1.17.0";
 //${se}console.warn(JSON.stringify(evaluateParameters(["presetText", "string", "json", "number", "boolean", "string", "presetText", "presetText"], "test test [{\"test\": \"test\"}, [\"test\", \"test\"] , \"test\", \"test\"] 1 true \"test \\\"test\" test test"))); 
 /**
  * Returns the sum of a and b
@@ -258,7 +258,7 @@ form.button("§eCreate Explosion §f[§cAlpha§f]", "textures/blocks/tnt_side");
 form.button("§4Fill Blocks(§cComing Soon!§f)§b", "textures/blocks/stone");
 form.button("§4World Debug§f(§cComing Soon!§f)§b", "textures/ui/xyz_axis.png");
 form.button("§4Dimension Debug§f(§cComing Soon!§f)§b", "textures/ui/NetherPortal");
-form.button("Inventory Transfer", "textures/ui/NetherPortal");
+form.button("Inventory Transfer§f(§nDEPRECATED§f)", "textures/ui/NetherPortal");
 form.button("Run Command", "textures/ui/ImpulseSquare.png");
 form.button("Script Eval", "textures/ui/RepeatSquare.png");
 form.button("Mange Restricted Areas", "textures/ui/xyz_axis.png");
@@ -632,8 +632,8 @@ export function globalSettings(sourceEntitya: Entity|executeCommandPlayerW|Playe
     form2.textField("§l§fnameDisplayPrefix§r§f\nPrefix that appears before player's names in chat messages, default is \"<\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<"));
     form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after player's names in chat messages, default is \"\uF019r\uF019f>\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"));
     form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));*/
-    form2.textField("§l§fgametestStructureDefaultSpawnLocation§r§f\nThe default spawn locations for the gametest structure, this is used when spawning in no ai entities or spawning in simulated player", "x, y, z", Object.values(world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {}).join(", "));
-    form2.textField("§l§fspawnCommandLocation§r§f\nThe location to teleport players when they use the \\spawn command, it is a list of coordinates separated by spaces, leaving it blank will disable the spawn command", "x y z", cullEmpty(Object.values(config.spawnCommandLocation)).filter(v=>v[0]!="dimension").join(" "));
+    form2.textField("§l§fgametestStructureDefaultSpawnLocation§r§f\nThe default spawn location for the gametest structures, this is used when spawning in no ai entities or spawning in simulated players", "x y z", cullEmpty([(world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {})["x"], (world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {})["y"], (world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {})["z"]]).join(" "));
+    form2.textField("§l§fspawnCommandLocation§r§f\nThe location to teleport players when they use the \\spawn command, it is a list of coordinates separated by spaces, leaving it blank will disable the spawn command", "x y z", cullEmpty([config.spawnCommandLocation.x, config.spawnCommandLocation.y, config.spawnCommandLocation.z]).join(" "));
     form2.dropdown("§l§fspawnCommandDimension§r§f\nThe dimension to teleport players when they use the \\spawn command, it is a list of coordinates separated by spaces, the default is overworld", ["§aOverworld", "§cNether", "§dThe End"], dimensionsd.indexOf(config.spawnCommandLocation.dimension.id));
     form2.dropdown("§l§finvalidChatCommandAction§r§f\nWhat to do when a chat command is typed that does not exist, or that the player does not have permission to use. ", ["Do Nothing", "Send Message", "Cancel Message", "Warn Player"], Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 0));
     form2.toggle("§l§fchatCommandsEnbaled§r§f\nSets whether or not to enable the chat commands, default is true", Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") ?? true));/*
@@ -660,7 +660,7 @@ export function globalSettings(sourceEntitya: Entity|executeCommandPlayerW|Playe
         world.setDynamicProperty("andexdbSettings:nameDisplayPrefix", nameDisplayPrefix)
         world.setDynamicProperty("andexdbSettings:nameDisplaySuffix", nameDisplaySuffix)
         world.setDynamicProperty("andexdbSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator)*/
-        if(String(gametestStructureDefaultSpawnLocation) != ""){world.setDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation", {x: Number(String(gametestStructureDefaultSpawnLocation).split(", ")[0]), y: Number(String(gametestStructureDefaultSpawnLocation).split(", ")[1]), z: Number(String(gametestStructureDefaultSpawnLocation).split(", ")[2])})}
+        if(String(gametestStructureDefaultSpawnLocation) != ""){world.setDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation", {x: Number(String(gametestStructureDefaultSpawnLocation).split(" ")[0]), y: Number(String(gametestStructureDefaultSpawnLocation).split(" ")[1]), z: Number(String(gametestStructureDefaultSpawnLocation).split(" ")[2])})}
         config.spawnCommandLocation={x: ((spawnCommandLocation as string).split(" ")[0]==""||!!!(spawnCommandLocation as string).split(" ")[0])?null:Number((spawnCommandLocation as string).split(" ")[0]), y: ((spawnCommandLocation as string).split(" ")[1]==""||!!!(spawnCommandLocation as string).split(" ")[1])?null:Number((spawnCommandLocation as string).split(" ")[1]), z: ((spawnCommandLocation as string).split(" ")[0])==""||!!!(spawnCommandLocation as string).split(" ")[1]?null:Number((spawnCommandLocation as string).split(" ")[1]), dimension: dimensions[spawnCommandDimension as number]}
         world.setDynamicProperty("andexdbSettings:chatCommandsEnbaled", chatCommandsEnbaled)/*
         world.setDynamicProperty("andexdbSettings:disableCustomChatMessages", disableCustomChatMessages)*/
@@ -740,7 +740,8 @@ export function scriptSettings(sourceEntitya: Entity|executeCommandPlayerW|Playe
     let form2 = new ModalFormData();
     form2.title("Script Settings")
     form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 5", "integer from 1-1000", String(config.playerDataRefreshRate));
-    form2.dropdown("§l§fundoClipboardMode§r§f\nWhether to save undo history in memory or to the world files, memory will cause clipboard history to be cleared undo restarting the world/realm/server, the default is Memory", ["Memory", "World"], ["Memory", "World"].indexOf(String(config.undoClipboardMode)));
+    form2.textField("§l§fprotectedAreasRefreshRate§r§f\nThe interval at which to update list the saved protected areas, decreasing this number may increase lag, the default is 20", "integer from 1-1000000", String(config.protectedAreasRefreshRate));
+    form2.dropdown("§l§fundoClipboardMode§r§f\nWhether to save undo history in memory or to the world files, memory will cause undo history to be cleared upon restarting the world/realm/server, the default is Memory", ["Memory", "World"], ["Memory", "World"].indexOf(String(config.undoClipboardMode)));
     form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
@@ -748,8 +749,9 @@ export function scriptSettings(sourceEntitya: Entity|executeCommandPlayerW|Playe
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
-        let [ playerDataRefreshRate, undoClipboardMode ] = t.formValues;
+        let [ playerDataRefreshRate, protectedAreasRefreshRate, undoClipboardMode ] = t.formValues;
         config.playerDataRefreshRate=Number(playerDataRefreshRate)
+        config.protectedAreasRefreshRate=Number(protectedAreasRefreshRate)
         config.undoClipboardMode=(["Memory", "World"][Number(undoClipboardMode)]??"Memory") as StructureSaveMode
         settings(sourceEntity); 
 }).catch(e => {
@@ -957,27 +959,27 @@ export function notificationsSettings(sourceEntitya: Entity|executeCommandPlayer
     form2.textField("SoundID", "Sound ID, none=no sound", noti.getBeforeChatSendNotificationsNotificationSound.soundId);
     form2.textField("Volume", "float, between 0 and 1", String(noti.getBeforeChatSendNotificationsNotificationSound.volume));
     form2.textField("Pitch", "float, between 0 and 255", String(noti.getBeforeChatSendNotificationsNotificationSound.pitch));
-    form2.toggle("§l§fGet notified when a§r§f", noti.getPlayerGameModeChangeNotifications);
+    form2.toggle("§l§fGet notified when a player switches gamemodes§r§f", noti.getPlayerGameModeChangeNotifications);
     form2.textField("SoundID", "Sound ID, none=no sound", noti.getPlayerGameModeChangeNotificationsNotificationSound.soundId);
     form2.textField("Volume", "float, between 0 and 1", String(noti.getPlayerGameModeChangeNotificationsNotificationSound.volume));
     form2.textField("Pitch", "float, between 0 and 255", String(noti.getPlayerGameModeChangeNotificationsNotificationSound.pitch));
-    form2.toggle("§l§fGet notified when a§r§f", noti.getWeatherChangeNotifications);
+    form2.toggle("§l§fGet notified when the weather changes§r§f", noti.getWeatherChangeNotifications);
     form2.textField("SoundID", "Sound ID, none=no sound", noti.getWeatherChangeNotificationsNotificationSound.soundId);
     form2.textField("Volume", "float, between 0 and 1", String(noti.getWeatherChangeNotificationsNotificationSound.volume));
     form2.textField("Pitch", "float, between 0 and 255", String(noti.getWeatherChangeNotificationsNotificationSound.pitch));
-    form2.toggle("§l§fGet notified when a§r§f", noti.getLeverActionNotifications);
+    form2.toggle("§l§fGet notified when a player interacts with a lever§r§f", noti.getLeverActionNotifications);
     form2.textField("SoundID", "Sound ID, none=no sound", noti.getLeverActionNotificationsNotificationSound.soundId);
     form2.textField("Volume", "float, between 0 and 1", String(noti.getLeverActionNotificationsNotificationSound.volume));
     form2.textField("Pitch", "float, between 0 and 255", String(noti.getLeverActionNotificationsNotificationSound.pitch));
-    form2.toggle("§l§fGet notified when a§r§f", noti.getMessageRecieveNotifications);
+    form2.toggle("§l§8Get notified when a message is received (Internal; Might not even do anything)§r§8", noti.getMessageRecieveNotifications);
     form2.textField("SoundID", "Sound ID, none=no sound", noti.getMessageRecieveNotificationsNotificationSound.soundId);
     form2.textField("Volume", "float, between 0 and 1", String(noti.getMessageRecieveNotificationsNotificationSound.volume));
     form2.textField("Pitch", "float, between 0 and 255", String(noti.getMessageRecieveNotificationsNotificationSound.pitch));
-    form2.toggle("§l§fGet notified when a§r§f", noti.getBlockInteractTriggerExplosionNotifications);
+    form2.toggle("§l§fGet notified when a player interacts with an explosive block§r§f", noti.getBlockInteractTriggerExplosionNotifications);
     form2.textField("SoundID", "Sound ID, none=no sound", noti.getBlockInteractTriggerExplosionNotificationsNotificationSound.soundId);
     form2.textField("Volume", "float, between 0 and 1", String(noti.getBlockInteractTriggerExplosionNotificationsNotificationSound.volume));
     form2.textField("Pitch", "float, between 0 and 255", String(noti.getBlockInteractTriggerExplosionNotificationsNotificationSound.pitch));
-    form2.toggle("§l§fGet notified when a§r§f", noti.getEntityInteractTriggerExplosionNotifications);
+    form2.toggle("§l§fGet notified when a player interacts with an explosive entity§r§f", noti.getEntityInteractTriggerExplosionNotifications);
     form2.textField("SoundID", "Sound ID, none=no sound", noti.getEntityInteractTriggerExplosionNotificationsNotificationSound.soundId);
     form2.textField("Volume", "float, between 0 and 1", String(noti.getEntityInteractTriggerExplosionNotificationsNotificationSound.volume));
     form2.textField("Pitch", "float, between 0 and 255", String(noti.getEntityInteractTriggerExplosionNotificationsNotificationSound.pitch));
@@ -1179,7 +1181,9 @@ export function antispamSettings(sourceEntitya: Entity|executeCommandPlayerW|Pla
     let form2 = new ModalFormData();
     form2.title("Anti-Spam Settings [§cExperimental§r]")
     form2.toggle("§l§fAnti-Spam Enabled§r§f", config.antispamEnabled);
-    form2.textField("§l§fWait time before player can send the spammed message again in seconds§r§f", "60", String(config.waitTimeAfterAntispamActivation));
+    form2.toggle("§l§fReset Anti-Spam Mute Timer Upon Attempted Message Send While Muted§r§f", config.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute);
+    form2.textField("§l§fWait time before player can send another chat message in seconds§r§f", "60", String(config.waitTimeAfterAntispamActivation));
+    form2.textField("§f(The anti-spam will only activate if the player sends a number of messages equal to (§bMessage count to trigger anti-spam§f) and those messages each had a delay of at most (§bMaximum time between messages§f) seconds between them)\n§lMaximum time between messages, §r§f", "5", String(config.maxTimeBewteenMessagesToTriggerAntiSpam));
     form2.slider("§l§fMessage count to trigger anti-spam, defaults to 4§r§f", 1, 100, 1, config.antispamTriggerMessageCount);
     form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
@@ -1188,9 +1192,11 @@ export function antispamSettings(sourceEntitya: Entity|executeCommandPlayerW|Pla
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
-        let [ antispamEnabled, waitTimeAfterAntispamActivation, antispamTriggerMessageCount ] = t.formValues;
+        let [ antispamEnabled, restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute, waitTimeAfterAntispamActivation, maxTimeBewteenMessagesToTriggerAntiSpam, antispamTriggerMessageCount ] = t.formValues;
         config.antispamEnabled=antispamEnabled as boolean
+        config.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute=restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute as boolean
         config.waitTimeAfterAntispamActivation=isNaN(Number(waitTimeAfterAntispamActivation))?60:Number(waitTimeAfterAntispamActivation)
+        config.maxTimeBewteenMessagesToTriggerAntiSpam=isNaN(Number(maxTimeBewteenMessagesToTriggerAntiSpam))?5:Number(maxTimeBewteenMessagesToTriggerAntiSpam)
         config.antispamTriggerMessageCount=Number(antispamTriggerMessageCount)
         moderationSettings(sourceEntity)
 }).catch(e => {
@@ -1212,6 +1218,7 @@ export function personalSettings(sourceEntitya: Entity|executeCommandPlayerW|Pla
     form2.textField("§l§fnameDisplayPrefix§r§f\nPrefix that appears before your names in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? "<"));
     form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after your names in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? "§r§f>"));
     form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between your name and and your chat message, default is \" \"", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator")?undefined:String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? " "));
+    form2.toggle("§l§fdoNotSetNameTag§r§f\nStops your name tag from having chat ranks added to it, this is usefull if you want to change your name tag, since otherwise it would keep resetting your name tag, default is false", sourceEntity.hasTag("doNotSetNameTag"));
     form2.textField("§l§fdebugStickUseCooldown§r§f\nCooldown between changing the block state of a block with a debug stick after you have just changed that state on the same block, default is 4", "number; default: 4", !!!sourceEntity.getDynamicProperty("debugStickUseCooldown")?undefined:String(sourceEntity.getDynamicProperty("debugStickUseCooldown") ?? 4));
     form2.textField("§l§fdebugStickHoldDuration§r§f\nTime after the actionbar for changing a block state with the debug stick appears before the actionbar can be changed again, default is 10", "number; default: 10", !!!sourceEntity.getDynamicProperty("debugStickHoldDuration")?undefined:String(sourceEntity.getDynamicProperty("debugStickHoldDuration") ?? 10));/*
     form2.textField("§l§fvalidChatCommandPrefixes§r§f\nList of valid prefixes for chat commands, use this if you have other add-ons with chat commands in them active, messages that start with any of these will not be sent and will not be modified by this add-on so it will work for you other packs, default is blank", "Comma-Separated List of Strings", String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? ""));
@@ -1233,7 +1240,7 @@ export function personalSettings(sourceEntitya: Entity|executeCommandPlayerW|Pla
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
-        let [ timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, debugStickUseCooldown, debugStickHoldDuration ] = t.formValues;
+        let [ timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, doNotSetNameTag, debugStickUseCooldown, debugStickHoldDuration ] = t.formValues;
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:timeZone", timeZone==""?undefined:timeZone)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatRankPrefix", chatRankPrefix==""?undefined:chatRankPrefix)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatSudoPrefix", chatSudoPrefix==""?undefined:chatSudoPrefix)
@@ -1243,6 +1250,7 @@ export function personalSettings(sourceEntitya: Entity|executeCommandPlayerW|Pla
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix", nameDisplayPrefix==""?undefined:nameDisplayPrefix)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix", nameDisplaySuffix==""?undefined:nameDisplaySuffix)
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator==""?undefined:chatNameAndMessageSeparator)
+        doNotSetNameTag as boolean?tryrun(()=>{sourceEntity.removeTag("doNotSetNameTag")}):tryrun(()=>{sourceEntity.addTag("doNotSetNameTag")})
         sourceEntity.setDynamicProperty("debugStickUseCooldown", debugStickUseCooldown==""?undefined:debugStickUseCooldown)
         sourceEntity.setDynamicProperty("debugStickHoldDuration", debugStickHoldDuration==""?undefined:debugStickHoldDuration)/*
         world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", validChatCommandPrefixes)
@@ -1271,7 +1279,7 @@ export function evalAutoScriptSettings(sourceEntitya: Entity|executeCommandPlaye
         targetList = String([String(targetList), players[index].nameTag]).split(",");
         }
     }
-    form2.title("Eval Auto Script Settings"); 
+    form2.title("§r§0Eval Auto Script Settings (§nDEPRECATED§r§0)"); 
     form2.textField("evalBeforeEvents:chatSend", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:chatSend") ?? ""));
     form2.textField("evalBeforeEvents:dataDrivenEntityTrggerEvent", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:dataDrivenEntityTriggerEvent") ?? ""));
     form2.textField("evalBeforeEvents:effectAdd", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:effectAdd") ?? ""));

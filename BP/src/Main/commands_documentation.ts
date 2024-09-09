@@ -1,5 +1,6 @@
 import { Player, world, Entity } from "@minecraft/server";
 import { command, executeCommandPlayerW } from "./commands";
+import { tryget } from "./utilities";
 
 export enum commanddescriptions {
 //"ban" = "Bans a player. ",
@@ -1080,14 +1081,44 @@ export const helpUpcomingCommandChatCommandsList = `§2Chat Commands List§r
 .\\generates2d - §oGenerates a 2d shape with the specified step according to a formula in the selected area. §r
 .\\hcone - §oGenerates a hollow cone in the selected area. §r`
 
+export function getCommandHelpPageForModBayCommandsDocumentation(commandName: string) {
+    let cmd = command.get(((commandName.slice(0, command.dp.length)==command.dp)&&(commandName.slice(command.dp.length, command.dp.length+1)!="\\"))?commandName.slice(1):commandName, "built-in");
+    return (!!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version)
+        ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
+        : `${!cmd.commandName.startsWith("\\")?"\\"+cmd.commandName:cmd.commandName}\n${(commanddescriptions[cmd.commandName]??cmd.settings.defaultSettings.description).replaceAll(/§[a-zA-Z]/g, "")}\nCommand Syntax:\n- ${(
+            commandsyntaxes[cmd.currentCommandName] ?? tryget(()=>cmd.settings.defaultSettings.formats["map"](v=>!!v?.format?v.format:v).join(" ")) ?? (typeof cmd.settings.defaultSettings.formats == "string" ? cmd.settings.defaultSettings.formats : undefined) ?? "missing"
+        )
+        .split("\n")
+        .join("§r\n- ")}${
+            !!!commandflags[cmd.currentCommandName]
+                ? ""
+                : "\nFlags:\n" + commandflags[cmd.currentCommandName]
+        }\nAliases: ${
+            (cmd.aliases?.length ?? 0) != 0 ? `${JSON.stringify(cmd.aliases.map((v) => v.commandName))}` : "[]"
+        }${
+            !!!cmd.category
+                ? ""
+                : "\nCategories: " + JSON.stringify(cmd.categories)
+        }${
+            !!!cmd.settings.defaultSettings
+                ? ""
+                : "\nDefault Required Tags: " + JSON.stringify(cmd.settings.defaultSettings.requiredTags)
+        }${
+            !!!cmd.command_version
+                ? ""
+                : "\nVersion: " + cmd.command_version
+        }`.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replace(!cmd.commandName.startsWith("\\")?"\\"+cmd.commandName:cmd.commandName, "<h3>"+(!cmd.commandName.startsWith("\\")?"\\"+cmd.commandName:cmd.commandName)+"</h3>").replaceAll(/(?<!\<\/h3\>)\n(?!\<h3\>)/g, "</p>\n<p>").replaceAll(/(?<=\<\/h3\>)\n(?!\<h3\>)/g, "\n<p>").replaceAll(/(?<!\<\/h3\>)\n(?=\<h3\>)/g, "</p>\n")+"</p>";
+}
+//${se}let a = ""; commands.filter(v=>v.deprecated==true&&v.functional==true).forEach(v=>{a+="\n"+cmdsdocs.getCommandHelpPageForModBayCommandsDocumentation(v.commandName)}); console.log(a)
+
 export function getCommandHelpPage(commandName: string, player?: Player | executeCommandPlayerW | Entity) {
     let cmd = command.get(((commandName.slice(0, command.dp.length)==command.dp)&&(commandName.slice(command.dp.length, command.dp.length+1)!="\\"))?commandName.slice(1):commandName, "built-in");
-    return (!!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version)||cmd.isHidden
+    return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
         : `§e${cmd.commandName}${
             (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
-        }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
-            commandsyntaxes[cmd.currentCommandName] ?? "missing"
+        }:\n${commanddescriptions[cmd.commandName]??cmd.settings.defaultSettings.description}§r\nUsage:\n- ${(
+            commandsyntaxes[cmd.currentCommandName] ?? tryget(()=>cmd.settings.defaultSettings.formats["map"](v=>!!v?.format?v.format:v).join(" ")) ?? (typeof cmd.settings.defaultSettings.formats == "string" ? cmd.settings.defaultSettings.formats : undefined) ?? "missing"
         )
         .split("\n")
         .join("§r\n- ")}${
@@ -1125,8 +1156,8 @@ export function getCommandHelpPageExtra(commandName: string, player?: Player | e
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
         : `§e${cmd.commandName}${
             (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
-        }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
-            commandsyntaxes[cmd.currentCommandName] ?? "missing"
+        }:\n${commanddescriptions[cmd.commandName]??cmd.settings.defaultSettings.description}§r\nUsage:\n- ${(
+            commandsyntaxes[cmd.currentCommandName] ?? tryget(()=>cmd.settings.defaultSettings.formats["map"](v=>!!v?.format?v.format:v).join(" ")) ?? (typeof cmd.settings.defaultSettings.formats == "string" ? cmd.settings.defaultSettings.formats : undefined) ?? "missing"
         )
         .split("\n")
         .join("§r\n- ")}${

@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.20.0-development.276";
+export const format_version = "1.20.0-preview.21+BULID.1";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -55,6 +55,7 @@ import "Main/utilities.js";
 import "@minecraft/math.js";
 export const mainmetaimport = import.meta;
 export const subscribedEvents = {};
+globalThis.tempVariables = {};
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
@@ -81,6 +82,8 @@ import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
 import * as chat from "Main/chat";
 import * as cmdutils from "Main/command_utilities";
+import * as cmdslist from "Main/commands_list";
+import * as cmdsdocs from "Main/commands_documentation";
 import * as utils from "Main/utilities";
 import * as errors from "Main/errors";
 import mcMath from "@minecraft/math.js"; /*
@@ -173,8 +176,12 @@ export class config {
     static set tpaSystemEnabled(enabled) { world.setDynamicProperty("tpaSystemSettings:tpaSystemEnabled", enabled ?? false); }
     static get antispamEnabled() { return Boolean(world.getDynamicProperty("antispamSettings:antispamEnabled") ?? false); }
     static set antispamEnabled(enabled) { world.setDynamicProperty("antispamSettings:antispamEnabled", enabled ?? false); }
+    static get restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute() { return Boolean(world.getDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute") ?? false); }
+    static set restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute(restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute) { world.setDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute", restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute ?? false); }
     static get waitTimeAfterAntispamActivation() { return isNaN(Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation"))) ? 60 : Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation") ?? 60); }
     static set waitTimeAfterAntispamActivation(waitTimeInSeconds) { world.setDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation", waitTimeInSeconds ?? 60); }
+    static get maxTimeBewteenMessagesToTriggerAntiSpam() { return isNaN(Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam"))) ? 5 : Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam") ?? 5); }
+    static set maxTimeBewteenMessagesToTriggerAntiSpam(maxTimeInSeconds) { world.setDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam", maxTimeInSeconds ?? 5); }
     static get antispamTriggerMessageCount() { return isNaN(Number(world.getDynamicProperty("antispamSettings:antispamTriggerMessageCount"))) ? 4 : Number(gwdp("antispamSettings:antispamTriggerMessageCount") ?? 4); }
     static set antispamTriggerMessageCount(messageCount) { world.setDynamicProperty("antispamSettings:antispamTriggerMessageCount", messageCount ?? 4); }
     static get timeZone() { return isNaN(Number(world.getDynamicProperty("andexdbSettings:timeZone"))) ? 0 : Number(world.getDynamicProperty("andexdbSettings:timeZone") ?? 0); }
@@ -185,8 +192,8 @@ export class config {
     static set chatDisplayTimeStamp(chatDisplayTimeStampEnabled) { world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled ?? false); }
     static get showRanksOnPlayerNameTags() { return Boolean(world.getDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags") ?? false); }
     static set showRanksOnPlayerNameTags(showRanksOnPlayerNameTags) { world.setDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags", showRanksOnPlayerNameTags ?? false); }
-    static get protectedAreasRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 1); }
-    static set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 1 : Math.min(1000, Math.max(1, Number(protectedAreasRefreshRate ?? 1)))); }
+    static get protectedAreasRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 20); }
+    static set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 20 : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 20)))); }
     static get playerDataRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 5); }
     static set playerDataRefreshRate(playerDataRefreshRate) { world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate)) ? 5 : Math.min(1000, Math.max(1, Number(playerDataRefreshRate ?? 5)))); }
     static get maxPlayersPerManagePlayersPage() { return Number(world.getDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage") ?? 10); }
@@ -7119,6 +7126,21 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
     }
     if (id == "andexdb:cmd") {
         chatCommands({ returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
+    }
+    if (id == "andexdb:silentCmd") {
+        chatCommands({ silentCMD: true, returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
+    }
+    if (id == "andexdb:silentBuiltInCmd") {
+        chatCommands({ silentCMD: true, isBultIn: true, isCustom: false, returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
+    }
+    if (id == "andexdb:builtInCmd") {
+        chatCommands({ silentCMD: false, isBultIn: true, isCustom: false, returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
+    }
+    if (id == "andexdb:silentCustomCmd") {
+        chatCommands({ silentCMD: true, isBultIn: false, isCustom: true, returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
+    }
+    if (id == "andexdb:customCmd") {
+        chatCommands({ silentCMD: false, isBultIn: false, isCustom: true, returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
     }
     if (id == "andexdb:blockExplosion") {
         const overworld = world.getDimension(String(message.split("|")[0]));

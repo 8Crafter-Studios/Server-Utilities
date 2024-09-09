@@ -1,6 +1,6 @@
 import { BlockVolume, CompoundBlockVolume, Player, system, world, Entity } from "@minecraft/server";
 import { ActionFormData, ModalFormData, ActionFormResponse, ModalFormResponse } from "@minecraft/server-ui";
-import { dimensions, format_version } from "Main";
+import { config, dimensions, format_version } from "Main";
 import { forceShow, mainMenu } from "./ui";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
@@ -42,69 +42,71 @@ mcMath;
 export const spawn_protection_format_version = "1.0.1";
 export const spawnProtectionTypeList = [/*"noPistonExtensionArea:", */ "noExplosionArea:", "noInteractArea:", "noBlockInteractArea:", "noBlockBreakArea:", "protectedArea:", "noBlockPlaceArea:"];
 export var noPistonExtensionAreas;
-noPistonExtensionAreas = undefined;
+noPistonExtensionAreas = { positive: [], negative: [] };
 export var noExplosionAreas;
-noExplosionAreas = undefined;
+noExplosionAreas = { positive: [], negative: [] };
 export var noBlockInteractAreas;
-noBlockInteractAreas = undefined;
+noBlockInteractAreas = { positive: [], negative: [] };
 export var noInteractAreas;
-noInteractAreas = undefined;
+noInteractAreas = { positive: [], negative: [] };
 export var protectedAreas;
-protectedAreas = undefined;
+protectedAreas = { positive: [], negative: [] };
 export var noBlockBreakAreas;
-noBlockBreakAreas = undefined;
+noBlockBreakAreas = { positive: [], negative: [] };
 export var noBlockPlaceAreas;
-noBlockPlaceAreas = undefined;
-try {
-    system.runInterval(() => {
-        try {
-            noPistonExtensionAreas = getAreas("noPistonExtensionArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-        ;
-        try {
-            noExplosionAreas = getAreas("noExplosionArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-        try {
-            noInteractAreas = getAreas("noInteractArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-        try {
-            noBlockInteractAreas = getAreas("noBlockInteractArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-        try {
-            noBlockBreakAreas = getAreas("noBlockBreakArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-        try {
-            protectedAreas = getAreas("protectedArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-        try {
-            noBlockPlaceAreas = getAreas("noBlockPlaceArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-    }, 1);
-}
-catch (e) {
-    console.error(e, e.stack);
-}
+noBlockPlaceAreas = { positive: [], negative: [] };
+import("Main").then(v => {
+    try {
+        system.runInterval(() => {
+            try {
+                noPistonExtensionAreas = getAreas("noPistonExtensionArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            ;
+            try {
+                noExplosionAreas = getAreas("noExplosionArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            try {
+                noInteractAreas = getAreas("noInteractArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            try {
+                noBlockInteractAreas = getAreas("noBlockInteractArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            try {
+                noBlockBreakAreas = getAreas("noBlockBreakArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            try {
+                protectedAreas = getAreas("protectedArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            try {
+                noBlockPlaceAreas = getAreas("noBlockPlaceArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+        }, v.config.protectedAreasRefreshRate ?? 20);
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
+});
 export function getType(areaGroup, type) { return areaGroup.split("|").filter((q) => (q.split(", ")[6] == String(type))).join("|"); }
 ;
 export function getAreas(prefix) {

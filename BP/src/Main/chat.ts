@@ -29,7 +29,7 @@ import *  as utils from "./utilities";
 import *  as errors from "./errors";
 import mcMath from "@minecraft/math.js";
 import { uiManager, UIManager } from "@minecraft/server-ui";
-import { chatCommands, command, idGenerator } from "./commands";
+import { chatCommands, cmdsEval, command, idGenerator } from "./commands";
 import { ExpireError, TimeoutError } from "./errors";
 import { commands } from "./commands_list";
 export const chatmetaimport = import.meta
@@ -289,7 +289,7 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
     try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatMessages"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("chatMessageNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + player.name + "]: " + newMessage); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getAllChatMessagesNotificationSound.soundId, {pitch: pn.getAllChatMessagesNotificationSound.pitch, volume: pn.getAllChatMessagesNotificationSound.volume}))}catch{}})}catch{}
     if(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(true)}
     if(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(false, false, 0, true)}
-    if(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") != false){
+    if(player.hasTag("canUseChatEscapeCodes")||world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") != false){
     if(newMessage.includes("${ea}")){newMessage = newMessage.replace("${ea}", ""); newMessage = newMessage.escapeCharacters(true)}
     if(newMessage.includes("${eu}")){newMessage = newMessage.replace("${eu}", ""); newMessage = newMessage.escapeCharacters(false, true, 0, false, false, false, false, false, false)}
     if(newMessage.includes("${ei}")){newMessage = newMessage.replace("${ei}", ""); newMessage = newMessage.escapeCharacters(false, false, 0, true, false, false, false, false, false)}
@@ -300,8 +300,36 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
     if(newMessage.includes("${escapeuri}")){newMessage = newMessage.replace("${escapeuri}", ""); newMessage = newMessage.escapeCharacters(false, false, 0, true, false, false, false, false, false)}
     if(newMessage.includes("${escapegeneral}")){newMessage = newMessage.replace("${escapegeneral}", ""); newMessage = newMessage.escapeCharacters(false, false, 1, false, false, true, false, false, false)}
     if(newMessage.includes("${escapex}")){newMessage = newMessage.replace("${escapex}", ""); newMessage = newMessage.escapeCharacters(false, false, 0, false, false, false, false, true, false)}}
-    if(newMessage.includes("${se}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){newMessage = newMessage.replace("${se}", ""); try{eval(newMessage)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; eventData.cancel = true; return; }else{if(newMessage.includes("${r}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true))){newMessage = newMessage.replace("${r}", ""); eventData.cancel = true; player.runCommandAsync(newMessage); return; }}
-    if(newMessage.includes("${scripteval}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){newMessage = newMessage.replace("${scripteval}", ""); try{eval(newMessage)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; eventData.cancel = true; return; }else{if(newMessage.includes("${run}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true))){newMessage = newMessage.replace("${run}", ""); eventData.cancel = true; player.runCommandAsync(newMessage); return; }}
+    if(newMessage.includes("${se}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){
+        newMessage = newMessage.replace("${se}", ""); 
+        try{cmdsEval(newMessage)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; 
+        eventData.cancel = true; 
+        return; 
+    }else if(newMessage.includes("${sel}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){
+        newMessage = newMessage.replace("${sel}", ""); 
+        try{eval(newMessage)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; 
+        eventData.cancel = true; 
+        return; 
+    }else if(newMessage.includes("${r}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true))){
+        newMessage = newMessage.replace("${r}", ""); 
+        eventData.cancel = true; 
+        player.runCommandAsync(newMessage); 
+        return; 
+    }
+    if(newMessage.includes("${scripteval}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){
+        newMessage = newMessage.replace("${scripteval}", ""); 
+        try{cmdsEval(newMessage)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; 
+        eventData.cancel = true; return; 
+    }else if(newMessage.includes("${scriptevallocal}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){
+        newMessage = newMessage.replace("${scriptevallocal}", ""); 
+        try{eval(newMessage)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; 
+        eventData.cancel = true; return; 
+    }else if(newMessage.includes("${run}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true))){
+        newMessage = newMessage.replace("${run}", ""); 
+        eventData.cancel = true; 
+        player.runCommandAsync(newMessage); 
+        return; 
+    }
     /*${scripteval}world.getAllPlayers().forEach((t)=>{t.setDynamicProperty("canUseScriptEval", true)}); */
 	if ((player.hasTag('noCustomChatMessages') && !player.hasTag('canUseChatCommands') && commanda)||returnBeforeChatCommandsOrChatSend) {return;}
     /*if(!((eventData.message.includes("${scripteval}") && (player.getDynamicProperty("canUseScriptEval") == true))||(eventData.message.includes("${run}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true)))||(eventData.message.startsWith("\\")))){world.getDimension("overworld").runCommand("/playsound note.harp.ui @a ~~~ 1 0.75 1"); }*/if(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != undefined && world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != ""){String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? "").split(", ").forEach((prefix)=>{if(newMessage.startsWith(prefix))runreturn = true})}; if (Boolean(runreturn) == true){return; }
@@ -314,7 +342,26 @@ export function chatSend(params: {returnBeforeChatSend: boolean|undefined, playe
     let eventData = params.eventData
     let event = params.event
     let newMessage = params.newMessage
-    if(config.antispamEnabled){if(!player.hasTag("canBypassAntiSpam")){if(!!globalThis["lastChatMessage"+player.id]){if(globalThis["lastChatMessage"+player.id]==event.message&&((Date.now()-(globalThis["lastChatTime"+player.id]??0))<(config.waitTimeAfterAntispamActivation*1000))){globalThis["msgAmountOfSpam"+player.id]=(globalThis["msgAmountOfSpam"+player.id]??0)+1; if(globalThis["msgAmountOfSpam"+player.id]>=config.antispamTriggerMessageCount){returnBeforeChatSend=true; event.cancel=true; player.sendMessage("§cStop Spamming")}}else{globalThis["lastChatMessage"+player.id]=event.message; globalThis["msgAmountOfSpam"+player.id]=0}}else{globalThis["lastChatMessage"+player.id]=event.message}; globalThis["lastChatTime"+player.id]=Date.now(); }}
+    if (config.antispamEnabled) {
+        if (!player.hasTag("canBypassAntiSpam")) {
+            if (/*
+                globalThis["lastChatMessage" + player.id] == event.message &&*/
+                Date.now() - (globalThis["lastChatTime" + player.id] ?? 0) <
+                    config.waitTimeAfterAntispamActivation * 1000
+            ) {
+                globalThis["msgAmountOfSpam" + player.id] = (globalThis["msgAmountOfSpam" + player.id] ?? 0) + 1;
+                if (globalThis["msgAmountOfSpam" + player.id] >= config.antispamTriggerMessageCount) {
+                    returnBeforeChatSend = true;
+                    event.cancel = true;
+                    player.sendMessage("§cStop Spamming");
+                }
+            } else {
+                globalThis["msgAmountOfSpam" + player.id] = 0;
+            }
+            globalThis["lastChatMessage" + player.id] = event.message;
+            globalThis["lastChatTime" + player.id] = Date.now();
+        }
+    }
     
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendComplete")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendBeforeEventDebugErrors")){currentplayer.sendMessage((e + " " + e.stack))}})}
     if(returnBeforeChatSend)return

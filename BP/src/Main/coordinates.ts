@@ -42,7 +42,7 @@ playersave
 spawnprot
 mcMath
 
-export const coordinates_format_version = "6.0.1";
+export const coordinates_format_version = "7.0.0";
 export class Vector extends mcMath.Vector3Builder implements mcMath.Vector3Utils {
     zero = mcMath.VECTOR3_ZERO
     one = mcMath.VECTOR3_ONE
