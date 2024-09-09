@@ -197,10 +197,10 @@ export enum commanddescriptions {
 "\\\\cone" = "Generates a cone in the selected area. ",
 "disconnect" = "Disconnects a player from the server. ",
 "morph" = "Morphs into the morph with the specified ID. ",
-"scale" = "Sets your scale value to the specified amount. ",
-"tint" = "Tints the specified player's skin the specified color, or makes it glow, and optionally adjusts the opacity of their skin. ",
+"scale" = "Sets the scale of the player, the default is 1.0. The visual scale scales the rendering and hitbox of the player by a certain amount, this can be combined with the visual scale. To use this command, the player must first have run one of the andexsa:scale_#x events on themself. Ex. /event entity @s andexsa:scale_1x",
+"tint" = "Tints the players skins a specified color, and optionally sets the alpha channel of their skins. The r, g, and b parameters are the color to tint it. The a parameter is the alpha channel. For the r, g, b, and a parameters, 1 is 0% brightness, 2 is 100% brightness, and anything higher than new makes the skins glow a certain amount. To enable the alpha channel you must set the useSpectatorMaterial parameter to 1, 0 is the default player material, 1 is the player material for players who are in spectator mode, 0 does not allow for an alpha channel, but 1 does allow for an alpha channel. ",
 "tps" = "Displays the TPS. ",
-"visualscale" = "Sets your visual scale (the one that does not actually change your hitbox size) to the specified amount. ",
+"visualscale" = "Sets the visual scale of the player, the default is 0.9375. The visual scale scales the rendering of the player by a certain amount without changing the hitbox, this can be combined with the regular scale.",
 "visualscaleenabled" = "Enables or diables your visual scaling. "
 }
 export const commandsyntaxes = {
@@ -834,7 +834,7 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollo
 "disconnect": `${command.dp}disconnect <players: targetSelector>`,
 "morph": `${command.dp}morph <morphId: int>`,
 "scale": `${command.dp}scale <scale: float>`,
-"tint": `${command.dp}tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: targetSelector]`,
+"tint": `${command.dp}tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: target[?=@s,allowMultiple=false]]`,
 "tps": `${command.dp}tps`,
 "visualscale": `${command.dp}visualscale <visualscale: float>`,
 "visualscaleenabled": `${command.dp}visualscaleenabled <visualscaleenabled: bool>`

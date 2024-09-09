@@ -393,7 +393,7 @@ let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicPr
     if (newMessage.includes("${se}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)) {
         newMessage = newMessage.replace("${se}", "");
         try {
-            cmdsEval(newMessage);
+            cmdsEval(newMessage, eventData, bypassChatInputRequests, runreturn, returnBeforeChatSend, returnBeforeChatCommandsOrChatSend, event, player, sendToPlayers, newMessage, switchTest, switchTestB, commanda);
         }
         catch (e) {
             console.error(e, e.stack);
@@ -425,7 +425,7 @@ let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicPr
     if (newMessage.includes("${scripteval}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)) {
         newMessage = newMessage.replace("${scripteval}", "");
         try {
-            cmdsEval(newMessage);
+            cmdsEval(newMessage, eventData, bypassChatInputRequests, runreturn, returnBeforeChatSend, returnBeforeChatCommandsOrChatSend, event, player, sendToPlayers, newMessage, switchTest, switchTestB, commanda);
         }
         catch (e) {
             console.error(e, e.stack);

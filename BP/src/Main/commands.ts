@@ -52,7 +52,7 @@ uis
 playersave
 spawnprot
 mcMath
-export function cmdsEval(x: string){return eval(x)}
+export function cmdsEval(x: string, eventData?, bypassChatInputRequests?, runreturn?, returnBeforeChatSend?, returnBeforeChatCommandsOrChatSend?, event?, player?, sendToPlayers?, newMessage?, switchTest?, switchTestB?, commanda?){return eval(x)}
 export function indirectCmdsEval(x: string){return eval?.(x)}
 export function cmdsRun(x: (...args)=>any, ...args){return x(...args)}
 export const disconnectingPlayers = [] as string[]

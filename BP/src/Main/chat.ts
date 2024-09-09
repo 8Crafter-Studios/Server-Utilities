@@ -302,7 +302,7 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
     if(newMessage.includes("${escapex}")){newMessage = newMessage.replace("${escapex}", ""); newMessage = newMessage.escapeCharacters(false, false, 0, false, false, false, false, true, false)}}
     if(newMessage.includes("${se}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){
         newMessage = newMessage.replace("${se}", ""); 
-        try{cmdsEval(newMessage)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; 
+        try{cmdsEval(newMessage, eventData, bypassChatInputRequests, runreturn, returnBeforeChatSend, returnBeforeChatCommandsOrChatSend, event, player, sendToPlayers, newMessage, switchTest, switchTestB, commanda)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; 
         eventData.cancel = true; 
         return; 
     }else if(newMessage.includes("${sel}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){
@@ -318,7 +318,7 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
     }
     if(newMessage.includes("${scripteval}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){
         newMessage = newMessage.replace("${scripteval}", ""); 
-        try{cmdsEval(newMessage)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; 
+        try{cmdsEval(newMessage, eventData, bypassChatInputRequests, runreturn, returnBeforeChatSend, returnBeforeChatCommandsOrChatSend, event, player, sendToPlayers, newMessage, switchTest, switchTestB, commanda)}catch(e){console.error(e, e.stack); eventData.sender.sendMessage(e + " " + e.stack)}; 
         eventData.cancel = true; return; 
     }else if(newMessage.includes("${scriptevallocal}") && ((player.getDynamicProperty("canUseScriptEval") == true) || player.hasTag("canUseScriptEval") == true)){
         newMessage = newMessage.replace("${scriptevallocal}", ""); 

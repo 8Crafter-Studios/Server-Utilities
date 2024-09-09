@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.20.0-preview.21+BULID.1";
+export const format_version = "1.20.0-preview.22";
 /*
 import "AllayTests.js";
 import "APITests.js";*/

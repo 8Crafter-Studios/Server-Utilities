@@ -223,6 +223,9 @@
          "path" : "textures/ui/button_borderless_light_blue_pressed.png"
       },
       {
+         "path" : "textures/ui/debug_sticks_pack_icon.png"
+      },
+      {
          "path" : "textures/ui/help/installation/education_edition_toggle.png"
       },
       {

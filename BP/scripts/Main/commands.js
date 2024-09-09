@@ -52,7 +52,7 @@ uis;
 playersave;
 spawnprot;
 mcMath;
-export function cmdsEval(x) { return eval(x); }
+export function cmdsEval(x, eventData, bypassChatInputRequests, runreturn, returnBeforeChatSend, returnBeforeChatCommandsOrChatSend, event, player, sendToPlayers, newMessage, switchTest, switchTestB, commanda) { return eval(x); }
 export function indirectCmdsEval(x) { return eval?.(x); }
 export function cmdsRun(x, ...args) { return x(...args); }
 export const disconnectingPlayers = [];

@@ -995,6 +995,10 @@ export function notificationsSettings(sourceEntitya: Entity|executeCommandPlayer
             getAllChatCommandsSoundID,
             getAllChatCommandsVolume,
             getAllChatCommandsPitch,
+            getAllChatMessages,
+            getAllChatMessagesSoundID,
+            getAllChatMessagesVolume,
+            getAllChatMessagesPitch,
             getGameRuleChangeNotifications,
             getGameRuleChangeNotificationsSoundID,
             getGameRuleChangeNotificationsVolume,
@@ -1069,6 +1073,12 @@ export function notificationsSettings(sourceEntitya: Entity|executeCommandPlayer
             soundId: String(getAllChatCommandsSoundID==""?"none":getAllChatCommandsSoundID),
             volume: Number.isNaN(Number(getAllChatCommandsVolume))?1:Math.min(Math.max(Number(getAllChatCommandsVolume), 0), 1),
             pitch: Number.isNaN(Number(getAllChatCommandsPitch))?1:Math.min(Math.max(Number(getAllChatCommandsPitch), 0), 255)
+        }
+        noti.getAllChatMessages=Boolean(getAllChatMessages)
+        noti.getAllChatMessagesNotificationSound={
+            soundId: String(getAllChatMessagesSoundID==""?"none":getAllChatMessagesSoundID),
+            volume: Number.isNaN(Number(getAllChatMessagesVolume))?1:Math.min(Math.max(Number(getAllChatMessagesVolume), 0), 1),
+            pitch: Number.isNaN(Number(getAllChatMessagesPitch))?1:Math.min(Math.max(Number(getAllChatMessagesPitch), 0), 255)
         }
         noti.getGameRuleChangeNotifications=Boolean(getGameRuleChangeNotifications)
         noti.getGameRuleChangeNotificationsNotificationSound={

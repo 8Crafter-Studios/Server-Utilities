@@ -5678,11 +5678,11 @@ export const commands = [
         },
         formats: [
             {
-                format: ""
+                format: "visualscale <visualscale: float>"
             }
         ],
         command_version: "1.0.0-beta.1",
-        description: "",
+        description: "Sets the visual scale of the player, the default is 0.9375. The visual scale scales the rendering of the player by a certain amount without changing the hitbox, this can be combined with the regular scale. ",
         category: [
             "Entity Scale Add-On"
         ],
