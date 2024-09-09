@@ -9832,7 +9832,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const range = VSTR(player.getDynamicProperty("pos1"), player.getDynamicProperty("pos2"));
                     player.setDynamicProperty("pos1", Vector.add(range.from, Vector.scale(diroffsetmapb(args[1].toLowerCase()), Number(args[2]))));
                     player.setDynamicProperty("pos2", Vector.add(range.to, Vector.scale(diroffsetmapb(args[1].toLowerCase()), Number(args[2]))));
-                    player.sendMessage(`Seccessfully shifted the selection ${args[2]} blocks ${args[1]} (${vTStr(player.getDynamicProperty("pos1"))} to ${vTStr(player.getDynamicProperty("pos2"))}).`);
+                    player.sendMessage(`Successfully shifted the selection ${args[2]} blocks ${args[1]} (${vTStr(player.getDynamicProperty("pos1"))} to ${vTStr(player.getDynamicProperty("pos2"))}).`);
                 }
                 break;
             case !!switchTest.match(/^\\offset$/):
