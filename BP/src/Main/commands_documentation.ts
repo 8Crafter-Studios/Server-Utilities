@@ -29,17 +29,23 @@ export enum commanddescriptions {
 "ecinvsee" = "Scans a player's ender chest and displays the contents of it. ",
 "ecinvseec" = "Scans a player's ender chest and displays the contents of it. ",
 "enderchest" = "Spawns an ender chest where you are standing. ",
-"eval" = "Runs the specified JavaScript Script/ScriptAPI Code. ",
+"eval" = `Runs the specified JаvaScript / Script API code. This can be very useful for doing things such as running more advanced commands with JаvaScript variables and conditions, or running commands with JаvaScript escape codes(for example to put multiple lines of text in the name of an entity or use special unicode characters in commands without needing to copy and paste them into your game). (Note: The names of the server modules are mcServer for the minecraft/Server module, mcServerUI for the minecraft/ServerUI module, and GameTest for the minecraft/GameTest module). Here are some examples:
+
+Send a tellraw command message:
+\\eval world.sendMessage("Example message\\nNew Line\\nSender's Name: " + player.name + "\\nToken Emoji: \\uE105")
+
+Give all players health boost with the level equal to their XP level:
+\\eval world.getAllPlayers().forEach((p)=>{p.addEffect("health_boost", 200, {amplifier: player.level, showParticles: false}); })`,
 "execute" = "Executes a command on behalf of one or more entities. ",
-"extinguish" = "Extinguishes fire in the specified radius. ",
+"extinguish" = "Extinguishes fire and soul fire in the specified radius. ",
 "fill" = "Fills all or parts of a reigon with a specific block, can use any block type including NBT Editor only ones. ",
 "fillillegal" = "Fills a player's inventory with illegal items. ",
 "fillinventory" = "Fills a player's inventory with items based on the provided itemJSON. ",
 "filljunk" = "Fills a player's inventory with junk items. ",
 "fillop" = "Fills a player's inventory with op items. ",
 "fillrandom" = "Fills a player's inventory with random items. ",
-"give" = "Gives you a specified amount of an item of a specified type. ",
-"giveb" = "Gives you an item stack with a specified type and stack size in your next empty inventory slot. ",
+"give" = "Inserts the specified number of the specified item type into the player's inventory. Note: The item parameter can be set to any valid item id, even ones that can't be used with the normal vanilla /give, such as ones that require an NBT editor to obtain, for example you could use minecraft:netherreactor to get a Nether Reactor Core. The count parameter can be any value from 0-255.",
+"giveb" = "Creates a new stack of the specified item type of the specified size in the player's inventory. Note: The item parameter can be set to any valid item id, even ones that can't be used with the normal vanilla /give, such as ones that require an NBT editor to obtain, for example you could use minecraft:netherreactor to get a Nether Reactor Core. The count parameter can be any value from 0-255.",
 "givec" = "Gives you an item stack based on the provided itemJSON in your next empty inventory slot. ",
 "getuuid" = "Gets the UUID of the specified entity. ",
 "gma" = "Sets your gamemode to adventure. ",
@@ -49,7 +55,8 @@ export enum commanddescriptions {
 "gmr" = "Sets your gamemode to a random gamemode. ",
 "gms" = "Sets your gamemode to survival. ",
 "gohome" = "Warps to a home. ",
-"h#" = "Swaps your hotbar with the specified hotbar preset. ",
+"h" = "Swaps your hotbar with the specified hotbar preset, optionally specifying a row of the container block to swap your hotbar with. ",
+"h#" = "Swaps your hotbar with the specified hotbar preset, optionally specifying a row of the container block to swap your hotbar with. ",
 "heal" = "Heals entities. ",
 "health" = "Modifies the health of entities. ",
 "home" = "Sets/Removes/Warps to a home. ",
@@ -101,11 +108,12 @@ export enum commanddescriptions {
 "offlineinvsee" = "Displays the saved contents of the specified player's inventory. ",
 "offlineuuidinvsee" = "Displays the saved contents of the inventory of the player with the specified UUID. ",
 //"permaban" = "Permanently bans a player. ",
-"printlayers" = "Displays a list of all the blocks at your specified x and z coordinates. ",
+"printlayers" = "Displays a list of all the non-air blocks at your specified x and z coordinates. ",
 "rank" = "Manages ranks stored in players. ",
-"remexp" = "Removes explosive blocks in the specified radius. ",
+"remexp" = "Removes explosive blocks and entities in the specified radius, the radius defaults to 10 if not specified. Removes TNT and respawn anchors if in the overworld, removes TNT and beds if in the nether, and removes TNT, beds, and respawn anchors if in the end.",
+"remexpne" = "Removes explosive blocks in the specified radius, the radius defaults to 10 if not specified. Removes TNT and respawn anchors if in the overworld, removes TNT and beds if in the nether, and removes TNT, beds, and respawn anchors if in the end. Unlike the \remexp command, this one does not remove explosive entities, it only removes explosive blocks.",
 "replacenear" = "Replaces blocks of the specified type with another specified block type in the specified radius. ",
-"run" = "Runs the specified command. ",
+"run" = "Runs the specified command after the specified number of ticks. ",
 "scanenderchest" = "Scans a player's ender chest and displays the contents of it. ",
 "scanenderchestc" = "Scans a player's ender chest and displays the contents of it. ",
 "scnendchst" = "Scans a player's ender chest and displays the contents of it. ",
@@ -114,10 +122,14 @@ export enum commanddescriptions {
 "selinfo" = "Displays info about the current selection. ",
 "seli" = "Displays info about the current selection. ",
 "sendui" = "Opens up a menu where you can type a chat message to send with no character limits. ",
-"setitem" = "Replaces the item stack in the specified inventory slot with an item stack with a specified type and stack size. ",
+"setitem" = "Creates a new stack of the specified item type of the specified size in the specified slot of the specified player's inventory. Note: The item parameter can be set to any valid item id, even ones that can't be used with the normal vanilla /give, such as ones that require an NBT editor to obtain, for example you could use minecraft:netherreactor to get a Nether Reactor Core. The count parameter can be any value from 0-255.",
 "setitemb" = "Replaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. ",
+"setnametag" = "Sets the name tag of a player or entity. ",
+"setplayernametag" = "Sets the name tag of a player or entity. ",
+"setentitynametag" = "Sets the name tag of a player or entity. ",
 "settings" = "Opens up the settings menu. ",
 "shuffleinventory" = "Shuffles the inventory of the specified player. ",
+"spawn" = "Teleports you to spawn. ",
 "structure" = "Manages structures. ",
 "summon" = "Summons entities. ",
 "swapinventories" = "Swaps the inventories of 2 players. ",
@@ -174,6 +186,8 @@ export enum commanddescriptions {
 "\\\\hpos1" = "Sets the pos1 location of the selected area to the block that you are looking at for use in other worldedit commands. ",
 "\\\\hpos2" = "Sets the pos2 location of the selected area to the block that you are looking at for use in other worldedit commands. ",
 "\\\\chunk" = "Sets the pos1 and pos2 locations of the selected area to contain the entire chunk that you are currently in for use in other worldedit commands. ",
+"\\\\shift" = "Shifts the pos1 and pos2 locations of the selected area. ",
+"\\\\offset" = "Offsets the pos1 and pos2 locations of the selected area. ",
 "\\\\generate" = "Generates a 3d shape according to a formula in the selected area, in [-sr] the s modifier will prevent the math equation parser from replacing single equal signs with double equal signs and the r modifier will prevent that as well as any other modifications so that it is run as pure javascript, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
 "\\\\generatef" = "Generates a 3d shape according to a formula in the selected area, this one does not allow access to custom variables which will prevent being able to run scripts using this, this one is much more limited than \\\\generate so it is only reccommended if you are restricting the \\\\generate command from a player to prevent script execution, in [-sr] the s modifier will prevent the math equation parser from replacing single equal signs with double equal signs and the r modifier will prevent that as well as any other modifications so that it is run as pure javascript, the formula can utilize the following variables: wx: world x, wy: world y, wz: world z, x: center relative x, y: center relative y, z: center relative z, ax: pos1 x, ay: pos1 y, az: pos1 z, bx: pos2 x, by: pos2 y, bz: pos2 z, nx: negative corner x, ny: negative corner y, nz: negative corner z, px: positive corner x, py: positive corner y, pz: positive corner z. ",
 "\\\\generatejs" = "Generates a 3d shape according to the outputs of a JavaScript function in the selected area. ",
@@ -195,13 +209,13 @@ export enum commanddescriptions {
 "\\\\sphere" = "Generates a sphere in the selected area. ",
 "\\\\hsphere" = "Generates a hollow sphere in the selected area. ",
 "\\\\cone" = "Generates a cone in the selected area. ",
-"disconnect" = "Disconnects a player from the server. ",
-"morph" = "Morphs into the morph with the specified ID. ",
-"scale" = "Sets the scale of the player, the default is 1.0. The visual scale scales the rendering and hitbox of the player by a certain amount, this can be combined with the visual scale. To use this command, the player must first have run one of the andexsa:scale_#x events on themself. Ex. /event entity @s andexsa:scale_1x",
+"disconnect" = "Disconnects the specified players with an unexpected packet type error without saying that they left the game in the chat. So, it basically lets you silent disconnect players. ",
+"morph" = "Morphs into the morph with the specified morph ID. ",
+"scale" = "Sets the scale of the player, the default is 1.0. The visual scale scales the rendering and hitbox of the player by a certain amount, this can be combined with the visual scale. Note: To use this command the player must first have a scale component, to add this to the player you must run one of the andexsa:scale_#x commands on the player. Ex. /event entity @s andexsa:scale_1x",
 "tint" = "Tints the players skins a specified color, and optionally sets the alpha channel of their skins. The r, g, and b parameters are the color to tint it. The a parameter is the alpha channel. For the r, g, b, and a parameters, 1 is 0% brightness, 2 is 100% brightness, and anything higher than new makes the skins glow a certain amount. To enable the alpha channel you must set the useSpectatorMaterial parameter to 1, 0 is the default player material, 1 is the player material for players who are in spectator mode, 0 does not allow for an alpha channel, but 1 does allow for an alpha channel. ",
-"tps" = "Displays the TPS. ",
+"tps" = "Gets the current TPS values and displays them in the chat to you only.",
 "visualscale" = "Sets the visual scale of the player, the default is 0.9375. The visual scale scales the rendering of the player by a certain amount without changing the hitbox, this can be combined with the regular scale.",
-"visualscaleenabled" = "Enables or diables your visual scaling. "
+"visualscaleenabled" = "Enables or disables the visual scale override set in the \visualscale command."
 }
 export const commandsyntaxes = {
 "align": `${command.dp}align`,
@@ -212,23 +226,22 @@ export const commandsyntaxes = {
 "clear": `§cThis command is still unfinished! `,
 "clearenderchest": `clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
 "clearenderchestslot": `clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"cloneitem": `${command.dp}cloneitem [toPlayer: targetSelector|~]`,
+"cloneitem": `${command.dp}cloneitem [toPlayer: target|~]`,
 "cmdui": `${command.dp}cmdui`,
 "compressitems": `${command.dp}compressitems [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
 "compressitemsshulker": `${command.dp}compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
 "compressitemscontainer": `${command.dp}compressitemscontainer [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
 "compressitemscontainerb": `${command.dp}compressitemscontainerb [containerType: Block] [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
-"copyitem": `${command.dp}copyitem [toSlot: int|head|chest|legs|feet|mainhand|offhand|~] [toPlayer: targetSelector|~]`,
-"createexplosion": `${command.dp}createexplosion <location: x y z> [dimension: string] [radius: float] [allowUnderwater: bool] [breaksBlocks: bool] [causesFire: bool] [source: targetSelector]`,
+"copyitem": `${command.dp}copyitem [toSlot: int|head|chest|legs|feet|mainhand|offhand|~] [toPlayer: target|~]`,
+"createexplosion": `${command.dp}createexplosion <location: x y z> [dimension: string] [radius: float] [allowUnderwater: bool] [breaksBlocks: bool] [causesFire: bool] [source: target]`,
 "datapickblock": `${command.dp}datapickblock`,
 "drain": `${command.dp}drain [radius: number]`,
 "dupeitem": `${command.dp}dupeitem [slot: int|head|chest|legs|feet|mainhand|offhand|~]`,
-"einvsee": `${command.dp}einvsee <targetSelector: targetSelector>`,
+"einvsee": `${command.dp}einvsee <targetSelector: target>`,
 "ecinvsee": `ecinvsee [target: string|~]`,
 "ecinvseec": `ecinvseec [target: string|~]`,
 "enderchest": `${command.dp}enderchest`,
 "eval": `${command.dp}eval <ScriptAPICode: JavaScript>`,
-"ext": `${command.dp}ext [radius: number]`,
 "execute": `${command.dp}execute ...
 ${command.dp}... align <axes: string> ...
 ${command.dp}... anchored <eyes|feet> ...
@@ -246,15 +259,18 @@ ${command.dp}... matchdimension <origin: target> ...
 ${command.dp}... if block <position: x y z> <block: Block> <blockStates: block states> ...
 ${command.dp}... if entity <target: target> ...
 ${command.dp}... run <command: command>`,
-"extinguish": `${command.dp}extinguish [radius: number]`,
+"ext": `${command.dp}ext [radius: number[?=10]]`,
+"extinguish": `${command.dp}extinguish [radius: number[?=10]]`,
+"ex": `${command.dp}ex [radius: number[?=10]]`,
+"remfire": `${command.dp}remfire [radius: number[?=10]]`,
 "fill": `${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
 "fillillegal": `${command.dp}fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
 "fillinventory": `${command.dp}fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]`,
 "filljunk": `${command.dp}filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
 "fillop": `${command.dp}fillop [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
 "fillrandom": `${command.dp}fillrandom [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"give": `${command.dp}give <item: itemType> <amount: int>`,
-"giveb": `${command.dp}giveb <item: itemType> <stackSize: int(1-255)>`,
+"give": `${command.dp}give <item: itemType> [amount: int[min=1,max=255]]`,
+"giveb": `${command.dp}giveb <item: itemType> [stackSize: int[min=1,max=255]>`,
 "givec": `${command.dp}givec <itemJSON: itemJSON>
 simplified itemJSON format (type "${command.dp}help itemJSONFormat" to see full format options): 
 {
@@ -316,7 +332,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 "getbans": `${command.dp}getbans`,
 "getidbans": `${command.dp}getidbans`,
 "getnamebans": `${command.dp}getnamebans`,
-"getuuid": `${command.dp}getuuid <target: target>`,
+"getuuid": `${command.dp}getuuid <target: target[allowMultiple=false]>`,
 "gma": `${command.dp}gma`,
 "gmc": `${command.dp}gmc`,
 "gmd": `${command.dp}gmd`,
@@ -324,9 +340,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 "gmr": `${command.dp}gmr`,
 "gms": `${command.dp}gms`,
 "gohome": `${command.dp}gohome <homeName: text>`,
-"h#": `${command.dp}h<presetId: float> <containerRow: float>`,
-"heal": `${command.dp}heal [targets: target]`,
-"health": `${command.dp}health <health: number> [targets: target]`,
+"h": `${command.dp}h<presetId: float> [containerRow: float[?=0]]`,
+"h#": `${command.dp}h<presetId: float> [containerRow: float[?=0]]`,
+"heal": `${command.dp}heal [targets: target[allowMultiple=true]]`,
+"health": `${command.dp}health <health: number> [targets: target[allowMultiple=true]]`,
 "home": `${command.dp}home <mode: set|remove|go|warp|teleport> <homeName: text>
 ${command.dp}home clear
 ${command.dp}home removeall
@@ -395,42 +412,27 @@ ${command.dp}ifill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Blo
 ${command.dp}ifill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Block> {blockStates: block states} <mode: skygrid|inverseskygrid> [clearContainers: boolean]
 ${command.dp}ifill <from: x y z> <to: x y z> clear [clearContainers: boolean]
 ${command.dp}ifill <from: x y z> <to: x y z> drain
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> {blockStates: block states} <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> {blockStates: block states} <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> {blockStates: block states} <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <thickness: float> <tileName: Block> {blockStates: block states} <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <thickness: float> <tileName: Block> {blockStates: block states} <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <thickness: float> <tileName: Block> {blockStates: block states} <mode: hollowsphere|dome> [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <tileName: Block> {blockStates: block states} <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <tileName: Block> {blockStates: block states} <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <tileName: Block> {blockStates: block states} <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> {blockStates: block states} <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> {blockStates: block states} <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> {blockStates: block states} <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> {blockStates: block states} hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> {blockStates: block states} hollowovoid [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> {blockStates: block states} hollowovoid [clearContainers: boolean]`,
+${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> {blockStates: block states} circle {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> {blockStates: block states} <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <thickness: float> <tileName: Block> {blockStates: block states} <mode: hollowsphere|dome> {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <length: float> <tileName: Block> {blockStates: block states} <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> {blockStates: block states} <mode: tunnel|cylinder> {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> {blockStates: block states} hollowovoid {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]`,
 "ifillb": `${command.dp}ifillb <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
 "ifillc": `${command.dp}ifillc <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
 "ifilld": `${command.dp}ifillc <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
 "igfill": `${command.dp}igfill <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
-"ignite": `${command.dp}ignite [radius: number]`,
+"ignite": `${command.dp}ignite [radius: float[?=10]]`,
 "invfillillegal": `${command.dp}fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
 "invfill": `${command.dp}fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]`,
 "invfilljunk": `${command.dp}filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
 "invfillop": `${command.dp}fillop [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
 "invfillrandom": `${command.dp}fillrandom [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
-"invsee": `${command.dp}invsee <playerTarget: targetSelector>`,
-"invseep": `${command.dp}invseep <playerTarget: targetSelector>`,
+"invsee": `${command.dp}invsee <playerTarget: target[allowMultiple=false]>`,
+"invseep": `${command.dp}invseep <playerTarget: target[allowMultiple=false]>`,
 "invseeuuidmode": `${command.dp}invseeuuidmode <entityUUID: int>`,
-"invshuffle": `${command.dp}invshuffle <playerTarget: targetSelector|~>`,
-"invswap": `${command.dp}invswap [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
+"invshuffle": `${command.dp}invshuffle <playerTarget: target|~>`,
+"invswap": `${command.dp}invswap [player: target|~] [otherPlayer: target|~]`,
 "invswapb": `${command.dp}invswapb [player: playerName|~] [otherPlayer: playerName|~]`,
 "iogfill": `${command.dp}iogfill <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}iogfill <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
 "item": `${command.dp}item <mode: lore|lorene> <lore: JSON>
@@ -527,7 +529,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
 "itfillc": `${command.dp}itfillc <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}itfillc <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
 "j": `${command.dp}j`,
 "jumpto": `${command.dp}jumpto`,
-"kick": `${command.dp}kick <players: targetSelector> [reason: string]`,
+"kick": `${command.dp}kick <players: target> [reason: string]`,
 "liststructures": `${command.dp}liststructures`,
 "listbans": `${command.dp}listbans`,
 "listidbans": `${command.dp}listidbans`,
@@ -536,10 +538,10 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
 "managecommands": `${command.dp}managecommands`,
 "manageplayers": `${command.dp}manageplayers`,
 "managescriptautoeval": `${command.dp}managescriptautoeval`,
-"maxhealth": `${command.dp}maxhealth [targets: targetSelector]`,
+"maxhealth": `${command.dp}maxhealth [targets: target]`,
 "menu": `${command.dp}menu`,
 "messageui": `${command.dp}messageui`,
-"minhealth": `${command.dp}minhealth [targets: targetSelector]`,
+"minhealth": `${command.dp}minhealth [targets: target]`,
 "mngcmds": `${command.dp}mngcmds`,
 "mngplyrs": `${command.dp}mngplyrs`,
 "mm": `${command.dp}mm`,
@@ -549,13 +551,13 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
 "offlineinvsee": `${command.dp}offlineinvsee <playerName: string>`,
 "offlineuuidinvsee": `${command.dp}offlineuuidinvsee <playerUUID: int>`,
 "printlayers": `${command.dp}printlayers`,
-"rank": `${command.dp}rank <players: targetSelector> <mode: add|remove> <tag: string>\n${command.dp}rank <players: targetSelector> clear`,
+"rank": `${command.dp}rank <players: target> <mode: add|remove> <tag: string>\n${command.dp}rank <players: target> clear`,
 "remexp": `${command.dp}remexp [radius: number]`,
 "replacenear": `${command.dp}repalcenear <radius: number> <replaceTileName: Block> <replaceBlockStates: block states> <tileName: Block> <blockStates: block states>`,
-"run": `${command.dp}run <delayTicks: int> <command: command>`,
-"scanenderchest": `${command.dp}scanenderchest [targets: targetSelector|~]`,
+"run": `${command.dp}run <delayTicks: int[min=0]> <command: command>`,
+"scanenderchest": `${command.dp}scanenderchest [targets: target|~]`,
 "scanenderchestc": `${command.dp}scanenderchestc [target: string|~]`,
-"scnendchst": `${command.dp}scnendchst [targets: targetSelector|~]`,
+"scnendchst": `${command.dp}scnendchst [targets: target|~]`,
 "scnendchstc": `${command.dp}scnendchstc [target: string|~]`,
 "sendui": `${command.dp}sendui`,
 "setitem": `${command.dp}setitem <item: itemType> <amount: int> <slot: int>`,
@@ -618,7 +620,8 @@ stack of 255 sharpness 1 wooden swords: {"minecraft:components": {"enchantable":
 sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept on death with the name "§4Storage Hog Axe§r" and the lore "§eTakes\\nUp\\nYour\\nInventory§r" (with the \\n as line break characters) that says lol in the chat and damages the user when used: {"minecraft:components": {"enchantable": {"add": [{"level": 1, "type": "sharpness"}, {"type": "fortune", "level": 3}, {"type": "efficiency", "level": 5}]}}, "id": "iron_axe", "count": 72, "keepondeath": true, "lockMode": "inventory", "name": "§r§4Storage Hog Axe§r§f", "lore": ["§r§eTakes\\nUp§r§f","§r§eYour\\nInventory§r§f"], "dynamicProperties": {"code": "world.sendMessage('lol'); event.source.runCommandAsync(\\"/damage @s 1 thorns entity @s\\")"}}
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`,
 "settings": `${command.dp}settings`,
-"shuffleinventory": `${command.dp}shuffleinventory <playerTarget: targetSelector|~>`,
+"spawn": `${command.dp}spawn`,
+"shuffleinventory": `${command.dp}shuffleinventory <playerTarget: target|~>`,
 "structure": `${command.dp}structure createempty <structureName: string> <sizeX: float> <sizeY: float> <sizeZ: float> [saveMode: memory|disk]
 ${command.dp}structure save <structureName: string> <from: x y z> <to: x y z> [saveMode: world|memory] [includeEntities: Boolean] [includeBlocks: Boolean]
 ${command.dp}structure load <structureName: string> <to: x y z> [rotation: 0|90|190|270] [mirror: none|x|z|xz] [includeEntities: Boolean] [includeBlocks: Boolean] [waterlogged: Boolean] [integrity: float] [integritySeed: string] [animationMode: none|blocks|layers] [animationSeconds: float]
@@ -633,20 +636,20 @@ ${command.dp}structure removeall
 ${command.dp}structure list`,
 "summon": `${command.dp}summon <spawnCount: int> <entity: EntityType<[spawnEvent]>> [spawnPos: x y z] [yRot: value] [xRot: value] [persistent: bool] [nameTag: string]
 ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn"`,
-"swapinventories": `${command.dp}swapinventories [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
+"swapinventories": `${command.dp}swapinventories [player: target|~] [otherPlayer: target|~]`,
 "swapinventoriesb": `${command.dp}swapinventoriesb [player: playerName|~] [otherPlayer: playerName|~]`,
-"swapitems": `${command.dp}swapitems [slot: int|head|chest|legs|feet|mainhand|offhand|~] [otherSlot: int|head|chest|legs|feet|mainhand|offhand|~] [player: targetSelector|~] [otherPlayer: targetSelector|~]`,
-"takeitem": `${command.dp}takeitem <fromSlot: int|head|chest|legs|feet|mainhand|offhand|~> <fromPlayer: targetSelector|~>`,
+"swapitems": `${command.dp}swapitems [slot: int|head|chest|legs|feet|mainhand|offhand|~] [otherSlot: int|head|chest|legs|feet|mainhand|offhand|~] [player: target|~] [otherPlayer: target|~]`,
+"takeitem": `${command.dp}takeitem <fromSlot: int|head|chest|legs|feet|mainhand|offhand|~> <fromPlayer: target|~>`,
 "terminal": `${command.dp}terminal`,
-"transferitem": `${command.dp}transferitem <transferItemToPlayer: targetSelector>`,
+"transferitem": `${command.dp}transferitem <transferItemToPlayer: target>`,
 "thru": `${command.dp}thru`,
 "timezone": `${command.dp}timezone [UTCOffsetInHours: float]`,
 "top": `${command.dp}top`,
-"tpa": `${command.dp}tpa <player: targetSelector|playerName|string>`,
-"tpaccept": `${command.dp}tpaccept [player: targetSelector|playerName|string]`,
-"tpdeny": `${command.dp}tpdeny [player: targetSelector|playerName|string]`,
+"tpa": `${command.dp}tpa <player: target|playerName|string>`,
+"tpaccept": `${command.dp}tpaccept [player: target|playerName|string]`,
+"tpdeny": `${command.dp}tpdeny [player: target|playerName|string]`,
 "tz": `${command.dp}tz [UTCOffsetInHours: float]`,
-"up": `${command.dp}up [placeGlass: bool]`,
+"up": `${command.dp}up [placeGlass: bool[?=true]]`,
 "ver": `${command.dp}ver`,
 "version": `${command.dp}version`,
 "warp": `${command.dp}warp <name: escapableString>`,
@@ -700,6 +703,8 @@ ${command.dp}snapshot list`,
 "\\\\hpos1": `${command.dp}\\hpos1`,
 "\\\\hpos2": `${command.dp}\\hpos2`,
 "\\\\chunk": `${command.dp}\\chunk`,
+"\\\\shift": `${command.dp}\\shift <direction: {north}|{south}|{east}|{west}|{up}|{down}> <distance: float>`,
+"\\\\offset": `${command.dp}\\offset [x: float] [y: float] [z: float]`,
 "\\\\sphere": `${command.dp}\\sphere <radius: float> <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
 "\\\\hsphere": `${command.dp}\\hsphere <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
 "\\\\cone": `${command.dp}\\cone <radius: float> <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
@@ -831,7 +836,7 @@ ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> <bloc
 ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> hollowovoid [clearContainers: boolean]`,
-"disconnect": `${command.dp}disconnect <players: targetSelector>`,
+"disconnect": `${command.dp}disconnect <players: target>`,
 "morph": `${command.dp}morph <morphId: int>`,
 "scale": `${command.dp}scale <scale: float>`,
 "tint": `${command.dp}tint [red: float|~] [green: float|~] [blue: float|~] [alpha: float|~] [materialType: 0|1] [playerTarget: target[?=@s,allowMultiple=false]]`,
@@ -1085,13 +1090,15 @@ export function getCommandHelpPageForModBayCommandsDocumentation(commandName: st
     let cmd = command.get(((commandName.slice(0, command.dp.length)==command.dp)&&(commandName.slice(command.dp.length, command.dp.length+1)!="\\"))?commandName.slice(1):commandName, "built-in");
     return (!!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version)
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
-        : `${!cmd.commandName.startsWith("\\")?"\\"+cmd.commandName:cmd.commandName}\n${(commanddescriptions[cmd.commandName]??cmd.settings.defaultSettings.description).replaceAll(/§[a-zA-Z]/g, "")}\nCommand Syntax:\n- ${(
-            commandsyntaxes[cmd.currentCommandName] ?? tryget(()=>cmd.settings.defaultSettings.formats["map"](v=>!!v?.format?v.format:v).join(" ")) ?? (typeof cmd.settings.defaultSettings.formats == "string" ? cmd.settings.defaultSettings.formats : undefined) ?? "missing"
+        : `${!cmd.commandName.startsWith("\\")?"\\"+cmd.commandName:cmd.commandName}\n${(commanddescriptions[cmd.commandName]??cmd.settings.defaultSettings?.description).replaceAll(/§[a-zA-Z]/g, "")}\nCommand Syntax:\n- ${(
+            commandsyntaxes[cmd.currentCommandName] ?? commandsyntaxes[cmd.commandName] ?? tryget(()=>cmd.formats["map"](v=>!!v?.format?v.format:v).join(" ")) ?? (typeof cmd.formats == "string" ? cmd.formats : undefined) ?? "missing"
         )
         .split("\n")
         .join("§r\n- ")}${
             !!!commandflags[cmd.currentCommandName]
-                ? ""
+                ? !!!commandflags[cmd.commandName]
+                    ? ""
+                    : "\nFlags:\n" + commandflags[cmd.commandName]
                 : "\nFlags:\n" + commandflags[cmd.currentCommandName]
         }\nAliases: ${
             (cmd.aliases?.length ?? 0) != 0 ? `${JSON.stringify(cmd.aliases.map((v) => v.commandName))}` : "[]"
@@ -1117,8 +1124,8 @@ export function getCommandHelpPage(commandName: string, player?: Player | execut
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
         : `§e${cmd.commandName}${
             (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
-        }:\n${commanddescriptions[cmd.commandName]??cmd.settings.defaultSettings.description}§r\nUsage:\n- ${(
-            commandsyntaxes[cmd.currentCommandName] ?? tryget(()=>cmd.settings.defaultSettings.formats["map"](v=>!!v?.format?v.format:v).join(" ")) ?? (typeof cmd.settings.defaultSettings.formats == "string" ? cmd.settings.defaultSettings.formats : undefined) ?? "missing"
+        }:\n${commanddescriptions[cmd.commandName]??cmd.description}§r\nUsage:\n- ${(
+            commandsyntaxes[cmd.currentCommandName] ?? tryget(()=>cmd.formats?.["map"](v=>!!v?.format?v.format:v).join(" ")) ?? (typeof cmd.formats == "string" ? cmd.formats : undefined) ?? "missing"
         )
         .split("\n")
         .join("§r\n- ")}${
@@ -1156,7 +1163,7 @@ export function getCommandHelpPageExtra(commandName: string, player?: Player | e
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
         : `§e${cmd.commandName}${
             (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
-        }:\n${commanddescriptions[cmd.commandName]??cmd.settings.defaultSettings.description}§r\nUsage:\n- ${(
+        }:\n${commanddescriptions[cmd.commandName]??cmd.settings.defaultSettings?.description??"Missing"}§r\nUsage:\n- ${(
             commandsyntaxes[cmd.currentCommandName] ?? tryget(()=>cmd.settings.defaultSettings.formats["map"](v=>!!v?.format?v.format:v).join(" ")) ?? (typeof cmd.settings.defaultSettings.formats == "string" ? cmd.settings.defaultSettings.formats : undefined) ?? "missing"
         )
         .split("\n")

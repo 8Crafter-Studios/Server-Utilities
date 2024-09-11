@@ -653,7 +653,7 @@ export class command{
     }
     get isHidden(){return this?.settings?.defaultSettings?.hidden??false}
     get isDeprecated(){return this?.settings?.defaultSettings?.deprecated??false}
-    get isFunctional(){return this.type=="custom"?true:this?.settings?.defaultSettings?.functional??false}
+    get isFunctional(){return (this.type=="custom")?true:(this?.settings?.defaultSettings?.functional??false)}
     get releaseStage(){return tryget(()=>SemVerString.fromString(String(this.command_version)).pre_release_stage)}
     get regexp(){return new RegExp(this?.escregexp?.v ?? "", this?.escregexp?.f)}
     get currentregexp(){return new RegExp(this?.currentescregexp?.v ?? "", this?.currentescregexp?.f)}
@@ -700,6 +700,7 @@ export class commandSettings{
     constructor(commandSettingsId: string, command?: command) {
         this.type = commandSettingsId.startsWith("built-inCommandSettings:")?"built-in":commandSettingsId.startsWith("customCommandSettings:")?"custom":"unknown"; 
         this.commandName = commandSettingsId.startsWith("built-inCommandSettings:")?commandSettingsId.slice(24):commandSettingsId.startsWith("customCommandSettings:")?commandSettingsId.slice(22):commandSettingsId; 
+        this.commandName = ((this.commandName.slice(0, cmds.command.dp.length)==cmds.command.dp)&&(this.commandName.slice(cmds.command.dp.length, cmds.command.dp.length+1)!="\\"))?"\\"+this.commandName:this.commandName
         this.commandSettingsId = commandSettingsId
         this.customCommandId = (this.type=="custom")?command?.customCommandId??("customCommand:"+this.commandName):undefined
         this.command = command
@@ -3799,20 +3800,20 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args;
                     //name; sizex; sizey; sizez
                     world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] }, args[6].toLowerCase() == "disk" ? StructureSaveMode.World : StructureSaveMode.Memory);
-                    psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v => v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase() == "disk" ? "the disk" : "memory"}.`);
+                    psend(player, `§aSuccessfully created an empty structure of size ${args.slice(3, 6).map(v => v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase() == "disk" ? "the disk" : "memory"}.`);
                 }
                 break;
                 case "createempty":{
                     let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "number" }, { type: "number" }, { type: "number" }, { type: "presetText" }]).args;
                     //name; sizex; sizey; sizez
                     world.structureManager.createEmpty(args[2], { x: args[3], y: args[4], z: args[5] }, args[6].toLowerCase() == "disk" ? StructureSaveMode.World : StructureSaveMode.Memory);
-                    psend(player, `§aSeccessfully created an empty structure of size ${args.slice(3, 6).map(v => v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase() == "disk" ? "the disk" : "memory"}.`);
+                    psend(player, `§aSuccessfully created an empty structure of size ${args.slice(3, 6).map(v => v.toString()).join("x")} with the name "§r${args[2]}§a" and saved it to ${args[6].toLowerCase() == "disk" ? "the disk" : "memory"}.`);
                 }
                 break;
                 case "delete":{
                     let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra];
                     if (!!world.structureManager.get(args[2])) {
-                        world.structureManager.delete(args[2]) ? psend(player, `§aSeccessfully deleted the structure "§r${args[2]}§a".`) : psend(player, `§cError: Failed to delete the structure "§r${args[2]}§c".`);
+                        world.structureManager.delete(args[2]) ? psend(player, `§aSuccessfully deleted the structure "§r${args[2]}§a".`) : psend(player, `§cError: Failed to delete the structure "§r${args[2]}§c".`);
                     }
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
@@ -3827,7 +3828,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         args[7]??="";
                         const location = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
                         world.structureManager.place(args[2], player.dimension, location, {includeBlocks: args[8]??true, includeEntities: args[9]??true, waterlogged: args[10]??false, animationMode: StructureAnimationMode[args[13]]??StructureAnimationMode.None, animationSeconds: args[14], mirror: args[7].includes("x")?args[7].includes("z")?StructureMirrorAxis.XZ:StructureMirrorAxis.X:args[7].includes("z")?StructureMirrorAxis.Z:StructureMirrorAxis.None, integrity: args[11], integritySeed: args[12], rotation: Math.round(args[6]/90)==0?StructureRotation.None:Math.round(args[6]/90)==1?StructureRotation.Rotate90:Math.round(args[6]/90)==2?StructureRotation.Rotate180:Math.round(args[6]/90)==3?StructureRotation.Rotate270:StructureRotation.None});
-                        psend(player, `§aSeccessfully loaded the structure "§r${args[2]}§a".`);
+                        psend(player, `§aSuccessfully loaded the structure "§r${args[2]}§a".`);
                     }
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
@@ -3838,7 +3839,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
                     if (!!world.structureManager.get(args[2])) {
                         world.structureManager.get(args[2]).saveAs(args[3]);
-                        psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a".`);
+                        psend(player, `§aSuccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a".`);
                     }
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
@@ -3849,7 +3850,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
                     if (!!world.structureManager.get(args[2])) {
                         world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.World);
-                        psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" on the disk.`);
+                        psend(player, `§aSuccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" on the disk.`);
                     }
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
@@ -3860,7 +3861,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     let args = evaluateParameters(switchTestB, [{type: "presetText"}, {type: "presetText"}, { type: "string" }, { type: "string" }]).args;
                     if (!!world.structureManager.get(args[2])) {
                         world.structureManager.get(args[2]).saveAs(args[3], StructureSaveMode.Memory);
-                        psend(player, `§aSeccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" in memory.`);
+                        psend(player, `§aSuccessfully copied the structure "§r${args[2]}§a" to "§r${args[3]}§a" in memory.`);
                     }
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
@@ -3874,7 +3875,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         world.structureManager.delete(args[2]);
                         a.saveAs(args[2], StructureSaveMode.World);
                         world.structureManager.delete(a);
-                        psend(player, `§aSeccessfully saved the structure "§r${args[2]}§a" to the disk.`);
+                        psend(player, `§aSuccessfully saved the structure "§r${args[2]}§a" to the disk.`);
                     }
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
@@ -3888,7 +3889,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         world.structureManager.delete(args[2]);
                         s.saveAs(args[2], StructureSaveMode.Memory);
                         world.structureManager.delete(s);
-                        psend(player, `§aSeccessfully moved the structure "§r${args[2]}§a" to memory.`);
+                        psend(player, `§aSuccessfully moved the structure "§r${args[2]}§a" to memory.`);
                     }
                     else {
                         psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
@@ -3935,10 +3936,14 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 let args = [...argsa.args, argsa.extra] as [...typeof argsa.args, typeof argsa.extra]
                 switch(String(args[1])){
                     case "set": 
-                        if(!(HomeSystem.testIfPlayerAtMaxHomes(player)||!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2]))){
+                        if(HomeSystem.testIfPlayerAtMaxHomes(player)){
+                            player.sendMessage("§cError: Max homes reached. Please delete a home if you want to add a new one. ")
+                        }else if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
+                            player.sendMessage("§cError: You already have a home with this name. Please delete the home and create it again if you want to change its location. ")
+                        }else{
                             new Home({location: Object.assign(player.location, {dimension: player.dimension}), name: args[2], owner: player.player, saveId: "home:"+player.id+":"+args[2]}).save()
                             player.sendMessage(`Successfully set the home "${args[2]}§r§f" to ${vTStr(player.location)} in ${main.dimensionTypeDisplayFormatting[player.dimension.id]}. `)
-                        }else{player.sendMessage("§cError: Max homes reached. Please delete a home if you want to add a new one. ")}
+                        }
                     break; 
                     case "remove": 
                         if(!!HomeSystem.getHomesForPlayer(player).find(h=>h.name==args[2])){
@@ -6191,7 +6196,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             eventData.cancel = true;
             const args = evaluateParameters(switchTestB, ["presetText", "number"]).args
             player.setDynamicProperty("andexdbPersonalSettings:timeZone", args[1])
-            player.sendMessage(`Seccessfully set your timezone to ${args[1]}.`)
+            player.sendMessage(`Successfully set your timezone to ${args[1]}.`)
         }
         break; 
         case !!switchTest.match(/^\\pos1$/): {
@@ -6200,7 +6205,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const pos1 = mcMath.Vector3Utils.floor((args[1]??"")==""?player.location:evaluateCoordinates(args[1], args[2], args[3], player.location, player.getRotation()))
             player.setDynamicProperty("pos1", pos1)
             player.setDynamicProperty("posD", player.dimension.id)
-            player.sendMessage(`Seccessfully set pos1 to ${vTStr(pos1)}.`)
+            player.sendMessage(`Successfully set pos1 to ${vTStr(pos1)}.`)
         }
         break; 
         case !!switchTest.match(/^\\pos2$/): {
@@ -6209,7 +6214,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const pos2 = mcMath.Vector3Utils.floor((args[1]??"")==""?player.location:evaluateCoordinates(args[1], args[2], args[3], player.location, player.getRotation()))
             player.setDynamicProperty("pos2", pos2)
             player.setDynamicProperty("posD", player.dimension.id)
-            player.sendMessage(`Seccessfully set pos2 to ${vTStr(pos2)}.`)
+            player.sendMessage(`Successfully set pos2 to ${vTStr(pos2)}.`)
         }
         break; 
         case !!switchTest.match(/^\\hpos1$/): {
@@ -6221,7 +6226,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 const pos1 = mcMath.Vector3Utils.floor(loc)
                 player.setDynamicProperty("pos1", pos1)
                 player.setDynamicProperty("posD", player.dimension.id)
-                player.sendMessage(`Seccessfully set pos1 to ${vTStr(pos1)}.`)
+                player.sendMessage(`Successfully set pos1 to ${vTStr(pos1)}.`)
             }
         }
         break; 
@@ -6234,7 +6239,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 const pos2 = mcMath.Vector3Utils.floor(loc)
                 player.setDynamicProperty("pos2", pos2)
                 player.setDynamicProperty("posD", player.dimension.id)
-                player.sendMessage(`Seccessfully set pos2 to ${vTStr(pos2)}.`)
+                player.sendMessage(`Successfully set pos2 to ${vTStr(pos2)}.`)
             }
         }
         break; 
@@ -6245,7 +6250,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 player.sendMessage("§cError: The held item is a stackable item.")
             }else{
                 player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("selectmode", args[1])
-                player.sendMessage(`Seccessfully set selectmode of the held item to ${args[1]}.`)
+                player.sendMessage(`Successfully set selectmode of the held item to ${args[1]}.`)
             }
         }
         break; 
@@ -6255,7 +6260,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             player.setDynamicProperty("pos1", chunk.from)
             player.setDynamicProperty("pos2", chunk.to)
             player.setDynamicProperty("posD", player.dimension.id)
-            player.sendMessage(`Seccessfully set selection to the current chunk (${vTStr(chunk.from)} to ${vTStr(chunk.to)}).`)
+            player.sendMessage(`Successfully set selection to the current chunk (${vTStr(chunk.from)} to ${vTStr(chunk.to)}).`)
         }
         break; 
         case !!switchTest.match(/^\\shift$/): {
@@ -6274,7 +6279,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             const range = VSTR(player.getDynamicProperty("pos1") as Vector3, player.getDynamicProperty("pos2") as Vector3)
             player.setDynamicProperty("pos1", Vector.add(range.from, offset))
             player.setDynamicProperty("pos2", Vector.add(range.to, offset))
-            player.sendMessage(`Seccessfully shifted the selection by ${vTStr(offset)} (${vTStr(player.getDynamicProperty("pos1") as Vector3)} to ${vTStr(player.getDynamicProperty("pos2") as Vector3)}).`)
+            player.sendMessage(`Successfully shifted the selection by ${vTStr(offset)} (${vTStr(player.getDynamicProperty("pos1") as Vector3)} to ${vTStr(player.getDynamicProperty("pos2") as Vector3)}).`)
         }
         break; 
         case !!switchTest.match(/^\\replace$/): {
@@ -7413,7 +7418,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
 //            try{system.run(()=>{player.dimension.fillBlocks(evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation()), evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation()), mcServer.BlockPermutation.resolve(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1).split(" ")[0], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[0]), {matchingBlock: mcServer.BlockPermutation.resolve(getParametersFromString(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")+1)).results[2], extractJSONStrings(switchTestB.split(" ").slice(1).join(" ").slice(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5].index+Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0].indexOf(" ")).split(" ").slice(1).join(" "), false)[1])}); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         }
         break; 
-        case !!switchTest.match(/^brush$/): {
+        case !!switchTest.match(/^brush$/)||!!switchTest.match(/^\\brush$/)||!!switchTest.match(/^br$/)||!!switchTest.match(/^\\br$/): {
             eventData.cancel = true;
             let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string"]).args
             if(player.getComponent("inventory").container.getItem(player.selectedSlotIndex).isStackable){
@@ -7423,7 +7428,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                     case "none":{
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "none")
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore())}
-                        player.sendMessage(`Seccessfully unbound the brush from the currently held item.`)
+                        player.sendMessage(`Successfully unbound the brush from the currently held item.`)
                     }
                     break;
                     case "extinguish":{
@@ -7431,7 +7436,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "extinguish")
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bSelect Mode: ${player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getDynamicProperty("selectmode")}`, `§r§bBrush Type: §aExtinguish`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
                     }
                     break;
                     case "ex":{
@@ -7439,7 +7444,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "extinguish")
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aExtinguish`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
                     }
                     break;
                     case "remexp":{
@@ -7447,7 +7452,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "remexp")
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aRemExp`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
                     }
                     break;
                     case "remexpne":{
@@ -7455,7 +7460,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "remexpne")
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[3])))?10:args[3])
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aRemExpNE`, `§r§bBrush Radius: ${(isNaN(Number(args[3])))?10:args[3]}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3])))?10:args[3]}.`)
                     }
                     break;
                     case "sphere":{
@@ -7465,7 +7470,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSphere`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to sphere with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to sphere with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
                     }
                     break;
                     case "cube":{
@@ -7475,7 +7480,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aCube`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to cube with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to cube with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
                     }
                     break;
                     case "square":{
@@ -7485,7 +7490,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("patterntype", (args[4] as BlockPattern).type)
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSquare`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to square with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to square with a radius of ${(isNaN(Number(args[5])))?3:args[5]}.`)
                     }
                     break;
                     case "splatter":{
@@ -7497,7 +7502,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
                         //console.warn(JSON.stringify((args[4] as BlockPattern).blocks))
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatter`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, `§r§bBrush Pattern: `, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
                     }
                     break;
                     case "splattercube":{
@@ -7508,7 +7513,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterCube`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
                     }
                     break;
                     case "splattersquare":{
@@ -7519,7 +7524,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSquare`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
                     }
                     break;
                     case "splattersurface":{
@@ -7530,7 +7535,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to splatter surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
                     }
                     break;
                     case "splattercubesurface":{
@@ -7541,7 +7546,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterCubeSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter cube surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to splatter cube surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
                     }
                     break;
                     case "splattersquaresurface":{
@@ -7552,7 +7557,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("decay", (isNaN(Number(args[6])))?0:args[6])
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("radius", (isNaN(Number(args[5])))?3:args[5])
                         if(!args[1].l){srun(()=>player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSquareSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5])))?3:args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6])))?0:args[6]}`, ...[...(args[4] as BlockPattern).blocks.map(v=>v.rawns).slice(0, 15).map(v=>`§r§d${v}`), "§r§d..."].slice(0, (args[4] as BlockPattern).blocks.length>15?-1:undefined), `§r§bBrush Pattern Type: §a${(args[4] as BlockPattern).type}`]))}
-                        player.sendMessage(`Seccessfully set brush type of the held item to splatter square surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
+                        player.sendMessage(`Successfully set brush type of the held item to splatter square surface with a radius of ${(isNaN(Number(args[5])))?3:args[5]} and a decay level of ${(isNaN(Number(args[6])))?0:args[6]}.`)
                     }
                     break;
                     default:{
@@ -7808,7 +7813,7 @@ ${command.dp}snapshot list`); return}
                 default: 
                     try{system.run(()=>{let a = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "tnt"}); player.sendMessage(`${a==0?"§c":""}${a} explosives removed in radius of ${radius}`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
             }
-            [
+            srun(()=>[
                 ...player.dimension.getEntities({location: player.location, type: "minecraft:tnt", maxDistance: radius}), 
                 ...player.dimension.getEntities({location: player.location, type: "minecraft:tnt_minecart", maxDistance: radius}), 
                 ...player.dimension.getEntities({location: player.location, type: "projectile:tnt", maxDistance: radius}), 
@@ -7816,7 +7821,7 @@ ${command.dp}snapshot list`); return}
                 ...player.dimension.getEntities({location: player.location, type: "andexsa:normal_fire_tnt_arrow", maxDistance: radius}), 
                 ...player.dimension.getEntities({location: player.location, type: "andexsa:normal_tnt_arrow", maxDistance: radius}), 
                 ...player.dimension.getEntities({location: player.location, type: "andexsa:tnt_arrow", maxDistance: radius})
-            ].forEach(v=>v.remove())
+            ].forEach(v=>v.remove()))
         }
         break; 
         case !!switchTest.match(/^remexpne$/): {
