@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.19.0";
+export const format_version = "1.21.0";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -40,24 +40,31 @@ import "SculkTests.js";
 import "VibrationTests.js";
 import "EnchantmentTests.js";*/ /*
 import "Eval.js";*/
-import "Main/coordinates.js";
+import "Main/commands_documentation.js";
 import "Main/commands.js";
+import "Main/coordinates.js";
 import "Main/ban.js";
 import "Main/ui.js";
 import "Main/player_save.js";
 import "Main/spawn_protection.js";
+import "Main/chat.js";
+import "Main/command_utilities.js";
+import "Main/commands_list.js";
+import "Main/errors.js";
+import "Main/utilities.js";
 import "@minecraft/math.js";
 export const mainmetaimport = import.meta;
 export const subscribedEvents = {};
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError } from "@minecraft/server";
+globalThis.tempVariables = {};
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector, dirmap, diroffsetmap, diroffsetothersmap, generateMinecraftConeBG } from "Main/coordinates";
-import { chatMessage, commands_format_version, chatCommands, chatSend, evaluateParameters, evaluateParametersOld, clearContainer, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, currentlyRequestedChatInput, BlockPattern, dimensions, testBlockForMatch, overworld, executeCommandPlayerW, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, nether, the_end } from "Main/commands";
+import { commands_format_version, chatCommands, evaluateParameters, evaluateParametersOld, getPlayersWithTags, vTStr, getPlayersWithAnyOfTags, disconnectingPlayers, BlockPattern, testBlockForMatch, executeCommandPlayerW, BlockMask, testBlockForMatchToMask } from "Main/commands";
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
-import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal } from "Main/ui.js";
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, PlayerNotifications } from "Main/ui.js";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
@@ -73,9 +80,18 @@ import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
+import * as chat from "Main/chat";
+import * as cmdutils from "Main/command_utilities";
+import * as cmdslist from "Main/commands_list";
+import * as cmdsdocs from "Main/commands_documentation";
+import * as utils from "Main/utilities";
+import * as errors from "Main/errors";
 import mcMath from "@minecraft/math.js"; /*
 import { disableWatchdog } from "@minecraft/debug-utilities";*/
 import { listoftransformrecipes } from "transformrecipes";
+import { chatMessage, patternColors, patternColorsMap, patternFunctionList, evaluateChatColorType, chatSend } from "Main/chat";
+import { targetSelectorAllListE, targetSelectorB, targetSelectorAllListC, clearContainer } from "Main/command_utilities";
+import { tryget, customModulo, psend, JSONStringify } from "Main/utilities";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -97,6 +113,25 @@ mcMath;
 globalThis.scriptStartTick = system.currentTick;
 export let crashEnabled = false;
 export let tempSavedVariables = [];
+export function mainEval(x) { return eval(x); }
+export function indirectMainEval(x) { return eval?.(x); }
+export function mainRun(x, ...args) { return x(...args); }
+export function spawnBlockSurroundingParticleForPlayer(player, location, textures) {
+    player.spawnParticle(textures.up ?? textures.default, Vector.add(location, { x: 0.5, y: 1.001, z: 0.5 }));
+    player.spawnParticle(textures.north ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: -0.001 }));
+    player.spawnParticle(textures.east ?? textures.default, Vector.add(location, { x: -0.001, y: 0.5, z: 0.5 }));
+    player.spawnParticle(textures.down ?? textures.default, Vector.add(location, { x: 0.5, y: -0.001, z: 0.5 }));
+    player.spawnParticle(textures.south ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: 1.001 }));
+    player.spawnParticle(textures.west ?? textures.default, Vector.add(location, { x: 1.001, y: 0.5, z: 0.5 }));
+}
+export function spawnBlockSurroundingParticle(dimension, location, textures) {
+    dimension.spawnParticle(textures.up ?? textures.default, Vector.add(location, { x: 0.5, y: 1.001, z: 0.5 }));
+    dimension.spawnParticle(textures.north ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: -0.001 }));
+    dimension.spawnParticle(textures.east ?? textures.default, Vector.add(location, { x: -0.001, y: 0.5, z: 0.5 }));
+    dimension.spawnParticle(textures.down ?? textures.default, Vector.add(location, { x: 0.5, y: -0.001, z: 0.5 }));
+    dimension.spawnParticle(textures.south ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: 1.001 }));
+    dimension.spawnParticle(textures.west ?? textures.default, Vector.add(location, { x: 1.001, y: 0.5, z: 0.5 }));
+}
 export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]; /*
 disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
 system.beforeEvents.watchdogTerminate.subscribe(e => {
@@ -141,8 +176,12 @@ export class config {
     static set tpaSystemEnabled(enabled) { world.setDynamicProperty("tpaSystemSettings:tpaSystemEnabled", enabled ?? false); }
     static get antispamEnabled() { return Boolean(world.getDynamicProperty("antispamSettings:antispamEnabled") ?? false); }
     static set antispamEnabled(enabled) { world.setDynamicProperty("antispamSettings:antispamEnabled", enabled ?? false); }
+    static get restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute() { return Boolean(world.getDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute") ?? false); }
+    static set restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute(restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute) { world.setDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute", restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute ?? false); }
     static get waitTimeAfterAntispamActivation() { return isNaN(Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation"))) ? 60 : Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation") ?? 60); }
     static set waitTimeAfterAntispamActivation(waitTimeInSeconds) { world.setDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation", waitTimeInSeconds ?? 60); }
+    static get maxTimeBewteenMessagesToTriggerAntiSpam() { return isNaN(Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam"))) ? 5 : Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam") ?? 5); }
+    static set maxTimeBewteenMessagesToTriggerAntiSpam(maxTimeInSeconds) { world.setDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam", maxTimeInSeconds ?? 5); }
     static get antispamTriggerMessageCount() { return isNaN(Number(world.getDynamicProperty("antispamSettings:antispamTriggerMessageCount"))) ? 4 : Number(gwdp("antispamSettings:antispamTriggerMessageCount") ?? 4); }
     static set antispamTriggerMessageCount(messageCount) { world.setDynamicProperty("antispamSettings:antispamTriggerMessageCount", messageCount ?? 4); }
     static get timeZone() { return isNaN(Number(world.getDynamicProperty("andexdbSettings:timeZone"))) ? 0 : Number(world.getDynamicProperty("andexdbSettings:timeZone") ?? 0); }
@@ -153,8 +192,8 @@ export class config {
     static set chatDisplayTimeStamp(chatDisplayTimeStampEnabled) { world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled ?? false); }
     static get showRanksOnPlayerNameTags() { return Boolean(world.getDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags") ?? false); }
     static set showRanksOnPlayerNameTags(showRanksOnPlayerNameTags) { world.setDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags", showRanksOnPlayerNameTags ?? false); }
-    static get protectedAreasRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 1); }
-    static set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 1 : Math.min(1000, Math.max(1, Number(protectedAreasRefreshRate ?? 1)))); }
+    static get protectedAreasRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 20); }
+    static set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 20 : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 20)))); }
     static get playerDataRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 5); }
     static set playerDataRefreshRate(playerDataRefreshRate) { world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate)) ? 5 : Math.min(1000, Math.max(1, Number(playerDataRefreshRate ?? 5)))); }
     static get maxPlayersPerManagePlayersPage() { return Number(world.getDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage") ?? 10); }
@@ -165,6 +204,10 @@ export class config {
     static set maxHomesPerManageHomesPage(maxHomesPerManageHomesPage) { world.setDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage", maxHomesPerManageHomesPage ?? 10); }
     static get artificialLagMS() { return Number(world.getDynamicProperty("andexdbSettings:artificialLagMS") ?? 0); }
     static set artificialLagMS(artificialLagMS) { world.setDynamicProperty("andexdbSettings:artificialLagMS", artificialLagMS ?? 0); }
+    static get undoClipboardMode() { return String(world.getDynamicProperty("andexdbSettings:undoClipboardMode") ?? StructureSaveMode.Memory); }
+    static set undoClipboardMode(undoClipboardMode) { world.setDynamicProperty("andexdbSettings:undoClipboardMode", undoClipboardMode ?? StructureSaveMode.Memory); }
+    static get spawnCommandLocation() { const v = tryget(() => JSON.parse(String(world.getDynamicProperty("andexdbSettings:spawnCommandLocation") ?? '{x: null, y: null, z: null, dimension: "overworld"}'))) ?? { x: null, y: null, z: null, dimension: "overworld" }; return tryget(() => ({ x: v.x, y: v.y, z: v.z, dimension: dimensionsb[String(v.dimension)] ?? overworld })) ?? { x: null, y: null, z: null, dimension: overworld }; }
+    static set spawnCommandLocation(spawnCommandLocation) { world.setDynamicProperty("andexdbSettings:spawnCommandLocation", JSON.stringify({ x: spawnCommandLocation.x, y: spawnCommandLocation.y, z: spawnCommandLocation.z, dimension: spawnCommandLocation.dimension ?? overworld })); }
     static reset() { }
 }
 export class worldPlayers {
@@ -259,6 +302,78 @@ export class worldPlayers {
     }*/
 }
 ;
+/**
+ * @since 1.20.0-development.63
+ */
+export class SemVerString {
+    constructor(major, minor, patch, pre_release, build /*, SemVerVersion*/) {
+        if (!!!pre_release) { }
+        else if (typeof pre_release != "string") {
+            throw (new TypeError(`Native type conversion failed. Function argument [3] expected type string but got type ${typeof pre_release} instead`));
+        }
+        else if (!!!pre_release.match(/^(?:(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?$/)) {
+            throw (new TypeError(`Invalid pre-release version: ${JSON.stringify(pre_release)}. Pre-release string must match the following regex expression: /^(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*$/`));
+        }
+        if (!!!build) { }
+        else if (typeof build != "string") {
+            throw (new TypeError(`Native type conversion failed. Function argument [4] expected type string but got type ${typeof build} instead`));
+        }
+        else if (!!!build.match(/^([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/)) {
+            throw (new TypeError(`Invalid build version: ${JSON.stringify(build)}. Pre-release string must match the following regex expression: /^[0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*$/`));
+        }
+        this.major = major;
+        this.minor = minor;
+        this.patch = patch;
+        this.pre_release_stage_internal = pre_release == "" ? undefined : pre_release.match(SemVerString.pre_release_regex).groups.pre_release_phase;
+        this.pre_release_version_internal = pre_release == "" ? undefined : pre_release.match(SemVerString.pre_release_regex).groups.pre_release_version;
+        this.build = build == "" ? undefined : build;
+    }
+    get pre_release() { return this.pre_release_stage_internal + this.pre_release_version_internal; }
+    set pre_release(pre_release) {
+        if (!!!pre_release) { }
+        else if (typeof pre_release != "string") {
+            throw (new TypeError(`Native type conversion failed. Function argument [0] expected type string but got type ${typeof pre_release} instead`));
+        }
+        else if (!!!pre_release.match(/^(?:(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?$/)) {
+            throw (new TypeError(`Invalid pre-release version: ${JSON.stringify(pre_release)}. Pre-release string must match the following regex expression: /^(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*$/`));
+        }
+        this.pre_release_stage_internal = pre_release == "" ? undefined : pre_release.match(SemVerString.pre_release_regex).groups.pre_release_phase;
+        this.pre_release_version_internal = pre_release == "" ? undefined : pre_release.match(SemVerString.pre_release_regex).groups.pre_release_version;
+    }
+    get pre_release_stage() { return this.pre_release_stage_internal; }
+    set pre_release_stage(pre_release_stage) {
+        if (!!!pre_release_stage) { }
+        else if (typeof pre_release_stage != "string") {
+            throw (new TypeError(`Native type conversion failed. Function argument [0] expected type string but got type ${typeof pre_release_stage} instead`));
+        }
+        else if (!!!pre_release_stage.match(/^(?:(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))?$/)) {
+            throw (new TypeError(`Invalid pre-release stage: ${JSON.stringify(pre_release_stage)}. Pre-release stage string must match the following regex expression: /^(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)$/`));
+        }
+        this.pre_release_stage_internal = pre_release_stage == "" ? undefined : pre_release_stage;
+    }
+    get pre_release_version() { return this.pre_release_version_internal; }
+    set pre_release_version(pre_release_version) {
+        if (!!!pre_release_version) { }
+        else if (typeof pre_release_version != "string") {
+            throw (new TypeError(`Native type conversion failed. Function argument [0] expected type string but got type ${typeof pre_release_version} instead`));
+        }
+        else if (!!!pre_release_version.match(/^(?:(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?$/)) {
+            throw (new TypeError(`Invalid pre-release stage: ${JSON.stringify(pre_release_version)}. Pre-release stage string must match the following regex expression: /^(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*$/`));
+        }
+        this.pre_release_version_internal = pre_release_version == "" ? undefined : pre_release_version;
+    }
+    get raw() { return `${!!this.major ? this.major + "." : ""}${!!this.minor ? this.minor + "." : ""}${!!this.patch ? this.patch : ""}${!!this.pre_release_stage ? `-${this.pre_release_stage}${!!this.pre_release_version_internal ? this.pre_release_version_internal : ""}` : (!!this.pre_release_version_internal ? "-" + this.pre_release_version_internal : "")}${!!this.build ? "+" + this.build : ""}`; }
+    toString() { return this.raw; }
+    toPrimitive() { return this.raw; }
+    toJSON() { return { major: this.major, minor: this.minor, patch: this.patch, pre_release_stage: this.pre_release_stage_internal, pre_release_version: this.pre_release_version_internal, build: this.build, type: "SemVerString" }; }
+    static fromJSON(json) { return new SemVerString(Number(json.major), Number(json.minor), Number(json.patch), json.pre_release_stage + json.pre_release_version, json.build); }
+    static fromString(string) { const json = string.match(SemVerString.semver_regex).groups; return new SemVerString(Number(json.major), Number(json.minor), Number(json.patch), json.pre_release_stage + json.pre_release_version, json.build); }
+}
+SemVerString.pre_release_regex = /^(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))$/;
+SemVerString.build_regex = /^([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/;
+SemVerString.semver_regex = /^(?<base>(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*))(?:-(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)))?(?:\+(?<build>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
+export function SemVerValidator(string) { return !!string.match(SemVerString.semver_regex); }
+export function SemVerMatcher(string) { return string.match(SemVerString.semver_regex); }
 /*let sourceEntity = Entity.prototype*/ /*
 targetSelectorAllListD("@e[c=2]", `${player.location.x} ${player.location.y} ${player.location.z}`, player.dimension).find((e)=>(player != e.getComponent("projectile").owner))*/ /*
 targetSelectorAllListD("@e[c=2]", `${sourceEntity.location.x} ${sourceEntity.location.y} ${sourceEntity.location.z}`, sourceEntity.dimension).find((e)=>(sourceEntity.getComponent("projectile").owner != e)).location*/ /*
@@ -271,621 +386,24 @@ export function flatPath(directoryObject, startingPath = ["input"]) {
     function flatPathObject(o, currentPath = ["input"]) { return [{ path: currentPath, name: currentPath[currentPath.length - 1] }, Object.entries(o).flatMap((v, i) => v[1] instanceof Array ? flatPathArray(v[1], [...currentPath, v[0]])[0] : typeof v[1] == "object" ? v[1]?.notPathable == true ? { path: [...currentPath, v[0]], name: v[0], index: i, objectindex: i, notPathable: true } : flatPathObject(v[1], [...currentPath, v[0]]) : { path: [...currentPath, v[0]], name: v[0], index: i, objectindex: i })]; }
     return flatPathObject(directoryObject, startingPath);
 }
-export function getPathInObject(directoryObject, path = ["input"]) { let a; a = directoryObject; path.slice(1).forEach(v => a = a[v]); return a; }
-export function fixedPositionNumberObject(object, decimals = Number(world.getDynamicProperty("scriptPrecision") ?? 5)) {
-    let newObject;
-    newObject = [];
-    Object.entries(object).forEach((k, i) => { if (typeof (k[1]) == "number") {
-        newObject.push([k[0], k[1].toFixed(decimals)]);
-    }
-    else {
-        newObject.push(k);
-    } });
-    return Object.fromEntries(newObject);
-}
-export function roundPlaceNumberObject(object, place = Number(world.getDynamicProperty("scriptPrecision") ?? 5)) {
-    let newObject;
-    newObject = [];
-    Object.entries(object).forEach((k, i) => { if (typeof (k[1]) == "number") {
-        newObject.push([k[0], Number(k[1].toFixed(place))]);
-    }
-    else {
-        newObject.push(k);
-    } });
-    return Object.fromEntries(newObject);
-} /*
-/execute as @e [type=andexsa:custom_arrow] at @s run /scriptevent andexdb:scriptEval let sl = sourceEntity.location; let ol = sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2", "npc", "armor_stand"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location; let d = {x: ol.x-sl.x, y: ol.y-sl.y, z: ol.z-sl.z}; eval("if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.x)*Number(d.x!=0)*d.x, y: Math.abs(1/d.x)*Number(d.y!=0)*d.y, z: Math.abs(1/d.x)*Number(d.z!=0)*d.z})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.y)*Number(d.x!=0)*d.x, y: Math.abs(1/d.y)*Number(d.y!=0)*d.y, z: Math.abs(1/d.y)*Number(d.z!=0)*d.z})}else{sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.z)*Number(d.x!=0)*d.x, y: Math.abs(1/d.z)*Number(d.y!=0)*d.y, z: Math.abs(1/d.z)*Number(d.z!=0)*d.z})}}}; ");*/
-export function arrayModifierOld(array, callbackfn) { array.forEach((v, i, a) => { array[i] = callbackfn(v, i, a); }); return array; }
-export function arrayModifier(sourcearray, callbackfn, overwrite = false) {
-    if (overwrite) {
-        sourcearray.forEach((v, i, a) => {
-            sourcearray[i] = callbackfn(v, i, a);
-        });
-        return sourcearray;
-    }
-    else {
-        let newarray;
-        newarray = [];
-        sourcearray.forEach((v, i, a) => {
-            newarray[i] = callbackfn(v, i, a);
-        });
-        return newarray;
-    }
-}
-; /*
+export function getPathInObject(directoryObject, path = ["input"]) { let a; a = directoryObject; path.slice(1).forEach(v => a = a[v]); return a; } /*
+/execute as @e [type=andexsa:custom_arrow] at @s run /scriptevent andexdb:scriptEval let sl = sourceEntity.location; let ol = sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2", "npc", "armor_stand"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location; let d = {x: ol.x-sl.x, y: ol.y-sl.y, z: ol.z-sl.z}; eval("if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.x)*Number(d.x!=0)*d.x, y: Math.abs(1/d.x)*Number(d.y!=0)*d.y, z: Math.abs(1/d.x)*Number(d.z!=0)*d.z})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.y)*Number(d.x!=0)*d.x, y: Math.abs(1/d.y)*Number(d.y!=0)*d.y, z: Math.abs(1/d.y)*Number(d.z!=0)*d.z})}else{sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.z)*Number(d.x!=0)*d.x, y: Math.abs(1/d.z)*Number(d.y!=0)*d.y, z: Math.abs(1/d.z)*Number(d.z!=0)*d.z})}}}; ");*/ /*
 import("Main").then(a=>{Object.entries(a)})*/
-export function getArrayElementProperty(array, property) { array.forEach((v, i, a) => { array[i] = eval(`v.${property}`); }); return array; }
-export function combineObjects(obj1, obj2) { return Object.fromEntries(Object.entries(obj1).concat(Object.entries(obj2))); }
-export function generateCUID(classid) { let CUID = Number(world.getDynamicProperty("cuidCounter:" + (classid ?? "default")) ?? 0) + 1; world.setDynamicProperty("cuidCounter:" + (classid ?? "default"), CUID); return CUID; }
-export function getCUIDClasses() { return world.getDynamicPropertyIds().filter(s => s.startsWith("cuidCounter:")); }
-export function generateAIID(classid) { let AIID = Number(world.getDynamicProperty("aiidCounter:" + (classid ?? "default")) ?? 0) + 1; world.setDynamicProperty("aiidCounter:" + (classid ?? "default"), AIID); return AIID; }
-export function getAIIDClasses() { return world.getDynamicPropertyIds().filter(s => s.startsWith("aiidCounter:")); }
-export function generateTUID() { return toBase(Date.now()); }
-export function toBase(num, radix = 10, keysa = radix > 62 ? "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/" : "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/") {
-    /*  var keys = ['0', '1', 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];*/
-    var keys = keysa.split("");
-    if (radix == 1)
-        return keys[0].repeat(num);
-    if (!(radix >= 2 && radix <= keys.length))
-        throw new RangeError("toBase() radix argument must be between 2 and " + keys.length);
-    if (num < 0)
-        var isNegative = true;
-    if (isNaN(num = Math.abs(+num)))
-        return NaN;
-    let output = [];
-    do {
-        let index = num % radix;
-        output.unshift(keys[index]);
-        num = Math.trunc(num / radix);
-    } while (num != 0);
-    if (isNegative ?? false)
-        output.unshift('-');
-    return output.join("");
-}
-export function fromBaseToBase(num, base = 10, radix = 10, keysa = radix > 62 ? "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/" : "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/") {
-    /*  var keys = ['0', '1', 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];*/
-    var keys = keysa.split("");
-    num = (base == 10) ? num : parseInt(num, base);
-    if (radix == 1)
-        return keys[0].repeat(num);
-    if (!(radix >= 2 && radix <= keys.length))
-        throw new RangeError("fromBaseToBase() radix argument must be between 2 and " + keys.length);
-    if (num < 0)
-        var isNegative = true;
-    if (isNaN(num = Math.abs(+num)))
-        return NaN;
-    let output = [];
-    do {
-        let index = num % radix;
-        output.unshift(keys[index]);
-        num = Math.trunc(num / radix);
-    } while (num != 0);
-    if (isNegative)
-        output.unshift('-');
-    return output.join("");
-}
-export function twoWayModulo(number, modulo) { if (number < 0) {
-    return modulo + (number % modulo);
+export function scanForBlockType(from, to, dimension, block, returnMode) { let blockType = BlockTypes.get(block).id; if ((returnMode ?? "") == "" || (returnMode ?? "") == "Vector3") {
+    return Array.from(new BlockVolume({ x: from.x, y: from.y, z: from.z }, { x: to.x, y: from.y, z: to.z }).getBlockLocationIterator()).filter(v => dimension.getBlock(v).typeId == blockType);
 }
 else {
-    return number % modulo;
+    return Array.from(new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getBlockLocationIterator()).map(v => dimension.getBlock(v)).filter(v => v.typeId == blockType);
 } }
-export function clamp24HoursTo12Hours(hours) { return twoWayModulo(hours - 1, 12) + 1; }
-/**
- * Formats a date object to a time string formatted as 12:37:01 PM.
- * @since 1.18.2-development.3
- * @version 1.0.1
- */
-export function formatTime(date, timeZoneOffset = 0) { const dateb = new Date(date.valueOf() + (timeZoneOffset * 3600000)); return `${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")} ${dateb.getUTCHours() > 11 ? "P" : "A"}M`; }
-/**
- * Formats a date object to a date time string formatted as 07/21/2024, 12:37:01 PM.
- * @since 1.18.2-development.10
- * @version 1.0.1
- */
-export function formatDateTime(date, timeZoneOffset = 0) { const dateb = new Date(date.valueOf() + (timeZoneOffset * 3600000)); return `${dateb.getUTCMonth().toString().padStart(2, "0")}/${dateb.getUTCDay().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()} ${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")} ${dateb.getUTCHours() > 11 ? "P" : "A"}M`; }
-/**
- * Better Version of JSON.parse() that is able to read undefined, NaN, Infinity, and -Infinity values.
- * @param {string} text A valid JSON string (with undefined, NaN, Infinity, and -Infinity values allowed).
- * @param {boolean} keepUndefined Whether or not to include undefined variables when parsing, defaults to true.
- * @returns {any} The parsed JSON data.
- */
-export function JSONParseOld(text, keepUndefined = true) {
-    let g = [];
-    let h = [];
-    let a = JSON.parse(text.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"'), function (k, v) {
-        if (v === '{{Infinity}}')
-            return Infinity;
-        else if (v === '{{-Infinity}}')
-            return -Infinity;
-        else if (v === '{{NaN}}')
-            return NaN;
-        else if (v === '{{undefined}}') {
-            g.push(k);
-            if (keepUndefined) {
-                return v;
-            }
-            else {
-                undefined;
-            }
-        }
-        ;
-        h.push(k);
-        return v;
-    });
-    g.forEach((v, i) => { let b = Object.entries(a); b[b.findIndex(b => b[0] == v)] = [v, undefined]; a = Object.fromEntries(b); });
-    {
-        let b = Object.entries(a);
-        b.filter(b => !!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)).forEach((v, i) => { console.log(v, i); b[b.findIndex(b => b[0] == v[0])] = [v[0], String(v[1]).replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}')]; a = Object.fromEntries(b); });
-    }
-    ;
-    return a;
-}
-/**
- * Better Version of JSON.stringify() that is able to save undefined, NaN, Infinity, and -Infinity values.
- * @param {any} value A JavaScript value, usually an object or array, to be converted (with undefined, NaN, Infinity, and -Infinity values allowed).
- * @param {boolean} keepUndefined Whether or not to include undefined variables when stringifying, defaults to false.
- * @param {string|number} space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
- * @returns {any} The JSON string.
- */
-export function JSONStringifyOld(value, keepUndefined = false, space) {
-    return JSON.stringify(value, function (k, v) {
-        if (v === Infinity)
-            return "{{Infinity}}";
-        else if (v === -Infinity)
-            return "{{-Infinity}}";
-        else if (Number.isNaN(v))
-            return "{{NaN}}";
-        else if (v === undefined && keepUndefined)
-            return "{{undefined}}";
-        if (String(v).match(/^{{(Infinity|NaN|-Infinity|undefined)}}$/)) {
-            v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}');
-        }
-        return v;
-    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
-}
-export function JSONParse(JSONString, keepUndefined = true) {
-    let g = [];
-    let h = [];
-    if (JSONString == undefined) {
-        let nothing;
-        return nothing;
-    }
-    if (JSONString == "undefined") {
-        return undefined;
-    }
-    if (JSONString == "Infinity") {
-        return Infinity;
-    }
-    if (JSONString == "-Infinity") {
-        return -Infinity;
-    }
-    if (JSONString == "NaN") {
-        return NaN;
-    }
-    if (JSONString == "null") {
-        return null;
-    }
-    let a = JSON.parse(JSONString.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"').replace(/(?<=(?:[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\[)[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*),(?:\s*)|[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*)\[(?:\s*)))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,\]](?:\s*))/g, '"{{$1}}"').replace(/^(Infinity|NaN|-Infinity|undefined)$/g, '"{{$1}}"'), function (k, v) {
-        if (v === '{{Infinity}}')
-            return Infinity;
-        else if (v === '{{-Infinity}}')
-            return -Infinity;
-        else if (v === '{{NaN}}')
-            return NaN;
-        else if (v === '{{undefined}}') {
-            g.push(k);
-            if (keepUndefined) {
-                return v;
-            }
-            else {
-                undefined;
-            }
-        }
-        ;
-        h.push(k);
-        return v;
-    });
-    function recursiveFind(a) {
-        if (a instanceof Array) {
-            let b = a;
-            b.forEach((v, i) => {
-                if (v instanceof Array || v instanceof Object) {
-                    b[i] = recursiveFind(v);
-                    return;
-                }
-                ;
-                if (String(v) == "{{undefined}}") {
-                    b[i] = undefined;
-                    return;
-                }
-                ;
-            });
-            a = b;
-            {
-                let b = a;
-                !!b.forEach((va, i) => {
-                    if (String(va).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)) {
-                        b[i] = va.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}');
-                    }
-                    a = b;
-                });
-            }
-            ;
-        }
-        else if (a instanceof Object) {
-            let b = Object.entries(a);
-            b.forEach((v, i) => {
-                if (v[1] instanceof Object || v[1] instanceof Array) {
-                    b[i] = [v[0], recursiveFind(v[1])];
-                    return;
-                }
-                ;
-                if (String(v[1]) == "{{undefined}}") {
-                    b[i] = [v[0], undefined];
-                    return;
-                }
-                ;
-            });
-            a = Object.fromEntries(b);
-            {
-                let b = Object.entries(a);
-                b.filter(b => !!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)).forEach((v, i) => {
-                    b[b.findIndex(b => b[0] == v[0])] = [v[0], v[1].replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}')];
-                    a = Object.fromEntries(b);
-                });
-            }
-            ;
-        }
-        else if (typeof a === "string") {
-            if (a == "{{undefined}}") {
-                a = undefined;
-            }
-            else {
-                if (a.match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)) {
-                    a = a.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}');
-                }
-            }
-        }
-        ;
-        return a;
-    }
-    a = recursiveFind(a);
-    return a;
-}
 ;
-export function objectify(object) { let entries = Object.entries(object); entries.forEach((v, i) => { if (v[1] instanceof Array) {
-    entries[i][1] = objectify(v[1]);
+export function scanForContainerBlocks(from, to, dimension, returnMode) { if ((returnMode ?? "") == "" || (returnMode ?? "") == "Vector3") {
+    return Array.from(new BlockVolume({ x: from.x, y: from.y, z: from.z }, { x: to.x, y: from.y, z: to.z }).getBlockLocationIterator()).filter(v => !!dimension.getBlock(v).getComponent("inventory"));
 }
-else if (v[1] instanceof Object) {
-    entries[i][1] = objectify(v[1]);
-} }); return Object.fromEntries(entries); }
+else {
+    return Array.from(new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getBlockLocationIterator()).map(v => dimension.getBlock(v)).filter(v => !!v.getComponent("inventory"));
+} }
 ;
-export function arrayify(object) { let entries = Object.entries(object); entries.forEach((v, i) => { if (v[1] instanceof Array) {
-    entries[i][1] = arrayify(v[1]);
-}
-else if (v[1] instanceof Object) {
-    entries[i][1] = arrayify(v[1]);
-} }); return entries; }
-;
-export function stringify(object, entriesmode = 0, escapedarrayorobjecttag = 0, objectifyinfinity = 0, objectifynan = 0, objectifyundefined = 0, objectifynull = 0, recursivemode = 0) { let entries = Object.entries(object); entries.forEach((v, i) => { if (v[1] instanceof Array) {
-    entries[i][1] = stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1);
-}
-else if (v[1] instanceof Object) {
-    entries[i][1] = stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1);
-}
-else if (v[1] instanceof Function) {
-    entries[i][1] = { escval: v[1].toString() };
-}
-else if (v[1] == Infinity && Boolean(objectifyinfinity)) {
-    entries[i][1] = { escval: "Infinity" };
-}
-else if (v[1] == -Infinity && Boolean(objectifyinfinity)) {
-    entries[i][1] = { escval: "-Infinity" };
-}
-else if (Number.isNaN(v[1]) && Boolean(objectifynan)) {
-    entries[i][1] = { escval: "NaN" };
-}
-else if (v[1] == undefined && Boolean(objectifyundefined)) {
-    entries[i][1] = { escval: "undefined" };
-}
-else if (v[1] == null && Boolean(objectifynull)) {
-    entries[i][1] = { escval: "null" };
-} }); return recursivemode ? ((Boolean(escapedarrayorobjecttag) && (((object instanceof Array) && !Boolean(entriesmode)) || ((object instanceof Object) && Boolean(entriesmode)))) ? (Boolean(entriesmode) ? { escobj: entries } : { escarray: Object.fromEntries(entries) }) : (Boolean(entriesmode) ? entries : Object.fromEntries(entries))) : JSONStringify(Boolean(entriesmode) ? entries : Object.fromEntries(entries), true); }
-;
-export function mainEval(x) { return eval(x); }
-export function indirectMainEval(x) { return eval?.(x); }
-export function mainRun(x, ...args) { return x(...args); }
-export function JSONStringify(JSONObject, keepUndefined = false, space) {
-    if (JSONObject == undefined) {
-        return keepUndefined ? "undefined" : "";
-    }
-    return JSON.stringify(JSONObject, function (k, v) {
-        if (v === Infinity)
-            return "{{Infinity}}";
-        else if (v === -Infinity)
-            return "{{-Infinity}}";
-        else if (Number.isNaN(v))
-            return "{{NaN}}";
-        else if (v === undefined && keepUndefined)
-            return "{{undefined}}";
-        else if (typeof v === "function")
-            return { function: v.toString() };
-        if (String(v).match(/^{{(Infinity|NaN|-Infinity|undefined)}}$/)) {
-            v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}');
-        }
-        return v;
-    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
-}
-;
-export function getParametersFromString(string) {
-    function arrayModifier(sourcearray, callbackfn, overwrite = false) {
-        if (overwrite) {
-            sourcearray.forEach((v, i, a) => {
-                sourcearray[i] = callbackfn(v, i, a);
-            });
-            return sourcearray;
-        }
-        else {
-            let newarray;
-            newarray = [];
-            sourcearray.forEach((v, i, a) => {
-                newarray[i] = callbackfn(v, i, a);
-            });
-            return newarray;
-        }
-    }
-    ;
-    const getStringsFromString = (ce) => {
-        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/gis));
-        cd.forEach((v, i) => cd[i].indices = [[v?.index, v?.index + v[0]?.length]]);
-        let cc = [];
-        cc.push({ t: "non-json", v: ce.substring(0, cd[0]?.indices[0][0]) });
-        cd.forEach((v, i) => {
-            cc.push({ t: "json", v: v[0] });
-            cc.push({ t: "non-json", v: ce.substring(v?.indices[0][1], cd[i + 1]?.indices[0][0] ?? ce.length) });
-        });
-        return cc;
-    };
-    let rawdata = extractJSONStrings(string);
-    let a = rawdata;
-    let b = string;
-    let c = [];
-    c.push(...getStringsFromString(b.substring(0, a[0]?.indices[0][0])));
-    a.forEach((v, i) => {
-        c.push({ t: "json", v: v[0] });
-        c.push(...getStringsFromString(b.substring(v?.indices[0][1], a[i + 1]?.indices[0][0] ?? b.length)));
-    });
-    let e = [];
-    let d = arrayModifier(c, (cb, i) => arrayModifier((cb.t == "json" ? [cb.v] : String(cb.v).trimStart().trimEnd().split(/\x20+?/g)), v => {
-        if (v instanceof Function) {
-            return { s: v, v: v.toString() };
-        }
-        else {
-            try {
-                return { s: v, v: JSONParse(String(v)) };
-            }
-            catch (f) {
-                e.push({ i: i, v: f });
-                return { s: v, v: String(v) };
-            }
-        }
-    }), false);
-    let f = [];
-    arrayModifier(d, d => arrayModifier(d, d => d.v)).forEach(d => f.push(...d));
-    let h = [];
-    d.forEach(d => h.push(...d));
-    return {
-        rawdata: a,
-        input: b,
-        resultAndTypeList: c,
-        separatedResultList: arrayModifier(d, d => arrayModifier(d, d => d.v)),
-        errors: e,
-        unfilteredresults: f,
-        results: f.filter(f => f != ""),
-        unfilteredresultsincludingunmodified: h,
-        resultsincludingunmodified: h.filter(h => h.v != "")
-    };
-}
-export function getParametersFromExtractedJSON(rawdata) {
-    function arrayModifier(sourcearray, callbackfn, overwrite = false) {
-        if (overwrite) {
-            sourcearray.forEach((v, i, a) => {
-                sourcearray[i] = callbackfn(v, i, a);
-            });
-            return sourcearray;
-        }
-        else {
-            let newarray;
-            newarray = [];
-            newarray.forEach((v, i, a) => {
-                newarray[i] = callbackfn(v, i, a);
-            });
-            return newarray;
-        }
-    }
-    ;
-    const getStringsFromString = (ce) => {
-        let cd = Array.from(ce.matchAll(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))".*?(?<!(?:(?:[^\\]\\)(?:\\\\)*))"/gis));
-        cd.forEach((v, i) => cd[i] = Object.assign(cd[i], { indices: [[v?.index, v?.index + v[0]?.length]] }));
-        let cc = [];
-        cc.push({
-            t: "non-json",
-            v: ce.substring(0, cd[0]?.indices[0][0])
-        });
-        cd.forEach((v, i) => {
-            cc.push({
-                t: "json",
-                v: v[0]
-            });
-            cc.push({
-                t: "non-json",
-                v: ce.substring(v?.indices[0][1], cd[0][i + 1]?.indices[0][0] ?? ce.length)
-            });
-        });
-        return cc;
-    };
-    let a = rawdata;
-    let b = rawdata[0].input;
-    let c = [];
-    c.push(...getStringsFromString(b.substring(0, a[0]?.indices[0][0])));
-    a.forEach((v, i) => {
-        c.push({ t: "json", v: v[0] });
-        c.push(...getStringsFromString(b.substring(v?.indices[0][1], a[i + 1]?.indices[0][0] ?? b.length)));
-    });
-    c;
-    let e = [];
-    let d = arrayModifier(c, (cb, i) => arrayModifier((cb.t == "json" ? [cb.v] : String(cb.v).trimStart().trimEnd().split(/\x20+?/g)), v => {
-        if (v instanceof Function) {
-            return { s: v, v: v.toString() };
-        }
-        else {
-            try {
-                return { s: v, v: JSONParse(String(v)) };
-            }
-            catch (f) {
-                e.push({ i: i, v: f });
-                return { s: v, v: String(v) };
-            }
-        }
-    }), false);
-    let f = [];
-    arrayModifier(d, d => arrayModifier(d, d => d.v)).forEach(d => f.push(...d));
-    let h = [];
-    d.forEach(d => h.push(...d));
-    return {
-        input: a,
-        originalinput: b,
-        resultAndTypeList: c,
-        separatedResultList: d,
-        errors: e,
-        unfilteredresults: f,
-        results: f.filter(f => f != ""),
-        unfilteredresultsincludingunmodified: h,
-        resultsincludingunmodified: h.filter(f => f.v != "")
-    };
-}
-export function extractJSONStrings(inputString, includeOtherResultData = true) {
-    const jsonStringArray = [];
-    let currentIndex = 0;
-    let inquotes = false;
-    while (currentIndex < inputString.length) {
-        let currentChar = inputString[currentIndex];
-        if (inputString[currentIndex] == "\"" && !!inputString.slice(0, currentIndex + 1).match(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))"$/g)) {
-            inquotes = !inquotes;
-        }
-        // Find potential start of JSON string
-        if ((currentChar === '{' || currentChar === '[') && !inquotes) {
-            let jsonString = '';
-            let openBrackets = 0;
-            let closeBrackets = 0;
-            // Iterate until balanced brackets are found
-            for (let i = currentIndex; i < inputString.length; i++) {
-                jsonString += inputString[i];
-                if ((inputString[i] === '{' || inputString[i] === '[') && !inquotes) {
-                    openBrackets++;
-                }
-                else if ((inputString[i] === '}' || inputString[i] === ']') && !inquotes) {
-                    closeBrackets++;
-                }
-                if (inputString[i] == "\"" && !!inputString.slice(0, i + 1).match(/(?<!(?:(?:[^\\]\\)(?:\\\\)*))"$/g)) {
-                    inquotes = !inquotes;
-                }
-                // If brackets are balanced, attempt to parse JSON
-                if (openBrackets === closeBrackets) {
-                    try {
-                        JSONParse(jsonString); // Attempt to parse JSON
-                        jsonStringArray.push(includeOtherResultData ? (() => {
-                            let atest = Array.from((" ".repeat(currentIndex) + inputString.slice(currentIndex))?.matchAll(new RegExp("")?.compile("" + escapeRegExp(jsonString) + "", `g`)))[0];
-                            atest.indices = [[atest?.index, atest?.index + atest[0]?.length]];
-                            try {
-                                atest.value = JSONParse(atest[0]);
-                            }
-                            catch (e) {
-                                atest.value = atest[0];
-                            }
-                            ;
-                            try {
-                                atest.modifiedinput = structuredClone(atest.input);
-                            }
-                            catch (e) {
-                                atest.modifiedinput = atest.input;
-                            }
-                            ;
-                            atest.input = inputString;
-                            atest.evaluationindex = currentIndex;
-                            return atest;
-                        })() : jsonString); // Convert string into RegExp match data, then push valid JSON string to array. 
-                        currentIndex = i;
-                        break;
-                    }
-                    catch (error) {
-                        // Invalid JSON, continue searching
-                    }
-                }
-            }
-        }
-        currentIndex++;
-    }
-    return jsonStringArray;
-}
-export function customModulo(dividend, min, max, inclusive = false) {
-    inclusive = Number(inclusive);
-    max += inclusive;
-    if (min >= max) {
-        throw new Error('Invalid range: min value must be less than max value');
-    }
-    if (!Number.isFinite(dividend)) {
-        return dividend;
-    }
-    if (dividend < min) {
-        const range = max - min;
-        return customModulo(dividend + range, min, max);
-    }
-    if (dividend >= max) {
-        const range = max - min;
-        return customModulo(dividend - range, min, max);
-    }
-    return dividend;
-}
-export function escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-;
-export function jsonFromString(str, useBetterJSONParse = true) {
-    const regex = /([{\["]{1}([,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]|".*?")+[}\]"]{1}|["]{1}(([^(")]|\\")*)+(?<!\\)["]){1}/gis;
-    const matches = str.match(regex);
-    if (useBetterJSONParse)
-        return matches.map((m) => JSONParse(m));
-    else
-        return matches.map((m) => JSON.parse(m));
-}
-export function cinfo(...data) { console.info(data); }
-;
-export function clog(...data) { console.log(data); }
-;
-export function cwarn(...data) { console.warn(data); }
-;
-export function cerror(...data) { console.error(data); }
-;
-export function asend(value) { world.sendMessage(String(value)); }
-;
-export function bsend(value) { world.sendMessage(JSONStringify(value, true)); }
-;
-export function csend(value) { world.sendMessage(JSON.stringify(value)); }
-;
-export function psend(player, value) { player.sendMessage(value); }
-;
-export function pasend(player, value) { player.sendMessage(String(value)); }
-;
-export function pbsend(player, value) { player.sendMessage(JSONStringify(value, true)); }
-;
-export function pcsend(player, value) { player.sendMessage(JSON.stringify(value)); }
-;
-export function perror(player, error, prefix = "§c") { player.sendMessage(prefix + error + " " + error.stack); }
-;
-export function splitTextByMaxProperyLength(string) { let length = string.length / 32767; let substringlist; substringlist = []; for (let i = 0; i < Math.ceil(length); i++) {
-    substringlist.push(string.slice((i - 1) * 32767, i == Math.ceil(length) ? string.length : i * 32767));
-} ; return substringlist; }
+export function clearAllContainerBlocks(blocks) { blocks.forEach(v => clearContainer(v.getComponent("inventory").container)); return blocks; }
 ;
 /**
  * @deprecated
@@ -3648,6 +3166,109 @@ export async function fillBlocksHFGB(begin, end, dimension, block, options, repl
 }
 ;
 /**
+ * Generates a fill. Supports block masks.
+ * @async
+ * @param {Vector3} begin The location of a corner of the area to fill in.
+ * @param {Vector3} end The location of the opposite corner of the area to fill in.
+ * @param {Dimension} dimension The dimension to generate the fill in.
+ * @param block The function to determine the BlockPermutation to generate.
+ * @param options Optional extra options for the fill generation execution.
+ * @param options.blockMask The block mask to match.
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick.
+ * @param replacemode Whether or not to clear container blocks before replacing them.
+ * @param integrity The integrity of the fill generation.
+ * @returns A promise that resolves with the details of the fill generation once the fill generation is complete.
+ */
+export async function fillBlocksHFGBM(begin, end, dimension, block, options, replacemode = false, integrity = 100) {
+    let counter = 0;
+    const id = generatorProgressIdGenerator();
+    if (!!!options?.blockMask || options?.blockMask?.blocks?.length == 0) {
+        if (replacemode) {
+            system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                        clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                    }
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                try {
+                    v.dimension.getBlock(v).setPermutation(block(v, index));
+                    counter++;
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    else {
+        let currentBlock = undefined;
+        if (replacemode) {
+            system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                currentBlock = block(v, index);
+                try {
+                    if ((options?.blockMask?.includesStates == true) ? testBlockForMatchToMask(v.dimension.getBlock(v), options.blockMask.blocks) : (options?.blockMask?.blockTypes.includes(v.dimension.getBlock(v).typeId))) {
+                        if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                            clearContainer(v.dimension.getBlock(v).getComponent("inventory").container);
+                        }
+                        v.dimension.getBlock(v).setPermutation(currentBlock);
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+        else {
+            system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
+                currentBlock = block(v, index);
+                try {
+                    if ((options?.blockMask?.includesStates == true) ? testBlockForMatchToMask(v.dimension.getBlock(v), options.blockMask.blocks) : (options?.blockMask?.blockTypes.includes(v.dimension.getBlock(v).typeId))) {
+                        v.dimension.getBlock(v).setPermutation(currentBlock);
+                        counter++;
+                    }
+                }
+                catch (e) {
+                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                        generatorProgress[id].containsUnloadedChunks = true;
+                    }
+                }
+            }, undefined, integrity));
+        }
+    }
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+/**
  * Generates a flood fill.
  * @async
  * @param {Vector3} begin The location of a corner of the area to flood.
@@ -3668,7 +3289,55 @@ export async function fillBlocksHFFGB(begin, end, dimension, options, integrity 
                 counter++;
             }
             else if (v.dimension.getBlock(v).type.canBeWaterlogged == true && !v.dimension.getBlock(v).isWaterlogged) {
-                v.dimension.getBlock(v).setType("minecraft:water");
+                v.dimension.getBlock(v).setWaterlogged(true);
+                counter++;
+            }
+        }
+        catch (e) {
+            if (e instanceof TypeError || e instanceof LocationInUnloadedChunkError) {
+                generatorProgress[id].containsUnloadedChunks = true;
+            }
+        }
+    }, undefined, integrity));
+    return new Promise((resolve, reject) => {
+        function a() {
+            if (generatorProgress[id]?.done !== true) {
+                system.run(() => {
+                    a();
+                });
+            }
+            else {
+                let returns = generatorProgress[id];
+                delete generatorProgress[id];
+                resolve({ counter: counter, completionData: returns });
+            }
+        }
+        a();
+    });
+}
+;
+/**
+ * Generates a drain fill.
+ * @async
+ * @param {Vector3} begin The location of a corner of the area to flood.
+ * @param {Vector3} end The location of the opposite corner of the area to flood.
+ * @param {Dimension} dimension The dimension to generate the flood fill in.
+ * @param options Optional extra options for the fill generation execution.
+ * @param options.minMSBetweenYields The shortest the generation can run for before pausing until the next tick.
+ * @param integrity The integrity of the flood fill generation.
+ * @returns A promise that resolves with the details of the flood fill generation once the flood fill generation is complete.
+ */
+export async function fillBlocksHDFGB(begin, end, dimension, options, integrity = 100) {
+    let counter = 0;
+    const id = generatorProgressIdGenerator();
+    system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
+        try {
+            if (["minecraft:water", "minecraft:flowing_water", "minecraft:lava", "minecraft:flowing_lava"].includes(v.dimension.getBlock(v).typeId)) {
+                v.dimension.getBlock(v).setType("minecraft:air");
+                counter++;
+            }
+            else if (v.dimension.getBlock(v).type.canBeWaterlogged == true && v.dimension.getBlock(v).isWaterlogged) {
+                v.dimension.getBlock(v).setWaterlogged(false);
                 counter++;
             }
         }
@@ -4006,22 +3675,6 @@ export async function fillBlocksHOFGB(begin, end, dimension, block, options, rep
         a();
     });
 }
-;
-export function scanForBlockType(from, to, dimension, block, returnMode) { let blockType = BlockTypes.get(block).id; if ((returnMode ?? "") == "" || (returnMode ?? "") == "Vector3") {
-    return Array.from(new BlockVolume({ x: from.x, y: from.y, z: from.z }, { x: to.x, y: from.y, z: to.z }).getBlockLocationIterator()).filter(v => dimension.getBlock(v).typeId == blockType);
-}
-else {
-    return Array.from(new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getBlockLocationIterator()).map(v => dimension.getBlock(v)).filter(v => v.typeId == blockType);
-} }
-;
-export function scanForContainerBlocks(from, to, dimension, returnMode) { if ((returnMode ?? "") == "" || (returnMode ?? "") == "Vector3") {
-    return Array.from(new BlockVolume({ x: from.x, y: from.y, z: from.z }, { x: to.x, y: from.y, z: to.z }).getBlockLocationIterator()).filter(v => !!dimension.getBlock(v).getComponent("inventory"));
-}
-else {
-    return Array.from(new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getBlockLocationIterator()).map(v => dimension.getBlock(v)).filter(v => !!v.getComponent("inventory"));
-} }
-;
-export function clearAllContainerBlocks(blocks) { blocks.forEach(v => cmds.clearContainer(v.getComponent("inventory").container)); return blocks; }
 ;
 /**
  * @deprecated
@@ -4483,16 +4136,6 @@ export function fillBlocksD(from, to, dimension, block = "air", blockStates, mat
  */
 export async function fillBlocksE(from, to, dimension, block = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => system.run(() => counter += fillBlocksC(v.from, v.to, dimension, block, blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates))); return counter; }
 ;
-export function catchtry(trycallbackfn, catchcallbackfn = (e) => console.error(e, e.stack), finallycallbackfn = (v) => { return v; }) { let v; v = undefined; try {
-    v = trycallbackfn();
-}
-catch (e) {
-    v = catchcallbackfn(e) ?? v;
-}
-finally {
-    return finallycallbackfn(v) ?? v;
-} }
-;
 export function gwdp(propertyId) { return world.getDynamicProperty(propertyId); }
 ;
 export function swdp(propertyId, newValue) { return world.setDynamicProperty(propertyId, newValue); }
@@ -4504,37 +4147,7 @@ export function sedp(entity, propertyId, newValue) { return entity.setDynamicPro
 export function gidp(item, propertyId) { return item.getDynamicProperty(propertyId); }
 ;
 export function sidp(item, entity, propertyId, newValue) { return item.setDynamicProperty(propertyId, newValue); }
-;
-export function shootProjectile(entityType, location, velocity, shootOptions = {}, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try {
-    setProjectileComponentPropertiesCallbackFn(entityProjectileComponent);
-}
-catch (e) {
-    console.error(e, e.stack);
-} ; entityProjectileComponent?.shoot(velocity, shootOptions); }
-;
-export function shootEntity(entityType, location, velocity, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entity = location.dimension.spawnEntity(String(entityType), location); try {
-    setProjectileComponentPropertiesCallbackFn(entity);
-}
-catch (e) {
-    console.error(e, e.stack);
-} ; entity.applyImpulse(velocity); }
-;
-export function shootProjectileB(entityType, location, rotation, power, shootOptions = {}, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entityProjectileComponent = location.dimension.spawnEntity(String(entityType), location).getComponent("projectile"); try {
-    setProjectileComponentPropertiesCallbackFn(entityProjectileComponent);
-}
-catch (e) {
-    console.error(e, e.stack);
-} ; entityProjectileComponent?.shoot(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation), shootOptions); }
-;
-export function shootEntityB(entityType, location, rotation, power, setProjectileComponentPropertiesCallbackFn = (a) => { }) { let entity = location.dimension.spawnEntity(String(entityType), location); try {
-    setProjectileComponentPropertiesCallbackFn(entity);
-}
-catch (e) {
-    console.error(e, e.stack);
-} ; entity.applyImpulse(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation)); }
-;
-export function targetSelector(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return Number((selectedEntityUUIDValue)); }
-export function targetSelectorB(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 100 + 50)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntityUUIDValue = (world.scoreboard.getObjective("andexdbDebug").getScores().find((score) => (score.score == scoreboardUUID))).participant.getEntity().id; world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return world.getDimension(DimensionTypes.getAll().find((dimension) => (world.getDimension(dimension.typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)))).typeId).getEntities().find((entity) => (entity.id == selectedEntityUUIDValue)); } /*
+; /*
 let a = world.getDimension("the_end").getBlock({x: 0, y: 0, z: 0}).permutation
 let c = a as BlockStates
 c*/
@@ -4578,37 +4191,6 @@ export function getUICustomForm(optionsids, codeids) {
 ; /*
 world.getAllPlayers().forEach((pi, ia)=>{console.warn(pi.getComponent("inventory").inventorySize); for(let i = 0; i<pi.getComponent("inventory").inventorySize; i++){let item = pi.getComponent("inventory").container.getSlot(i); console.warn(i); if(item.typeId == "minecraft:skull"){world.getAllPlayers().forEach((pn)=>{if(item.nameTag == `§r§f${pn.name}'s Head§§`){item.setLore([`§r§aLocation: ${JSON.stringify(pn.location)}`, `Velocity: ${JSON.stringify(pn.getVelocity())}`, `Rotation: ${JSON.stringify(pn.getRotation())}`, `View Direction: ${JSON.stringify(pn.getViewDirection())}`, `Sleeping: ${pn.isSleeping}`, `Sneaking: ${pn.isSneaking}`, `Sprinting: ${pn.isSprinting}`, `Swimming: ${pn.isSwimming}`])}})}}})
 world.getAllPlayers().forEach((pi, ia)=>{console.warn(pi.getComponent("inventory").inventorySize); for(let i = 0; i<pi.getComponent("inventory").inventorySize; i++){let item = pi.getComponent("inventory").container.getSlot(i); console.warn(i); }})*/
-export function targetSelectorAllListB(selector, filters, UUID) { let scoreboardUUID = Math.round((Math.random() * 1000 + 500)); world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntity; for (let i in world.scoreboard.getObjective("andexdbDebug").getScores()) {
-    selectedEntity.push((world.scoreboard.getObjective("andexdbDebug").getScores().filter((score) => (score.score == scoreboardUUID)))[i].participant.getEntity());
-} world.getAllPlayers().find((currentlySelectedPlayerEntity) => (Number(currentlySelectedPlayerEntity.id) == UUID)).runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0"); return selectedEntity; }
-export function targetSelectorAllListC(selector, filters, position, sourceEntityCommandExecution) { let scoreboardUUID = Math.round((Math.random() * 1000 + 500)); if (sourceEntityCommandExecution == undefined) {
-    world.getAllPlayers()[0].runCommand("/execute positioned " + position + " as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID);
-}
-else {
-    sourceEntityCommandExecution.runCommand("/execute positioned " + position + " as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID);
-} let selectedEntity; selectedEntity = []; for (let i in world.scoreboard.getObjective("andexdbDebug").getScores()) {
-    try {
-        selectedEntity.push((world.scoreboard.getObjective("andexdbDebug").getScores().filter((score) => (score.score == scoreboardUUID)))[i].participant.getEntity());
-    }
-    catch (e) { }
-} if (sourceEntityCommandExecution == undefined) {
-    world.getAllPlayers()[0].runCommand("/execute positioned " + position + " as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0");
-}
-else {
-    sourceEntityCommandExecution.runCommand("/execute as " + selector + filters + " at @s run /scoreboard players set @s andexdbDebug 0");
-} return selectedEntity; }
-export function targetSelectorAllListD(selector, position, dimension = world.getDimension("overworld")) { let scoreboardUUID = Math.round((Math.random() * 1000 + 500)); dimension.runCommand("/execute positioned " + position + " as " + selector + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); let selectedEntity; selectedEntity = []; for (let i in world.scoreboard.getObjective("andexdbDebug").getScores()) {
-    try {
-        selectedEntity.push((world.scoreboard.getObjective("andexdbDebug").getScores().filter((score) => (score.score == scoreboardUUID)))[i].participant.getEntity());
-    }
-    catch (e) { }
-} ; dimension.runCommand("/execute as " + selector + " at @s run /scoreboard players set @s andexdbDebug 0"); return selectedEntity; }
-export function targetSelectorAllListE(selector, position) { let scoreboardUUID = Math.round((Math.random() * 1000 + 500)); DimensionTypes.getAll().forEach((dt) => { let dimension = world.getDimension(dt.typeId); dimension.runCommand("/execute positioned " + position + " as " + selector + " at @s run /scoreboard players set @s andexdbDebug " + scoreboardUUID); }); let selectedEntity; selectedEntity = []; for (let i in world.scoreboard.getObjective("andexdbDebug").getScores()) {
-    try {
-        selectedEntity.push((world.scoreboard.getObjective("andexdbDebug").getScores().filter((score) => (score.score == scoreboardUUID)))[i].participant.getEntity());
-    }
-    catch (e) { }
-} ; DimensionTypes.getAll().forEach((dt) => { let dimension = world.getDimension(dt.typeId); dimension.runCommand("/execute as " + selector + " at @s run /scoreboard players set @s andexdbDebug 0"); }); return selectedEntity; }
 export function debugActionb(block, player, mode, direction) {
     if (player.getDynamicProperty("debugStickSelectedBlock") != block.typeId) {
         player.setDynamicProperty("debugStickSelectedBlock", block.typeId);
@@ -5169,14 +4751,14 @@ export const dimensionTypeDisplayFormattingB = { "minecraft:overworld": "overwor
 export const dimensionTypeDisplayFormattingC = { "minecraft:overworld": "The Overworld", "overworld": "The Overworld", "minecraft:nether": "The Nether", "nether": "The Nether", "minecraft:the_end": "The End", "the_end": "The End" };
 export const dimensionTypeDisplayFormattingD = { "minecraft:overworld": "Overworld", "overworld": "Overworld", "minecraft:nether": "Nether", "nether": "Nether", "minecraft:the_end": "The End", "the_end": "The End" };
 export const dimensionTypeDisplayFormattingE = { "minecraft:overworld": "§aOverworld", "overworld": "§aOverworld", "minecraft:nether": "§cNether", "nether": "§cNether", "minecraft:the_end": "§dThe End", "the_end": "§dThe End" };
-export function tryget(callbackfn) { try {
-    return callbackfn();
-}
-catch { } }
-export function tryrun(callbackfn) { try {
-    callbackfn();
-}
-catch { } }
+export const dimensions = [world.getDimension("overworld"), world.getDimension("nether"), world.getDimension("the_end")];
+export const dimensionsb = { "minecraft:overworld": world.getDimension("overworld"), "minecraft:nether": world.getDimension("nether"), "minecraft:the_end": world.getDimension("the_end") };
+export const dimensionsc = { "overworld": world.getDimension("overworld"), "nether": world.getDimension("nether"), "the_end": world.getDimension("the_end") };
+export const dimensionsd = ["minecraft:overworld", "minecraft:nether", "minecraft:the_end"];
+export const dimensionse = ["overworld", "nether", "the_end"];
+export const overworld = world.getDimension("overworld");
+export const nether = world.getDimension("nether");
+export const the_end = world.getDimension("the_end");
 subscribedEvents.beforeEffectAdd = world.beforeEvents.effectAdd.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:effectAdd")));
@@ -5375,7 +4957,11 @@ world.beforeEvents.playerInteractWithEntity.subscribe(event => {
                 playerTargetB.getViewDirection().y,
                 playerTargetB.getViewDirection().z) +
             ", §bselectedSlotIndex§a: " + playerTargetB.selectedSlotIndex +
-            spawnPointAllCoordinates);
+            (!!playerTargetB.getComponent("projectile") ?
+                "§a, §bprojectile§a: §9{ §3airInertia§a: §c" + playerTargetB.getComponent("projectile").airInertia +
+                    "§a, §bprojectile§a: §3catchFireOnHurt§a: §g" + playerTargetB.getComponent("projectile").catchFireOnHurt +
+                    "§a, §bprojectile§a: §3catchFireOnHurt§a: §g" + playerTargetB.getComponent("projectile").critParticlesOnProjectileHurt
+                : ""));
     }
 });
 world.beforeEvents.playerLeave.subscribe(event => {
@@ -5400,7 +4986,7 @@ world.afterEvents.blockExplode.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getBlockExplodeNotifications", "getBlockExplodeNotificationsIn:" + event.dimension, "getBlockExplodeNotificationsForExplodedBlockType:" + event.explodedBlockPermutation.type.id]).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eblockExplode§r] Block of type ${event.explodedBlockPermutation.type.id} in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was blown up${!!event.source ? ` by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}` : ""}. `));
+        getPlayersWithAnyOfTags(["getBlockExplodeNotifications", "getBlockExplodeNotificationsIn:" + event.dimension, "getBlockExplodeNotificationsForExplodedBlockType:" + event.explodedBlockPermutation.type.id]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eblockExplode§r] Block of type ${event.explodedBlockPermutation.type.id} in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was blown up${!!event.source ? ` by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBlockExplodeNotificationsNotificationSound.soundId, { pitch: pn.getBlockExplodeNotificationsNotificationSound.pitch, volume: pn.getBlockExplodeNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5417,7 +5003,7 @@ world.afterEvents.buttonPush.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getButtonPushNotifications", "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location) + " " + event.block.dimension, "getButtonPushNotificationsForBlockAt:" + event.block.dimension + " " + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(event.block.location)]).filter(p => !p.hasTag("excludeButtonPushNotificationsIn:" + event.dimension.id)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebuttonPush§r] Button in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was pressed by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}. `));
+        getPlayersWithAnyOfTags(["getButtonPushNotifications", "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location) + " " + event.block.dimension, "getButtonPushNotificationsForBlockAt:" + event.block.dimension + " " + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(event.block.location)]).filter(p => !p.hasTag("excludeButtonPushNotificationsIn:" + event.dimension.id)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebuttonPush§r] Button in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was pressed by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getButtonPushNotificationsNotificationSound.soundId, { pitch: pn.getButtonPushNotificationsNotificationSound.pitch, volume: pn.getButtonPushNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5465,7 +5051,7 @@ world.afterEvents.effectAdd.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEffectAddNotifications", "getEffectAddNotificationsForEntityType:" + event.entity.typeId, "getEntitySpawnNotificationsForEntityId:" + event.entity.id, "getEntitySpawnNotificationsWithEffectType:" + event.effect.typeId, "getEntitySpawnNotificationsWithEffectName:" + event.effect.displayName, "getEntitySpawnNotificationsWithAmplifier:" + event.effect.amplifier, "getEntitySpawnNotificationsWithEffectDuration:" + event.effect.duration]).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eeffectAdd§r] The effect ${event.effect.displayName} with the amplifier ${event.effect.amplifier} and the duration ${event.effect.duration} was added to ${event.entity.typeId == "minecraft:player" ? event.entity?.name : `an entity of type ${event.entity.typeId} with the id ${event.entity.id} in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location}`}. `));
+        getPlayersWithAnyOfTags(["getEffectAddNotifications", "getEffectAddNotificationsForEntityType:" + event.entity.typeId, "getEntitySpawnNotificationsForEntityId:" + event.entity.id, "getEntitySpawnNotificationsWithEffectType:" + event.effect.typeId, "getEntitySpawnNotificationsWithEffectName:" + event.effect.displayName, "getEntitySpawnNotificationsWithAmplifier:" + event.effect.amplifier, "getEntitySpawnNotificationsWithEffectDuration:" + event.effect.duration]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eeffectAdd§r] The effect ${event.effect.displayName} with the amplifier ${event.effect.amplifier} and the duration ${event.effect.duration} was added to ${event.entity.typeId == "minecraft:player" ? event.entity?.name : `an entity of type ${event.entity.typeId} with the id ${event.entity.id} in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location}`}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEffectAddNotificationsNotificationSound.soundId, { pitch: pn.getEffectAddNotificationsNotificationSound.pitch, volume: pn.getEffectAddNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5534,7 +5120,7 @@ world.afterEvents.entityHurt.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.hurtEntity?.typeId, "getEntitySpawnNotificationsForId:" + event.hurtEntity?.id, "getEntitySpawnNotificationsWithCause:" + event.damageSource?.cause, "getEntitySpawnNotificationsWithDamage:" + event.damage, "getEntitySpawnNotificationsWithDamagingEntityOfType:" + event.damageSource?.damagingEntity?.typeId, "getEntitySpawnNotificationsWithDamagingEntityWithId:" + event.damageSource?.damagingEntity?.id, "getEntitySpawnNotificationsWithDamagingProjectileOfType:" + event.damageSource?.damagingProjectile?.typeId, "getEntitySpawnNotificationsWithDamagingProjectileWithId:" + event.damageSource?.damagingProjectile?.id]).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityHurt§r] Entity of type ${event.hurtEntity?.typeId} with the id ${event.hurtEntity?.id} took ${event.damage} damage of type "${event.damageSource?.cause}" in ${tryget(() => dimensionTypeDisplayFormatting[event.hurtEntity?.dimension?.id]) ?? "an unknown dimension"} at ${(event.hurtEntity?.isValid() ?? false) ? vTStr(event.hurtEntity?.location) : "an unknown location"}${!!event.damageSource?.damagingEntity ? `, the entity was damaged by ${event.damageSource?.damagingEntity?.typeId == "minecraft:player" ? event.damageSource?.damagingEntity?.name : `an entity of type ${event.damageSource?.damagingEntity?.typeId} with the ID ${event.damageSource?.damagingEntity?.id}${tryget(() => event.damageSource.damagingEntity.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingEntity.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingEntity.dimension.id] + " at " + vTStr(event.damageSource.damagingEntity.location))}` : ""}${!!event.damageSource?.damagingProjectile ? `, the projectile that damaged the entity was ${`a projectile of type ${event.damageSource?.damagingProjectile?.typeId} with the ID ${event.damageSource?.damagingProjectile?.id}${tryget(() => event.damageSource.damagingProjectile.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingProjectile.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingProjectile.dimension.id] + " at " + vTStr(event.damageSource.damagingProjectile.location))}` : ""}. `));
+        getPlayersWithAnyOfTags(["getEntityHurtNotifications", "getEntityHurtNotificationsForType:" + event.hurtEntity?.typeId, "getEntityHurtNotificationsForId:" + event.hurtEntity?.id, "getEntityHurtNotificationsWithCause:" + event.damageSource?.cause, "getEntityHurtNotificationsWithDamage:" + event.damage, "getEntityHurtNotificationsWithDamagingEntityOfType:" + event.damageSource?.damagingEntity?.typeId, "getEntityHurtNotificationsWithDamagingEntityWithId:" + event.damageSource?.damagingEntity?.id, "getEntityHurtNotificationsWithDamagingProjectileOfType:" + event.damageSource?.damagingProjectile?.typeId, "getEntityHurtNotificationsWithDamagingProjectileWithId:" + event.damageSource?.damagingProjectile?.id]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityHurt§r] Entity of type ${event.hurtEntity?.typeId} with the id ${event.hurtEntity?.id} took ${event.damage} damage of type "${event.damageSource?.cause}" in ${tryget(() => dimensionTypeDisplayFormatting[event.hurtEntity?.dimension?.id]) ?? "an unknown dimension"} at ${(event.hurtEntity?.isValid() ?? false) ? vTStr(event.hurtEntity?.location) : "an unknown location"}${!!event.damageSource?.damagingEntity ? `, the entity was damaged by ${event.damageSource?.damagingEntity?.typeId == "minecraft:player" ? event.damageSource?.damagingEntity?.name : `an entity of type ${event.damageSource?.damagingEntity?.typeId} with the ID ${event.damageSource?.damagingEntity?.id}${tryget(() => event.damageSource.damagingEntity.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingEntity.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingEntity.dimension.id] + " at " + vTStr(event.damageSource.damagingEntity.location))}` : ""}${!!event.damageSource?.damagingProjectile ? `, the projectile that damaged the entity was ${`a projectile of type ${event.damageSource?.damagingProjectile?.typeId} with the ID ${event.damageSource?.damagingProjectile?.id}${tryget(() => event.damageSource.damagingProjectile.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingProjectile.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingProjectile.dimension.id] + " at " + vTStr(event.damageSource.damagingProjectile.location))}` : ""}. The current velocity of the damaged entity is: ${tryget(() => event.hurtEntity.getVelocity())}`); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityHurtNotificationsNotificationSound.soundId, { pitch: pn.getEntityHurtNotificationsNotificationSound.pitch, volume: pn.getEntityHurtNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5551,7 +5137,7 @@ world.afterEvents.entityLoad.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntityLoadNotifications", "getEntityLoadNotificationsForType:" + event.entity.typeId, "getEntityLoadNotificationsForId:" + event.entity.id]).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityLoad§r] Entity of type ${event.entity.typeId} with the ID ${event.entity.id}${event.entity.nameTag != "" ? " and the name \"" + event.entity.nameTag + "\"" : ""} was loaded in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${vTStr(event.entity.location)}. `));
+        getPlayersWithAnyOfTags(["getEntityLoadNotifications", "getEntityLoadNotificationsForType:" + event.entity.typeId, "getEntityLoadNotificationsForId:" + event.entity.id]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityLoad§r] Entity of type ${event.entity.typeId} with the ID ${event.entity.id}${event.entity.nameTag != "" ? " and the name \"" + event.entity.nameTag + "\"" : ""} was loaded in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${vTStr(event.entity.location)}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityLoadNotificationsNotificationSound.soundId, { pitch: pn.getEntityLoadNotificationsNotificationSound.pitch, volume: pn.getEntityLoadNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5568,7 +5154,7 @@ world.afterEvents.entityRemove.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntityRemoveNotifications", "getEntityRemoveNotificationsForType:" + event.typeId, "getEntityRemoveNotificationsForId:" + event.removedEntityId]).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityRemove§r] Entity of type ${event.typeId} with the id ${event.removedEntityId} was removed. `));
+        getPlayersWithAnyOfTags(["getEntityRemoveNotifications", "getEntityRemoveNotificationsForType:" + event.typeId, "getEntityRemoveNotificationsForId:" + event.removedEntityId]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityRemove§r] Entity of type ${event.typeId} with the id ${event.removedEntityId} was removed. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityRemoveNotificationsNotificationSound.soundId, { pitch: pn.getEntityRemoveNotificationsNotificationSound.pitch, volume: pn.getEntityRemoveNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5585,7 +5171,7 @@ world.afterEvents.entitySpawn.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.entity.typeId, "getEntitySpawnNotificationsForId:" + event.entity.id, "getEntitySpawnNotificationsWithCause:" + event.cause]).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location} with the cause "${event.cause}". `));
+        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.entity.typeId, "getEntitySpawnNotificationsForId:" + event.entity.id, "getEntitySpawnNotificationsWithCause:" + event.cause]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location} with the cause "${event.cause}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntitySpawnNotificationsNotificationSound.soundId, { pitch: pn.getEntitySpawnNotificationsNotificationSound.pitch, volume: pn.getEntitySpawnNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5602,7 +5188,7 @@ world.afterEvents.explosion.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getExplosionNotifications", "getExplosionNotificationsForSourceType:" + event.source?.typeId ?? "none"]).filter(p => !p.hasTag("excludeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeExplosionNotificationsBy:" + event.source?.name ?? tryget(() => event.source?.nameTag) ?? "undefined") && !p.hasTag("excludeExplosionNotificationsById:" + event.source?.id) && !p.hasTag("excludeExplosionNotificationsType:" + event.source?.typeId) : !p.hasTag("excludeExplosionNotificationsWithNoSource"))).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length != 0 ? " around " : ""}${event.getImpactedBlocks().length == 0 ? "" : vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `));
+        getPlayersWithAnyOfTags(["getExplosionNotifications", "getExplosionNotificationsForSourceType:" + event.source?.typeId ?? "none"]).filter(p => !p.hasTag("excludeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeExplosionNotificationsBy:" + event.source?.name ?? tryget(() => event.source?.nameTag) ?? "undefined") && !p.hasTag("excludeExplosionNotificationsById:" + event.source?.id) && !p.hasTag("excludeExplosionNotificationsType:" + event.source?.typeId) : !p.hasTag("excludeExplosionNotificationsWithNoSource"))).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length != 0 ? " around " : ""}${event.getImpactedBlocks().length == 0 ? "" : vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getExplosionNotificationsNotificationSound.soundId, { pitch: pn.getExplosionNotificationsNotificationSound.pitch, volume: pn.getExplosionNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5642,7 +5228,7 @@ world.afterEvents.gameRuleChange.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getGameRuleChangeNotifications").filter(p => !p.hasTag("excludeGameRuleChangeNotificationsFor:" + event.rule)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§egameRuleChange§r] "${event.rule}" was changed to ${event.value}. `));
+        getPlayersWithTags("getGameRuleChangeNotifications").filter(p => !p.hasTag("excludeGameRuleChangeNotificationsFor:" + event.rule)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§egameRuleChange§r] "${event.rule}" was changed to ${event.value}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getGameRuleChangeNotificationsNotificationSound.soundId, { pitch: pn.getGameRuleChangeNotificationsNotificationSound.pitch, volume: pn.getGameRuleChangeNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5659,7 +5245,7 @@ world.afterEvents.playerGameModeChange.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getGameModeChangeNotifications").filter(p => !p.hasTag("excludeGameModeChangeNotificationsFor:" + event.player.name) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.fromGameMode) && !p.hasTag("excludeGameModeChangeNotificationsTo:" + event.toGameMode)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eplayerGameModeChange§r][${event.player.name}] Changed from ${event.fromGameMode} to ${event.toGameMode}. `));
+        getPlayersWithTags("getGameModeChangeNotifications").filter(p => !p.hasTag("excludeGameModeChangeNotificationsFor:" + event.player.name) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.fromGameMode) && !p.hasTag("excludeGameModeChangeNotificationsTo:" + event.toGameMode)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eplayerGameModeChange§r][${event.player.name}] Changed from ${event.fromGameMode} to ${event.toGameMode}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getPlayerGameModeChangeNotificationsNotificationSound.soundId, { pitch: pn.getPlayerGameModeChangeNotificationsNotificationSound.pitch, volume: pn.getPlayerGameModeChangeNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5676,7 +5262,7 @@ world.afterEvents.weatherChange.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getWeatherChangeNotifications").filter(p => !p.hasTag("excludeWeatherChangeNotificationsTo:" + event.newWeather) && !p.hasTag("excludeGameModeChangeNotificationsIn:" + event.dimension) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.previousWeather)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eweatherChange§r] Weather in ${event.dimension} changed from ${event.previousWeather} to ${event.newWeather}. `));
+        getPlayersWithTags("getWeatherChangeNotifications").filter(p => !p.hasTag("excludeWeatherChangeNotificationsTo:" + event.newWeather) && !p.hasTag("excludeGameModeChangeNotificationsIn:" + event.dimension) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.previousWeather)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eweatherChange§r] Weather in ${event.dimension} changed from ${event.previousWeather} to ${event.newWeather}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getWeatherChangeNotificationsNotificationSound.soundId, { pitch: pn.getWeatherChangeNotificationsNotificationSound.pitch, volume: pn.getWeatherChangeNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5773,7 +5359,7 @@ world.afterEvents.leverAction.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getLeverActionNotifications").filter(p => !p.hasTag("excludeLeverActionNotificationsTo:" + event.isPowered) && !p.hasTag("excludeLeverActionNotificationsIn:" + event.dimension) && !p.hasTag("excludeLeverActionNotificationsBy:" + event.player.name) && !p.hasTag("excludeLeverActionNotificationsAt:" + Object.values(event.block.location).join(","))).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eleverAction§r][${event.player.name}] Lever in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} turned ${event.isPowered ? "ON" : "OFF"}. `));
+        getPlayersWithTags("getLeverActionNotifications").filter(p => !p.hasTag("excludeLeverActionNotificationsTo:" + event.isPowered) && !p.hasTag("excludeLeverActionNotificationsIn:" + event.dimension) && !p.hasTag("excludeLeverActionNotificationsBy:" + event.player.name) && !p.hasTag("excludeLeverActionNotificationsAt:" + Object.values(event.block.location).join(","))).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eleverAction§r][${event.player.name}] Lever in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} turned ${event.isPowered ? "ON" : "OFF"}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getLeverActionNotificationsNotificationSound.soundId, { pitch: pn.getLeverActionNotificationsNotificationSound.pitch, volume: pn.getLeverActionNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5791,7 +5377,7 @@ world.afterEvents.messageReceive.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getMessageReceiveNotifications").filter(p => !p.hasTag("excludeMessageReceiveNotificationsWithId:" + event.id) && !p.hasTag("excludeMessageReceiveNotificationsWithMessage:" + event.message) && !p.hasTag("excludeMessageReceiveNotificationsBy:" + event.player.name)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§emessageReceive§r][${event.player.name}] Message recieved with ID ${event.id} and value "${event.message}". `));
+        getPlayersWithTags("getMessageReceiveNotifications").filter(p => !p.hasTag("excludeMessageReceiveNotificationsWithId:" + event.id) && !p.hasTag("excludeMessageReceiveNotificationsWithMessage:" + event.message) && !p.hasTag("excludeMessageReceiveNotificationsBy:" + event.player.name)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§emessageReceive§r][${event.player.name}] Message recieved with ID ${event.id} and value "${event.message}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getMessageRecieveNotificationsNotificationSound.soundId, { pitch: pn.getMessageRecieveNotificationsNotificationSound.pitch, volume: pn.getMessageRecieveNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5841,7 +5427,7 @@ world.afterEvents.playerDimensionChange.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getPlayerDimensionChangeNotifications", "includePlayerDimensionChangeNotificationsBy:" + event.player.name, "includePlayerDimensionChangeNotificationsFromDimension:" + event.fromDimension, "includePlayerDimensionChangeNotificationsToDimension:" + event.toDimension, "includeBeforeChatSendNotificationsById:" + event.player.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + event.player.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + event.player.name)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eplayerDimensionChange§r][${event.player.name}] Entered ${dimensionTypeDisplayFormatting[event.fromDimension.id]} at ${vTStr(event.fromLocation)} from ${dimensionTypeDisplayFormatting[event.toDimension.id]} at ${vTStr(event.toLocation)}. `));
+        getPlayersWithAnyOfTags(["getPlayerDimensionChangeNotifications", "includePlayerDimensionChangeNotificationsBy:" + event.player.name, "includePlayerDimensionChangeNotificationsFromDimension:" + event.fromDimension, "includePlayerDimensionChangeNotificationsToDimension:" + event.toDimension, "includeBeforeChatSendNotificationsById:" + event.player.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + event.player.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + event.player.name)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eplayerDimensionChange§r][${event.player.name}] Entered ${dimensionTypeDisplayFormatting[event.fromDimension.id]} at ${vTStr(event.fromLocation)} from ${dimensionTypeDisplayFormatting[event.toDimension.id]} at ${vTStr(event.toLocation)}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getPlayerDimensionChangeNotificationsNotificationSound.soundId, { pitch: pn.getPlayerDimensionChangeNotificationsNotificationSound.pitch, volume: pn.getPlayerDimensionChangeNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5859,7 +5445,7 @@ world.afterEvents.playerInteractWithBlock.subscribe(event => {
     }
     try {
         if ((["minecraft:respawn_anchor", "minecraft:tnt"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:overworld") || (["minecraft:bed", "minecraft:tnt"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:nether") || (["minecraft:respawn_anchor", "minecraft:tnt", "minecraft:bed"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:overworld")) {
-            getPlayersWithTags("getBlockInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsIn:" + event.block.dimension) && (!!event.player ? !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBlockType:" + event.block.typeId)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveBlockInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive block of type "${event.block.typeId}"` : `Explosive block of type "${event.block.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.block.dimension.id]} at ${vTStr(event.block.location)}${!!event.itemStack ? ` using ${event.itemStack.typeId}` : ""}. `));
+            getPlayersWithTags("getBlockInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsIn:" + event.block.dimension) && (!!event.player ? !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBlockType:" + event.block.typeId)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveBlockInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive block of type "${event.block.typeId}"` : `Explosive block of type "${event.block.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.block.dimension.id]} at ${vTStr(event.block.location)}${!!event.itemStack ? ` using ${event.itemStack.typeId}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.soundId, { pitch: pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.volume })); });
         }
     }
     catch (e) {
@@ -5878,7 +5464,7 @@ world.afterEvents.playerInteractWithEntity.subscribe(event => {
     }
     try {
         if (["minecraft:creeper"].includes(event.target.typeId) && !!event.itemStack) {
-            getPlayersWithTags("getEntityInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsIn:" + event.target.dimension) && (!!event.player ? !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsEntityType:" + event.target.typeId)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveEntityInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive entity of type "${event.target.typeId}"` : `Explosive entity of type "${event.target.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.target.dimension.id]} at ${vTStr(event.target.location)}${!!event.itemStack ? ` using ${event.itemStack.typeId}` : ""}. `));
+            getPlayersWithTags("getEntityInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsIn:" + event.target.dimension) && (!!event.player ? !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsEntityType:" + event.target.typeId)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveEntityInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive entity of type "${event.target.typeId}"` : `Explosive entity of type "${event.target.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.target.dimension.id]} at ${vTStr(event.target.location)}${!!event.itemStack ? ` using ${event.itemStack.typeId}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.soundId, { pitch: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.volume })); });
         }
     }
     catch (e) {
@@ -6041,7 +5627,7 @@ world.beforeEvents.explosion.subscribe(event => {
     } /*
     eval(String(world.getDynamicProperty("scriptEvalBeforeEventsExplosion")))*/
     try {
-        getPlayersWithAnyOfTags(["getBeforeExplosionNotifications", "getExplosionNotificationsForSourceType:" + event.source?.typeId ?? "none", "getExplosionNotificationsForSourceId:" + event.source?.id ?? "none"]).filter(p => !p.hasTag("excludeBeforeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeBeforeExplosionNotificationsType:" + event.source?.typeId) : true) && ((!!event.source && (event.source?.isValid() ?? true)) ? !p.hasTag("excludeBeforeExplosionNotificationsBy:" + event.source?.name ?? tryget(() => event.source?.nameTag)) && !p.hasTag("excludeBeforeExplosionNotificationsById:" + event.source?.id) : !p.hasTag("excludeBeforeExplosionNotificationsWithNoSource"))).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebeforeExplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length == 0 ? "" : " around " + vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `));
+        getPlayersWithAnyOfTags(["getBeforeExplosionNotifications", "getExplosionNotificationsForSourceType:" + event.source?.typeId ?? "none", "getExplosionNotificationsForSourceId:" + event.source?.id ?? "none"]).filter(p => !p.hasTag("excludeBeforeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeBeforeExplosionNotificationsType:" + event.source?.typeId) : true) && ((!!event.source && (event.source?.isValid() ?? true)) ? !p.hasTag("excludeBeforeExplosionNotificationsBy:" + event.source?.name ?? tryget(() => event.source?.nameTag)) && !p.hasTag("excludeBeforeExplosionNotificationsById:" + event.source?.id) : !p.hasTag("excludeBeforeExplosionNotificationsWithNoSource"))).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebeforeExplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length == 0 ? "" : " around " + vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBeforeExplosionNotificationsNotificationSound.soundId, { pitch: pn.getBeforeExplosionNotificationsNotificationSound.pitch, volume: pn.getBeforeExplosionNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -7065,7 +6651,7 @@ console.error(e, e.stack);
                                         event.source.sendMessage("§c" + e + e.stack);
                                     }
                             }
-                            [
+                            srun(() => [
                                 ...event.source.dimension.getEntities({ location: pos, type: "minecraft:tnt", maxDistance: radius }),
                                 ...event.source.dimension.getEntities({ location: pos, type: "minecraft:tnt_minecart", maxDistance: radius }),
                                 ...event.source.dimension.getEntities({ location: pos, type: "projectile:tnt", maxDistance: radius }),
@@ -7073,7 +6659,7 @@ console.error(e, e.stack);
                                 ...event.source.dimension.getEntities({ location: pos, type: "andexsa:normal_fire_tnt_arrow", maxDistance: radius }),
                                 ...event.source.dimension.getEntities({ location: pos, type: "andexsa:normal_tnt_arrow", maxDistance: radius }),
                                 ...event.source.dimension.getEntities({ location: pos, type: "andexsa:tnt_arrow", maxDistance: radius })
-                            ].forEach(v => v.remove());
+                            ].forEach(v => v.remove()));
                         }
                     }
                     break;
@@ -7150,6 +6736,14 @@ console.error(e, e.stack);
                 event.source.setDynamicProperty("posD", event.source.dimension.id);
                 event.source.sendMessage(`Set ${mode ? "pos2" : "pos1"} to ${vTStr(posV)}.`);
                 event.source.setDynamicProperty("posM", !mode);
+                srun(() => {
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos1" : "andexdb:xz_axis_particle_pos2", Vector.add(loc, { x: 0.5, y: 1.001, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos1_north" : "andexdb:xz_axis_particle_pos2_north", Vector.add(loc, { x: 0.5, y: 0.5, z: 1.001 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos1_east" : "andexdb:xz_axis_particle_pos2_east", Vector.add(loc, { x: -0.001, y: 0.5, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos1_down" : "andexdb:xz_axis_particle_pos2_down", Vector.add(loc, { x: 0.5, y: -0.001, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos1_south" : "andexdb:xz_axis_particle_pos2_south", Vector.add(loc, { x: 0.5, y: 0.5, z: -0.001 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos1_west" : "andexdb:xz_axis_particle_pos2_west", Vector.add(loc, { x: 1.001, y: 0.5, z: 0.5 }));
+                });
             }
         }
         catch (e) {
@@ -7160,7 +6754,7 @@ console.error(e, e.stack);
 });
 world.beforeEvents.chatSend.subscribe((eventData) => {
     try {
-        getPlayersWithAnyOfTags(["getBeforeChatSendNotifications", "includeBeforeChatSendNotificationsBy:" + eventData.sender.name, "includeBeforeChatSendNotificationsById:" + eventData.sender.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + eventData.sender.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + eventData.sender.name)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebeforeChatSend§r][${eventData.sender.name}] Chat message sent${!!eventData.targets ? " with targets " + eventData.targets.map(p => p.name).join() : ""} with the message ${JSONStringify(eventData.message)}. `));
+        getPlayersWithAnyOfTags(["getBeforeChatSendNotifications", "includeBeforeChatSendNotificationsBy:" + eventData.sender.name, "includeBeforeChatSendNotificationsById:" + eventData.sender.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + eventData.sender.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + eventData.sender.name)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebeforeChatSend§r][${eventData.sender.name}] Chat message sent${!!eventData.targets ? " with targets " + eventData.targets.map(p => p.name).join() : ""} with the message ${JSONStringify(eventData.message)}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBeforeChatSendNotificationsNotificationSound.soundId, { pitch: pn.getBeforeChatSendNotificationsNotificationSound.pitch, volume: pn.getBeforeChatSendNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -7194,8 +6788,8 @@ try {
 §l§eminecraft:inventory: §r§9{§eSlots Filled: §r§c${block.getComponent("inventory").container.size - block.getComponent("inventory").container.emptySlotsCount}§b/§c${block.getComponent("inventory").container.size}§9}` : ""}${!!block.getComponent("lavaContainer") ? `
 §l§eminecraft:lavaContainer: §r§9{§eFill Level: §r§c${block.getComponent("lavaContainer").fillLevel}§9}` : ""}${!!block.getComponent("piston") ? `
 §l§eminecraft:piston: §r§9{§eIs Moving: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("piston").isMoving)}§a, §eState: §r§u${block.getComponent("piston").state}§a, §eAttatched Block Count: §r§c${block.getComponent("piston").getAttachedBlocks().length}§9}` : ""}${!!block.getComponent("potionContainer") ? `
-§l§eminecraft:potionContainer: §r§9{§eFill Level: §r§c${block.getComponent("potionContainer").fillLevel}§9}` : ""}${!!block.getComponent("recordPlayer") ? `
-§l§eminecraft:recordPlayer: §r§9{§eIs Playing: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("recordPlayer").isPlaying())}§9}` : ""}${!!block.getComponent("sign") ? `
+§l§eminecraft:potionContainer: §r§9{§eFill Level: §r§c${block.getComponent("potionContainer").fillLevel}§9}` : ""}${!!block.getComponent("record_player") ? `
+§l§eminecraft:recordPlayer: §r§9{§eIs Playing: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("record_player").isPlaying())}§9}` : ""}${!!block.getComponent("sign") ? `
 §l§eminecraft:sign: §r§9{§eIs Waxed: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("sign").isWaxed)}§a, §eF Dye: §r§u${block.getComponent("sign").getTextDyeColor(SignSide.Front) ?? "null"}§a, §eB Dye: §r§u${block.getComponent("sign").getTextDyeColor(SignSide.Back) ?? "null"}§a, §eF Text Length: §r§c${block.getComponent("sign").getText(SignSide.Front).length}§a, §eB Text Length: §r§c${block.getComponent("sign").getText(SignSide.Back).length}§a, §eF Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block.getComponent("sign").getRawText(SignSide.Front)))}§a, §eB Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block.getComponent("sign").getRawText(SignSide.Back)))}§9}` : ""}${!!block.getComponent("snowContainer") ? `
 §l§eminecraft:snowContainer: §r§9{§eFill Level: §r§c${block.getComponent("snowContainer").fillLevel}§9}` : ""}${!!block.getComponent("waterContainer") ? `
 §l§eminecraft:waterContainer: §r§9{§eFill Level: §r§c${block.getComponent("waterContainer").fillLevel}§a, §eCustom Color: §r§c${JSON.stringify(block.getComponent("waterContainer").getCustomColor())}§9}` : ""}`);
@@ -7532,6 +7126,21 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
     }
     if (id == "andexdb:cmd") {
         chatCommands({ returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
+    }
+    if (id == "andexdb:silentCmd") {
+        chatCommands({ silentCMD: true, returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
+    }
+    if (id == "andexdb:silentBuiltInCmd") {
+        chatCommands({ silentCMD: true, isBultIn: true, isCustom: false, returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
+    }
+    if (id == "andexdb:builtInCmd") {
+        chatCommands({ silentCMD: false, isBultIn: true, isCustom: false, returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
+    }
+    if (id == "andexdb:silentCustomCmd") {
+        chatCommands({ silentCMD: true, isBultIn: false, isCustom: true, returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
+    }
+    if (id == "andexdb:customCmd") {
+        chatCommands({ silentCMD: false, isBultIn: false, isCustom: true, returnBeforeChatSend: false, event: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, eventData: { cancel: false, message: message.replaceAll("\\@\\", "@").replaceAll("\\>\\", ">").replaceAll("\\<\\", "<"), sender: (initiator ?? sourceEntity ?? sourceBlock) }, newMessage: message.replaceAll("\\@\\", "@"), player: new executeCommandPlayerW(new WorldPosition(tryget(() => (initiator ?? sourceEntity ?? sourceBlock).location) ?? { x: 0, y: 0, z: 0 }, tryget(() => (initiator ?? sourceEntity).getRotation()) ?? { x: 0, y: 0 }, tryget(() => (initiator ?? sourceEntity ?? sourceBlock).dimension) ?? overworld, (initiator ?? sourceEntity), sourceBlock)) });
     }
     if (id == "andexdb:blockExplosion") {
         const overworld = world.getDimension(String(message.split("|")[0]));
@@ -12019,7 +11628,7 @@ console.error(e, e.stack);
             try {spawnYPosition = String(playerTargetB.getSpawnPoint().y);} catch(e){spawnYPosition = ""}
             try {spawnZPosition = String(playerTargetB.getSpawnPoint().z);} catch(e){spawnZPosition = ""}*/
             form.title("Entity Controller");
-            form.toggle("TypeId: " + playerTargetB.typeId + "\nId: " + playerTargetB.id + "\nFallDistance: " + playerTargetB.fallDistance + "\nLifetimeState: " + playerTargetB.lifetimeState + "\nTarget: " + playerTargetB.target + "\nX: " + "\nDimension: " + playerTargetB.dimension + "\nX: " + playerTargetB.location.x + "\nY: " + playerTargetB.location.y + "\nZ: " + playerTargetB.location.z + "\nChange Name Tag", false);
+            form.toggle("TypeId: " + playerTargetB.typeId + "\nId: " + playerTargetB.id + "\nIsFalling: " + playerTargetB.isFalling + "\nIsValid: " + playerTargetB.isValid() + "\nTarget: " + playerTargetB.target + "\nX: " + "\nDimension: " + playerTargetB.dimension + "\nX: " + playerTargetB.location.x + "\nY: " + playerTargetB.location.y + "\nZ: " + playerTargetB.location.z + "\nChange Name Tag", false);
             form.textField("Name Tag", "Name Tag", playerTargetB.nameTag);
             form.textField("Trigger Event", "Trigger Event");
             form.toggle("Set Property", false);
@@ -12915,7 +12524,7 @@ console.error(e, e.stack);
                             break;
                         case "setAirSupply":
                             try {
-                                targets[l].getComponent("minecraft:breathable").setAirSupply(Number(playerName.slice(1)[i].split(":")[1]));
+                                targets[l].getComponent("minecraft:breathable").airSupply = (Number(playerName.slice(1)[i].split(":")[1]));
                             }
                             catch (e) {
                                 console.error(e, e.stack);

@@ -245,6 +245,12 @@
       },
       {
          "path" : "ui/server_form.json"
+      },
+      {
+         "path" : "ui/settings_sections/settings_common.json"
+      },
+      {
+         "path" : "ui/ui_template_buttons.json"
       }
    ],
    "version" : 1

@@ -1,5 +1,5 @@
 import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume, BoundingBoxUtils, Direction, StructureSaveMode, Structure, BlockPermutation } from "@minecraft/server";
-import { targetSelectorAllListC, targetSelectorAllListE, format_version, tryget } from "../Main";
+import { format_version, config, dimensionsb, dimensionsc } from "../Main";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -16,8 +16,15 @@ import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
+import * as chat from "./chat";
+import * as cmdutils from "./command_utilities";
+import * as utils from "./utilities";
+import * as errors from "./errors";
 import mcMath from "@minecraft/math.js";
-import { dimensions, dimensionsb, dimensionsc, shuffle, vTStr } from "Main/commands";
+import { vTStr } from "Main/commands";
+import { targetSelectorAllListC, targetSelectorAllListE } from "./command_utilities";
+import { shuffle, tryget } from "./utilities";
+import { NoSelectorMatchesError } from "./errors";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -33,7 +40,7 @@ uis;
 playersave;
 spawnprot;
 mcMath;
-export const coordinates_format_version = "6.0.1";
+export const coordinates_format_version = "7.0.0";
 export class Vector extends mcMath.Vector3Builder {
     constructor() {
         super(...arguments);
@@ -148,38 +155,49 @@ export class WorldPosition {
         return this;
     }
     at(target) {
-        if (target.constructor.name == "Entity" || target.constructor.name == "Player") {
-            let entity = target;
-            this.location = entity?.location ?? this.location;
-            this.rotation = entity?.getRotation() ?? this.rotation;
+        let worldpositionlist = [];
+        if (target.constructor.name == "Array") {
+            let entities = target;
+            if (entities.length == 0) {
+                throw (new NoSelectorMatchesError("No targets matched selector"));
+            }
+            ;
+            worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, tryget(() => entity?.getRotation()) ?? this.rotation, entity.dimension ?? this.dimension, this.entity, this.block));
         }
         else {
             if (this.entity == undefined) {
-                let entity = targetSelectorAllListE(target, this.x + " " + this.y + " " + this.z)[0] ?? this.entity;
-                this.location = entity?.location ?? this.location;
-                this.rotation = entity?.getRotation() ?? this.rotation;
+                let entities = targetSelectorAllListE(target, this.x + " " + this.y + " " + this.z);
+                if (entities.length == 0) {
+                    throw (new NoSelectorMatchesError("No targets matched selector"));
+                }
+                ;
+                worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, tryget(() => entity?.getRotation()) ?? this.rotation, entity.dimension ?? this.dimension, this.entity, this.block));
             }
             else {
-                let entity = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity)[0] ?? this.entity;
-                this.location = entity.location;
-                this.rotation = entity.getRotation();
+                let entities = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
+                if (entities.length == 0) {
+                    throw (new NoSelectorMatchesError("No targets matched selector"));
+                }
+                ;
+                worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, tryget(() => entity?.getRotation()) ?? this.rotation, entity.dimension ?? this.dimension, this.entity, this.block));
             }
         }
-        return this;
+        return worldpositionlist;
     }
     as(target) {
-        if (target.constructor.name == "Entity" || target.constructor.name == "Player") {
-            this.entity = target;
+        let entitylist = [];
+        if (target.constructor.name == "Array") {
+            entitylist = target;
         }
         else {
             if (this.entity == undefined) {
                 this.entity = targetSelectorAllListE(target, this.x + " " + this.y + " " + this.z)[0];
             }
             else {
-                this.entity = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity)[0] ?? this.entity;
+                entitylist = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
             }
         }
-        return this;
+        return entitylist.map(v => new WorldPosition(this.location, this.rotation, this.dimension, v, this.block));
     }
     asblock(block) {
         if (block.constructor.name == "Block") {
@@ -192,39 +210,94 @@ export class WorldPosition {
         return this;
     }
     matchrotation(target) {
-        if (target.constructor.name == "Entity" || target.constructor.name == "Player") {
-            let entity = target;
-            this.rotation = entity?.getRotation() ?? this.rotation;
+        let worldpositionlist = [];
+        if (target.constructor.name == "Array") {
+            let entities = target;
+            if (entities.length == 0) {
+                throw (new NoSelectorMatchesError("No targets matched selector"));
+            }
+            ;
+            worldpositionlist = entities.map(entity => new WorldPosition(this.location, tryget(() => entity?.getRotation()) ?? this.rotation, this.dimension, this.entity, this.block));
         }
         else {
             if (this.entity == undefined) {
-                let entity = targetSelectorAllListE(target, this.x + " " + this.y + " " + this.z)[0] ?? this.entity;
-                this.rotation = entity?.getRotation() ?? this.rotation;
+                let entities = targetSelectorAllListE(target, this.x + " " + this.y + " " + this.z);
+                if (entities.length == 0) {
+                    throw (new NoSelectorMatchesError("No targets matched selector"));
+                }
+                ;
+                worldpositionlist = entities.map(entity => new WorldPosition(this.location, tryget(() => entity?.getRotation()) ?? this.rotation, this.dimension, this.entity, this.block));
             }
             else {
-                let entity = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity)[0] ?? this.entity;
-                this.rotation = entity.getRotation();
+                let entities = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
+                if (entities.length == 0) {
+                    throw (new NoSelectorMatchesError("No targets matched selector"));
+                }
+                ;
+                worldpositionlist = entities.map(entity => new WorldPosition(this.location, tryget(() => entity?.getRotation()) ?? this.rotation, this.dimension, this.entity, this.block));
             }
         }
-        return this;
+        return worldpositionlist;
     }
     matchlocation(target) {
-        if (target.constructor.name == "Entity" || target.constructor.name == "Player") {
-            let entity = target;
-            this.location = entity?.location ?? this.location;
+        let worldpositionlist = [];
+        if (target.constructor.name == "Array") {
+            let entities = target;
+            if (entities.length == 0) {
+                throw (new NoSelectorMatchesError("No targets matched selector"));
+            }
+            ;
+            worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, this.rotation, this.dimension, this.entity, this.block));
         }
         else {
             if (this.entity == undefined) {
-                let entity = targetSelectorAllListE(target, this.x + " " + this.y + " " + this.z)[0] ?? this.entity;
-                this.location = entity?.location ?? this.location;
+                let entities = targetSelectorAllListE(target, this.x + " " + this.y + " " + this.z);
+                if (entities.length == 0) {
+                    throw (new NoSelectorMatchesError("No targets matched selector"));
+                }
+                ;
+                worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, this.rotation, this.dimension, this.entity, this.block));
             }
             else {
-                let entity = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity)[0] ?? this.entity;
-                this.location = entity.location;
-                this.rotation = entity.getRotation();
+                let entities = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
+                if (entities.length == 0) {
+                    throw (new NoSelectorMatchesError("No targets matched selector"));
+                }
+                ;
+                worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, this.rotation, this.dimension, this.entity, this.block));
             }
         }
-        return this;
+        return worldpositionlist;
+    }
+    matchdimension(target) {
+        let worldpositionlist = [];
+        if (target.constructor.name == "Array") {
+            let entities = target;
+            if (entities.length == 0) {
+                throw (new NoSelectorMatchesError("No targets matched selector"));
+            }
+            ;
+            worldpositionlist = entities.map(entity => new WorldPosition(this.location, this.rotation, entity?.dimension ?? this.dimension, this.entity, this.block));
+        }
+        else {
+            if (this.entity == undefined) {
+                let entities = targetSelectorAllListE(target, this.x + " " + this.y + " " + this.z);
+                if (entities.length == 0) {
+                    throw (new NoSelectorMatchesError("No targets matched selector"));
+                }
+                ;
+                worldpositionlist = entities.map(entity => new WorldPosition(this.location, this.rotation, entity?.dimension ?? this.dimension, this.entity, this.block));
+            }
+            else {
+                let entities = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
+                if (entities.length == 0) {
+                    throw (new NoSelectorMatchesError("No targets matched selector"));
+                }
+                ;
+                worldpositionlist = entities.map(entity => new WorldPosition(this.location, this.rotation, entity?.dimension ?? this.dimension, this.entity, this.block));
+            }
+        }
+        return worldpositionlist;
     }
     anchored(anchor) {
         if (this.entity != undefined) {
@@ -250,6 +323,36 @@ export class WorldPosition {
     facing(location) {
         this.rotation = facingPoint(this.location, location).rot;
         return this;
+    }
+    facingEntity(target) {
+        let worldpositionlist = [];
+        if (target.constructor.name == "Array") {
+            let entities = target;
+            if (entities.length == 0) {
+                throw (new NoSelectorMatchesError("No targets matched selector"));
+            }
+            ;
+            worldpositionlist = entities.map(entity => new WorldPosition(this.location, facingPoint(this.location, entity.location).rot, this.dimension, this.entity, this.block));
+        }
+        else {
+            if (this.entity == undefined) {
+                let entities = targetSelectorAllListE(target, this.x + " " + this.y + " " + this.z);
+                if (entities.length == 0) {
+                    throw (new NoSelectorMatchesError("No targets matched selector"));
+                }
+                ;
+                worldpositionlist = entities.map(entity => new WorldPosition(this.location, facingPoint(this.location, entity.location).rot, this.dimension, this.entity, this.block));
+            }
+            else {
+                let entities = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
+                if (entities.length == 0) {
+                    throw (new NoSelectorMatchesError("No targets matched selector"));
+                }
+                ;
+                worldpositionlist = entities.map(entity => new WorldPosition(this.location, facingPoint(this.location, entity.location).rot, this.dimension, this.entity, this.block));
+            }
+        }
+        return worldpositionlist;
     }
     align(axis) {
         if (axis.toLowerCase().includes("x")) {
@@ -475,8 +578,12 @@ export class undoClipboard {
         return world.getDynamicPropertyIds().filter(v => v.startsWith("andexdb:undoclipboard;"));
     }
     static get saveTimes() {
-        return [...new Set(world.structureManager.getWorldStructureIds().filter(v => v.startsWith("andexdb:undoclipboard;")).map(v => Number(v.slice(22).split(",")[0])))].sort().reverse()[0];
+        return [...new Set(world.getDynamicPropertyIds().filter(v => v.startsWith("andexdb:undoclipboard;")).map(v => Number(v.slice(22))))].sort().reverse();
     }
+    static get newestSaveTime() {
+        return this.saveTimes[0];
+    }
+    static cullItemsMissingStructure() { this.saveTimes.filter(v => !!!world.structureManager.get(`andexdb:undoclipboard;${v},0,0,0`)).forEach(v => this.clearTime(v)); }
     static clear() { this.ids.forEach(v => world.structureManager.delete(v)); }
     static clearTime(timestamp) {
         this.saveIds(timestamp).forEach(v => world.structureManager.delete(v));
@@ -497,10 +604,10 @@ export class undoClipboard {
         world.setDynamicProperty(`andexdb:undoclipboardd;${saveTime}`, dimension.id);
         world.setDynamicProperty(`andexdb:undoclipboards;${saveTime}`, ((v) => ({ x: Math.abs(v.x), y: Math.abs(v.y), z: Math.abs(v.z) }))(Vector.subtract(area.to, area.from)));
         for (const range of splitArea(area, sizeLimits)) {
-            this.saveRange(dimension, range, saveTime, options);
+            this.saveRange(dimension, range, saveTime, { saveMode: options?.saveMode ?? config.undoClipboardMode, includeBlocks: options?.includeBlocks, includeEntities: options?.includeEntities });
         }
     }
-    static undo(saveTime = this.saveTimes, options, clearSave = true, sizes = { x: 64, y: 128, z: 64 }) {
+    static undo(saveTime = this.newestSaveTime, options, clearSave = true, sizes = { x: 64, y: 128, z: 64 }) {
         if (this.ids.length == 0) {
             return 0;
         }
@@ -512,6 +619,7 @@ export class undoClipboard {
         return 1;
     }
 }
+system.runTimeout(() => undoClipboard.cullItemsMissingStructure(), 50);
 export class AreaBackups {
     static get ids() {
         return world.getDynamicPropertyIds().filter(v => v.startsWith("areabackup:"));

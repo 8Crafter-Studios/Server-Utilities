@@ -1,6 +1,6 @@
-import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, GameRules, GameRule } from "@minecraft/server";
+import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, GameRules, GameRule, StructureSaveMode } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { JSONParse, JSONStringify, arrayModifier, getUICustomForm, targetSelectorAllListC, format_version, srun, dimensionTypeDisplayFormatting, config } from "Main";
+import { getUICustomForm, format_version, srun, dimensionTypeDisplayFormatting, config, dimensionsd, dimensions } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -20,8 +20,16 @@ import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
+import * as chat from "./chat";
+import * as cmdutils from "./command_utilities";
+import * as utils from "./utilities";
+import * as errors from "./errors";
 import mcMath from "@minecraft/math.js";
-import { chatCommands, chatMessage, chatSend, command, commandSettings, command_settings_format_version, commands, commands_format_version, dimensions, evaluateParameters, executeCommandPlayerW, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
+import { chatCommands, command, commandSettings, command_settings_format_version, commands_format_version, evaluateParameters, executeCommandPlayerW, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
+import { chatMessage, chatSend } from "./chat";
+import { targetSelectorAllListC } from "./command_utilities";
+import { cullEmpty, JSONParse, JSONStringify, tryget, tryrun } from "./utilities";
+import { commands } from "./commands_list";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -37,7 +45,7 @@ uis;
 playersave;
 spawnprot;
 mcMath;
-export const ui_format_version = "1.7.0";
+export const ui_format_version = "1.17.0";
 //${se}console.warn(JSON.stringify(evaluateParameters(["presetText", "string", "json", "number", "boolean", "string", "presetText", "presetText"], "test test [{\"test\": \"test\"}, [\"test\", \"test\"] , \"test\", \"test\"] 1 true \"test \\\"test\" test test"))); 
 /**
  * Returns the sum of a and b
@@ -330,7 +338,7 @@ export function mainMenu(sourceEntitya) {
     form.button("§4Fill Blocks(§cComing Soon!§f)§b", "textures/blocks/stone");
     form.button("§4World Debug§f(§cComing Soon!§f)§b", "textures/ui/xyz_axis.png");
     form.button("§4Dimension Debug§f(§cComing Soon!§f)§b", "textures/ui/NetherPortal");
-    form.button("Inventory Transfer", "textures/ui/NetherPortal");
+    form.button("Inventory Transfer§f(§nDEPRECATED§f)", "textures/ui/NetherPortal");
     form.button("Run Command", "textures/ui/ImpulseSquare.png");
     form.button("Script Eval", "textures/ui/RepeatSquare.png");
     form.button("Mange Restricted Areas", "textures/ui/xyz_axis.png");
@@ -752,7 +760,9 @@ export function globalSettings(sourceEntitya) {
     form2.textField("§l§fnameDisplayPrefix§r§f\nPrefix that appears before player's names in chat messages, default is \"<\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<"));
     form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after player's names in chat messages, default is \"\uF019r\uF019f>\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"));
     form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));*/
-    form2.textField("§l§fgametestStructureDefaultSpawnLocation§r§f\nThe default spawn locations for the gametest structure, this is used when spawning in no ai entities or spawning in simulated player", "x, y, z", Object.values(world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {}).join(", "));
+    form2.textField("§l§fgametestStructureDefaultSpawnLocation§r§f\nThe default spawn location for the gametest structures, this is used when spawning in no ai entities or spawning in simulated players", "x y z", cullEmpty([(world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {})["x"], (world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {})["y"], (world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {})["z"]]).join(" "));
+    form2.textField("§l§fspawnCommandLocation§r§f\nThe location to teleport players when they use the \\spawn command, it is a list of coordinates separated by spaces, leaving it blank will disable the spawn command", "x y z", cullEmpty([config.spawnCommandLocation.x, config.spawnCommandLocation.y, config.spawnCommandLocation.z]).join(" "));
+    form2.dropdown("§l§fspawnCommandDimension§r§f\nThe dimension to teleport players when they use the \\spawn command, it is a list of coordinates separated by spaces, the default is overworld", ["§aOverworld", "§cNether", "§dThe End"], dimensionsd.indexOf(config.spawnCommandLocation.dimension.id));
     form2.dropdown("§l§finvalidChatCommandAction§r§f\nWhat to do when a chat command is typed that does not exist, or that the player does not have permission to use. ", ["Do Nothing", "Send Message", "Cancel Message", "Warn Player"], Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 0));
     form2.toggle("§l§fchatCommandsEnbaled§r§f\nSets whether or not to enable the chat commands, default is true", Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") ?? true)); /*
     form2.toggle("§l§fautoEscapeChatMessages§r§f\nEvaluates escape codes in the chat automatically, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") ?? false));
@@ -770,7 +780,7 @@ export function globalSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix /*, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator*/, gametestStructureDefaultSpawnLocation, invalidChatCommandAction, chatCommandsEnbaled /*, disableCustomChatMessages, allowCustomChatMessagesMuting*/ /*, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes*/ /*, chatDisplayTimeStamp*/, autoSavePlayerData, bepl, beppb, aebe, aepl] = t.formValues;
+        let [chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix /*, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator*/, gametestStructureDefaultSpawnLocation, spawnCommandLocation, spawnCommandDimension, invalidChatCommandAction, chatCommandsEnbaled /*, disableCustomChatMessages, allowCustomChatMessagesMuting*/ /*, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes*/ /*, chatDisplayTimeStamp*/, autoSavePlayerData, bepl, beppb, aebe, aepl] = t.formValues;
         world.setDynamicProperty("andexdbSettings:chatCommandPrefix", chatCommandPrefix);
         world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", validChatCommandPrefixes);
         world.setDynamicProperty("andexdbSettings:chatRankPrefix", chatRankPrefix);
@@ -782,8 +792,9 @@ export function globalSettings(sourceEntitya) {
         world.setDynamicProperty("andexdbSettings:nameDisplaySuffix", nameDisplaySuffix)
         world.setDynamicProperty("andexdbSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator)*/
         if (String(gametestStructureDefaultSpawnLocation) != "") {
-            world.setDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation", { x: Number(String(gametestStructureDefaultSpawnLocation).split(", ")[0]), y: Number(String(gametestStructureDefaultSpawnLocation).split(", ")[1]), z: Number(String(gametestStructureDefaultSpawnLocation).split(", ")[2]) });
+            world.setDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation", { x: Number(String(gametestStructureDefaultSpawnLocation).split(" ")[0]), y: Number(String(gametestStructureDefaultSpawnLocation).split(" ")[1]), z: Number(String(gametestStructureDefaultSpawnLocation).split(" ")[2]) });
         }
+        config.spawnCommandLocation = { x: (spawnCommandLocation.split(" ")[0] == "" || !!!spawnCommandLocation.split(" ")[0]) ? null : Number(spawnCommandLocation.split(" ")[0]), y: (spawnCommandLocation.split(" ")[1] == "" || !!!spawnCommandLocation.split(" ")[1]) ? null : Number(spawnCommandLocation.split(" ")[1]), z: (spawnCommandLocation.split(" ")[0]) == "" || !!!spawnCommandLocation.split(" ")[1] ? null : Number(spawnCommandLocation.split(" ")[1]), dimension: dimensions[spawnCommandDimension] };
         world.setDynamicProperty("andexdbSettings:chatCommandsEnbaled", chatCommandsEnbaled); /*
         world.setDynamicProperty("andexdbSettings:disableCustomChatMessages", disableCustomChatMessages)*/
         world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction); /*
@@ -867,6 +878,8 @@ export function scriptSettings(sourceEntitya) {
     let form2 = new ModalFormData();
     form2.title("Script Settings");
     form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 5", "integer from 1-1000", String(config.playerDataRefreshRate));
+    form2.textField("§l§fprotectedAreasRefreshRate§r§f\nThe interval at which to update list the saved protected areas, decreasing this number may increase lag, the default is 20", "integer from 1-1000000", String(config.protectedAreasRefreshRate));
+    form2.dropdown("§l§fundoClipboardMode§r§f\nWhether to save undo history in memory or to the world files, memory will cause undo history to be cleared upon restarting the world/realm/server, the default is Memory", ["Memory", "World"], ["Memory", "World"].indexOf(String(config.undoClipboardMode)));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -877,8 +890,10 @@ export function scriptSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [playerDataRefreshRate] = t.formValues;
+        let [playerDataRefreshRate, protectedAreasRefreshRate, undoClipboardMode] = t.formValues;
         config.playerDataRefreshRate = Number(playerDataRefreshRate);
+        config.protectedAreasRefreshRate = Number(protectedAreasRefreshRate);
+        config.undoClipboardMode = (["Memory", "World"][Number(undoClipboardMode)] ?? "Memory");
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -957,12 +972,170 @@ export function tpaSettings(sourceEntitya) {
         console.error(e, e.stack);
     });
 }
+export class PlayerNotifications {
+    constructor(player) { this.player = player; }
+    get getAllChatCommands() { return this.player.hasTag("getAllChatCommands"); }
+    set getAllChatCommands(value) { value ? this.player.addTag("getAllChatCommands") : this.player.removeTag("getAllChatCommands"); }
+    get getAllChatCommandsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getAllChatCommandsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getAllChatCommandsNotificationSound(value) { this.player.setDynamicProperty("getAllChatCommandsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getAllChatMessages() { return this.player.hasTag("getAllChatMessages"); }
+    set getAllChatMessages(value) { value ? this.player.addTag("getAllChatMessages") : this.player.removeTag("getAllChatMessages"); }
+    get getAllChatMessagesNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getAllChatMessagesNotificationSound") ?? '{"soundId": "none"}')); }
+    set getAllChatMessagesNotificationSound(value) { this.player.setDynamicProperty("getAllChatMessagesNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getGameRuleChangeNotifications() { return this.player.hasTag("getGameRuleChangeNotifications"); }
+    set getGameRuleChangeNotifications(value) { value ? this.player.addTag("getGameRuleChangeNotifications") : this.player.removeTag("getGameRuleChangeNotifications"); }
+    get getGameRuleChangeNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getGameRuleChangeNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getGameRuleChangeNotificationsNotificationSound(value) { this.player.setDynamicProperty("getGameRuleChangeNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getBlockExplodeNotifications() { return this.player.hasTag("getBlockExplodeNotifications"); }
+    set getBlockExplodeNotifications(value) { value ? this.player.addTag("getBlockExplodeNotifications") : this.player.removeTag("getBlockExplodeNotifications"); }
+    get getBlockExplodeNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getBlockExplodeNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getBlockExplodeNotificationsNotificationSound(value) { this.player.setDynamicProperty("getBlockExplodeNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getButtonPushNotifications() { return this.player.hasTag("getButtonPushNotifications"); }
+    set getButtonPushNotifications(value) { value ? this.player.addTag("getButtonPushNotifications") : this.player.removeTag("getButtonPushNotifications"); }
+    get getButtonPushNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getButtonPushNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getButtonPushNotificationsNotificationSound(value) { this.player.setDynamicProperty("getButtonPushNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getEffectAddNotifications() { return this.player.hasTag("getEffectAddNotifications"); }
+    set getEffectAddNotifications(value) { value ? this.player.addTag("getEffectAddNotifications") : this.player.removeTag("getEffectAddNotifications"); }
+    get getEffectAddNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getEffectAddNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getEffectAddNotificationsNotificationSound(value) { this.player.setDynamicProperty("getEffectAddNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getEntityHurtNotifications() { return this.player.hasTag("getEntityHurtNotifications"); }
+    set getEntityHurtNotifications(value) { value ? this.player.addTag("getEntityHurtNotifications") : this.player.removeTag("getEntityHurtNotifications"); }
+    get getEntityHurtNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getEntityHurtNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getEntityHurtNotificationsNotificationSound(value) { this.player.setDynamicProperty("getEntityHurtNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getEntityLoadNotifications() { return this.player.hasTag("getEntityLoadNotifications"); }
+    set getEntityLoadNotifications(value) { value ? this.player.addTag("getEntityLoadNotifications") : this.player.removeTag("getEntityLoadNotifications"); }
+    get getEntityLoadNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getEntityLoadNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getEntityLoadNotificationsNotificationSound(value) { this.player.setDynamicProperty("getEntityLoadNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getEntityRemoveNotifications() { return this.player.hasTag("getEntityRemoveNotifications"); }
+    set getEntityRemoveNotifications(value) { value ? this.player.addTag("getEntityRemoveNotifications") : this.player.removeTag("getEntityRemoveNotifications"); }
+    get getEntityRemoveNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getEntityRemoveNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getEntityRemoveNotificationsNotificationSound(value) { this.player.setDynamicProperty("getEntityRemoveNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getEntitySpawnNotifications() { return this.player.hasTag("getEntitySpawnNotifications"); }
+    set getEntitySpawnNotifications(value) { value ? this.player.addTag("getEntitySpawnNotifications") : this.player.removeTag("getEntitySpawnNotifications"); }
+    get getEntitySpawnNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getEntitySpawnNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getEntitySpawnNotificationsNotificationSound(value) { this.player.setDynamicProperty("getEntitySpawnNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getExplosionNotifications() { return this.player.hasTag("getExplosionNotifications"); }
+    set getExplosionNotifications(value) { value ? this.player.addTag("getExplosionNotifications") : this.player.removeTag("getExplosionNotifications"); }
+    get getExplosionNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getExplosionNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getExplosionNotificationsNotificationSound(value) { this.player.setDynamicProperty("getExplosionNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getPlayerDimensionChangeNotifications() { return this.player.hasTag("getPlayerDimensionChangeNotifications"); }
+    set getPlayerDimensionChangeNotifications(value) { value ? this.player.addTag("getPlayerDimensionChangeNotifications") : this.player.removeTag("getPlayerDimensionChangeNotifications"); }
+    get getPlayerDimensionChangeNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getPlayerDimensionChangeNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getPlayerDimensionChangeNotificationsNotificationSound(value) { this.player.setDynamicProperty("getPlayerDimensionChangeNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getBeforeExplosionNotifications() { return this.player.hasTag("getBeforeExplosionNotifications"); }
+    set getBeforeExplosionNotifications(value) { value ? this.player.addTag("getBeforeExplosionNotifications") : this.player.removeTag("getBeforeExplosionNotifications"); }
+    get getBeforeExplosionNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getBeforeExplosionNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getBeforeExplosionNotificationsNotificationSound(value) { this.player.setDynamicProperty("getBeforeExplosionNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getBeforeChatSendNotifications() { return this.player.hasTag("getBeforeChatSendNotifications"); }
+    set getBeforeChatSendNotifications(value) { value ? this.player.addTag("getBeforeChatSendNotifications") : this.player.removeTag("getBeforeChatSendNotifications"); }
+    get getBeforeChatSendNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getBeforeChatSendNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getBeforeChatSendNotificationsNotificationSound(value) { this.player.setDynamicProperty("getBeforeChatSendNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getPlayerGameModeChangeNotifications() { return this.player.hasTag("getPlayerGameModeChangeNotifications"); }
+    set getPlayerGameModeChangeNotifications(value) { value ? this.player.addTag("getPlayerGameModeChangeNotifications") : this.player.removeTag("getPlayerGameModeChangeNotifications"); }
+    get getPlayerGameModeChangeNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getPlayerGameModeChangeNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getPlayerGameModeChangeNotificationsNotificationSound(value) { this.player.setDynamicProperty("getPlayerGameModeChangeNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getWeatherChangeNotifications() { return this.player.hasTag("getWeatherChangeNotifications"); }
+    set getWeatherChangeNotifications(value) { value ? this.player.addTag("getWeatherChangeNotifications") : this.player.removeTag("getWeatherChangeNotifications"); }
+    get getWeatherChangeNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getWeatherChangeNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getWeatherChangeNotificationsNotificationSound(value) { this.player.setDynamicProperty("getWeatherChangeNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getLeverActionNotifications() { return this.player.hasTag("getLeverActionNotifications"); }
+    set getLeverActionNotifications(value) { value ? this.player.addTag("getLeverActionNotifications") : this.player.removeTag("getLeverActionNotifications"); }
+    get getLeverActionNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getLeverActionNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getLeverActionNotificationsNotificationSound(value) { this.player.setDynamicProperty("getLeverActionNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getMessageRecieveNotifications() { return this.player.hasTag("getMessageRecieveNotifications"); }
+    set getMessageRecieveNotifications(value) { value ? this.player.addTag("getMessageRecieveNotifications") : this.player.removeTag("getMessageRecieveNotifications"); }
+    get getMessageRecieveNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getMessageRecieveNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getMessageRecieveNotificationsNotificationSound(value) { this.player.setDynamicProperty("getMessageRecieveNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getBlockInteractTriggerExplosionNotifications() { return this.player.hasTag("getBlockInteractTriggerExplosionNotifications"); }
+    set getBlockInteractTriggerExplosionNotifications(value) { value ? this.player.addTag("getBlockInteractTriggerExplosionNotifications") : this.player.removeTag("getBlockInteractTriggerExplosionNotifications"); }
+    get getBlockInteractTriggerExplosionNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getBlockInteractTriggerExplosionNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getBlockInteractTriggerExplosionNotificationsNotificationSound(value) { this.player.setDynamicProperty("getBlockInteractTriggerExplosionNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+    get getEntityInteractTriggerExplosionNotifications() { return this.player.hasTag("getEntityInteractTriggerExplosionNotifications"); }
+    set getEntityInteractTriggerExplosionNotifications(value) { value ? this.player.addTag("getEntityInteractTriggerExplosionNotifications") : this.player.removeTag("getEntityInteractTriggerExplosionNotifications"); }
+    get getEntityInteractTriggerExplosionNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getEntityInteractTriggerExplosionNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
+    set getEntityInteractTriggerExplosionNotificationsNotificationSound(value) { this.player.setDynamicProperty("getEntityInteractTriggerExplosionNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
+}
 export function notificationsSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
+    const noti = new PlayerNotifications(sourceEntity);
     form2.title("Notifications Settings");
-    form2.toggle("§l§fGet notified when players run chat commands§r§f", sourceEntity.hasTag("getAllChatCommands"));
-    form2.toggle("§l§fGet notified when a game rule is changed§r§f", sourceEntity.hasTag("getGameRuleChangeNotifications"));
+    form2.toggle("§l§fGet notified when players run chat commands§r§f", noti.getAllChatCommands);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getAllChatCommandsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getAllChatCommandsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getAllChatCommandsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when players send chat messages§r§f", noti.getAllChatMessages);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getAllChatMessagesNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getAllChatMessagesNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getAllChatMessagesNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when a game rule is changed§r§f", noti.getGameRuleChangeNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getGameRuleChangeNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getGameRuleChangeNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getGameRuleChangeNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when a block explodes§r§f", noti.getBlockExplodeNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getBlockExplodeNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getBlockExplodeNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getBlockExplodeNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when a button is pushed§r§f", noti.getButtonPushNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getButtonPushNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getButtonPushNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getButtonPushNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when an entity takes damage§r§f", noti.getEntityHurtNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getEntityHurtNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getEntityHurtNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getEntityHurtNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when an entity is loaded§r§f", noti.getEntityLoadNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getEntityLoadNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getEntityLoadNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getEntityLoadNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when an entity is removed§r§f", noti.getEntityRemoveNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getEntityRemoveNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getEntityRemoveNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getEntityRemoveNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when an entity is spawned§r§f", noti.getEntitySpawnNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getEntitySpawnNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getEntitySpawnNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getEntitySpawnNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when an explosion occurs§r§f", noti.getExplosionNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getExplosionNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getExplosionNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getExplosionNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when a player changes dimensions§r§f", noti.getPlayerDimensionChangeNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getPlayerDimensionChangeNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getPlayerDimensionChangeNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getPlayerDimensionChangeNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified the tick before an explosion occurs§r§f", noti.getBeforeExplosionNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getBeforeExplosionNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getBeforeExplosionNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getBeforeExplosionNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified the tick before a chat message is sent§r§f", noti.getBeforeChatSendNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getBeforeChatSendNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getBeforeChatSendNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getBeforeChatSendNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when a player switches gamemodes§r§f", noti.getPlayerGameModeChangeNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getPlayerGameModeChangeNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getPlayerGameModeChangeNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getPlayerGameModeChangeNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when the weather changes§r§f", noti.getWeatherChangeNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getWeatherChangeNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getWeatherChangeNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getWeatherChangeNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when a player interacts with a lever§r§f", noti.getLeverActionNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getLeverActionNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getLeverActionNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getLeverActionNotificationsNotificationSound.pitch));
+    form2.toggle("§l§8Get notified when a message is received (Internal; Might not even do anything)§r§8", noti.getMessageRecieveNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getMessageRecieveNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getMessageRecieveNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getMessageRecieveNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when a player interacts with an explosive block§r§f", noti.getBlockInteractTriggerExplosionNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getBlockInteractTriggerExplosionNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getBlockInteractTriggerExplosionNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getBlockInteractTriggerExplosionNotificationsNotificationSound.pitch));
+    form2.toggle("§l§fGet notified when a player interacts with an explosive entity§r§f", noti.getEntityInteractTriggerExplosionNotifications);
+    form2.textField("SoundID", "Sound ID, none=no sound", noti.getEntityInteractTriggerExplosionNotificationsNotificationSound.soundId);
+    form2.textField("Volume", "float, between 0 and 1", String(noti.getEntityInteractTriggerExplosionNotificationsNotificationSound.volume));
+    form2.textField("Pitch", "float, between 0 and 255", String(noti.getEntityInteractTriggerExplosionNotificationsNotificationSound.pitch));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -973,9 +1146,121 @@ export function notificationsSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [getAllChatCommands, getGameRuleChangeNotifications] = t.formValues;
-        Boolean(getAllChatCommands) ? sourceEntity.addTag("getAllChatCommands") : sourceEntity.removeTag("getAllChatCommands");
-        Boolean(getGameRuleChangeNotifications) ? sourceEntity.addTag("getGameRuleChangeNotifications") : sourceEntity.removeTag("getGameRuleChangeNotifications");
+        let [getAllChatCommands, getAllChatCommandsSoundID, getAllChatCommandsVolume, getAllChatCommandsPitch, getAllChatMessages, getAllChatMessagesSoundID, getAllChatMessagesVolume, getAllChatMessagesPitch, getGameRuleChangeNotifications, getGameRuleChangeNotificationsSoundID, getGameRuleChangeNotificationsVolume, getGameRuleChangeNotificationsPitch, getBlockExplodeNotifications, getBlockExplodeNotificationsSoundID, getBlockExplodeNotificationsVolume, getBlockExplodeNotificationsPitch, getButtonPushNotifications, getButtonPushNotificationsSoundID, getButtonPushNotificationsVolume, getButtonPushNotificationsPitch, getEntityHurtNotifications, getEntityHurtNotificationsSoundID, getEntityHurtNotificationsVolume, getEntityHurtNotificationsPitch, getEntityLoadNotifications, getEntityLoadNotificationsSoundID, getEntityLoadNotificationsVolume, getEntityLoadNotificationsPitch, getEntityRemoveNotifications, getEntityRemoveNotificationsSoundID, getEntityRemoveNotificationsVolume, getEntityRemoveNotificationsPitch, getEntitySpawnNotifications, getEntitySpawnNotificationsSoundID, getEntitySpawnNotificationsVolume, getEntitySpawnNotificationsPitch, getExplosionNotifications, getExplosionNotificationsSoundID, getExplosionNotificationsVolume, getExplosionNotificationsPitch, getPlayerDimensionChangeNotifications, getPlayerDimensionChangeNotificationsSoundID, getPlayerDimensionChangeNotificationsVolume, getPlayerDimensionChangeNotificationsPitch, getBeforeExplosionNotifications, getBeforeExplosionNotificationsSoundID, getBeforeExplosionNotificationsVolume, getBeforeExplosionNotificationsPitch, getBeforeChatSendNotifications, getBeforeChatSendNotificationsSoundID, getBeforeChatSendNotificationsVolume, getBeforeChatSendNotificationsPitch, getPlayerGameModeChangeNotifications, getPlayerGameModeChangeNotificationsSoundID, getPlayerGameModeChangeNotificationsVolume, getPlayerGameModeChangeNotificationsPitch, getWeatherChangeNotifications, getWeatherChangeNotificationsSoundID, getWeatherChangeNotificationsVolume, getWeatherChangeNotificationsPitch, getLeverActionNotifications, getLeverActionNotificationsSoundID, getLeverActionNotificationsVolume, getLeverActionNotificationsPitch, getMessageRecieveNotifications, getMessageRecieveNotificationsSoundID, getMessageRecieveNotificationsVolume, getMessageRecieveNotificationsPitch, getBlockInteractTriggerExplosionNotifications, getBlockInteractTriggerExplosionNotificationsSoundID, getBlockInteractTriggerExplosionNotificationsVolume, getBlockInteractTriggerExplosionNotificationsPitch, getEntityInteractTriggerExplosionNotifications, getEntityInteractTriggerExplosionNotificationsSoundID, getEntityInteractTriggerExplosionNotificationsVolume, getEntityInteractTriggerExplosionNotificationsPitch] = t.formValues;
+        noti.getAllChatCommands = Boolean(getAllChatCommands);
+        noti.getAllChatCommandsNotificationSound = {
+            soundId: String(getAllChatCommandsSoundID == "" ? "none" : getAllChatCommandsSoundID),
+            volume: Number.isNaN(Number(getAllChatCommandsVolume)) ? 1 : Math.min(Math.max(Number(getAllChatCommandsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getAllChatCommandsPitch)) ? 1 : Math.min(Math.max(Number(getAllChatCommandsPitch), 0), 255)
+        };
+        noti.getAllChatMessages = Boolean(getAllChatMessages);
+        noti.getAllChatMessagesNotificationSound = {
+            soundId: String(getAllChatMessagesSoundID == "" ? "none" : getAllChatMessagesSoundID),
+            volume: Number.isNaN(Number(getAllChatMessagesVolume)) ? 1 : Math.min(Math.max(Number(getAllChatMessagesVolume), 0), 1),
+            pitch: Number.isNaN(Number(getAllChatMessagesPitch)) ? 1 : Math.min(Math.max(Number(getAllChatMessagesPitch), 0), 255)
+        };
+        noti.getGameRuleChangeNotifications = Boolean(getGameRuleChangeNotifications);
+        noti.getGameRuleChangeNotificationsNotificationSound = {
+            soundId: String(getGameRuleChangeNotificationsSoundID == "" ? "none" : getGameRuleChangeNotificationsSoundID),
+            volume: Number.isNaN(Number(getGameRuleChangeNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getGameRuleChangeNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getGameRuleChangeNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getGameRuleChangeNotificationsPitch), 0), 255)
+        };
+        noti.getBlockExplodeNotifications = Boolean(getBlockExplodeNotifications);
+        noti.getBlockExplodeNotificationsNotificationSound = {
+            soundId: String(getBlockExplodeNotificationsSoundID == "" ? "none" : getBlockExplodeNotificationsSoundID),
+            volume: Number.isNaN(Number(getBlockExplodeNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getBlockExplodeNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getBlockExplodeNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getBlockExplodeNotificationsPitch), 0), 255)
+        };
+        noti.getButtonPushNotifications = Boolean(getButtonPushNotifications);
+        noti.getButtonPushNotificationsNotificationSound = {
+            soundId: String(getButtonPushNotificationsSoundID == "" ? "none" : getButtonPushNotificationsSoundID),
+            volume: Number.isNaN(Number(getButtonPushNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getButtonPushNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getButtonPushNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getButtonPushNotificationsPitch), 0), 255)
+        };
+        noti.getEntityHurtNotifications = Boolean(getEntityHurtNotifications);
+        noti.getEntityHurtNotificationsNotificationSound = {
+            soundId: String(getEntityHurtNotificationsSoundID == "" ? "none" : getEntityHurtNotificationsSoundID),
+            volume: Number.isNaN(Number(getEntityHurtNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getEntityHurtNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getEntityHurtNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getEntityHurtNotificationsPitch), 0), 255)
+        };
+        noti.getEntityLoadNotifications = Boolean(getEntityLoadNotifications);
+        noti.getEntityLoadNotificationsNotificationSound = {
+            soundId: String(getEntityLoadNotificationsSoundID == "" ? "none" : getEntityLoadNotificationsSoundID),
+            volume: Number.isNaN(Number(getEntityLoadNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getEntityLoadNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getEntityLoadNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getEntityLoadNotificationsPitch), 0), 255)
+        };
+        noti.getEntityRemoveNotifications = Boolean(getEntityRemoveNotifications);
+        noti.getEntityRemoveNotificationsNotificationSound = {
+            soundId: String(getEntityRemoveNotificationsSoundID == "" ? "none" : getEntityRemoveNotificationsSoundID),
+            volume: Number.isNaN(Number(getEntityRemoveNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getEntityRemoveNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getEntityRemoveNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getEntityRemoveNotificationsPitch), 0), 255)
+        };
+        noti.getEntitySpawnNotifications = Boolean(getEntitySpawnNotifications);
+        noti.getEntitySpawnNotificationsNotificationSound = {
+            soundId: String(getEntitySpawnNotificationsSoundID == "" ? "none" : getEntitySpawnNotificationsSoundID),
+            volume: Number.isNaN(Number(getEntitySpawnNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getEntitySpawnNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getEntitySpawnNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getEntitySpawnNotificationsPitch), 0), 255)
+        };
+        noti.getExplosionNotifications = Boolean(getExplosionNotifications);
+        noti.getExplosionNotificationsNotificationSound = {
+            soundId: String(getExplosionNotificationsSoundID == "" ? "none" : getExplosionNotificationsSoundID),
+            volume: Number.isNaN(Number(getExplosionNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getExplosionNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getExplosionNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getExplosionNotificationsPitch), 0), 255)
+        };
+        noti.getPlayerDimensionChangeNotifications = Boolean(getPlayerDimensionChangeNotifications);
+        noti.getPlayerDimensionChangeNotificationsNotificationSound = {
+            soundId: String(getPlayerDimensionChangeNotificationsSoundID == "" ? "none" : getPlayerDimensionChangeNotificationsSoundID),
+            volume: Number.isNaN(Number(getPlayerDimensionChangeNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getPlayerDimensionChangeNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getPlayerDimensionChangeNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getPlayerDimensionChangeNotificationsPitch), 0), 255)
+        };
+        noti.getBeforeExplosionNotifications = Boolean(getBeforeExplosionNotifications);
+        noti.getBeforeExplosionNotificationsNotificationSound = {
+            soundId: String(getBeforeExplosionNotificationsSoundID == "" ? "none" : getBeforeExplosionNotificationsSoundID),
+            volume: Number.isNaN(Number(getBeforeExplosionNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getBeforeExplosionNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getBeforeExplosionNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getBeforeExplosionNotificationsPitch), 0), 255)
+        };
+        noti.getBeforeChatSendNotifications = Boolean(getBeforeChatSendNotifications);
+        noti.getBeforeChatSendNotificationsNotificationSound = {
+            soundId: String(getBeforeChatSendNotificationsSoundID == "" ? "none" : getBeforeChatSendNotificationsSoundID),
+            volume: Number.isNaN(Number(getBeforeChatSendNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getBeforeChatSendNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getBeforeChatSendNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getBeforeChatSendNotificationsPitch), 0), 255)
+        };
+        noti.getPlayerGameModeChangeNotifications = Boolean(getPlayerGameModeChangeNotifications);
+        noti.getPlayerGameModeChangeNotificationsNotificationSound = {
+            soundId: String(getPlayerGameModeChangeNotificationsSoundID == "" ? "none" : getPlayerGameModeChangeNotificationsSoundID),
+            volume: Number.isNaN(Number(getPlayerGameModeChangeNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getPlayerGameModeChangeNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getPlayerGameModeChangeNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getPlayerGameModeChangeNotificationsPitch), 0), 255)
+        };
+        noti.getWeatherChangeNotifications = Boolean(getWeatherChangeNotifications);
+        noti.getWeatherChangeNotificationsNotificationSound = {
+            soundId: String(getWeatherChangeNotificationsSoundID == "" ? "none" : getWeatherChangeNotificationsSoundID),
+            volume: Number.isNaN(Number(getWeatherChangeNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getWeatherChangeNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getWeatherChangeNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getWeatherChangeNotificationsPitch), 0), 255)
+        };
+        noti.getLeverActionNotifications = Boolean(getLeverActionNotifications);
+        noti.getLeverActionNotificationsNotificationSound = {
+            soundId: String(getLeverActionNotificationsSoundID == "" ? "none" : getLeverActionNotificationsSoundID),
+            volume: Number.isNaN(Number(getLeverActionNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getLeverActionNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getLeverActionNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getLeverActionNotificationsPitch), 0), 255)
+        };
+        noti.getMessageRecieveNotifications = Boolean(getMessageRecieveNotifications);
+        noti.getMessageRecieveNotificationsNotificationSound = {
+            soundId: String(getMessageRecieveNotificationsSoundID == "" ? "none" : getMessageRecieveNotificationsSoundID),
+            volume: Number.isNaN(Number(getMessageRecieveNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getMessageRecieveNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getMessageRecieveNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getMessageRecieveNotificationsPitch), 0), 255)
+        };
+        noti.getBlockInteractTriggerExplosionNotifications = Boolean(getBlockInteractTriggerExplosionNotifications);
+        noti.getBlockInteractTriggerExplosionNotificationsNotificationSound = {
+            soundId: String(getBlockInteractTriggerExplosionNotificationsSoundID == "" ? "none" : getBlockInteractTriggerExplosionNotificationsSoundID),
+            volume: Number.isNaN(Number(getBlockInteractTriggerExplosionNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getBlockInteractTriggerExplosionNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getBlockInteractTriggerExplosionNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getBlockInteractTriggerExplosionNotificationsPitch), 0), 255)
+        };
+        noti.getEntityInteractTriggerExplosionNotifications = Boolean(getEntityInteractTriggerExplosionNotifications);
+        noti.getEntityInteractTriggerExplosionNotificationsNotificationSound = {
+            soundId: String(getEntityInteractTriggerExplosionNotificationsSoundID == "" ? "none" : getEntityInteractTriggerExplosionNotificationsSoundID),
+            volume: Number.isNaN(Number(getEntityInteractTriggerExplosionNotificationsVolume)) ? 1 : Math.min(Math.max(Number(getEntityInteractTriggerExplosionNotificationsVolume), 0), 1),
+            pitch: Number.isNaN(Number(getEntityInteractTriggerExplosionNotificationsPitch)) ? 1 : Math.min(Math.max(Number(getEntityInteractTriggerExplosionNotificationsPitch), 0), 255)
+        };
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -986,7 +1271,9 @@ export function antispamSettings(sourceEntitya) {
     let form2 = new ModalFormData();
     form2.title("Anti-Spam Settings [§cExperimental§r]");
     form2.toggle("§l§fAnti-Spam Enabled§r§f", config.antispamEnabled);
-    form2.textField("§l§fWait time before player can send the spammed message again in seconds§r§f", "60", String(config.waitTimeAfterAntispamActivation));
+    form2.toggle("§l§fReset Anti-Spam Mute Timer Upon Attempted Message Send While Muted§r§f", config.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute);
+    form2.textField("§l§fWait time before player can send another chat message in seconds§r§f", "60", String(config.waitTimeAfterAntispamActivation));
+    form2.textField("§f(The anti-spam will only activate if the player sends a number of messages equal to (§bMessage count to trigger anti-spam§f) and those messages each had a delay of at most (§bMaximum time between messages§f) seconds between them)\n§lMaximum time between messages, §r§f", "5", String(config.maxTimeBewteenMessagesToTriggerAntiSpam));
     form2.slider("§l§fMessage count to trigger anti-spam, defaults to 4§r§f", 1, 100, 1, config.antispamTriggerMessageCount);
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
@@ -998,9 +1285,11 @@ export function antispamSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [antispamEnabled, waitTimeAfterAntispamActivation, antispamTriggerMessageCount] = t.formValues;
+        let [antispamEnabled, restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute, waitTimeAfterAntispamActivation, maxTimeBewteenMessagesToTriggerAntiSpam, antispamTriggerMessageCount] = t.formValues;
         config.antispamEnabled = antispamEnabled;
+        config.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute = restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute;
         config.waitTimeAfterAntispamActivation = isNaN(Number(waitTimeAfterAntispamActivation)) ? 60 : Number(waitTimeAfterAntispamActivation);
+        config.maxTimeBewteenMessagesToTriggerAntiSpam = isNaN(Number(maxTimeBewteenMessagesToTriggerAntiSpam)) ? 5 : Number(maxTimeBewteenMessagesToTriggerAntiSpam);
         config.antispamTriggerMessageCount = Number(antispamTriggerMessageCount);
         moderationSettings(sourceEntity);
     }).catch(e => {
@@ -1023,6 +1312,7 @@ export function personalSettings(sourceEntitya) {
     form2.textField("§l§fnameDisplayPrefix§r§f\nPrefix that appears before your names in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? "<"));
     form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after your names in your chat messages, default is undefined", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? "§r§f>"));
     form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between your name and and your chat message, default is \" \"", "string", !!!sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ? undefined : String(sourceEntity.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? " "));
+    form2.toggle("§l§fdoNotSetNameTag§r§f\nStops your name tag from having chat ranks added to it, this is usefull if you want to change your name tag, since otherwise it would keep resetting your name tag, default is false", sourceEntity.hasTag("doNotSetNameTag"));
     form2.textField("§l§fdebugStickUseCooldown§r§f\nCooldown between changing the block state of a block with a debug stick after you have just changed that state on the same block, default is 4", "number; default: 4", !!!sourceEntity.getDynamicProperty("debugStickUseCooldown") ? undefined : String(sourceEntity.getDynamicProperty("debugStickUseCooldown") ?? 4));
     form2.textField("§l§fdebugStickHoldDuration§r§f\nTime after the actionbar for changing a block state with the debug stick appears before the actionbar can be changed again, default is 10", "number; default: 10", !!!sourceEntity.getDynamicProperty("debugStickHoldDuration") ? undefined : String(sourceEntity.getDynamicProperty("debugStickHoldDuration") ?? 10)); /*
     form2.textField("§l§fvalidChatCommandPrefixes§r§f\nList of valid prefixes for chat commands, use this if you have other add-ons with chat commands in them active, messages that start with any of these will not be sent and will not be modified by this add-on so it will work for you other packs, default is blank", "Comma-Separated List of Strings", String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? ""));
@@ -1047,7 +1337,7 @@ export function personalSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, debugStickUseCooldown, debugStickHoldDuration] = t.formValues;
+        let [timeZone, chatRankPrefix, chatSudoPrefix, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator, doNotSetNameTag, debugStickUseCooldown, debugStickHoldDuration] = t.formValues;
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:timeZone", timeZone == "" ? undefined : timeZone);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatRankPrefix", chatRankPrefix == "" ? undefined : chatRankPrefix);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatSudoPrefix", chatSudoPrefix == "" ? undefined : chatSudoPrefix);
@@ -1057,6 +1347,7 @@ export function personalSettings(sourceEntitya) {
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix", nameDisplayPrefix == "" ? undefined : nameDisplayPrefix);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix", nameDisplaySuffix == "" ? undefined : nameDisplaySuffix);
         sourceEntity.setDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator == "" ? undefined : chatNameAndMessageSeparator);
+        doNotSetNameTag ? tryrun(() => { sourceEntity.removeTag("doNotSetNameTag"); }) : tryrun(() => { sourceEntity.addTag("doNotSetNameTag"); });
         sourceEntity.setDynamicProperty("debugStickUseCooldown", debugStickUseCooldown == "" ? undefined : debugStickUseCooldown);
         sourceEntity.setDynamicProperty("debugStickHoldDuration", debugStickHoldDuration == "" ? undefined : debugStickHoldDuration); /*
         world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", validChatCommandPrefixes)
@@ -1086,7 +1377,7 @@ export function evalAutoScriptSettings(sourceEntitya) {
             targetList = String([String(targetList), players[index].nameTag]).split(",");
         }
     }
-    form2.title("Eval Auto Script Settings");
+    form2.title("§r§0Eval Auto Script Settings (§nDEPRECATED§r§0)");
     form2.textField("evalBeforeEvents:chatSend", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:chatSend") ?? ""));
     form2.textField("evalBeforeEvents:dataDrivenEntityTrggerEvent", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:dataDrivenEntityTriggerEvent") ?? ""));
     form2.textField("evalBeforeEvents:effectAdd", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:effectAdd") ?? ""));
@@ -1347,7 +1638,7 @@ export function mapArtGenerator(sourceEntitya) {
         form.textField("Offset x", "integer", "0");
         form.textField("Offset z", "integer", "0");
         form.dropdown("Alignment Mode", ["Chunk Grid", "Map Grid"], 1);
-        form.dropdown("Dimension", dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.dropdown("Dimension", main.dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), main.dimensions.indexOf(sourceEntity.dimension));
         form.submitButton("Generate Map Art");
         forceShow(form, sourceEntity).then(ra => {
             let r = ra;
@@ -1364,7 +1655,7 @@ export function mapArtGenerator(sourceEntitya) {
             //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
             //console.warn(JSONStringify(Object.assign(mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from), {dimension: dimensions[dimension as number]??sourceEntity.dimension, y: (dimensions[dimension as number]??sourceEntity.dimension).heightRange.max-((newsnbta.size[1]??1) as number)})))
             //console.warn(JSONStringify(newsnbta))
-            generateNBTFileD(Object.assign(mcMath.Vector3Utils.add({ x: Number(offsetx), y: 0, z: Number(offsetz) }, coords.chunkIndexToBoundingBox({ x: (alignmentmode == 1 ? ((Math.floor((Number(chunkx) / 8) + 0.5) * 8 - 4)) : Number(chunkx)), y: (alignmentmode == 1 ? ((Math.floor((Number(chunky) / 8) + 0.5) * 8) - 4) : Number(chunky)) }).from), { dimension: dimensions[dimension] ?? sourceEntity.dimension, y: (dimensions[dimension] ?? sourceEntity.dimension).heightRange.max - (newsnbta.size[1] ?? 1) }), newsnbta, sourceEntity);
+            generateNBTFileD(Object.assign(mcMath.Vector3Utils.add({ x: Number(offsetx), y: 0, z: Number(offsetz) }, coords.chunkIndexToBoundingBox({ x: (alignmentmode == 1 ? ((Math.floor((Number(chunkx) / 8) + 0.5) * 8 - 4)) : Number(chunkx)), y: (alignmentmode == 1 ? ((Math.floor((Number(chunky) / 8) + 0.5) * 8) - 4) : Number(chunky)) }).from), { dimension: main.dimensions[dimension] ?? sourceEntity.dimension, y: (main.dimensions[dimension] ?? sourceEntity.dimension).heightRange.max - (newsnbta.size[1] ?? 1) }), newsnbta, sourceEntity);
             //console.warn(JSONStringify([mcMath.Vector3Utils.add({x: Number(offsetx), y: 0, z: Number(offsetz)}, coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from), coords.chunkIndexToBoundingBox({x: (alignmentmode==1?((Math.floor(Number(chunkx) / 8)*8)+4):Number(chunkx)), y: (alignmentmode==1?((Math.floor(Number(chunky) / 8)*8)+4):Number(chunky))}).from]))
             // Do something
         }).catch(e => {
@@ -1385,7 +1676,7 @@ export function mapArtGeneratorB(sourceEntitya) {
         form.textField("To use this generator you must first use something like cubical.xyz to convert an image to a minecraft structure, then save that structure as a .nbt file, then convert that .nbt file to SNBT format, then paste the SNBT into the text box below. \nNote: When pasting into the text box the game might freeze for a few minutes until it finishes pasting, and then it will unfreeze. \nSNBT of the .nbt file", "SNBT Data");
         form.textField("Chunk Index x", "integer", String(Math.floor(coords.getChunkIndex(sourceEntity.location).x / 8)));
         form.textField("Chunk Index y", "integer", String(Math.floor(coords.getChunkIndex(sourceEntity.location).y / 8)));
-        form.dropdown("Dimension", dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.dropdown("Dimension", main.dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), main.dimensions.indexOf(sourceEntity.dimension));
         form.submitButton("Generate Map Art");
         forceShow(form, sourceEntity).then(ra => {
             let r = ra;
@@ -1400,7 +1691,7 @@ export function mapArtGeneratorB(sourceEntitya) {
             }
             let newsnbta = JSON.parse(snbt.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*([\"\'\`funIN\-0-9\{\[])/g, '"$2":$4'));
             //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
-            generateNBTFileB(Object.assign(coords.chunkIndexToBoundingBox({ x: chunkx, y: chunky }).from, { dimension: dimensions[dimension] ?? sourceEntity.dimension, y: (dimensions[dimension] ?? sourceEntity.dimension).heightRange.max - (newsnbta.size[1] ?? 1) }), newsnbta);
+            generateNBTFileB(Object.assign(coords.chunkIndexToBoundingBox({ x: chunkx, y: chunky }).from, { dimension: main.dimensions[dimension] ?? sourceEntity.dimension, y: (main.dimensions[dimension] ?? sourceEntity.dimension).heightRange.max - (newsnbta.size[1] ?? 1) }), newsnbta);
             // Do something
         }).catch(e => {
             console.error(e, e.stack);
@@ -1422,7 +1713,7 @@ export function nbtStructureLoader(sourceEntitya) {
         form.textField("spawn position x", "integer", String(sourceEntity.location.x));
         form.textField("spawn position y", "integer", String(sourceEntity.location.y));
         form.textField("spawn position z", "integer", String(sourceEntity.location.z));
-        form.dropdown("Dimension", dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.dropdown("Dimension", main.dimensions.map(d => dimensionTypeDisplayFormatting[d.id]), main.dimensions.indexOf(sourceEntity.dimension));
         form.submitButton("Load Java NBT Structure");
         forceShow(form, sourceEntity).then(ra => {
             let r = ra;
@@ -1437,7 +1728,7 @@ export function nbtStructureLoader(sourceEntitya) {
             }
             let newsnbta = JSON.parse(snbt.replace(/(?<=[,\{][\s\n]*?)(['"])?(?<vb>[a-zA-Z0-9_]+)(['"])?[\s\n]*:[\s\n]*(?<vd>false|true|undefined|NULL|Infinity|-Infinity|[\-\+]?[0-9]+|"(?:[^"]|(?<=([^\\])(\\\\)*?\\)")*"|'(?:[^']|(?<=([^\\])(\\\\)*?\\)')*')(?=[\s\n]*?[,\}])/g, '"$<vb>":$<vd>'));
             //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
-            generateNBTFileD({ dimension: dimensions[dimension] ?? sourceEntity.dimension, x: (Number(x) ?? sourceEntity.location.x), y: (Number(y) ?? sourceEntity.location.y), z: (Number(z) ?? sourceEntity.location.z) }, newsnbta, sourceEntity);
+            generateNBTFileD({ dimension: main.dimensions[dimension] ?? sourceEntity.dimension, x: (Number(x) ?? sourceEntity.location.x), y: (Number(y) ?? sourceEntity.location.y), z: (Number(z) ?? sourceEntity.location.z) }, newsnbta, sourceEntity);
             // Do something
         }).catch(e => {
             console.error(e, e.stack);
@@ -4093,7 +4384,7 @@ export function manageCommands(sourceEntitya) {
                                                 return;
                                             }
                                             ;
-                                            commandsItem.settings.save({ requiredTags: h.formValues[0] == "" ? [] : JSONParse(String(h.formValues[0])), requiredPermissionLevel: Number(h.formValues[1]), requiresOp: Boolean(h.formValues[2]), enabled: Boolean(h.formValues[3]), settings_version: command_settings_format_version, format_version: format_version });
+                                            commandsItem.settings.save({ requiredTags: h.formValues[0] == "" ? (commandsItem.type == "built-in" ? tryget(() => commandsItem.settings.defaultSettings.requiredTags) ?? [] : []) : JSONParse(String(h.formValues[0])), requiredPermissionLevel: Number(h.formValues[1]), requiresOp: Boolean(h.formValues[2]), enabled: Boolean(h.formValues[3]), settings_version: command_settings_format_version, format_version: format_version });
                                             manageCommands(sourceEntity);
                                         }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                                         break;

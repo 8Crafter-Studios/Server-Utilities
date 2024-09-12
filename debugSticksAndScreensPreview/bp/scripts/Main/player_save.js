@@ -1,5 +1,5 @@
 import { EquipmentSlot, Dimension, GameMode, world, Player, system } from "@minecraft/server";
-import { format_version, config, tryget } from "Main";
+import { format_version, config } from "Main";
 import { ban } from "./ban";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
@@ -17,7 +17,12 @@ import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
+import * as chat from "./chat";
+import * as cmdutils from "./command_utilities";
+import * as utils from "./utilities";
+import * as errors from "./errors";
 import mcMath from "@minecraft/math.js";
+import { tryget } from "./utilities";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*

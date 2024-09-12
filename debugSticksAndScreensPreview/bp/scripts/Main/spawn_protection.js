@@ -1,6 +1,6 @@
 import { BlockVolume, CompoundBlockVolume, Player, system, world, Entity } from "@minecraft/server";
 import { ActionFormData, ModalFormData, ActionFormResponse, ModalFormResponse } from "@minecraft/server-ui";
-import { format_version, tryget, tryrun } from "Main";
+import { config, dimensions, format_version } from "Main";
 import { forceShow, mainMenu } from "./ui";
 import { listoftransformrecipes } from "transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
@@ -18,7 +18,12 @@ import * as bans from "Main/ban";
 import * as uis from "Main/ui";
 import * as playersave from "Main/player_save";
 import * as spawnprot from "Main/spawn_protection";
+import * as chat from "./chat";
+import * as cmdutils from "./command_utilities";
+import * as utils from "./utilities";
+import * as errors from "./errors";
 import mcMath from "@minecraft/math.js";
+import { tryget, tryrun } from "./utilities";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -37,69 +42,71 @@ mcMath;
 export const spawn_protection_format_version = "1.0.1";
 export const spawnProtectionTypeList = [/*"noPistonExtensionArea:", */ "noExplosionArea:", "noInteractArea:", "noBlockInteractArea:", "noBlockBreakArea:", "protectedArea:", "noBlockPlaceArea:"];
 export var noPistonExtensionAreas;
-noPistonExtensionAreas = undefined;
+noPistonExtensionAreas = { positive: [], negative: [] };
 export var noExplosionAreas;
-noExplosionAreas = undefined;
+noExplosionAreas = { positive: [], negative: [] };
 export var noBlockInteractAreas;
-noBlockInteractAreas = undefined;
+noBlockInteractAreas = { positive: [], negative: [] };
 export var noInteractAreas;
-noInteractAreas = undefined;
+noInteractAreas = { positive: [], negative: [] };
 export var protectedAreas;
-protectedAreas = undefined;
+protectedAreas = { positive: [], negative: [] };
 export var noBlockBreakAreas;
-noBlockBreakAreas = undefined;
+noBlockBreakAreas = { positive: [], negative: [] };
 export var noBlockPlaceAreas;
-noBlockPlaceAreas = undefined;
-try {
-    system.runInterval(() => {
-        try {
-            noPistonExtensionAreas = getAreas("noPistonExtensionArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-        ;
-        try {
-            noExplosionAreas = getAreas("noExplosionArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-        try {
-            noInteractAreas = getAreas("noInteractArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-        try {
-            noBlockInteractAreas = getAreas("noBlockInteractArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-        try {
-            noBlockBreakAreas = getAreas("noBlockBreakArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-        try {
-            protectedAreas = getAreas("protectedArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-        try {
-            noBlockPlaceAreas = getAreas("noBlockPlaceArea:");
-        }
-        catch (e) {
-            console.error(e, e.stack);
-        }
-    }, 1);
-}
-catch (e) {
-    console.error(e, e.stack);
-}
+noBlockPlaceAreas = { positive: [], negative: [] };
+import("Main").then(v => {
+    try {
+        system.runInterval(() => {
+            try {
+                noPistonExtensionAreas = getAreas("noPistonExtensionArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            ;
+            try {
+                noExplosionAreas = getAreas("noExplosionArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            try {
+                noInteractAreas = getAreas("noInteractArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            try {
+                noBlockInteractAreas = getAreas("noBlockInteractArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            try {
+                noBlockBreakAreas = getAreas("noBlockBreakArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            try {
+                protectedAreas = getAreas("protectedArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            try {
+                noBlockPlaceAreas = getAreas("noBlockPlaceArea:");
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+        }, v.config.protectedAreasRefreshRate ?? 20);
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
+});
 export function getType(areaGroup, type) { return areaGroup.split("|").filter((q) => (q.split(", ")[6] == String(type))).join("|"); }
 ;
 export function getAreas(prefix) {
@@ -133,7 +140,7 @@ export function editAreas(player, prefix) {
                 form12345.textField("Identifier Name", "myArea");
                 form12345.textField("From", "x1, y1, z1");
                 form12345.textField("To", "x2, y2, z2");
-                form12345.dropdown("Dimension", ["Overworld", "Nether", "The End"], cmds.dimensions.indexOf(player.dimension));
+                form12345.dropdown("Dimension", ["Overworld", "Nether", "The End"], dimensions.indexOf(player.dimension));
                 form12345.dropdown("Mode", ["Protection", "Anti-Protection"]);
                 form12345.textField("Icon Path (Optional)", "text");
                 form12345.submitButton("Add");

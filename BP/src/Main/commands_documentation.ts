@@ -673,9 +673,9 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
 "remotheritemenchants": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
 "removeotheritemenchantments": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
 "brush": `${command.dp}brush [-l] none
-${command.dp}brush [-l] <brushType: sphere|cube|square> [-h] <blockPattern: BlockPattern> [radius: float]
-${command.dp}brush [-l] <brushType: splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface> [-h] <blockPattern: BlockPattern> [radius: float] [decay: float]
-${command.dp}brush [-l] <brushType: raise|lower> <shape: sphere|cube§c|squarex|squarey|squarez§r> [radius: float]
+${command.dp}brush [-l] <brushType: sphere|cube|square>`/*+` [-h]`*/+` <blockPattern: BlockPattern> [radius: float]
+${command.dp}brush [-l] <brushType: splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface> [-h] <blockPattern: BlockPattern> [radius: float] [decay: float]`/*+`
+${command.dp}brush [-l] <brushType: raise|lower> <shape: sphere|cube§c|squarex|squarey|squarez§r> [radius: float]`*/+`
 ${command.dp}brush [-l] <brushType: extinguish|ex|remexp> [radius: float]`,
 "butcher": `${command.dp}butcher [-abfgnprtwipceh] [radius: float]`,
 "butcherdespawn": `${command.dp}butcherdespawn [-abfgnprtwipceh] [radius: float]`,
