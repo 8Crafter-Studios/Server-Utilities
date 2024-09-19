@@ -793,6 +793,27 @@
          "path" : "recipes/smithing_table/1059minecraft;jungle_wall_sign.json"
       },
       {
+         "path" : "structures/BlockTests/turtle_eggs_survive_xp.mcstructure"
+      },
+      {
+         "path" : "recipes/smithing_table/1825minecraft;tropical_fish.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1582minecraft;respawn_anchor.3.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1793minecraft;structure_block.json"
+      },
+      {
+         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/tsconfig.json"
+      },
+      {
+         "path" : "items/ultra_bundle.json"
+      },
+      {
+         "path" : "recipes/smithing_table/387minecraft;cocoa_beans.json"
+      },
+      {
          "path" : "recipes/smithing_table/7minecraft;acacia_hanging_sign.json"
       },
       {
@@ -1562,21 +1583,6 @@
       },
       {
          "path" : "recipes/smithing_table/1348minecraft;orange_concrete.json"
-      },
-      {
-         "path" : "structures/BlockTests/turtle_eggs_survive_xp.mcstructure"
-      },
-      {
-         "path" : "recipes/smithing_table/1825minecraft;tropical_fish.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1582minecraft;respawn_anchor.3.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1793minecraft;structure_block.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/tsconfig.json"
       },
       {
          "path" : "recipes/smithing_table/1445minecraft;potion.-1.json"
@@ -2629,18 +2635,6 @@
          "path" : "recipes/smithing_table/30minecraft;andesite.json"
       },
       {
-         "path" : "recipes/smithing_table/1065minecraft;lapis_lazuli.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1963minecraft;wolf_spawn_egg.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1344minecraft;ominous_trial_key.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1214minecraft;magenta_wool.json"
-      },
-      {
          "path" : "structures/RedstoneTests/itemframe_override_bedrock.mcstructure"
       },
       {
@@ -2654,6 +2648,18 @@
       },
       {
          "path" : "recipes/smithing_table/113minecraft;arrow.72.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1065minecraft;lapis_lazuli.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1963minecraft;wolf_spawn_egg.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1344minecraft;ominous_trial_key.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1214minecraft;magenta_wool.json"
       },
       {
          "path" : "recipes/smithing_table/1258minecraft;mooshroom_spawn_egg.json"
@@ -3440,15 +3446,6 @@
       },
       {
          "path" : "recipes/smithing_table/1237minecraft;mangrove_wall_sign.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1880minecraft;warped_standing_sign.json"
-      },
-      {
-         "path" : "structures/DoorTests/door_maze.mcstructure"
-      },
-      {
-         "path" : "recipes/smithing_table/1676minecraft;splash_potion.6.json"
       },
       {
          "path" : "recipes/smithing_table/1238minecraft;mangrove_wood.json"
@@ -4819,6 +4816,15 @@
          "path" : "recipes/smithing_table/373minecraft;clock.json"
       },
       {
+         "path" : "recipes/smithing_table/1880minecraft;warped_standing_sign.json"
+      },
+      {
+         "path" : "structures/DoorTests/door_maze.mcstructure"
+      },
+      {
+         "path" : "recipes/smithing_table/1676minecraft;splash_potion.6.json"
+      },
+      {
          "path" : "recipes/smithing_table/1678minecraft;splash_potion.8.json"
       },
       {
@@ -6131,9 +6137,6 @@
       },
       {
          "path" : "recipes/smithing_table/384minecraft;cobblestone_slab.json"
-      },
-      {
-         "path" : "recipes/smithing_table/387minecraft;cocoa_beans.json"
       },
       {
          "path" : "recipes/smithing_table/388minecraft;cod.json"

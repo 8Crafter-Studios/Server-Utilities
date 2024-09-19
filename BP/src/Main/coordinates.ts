@@ -231,7 +231,7 @@ export class WorldPosition {
         }
         return worldpositionlist as WorldPosition[]; 
     }
-    anchored(anchor: string) {
+    anchored(anchor: string|"feet"|"eyes") {
         if(this.entity != undefined){if(anchor.toLowerCase().includes("feet")){this.location = this.entity.location; }; if(anchor.toLowerCase().includes("eyes")){this.location = this.entity.getHeadLocation(); }; }; 
         return this as WorldPosition; 
     }
@@ -650,7 +650,7 @@ export interface DimensionRotationLocation{
 export function facingPoint(location: Vector3, otherLocation: Vector3) { 
     const sl = location
     const ol = otherLocation
-    const x = (-ol.x)-sl.x
+    const x = (-ol.x)+sl.x
     const y = ol.y-sl.y
     const z = ol.z-sl.z/*
     let rotx = Math.atan2( y, z );

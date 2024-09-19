@@ -1,6 +1,6 @@
 import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, GameRules, GameRule, StructureSaveMode } from "@minecraft/server";
 import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
-import { getUICustomForm, format_version, srun, dimensionTypeDisplayFormatting, config, dimensionsd, dimensions } from "Main";
+import { getUICustomForm, format_version, srun, dimensionTypeDisplayFormatting, config, dimensionsd, dimensions, dimensionse } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
@@ -564,6 +564,7 @@ export function settings(sourceEntitya) {
     form.button("Home System Settings [§cExperimental§r]", "textures/ui/store_home_icon");
     form.button("TPA System Settings [§cExperimental§r]", "textures/items/ender_pearl");
     form.button("Manage Game Rules", "textures/ui/controller_glyph_color");
+    form.button("Extra Features", "textures/ui/color_plus");
     form.button("Back", "textures/ui/arrow_left"); /*
     form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
     forceShow(form, sourceEntity).then(ra => {
@@ -604,6 +605,9 @@ export function settings(sourceEntitya) {
                 manageGameRulesUI(sourceEntity);
                 break;
             case 10:
+                extraFeaturesSettings(sourceEntity);
+                break;
+            case 11:
                 mainMenu(sourceEntity);
                 break;
             default:
@@ -1363,6 +1367,90 @@ export function personalSettings(sourceEntitya) {
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes)
         world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData)*/
         settings(sourceEntity);
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function extraFeaturesSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form = new ActionFormData();
+    let players = world.getPlayers();
+    form.title("Extra Features Settings");
+    form.body("Extra features are optional features that can be enabled but are disabled by default.");
+    form.button("World Border System", "textures/ui/worldsIcon");
+    form.button("Back", "textures/ui/arrow_left"); /*
+    form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
+    forceShow(form, sourceEntity).then(ra => {
+        let r = ra;
+        // This will stop the code when the player closes the form
+        if (r.canceled)
+            return;
+        let response = r.selection;
+        switch (response) {
+            case 0:
+                worldBorderSettingsDimensionSelector(sourceEntity);
+                break;
+            case 1:
+                settings(sourceEntity);
+                break;
+            default:
+        }
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function worldBorderSettingsDimensionSelector(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form2 = new ActionFormData();
+    form2.button("Overworld");
+    form2.button("Nether");
+    form2.button("The End");
+    form2.button("Back");
+    forceShow(form2, sourceEntity).then(t => {
+        if (t.canceled || t.selection == 3) {
+            settings(sourceEntity);
+            return;
+        }
+        ;
+        worldBorderSettings(sourceEntity, t.selection);
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function worldBorderSettings(sourceEntitya, dimension = 0) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form2 = new ModalFormData();
+    const configobj = config.worldBorder[dimensionse[dimension]];
+    form2.title(`${["Overworld", "Nether", "The End"][dimension]} World Border Settings`);
+    form2.toggle("§l§fEnabled§r§f\nWhether or not the overworld world border is enabled, default is false", configobj.enabled);
+    form2.toggle("§l§fPrevent World Interaction§r§f\nWhether or not to prevent players form interacting with the world when outside of the overworld world border, default is false", configobj.preventWorldInteractionOutsideBorder);
+    form2.dropdown("§l§fMode§r§f\nThe mode of the world border, default is Yeet Players", ["Teleport Players", "Yeet Players", "Damage Players"], configobj.mode);
+    form2.textField("§l§fFrom§r§f\nThe first corner of the world border, each of the values in this should be smaller than their corresponding values in the \"To\" property, default is \"-29999984 -29999984\"", "x z", `${configobj.from.x} ${configobj.from.z}`);
+    form2.textField("§l§fTo§r§f\nThe first corner of the world border, each of the values in this should be larger than their corresponding values in the \"From\" property, default is \"29999984 29999984\"", "x z", `${configobj.to.x} ${configobj.to.z}`);
+    form2.textField("§l§fBuffer§r§f\n(§cONLY APPLIES TO DAMAGE MODE§f)\nThe distance outside of the border that a player must be to start taking damage, the default is 5", "float", String(configobj.buffer));
+    form2.textField("§l§fDamage§r§f\n(§cONLY APPLIES TO DAMAGE MODE§f)\nThe amount of damage to apply, the default is 1", "float", String(configobj.damage));
+    form2.textField("§l§fHorizontal Knockback§r§f\n(§bONLY APPLIES TO YEET MODE§f)\nThe amount of horizontal knockback to apply, the default is 2.5", "float", String(configobj.knockbackH));
+    form2.textField("§l§fVertical Knockback§r§f\n(§bONLY APPLIES TO YEET MODE§f)\nThe amount of vertical knockback to apply, the default is 1.25", "float", String(configobj.knockbackV));
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(t => {
+        if (t.canceled) {
+            worldBorderSettingsDimensionSelector(sourceEntity);
+            return;
+        }
+        ; /*
+        GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
+        ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
+        let [enabled, preventWorldInteraction, mode, from, to, buffer, damage, knockbackH, knockbackV] = t.formValues;
+        configobj.enabled = enabled;
+        configobj.preventWorldInteractionOutsideBorder = preventWorldInteraction;
+        configobj.mode = mode;
+        configobj.from = from == "" ? undefined : { x: JSON.parse(from.split(" ")[0]), z: JSON.parse(from.split(" ")[1]) };
+        configobj.to = to == "" ? undefined : { x: JSON.parse(to.split(" ")[0]), z: JSON.parse(to.split(" ")[1]) };
+        configobj.buffer = buffer == "" ? undefined : Number(buffer);
+        configobj.damage = damage == "" ? undefined : Number(damage);
+        configobj.knockbackH = knockbackH == "" ? undefined : Number(knockbackH);
+        configobj.knockbackV = knockbackV == "" ? undefined : Number(knockbackV);
+        worldBorderSettingsDimensionSelector(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
@@ -3165,7 +3253,7 @@ export function editorStickMenuC(sourceEntitya) {
         console.error(e, e.stack);
     });
 }
-export function editorStickB(sourceEntitya, dimensionLocation) {
+export function editorStickB(sourceEntitya, dimensionLocation = { x: sourceEntitya.location.x, y: sourceEntitya.location.y, z: sourceEntitya.location.z, dimension: sourceEntitya.dimension }) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData();
     let playerList = world.getPlayers(); /*
