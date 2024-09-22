@@ -1603,21 +1603,6 @@
          "path" : "recipes/smithing_table/393minecraft;colored_torch_rg.json"
       },
       {
-         "path" : "recipes/smithing_table/731minecraft;element_9.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1584minecraft;respawn_anchor.5.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1159minecraft;lingering_potion.19.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-ui/tests.ts"
-      },
-      {
-         "path" : "recipes/smithing_table/1630minecraft;skull.4.json"
-      },
-      {
          "path" : "node_modules/@minecraft/vanilla-data/lib/index.d.ts"
       },
       {
@@ -2635,6 +2620,18 @@
          "path" : "recipes/smithing_table/30minecraft;andesite.json"
       },
       {
+         "path" : "recipes/smithing_table/1065minecraft;lapis_lazuli.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1963minecraft;wolf_spawn_egg.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1344minecraft;ominous_trial_key.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1214minecraft;magenta_wool.json"
+      },
+      {
          "path" : "structures/RedstoneTests/itemframe_override_bedrock.mcstructure"
       },
       {
@@ -2648,18 +2645,6 @@
       },
       {
          "path" : "recipes/smithing_table/113minecraft;arrow.72.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1065minecraft;lapis_lazuli.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1963minecraft;wolf_spawn_egg.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1344minecraft;ominous_trial_key.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1214minecraft;magenta_wool.json"
       },
       {
          "path" : "recipes/smithing_table/1258minecraft;mooshroom_spawn_egg.json"
@@ -3142,6 +3127,15 @@
          "path" : "recipes/smithing_table/1158minecraft;lingering_potion.18.json"
       },
       {
+         "path" : "recipes/smithing_table/731minecraft;element_9.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1584minecraft;respawn_anchor.5.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1159minecraft;lingering_potion.19.json"
+      },
+      {
          "path" : "recipes/smithing_table/557minecraft;dead_horn_coral_fan.json"
       },
       {
@@ -3446,6 +3440,15 @@
       },
       {
          "path" : "recipes/smithing_table/1237minecraft;mangrove_wall_sign.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1880minecraft;warped_standing_sign.json"
+      },
+      {
+         "path" : "structures/DoorTests/door_maze.mcstructure"
+      },
+      {
+         "path" : "recipes/smithing_table/1676minecraft;splash_potion.6.json"
       },
       {
          "path" : "recipes/smithing_table/1238minecraft;mangrove_wood.json"
@@ -4735,6 +4738,9 @@
          "path" : "recipes/smithing_table/162minecraft;bamboo_wall_sign.json"
       },
       {
+         "path" : "recipes/smithing_table/1630minecraft;skull.4.json"
+      },
+      {
          "path" : "recipes/smithing_table/1635minecraft;skull_banner_pattern.json"
       },
       {
@@ -4814,15 +4820,6 @@
       },
       {
          "path" : "recipes/smithing_table/373minecraft;clock.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1880minecraft;warped_standing_sign.json"
-      },
-      {
-         "path" : "structures/DoorTests/door_maze.mcstructure"
-      },
-      {
-         "path" : "recipes/smithing_table/1676minecraft;splash_potion.6.json"
       },
       {
          "path" : "recipes/smithing_table/1678minecraft;splash_potion.8.json"
