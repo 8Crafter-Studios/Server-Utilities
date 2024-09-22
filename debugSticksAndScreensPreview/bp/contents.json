@@ -793,6 +793,27 @@
          "path" : "recipes/smithing_table/1059minecraft;jungle_wall_sign.json"
       },
       {
+         "path" : "structures/BlockTests/turtle_eggs_survive_xp.mcstructure"
+      },
+      {
+         "path" : "recipes/smithing_table/1825minecraft;tropical_fish.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1582minecraft;respawn_anchor.3.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1793minecraft;structure_block.json"
+      },
+      {
+         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/tsconfig.json"
+      },
+      {
+         "path" : "items/ultra_bundle.json"
+      },
+      {
+         "path" : "recipes/smithing_table/387minecraft;cocoa_beans.json"
+      },
+      {
          "path" : "recipes/smithing_table/7minecraft;acacia_hanging_sign.json"
       },
       {
@@ -1564,21 +1585,6 @@
          "path" : "recipes/smithing_table/1348minecraft;orange_concrete.json"
       },
       {
-         "path" : "structures/BlockTests/turtle_eggs_survive_xp.mcstructure"
-      },
-      {
-         "path" : "recipes/smithing_table/1825minecraft;tropical_fish.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1582minecraft;respawn_anchor.3.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1793minecraft;structure_block.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/tsconfig.json"
-      },
-      {
          "path" : "recipes/smithing_table/1445minecraft;potion.-1.json"
       },
       {
@@ -1595,21 +1601,6 @@
       },
       {
          "path" : "recipes/smithing_table/393minecraft;colored_torch_rg.json"
-      },
-      {
-         "path" : "recipes/smithing_table/731minecraft;element_9.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1584minecraft;respawn_anchor.5.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1159minecraft;lingering_potion.19.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-ui/tests.ts"
-      },
-      {
-         "path" : "recipes/smithing_table/1630minecraft;skull.4.json"
       },
       {
          "path" : "node_modules/@minecraft/vanilla-data/lib/index.d.ts"
@@ -3134,6 +3125,15 @@
       },
       {
          "path" : "recipes/smithing_table/1158minecraft;lingering_potion.18.json"
+      },
+      {
+         "path" : "recipes/smithing_table/731minecraft;element_9.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1584minecraft;respawn_anchor.5.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1159minecraft;lingering_potion.19.json"
       },
       {
          "path" : "recipes/smithing_table/557minecraft;dead_horn_coral_fan.json"
@@ -4738,6 +4738,9 @@
          "path" : "recipes/smithing_table/162minecraft;bamboo_wall_sign.json"
       },
       {
+         "path" : "recipes/smithing_table/1630minecraft;skull.4.json"
+      },
+      {
          "path" : "recipes/smithing_table/1635minecraft;skull_banner_pattern.json"
       },
       {
@@ -6131,9 +6134,6 @@
       },
       {
          "path" : "recipes/smithing_table/384minecraft;cobblestone_slab.json"
-      },
-      {
-         "path" : "recipes/smithing_table/387minecraft;cocoa_beans.json"
       },
       {
          "path" : "recipes/smithing_table/388minecraft;cod.json"

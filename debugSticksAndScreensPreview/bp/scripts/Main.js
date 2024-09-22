@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.21.0";
+export const format_version = "1.22.0-preview.20+BULID.1";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -56,7 +56,8 @@ import "@minecraft/math.js";
 export const mainmetaimport = import.meta;
 export const subscribedEvents = {};
 globalThis.tempVariables = {};
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode } from "@minecraft/server";
+export const editorStickMenuOpeningAsyncCancelActionNumbers = {};
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode, LocationOutOfWorldBoundariesError } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector, dirmap, diroffsetmap, diroffsetothersmap, generateMinecraftConeBG } from "Main/coordinates";
@@ -91,7 +92,7 @@ import { disableWatchdog } from "@minecraft/debug-utilities";*/
 import { listoftransformrecipes } from "transformrecipes";
 import { chatMessage, patternColors, patternColorsMap, patternFunctionList, evaluateChatColorType, chatSend } from "Main/chat";
 import { targetSelectorAllListE, targetSelectorB, targetSelectorAllListC, clearContainer } from "Main/command_utilities";
-import { tryget, customModulo, psend, JSONStringify } from "Main/utilities";
+import { tryget, customModulo, psend, JSONStringify, bsend } from "Main/utilities";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -208,6 +209,170 @@ export class config {
     static set undoClipboardMode(undoClipboardMode) { world.setDynamicProperty("andexdbSettings:undoClipboardMode", undoClipboardMode ?? StructureSaveMode.Memory); }
     static get spawnCommandLocation() { const v = tryget(() => JSON.parse(String(world.getDynamicProperty("andexdbSettings:spawnCommandLocation") ?? '{x: null, y: null, z: null, dimension: "overworld"}'))) ?? { x: null, y: null, z: null, dimension: "overworld" }; return tryget(() => ({ x: v.x, y: v.y, z: v.z, dimension: dimensionsb[String(v.dimension)] ?? overworld })) ?? { x: null, y: null, z: null, dimension: overworld }; }
     static set spawnCommandLocation(spawnCommandLocation) { world.setDynamicProperty("andexdbSettings:spawnCommandLocation", JSON.stringify({ x: spawnCommandLocation.x, y: spawnCommandLocation.y, z: spawnCommandLocation.z, dimension: spawnCommandLocation.dimension ?? overworld })); }
+    static get worldBorder() {
+        return {
+            get overworld() {
+                return {
+                    get enabled() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.enabled") ?? false); },
+                    set enabled(enabled) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.enabled", enabled ?? false); },
+                    get from() { return tryget(() => JSON.parse(String(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.from") ?? '{x: -29999984, z: -29999984}'))) ?? { x: -29999984, z: -29999984 }; },
+                    set from(from) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.from", JSON.stringify(from ?? { x: -29999984, z: -29999984 })); },
+                    get to() { return tryget(() => JSON.parse(String(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.to") ?? '{x: 29999984, z: 29999984}'))) ?? { x: 29999984, z: 29999984 }; },
+                    set to(to) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.to", JSON.stringify(to ?? { x: 29999984, z: 29999984 })); },
+                    get mode() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.mode") ?? 1); },
+                    set mode(mode) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.mode", mode ?? 1); },
+                    get damage() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.damageMode.damage") ?? 1); },
+                    set damage(damage) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.damageMode.damage", damage ?? 1); },
+                    get knockbackH() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.knockbackMode.knockbackH") ?? 2.5); },
+                    set knockbackH(horizontalKnockback) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.knockbackMode.knockbackH", horizontalKnockback ?? 2.5); },
+                    get knockbackV() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.knockbackMode.knockbackV") ?? 1.25); },
+                    set knockbackV(verticalKnockback) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.knockbackMode.knockbackV", verticalKnockback ?? 1.25); },
+                    get preventWorldInteractionOutsideBorder() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.preventWorldInteractionOutsideBorder") ?? false); },
+                    set preventWorldInteractionOutsideBorder(preventWorldInteractionOutsideBorder) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.preventWorldInteractionOutsideBorder", preventWorldInteractionOutsideBorder ?? false); },
+                    get tintIntensity() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.tintIntensity") ?? 1); },
+                    set tintIntensity(tintIntensity) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.tintIntensity", tintIntensity ?? 1); },
+                    /**
+                     * d
+                     * @todo
+                     */
+                    get warnPlayersInChat() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.warnPlayersInChat") ?? false); },
+                    /**
+                     * c
+                     * @todo
+                     */
+                    set warnPlayersInChat(warnPlayersInChat) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.warnPlayersInChat", warnPlayersInChat ?? false); },
+                    /**
+                     * b
+                     * @todo
+                     */
+                    get showActionbarWarningWhenOutsideBorder() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.showActionbarWarningWhenOutsideBorder") ?? false); },
+                    /**
+                     * a
+                     * @todo
+                     */
+                    set showActionbarWarningWhenOutsideBorder(showActionbarWarningWhenOutsideBorder) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.showActionbarWarningWhenOutsideBorder", showActionbarWarningWhenOutsideBorder ?? false); },
+                    get showRedScreenOutlineWhenOutsideBorder() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.showRedScreenOutlineWhenOutsideBorder") ?? true); },
+                    set showRedScreenOutlineWhenOutsideBorder(showRedScreenOutlineWhenOutsideBorder) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.showRedScreenOutlineWhenOutsideBorder", showRedScreenOutlineWhenOutsideBorder ?? true); },
+                    get showBorderParticles() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.showBorderParticles") ?? true); },
+                    set showBorderParticles(showBorderParticles) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.showBorderParticles", showBorderParticles ?? true); },
+                    /**
+                     * @deprecated
+                     */
+                    get useShadersCompatibleBorderParticles() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.useShadersCompatibleBorderParticles") ?? false); },
+                    /**
+                     * @deprecated
+                     */
+                    set useShadersCompatibleBorderParticles(useShadersCompatibleBorderParticles) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.useShadersCompatibleBorderParticles", useShadersCompatibleBorderParticles ?? false); },
+                    get buffer() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:overworld.buffer") ?? 5); },
+                    set buffer(buffer) { world.setDynamicProperty("andexdbWorldBorderSettings:overworld.buffer", buffer ?? 5); }
+                };
+            },
+            get nether() {
+                return {
+                    get enabled() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:nether.enabled") ?? false); },
+                    set enabled(enabled) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.enabled", enabled ?? false); },
+                    get from() { return tryget(() => JSON.parse(String(world.getDynamicProperty("andexdbWorldBorderSettings:nether.from") ?? '{x: -29999984, z: -29999984}'))) ?? { x: -29999984, z: -29999984 }; },
+                    set from(from) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.from", JSON.stringify(from ?? { x: -29999984, z: -29999984 })); },
+                    get to() { return tryget(() => JSON.parse(String(world.getDynamicProperty("andexdbWorldBorderSettings:nether.to") ?? '{x: 29999984, z: 29999984}'))) ?? { x: 29999984, z: 29999984 }; },
+                    set to(to) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.to", JSON.stringify(to ?? { x: 29999984, z: 29999984 })); },
+                    get mode() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:nether.mode") ?? 1); },
+                    set mode(mode) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.mode", mode ?? 1); },
+                    get damage() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:nether.damageMode.damage") ?? 1); },
+                    set damage(damage) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.damageMode.damage", damage ?? 1); },
+                    get knockbackH() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:nether.knockbackMode.knockbackH") ?? 2.5); },
+                    set knockbackH(horizontalKnockback) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.knockbackMode.knockbackH", horizontalKnockback ?? 2.5); },
+                    get knockbackV() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:nether.knockbackMode.knockbackV") ?? 1.25); },
+                    set knockbackV(verticalKnockback) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.knockbackMode.knockbackV", verticalKnockback ?? 1.25); },
+                    get preventWorldInteractionOutsideBorder() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:nether.preventWorldInteractionOutsideBorder") ?? false); },
+                    set preventWorldInteractionOutsideBorder(preventWorldInteractionOutsideBorder) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.preventWorldInteractionOutsideBorder", preventWorldInteractionOutsideBorder ?? false); },
+                    get tintIntensity() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:nether.tintIntensity") ?? 1); },
+                    set tintIntensity(tintIntensity) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.tintIntensity", tintIntensity ?? 1); },
+                    /**
+                     * @todo
+                     */
+                    get warnPlayersInChat() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:nether.warnPlayersInChat") ?? false); },
+                    /**
+                     * @todo
+                     */
+                    set warnPlayersInChat(warnPlayersInChat) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.warnPlayersInChat", warnPlayersInChat ?? false); },
+                    /**
+                     * @todo
+                     */
+                    get showActionbarWarningWhenOutsideBorder() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:nether.showActionbarWarningWhenOutsideBorder") ?? false); },
+                    /**
+                     * @todo
+                     */
+                    set showActionbarWarningWhenOutsideBorder(showActionbarWarningWhenOutsideBorder) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.showActionbarWarningWhenOutsideBorder", showActionbarWarningWhenOutsideBorder ?? false); },
+                    get showRedScreenOutlineWhenOutsideBorder() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:nether.showRedScreenOutlineWhenOutsideBorder") ?? true); },
+                    set showRedScreenOutlineWhenOutsideBorder(showRedScreenOutlineWhenOutsideBorder) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.showRedScreenOutlineWhenOutsideBorder", showRedScreenOutlineWhenOutsideBorder ?? true); },
+                    get showBorderParticles() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:nether.showBorderParticles") ?? true); },
+                    set showBorderParticles(showBorderParticles) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.showBorderParticles", showBorderParticles ?? true); },
+                    /**
+                     * @deprecated
+                     */
+                    get useShadersCompatibleBorderParticles() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:nether.useShadersCompatibleBorderParticles") ?? false); },
+                    /**
+                     * @deprecated
+                     */
+                    set useShadersCompatibleBorderParticles(useShadersCompatibleBorderParticles) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.useShadersCompatibleBorderParticles", useShadersCompatibleBorderParticles ?? false); },
+                    get buffer() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:nether.buffer") ?? 5); },
+                    set buffer(buffer) { world.setDynamicProperty("andexdbWorldBorderSettings:nether.buffer", buffer ?? 5); }
+                };
+            },
+            get the_end() {
+                return {
+                    get enabled() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.enabled") ?? false); },
+                    set enabled(enabled) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.enabled", enabled ?? false); },
+                    get from() { return tryget(() => JSON.parse(String(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.from") ?? '{x: -29999984, z: -29999984}'))) ?? { x: -29999984, z: -29999984 }; },
+                    set from(from) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.from", JSON.stringify(from ?? { x: -29999984, z: -29999984 })); },
+                    get to() { return tryget(() => JSON.parse(String(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.to") ?? '{x: 29999984, z: 29999984}'))) ?? { x: 29999984, z: 29999984 }; },
+                    set to(to) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.to", JSON.stringify(to ?? { x: 29999984, z: 29999984 })); },
+                    get mode() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.mode") ?? 1); },
+                    set mode(mode) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.mode", mode ?? 1); },
+                    get damage() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.damageMode.damage") ?? 1); },
+                    set damage(damage) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.damageMode.damage", damage ?? 1); },
+                    get knockbackH() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.knockbackMode.knockbackH") ?? 2.5); },
+                    set knockbackH(horizontalKnockback) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.knockbackMode.knockbackH", horizontalKnockback ?? 2.5); },
+                    get knockbackV() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.knockbackMode.knockbackV") ?? 1.25); },
+                    set knockbackV(verticalKnockback) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.knockbackMode.knockbackV", verticalKnockback ?? 1.25); },
+                    get preventWorldInteractionOutsideBorder() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.preventWorldInteractionOutsideBorder") ?? false); },
+                    set preventWorldInteractionOutsideBorder(preventWorldInteractionOutsideBorder) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.preventWorldInteractionOutsideBorder", preventWorldInteractionOutsideBorder ?? false); },
+                    get tintIntensity() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.tintIntensity") ?? 1); },
+                    set tintIntensity(tintIntensity) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.tintIntensity", tintIntensity ?? 1); },
+                    /**
+                     * @todo
+                     */
+                    get warnPlayersInChat() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.warnPlayersInChat") ?? false); },
+                    /**
+                     * @todo
+                     */
+                    set warnPlayersInChat(warnPlayersInChat) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.warnPlayersInChat", warnPlayersInChat ?? false); },
+                    /**
+                     * @todo
+                     */
+                    get showActionbarWarningWhenOutsideBorder() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.showActionbarWarningWhenOutsideBorder") ?? false); },
+                    /**
+                     * @todo
+                     */
+                    set showActionbarWarningWhenOutsideBorder(showActionbarWarningWhenOutsideBorder) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.showActionbarWarningWhenOutsideBorder", showActionbarWarningWhenOutsideBorder ?? false); },
+                    get showRedScreenOutlineWhenOutsideBorder() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.showRedScreenOutlineWhenOutsideBorder") ?? true); },
+                    set showRedScreenOutlineWhenOutsideBorder(showRedScreenOutlineWhenOutsideBorder) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.showRedScreenOutlineWhenOutsideBorder", showRedScreenOutlineWhenOutsideBorder ?? true); },
+                    get showBorderParticles() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.showBorderParticles") ?? true); },
+                    set showBorderParticles(showBorderParticles) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.showBorderParticles", showBorderParticles ?? true); },
+                    /**
+                     * @deprecated
+                     */
+                    get useShadersCompatibleBorderParticles() { return Boolean(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.useShadersCompatibleBorderParticles") ?? false); },
+                    /**
+                     * @deprecated
+                     */
+                    set useShadersCompatibleBorderParticles(useShadersCompatibleBorderParticles) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.useShadersCompatibleBorderParticles", useShadersCompatibleBorderParticles ?? false); },
+                    get buffer() { return Number(world.getDynamicProperty("andexdbWorldBorderSettings:the_end.buffer") ?? 5); },
+                    set buffer(buffer) { world.setDynamicProperty("andexdbWorldBorderSettings:the_end.buffer", buffer ?? 5); }
+                };
+            }
+        };
+    }
     static reset() { }
 }
 export class worldPlayers {
@@ -4373,25 +4538,48 @@ export function debugAction(block, player, mode, direction) {
     console.warn(Object.entries(block.permutation.getAllStates()))*/
 }
 export function getNextTopSolidBlockAbovePosition(location, dimension, onlySolid = false, allowLiquidAbove = true, allowNonSolidBlocksAbove = false, allowLiquidBelow = false) {
-    let block = tryget(() => dimension.getBlock(location));
-    let readyToSearch = !(onlySolid ? !block.isSolid : (block.isLiquid && allowLiquidAbove) || (block.isSolid && allowNonSolidBlocksAbove) || block.isAir);
+    let block = tryget(() => dimension.getBlock({ x: location.x, y: Math.max(Math.min(location.y, dimension.heightRange.max), dimension.heightRange.min), z: location.z }));
+    let readyToSearch = !(onlySolid
+        ? !block.isSolid
+        : (block.isLiquid && allowLiquidAbove) || (block.isSolid && allowNonSolidBlocksAbove) || block.isAir);
     while (block.y <= dimension.heightRange.max) {
-        if (((block.isLiquid && allowLiquidAbove) || (block.isSolid && allowNonSolidBlocksAbove) || block.isAir) && !readyToSearch) {
+        if (((block.isLiquid && allowLiquidAbove) || (block.isSolid && allowNonSolidBlocksAbove) || block.isAir) &&
+            !readyToSearch) {
             block = block.above(1);
         }
         else {
-            if ((onlySolid ? !block.isSolid : (block.isLiquid && allowLiquidAbove) || (block.isSolid && allowNonSolidBlocksAbove) || block.isAir) && readyToSearch && (onlySolid ? block.below(1).isSolid : !((!allowLiquidBelow ? block.below(1).isLiquid : false) || block.below(1).isAir))) {
+            if ((onlySolid
+                ? !block.isSolid
+                : (block.isLiquid && allowLiquidAbove) ||
+                    (block.isSolid && allowNonSolidBlocksAbove) ||
+                    block.isAir) &&
+                readyToSearch &&
+                (onlySolid
+                    ? block.below(1).isSolid
+                    : !((!allowLiquidBelow ? block.below(1).isLiquid : false) || block.below(1).isAir))) {
                 return block;
             }
             else {
-                block = block.above(1);
+                try {
+                    block = block.above(1);
+                }
+                catch (e) {
+                    if (e instanceof LocationOutOfWorldBoundariesError) {
+                        throw (new Error("No top solid block could be found above the provided position."));
+                    }
+                    else {
+                        throw (e);
+                    }
+                }
+                ;
             }
         }
-        ;
-        readyToSearch = readyToSearch ? true : !(onlySolid ? !block.isSolid : (block.isLiquid && allowLiquidAbove) || (block.isSolid && allowNonSolidBlocksAbove) || block.isAir);
+        readyToSearch = readyToSearch
+            ? true
+            : !(onlySolid
+                ? !block.isSolid
+                : (block.isLiquid && allowLiquidAbove) || (block.isSolid && allowNonSolidBlocksAbove) || block.isAir);
     }
-    ;
-    return getTopSolidBlock(location, dimension);
 }
 export function getNextTopSolidBlockBelowPosition(location, dimension, onlySolid = false, allowLiquidAbove = true, allowNonSolidBlocksAbove = false, allowLiquidBelow = false) {
     let block = tryget(() => dimension.getBlock(location));
@@ -4746,18 +4934,126 @@ catch { }
   console.warn(event.dimension);*/ /*
 }
 });*/ //removed in minecraft 1.20.60 >:(
+/**
+ * @remarks Maps the dimension IDs to lowercase names of the dimensions types that all include "The" before the dimension name.
+ * @property overworld: the overworld
+ * @property minecraft:overworld: the overworld
+ * @property nether: the nether
+ * @property minecraft:nether: the nether
+ * @property the_end: the end
+ * @property minecraft:the_end: the end
+ */
 export const dimensionTypeDisplayFormatting = { "minecraft:overworld": "the overworld", "overworld": "the overworld", "minecraft:nether": "the nether", "nether": "the nether", "minecraft:the_end": "the end", "the_end": "the end" };
+/**
+ * @remarks Maps the dimension IDs to lowercase names of the dimensions types.
+ * @property overworld: overworld
+ * @property minecraft:overworld: overworld
+ * @property nether: nether
+ * @property minecraft:nether: nether
+ * @property the_end: the end
+ * @property minecraft:the_end: the end
+ */
 export const dimensionTypeDisplayFormattingB = { "minecraft:overworld": "overworld", "overworld": "overworld", "minecraft:nether": "nether", "nether": "nether", "minecraft:the_end": "the end", "the_end": "the end" };
+/**
+ * @remarks Maps the dimension IDs to titlecase names of the dimensions types that all include "The" before the dimension name.
+ * @property overworld: The Overworld
+ * @property minecraft:overworld: The Overworld
+ * @property nether: The Nether
+ * @property minecraft:nether: The Nether
+ * @property the_end: The End
+ * @property minecraft:the_end: The End
+ */
 export const dimensionTypeDisplayFormattingC = { "minecraft:overworld": "The Overworld", "overworld": "The Overworld", "minecraft:nether": "The Nether", "nether": "The Nether", "minecraft:the_end": "The End", "the_end": "The End" };
+/**
+ * @remarks Maps the dimension IDs to titlecase names of the dimensions types.
+ * @property overworld: Overworld
+ * @property minecraft:overworld: Overworld
+ * @property nether: Nether
+ * @property minecraft:nether: Nether
+ * @property the_end: The End
+ * @property minecraft:the_end: The End
+ */
 export const dimensionTypeDisplayFormattingD = { "minecraft:overworld": "Overworld", "overworld": "Overworld", "minecraft:nether": "Nether", "nether": "Nether", "minecraft:the_end": "The End", "the_end": "The End" };
+/**
+ * @remarks Maps the dimension IDs to titlecase names of the dimensions types that have formatting codes.
+ * @property overworld: §aOverworld
+ * @property minecraft:overworld: §aOverworld
+ * @property nether: §cNether
+ * @property minecraft:nether: §cNether
+ * @property the_end: §dThe End
+ * @property minecraft:the_end: §dThe End
+ */
 export const dimensionTypeDisplayFormattingE = { "minecraft:overworld": "§aOverworld", "overworld": "§aOverworld", "minecraft:nether": "§cNether", "nether": "§cNether", "minecraft:the_end": "§dThe End", "the_end": "§dThe End" };
+/**
+ * @remarks Maps the dimension IDs to their non-namespaces versions.
+ * @property overworld: overworld
+ * @property minecraft:overworld: overworld
+ * @property nether: nether
+ * @property minecraft:nether: nether
+ * @property the_end: the_end
+ * @property minecraft:the_end: the_end
+ */
+export const dimensionTypeDisplayFormattingF = { "minecraft:overworld": "overworld", "overworld": "overworld", "minecraft:nether": "nether", "nether": "nether", "minecraft:the_end": "the_end", "the_end": "the_end" };
+/**
+ * @remarks An array containing all of the dimension objects.
+ * @property 0: Overworld
+ * @property 1: Nether
+ * @property 2: The End
+ */
 export const dimensions = [world.getDimension("overworld"), world.getDimension("nether"), world.getDimension("the_end")];
+/**
+ * @remarks Maps the namespaced dimension IDs to the dimensions objects with the same IDs.
+ * @property minecraft:overworld: Overworld
+ * @property minecraft:nether: Nether
+ * @property minecraft:the_end: The End
+ */
 export const dimensionsb = { "minecraft:overworld": world.getDimension("overworld"), "minecraft:nether": world.getDimension("nether"), "minecraft:the_end": world.getDimension("the_end") };
+/**
+ * @remarks Maps the non-namespaced dimension IDs to the dimensions objects with the same IDs.
+ * @property overworld: Overworld
+ * @property nether: Nether
+ * @property the_end: The End
+ */
 export const dimensionsc = { "overworld": world.getDimension("overworld"), "nether": world.getDimension("nether"), "the_end": world.getDimension("the_end") };
+/**
+ * @remarks An array containing all of the namespaced dimension IDs.
+ * ```typescript
+ * 0: "minecraft:overworld"
+ * 1: "minecraft:nether"
+ * 2: "minecraft:the_end"
+ * ```
+ */
 export const dimensionsd = ["minecraft:overworld", "minecraft:nether", "minecraft:the_end"];
+/**
+ * @remarks An array containing all of the non-namespaced dimension IDs.
+ * ```typescript
+ * 0: "overworld"
+ * 1: "nether"
+ * 2: "the_end"
+ * ```
+ */
 export const dimensionse = ["overworld", "nether", "the_end"];
+/**
+ * @remarks Maps the dimension IDs to the dimensions objects with the same IDs.
+ * @property minecraft:overworld: Overworld
+ * @property minecraft:nether: Nether
+ * @property minecraft:the_end: The End
+ * @property overworld: Overworld
+ * @property nether: Nether
+ * @property the_end: The End
+ */
+export const dimensionsf = { "minecraft:overworld": world.getDimension("overworld"), "minecraft:nether": world.getDimension("nether"), "minecraft:the_end": world.getDimension("the_end"), "overworld": world.getDimension("overworld"), "nether": world.getDimension("nether"), "the_end": world.getDimension("the_end") };
+/**
+ * @remarks The overworld dimension object.
+ */
 export const overworld = world.getDimension("overworld");
+/**
+ * @remarks The nether dimension object.
+ */
 export const nether = world.getDimension("nether");
+/**
+ * @remarks The end dimension object.
+ */
 export const the_end = world.getDimension("the_end");
 subscribedEvents.beforeEffectAdd = world.beforeEvents.effectAdd.subscribe(event => {
     try {
@@ -4792,7 +5088,7 @@ subscribedEvents.beforePlayerGameModeChange = world.beforeEvents.playerGameModeC
         } });
     }
 });
-world.beforeEvents.weatherChange.subscribe(event => {
+subscribedEvents.beforeWeatherChange = world.beforeEvents.weatherChange.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:weatherChange")));
     }
@@ -4806,7 +5102,7 @@ world.beforeEvents.weatherChange.subscribe(event => {
 world.beforeEvents.itemDefinitionEvent.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });*/ //removed in 1.20.70.21
-world.beforeEvents.playerInteractWithEntity.subscribe(event => {
+subscribedEvents.beforePlayerInteractWithEntity = world.beforeEvents.playerInteractWithEntity.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")));
@@ -5009,6 +5305,469 @@ world.afterEvents.buttonPush.subscribe(event => {
         console.error(e, e.stack);
     }
 });
+export const outsideBorderTintShownTimes = {};
+export const outsideBorderTintParticleMolangVariableMapObject = new MolangVariableMap();
+outsideBorderTintParticleMolangVariableMapObject.setFloat("variable.max_distance_from_camera", 0.25);
+outsideBorderTintParticleMolangVariableMapObject.setFloat("variable.max_particle_age", 0.5);
+system.runInterval(() => {
+    if (config.worldBorder.overworld.enabled) {
+        const borderSettings = Object.fromEntries(Object.entries(config.worldBorder.overworld));
+        world.getAllPlayers().filter(p => p.dimension.id == "minecraft:overworld").forEach(p => {
+            let loc = undefined;
+            const intensity = Number(p.getDynamicProperty("outsideBorderTintIntensity") ?? borderSettings.tintIntensity);
+            if (intensity != 0 && !Number.isNaN(intensity)) {
+                if (Date.now() >= (outsideBorderTintShownTimes[p.id] + Number(p.getDynamicProperty("outsideBorderTintShowIntervalMS") ?? 500)) || !!!outsideBorderTintShownTimes[p.id]) {
+                    if (borderSettings.showRedScreenOutlineWhenOutsideBorder && (p.location.x > borderSettings.to.x || p.location.z > borderSettings.to.z || p.location.x < borderSettings.from.x || p.location.z < borderSettings.from.z)) {
+                        loc = WorldPosition.fromentity(p).anchored("eyes").offset({ x: 0, y: 0.1, z: 0 }).positioned("^^^0.2").location;
+                        outsideBorderTintShownTimes[p.id] = Date.now();
+                        for (let i = 0; i < intensity; i++) {
+                            p.spawnParticle("andexdb:world_border_red_screen_tint", loc, outsideBorderTintParticleMolangVariableMapObject);
+                        }
+                    }
+                }
+            }
+            if ((!p.hasTag("canBypassWorldBorder")) && (p.location.x > borderSettings.to.x || p.location.z > borderSettings.to.z || p.location.x < borderSettings.from.x || p.location.z < borderSettings.from.z)) {
+                if (borderSettings.mode == 0) {
+                    if (!p.tryTeleport({
+                        x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                        y: p.location.y,
+                        z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                    })) {
+                        try {
+                            p.teleport({
+                                x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                                y: getNextTopSolidBlockAbovePosition({
+                                    x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                                    y: p.location.y,
+                                    z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                                }, p.dimension).y,
+                                z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                            });
+                        }
+                        catch (e) {
+                            p.teleport({
+                                x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                                y: getTopSolidBlock({
+                                    x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                                    y: p.location.y,
+                                    z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                                }, p.dimension).y,
+                                z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                            });
+                        }
+                    }
+                }
+                else if (borderSettings.mode == 1) {
+                    let values = facingPoint(p.location, {
+                        x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                        y: p.location.y,
+                        z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                    });
+                    let rot = values.rot;
+                    let difference = values.difference;
+                    let dv = anglesToDirectionVectorDeg(rot.x, rot.y);
+                    p.applyKnockback(dv.x, dv.z, borderSettings.knockbackH ?? 2.5, borderSettings.knockbackV ?? 1.25);
+                }
+                else if (borderSettings.mode == 2) {
+                    if (p.location.x > borderSettings.to.x + borderSettings.buffer || p.location.z > borderSettings.to.z + borderSettings.buffer || p.location.x < borderSettings.from.x - borderSettings.buffer || p.location.z < borderSettings.from.z - borderSettings.buffer) {
+                        p.applyDamage(borderSettings.damage, { cause: EntityDamageCause.void });
+                    }
+                }
+            }
+            if (borderSettings.showBorderParticles) {
+                const borderXDistance = Math.min(100, Math.abs(borderSettings.to.x - borderSettings.from.x));
+                let borderXOffset = 0;
+                const borderZDistance = Math.min(100, Math.abs(borderSettings.to.z - borderSettings.from.z));
+                let borderZOffset = 0;
+                if (borderSettings.to.x - p.location.x < (borderXDistance / 2)) {
+                    borderXOffset -= (borderXDistance / 2) - (borderSettings.to.x - p.location.x);
+                }
+                if (borderSettings.from.x - p.location.x > -(borderXDistance / 2)) {
+                    borderXOffset -= -(borderXDistance / 2) - (borderSettings.from.x - p.location.x);
+                }
+                if (borderSettings.to.z - p.location.z < (borderZDistance / 2)) {
+                    borderZOffset -= (borderZDistance / 2) - (borderSettings.to.z - p.location.z);
+                }
+                if (borderSettings.from.z - p.location.z > -(borderZDistance / 2)) {
+                    borderZOffset -= -(borderZDistance / 2) - (borderSettings.from.z - p.location.z);
+                }
+                if ((p.getDynamicProperty("useShadersCompatibleParticles") ?? false) == true || borderSettings.useShadersCompatibleBorderParticles) {
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && !(p.location.z > borderSettings.to.z + 50) && !(p.location.z < borderSettings.from.z - 50)) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                    }
+                    if (Math.abs(borderSettings.to.z - p.location.z) <= 50 && !(p.location.x > borderSettings.to.x + 50) && !(p.location.x < borderSettings.from.x - 50)) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { z: borderSettings.to.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { z: borderSettings.to.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && !(p.location.z > borderSettings.to.z + 50) && !(p.location.z < borderSettings.from.z - 50)) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                    }
+                    if (Math.abs(borderSettings.from.z - p.location.z) <= 50 && !(p.location.x > borderSettings.to.x + 50) && !(p.location.x < borderSettings.from.x - 50)) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { z: borderSettings.from.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { z: borderSettings.from.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                    }
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && Math.abs(borderSettings.to.z - p.location.z) <= 50) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                    }
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && Math.abs(borderSettings.from.z - p.location.z) <= 50) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && Math.abs(borderSettings.to.z - p.location.z) <= 50) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && Math.abs(borderSettings.from.z - p.location.z) <= 50) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                    }
+                }
+                else {
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && !(p.location.z > borderSettings.to.z + 50) && !(p.location.z < borderSettings.from.z - 50)) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                    }
+                    if (Math.abs(borderSettings.to.z - p.location.z) <= 50 && !(p.location.x > borderSettings.to.x + 50) && !(p.location.x < borderSettings.from.x - 50)) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { z: borderSettings.to.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { z: borderSettings.to.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && !(p.location.z > borderSettings.to.z + 50) && !(p.location.z < borderSettings.from.z - 50)) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                    }
+                    if (Math.abs(borderSettings.from.z - p.location.z) <= 50 && !(p.location.x > borderSettings.to.x + 50) && !(p.location.x < borderSettings.from.x - 50)) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { z: borderSettings.from.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { z: borderSettings.from.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                    }
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && Math.abs(borderSettings.to.z - p.location.z) <= 50) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                    }
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && Math.abs(borderSettings.from.z - p.location.z) <= 50) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && Math.abs(borderSettings.to.z - p.location.z) <= 50) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && Math.abs(borderSettings.from.z - p.location.z) <= 50) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                    }
+                }
+            }
+        });
+    }
+    if (config.worldBorder.nether.enabled) {
+        const borderSettings = Object.fromEntries(Object.entries(config.worldBorder.nether));
+        world.getAllPlayers().filter(p => p.dimension.id == "minecraft:nether").forEach(p => {
+            let loc = undefined;
+            const intensity = Number(p.getDynamicProperty("outsideBorderTintIntensity") ?? borderSettings.tintIntensity);
+            if (intensity != 0 && !Number.isNaN(intensity)) {
+                if (Date.now() >= (outsideBorderTintShownTimes[p.id] + Number(p.getDynamicProperty("outsideBorderTintShowIntervalMS") ?? 500)) || !!!outsideBorderTintShownTimes[p.id]) {
+                    if (borderSettings.showRedScreenOutlineWhenOutsideBorder && (p.location.x > borderSettings.to.x || p.location.z > borderSettings.to.z || p.location.x < borderSettings.from.x || p.location.z < borderSettings.from.z)) {
+                        loc = WorldPosition.fromentity(p).anchored("eyes").offset({ x: 0, y: 0.1, z: 0 }).positioned("^^^0.2").location;
+                        outsideBorderTintShownTimes[p.id] = Date.now();
+                        for (let i = 0; i < intensity; i++) {
+                            p.spawnParticle("andexdb:world_border_red_screen_tint", loc, outsideBorderTintParticleMolangVariableMapObject);
+                        }
+                    }
+                }
+            }
+            if ((!p.hasTag("canBypassWorldBorder")) && (p.location.x > borderSettings.to.x || p.location.z > borderSettings.to.z || p.location.x < borderSettings.from.x || p.location.z < borderSettings.from.z)) {
+                if (borderSettings.mode == 0) {
+                    if (!p.tryTeleport({
+                        x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                        y: p.location.y,
+                        z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                    })) {
+                        try {
+                            p.teleport({
+                                x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                                y: getNextTopSolidBlockAbovePosition({
+                                    x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                                    y: p.location.y,
+                                    z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                                }, p.dimension).y,
+                                z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                            });
+                        }
+                        catch (e) {
+                            p.teleport({
+                                x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                                y: getTopSolidBlock({
+                                    x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                                    y: p.location.y,
+                                    z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                                }, p.dimension).y,
+                                z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                            });
+                        }
+                    }
+                }
+                else if (borderSettings.mode == 1) {
+                    let values = facingPoint(p.location, {
+                        x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                        y: p.location.y,
+                        z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                    });
+                    let rot = values.rot;
+                    let difference = values.difference;
+                    let dv = anglesToDirectionVectorDeg(rot.x, rot.y);
+                    p.applyKnockback(dv.x, dv.z, borderSettings.knockbackH ?? 2.5, borderSettings.knockbackV ?? 1.25);
+                }
+                else if (borderSettings.mode == 2) {
+                    if (p.location.x > borderSettings.to.x + borderSettings.buffer || p.location.z > borderSettings.to.z + borderSettings.buffer || p.location.x < borderSettings.from.x - borderSettings.buffer || p.location.z < borderSettings.from.z - borderSettings.buffer) {
+                        p.applyDamage(borderSettings.damage, { cause: EntityDamageCause.void });
+                    }
+                }
+            }
+            if (borderSettings.showBorderParticles) {
+                const borderXDistance = Math.min(100, Math.abs(borderSettings.to.x - borderSettings.from.x));
+                let borderXOffset = 0;
+                const borderZDistance = Math.min(100, Math.abs(borderSettings.to.z - borderSettings.from.z));
+                let borderZOffset = 0;
+                if (borderSettings.to.x - p.location.x < (borderXDistance / 2)) {
+                    borderXOffset -= (borderXDistance / 2) - (borderSettings.to.x - p.location.x);
+                }
+                if (borderSettings.from.x - p.location.x > -(borderXDistance / 2)) {
+                    borderXOffset -= -(borderXDistance / 2) - (borderSettings.from.x - p.location.x);
+                }
+                if (borderSettings.to.z - p.location.z < (borderZDistance / 2)) {
+                    borderZOffset -= (borderZDistance / 2) - (borderSettings.to.z - p.location.z);
+                }
+                if (borderSettings.from.z - p.location.z > -(borderZDistance / 2)) {
+                    borderZOffset -= -(borderZDistance / 2) - (borderSettings.from.z - p.location.z);
+                }
+                if ((p.getDynamicProperty("useShadersCompatibleParticles") ?? false) == true || borderSettings.useShadersCompatibleBorderParticles) {
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && !(p.location.z > borderSettings.to.z + 50) && !(p.location.z < borderSettings.from.z - 50)) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                    }
+                    if (Math.abs(borderSettings.to.z - p.location.z) <= 50 && !(p.location.x > borderSettings.to.x + 50) && !(p.location.x < borderSettings.from.x - 50)) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { z: borderSettings.to.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { z: borderSettings.to.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && !(p.location.z > borderSettings.to.z + 50) && !(p.location.z < borderSettings.from.z - 50)) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                    }
+                    if (Math.abs(borderSettings.from.z - p.location.z) <= 50 && !(p.location.x > borderSettings.to.x + 50) && !(p.location.x < borderSettings.from.x - 50)) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { z: borderSettings.from.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { z: borderSettings.from.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                    }
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && Math.abs(borderSettings.to.z - p.location.z) <= 50) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                    }
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && Math.abs(borderSettings.from.z - p.location.z) <= 50) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && Math.abs(borderSettings.to.z - p.location.z) <= 50) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && Math.abs(borderSettings.from.z - p.location.z) <= 50) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                    }
+                }
+                else {
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && !(p.location.z > borderSettings.to.z + 50) && !(p.location.z < borderSettings.from.z - 50)) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                    }
+                    if (Math.abs(borderSettings.to.z - p.location.z) <= 50 && !(p.location.x > borderSettings.to.x + 50) && !(p.location.x < borderSettings.from.x - 50)) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { z: borderSettings.to.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { z: borderSettings.to.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && !(p.location.z > borderSettings.to.z + 50) && !(p.location.z < borderSettings.from.z - 50)) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                    }
+                    if (Math.abs(borderSettings.from.z - p.location.z) <= 50 && !(p.location.x > borderSettings.to.x + 50) && !(p.location.x < borderSettings.from.x - 50)) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { z: borderSettings.from.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { z: borderSettings.from.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                    }
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && Math.abs(borderSettings.to.z - p.location.z) <= 50) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                    }
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && Math.abs(borderSettings.from.z - p.location.z) <= 50) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && Math.abs(borderSettings.to.z - p.location.z) <= 50) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && Math.abs(borderSettings.from.z - p.location.z) <= 50) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                    }
+                }
+            }
+        });
+    }
+    if (config.worldBorder.the_end.enabled) {
+        const borderSettings = Object.fromEntries(Object.entries(config.worldBorder.the_end));
+        world.getAllPlayers().filter(p => p.dimension.id == "minecraft:the_end").forEach(p => {
+            let loc = undefined;
+            const intensity = Number(p.getDynamicProperty("outsideBorderTintIntensity") ?? borderSettings.tintIntensity);
+            if (intensity != 0 && !Number.isNaN(intensity)) {
+                if (Date.now() >= (outsideBorderTintShownTimes[p.id] + Number(p.getDynamicProperty("outsideBorderTintShowIntervalMS") ?? 500)) || !!!outsideBorderTintShownTimes[p.id]) {
+                    if (borderSettings.showRedScreenOutlineWhenOutsideBorder && (p.location.x > borderSettings.to.x || p.location.z > borderSettings.to.z || p.location.x < borderSettings.from.x || p.location.z < borderSettings.from.z)) {
+                        loc = WorldPosition.fromentity(p).anchored("eyes").offset({ x: 0, y: 0.1, z: 0 }).positioned("^^^0.2").location;
+                        outsideBorderTintShownTimes[p.id] = Date.now();
+                        for (let i = 0; i < intensity; i++) {
+                            p.spawnParticle("andexdb:world_border_red_screen_tint", loc, outsideBorderTintParticleMolangVariableMapObject);
+                        }
+                    }
+                }
+            }
+            if ((!p.hasTag("canBypassWorldBorder")) && (p.location.x > borderSettings.to.x || p.location.z > borderSettings.to.z || p.location.x < borderSettings.from.x || p.location.z < borderSettings.from.z)) {
+                if (borderSettings.mode == 0) {
+                    if (!p.tryTeleport({
+                        x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                        y: p.location.y,
+                        z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                    })) {
+                        try {
+                            p.teleport({
+                                x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                                y: getNextTopSolidBlockAbovePosition({
+                                    x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                                    y: p.location.y,
+                                    z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                                }, p.dimension).y,
+                                z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                            });
+                        }
+                        catch (e) {
+                            p.teleport({
+                                x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                                y: getTopSolidBlock({
+                                    x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                                    y: p.location.y,
+                                    z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                                }, p.dimension).y,
+                                z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                            });
+                        }
+                    }
+                }
+                else if (borderSettings.mode == 1) {
+                    let values = facingPoint(p.location, {
+                        x: Math.max(Math.min(p.location.x, borderSettings.to.x), borderSettings.from.x),
+                        y: p.location.y,
+                        z: Math.max(Math.min(p.location.z, borderSettings.to.z), borderSettings.from.z)
+                    });
+                    let rot = values.rot;
+                    let difference = values.difference;
+                    let dv = anglesToDirectionVectorDeg(rot.x, rot.y);
+                    p.applyKnockback(dv.x, dv.z, borderSettings.knockbackH ?? 2.5, borderSettings.knockbackV ?? 1.25);
+                }
+                else if (borderSettings.mode == 2) {
+                    if (p.location.x > borderSettings.to.x + borderSettings.buffer || p.location.z > borderSettings.to.z + borderSettings.buffer || p.location.x < borderSettings.from.x - borderSettings.buffer || p.location.z < borderSettings.from.z - borderSettings.buffer) {
+                        p.applyDamage(borderSettings.damage, { cause: EntityDamageCause.void });
+                    }
+                }
+            }
+            if (borderSettings.showBorderParticles) {
+                const borderXDistance = Math.min(100, Math.abs(borderSettings.to.x - borderSettings.from.x));
+                let borderXOffset = 0;
+                const borderZDistance = Math.min(100, Math.abs(borderSettings.to.z - borderSettings.from.z));
+                let borderZOffset = 0;
+                if (borderSettings.to.x - p.location.x < (borderXDistance / 2)) {
+                    borderXOffset -= (borderXDistance / 2) - (borderSettings.to.x - p.location.x);
+                }
+                if (borderSettings.from.x - p.location.x > -(borderXDistance / 2)) {
+                    borderXOffset -= -(borderXDistance / 2) - (borderSettings.from.x - p.location.x);
+                }
+                if (borderSettings.to.z - p.location.z < (borderZDistance / 2)) {
+                    borderZOffset -= (borderZDistance / 2) - (borderSettings.to.z - p.location.z);
+                }
+                if (borderSettings.from.z - p.location.z > -(borderZDistance / 2)) {
+                    borderZOffset -= -(borderZDistance / 2) - (borderSettings.from.z - p.location.z);
+                }
+                if ((p.getDynamicProperty("useShadersCompatibleParticles") ?? false) == true || borderSettings.useShadersCompatibleBorderParticles) {
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && !(p.location.z > borderSettings.to.z + 50) && !(p.location.z < borderSettings.from.z - 50)) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                    }
+                    if (Math.abs(borderSettings.to.z - p.location.z) <= 50 && !(p.location.x > borderSettings.to.x + 50) && !(p.location.x < borderSettings.from.x - 50)) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { z: borderSettings.to.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { z: borderSettings.to.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && !(p.location.z > borderSettings.to.z + 50) && !(p.location.z < borderSettings.from.z - 50)) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                    }
+                    if (Math.abs(borderSettings.from.z - p.location.z) <= 50 && !(p.location.x > borderSettings.to.x + 50) && !(p.location.x < borderSettings.from.x - 50)) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { z: borderSettings.from.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { z: borderSettings.from.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                    }
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && Math.abs(borderSettings.to.z - p.location.z) <= 50) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                    }
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && Math.abs(borderSettings.from.z - p.location.z) <= 50) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && Math.abs(borderSettings.to.z - p.location.z) <= 50) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && Math.abs(borderSettings.from.z - p.location.z) <= 50) {
+                        p.spawnParticle("andexdb:rising_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                        p.spawnParticle("andexdb:falling_border_dust_particle_b", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                    }
+                }
+                else {
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && !(p.location.z > borderSettings.to.z + 50) && !(p.location.z < borderSettings.from.z - 50)) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                    }
+                    if (Math.abs(borderSettings.to.z - p.location.z) <= 50 && !(p.location.x > borderSettings.to.x + 50) && !(p.location.x < borderSettings.from.x - 50)) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { z: borderSettings.to.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { z: borderSettings.to.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && !(p.location.z > borderSettings.to.z + 50) && !(p.location.z < borderSettings.from.z - 50)) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: Math.max(Math.min(p.location.z + ((Math.random() * borderZDistance) - (borderZDistance / 2)) + borderZOffset, borderSettings.to.z), borderSettings.from.z) });
+                    }
+                    if (Math.abs(borderSettings.from.z - p.location.z) <= 50 && !(p.location.x > borderSettings.to.x + 50) && !(p.location.x < borderSettings.from.x - 50)) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { z: borderSettings.from.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { z: borderSettings.from.z, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), x: Math.max(Math.min(p.location.x + ((Math.random() * borderXDistance) - (borderXDistance / 2)) + borderXOffset, borderSettings.to.x), borderSettings.from.x) });
+                    }
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && Math.abs(borderSettings.to.z - p.location.z) <= 50) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                    }
+                    if (Math.abs(borderSettings.to.x - p.location.x) <= 50 && Math.abs(borderSettings.from.z - p.location.z) <= 50) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.to.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && Math.abs(borderSettings.to.z - p.location.z) <= 50) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.to.z });
+                    }
+                    if (Math.abs(borderSettings.from.x - p.location.x) <= 50 && Math.abs(borderSettings.from.z - p.location.z) <= 50) {
+                        p.spawnParticle("minecraft:rising_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                        p.spawnParticle("minecraft:falling_border_dust_particle", { x: borderSettings.from.x, y: Math.random() < 0.75 ? p.location.y + ((Math.random() * 10) - 5) : p.location.y + ((Math.random() * 100) - 50), z: borderSettings.from.z });
+                    }
+                }
+            }
+        });
+    }
+}, 1);
+// ${se}srun(()=>{let p = player; let values = facingPoint(p.location, {x: 240.50, y: 75.00, z: 1269.50}); let rot = values.rot; let difference = values.difference; let dv = anglesToDirectionVectorDeg(rot.x, rot.y); bsend([values, dv]); p.applyKnockback(dv.x, dv.z, (1-Math.abs(dv.y))*Vector.magnitude(difference), dv.y*Vector.magnitude(difference)); })
 world.afterEvents.chatSend.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:chatSend")));
@@ -5120,7 +5879,7 @@ world.afterEvents.entityHurt.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntityHurtNotifications", "getEntityHurtNotificationsForType:" + event.hurtEntity?.typeId, "getEntityHurtNotificationsForId:" + event.hurtEntity?.id, "getEntityHurtNotificationsWithCause:" + event.damageSource?.cause, "getEntityHurtNotificationsWithDamage:" + event.damage, "getEntityHurtNotificationsWithDamagingEntityOfType:" + event.damageSource?.damagingEntity?.typeId, "getEntityHurtNotificationsWithDamagingEntityWithId:" + event.damageSource?.damagingEntity?.id, "getEntityHurtNotificationsWithDamagingProjectileOfType:" + event.damageSource?.damagingProjectile?.typeId, "getEntityHurtNotificationsWithDamagingProjectileWithId:" + event.damageSource?.damagingProjectile?.id]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityHurt§r] Entity of type ${event.hurtEntity?.typeId} with the id ${event.hurtEntity?.id} took ${event.damage} damage of type "${event.damageSource?.cause}" in ${tryget(() => dimensionTypeDisplayFormatting[event.hurtEntity?.dimension?.id]) ?? "an unknown dimension"} at ${(event.hurtEntity?.isValid() ?? false) ? vTStr(event.hurtEntity?.location) : "an unknown location"}${!!event.damageSource?.damagingEntity ? `, the entity was damaged by ${event.damageSource?.damagingEntity?.typeId == "minecraft:player" ? event.damageSource?.damagingEntity?.name : `an entity of type ${event.damageSource?.damagingEntity?.typeId} with the ID ${event.damageSource?.damagingEntity?.id}${tryget(() => event.damageSource.damagingEntity.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingEntity.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingEntity.dimension.id] + " at " + vTStr(event.damageSource.damagingEntity.location))}` : ""}${!!event.damageSource?.damagingProjectile ? `, the projectile that damaged the entity was ${`a projectile of type ${event.damageSource?.damagingProjectile?.typeId} with the ID ${event.damageSource?.damagingProjectile?.id}${tryget(() => event.damageSource.damagingProjectile.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingProjectile.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingProjectile.dimension.id] + " at " + vTStr(event.damageSource.damagingProjectile.location))}` : ""}. The current velocity of the damaged entity is: ${tryget(() => event.hurtEntity.getVelocity())}`); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityHurtNotificationsNotificationSound.soundId, { pitch: pn.getEntityHurtNotificationsNotificationSound.pitch, volume: pn.getEntityHurtNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getEntityHurtNotifications", "getEntityHurtNotificationsForType:" + event.hurtEntity?.typeId, "getEntityHurtNotificationsForId:" + event.hurtEntity?.id, "getEntityHurtNotificationsWithCause:" + event.damageSource?.cause, "getEntityHurtNotificationsWithDamage:" + event.damage, "getEntityHurtNotificationsWithDamagingEntityOfType:" + event.damageSource?.damagingEntity?.typeId, "getEntityHurtNotificationsWithDamagingEntityWithId:" + event.damageSource?.damagingEntity?.id, "getEntityHurtNotificationsWithDamagingProjectileOfType:" + event.damageSource?.damagingProjectile?.typeId, "getEntityHurtNotificationsWithDamagingProjectileWithId:" + event.damageSource?.damagingProjectile?.id]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityHurt§r] Entity of type ${event.hurtEntity?.typeId} with the id ${event.hurtEntity?.id} took ${event.damage} damage of type "${event.damageSource?.cause}" in ${tryget(() => dimensionTypeDisplayFormatting[event.hurtEntity?.dimension?.id]) ?? "an unknown dimension"} at ${(event.hurtEntity?.isValid() ?? false) ? vTStr(event.hurtEntity?.location) : "an unknown location"}${!!event.damageSource?.damagingEntity ? `, the entity was damaged by ${event.damageSource?.damagingEntity?.typeId == "minecraft:player" ? event.damageSource?.damagingEntity?.name : `an entity of type ${event.damageSource?.damagingEntity?.typeId} with the ID ${event.damageSource?.damagingEntity?.id}${tryget(() => event.damageSource.damagingEntity.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingEntity.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingEntity.dimension.id] + " at " + vTStr(event.damageSource.damagingEntity.location))}` : ""}${!!event.damageSource?.damagingProjectile ? `, the projectile that damaged the entity was ${`a projectile of type ${event.damageSource?.damagingProjectile?.typeId} with the ID ${event.damageSource?.damagingProjectile?.id}${tryget(() => event.damageSource.damagingProjectile.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingProjectile.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingProjectile.dimension.id] + " at " + vTStr(event.damageSource.damagingProjectile.location))}` : ""}. The current velocity of the damaged entity is: ${tryget(() => JSON.stringify(event.hurtEntity.getVelocity())) ?? "§cError: Unable to get velocity.§r"}`); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityHurtNotificationsNotificationSound.soundId, { pitch: pn.getEntityHurtNotificationsNotificationSound.pitch, volume: pn.getEntityHurtNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5445,7 +6204,7 @@ world.afterEvents.playerInteractWithBlock.subscribe(event => {
     }
     try {
         if ((["minecraft:respawn_anchor", "minecraft:tnt"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:overworld") || (["minecraft:bed", "minecraft:tnt"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:nether") || (["minecraft:respawn_anchor", "minecraft:tnt", "minecraft:bed"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:overworld")) {
-            getPlayersWithTags("getBlockInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsIn:" + event.block.dimension) && (!!event.player ? !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBlockType:" + event.block.typeId)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveBlockInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive block of type "${event.block.typeId}"` : `Explosive block of type "${event.block.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.block.dimension.id]} at ${vTStr(event.block.location)}${!!event.itemStack ? ` using ${event.itemStack.typeId}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.soundId, { pitch: pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.volume })); });
+            getPlayersWithTags("getBlockInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsIn:" + event.block.dimension) && (!!event.player ? !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBlockType:" + event.block.typeId)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveBlockInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive block of type "${event.block.typeId}"` : `Explosive block of type "${event.block.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.block.dimension.id]} at ${vTStr(event.block.location)}${!!event.itemStack ? ` using ${event.itemStack?.typeId}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.soundId, { pitch: pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.volume })); });
         }
     }
     catch (e) {
@@ -5464,7 +6223,7 @@ world.afterEvents.playerInteractWithEntity.subscribe(event => {
     }
     try {
         if (["minecraft:creeper"].includes(event.target.typeId) && !!event.itemStack) {
-            getPlayersWithTags("getEntityInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsIn:" + event.target.dimension) && (!!event.player ? !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsEntityType:" + event.target.typeId)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveEntityInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive entity of type "${event.target.typeId}"` : `Explosive entity of type "${event.target.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.target.dimension.id]} at ${vTStr(event.target.location)}${!!event.itemStack ? ` using ${event.itemStack.typeId}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.soundId, { pitch: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.volume })); });
+            getPlayersWithTags("getEntityInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsIn:" + event.target.dimension) && (!!event.player ? !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsEntityType:" + event.target.typeId)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveEntityInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive entity of type "${event.target.typeId}"` : `Explosive entity of type "${event.target.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.target.dimension.id]} at ${vTStr(event.target.location)}${!!event.itemStack ? ` using ${event.itemStack?.typeId}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.soundId, { pitch: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.volume })); });
         }
     }
     catch (e) {
@@ -5716,7 +6475,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
         }
     }
     ; /*
-    if (event.itemStack.typeId === "andexdb:selection_tool") {
+    if (event.itemStack?.typeId === "andexdb:selection_tool") {
         event.cancel = true
         try {
             const mode = Boolean(event.player.getDynamicProperty("posM")??false)
@@ -5730,6 +6489,49 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     world.getAllPlayers().filter((player) => (player.hasTag("getPlayerBlockInteractionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.playerInteractWithBlock]Location: [ " + event.block.location.x + ", " + event.block.location.y + ", " + event.block.location.z + " ], Dimension: " + event.block.dimension.id + ", Block Type: " + (event.block?.typeId ?? "") + ", Item Type: " + (event.itemStack?.typeId ?? "") + ", Player: " + event.player.name); });
     if ((event.player.getDynamicProperty("canBypassProtectedAreas") != true && event.player.hasTag("canBypassProtectedAreas") != true) && ((((testIsWithinRanges(noBlockInteractAreas.positive.filter(v => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(noBlockInteractAreas.negative.filter(v => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == false)) || (((testIsWithinRanges(noInteractAreas.positive.filter(v => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(noInteractAreas.negative.filter(v => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == false)))) {
         event.cancel = true;
+    }
+    else {
+        const borderSettings = Object.fromEntries(Object.entries(config.worldBorder[dimensionse[dimensionsd.indexOf(event.block.dimension.id)]]));
+        if (borderSettings.enabled && borderSettings.preventWorldInteractionOutsideBorder) {
+            if ((!event.player.hasTag("canBypassWorldBorderInteractionLimits")) && (event.block.x >= borderSettings.to.x || event.block.z >= borderSettings.to.z || event.block.x < borderSettings.from.x || event.block.z < borderSettings.from.z)) {
+                event.cancel = true;
+            }
+        }
+    }
+    if (event.isFirstEvent) {
+        if (event.itemStack?.typeId === "andexdb:editor_stick") {
+            event.cancel = true;
+            try {
+                editorStickMenuOpeningAsyncCancelActionNumbers[event.player.id] = srun(() => editorStick(event.player));
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            ;
+        }
+        ;
+        if (event.itemStack?.typeId === "andexdb:editor_stick_b") {
+            event.cancel = true;
+            try {
+                editorStickMenuOpeningAsyncCancelActionNumbers[event.player.id] = srun(() => editorStickB(event.player));
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            ;
+        }
+        ;
+        if (event.itemStack?.typeId === "andexdb:editor_stick_c") {
+            event.cancel = true;
+            try {
+                editorStickMenuOpeningAsyncCancelActionNumbers[event.player.id] = srun(() => editorStickC(event.player));
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            ;
+        }
+        ;
     }
 });
 world.beforeEvents.itemUseOn.subscribe(event => {
@@ -5758,7 +6560,7 @@ world.beforeEvents.itemUseOn.subscribe(event => {
     debugAction(event.source.getBlockFromViewDirection().block, event.source, 0)*/
     }
     ; /*
-    if (event.itemStack.typeId === "andexdb:selection_tool") {
+    if (event.itemStack?.typeId === "andexdb:selection_tool") {
         event.cancel = true
         try {
             const mode = Boolean(event.source.getDynamicProperty("posM")??false)
@@ -5772,6 +6574,19 @@ world.beforeEvents.itemUseOn.subscribe(event => {
     world.getAllPlayers().filter((player) => (player.hasTag("getPlayerItemUseOnEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.itemUseOn]Location: [ " + event.block.location.x + ", " + event.block.location.y + ", " + event.block.location.z + " ], Dimension: " + event.block.dimension.id + ", Block Type: " + (event.block?.typeId ?? "") + ", Item Type: " + (event.itemStack?.typeId ?? "") + ", Player: " + event.source.name); });
     if ((event.source.getDynamicProperty("canBypassProtectedAreas") != true && event.source.hasTag("canBypassProtectedAreas") != true) && ((((testIsWithinRanges(noBlockInteractAreas.positive.filter(v => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(noBlockInteractAreas.negative.filter(v => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == false)) || (((testIsWithinRanges(noInteractAreas.positive.filter(v => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(noInteractAreas.negative.filter(v => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == false)))) {
         event.cancel = true;
+    }
+    else {
+        const borderSettings = Object.fromEntries(Object.entries(config.worldBorder[dimensionse[dimensionsd.indexOf(event.block.dimension.id)]]));
+        if (borderSettings.enabled && borderSettings.preventWorldInteractionOutsideBorder) {
+            if ((!event.source.hasTag("canBypassWorldBorderInteractionLimits")) && (event.block.x >= borderSettings.to.x || event.block.z >= borderSettings.to.z || event.block.x < borderSettings.from.x || event.block.z < borderSettings.from.z)) {
+                event.cancel = true;
+            }
+        }
+    }
+    if (event.isFirstEvent) {
+        if (["andexdb:editor_stick", "andexdb:editor_stick_b", "andexdb:editor_stick_c"].includes(event.itemStack?.typeId)) {
+            event.cancel = true;
+        }
     }
 });
 world.beforeEvents.playerBreakBlock.subscribe(event => {
@@ -5803,6 +6618,14 @@ world.beforeEvents.playerBreakBlock.subscribe(event => {
     if ((event.player.getDynamicProperty("canBypassProtectedAreas") != true && event.player.hasTag("canBypassProtectedAreas") != true) && ((((testIsWithinRanges(noBlockBreakAreas.positive.filter(v => v.dimension == dimensions.indexOf(event.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(noBlockBreakAreas.negative.filter(v => v.dimension == dimensions.indexOf(event.dimension)), event.block.location) ?? false) == false)) || (((testIsWithinRanges(protectedAreas.positive.filter(v => v.dimension == dimensions.indexOf(event.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative.filter(v => v.dimension == dimensions.indexOf(event.dimension)), event.block.location) ?? false) == false)))) {
         event.cancel = true;
     }
+    else {
+        const borderSettings = Object.fromEntries(Object.entries(config.worldBorder[dimensionse[dimensionsd.indexOf(event.dimension.id)]]));
+        if (borderSettings.enabled && borderSettings.preventWorldInteractionOutsideBorder) {
+            if ((!event.player.hasTag("canBypassWorldBorderInteractionLimits")) && (event.block.x >= borderSettings.to.x || event.block.z >= borderSettings.to.z || event.block.x < borderSettings.from.x || event.block.z < borderSettings.from.z)) {
+                event.cancel = true;
+            }
+        }
+    }
 });
 world.beforeEvents.playerPlaceBlock.subscribe(event => {
     try {
@@ -5820,6 +6643,14 @@ world.beforeEvents.playerPlaceBlock.subscribe(event => {
     world.getAllPlayers().filter((player) => (player.hasTag("getPlayerBlockPlacingEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.playerPlaceBlock]Location: [ " + event.block.location.x + ", " + event.block.location.y + ", " + event.block.location.z + " ], Dimension: " + event.block.dimension.id + ", Block Type: " + (event.block?.typeId ?? "") + ", Player: " + event.player.name); });
     if ((event.player.getDynamicProperty("canBypassProtectedAreas") != true && event.player.hasTag("canBypassProtectedAreas") != true) && ((((testIsWithinRanges(noBlockPlaceAreas.positive.filter(v => v.dimension == dimensions.indexOf(event.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(noBlockPlaceAreas.negative.filter(v => v.dimension == dimensions.indexOf(event.dimension)), event.block.location) ?? false) == false)) || (((testIsWithinRanges(protectedAreas.positive.filter(v => v.dimension == dimensions.indexOf(event.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(protectedAreas.negative.filter(v => v.dimension == dimensions.indexOf(event.dimension)), event.block.location) ?? false) == false)))) {
         event.cancel = true;
+    }
+    else {
+        const borderSettings = Object.fromEntries(Object.entries(config.worldBorder[dimensionse[dimensionsd.indexOf(event.dimension.id)]]));
+        if (borderSettings.enabled && borderSettings.preventWorldInteractionOutsideBorder) {
+            if ((!event.player.hasTag("canBypassWorldBorderInteractionLimits")) && (event.block.x >= borderSettings.to.x || event.block.z >= borderSettings.to.z || event.block.x < borderSettings.from.x || event.block.z < borderSettings.from.z)) {
+                event.cancel = true;
+            }
+        }
     }
 });
 /*${scripteval}world.getAllPlayers().filter((p)=>(p.getDynamicProperty("canBypassProtectedAreas") == undefined)).forEach((p)=>{p.setDynamicProperty("canBypassProtectedAreas", false)})*/
@@ -5883,7 +6714,7 @@ world.beforeEvents.itemUse.subscribe(event => {
         } });
     }
     world.getAllPlayers().filter((player) => (player.hasTag("getPlayerItemUseEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.itemUse]Location: [ " + event.source.location.x + ", " + event.source.location.y + ", " + event.source.location.z + " ], Dimension: " + event.source.dimension.id + ", Item Type: " + (event.itemStack?.typeId ?? "") + ", Player: " + event.source.name); }); /*
-    if (event.itemStack.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){*/ /*
+    if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){*/ /*
     if (interactable_block == true){interactable_block = false}else{*/ /*
         interactable_block.find((playerId)=>(playerId.id == event.source.id)).delay = 0; */ /*
 if (event.source.isSneaking){system.run(()=>{
@@ -5892,7 +6723,7 @@ if (event.source.isSneaking){system.run(()=>{
 debugAction(event.source.getBlockFromViewDirection().block, event.source, 0)
 }; */ /*
     }; */
-    if (event.itemStack.typeId === "andexdb:inventory_controller") {
+    if (event.itemStack?.typeId === "andexdb:inventory_controller") {
         event.cancel = true;
         try {
             (event.source).runCommandAsync(String("/scriptevent andexdb:itemLoreInventoryModifier hisw"));
@@ -6028,7 +6859,7 @@ console.error(e, e.stack);
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:debug_stick" && event.itemStack.nameTag === "§r§dItem Modifier") {
+    if (event.itemStack?.typeId === "andexdb:debug_stick" && event.itemStack.nameTag === "§r§dItem Modifier") {
         event.cancel = true;
         try {
             (event.source).runCommandAsync(String("/scriptevent andexdb:itemLoreInventoryModifier hisw"));
@@ -6164,7 +6995,7 @@ console.error(e, e.stack);
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:command_runner") {
+    if (event.itemStack?.typeId === "andexdb:command_runner") {
         event.cancel = true;
         system.run(() => {
             let form = new ModalFormData();
@@ -6191,49 +7022,43 @@ console.error(e, e.stack);
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:editor_stick") {
+    if (event.itemStack?.typeId === "andexdb:editor_stick") {
         event.cancel = true;
         try {
-            (event.source).runCommandAsync(String("/scriptevent andexdb:debugStick hisa"));
+            system.clearRun(editorStickMenuOpeningAsyncCancelActionNumbers[event.source.id]);
+            editorStickMenuOpeningAsyncCancelActionNumbers[event.source.id] = srun(() => editorStick(event.source));
         }
-        // Do something
         catch (e) {
             console.error(e, e.stack);
         }
         ;
-        // ...
-        // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:editor_stick_b") {
+    if (event.itemStack?.typeId === "andexdb:editor_stick_b") {
         event.cancel = true;
         try {
-            (event.source).runCommandAsync(String("/scriptevent andexdb:debugStickMenuB hisa"));
+            system.clearRun(editorStickMenuOpeningAsyncCancelActionNumbers[event.source.id]);
+            editorStickMenuOpeningAsyncCancelActionNumbers[event.source.id] = srun(() => editorStickB(event.source));
         }
-        // Do something
         catch (e) {
             console.error(e, e.stack);
         }
         ;
-        // ...
-        // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:editor_stick_c") {
+    if (event.itemStack?.typeId === "andexdb:editor_stick_c") {
         event.cancel = true;
         try {
-            (event.source).runCommandAsync(String("/scriptevent andexdb:debugStickMenuC hisa"));
+            system.clearRun(editorStickMenuOpeningAsyncCancelActionNumbers[event.source.id]);
+            editorStickMenuOpeningAsyncCancelActionNumbers[event.source.id] = srun(() => editorStickC(event.source));
         }
-        // Do something
         catch (e) {
             console.error(e, e.stack);
         }
         ;
-        // ...
-        // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:player_debug_stick") {
+    if (event.itemStack?.typeId === "andexdb:player_debug_stick") {
         event.cancel = true;
         try {
             (event.source).runCommandAsync(String("/scriptevent andexdb:playerDebug saqw"));
@@ -6247,7 +7072,7 @@ console.error(e, e.stack);
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:player_controller") {
+    if (event.itemStack?.typeId === "andexdb:player_controller") {
         event.cancel = true;
         try {
             (event.source).runCommandAsync(String("/scriptevent andexdb:playerController asdw"));
@@ -6261,7 +7086,7 @@ console.error(e, e.stack);
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:debug_screen") {
+    if (event.itemStack?.typeId === "andexdb:debug_screen") {
         event.cancel = true;
         try {
             (event.source).runCommandAsync(String("/scriptevent andexdb:debugScreen sdaq"));
@@ -6276,7 +7101,7 @@ console.error(e, e.stack);
     }
     ;
     ;
-    if (event.itemStack.typeId === "andexdb:entity_controller") {
+    if (event.itemStack?.typeId === "andexdb:entity_controller") {
         event.cancel = true;
         try {
             (event.source).runCommandAsync(String("/scriptevent andexdb:entityController nsaz"));
@@ -6290,7 +7115,7 @@ console.error(e, e.stack);
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:entity_debug_stick") {
+    if (event.itemStack?.typeId === "andexdb:entity_debug_stick") {
         event.cancel = true;
         try {
             (event.source).runCommandAsync(String("/scriptevent andexdb:entityDebug saop"));
@@ -6304,7 +7129,7 @@ console.error(e, e.stack);
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:main_menu") {
+    if (event.itemStack?.typeId === "andexdb:main_menu") {
         event.cancel = true;
         try {
             srun(() => mainMenu(event.source));
@@ -6318,7 +7143,7 @@ console.error(e, e.stack);
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
     ;
-    if (event.itemStack.typeId === "andexdb:selection_menu") {
+    if (event.itemStack?.typeId === "andexdb:selection_menu") {
         event.cancel = true;
         try {
             srun(() => mainMenu(event.source));
@@ -6722,7 +7547,7 @@ console.error(e, e.stack);
             console.error(e, e.stack);
         }
     }
-    else if (event.itemStack.typeId === "andexdb:selection_tool") {
+    else if (event.itemStack?.typeId === "andexdb:selection_tool") {
         event.cancel = true;
         try {
             const mode = Boolean(event.source.getDynamicProperty("posM") ?? false);

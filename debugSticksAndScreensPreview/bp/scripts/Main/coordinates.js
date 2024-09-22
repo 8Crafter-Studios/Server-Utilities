@@ -709,7 +709,7 @@ export function* removeAirFromStructure(structure) {
 export function facingPoint(location, otherLocation) {
     const sl = location;
     const ol = otherLocation;
-    const x = (-ol.x) - sl.x;
+    const x = (-ol.x) + sl.x;
     const y = ol.y - sl.y;
     const z = ol.z - sl.z; /*
     let rotx = Math.atan2( y, z );
