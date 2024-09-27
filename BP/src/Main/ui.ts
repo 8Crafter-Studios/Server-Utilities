@@ -30,6 +30,7 @@ import { chatMessage, chatSend } from "./chat";
 import { targetSelectorAllListC } from "./command_utilities";
 import { cullEmpty, JSONParse, JSONStringify, tryget, tryrun } from "./utilities";
 import { commands } from "./commands_list";
+import { mainShopSystemSettings } from "ExtraFeatures/shop_main";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -49,11 +50,12 @@ mcMath
 export const ui_format_version = "1.17.0";
 //${se}console.warn(JSON.stringify(evaluateParameters(["presetText", "string", "json", "number", "boolean", "string", "presetText", "presetText"], "test test [{\"test\": \"test\"}, [\"test\", \"test\"] , \"test\", \"test\"] 1 true \"test \\\"test\" test test"))); 
 /**
- * Returns the sum of a and b
- * @param {ModalFormData|ActionFormData|MessageFormData} form
- * @param {Player} player
- * @param {number} timeout If set to true, the function will return an array
- * @returns {ModalFormResponse|ActionFormResponse|MessageFormResponse|undefined} Sum of a and b or an array that contains a, b and the sum of a and b.
+ * Forces a form to show even if the player has another form or menu open.
+ * If the player has another form or menu open then it will wait until they close it.
+ * @param {ModalFormData|ActionFormData|MessageFormData} form The form to show
+ * @param {Player} player The player to show the form to
+ * @param {number} timeout The number of milleseconds before the function will give up and throw an error
+ * @returns {ModalFormResponse|ActionFormResponse|MessageFormResponse|undefined} The response of the form
  */
 export async function forceShow<T extends ModalFormData|ActionFormData|MessageFormData>(form: T, player: Player, timeout?: number): Promise<T extends ModalFormData ? ModalFormResponse : T extends ActionFormData ? ActionFormResponse : MessageFormResponse> {
     const timeoutTicks = system.currentTick + (timeout ?? 9999)
@@ -1287,29 +1289,33 @@ export function personalSettings(sourceEntitya: Entity|executeCommandPlayerW|Pla
 export function extraFeaturesSettings(sourceEntitya: Entity|executeCommandPlayerW|Player){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form = new ActionFormData();
-    let players = world.getPlayers();
-form.title("Extra Features Settings");
-form.body("Extra features are optional features that can be enabled but are disabled by default.");
-form.button("World Border System", "textures/ui/worldsIcon");
-form.button("Back", "textures/ui/arrow_left");/*
-form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
-forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormResponse); 
-    // This will stop the code when the player closes the form
-    if (r.canceled) return;
+    form.title("Extra Features Settings");
+    form.body("Extra features are optional features that can be enabled but are disabled by default.");
+    form.button("World Border System", "textures/ui/worldsIcon");
+    form.button("Shop System", "textures/ui/store_home_icon");
+    form.button("Back", "textures/ui/arrow_left");/*
+    form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
+    forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormResponse); 
+        // This will stop the code when the player closes the form
+        if (r.canceled) return;
 
-    let response = r.selection;
-    switch (response) {
-        case 0:
-        worldBorderSettingsDimensionSelector(sourceEntity)
-        break;
-        case 1:
-            settings(sourceEntity)
-        break;
-        default:
-    }
-}).catch(e => {
-    console.error(e, e.stack);
-});}
+        let response = r.selection;
+        switch (response) {
+            case 0:
+                worldBorderSettingsDimensionSelector(sourceEntity)
+            break;
+            case 1:
+                mainShopSystemSettings(sourceEntity)
+            break;
+            case 2:
+                settings(sourceEntity)
+            break;
+            default:
+        }
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
 export function worldBorderSettingsDimensionSelector(sourceEntitya: Entity|executeCommandPlayerW|Player){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form2 = new ActionFormData();
@@ -3107,7 +3113,10 @@ export async function onlinePlayerSelector(sourceEntitya: Entity|executeCommandP
         }
     }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
 }
-export async function itemSelector(sourceEntitya: Entity|executeCommandPlayerW|Player, targetPlayer: Entity|Player, backFunction: Function = mainMenu, ...functionargs: any){
+export async function itemSelector<FuncType extends (...args: any) => FuncReturnType, FuncReturnType extends any>(sourceEntitya: Entity|executeCommandPlayerW|Player, targetPlayer: Entity|Player, backFunction?: FuncType, ...functionargs: any): Promise<{
+    slot: number | EquipmentSlot;
+    item: ContainerSlot;
+}>{
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form = new ActionFormData; 
     form.title("Select Item"); 
@@ -3118,17 +3127,24 @@ export async function itemSelector(sourceEntitya: Entity|executeCommandPlayerW|P
     let slotsList = equipmentList.concat(itemsList); 
     slotsList.forEach((p)=>{if(p.item.hasItem()){form.button(`${p?.slot}: ${p?.item?.typeId}\n${p?.item?.amount}; ${p?.item?.nameTag}`/*, "textures/ui/online"*/)}else{form.button(`${p?.slot}: empty\n0; `/*, "textures/ui/online"*/)}}); 
     form.button("Back"); 
-    return forceShow(form, sourceEntity as Player).then(ra=>{
-        let r = (ra as ActionFormResponse); 
-        if(r.canceled){return}; 
+    let r = await forceShow(form, sourceEntity as Player)
+    try{
+        if(r.canceled){return undefined}; 
         switch(r.selection){
             case slotsList.length: 
-            return backFunction(...(functionargs.length==0?[(sourceEntity as Player)]:(functionargs??[(sourceEntity as Player)])))
+            return backFunction(...(functionargs.length==0?[(sourceEntity as Player)]:(functionargs??[(sourceEntity as Player)]))) as any
             break
             default: 
             return slotsList[r.selection]
         }
-    }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+    }catch(e){
+        let formError = new MessageFormData;
+        formError.body(e+e.stack);
+        formError.title("Error");
+        formError.button1("Done");
+        await forceShow(formError, sourceEntity as Player)
+        return e;
+    }; 
 }
 export async function itemEditorTypeSelection(sourceEntitya: Entity|executeCommandPlayerW|Player, targetPlayer: Entity|Player, item: {slot: number|EquipmentSlot, item: ContainerSlot}, selectionItems?: {edit?: {f: Function, a?: any[]}, editCode?: {f: Function, a?: any[]}, editDynamicProperties?: {f: Function, a?: any[]}, editEnchantments?: {f: Function, a?: any[]}, newItem?: {f: Function, a?: any[]}, transfer?: {f: Function, a?: any[]}, clone?: {f: Function, a?: any[]}, delete?: {f: Function, a?: any[]}}, backFunction: Function = mainMenu, ...functionargs: any){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
@@ -3177,10 +3193,10 @@ export async function itemEditor(sourceEntitya: Entity|executeCommandPlayerW|Pla
     form.title("Edit Item"); 
     form.textField("Item Name (escape characters such as \\n are allowed)", "string", !!!item.nameTag?undefined:item.nameTag); 
     form.textField("Item Lore (escape characters such as \\n are allowed)(set to [] to clear)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getLore())); 
-    form.slider("Amount", 0, 127, 1, item.amount); 
+    form.slider("Amount", 0, 255, 1, item.amount); 
     form.textField("Can Destroy (escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getCanDestroy())); 
     form.textField("Can Place On (escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getCanPlaceOn())); 
-    form.dropdown("Item Lock Mode", [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory], [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory][item.lockMode]); 
+    form.dropdown("Item Lock Mode", [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory], [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory].indexOf(item.lockMode)); 
     form.toggle("Keep On Death", item.keepOnDeath); 
     form.textField((!!!item.getItem().getComponent("cooldown")?"§c(UNAVAILABLE)§f ":"")+"Set Cooldown (In Ticks)", "ticks"); 
     form.textField((!!!item.getItem().getComponent("durability")?"§c(UNAVAILABLE)§f ":"")+"Set Damage", "int", String(item.getItem().getComponent("durability")?.damage)); 

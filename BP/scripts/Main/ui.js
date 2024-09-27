@@ -30,6 +30,7 @@ import { chatMessage, chatSend } from "./chat";
 import { targetSelectorAllListC } from "./command_utilities";
 import { cullEmpty, JSONParse, JSONStringify, tryget, tryrun } from "./utilities";
 import { commands } from "./commands_list";
+import { mainShopSystemSettings } from "ExtraFeatures/shop_main";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -48,11 +49,12 @@ mcMath;
 export const ui_format_version = "1.17.0";
 //${se}console.warn(JSON.stringify(evaluateParameters(["presetText", "string", "json", "number", "boolean", "string", "presetText", "presetText"], "test test [{\"test\": \"test\"}, [\"test\", \"test\"] , \"test\", \"test\"] 1 true \"test \\\"test\" test test"))); 
 /**
- * Returns the sum of a and b
- * @param {ModalFormData|ActionFormData|MessageFormData} form
- * @param {Player} player
- * @param {number} timeout If set to true, the function will return an array
- * @returns {ModalFormResponse|ActionFormResponse|MessageFormResponse|undefined} Sum of a and b or an array that contains a, b and the sum of a and b.
+ * Forces a form to show even if the player has another form or menu open.
+ * If the player has another form or menu open then it will wait until they close it.
+ * @param {ModalFormData|ActionFormData|MessageFormData} form The form to show
+ * @param {Player} player The player to show the form to
+ * @param {number} timeout The number of milleseconds before the function will give up and throw an error
+ * @returns {ModalFormResponse|ActionFormResponse|MessageFormResponse|undefined} The response of the form
  */
 export async function forceShow(form, player, timeout) {
     const timeoutTicks = system.currentTick + (timeout ?? 9999);
@@ -1374,10 +1376,10 @@ export function personalSettings(sourceEntitya) {
 export function extraFeaturesSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData();
-    let players = world.getPlayers();
     form.title("Extra Features Settings");
     form.body("Extra features are optional features that can be enabled but are disabled by default.");
     form.button("World Border System", "textures/ui/worldsIcon");
+    form.button("Shop System", "textures/ui/store_home_icon");
     form.button("Back", "textures/ui/arrow_left"); /*
     form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
     forceShow(form, sourceEntity).then(ra => {
@@ -1391,6 +1393,9 @@ export function extraFeaturesSettings(sourceEntitya) {
                 worldBorderSettingsDimensionSelector(sourceEntity);
                 break;
             case 1:
+                mainShopSystemSettings(sourceEntity);
+                break;
+            case 2:
                 settings(sourceEntity);
                 break;
             default:
@@ -4522,7 +4527,7 @@ export async function onlinePlayerSelector(sourceEntitya, backFunction = mainMen
         }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
-export async function itemSelector(sourceEntitya, targetPlayer, backFunction = mainMenu, ...functionargs) {
+export async function itemSelector(sourceEntitya, targetPlayer, backFunction, ...functionargs) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData;
     form.title("Select Item");
@@ -4544,10 +4549,10 @@ export async function itemSelector(sourceEntitya, targetPlayer, backFunction = m
         form.button(`${p?.slot}: empty\n0; ` /*, "textures/ui/online"*/);
     } });
     form.button("Back");
-    return forceShow(form, sourceEntity).then(ra => {
-        let r = ra;
+    let r = await forceShow(form, sourceEntity);
+    try {
         if (r.canceled) {
-            return;
+            return undefined;
         }
         ;
         switch (r.selection) {
@@ -4557,7 +4562,16 @@ export async function itemSelector(sourceEntitya, targetPlayer, backFunction = m
             default:
                 return slotsList[r.selection];
         }
-    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+    }
+    catch (e) {
+        let formError = new MessageFormData;
+        formError.body(e + e.stack);
+        formError.title("Error");
+        formError.button1("Done");
+        await forceShow(formError, sourceEntity);
+        return e;
+    }
+    ;
 }
 export async function itemEditorTypeSelection(sourceEntitya, targetPlayer, item, selectionItems, backFunction = mainMenu, ...functionargs) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
@@ -4624,10 +4638,10 @@ export async function itemEditor(sourceEntitya, targetPlayer, item) {
     form.title("Edit Item");
     form.textField("Item Name (escape characters such as \\n are allowed)", "string", !!!item.nameTag ? undefined : item.nameTag);
     form.textField("Item Lore (escape characters such as \\n are allowed)(set to [] to clear)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getLore()));
-    form.slider("Amount", 0, 127, 1, item.amount);
+    form.slider("Amount", 0, 255, 1, item.amount);
     form.textField("Can Destroy (escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getCanDestroy()));
     form.textField("Can Place On (escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getCanPlaceOn()));
-    form.dropdown("Item Lock Mode", [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory], [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory][item.lockMode]);
+    form.dropdown("Item Lock Mode", [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory], [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory].indexOf(item.lockMode));
     form.toggle("Keep On Death", item.keepOnDeath);
     form.textField((!!!item.getItem().getComponent("cooldown") ? "§c(UNAVAILABLE)§f " : "") + "Set Cooldown (In Ticks)", "ticks");
     form.textField((!!!item.getItem().getComponent("durability") ? "§c(UNAVAILABLE)§f " : "") + "Set Damage", "int", String(item.getItem().getComponent("durability")?.damage));
