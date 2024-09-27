@@ -349,7 +349,7 @@ export function manageServerShops(sourceEntitya: Entity|executeCommandPlayerW|Pl
         let response = r.selection;
         switch (response) {
             case shopsList.length:
-                worldBorderSettingsDimensionSelector(sourceEntity)
+                addServerShop(sourceEntity)
             break;
             case shopsList.length+1:
                 serverShopSystemSettings(sourceEntity)
@@ -358,6 +358,36 @@ export function manageServerShops(sourceEntitya: Entity|executeCommandPlayerW|Pl
                 manageServerShop(sourceEntity, shopsList[response])
 
         }
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+
+export function addServerShop(sourceEntitya: Entity|executeCommandPlayerW|Player){
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
+    let form2 = new ModalFormData();
+    form2.title(`Server Shop System Settings`)
+    form2.textField(`§l§fShop ID§r§c*§f\nThe ID of the shop`, "myShop", "myShop")
+    form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", "My Shop")
+    form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", "My Shop")
+    form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", "My Shop")
+    form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, true)
+    form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, true)
+    form2.submitButton("Save")
+    forceShow(form2, (sourceEntity as Player)).then(t => {
+        if (t.canceled) {manageServerShops(sourceEntity); return;};
+        let [ id, name, title, mainPageBodyText, buyShop, sellShop ] = t.formValues as [ id: string, name: string, title: string, mainPageBodyText: string, buyShop: boolean, sellShop: boolean ];
+        const shop = new ServerShop({
+            id: "shop:"+id,
+            name: name,
+            title: title,
+            mainPageBodyText: mainPageBodyText,
+            buyShop: buyShop,
+            sellShop: sellShop
+        })
+        
+        shop.save()
+        manageServerShop(sourceEntity, shop); 
     }).catch(e => {
         console.error(e, e.stack);
     });
@@ -423,7 +453,7 @@ export function manageServerShop_settings(sourceEntitya: Entity|executeCommandPl
     form2.title(`Server Shop System Settings`)
     form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", shop.name)
     form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", shop.title)
-    form2.textField(`§l§fPage Title§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", shop.mainPageBodyText)
+    form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", shop.mainPageBodyText)
     form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, shop.buyShop??true)
     form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, shop.sellShop??true)
     form2.submitButton("Save")
