@@ -1,11 +1,12 @@
-import { ItemLockMode, ItemStack, Player, world, Entity } from "@minecraft/server";
+import { ItemLockMode, ItemStack, Player, world, Entity, StructureSaveMode } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { config, getPathInObject } from "Main";
 import { containerToContainerSlotArray, containerToItemStackArray } from "Main/command_utilities";
 import { executeCommandPlayerW } from "Main/commands";
 import { forceShow, itemSelector, settings, worldBorderSettingsDimensionSelector } from "Main/ui";
-import { getStringFromDynamicProperties, saveStringToDynamicProperties, showActions, showMessage, tryrun } from "Main/utilities";
+import { getStringFromDynamicProperties, getSuperUniqueID, saveStringToDynamicProperties, showActions, showMessage, tryget, tryrun } from "Main/utilities";
 import { mainShopSystemSettings } from "./shop_main";
+import { Vector } from "Main/coordinates";
 export class ServerShop {
     constructor(config) {
         this.id = config.id;
@@ -39,7 +40,7 @@ export class ServerShop {
         else if (mode == "sell") {
             const form = new ActionFormData;
             form.title(this.title);
-            const data = JSON.parse(getStringFromDynamicProperties("sellShop:" + this.id));
+            const data = tryget(() => JSON.parse(getStringFromDynamicProperties("sellShop:" + this.id))) ?? [];
             form.body(`§6---------------------------------
 §aMoney: $${world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity) ?? 0}
 §6---------------------------------`);
@@ -70,7 +71,7 @@ export class ServerShop {
         else if (mode == "buy") {
             const form = new ActionFormData;
             form.title(this.title);
-            const data = JSON.parse(getStringFromDynamicProperties("buyShop:" + this.id));
+            const data = tryget(() => JSON.parse(getStringFromDynamicProperties("buyShop:" + this.id))) ?? [];
             form.body(`§6------------------
 §aMoney: $${world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity)}
 §6------------------`);
@@ -409,7 +410,7 @@ export function manageServerShop_contents(sourceEntitya, shop, mode = "buy") {
     let form = new ActionFormData();
     form.title(`Manage ${shop.title} Contents`);
     form.body("The server shop system is " + config.shopSystem.server.enabled ? "§aEnabled" : "§cDisabled");
-    const shopData = shop[mode + "Data"];
+    const shopData = tryget(() => { return shop[mode + "Data"]; }) ?? [];
     shopData.forEach(s => {
         form.button(s.title, s.texture);
     });
@@ -431,7 +432,54 @@ export function manageServerShop_contents(sourceEntitya, shop, mode = "buy") {
                     "sellable";
                 if (type == "pre-made") {
                     const item = await itemSelector(sourceEntity, sourceEntity, manageServerShop_contents, sourceEntity, shop, mode);
-                    sourceEntity.dimension.spawnEntity("andexdb:shop_item_storage", sourceEntity.location);
+                    const entity = sourceEntity.dimension.spawnEntity("andexdb:shop_item_storage", { x: Math.floor(sourceEntity.location.x) + 0.5, y: Math.floor(sourceEntity.location.y) + 0.5, z: Math.floor(sourceEntity.location.z) + 0.5 });
+                    const entityID = getSuperUniqueID();
+                    entity.setDynamicProperty("andexdb:shop_item_storage_save_id", entityID);
+                    entity.getComponent("inventory").container.setItem(0, item.item.getItem());
+                    world.structureManager.createFromWorld("andexdbSavedShopItem:" + entityID, sourceEntity.dimension, {
+                        x: Math.floor(sourceEntity.location.x),
+                        y: Math.floor(sourceEntity.location.y),
+                        z: Math.floor(sourceEntity.location.z)
+                    }, {
+                        x: Math.floor(sourceEntity.location.x) + 1,
+                        y: Math.floor(sourceEntity.location.y) + 1,
+                        z: Math.floor(sourceEntity.location.z) + 1
+                    }, {
+                        includeBlocks: false,
+                        includeEntities: true,
+                        saveMode: StructureSaveMode.World
+                    });
+                    const form2 = new ModalFormData;
+                    form2.textField("§7Buyable Item Type: pre-made\n§fButton Title§c*", "Stick");
+                    form2.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick");
+                    form2.textField("Button Index§c*", String(mode == "buy" ? shop.buyData.length : shop.sellData.length), String(mode == "buy" ? shop.buyData.length : shop.sellData.length));
+                    form2.textField("Price§c*", "10", "10");
+                    form2.textField("Purchase Amount Step\n§oDefault is 1", "1", "1");
+                    form2.textField("Max Purchase Amount\n§oDefault is 64", "64", "64");
+                    const r = await forceShow(form2, sourceEntity);
+                    let [title, texture, itemIndex, price, step, max] = r.formValues;
+                    const itemB = {
+                        type: "item",
+                        itemType: "pre-made",
+                        title: title,
+                        texture: texture,
+                        price: Number.isNaN(Number(price)) ? 10 : Number(price),
+                        step: Number.isNaN(Number(step)) ? 10 : Number(step),
+                        max: Number.isNaN(Number(max)) ? 10 : Number(max),
+                        structureID: "andexdbSavedShopItem:" + entityID,
+                        entityID: entityID
+                    };
+                    let itemIndexB = Number.isNaN(Number(itemIndex)) ? (mode == "buy" ? shop.buyData.length : shop.sellData.length) : Number(itemIndex);
+                    if (mode == "buy") {
+                        let newData = shop.buyData;
+                        newData.splice(itemIndexB, 0, itemB);
+                        shop.buyData = newData;
+                    }
+                    else if (mode == "sell") {
+                        let newData = shop.sellData;
+                        newData.splice(itemIndexB, 0, itemB);
+                        shop.sellData = newData;
+                    }
                 }
                 else {
                     manageServerShop_addItem(sourceEntity, shop, type, mode);
@@ -441,7 +489,7 @@ export function manageServerShop_contents(sourceEntitya, shop, mode = "buy") {
                 manageServerShop_addPage(sourceEntity, shop, mode);
                 break;
             default:
-                shopData[response].type == "item" ? await manageServerShop_manageItem(sourceEntity, shop, shopData[response], response, mode) : undefined; // await manageServerShop_managePage(sourceEntity, shop, shopData[response], mode)
+                shopData[response].type == "item" ? await manageServerShop_manageItem(sourceEntity, shop, shopData[response], response, mode) : await manageServerShop_managePage(sourceEntity, shop, shopData[response], response, mode);
                 manageServerShop_contents(sourceEntity, shop, mode);
         }
     }).catch(async (e) => {
@@ -764,6 +812,7 @@ export async function manageServerShop_managePage(sourceEntitya, shop, page, pag
 Page Body: ${page.pageBody}
 Title: ${page.title}
 Texture: ${page.texture}`);
+    form.button("Edit Contents", "textures/ui/color_plus");
     form.button("Move Page", "textures/ui/color_plus");
     form.button("Edit Page", "textures/ui/color_plus");
     form.button("Delete Page", "textures/ui/color_plus");
