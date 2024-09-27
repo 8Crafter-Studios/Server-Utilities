@@ -301,16 +301,35 @@ export function serverShopSystemSettings(sourceEntitya) {
                 manageServerShops(sourceEntity);
                 break;
             case 1:
-                serverShopSystemSettings(sourceEntity);
+                serverShopSystemSettings_main(sourceEntity);
                 break;
-            case 1:
+            case 2:
                 // shopItemSettings(sourceEntity)
                 break;
             case 3:
-                settings(sourceEntity);
+                mainShopSystemSettings(sourceEntity);
                 break;
             default:
         }
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function serverShopSystemSettings_main(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form2 = new ModalFormData();
+    form2.title(`Server Shop System Settings`);
+    form2.toggle(`§l§fEnabled§r§f\nWhether or not the server shop system is enabled, default is false`, config.shopSystem.server.enabled);
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(t => {
+        if (t.canceled) {
+            serverShopSystemSettings(sourceEntity);
+            return;
+        }
+        ;
+        let [enabled] = t.formValues;
+        config.shopSystem.server.enabled = enabled;
+        serverShopSystemSettings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
     });
@@ -337,7 +356,7 @@ export function manageServerShops(sourceEntitya) {
                 worldBorderSettingsDimensionSelector(sourceEntity);
                 break;
             case shopsList.length + 1:
-                mainShopSystemSettings(sourceEntity);
+                serverShopSystemSettings(sourceEntity);
                 break;
             default:
                 manageServerShop(sourceEntity, shopsList[response]);
@@ -380,7 +399,7 @@ Is Sell Shop: ${shop.sellShop ? "§aTrue" : "§cFalse"}`);
                 }
                 break;
             case 1:
-                // manageServerShop_settings(sourceEntity)
+                manageServerShop_settings(sourceEntity, shop);
                 break;
             case 2:
                 if (shop.buyShop && shop.sellShop) {
@@ -397,10 +416,38 @@ Is Sell Shop: ${shop.sellShop ? "§aTrue" : "§cFalse"}`);
                 }
                 break;
             case 3:
-                mainShopSystemSettings(sourceEntity);
+                manageServerShops(sourceEntity);
                 break;
             default:
         }
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function manageServerShop_settings(sourceEntitya, shop) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form2 = new ModalFormData();
+    form2.title(`Server Shop System Settings`);
+    form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", shop.name);
+    form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", shop.title);
+    form2.textField(`§l§fPage Title§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", shop.mainPageBodyText);
+    form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, shop.buyShop ?? true);
+    form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, shop.sellShop ?? true);
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(t => {
+        if (t.canceled) {
+            manageServerShop(sourceEntity, shop);
+            return;
+        }
+        ;
+        let [name, title, mainPageBodyText, buyShop, sellShop] = t.formValues;
+        shop.name = name;
+        shop.title = title;
+        shop.mainPageBodyText = mainPageBodyText;
+        shop.buyShop = buyShop;
+        shop.sellShop = sellShop;
+        shop.save();
+        manageServerShop(sourceEntity, shop);
     }).catch(e => {
         console.error(e, e.stack);
     });
