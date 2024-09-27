@@ -69,7 +69,14 @@ export class ServerShop{
         this.buyShop=config.buyShop??true
     }
     save(){
-        world.setDynamicProperty(this.id, JSON.stringify({id: this.id, title: this.title, sellShop: this.sellShop, buyShop: this.buyShop}))
+        world.setDynamicProperty(this.id, JSON.stringify({
+            id: this.id,
+            name: this.name,
+            mainPageBodyText: this.mainPageBodyText,
+            title: this.title,
+            sellShop: this.sellShop,
+            buyShop: this.buyShop
+        }))
     }
     openShop(player: Player, mode: "buy"|"sell"|"both"|"none" = (this.sellShop&&this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both"){
         if(mode=="both"){
@@ -90,16 +97,16 @@ export class ServerShop{
             const form = new ActionFormData
             form.title(this.title);
             const data = tryget(()=>JSON.parse(getStringFromDynamicProperties("sellShop:"+this.id)) as SellableShopElement[])??[]
-            form.body(`§6---------------------------------
+            form.body(`§6--------------------------------
 §aMoney: $${world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity)??0}
-§6---------------------------------`)
+§6--------------------------------`)
             data.forEach(v=>{
                 form.button(v.title, v.texture)
             });
             if(this.buyShop){form.button("Back")}
             forceShow(form, player).then(r=>{
                 if(r.canceled==true){return}
-                if(r.selection==data.length){this.openShop(player, "both")}
+                if(r.selection==data.length){this.openShop(player, "both"); return}
                 const item = data[r.selection]
                 if(item.type=="item"){
                     this.sellItem(player, item).then(()=>{
@@ -113,16 +120,16 @@ export class ServerShop{
             const form = new ActionFormData
             form.title(this.title)
             const data = tryget(()=>JSON.parse(getStringFromDynamicProperties("buyShop:"+this.id)) as BuyableShopElement[])??[]
-            form.body(`§6------------------
+            form.body(`§6--------------------------------
 §aMoney: $${world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity)}
-§6------------------`)
+§6--------------------------------`)
             data.forEach(v=>{
                 form.button(v.title, v.texture)
             });
             if(this.sellShop){form.button("Back")}
             forceShow(form, player).then(r=>{
                 if(r.canceled==true){return}
-                if(r.selection==data.length){this.openShop(player, "both")}
+                if(r.selection==data.length){this.openShop(player, "both"); return}
                 const item = data[r.selection]
                 if(item.type=="item"){
                     this.buyItem(player, item).then(()=>{
@@ -153,7 +160,14 @@ export class ServerShop{
             form.button("Back")
             forceShow(form, player).then(r=>{
                 if(r.canceled==true){return}
-                if(r.selection==newData.length){if(path.slice(0, -1).length==1){this.openShop(player, "both")}else{this.openShopPage(player, data, path.slice(0, -2) as [typeof path[0], ...string[]])}}
+                if(r.selection==newData.length){
+                    if(path.slice(0, -1).length==1){
+                        this.openShop(player, "both")
+                    }else{
+                        this.openShopPage(player, data, path.slice(0, -2) as [typeof path[0], ...string[]])
+                    };
+                    return;
+                }
                 const item = newData[r.selection]
                 if(item.type=="item"){
                     this.sellItem(player, item).then(()=>{
@@ -178,16 +192,16 @@ export class ServerShop{
                         this.openShop(player, "both")
                     }else{
                         this.openShopPage(player, data, path.slice(0, -2) as [typeof path[0], ...string[]])
-                    }
-                }else{
-                    const item = newData[r.selection]
-                    if(item.type=="item"){
-                        this.buyItem(player, item).then(()=>{
-                            this.openShopPage(player, data, path)
-                        })
-                    }else if(item.type=="page"){
-                        this.openShopPage(player, data, [...path, "data", String(r.selection)])
-                    }
+                    };
+                    return;
+                }
+                const item = newData[r.selection]
+                if(item.type=="item"){
+                    this.buyItem(player, item).then(()=>{
+                        this.openShopPage(player, data, path)
+                    })
+                }else if(item.type=="page"){
+                    this.openShopPage(player, data, [...path, "data", String(r.selection)])
                 }
             })
         }
@@ -248,23 +262,23 @@ export class ServerShop{
             })
         }
     }
-    async sellItem(player: Player, item: SellableShopItem){
+    async sellItem(player: Player, item: SellableShopItem){try{
         const form = new ModalFormData
         form.title("Sell "+item.title)
         form.slider(`§a${item.title}\n§gValue: ${item.value}\n§fHow many would you like to sell?`, 0, item.max??64, item.step??1, item.step??1)
         const r = await forceShow(form, player)
         if(r.canceled==true||(r.formValues[0] as number)==0){return}
-        const items = containerToContainerSlotArray(player.getComponent("inventory").container).filter(v=>v?.typeId==item.itemID)
+        const items = containerToContainerSlotArray(player.getComponent("inventory").container).filter(v=>v.hasItem?v?.typeId==item.itemID:false)
         let itemCount = 0
         items.forEach(v=>itemCount+=v.amount)
         if(itemCount>=(r.formValues[0] as number)){
             if(item.itemType=="sellable"){
                 world.scoreboard.getObjective("andexdb:money").addScore(player.scoreboardIdentity, item.value*(r.formValues[0] as number))
                 let amountToRemove = r.formValues[0] as number
-                const items = containerToContainerSlotArray(player.getComponent("inventory").container).filter(v=>v?.typeId==item.itemID)
                 for(let i = 0; amountToRemove!=0; i++){
-                    items[i].amount-=Math.min(amountToRemove, items[i].amount)
-                    amountToRemove-=Math.min(amountToRemove, items[i].amount)
+                    let amount = Math.min(amountToRemove, items[i].amount)
+                    items[i].amount-=amount
+                    amountToRemove-=amount
                 }
                 this.openShop(player, "sell")
             }
@@ -279,14 +293,14 @@ export class ServerShop{
                 this.openShop(player, "sell")
             })
         }
-    }
+    }catch(e){console.error(e, e.stack)}}
 }
 
 export function serverShopSystemSettings(sourceEntitya: Entity|executeCommandPlayerW|Player){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form = new ActionFormData();
     form.title("Server Shop System");
-    form.body("The server shop system is "+config.shopSystem.server.enabled?"§aEnabled":"§cDisabled");
+    form.body("The server shop system is "+(config.shopSystem.server.enabled?"§aEnabled":"§cDisabled"));
     form.button("Manage Shops", "textures/ui/store_home_icon");
     form.button("Main Settings", "textures/ui/icon_setting");
     form.button("§cShop Item Settings", "textures/ui/icon_items");
@@ -401,7 +415,7 @@ export function manageServerShop(sourceEntitya: Entity|executeCommandPlayerW|Pla
 Display Name: ${shop.name}
 Title: ${shop.title}
 Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
-Is Sell Shop: ${shop.sellShop?"§aTrue":"§cFalse"}`)
+§fIs Sell Shop: ${shop.sellShop?"§aTrue":"§cFalse"}`)
     form.button("Manage Items/Pages", "textures/ui/color_plus");
     form.button("Shop Settings", "textures/ui/color_plus");
     form.button("View Shop", "textures/ui/color_plus");
@@ -450,7 +464,7 @@ Is Sell Shop: ${shop.sellShop?"§aTrue":"§cFalse"}`)
 export function manageServerShop_settings(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form2 = new ModalFormData();
-    form2.title(`Server Shop System Settings`)
+    form2.title(`${shop.title} Settings`)
     form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", shop.name)
     form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", shop.title)
     form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", shop.mainPageBodyText)
@@ -565,6 +579,9 @@ export function manageServerShop_contents(sourceEntitya: Entity|executeCommandPl
             case shopData.length+1:
                 manageServerShop_addPage(sourceEntity, shop, mode)
             break;
+            case shopData.length+2:
+                manageServerShop(sourceEntity, shop)
+            break;
             default:
                 shopData[response].type=="item"?await manageServerShop_manageItem(sourceEntity, shop, shopData[response] as SellableShopItem|ShopItem, response, mode):await manageServerShop_managePage(sourceEntity, shop, shopData[response] as ShopPage, response, mode)
                 manageServerShop_contents(sourceEntity, shop, mode)
@@ -641,7 +658,6 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
         return r
     });
 }
-
 export async function manageServerShop_editItem<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number, mode: mode){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     const form = new ModalFormData;
@@ -741,7 +757,6 @@ export async function manageServerShop_editItem<mode extends "buy"|"sell">(sourc
         return r
     });
 }
-
 export async function manageServerShop_addItem<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, type: "pre-made"|"pre-made_manual"|"newItemStack"|"giveCommand"|"sellable", mode: mode){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     const form = new ModalFormData;
@@ -864,7 +879,6 @@ export async function manageServerShop_addItem<mode extends "buy"|"sell">(source
     });
 }
 
-
 export async function manageServerShop_managePage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, page: ShopPage, pageIndex: number, mode: mode){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     const form = new ActionFormData;
@@ -930,7 +944,6 @@ Texture: ${page.texture}`)
         return r
     });
 }
-
 export async function manageServerShop_editPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, page: ShopPage, pageIndex: number, mode: mode){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     const form = new ModalFormData;
@@ -961,7 +974,6 @@ export async function manageServerShop_editPage<mode extends "buy"|"sell">(sourc
         return r
     });
 }
-
 export async function manageServerShop_addPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, mode: mode){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     const form = new ModalFormData;

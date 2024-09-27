@@ -16,7 +16,14 @@ export class ServerShop {
         this.buyShop = config.buyShop ?? true;
     }
     save() {
-        world.setDynamicProperty(this.id, JSON.stringify({ id: this.id, title: this.title, sellShop: this.sellShop, buyShop: this.buyShop }));
+        world.setDynamicProperty(this.id, JSON.stringify({
+            id: this.id,
+            name: this.name,
+            mainPageBodyText: this.mainPageBodyText,
+            title: this.title,
+            sellShop: this.sellShop,
+            buyShop: this.buyShop
+        }));
     }
     openShop(player, mode = (this.sellShop && this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both") {
         if (mode == "both") {
@@ -41,9 +48,9 @@ export class ServerShop {
             const form = new ActionFormData;
             form.title(this.title);
             const data = tryget(() => JSON.parse(getStringFromDynamicProperties("sellShop:" + this.id))) ?? [];
-            form.body(`§6---------------------------------
+            form.body(`§6--------------------------------
 §aMoney: $${world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity) ?? 0}
-§6---------------------------------`);
+§6--------------------------------`);
             data.forEach(v => {
                 form.button(v.title, v.texture);
             });
@@ -56,6 +63,7 @@ export class ServerShop {
                 }
                 if (r.selection == data.length) {
                     this.openShop(player, "both");
+                    return;
                 }
                 const item = data[r.selection];
                 if (item.type == "item") {
@@ -72,9 +80,9 @@ export class ServerShop {
             const form = new ActionFormData;
             form.title(this.title);
             const data = tryget(() => JSON.parse(getStringFromDynamicProperties("buyShop:" + this.id))) ?? [];
-            form.body(`§6------------------
+            form.body(`§6--------------------------------
 §aMoney: $${world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity)}
-§6------------------`);
+§6--------------------------------`);
             data.forEach(v => {
                 form.button(v.title, v.texture);
             });
@@ -87,6 +95,7 @@ export class ServerShop {
                 }
                 if (r.selection == data.length) {
                     this.openShop(player, "both");
+                    return;
                 }
                 const item = data[r.selection];
                 if (item.type == "item") {
@@ -129,6 +138,8 @@ export class ServerShop {
                     else {
                         this.openShopPage(player, data, path.slice(0, -2));
                     }
+                    ;
+                    return;
                 }
                 const item = newData[r.selection];
                 if (item.type == "item") {
@@ -160,17 +171,17 @@ export class ServerShop {
                     else {
                         this.openShopPage(player, data, path.slice(0, -2));
                     }
+                    ;
+                    return;
                 }
-                else {
-                    const item = newData[r.selection];
-                    if (item.type == "item") {
-                        this.buyItem(player, item).then(() => {
-                            this.openShopPage(player, data, path);
-                        });
-                    }
-                    else if (item.type == "page") {
-                        this.openShopPage(player, data, [...path, "data", String(r.selection)]);
-                    }
+                const item = newData[r.selection];
+                if (item.type == "item") {
+                    this.buyItem(player, item).then(() => {
+                        this.openShopPage(player, data, path);
+                    });
+                }
+                else if (item.type == "page") {
+                    this.openShopPage(player, data, [...path, "data", String(r.selection)]);
                 }
             });
         }
@@ -246,40 +257,45 @@ export class ServerShop {
         }
     }
     async sellItem(player, item) {
-        const form = new ModalFormData;
-        form.title("Sell " + item.title);
-        form.slider(`§a${item.title}\n§gValue: ${item.value}\n§fHow many would you like to sell?`, 0, item.max ?? 64, item.step ?? 1, item.step ?? 1);
-        const r = await forceShow(form, player);
-        if (r.canceled == true || r.formValues[0] == 0) {
-            return;
-        }
-        const items = containerToContainerSlotArray(player.getComponent("inventory").container).filter(v => v?.typeId == item.itemID);
-        let itemCount = 0;
-        items.forEach(v => itemCount += v.amount);
-        if (itemCount >= r.formValues[0]) {
-            if (item.itemType == "sellable") {
-                world.scoreboard.getObjective("andexdb:money").addScore(player.scoreboardIdentity, item.value * r.formValues[0]);
-                let amountToRemove = r.formValues[0];
-                const items = containerToContainerSlotArray(player.getComponent("inventory").container).filter(v => v?.typeId == item.itemID);
-                for (let i = 0; amountToRemove != 0; i++) {
-                    items[i].amount -= Math.min(amountToRemove, items[i].amount);
-                    amountToRemove -= Math.min(amountToRemove, items[i].amount);
+        try {
+            const form = new ModalFormData;
+            form.title("Sell " + item.title);
+            form.slider(`§a${item.title}\n§gValue: ${item.value}\n§fHow many would you like to sell?`, 0, item.max ?? 64, item.step ?? 1, item.step ?? 1);
+            const r = await forceShow(form, player);
+            if (r.canceled == true || r.formValues[0] == 0) {
+                return;
+            }
+            const items = containerToContainerSlotArray(player.getComponent("inventory").container).filter(v => v.hasItem ? v?.typeId == item.itemID : false);
+            let itemCount = 0;
+            items.forEach(v => itemCount += v.amount);
+            if (itemCount >= r.formValues[0]) {
+                if (item.itemType == "sellable") {
+                    world.scoreboard.getObjective("andexdb:money").addScore(player.scoreboardIdentity, item.value * r.formValues[0]);
+                    let amountToRemove = r.formValues[0];
+                    for (let i = 0; amountToRemove != 0; i++) {
+                        let amount = Math.min(amountToRemove, items[i].amount);
+                        items[i].amount -= amount;
+                        amountToRemove -= amount;
+                    }
+                    this.openShop(player, "sell");
                 }
-                this.openShop(player, "sell");
+            }
+            else {
+                const form = new MessageFormData;
+                form.title("Not Enough Items");
+                form.body(`You do not have ${r.formValues[0]} of this item.\nYou currently have ${itemCount}of this item.\nYou wanted to sell ${r.formValues[0]} of this item.\nYou need another $${r.formValues[0] - itemCount} to buy this item.`);
+                form.button1("Go Back");
+                form.button2("Close Shop");
+                forceShow(form, player).then(r => {
+                    if (r.canceled == true || r.selection == 1) {
+                        return;
+                    }
+                    this.openShop(player, "sell");
+                });
             }
         }
-        else {
-            const form = new MessageFormData;
-            form.title("Not Enough Items");
-            form.body(`You do not have ${r.formValues[0]} of this item.\nYou currently have ${itemCount}of this item.\nYou wanted to sell ${r.formValues[0]} of this item.\nYou need another $${r.formValues[0] - itemCount} to buy this item.`);
-            form.button1("Go Back");
-            form.button2("Close Shop");
-            forceShow(form, player).then(r => {
-                if (r.canceled == true || r.selection == 1) {
-                    return;
-                }
-                this.openShop(player, "sell");
-            });
+        catch (e) {
+            console.error(e, e.stack);
         }
     }
 }
@@ -287,7 +303,7 @@ export function serverShopSystemSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData();
     form.title("Server Shop System");
-    form.body("The server shop system is " + config.shopSystem.server.enabled ? "§aEnabled" : "§cDisabled");
+    form.body("The server shop system is " + (config.shopSystem.server.enabled ? "§aEnabled" : "§cDisabled"));
     form.button("Manage Shops", "textures/ui/store_home_icon");
     form.button("Main Settings", "textures/ui/icon_setting");
     form.button("§cShop Item Settings", "textures/ui/icon_items");
@@ -353,7 +369,7 @@ export function manageServerShops(sourceEntitya) {
         let response = r.selection;
         switch (response) {
             case shopsList.length:
-                worldBorderSettingsDimensionSelector(sourceEntity);
+                addServerShop(sourceEntity);
                 break;
             case shopsList.length + 1:
                 serverShopSystemSettings(sourceEntity);
@@ -361,6 +377,38 @@ export function manageServerShops(sourceEntitya) {
             default:
                 manageServerShop(sourceEntity, shopsList[response]);
         }
+    }).catch(e => {
+        console.error(e, e.stack);
+    });
+}
+export function addServerShop(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form2 = new ModalFormData();
+    form2.title(`Server Shop System Settings`);
+    form2.textField(`§l§fShop ID§r§c*§f\nThe ID of the shop`, "myShop", "myShop");
+    form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", "My Shop");
+    form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", "My Shop");
+    form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", "My Shop");
+    form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, true);
+    form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, true);
+    form2.submitButton("Save");
+    forceShow(form2, sourceEntity).then(t => {
+        if (t.canceled) {
+            manageServerShops(sourceEntity);
+            return;
+        }
+        ;
+        let [id, name, title, mainPageBodyText, buyShop, sellShop] = t.formValues;
+        const shop = new ServerShop({
+            id: "shop:" + id,
+            name: name,
+            title: title,
+            mainPageBodyText: mainPageBodyText,
+            buyShop: buyShop,
+            sellShop: sellShop
+        });
+        shop.save();
+        manageServerShop(sourceEntity, shop);
     }).catch(e => {
         console.error(e, e.stack);
     });
@@ -373,7 +421,7 @@ export function manageServerShop(sourceEntitya, shop) {
 Display Name: ${shop.name}
 Title: ${shop.title}
 Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
-Is Sell Shop: ${shop.sellShop ? "§aTrue" : "§cFalse"}`);
+§fIs Sell Shop: ${shop.sellShop ? "§aTrue" : "§cFalse"}`);
     form.button("Manage Items/Pages", "textures/ui/color_plus");
     form.button("Shop Settings", "textures/ui/color_plus");
     form.button("View Shop", "textures/ui/color_plus");
@@ -427,10 +475,10 @@ Is Sell Shop: ${shop.sellShop ? "§aTrue" : "§cFalse"}`);
 export function manageServerShop_settings(sourceEntitya, shop) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
-    form2.title(`Server Shop System Settings`);
+    form2.title(`${shop.title} Settings`);
     form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", shop.name);
     form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", shop.title);
-    form2.textField(`§l§fPage Title§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", shop.mainPageBodyText);
+    form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", shop.mainPageBodyText);
     form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, shop.buyShop ?? true);
     form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, shop.sellShop ?? true);
     form2.submitButton("Save");
@@ -534,6 +582,9 @@ export function manageServerShop_contents(sourceEntitya, shop, mode = "buy") {
                 break;
             case shopData.length + 1:
                 manageServerShop_addPage(sourceEntity, shop, mode);
+                break;
+            case shopData.length + 2:
+                manageServerShop(sourceEntity, shop);
                 break;
             default:
                 shopData[response].type == "item" ? await manageServerShop_manageItem(sourceEntity, shop, shopData[response], response, mode) : await manageServerShop_managePage(sourceEntity, shop, shopData[response], response, mode);
