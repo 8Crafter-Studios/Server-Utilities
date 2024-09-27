@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.22.0-preview.20+BULID.1";
+export const format_version = "1.23.0-preview.20+BULID.1";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -373,6 +373,28 @@ export class config {
             }
         };
     }
+    static get shopSystem() {
+        return {
+            get server() {
+                return {
+                    get enabled() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:server.enabled") ?? false); },
+                    set enabled(enabled) { world.setDynamicProperty("andexdbShopSystemSettings:server.enabled", enabled ?? false); }
+                };
+            },
+            get player() {
+                return {
+                    get enabled() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.enabled") ?? false); },
+                    set enabled(enabled) { world.setDynamicProperty("andexdbShopSystemSettings:player.enabled", enabled ?? false); }
+                };
+            },
+            get sign() {
+                return {
+                    get enabled() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:sign.enabled") ?? false); },
+                    set enabled(enabled) { world.setDynamicProperty("andexdbShopSystemSettings:sign.enabled", enabled ?? false); }
+                };
+            }
+        };
+    }
     static reset() { }
 }
 export class worldPlayers {
@@ -547,8 +569,36 @@ if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>
 if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent("projectile").shoot({x: Number(d.x>=0)*Math.abs(1/d.x), y: Number(d.y>=0)*Math.abs(1/d.x), z: Number(d.z>=0)*Math.abs(1/d.x)})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent("projectile").shoot({x: Number(d.x>=0)*Math.abs(1/d.x), y: Number(d.y>=0)*Math.abs(1/d.x), z: Number(d.z>=0)*Math.abs(1/d.x)})}else{sourceEntity.getComponent("projectile").shoot({x: Number(d.x>=0)*Math.abs(1/d.x), y: Number(d.y>=0)*Math.abs(1/d.x), z: Number(d.z>=0)*Math.abs(1/d.x)})}}}
 sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location*/
 export function flatPath(directoryObject, startingPath = ["input"]) {
-    function flatPathArray(a, currentPath = ["input"]) { return [{ path: currentPath, name: currentPath[currentPath.length - 1] }, a.flatMap((v, i) => v instanceof Array ? flatPathArray(v, [...currentPath, String(i)]) : typeof v == "object" ? v?.notPathable == true ? { path: [...currentPath, String(i)], name: v?.name ?? String(i), index: i, arrayindex: i, notPathable: true } : flatPathObject(v[1], [...currentPath, v[0]]) : { path: [...currentPath, String(v ?? i)], name: String(v ?? i), index: i, arrayindex: i })]; }
-    function flatPathObject(o, currentPath = ["input"]) { return [{ path: currentPath, name: currentPath[currentPath.length - 1] }, Object.entries(o).flatMap((v, i) => v[1] instanceof Array ? flatPathArray(v[1], [...currentPath, v[0]])[0] : typeof v[1] == "object" ? v[1]?.notPathable == true ? { path: [...currentPath, v[0]], name: v[0], index: i, objectindex: i, notPathable: true } : flatPathObject(v[1], [...currentPath, v[0]]) : { path: [...currentPath, v[0]], name: v[0], index: i, objectindex: i })]; }
+    function flatPathArray(a, currentPath = ["input"]) {
+        return [
+            { path: currentPath, name: currentPath[currentPath.length - 1] },
+            a.flatMap((v, i) => v instanceof Array
+                ? flatPathArray(v, [...currentPath, String(i)])
+                : typeof v == "object"
+                    ? v?.notPathable == true
+                        ? {
+                            path: [...currentPath, String(i)],
+                            name: v?.name ?? String(i),
+                            index: i,
+                            arrayindex: i,
+                            notPathable: true,
+                        }
+                        : flatPathObject(v, [...currentPath, String(i)])
+                    : { path: [...currentPath, String(i)], name: String(i), index: i, arrayindex: i }),
+        ];
+    }
+    function flatPathObject(o, currentPath = ["input"]) {
+        return [
+            { path: currentPath, name: currentPath[currentPath.length - 1] },
+            Object.entries(o).flatMap((v, i) => v[1] instanceof Array
+                ? flatPathArray(v[1], [...currentPath, v[0]])[0]
+                : typeof v[1] == "object"
+                    ? v[1]?.notPathable == true
+                        ? { path: [...currentPath, v[0]], name: v[0], index: i, objectindex: i, notPathable: true }
+                        : flatPathObject(v[1], [...currentPath, v[0]])
+                    : { path: [...currentPath, v[0]], name: v[0], index: i, objectindex: i }),
+        ];
+    }
     return flatPathObject(directoryObject, startingPath);
 }
 export function getPathInObject(directoryObject, path = ["input"]) { let a; a = directoryObject; path.slice(1).forEach(v => a = a[v]); return a; } /*
@@ -4845,6 +4895,12 @@ subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscr
     try {
         if (world.scoreboard.getObjective("andexdbDebug") == undefined) {
             world.scoreboard.addObjective("andexdbDebug", "andexdbScriptDebuggingService");
+        }
+    }
+    catch (e) { }
+    try {
+        if (world.scoreboard.getObjective("andexdb:money") == undefined) {
+            world.scoreboard.addObjective("andexdb:money", "Money");
         }
     }
     catch (e) { }

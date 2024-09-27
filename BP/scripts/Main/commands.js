@@ -30,6 +30,8 @@ import * as utils from "./utilities";
 import * as errors from "./errors";
 import * as cmdsdocs from "./commands_documentation";
 import * as cmdslist from "./commands_list";
+import * as servershop from "../ExtraFeatures/server_shop";
+// import *  as shopmain from "../ExtraFeatures/shop_main";
 import mcMath from "@minecraft/math.js";
 import { uiManager, UIManager } from "@minecraft/server-ui";
 import { commands } from "./commands_list";

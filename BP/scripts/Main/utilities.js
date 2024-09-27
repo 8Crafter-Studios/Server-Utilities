@@ -28,7 +28,7 @@ import * as cmdutils from "./command_utilities";
 import * as utils from "./utilities";
 import * as errors from "./errors";
 import mcMath from "@minecraft/math.js";
-import { uiManager, UIManager } from "@minecraft/server-ui";
+import { ActionFormData, MessageFormData, uiManager, UIManager } from "@minecraft/server-ui";
 export const utilsmetaimport = import.meta;
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer;
@@ -734,4 +734,101 @@ catch (e) {
     console.error(e, e.stack);
 } ; entity.applyImpulse(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation)); }
 ;
+export function splitUpStringData(data, chunkSize = 32760) {
+    if (chunkSize == 0) {
+        throw (new RangeError(`chunkSize cannot be 0 (got ${chunkSize.toString()})`));
+    }
+    if (typeof data != "string") {
+        throw (new TypeError(`args[0]: Expected type of string but got type of ${typeof data} instead.`));
+    }
+    if (typeof chunkSize == "bigint") {
+        const chunkSizeB = Number(chunkSize);
+        let remainingData = data;
+        const splitData = [];
+        for (let i = 0n; remainingData.length != 0; i++) {
+            splitData.push(remainingData.slice(0, Math.min(remainingData.length, chunkSizeB)));
+            remainingData = remainingData.slice(Math.min(remainingData.length, chunkSizeB));
+        }
+        return splitData;
+    }
+    else if (typeof chunkSize != "number") {
+        throw (new TypeError(`args[1]: Expected type of number but got type of ${typeof chunkSize} instead.`));
+    }
+    else {
+        let remainingData = data;
+        let splitData = [];
+        for (let i = 0n; remainingData.length != 0; i++) {
+            splitData.push(remainingData.slice(0, Math.min(remainingData.length, chunkSize)));
+            remainingData = remainingData.slice(Math.min(remainingData.length, chunkSize));
+        }
+        return splitData;
+    }
+}
+export function saveStringToDynamicProperties(string, propertyName, clearOldProperties = true, chunkSize = 32760) {
+    if (typeof propertyName != "string") {
+        throw (new TypeError(`args[1]: Expected type of string but got type of ${typeof propertyName} instead.`));
+    }
+    if (typeof clearOldProperties != "boolean") {
+        throw (new TypeError(`args[2]: Expected type of boolean but got type of ${typeof clearOldProperties} instead.`));
+    }
+    if (clearOldProperties) {
+        const length = Number(world.getDynamicProperty(`${propertyName}.length`) ?? 0);
+        for (let i = 0n; i < length; i++) {
+            world.setDynamicProperty(`#splitString[${i}]:${propertyName}`);
+        }
+    }
+    const data = splitUpStringData(string, chunkSize);
+    data.forEach((s, i) => {
+        world.setDynamicProperty(`#splitString[${i}]:${propertyName}`, s);
+    });
+    world.setDynamicProperty(`${propertyName}.length`, data.length);
+}
+export function getStringFromDynamicProperties(propertyName) {
+    if (typeof propertyName != "string") {
+        throw (new TypeError(`args[0]: Expected type of string but got type of ${typeof propertyName} instead.`));
+    }
+    const length = Number(world.getDynamicProperty(`${propertyName}.length`) ?? 0);
+    const data = [];
+    for (let i = 0n; i < length; i++) {
+        data.push(world.getDynamicProperty(`#splitString[${i}]:${propertyName}`));
+    }
+    return data.join("");
+}
+export async function showMessage(player, title, body, button1, button2) {
+    const form = new MessageFormData;
+    if (!!title) {
+        form.title(title);
+    }
+    if (!!body) {
+        form.body(body);
+    }
+    if (!!button1) {
+        form.button1(button1);
+    }
+    if (!!button2) {
+        form.button2(button2);
+    }
+    return forceShow(form, player);
+}
+export async function showActions(player, title, body, ...buttons) {
+    const form = new ActionFormData;
+    if (!!title) {
+        form.title(title);
+    }
+    if (!!body) {
+        form.body(body);
+    }
+    buttons.forEach(b => { form.button(b[0], b[1]); });
+    return forceShow(form, player);
+}
+export function getSuperUniqueID() {
+    return `${Date.now()}_${Math.round(Math.random() * 100000)}_${Math.round(Math.random() * 100000)}`;
+}
+export function getSuperUniqueID2(depth = 2) {
+    let id = `${Date.now()}`;
+    for (let i = 0; i < depth; i++) {
+        id += `_${Math.round(Math.random() * 100000)}`;
+    }
+    return id;
+}
 //# sourceMappingURL=utilities.js.map

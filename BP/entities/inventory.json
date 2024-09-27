@@ -1,0 +1,51 @@
+{
+  "format_version": "1.21.10",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "andexdb:saved_shop_item",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+    "components": {
+      "minecraft:inventory": {
+        "container_type": "inventory",
+        "can_be_siphoned_from": true,
+        "inventory_size": 1
+      },
+			"minecraft:physics": {
+				"has_collision": false,
+				"has_gravity": false
+			},
+			"minecraft:fire_immune": true,
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "all",
+            "deals_damage": false
+          }
+        ]
+      },
+      "minecraft:tick_world":{
+        "distance_to_players": 128,
+        "never_despawn": true,
+        "radius": 2
+      },
+      "minecraft:type_family": {
+        "family": [ "saved_shop_item" ]
+      },
+      "minecraft:pushable":{
+          "is_pushable": false,
+          "is_pushable_by_piston": false
+      },
+      "minecraft:persistent":{
+      },
+      "minecraft:is_hidden_when_invisible": {
+      },
+      "minecraft:nameable": {
+        "allow_name_tag_renaming": false,
+        "always_show": false
+      }
+    }
+  }
+}
