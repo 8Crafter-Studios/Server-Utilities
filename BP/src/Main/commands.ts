@@ -1946,7 +1946,7 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
         let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!(switchTest.match((command.get(v.commandName, "built-in").regexp))))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
     if(commanda?.type=="server_shop"){
         eventData.cancel=true
-        LinkedServerShopCommands.openShopForCommand(newMessage, player.player)
+        srun(()=>LinkedServerShopCommands.openShopForCommand(newMessage, player.player))
     }else if(commanda?.type=="built-in"){switch (true){
         case !!switchTest.match(/^give$/): 
             eventData.cancel = true;
