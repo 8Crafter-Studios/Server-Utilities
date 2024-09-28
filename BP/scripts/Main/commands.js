@@ -74,7 +74,8 @@ let tfsb = ((b) => (([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+
 ![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] +
     // @ts-expect-error
     [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][
-// @ts-expect-error
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 (![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]
 // @ts-expect-error
 ])[+!+[] + [+[]]] + ([][
@@ -195,7 +196,8 @@ let tfsb = ((b) => (([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+
 ])[+!+[] + [+[]]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (
 // @ts-expect-error
 ![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (
-// @ts-expect-error
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 ![] + [])[!+[] + !+[] + !+[]]]()[+!+[] + [+[]]] + ![] + (![] + [+[]])[([![]] + [][
 // @ts-expect-error
 []
@@ -534,10 +536,9 @@ let tfsb = ((b) => (([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+
 ])[+!+[] + [+[]]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (
 // @ts-expect-error
 ![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (
-// @ts-expect-error
-![] + [])[!+[] + !+[] + !+[]]]()[+!+[] + [+[]]] + ![] + (![] + [+[]])[([![]] + [][
-// @ts-expect-error
-[]
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+![] + [])[!+[] + !+[] + !+[]]]()[+!+[] + [+[]]] + ![] + (![] + [+[]])[([![]] + [][[]
 // @ts-expect-error
 ])[+!+[] + [+[]]] + (!![] + [])[+[]] + (![] + [])[+!+[]] + (![] + [])[
 // @ts-expect-error
@@ -2385,42 +2386,126 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         let slotsArray = [];
                         for (let i = 0; i < inventoryd2.inventorySize; i++) {
                             if (inventoryd2.container.getItem(Number(i)) !== undefined) {
-                                slotsArray = slotsArray.concat(String("slot: " + i + "§r§f, item: " + inventoryd2.container.getItem(Number(i)).typeId + "§r§f, amount: " + inventoryd2.container.getItem(Number(i)).amount + "§r§f, nameTag: " + inventoryd2.container.getItem(Number(i)).nameTag + "§r§f, lore: " + (JSONStringify(inventoryd2.container.getItem(Number(i)).getLore() ?? [], true) ?? "[]") + ", enchantments: " + ((!!inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")) ? (JSONStringify(inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments() ?? [], true) ?? "[]") : "N/A") + ", properties: " + JSONStringify(((i) => { if ((inventoryd2.container.getItem(Number(i)).getDynamicPropertyIds() ?? []).length == 0) {
-                                    return inventoryd2.container.getItem(Number(i)).isStackable ? null : {};
-                                }
-                                else {
-                                    let properties = {};
-                                    inventoryd2.container.getItem(Number(i)).getDynamicPropertyIds().forEach(v => properties[v] = inventoryd2.container.getItem(Number(i))?.getDynamicProperty(v));
-                                    return properties;
-                                } })(i) ?? (inventoryd2.container.getItem(Number(i)).isStackable ? null : {}), true) ?? (inventoryd2.container.getItem(Number(i)).isStackable ? "null" : {})));
+                                slotsArray = slotsArray.concat(String("slot: " +
+                                    i +
+                                    "§r§f, item: " +
+                                    inventoryd2.container.getItem(Number(i)).typeId +
+                                    "§r§f, amount: " +
+                                    inventoryd2.container.getItem(Number(i)).amount +
+                                    "§r§f, nameTag: " +
+                                    inventoryd2.container.getItem(Number(i)).nameTag +
+                                    "§r§f, lore: " +
+                                    JSONStringify(inventoryd2.container.getItem(Number(i)).getLore() ??
+                                        [], true) +
+                                    ", enchantments: " +
+                                    (!!inventoryd2.container
+                                        .getItem(Number(i))
+                                        ?.getComponent("enchantable")
+                                        ? JSONStringify(inventoryd2.container
+                                            .getItem(Number(i))
+                                            ?.getComponent("enchantable")
+                                            ?.getEnchantments() ?? [], true)
+                                        : "N/A") +
+                                    ", properties: " +
+                                    JSONStringify(((i) => {
+                                        if ((inventoryd2.container
+                                            .getItem(Number(i))
+                                            .getDynamicPropertyIds() ?? []).length == 0) {
+                                            return inventoryd2.container.getItem(Number(i))
+                                                .isStackable
+                                                ? null
+                                                : {};
+                                        }
+                                        else {
+                                            let properties = {};
+                                            inventoryd2.container
+                                                .getItem(Number(i))
+                                                .getDynamicPropertyIds()
+                                                .forEach((v) => (properties[v] = inventoryd2.container
+                                                .getItem(Number(i))
+                                                ?.getDynamicProperty(v)));
+                                            return properties;
+                                        }
+                                    })(i) ??
+                                        (inventoryd2.container.getItem(Number(i))
+                                            .isStackable
+                                            ? null
+                                            : {}), true)));
                             }
                             else {
                                 slotsArray = slotsArray.concat("slot: " + i + ", item: minecraft:air");
                             }
                         }
-                        ;
-                        ;
                         for (let i = 0; i < 6; i++) {
                             try {
-                                let item = equipmentd2.getEquipment([EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i]);
+                                let item = equipmentd2.getEquipment([
+                                    EquipmentSlot.Head,
+                                    EquipmentSlot.Chest,
+                                    EquipmentSlot.Legs,
+                                    EquipmentSlot.Feet,
+                                    EquipmentSlot.Mainhand,
+                                    EquipmentSlot.Offhand,
+                                ][i]);
                                 if (item !== undefined) {
-                                    slotsArray = slotsArray.concat(String("slot: " + [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i] + ", item: " + item.typeId + ", amount: " + item.amount + ", nameTag: " + item.nameTag + "§r§f, lore: " + (JSONStringify(item.getLore() ?? [], true)) + "§r§f, enchantments: " + ((!!item.getComponent("enchantable")) ? (JSON.stringify(item?.getComponent("enchantable")?.getEnchantments() ?? []) ?? "[]") : "N/A") + ", properties: " + JSONStringify(((i) => { if ((item.getDynamicPropertyIds() ?? []).length == 0) {
-                                        return item.isStackable ? null : {};
-                                    }
-                                    else {
-                                        let properties = {};
-                                        item.getDynamicPropertyIds().forEach(v => properties[v] = item?.getDynamicProperty(v));
-                                        return properties;
-                                    } })(i) ?? (item.isStackable ? null : {}), true) ?? (item.isStackable ? "null" : {})));
+                                    slotsArray = slotsArray.concat(String("slot: " +
+                                        [
+                                            EquipmentSlot.Head,
+                                            EquipmentSlot.Chest,
+                                            EquipmentSlot.Legs,
+                                            EquipmentSlot.Feet,
+                                            EquipmentSlot.Mainhand,
+                                            EquipmentSlot.Offhand,
+                                        ][i] +
+                                        ", item: " +
+                                        item.typeId +
+                                        ", amount: " +
+                                        item.amount +
+                                        ", nameTag: " +
+                                        item.nameTag +
+                                        "§r§f, lore: " +
+                                        JSONStringify(item.getLore() ?? [], true) +
+                                        "§r§f, enchantments: " +
+                                        (!!item.getComponent("enchantable")
+                                            ? JSON.stringify(item
+                                                ?.getComponent("enchantable")
+                                                ?.getEnchantments() ?? [])
+                                            : "N/A") +
+                                        ", properties: " +
+                                        JSONStringify(((i) => {
+                                            if ((item.getDynamicPropertyIds() ?? []).length == 0) {
+                                                return item.isStackable ? null : {};
+                                            }
+                                            else {
+                                                let properties = {};
+                                                item
+                                                    .getDynamicPropertyIds()
+                                                    .forEach((v) => (properties[v] =
+                                                    item?.getDynamicProperty(v)));
+                                                return properties;
+                                            }
+                                        })(i) ?? (item.isStackable ? null : {}), true)));
                                 }
                                 else {
-                                    slotsArray = slotsArray.concat("slot: " + [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i] + ", item: minecraft:air");
+                                    slotsArray = slotsArray.concat("slot: " +
+                                        [
+                                            EquipmentSlot.Head,
+                                            EquipmentSlot.Chest,
+                                            EquipmentSlot.Legs,
+                                            EquipmentSlot.Feet,
+                                            EquipmentSlot.Mainhand,
+                                            EquipmentSlot.Offhand,
+                                        ][i] +
+                                        ", item: minecraft:air");
                                 }
                             }
                             catch { }
                         }
-                        ;
-                        eventData.sender.sendMessage(String(world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(switchTestB.slice(8), "", Number(eventData.sender.id)))).name + "'s Items: \n" + slotsArray.join("§r§f\n")));
+                        eventData.sender.sendMessage(String(world
+                            .getPlayers()
+                            .find((playerFinders) => playerFinders ==
+                            targetSelectorB(switchTestB.slice(8), "", Number(eventData.sender.id))).name +
+                            "'s Items: \n" +
+                            slotsArray.join("§r§f\n")));
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -2591,7 +2676,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             let player = players[0];
                             let items = player.items.inventory.concat(player.items.equipment);
                             items.forEach((item) => { if (item.count != 0) {
-                                slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore ?? [], true) ?? "[]" + "§r§f, enchantments: " + JSONStringify(item.enchants ?? "N/A", true) ?? "N/A"));
+                                slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore ?? [], true) + "§r§f, enchantments: " + JSONStringify(item.enchants ?? "N/A", true)));
                             }
                             else {
                                 slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
@@ -2617,7 +2702,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         let player = players[0];
                         let items = player.items.inventory.concat(player.items.equipment);
                         items.forEach((item) => { if (item.count != 0) {
-                            slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore ?? [], true) ?? "[]" + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? "N/A") ?? "N/A"));
+                            slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore ?? [], true) + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? "N/A")));
                         }
                         else {
                             slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
@@ -13835,7 +13920,7 @@ ${command.dp}snapshot list`);
 }
 export function evaluateSelectors(selector, options) {
     if (!!selector.trimStart().replaceAll("\\", "").match(/^(@[aeprs]\s*\[|@[aeprs]\s+)/)) {
-        return (!!options) ? !!options?.source ? !(options.source instanceof Block) ? targetSelectorAllListC(selector, "", (options.location ?? options.source.location).x + " " + (options.location ?? options.source.location).y + " " + (options.location ?? options.source.location).z, options.source) : targetSelectorAllListD(selector, (options.location ?? options.source.location).x + " " + (options.location ?? options.source.location).y + " " + (options.location ?? options.source.location).z, options.dimension ?? options.location?.dimension) : (!!options.dimension ?? options.location?.dimension) ? targetSelectorAllListE(selector, ((options.location ?? { x: 0, y: 0, z: 0 }).x + " " + (options.location ?? { x: 0, y: 0, z: 0 }).y + " " + (options.location ?? { x: 0, y: 0, z: 0 }).z)) : targetSelectorAllListD(selector, ((options.location ?? { x: 0, y: 0, z: 0 }).x + " " + (options.location ?? { x: 0, y: 0, z: 0 }).y + " " + (options.location ?? { x: 0, y: 0, z: 0 }).z), options.dimension ?? options.location?.dimension) : targetSelectorAllListE(selector, "0 0 0");
+        return (!!options) ? !!options?.source ? !(options.source instanceof Block) ? targetSelectorAllListC(selector, "", (options.location ?? options.source.location).x + " " + (options.location ?? options.source.location).y + " " + (options.location ?? options.source.location).z, options.source) : targetSelectorAllListD(selector, (options.location ?? options.source.location).x + " " + (options.location ?? options.source.location).y + " " + (options.location ?? options.source.location).z, options.dimension ?? options.location?.dimension) : (!!(options.dimension ?? options.location?.dimension)) ? targetSelectorAllListE(selector, ((options.location ?? { x: 0, y: 0, z: 0 }).x + " " + (options.location ?? { x: 0, y: 0, z: 0 }).y + " " + (options.location ?? { x: 0, y: 0, z: 0 }).z)) : targetSelectorAllListD(selector, ((options.location ?? { x: 0, y: 0, z: 0 }).x + " " + (options.location ?? { x: 0, y: 0, z: 0 }).y + " " + (options.location ?? { x: 0, y: 0, z: 0 }).z), options.dimension ?? options.location?.dimension) : targetSelectorAllListE(selector, "0 0 0");
     }
     else if ((options?.enableI ?? true) == true && !!selector.trimStart().replaceAll("\\", "").match(/^(@i\s*\[|@i\s+)/)) {
         return getEntityById(selector.trim().match(/^(?<=@i\s*\[((?:uu)?id=)?(?:")?)[\-\+]?\d(?=(?:")?\])/)[0]);
@@ -14512,7 +14597,7 @@ export function evaluateParametersOld(parameters, paramEvalA) {
                         }
                         ;
                         try {
-                            args.push(JSON.parse((paramEval.split(endCharacter + " ")[0] + endCharacter) ?? paramEval));
+                            args.push(JSON.parse(paramEval.split(endCharacter + " ")[0] + endCharacter));
                         }
                         catch (e) {
                             er.push([e, e.stack]);

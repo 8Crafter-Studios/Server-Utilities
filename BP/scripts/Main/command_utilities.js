@@ -306,7 +306,7 @@ export function itemJSONPropertiesEval(itemJSON, StartingItem, player) {
     let ij = itemJSON;
     ij.force ??= false;
     let sp = player;
-    let item = (!!ij.new) ? (new ItemStack(ij.new[0], ij.new[1])) : (!!StartingItem ? (StartingItem instanceof ContainerSlot ? StartingItem.getItem() : StartingItem instanceof ItemStack ? StartingItem : undefined) : undefined) ?? (!!ij.source ? (ij.source.type == "slot" ? (!!ij.source.targetSelector ? (!!ij.source.targetSelectorExecutionLocation ? targetSelectorAllListD(ij.source.targetSelector, (ij.source.targetSelectorExecutionLocation.x + " " + ij.source.targetSelectorExecutionLocation.y + " " + ij.source.targetSelectorExecutionLocation.z), ij.source.targetSelectorExecutionLocation.dimension)[0] : targetSelectorAllListC(ij.source.targetSelector, "", (ij.source.targetSelectorSourceEntity.location.x + " " + ij.source.targetSelectorSourceEntity.location.y + " " + ij.source.targetSelectorSourceEntity.location.z), ij.source.targetSelectorSourceEntity)[0])?.getComponent?.("inventory") : !!ij.source.entityId ? getEntityById(ij.source.entityId)?.getComponent?.("inventory") : !!ij.source.player ? getPlayer(ij.source.player)?.getComponent?.("inventory") : !!ij.source.entityAtBlock ? ij.source.entityAtBlock.dimension.getEntitiesAtBlockLocation(ij.source.entityAtBlock).find(v => v.typeId == ij.source.entityTypeId ?? ij.source.entityType)?.getComponent?.("inventory") : !!ij.source.block ? ij.source.block.dimension.getBlock(ij.source.block)?.getComponent?.("inventory") : sp?.getComponent?.("inventory"))?.container?.getItem(ij.source.slot ?? 0) : new ItemStack(ij.source.id, ij.source.count ?? ij.source.amount)) : new ItemStack(ij?.id ?? ij?.type ?? ij?.itemId, ij?.count ?? ij?.amount)); /*
+    let item = (!!ij.new) ? (new ItemStack(ij.new[0], ij.new[1])) : (!!StartingItem ? (StartingItem instanceof ContainerSlot ? StartingItem.getItem() : StartingItem instanceof ItemStack ? StartingItem : undefined) : undefined) ?? (!!ij.source ? (ij.source.type == "slot" ? (!!ij.source.targetSelector ? (!!ij.source.targetSelectorExecutionLocation ? targetSelectorAllListD(ij.source.targetSelector, (ij.source.targetSelectorExecutionLocation.x + " " + ij.source.targetSelectorExecutionLocation.y + " " + ij.source.targetSelectorExecutionLocation.z), ij.source.targetSelectorExecutionLocation.dimension)[0] : targetSelectorAllListC(ij.source.targetSelector, "", (ij.source.targetSelectorSourceEntity.location.x + " " + ij.source.targetSelectorSourceEntity.location.y + " " + ij.source.targetSelectorSourceEntity.location.z), ij.source.targetSelectorSourceEntity)[0])?.getComponent?.("inventory") : !!ij.source.entityId ? getEntityById(ij.source.entityId)?.getComponent?.("inventory") : !!ij.source.player ? getPlayer(ij.source.player)?.getComponent?.("inventory") : !!ij.source.entityAtBlock ? ij.source.entityAtBlock.dimension.getEntitiesAtBlockLocation(ij.source.entityAtBlock).find(v => v.typeId == (ij.source.entityTypeId ?? ij.source.entityType))?.getComponent?.("inventory") : !!ij.source.block ? ij.source.block.dimension.getBlock(ij.source.block)?.getComponent?.("inventory") : sp?.getComponent?.("inventory"))?.container?.getItem(ij.source.slot ?? 0) : new ItemStack(ij.source.id, ij.source.count ?? ij.source.amount)) : new ItemStack(ij?.id ?? ij?.type ?? ij?.itemId, ij?.count ?? ij?.amount)); /*
     if(!!ij.new){item=new ItemStack(ij.new[0], ij.new[1])}*/
     const itemPropertyEnum = {
         "components": (property) => Object.entries(property[1]).forEach(vb => itemComponentEnum[componentTypeEnum[vb[0]]](vb)),
@@ -471,7 +471,7 @@ export function entityToItemStackArray(entity, getContainer = true, getEquipment
     let itemList = [];
     let container = entity.getComponent("inventory")?.container;
     let equipment = entity.getComponent("equippable");
-    for (let i = 0; i < container?.size ?? 0; i++) {
+    for (let i = 0; i < (container?.size ?? 0); i++) {
         itemList.push(container.getItem(i));
     }
     ;
@@ -494,7 +494,7 @@ export function entityToContainerSlotArray(entity, getContainer = true, getEquip
     let itemList = [];
     let container = entity.getComponent("inventory")?.container;
     let equipment = entity.getComponent("equippable");
-    for (let i = 0; (i < container?.size ?? 0) && getContainer; i++) {
+    for (let i = 0; (i < (container?.size ?? 0)) && getContainer; i++) {
         itemList.push(container.getSlot(i));
     }
     ;
@@ -507,7 +507,7 @@ export function entityToContainerSlotArray(entity, getContainer = true, getEquip
 export function blockToContainerSlotArray(block) {
     let itemList = [];
     let container = block.getComponent("inventory")?.container;
-    for (let i = 0; i < container?.size ?? 0; i++) {
+    for (let i = 0; i < (container?.size ?? 0); i++) {
         itemList.push(container.getSlot(i));
     }
     ;
@@ -517,7 +517,7 @@ export function entityToContainerSlotListObject(entity, getContainer = true, get
     let itemList = {};
     let container = entity.getComponent("inventory")?.container;
     let equipment = entity.getComponent("equippable");
-    for (let i = 0; (i < container?.size ?? 0) && getContainer; i++) {
+    for (let i = 0; (i < (container?.size ?? 0)) && getContainer; i++) {
         itemList[String(i)] = container.getSlot(i);
     }
     ;
@@ -530,7 +530,7 @@ export function entityToContainerSlotListObject(entity, getContainer = true, get
 export function blockToContainerSlotListObject(block) {
     let itemList = {};
     let container = block.getComponent("inventory")?.container;
-    for (let i = 0; i < container?.size ?? 0; i++) {
+    for (let i = 0; i < (container?.size ?? 0); i++) {
         itemList[String(i)] = container.getSlot(i);
     }
     ;
@@ -541,7 +541,7 @@ export function entityToContainerSlotArrayB(entity, getContainer = true, getEqui
     let itemListB = [];
     let container = entity.getComponent("inventory")?.container;
     let equipment = entity.getComponent("equippable");
-    for (let i = 0; (i < container?.size ?? 0) && getContainer; i++) {
+    for (let i = 0; (i < (container?.size ?? 0)) && getContainer; i++) {
         itemList.push(container.getSlot(i));
     }
     ;

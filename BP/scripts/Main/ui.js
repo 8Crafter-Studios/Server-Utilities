@@ -4102,7 +4102,7 @@ export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = conf
                             let text = "";
                             let items = player.items.inventory.concat(player.items.equipment);
                             items.forEach((item) => { if (item.count != 0) {
-                                slotsArray = slotsArray.concat(String("slot: " + item.slot + ", item: " + item.id + "§r§f, amount: " + item.count + ", nameTag: " + item.name + "§r§f, lore: " + item.lore + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? []) ?? "[]"));
+                                slotsArray = slotsArray.concat(String("slot: " + item.slot + ", item: " + item.id + "§r§f, amount: " + item.count + ", nameTag: " + item.name + "§r§f, lore: " + item.lore + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? [])));
                             }
                             else {
                                 slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
