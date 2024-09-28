@@ -1191,7 +1191,7 @@ export class ServerShopManager {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const mode = path[0];
         let form = new ActionFormData();
-        const shopDataA = tryget(() => { return getPathInObject(shop[mode + "Data"]); }) ?? {};
+        const shopDataA = tryget(() => { return getPathInObject(shop[mode + "Data"], path); }) ?? {};
         const shopData = tryget(() => { return shopDataA.data; }) ?? [];
         form.title(`Manage ${shopDataA.pageTitle ?? ""} Contents`);
         if (!!shopDataA.pageBody)
