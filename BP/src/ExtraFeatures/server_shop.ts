@@ -1159,7 +1159,7 @@ export class ServerShopManager{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const mode = path[0]
         let form = new ActionFormData();
-        const shopDataA: ShopPage = tryget(()=>{return getPathInObject(shop[mode+"Data" as `${"buy"|"sell"}Data`]) as ShopPage})??{} as ShopPage;
+        const shopDataA: ShopPage = tryget(()=>{return getPathInObject(shop[mode+"Data" as `${"buy"|"sell"}Data`], path) as ShopPage})??{} as ShopPage;
         const shopData: (BuyableShopElement|SellableShopElement)[] = tryget(()=>{return shopDataA.data as (BuyableShopElement|SellableShopElement)[]})??[] as (BuyableShopElement|SellableShopElement)[];
         form.title(`Manage ${shopDataA.pageTitle??""} Contents`);
         if(!!shopDataA.pageBody)form.body(shopDataA.pageBody);
