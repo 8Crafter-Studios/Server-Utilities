@@ -265,7 +265,7 @@ export class ServerShop {
             if (r.canceled == true || r.formValues[0] == 0) {
                 return;
             }
-            const items = containerToContainerSlotArray(player.getComponent("inventory").container).filter(v => v.hasItem ? v?.typeId == item.itemID : false);
+            const items = containerToContainerSlotArray(player.getComponent("inventory").container).filter(v => v.hasItem() ? v?.typeId == item.itemID : false);
             let itemCount = 0;
             items.forEach(v => itemCount += v.amount);
             if (itemCount >= r.formValues[0]) {
