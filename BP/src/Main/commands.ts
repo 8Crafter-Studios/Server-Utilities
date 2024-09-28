@@ -75,9 +75,9 @@ export const commands_format_version = "33.12.17";
             ![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+
                 // @ts-expect-error
             [])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][
-                // @ts-expect-error
-            (![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!
-            ![]+[])[+[]]
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+            (![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]
             // @ts-expect-error
             ])[+!+[]+[+[]]]+([][
                 // @ts-expect-error
@@ -201,9 +201,9 @@ export const commands_format_version = "33.12.17";
             ])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(
 // @ts-expect-error
             ![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(
-// @ts-expect-error
-            ![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]]+![]+(![]+[+[]])[
-            ([![]]+[][
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+            ![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]]+![]+(![]+[+[]])[([![]]+[][
 // @ts-expect-error
             []
 // @ts-expect-error
@@ -550,11 +550,9 @@ export const commands_format_version = "33.12.17";
             ])[+!+[]+[+[]]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(
 // @ts-expect-error
             ![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(
-// @ts-expect-error
-            ![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]]+![]+(![]+[+[]])[
-            ([![]]+[][
-// @ts-expect-error
-            []
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+            ![]+[])[!+[]+!+[]+!+[]]]()[+!+[]+[+[]]]+![]+(![]+[+[]])[([![]]+[][[]
 // @ts-expect-error
             ])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[
 // @ts-expect-error
@@ -2099,18 +2097,179 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         case !!switchTest.match(/^invseep$$/): 
             eventData.cancel = true;
             system.run(()=>{const inventoryd2 = world.getPlayers().find((playerFinders)=>(playerFinders == targetSelectorB(switchTestB.slice(8), "", Number(eventData.sender.id)))).getComponent("inventory") as EntityInventoryComponent; const equipmentd2 = world.getPlayers().find((playerFinders)=>(playerFinders == targetSelectorB(switchTestB.slice(8), "", Number(eventData.sender.id)))).getComponent("equippable") as EntityEquippableComponent
-            try{let slotsArray = []; for(let i = 0; i < inventoryd2.inventorySize; i++){if (inventoryd2.container.getItem(Number(i)) !== undefined) {slotsArray = slotsArray.concat(String("slot: " + i + "§r§f, item: " + inventoryd2.container.getItem(Number(i)).typeId + "§r§f, amount: " + inventoryd2.container.getItem(Number(i)).amount + "§r§f, nameTag: " + inventoryd2.container.getItem(Number(i)).nameTag + "§r§f, lore: " + (JSONStringify(inventoryd2.container.getItem(Number(i)).getLore()??[], true)??"[]") + ", enchantments: " + ((!!inventoryd2.container.getItem(Number(i))?.getComponent("enchantable"))?(JSONStringify(inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments()??[], true)??"[]"):"N/A") + ", properties: " + JSONStringify(((i)=>{if((inventoryd2.container.getItem(Number(i)).getDynamicPropertyIds()??[]).length==0){return inventoryd2.container.getItem(Number(i)).isStackable?null:{}}else{let properties = {}; inventoryd2.container.getItem(Number(i)).getDynamicPropertyIds().forEach(v=>properties[v]=inventoryd2.container.getItem(Number(i))?.getDynamicProperty(v)); return properties}})(i)??(inventoryd2.container.getItem(Number(i)).isStackable?null:{}), true)??(inventoryd2.container.getItem(Number(i)).isStackable?"null":{})))}else{slotsArray = slotsArray.concat("slot: " + i + ", item: minecraft:air")}}; ; 
-            for (let i = 0; i < 6; i++) {
-                try{
-                    let item = equipmentd2.getEquipment([EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i])
-                    if (item !== undefined) {
-                        slotsArray = slotsArray.concat(String("slot: " + [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i] + ", item: " + item.typeId + ", amount: " + item.amount + ", nameTag: " + item.nameTag + "§r§f, lore: " + (JSONStringify(item.getLore()??[], true)) + "§r§f, enchantments: " + ((!!item.getComponent("enchantable"))?(JSON.stringify(item?.getComponent("enchantable")?.getEnchantments()??[])??"[]"):"N/A") + ", properties: " + JSONStringify(((i)=>{if((item.getDynamicPropertyIds()??[]).length==0){return item.isStackable?null:{}}else{let properties = {}; item.getDynamicPropertyIds().forEach(v=>properties[v]=item?.getDynamicProperty(v)); return properties}})(i)??(item.isStackable?null:{}), true)??(item.isStackable?"null":{})));
-                    }
-                    else {
-                        slotsArray = slotsArray.concat("slot: " + [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i] + ", item: minecraft:air");
-                    }
-                }catch{}
-            };eventData.sender.sendMessage(String(world.getPlayers().find((playerFinders)=>(playerFinders == targetSelectorB(switchTestB.slice(8), "", Number(eventData.sender.id)))).name + "'s Items: \n" + slotsArray.join("§r§f\n")))}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}})
+            try {
+              let slotsArray = [];
+              for (let i = 0; i < inventoryd2.inventorySize; i++) {
+                if (inventoryd2.container.getItem(Number(i)) !== undefined) {
+                  slotsArray = slotsArray.concat(
+                    String(
+                      "slot: " +
+                        i +
+                        "§r§f, item: " +
+                        inventoryd2.container.getItem(Number(i)).typeId +
+                        "§r§f, amount: " +
+                        inventoryd2.container.getItem(Number(i)).amount +
+                        "§r§f, nameTag: " +
+                        inventoryd2.container.getItem(Number(i)).nameTag +
+                        "§r§f, lore: " +
+                        JSONStringify(
+                          inventoryd2.container.getItem(Number(i)).getLore() ??
+                            [],
+                          true
+                        ) +
+                        ", enchantments: " +
+                        (!!inventoryd2.container
+                          .getItem(Number(i))
+                          ?.getComponent("enchantable")
+                          ? JSONStringify(
+                              inventoryd2.container
+                                .getItem(Number(i))
+                                ?.getComponent("enchantable")
+                                ?.getEnchantments() ?? [],
+                              true
+                            )
+                          : "N/A") +
+                        ", properties: " +
+                        JSONStringify(
+                          ((i) => {
+                            if (
+                              (
+                                inventoryd2.container
+                                  .getItem(Number(i))
+                                  .getDynamicPropertyIds() ?? []
+                              ).length == 0
+                            ) {
+                              return inventoryd2.container.getItem(Number(i))
+                                .isStackable
+                                ? null
+                                : {};
+                            } else {
+                              let properties = {};
+                              inventoryd2.container
+                                .getItem(Number(i))
+                                .getDynamicPropertyIds()
+                                .forEach(
+                                  (v) =>
+                                    (properties[v] = inventoryd2.container
+                                      .getItem(Number(i))
+                                      ?.getDynamicProperty(v))
+                                );
+                              return properties;
+                            }
+                          })(i) ??
+                            (inventoryd2.container.getItem(Number(i))
+                              .isStackable
+                              ? null
+                              : {}),
+                          true
+                        )
+                    )
+                  );
+                } else {
+                  slotsArray = slotsArray.concat(
+                    "slot: " + i + ", item: minecraft:air"
+                  );
+                }
+              }
+              for (let i = 0; i < 6; i++) {
+                try {
+                  let item = equipmentd2.getEquipment(
+                    [
+                      EquipmentSlot.Head,
+                      EquipmentSlot.Chest,
+                      EquipmentSlot.Legs,
+                      EquipmentSlot.Feet,
+                      EquipmentSlot.Mainhand,
+                      EquipmentSlot.Offhand,
+                    ][i]
+                  );
+                  if (item !== undefined) {
+                    slotsArray = slotsArray.concat(
+                      String(
+                        "slot: " +
+                          [
+                            EquipmentSlot.Head,
+                            EquipmentSlot.Chest,
+                            EquipmentSlot.Legs,
+                            EquipmentSlot.Feet,
+                            EquipmentSlot.Mainhand,
+                            EquipmentSlot.Offhand,
+                          ][i] +
+                          ", item: " +
+                          item.typeId +
+                          ", amount: " +
+                          item.amount +
+                          ", nameTag: " +
+                          item.nameTag +
+                          "§r§f, lore: " +
+                          JSONStringify(item.getLore() ?? [], true) +
+                          "§r§f, enchantments: " +
+                          (!!item.getComponent("enchantable")
+                            ? JSON.stringify(
+                                item
+                                  ?.getComponent("enchantable")
+                                  ?.getEnchantments() ?? []
+                              )
+                            : "N/A") +
+                          ", properties: " +
+                          JSONStringify(
+                            ((i) => {
+                              if (
+                                (item.getDynamicPropertyIds() ?? []).length == 0
+                              ) {
+                                return item.isStackable ? null : {};
+                              } else {
+                                let properties = {};
+                                item
+                                  .getDynamicPropertyIds()
+                                  .forEach(
+                                    (v) =>
+                                      (properties[v] =
+                                        item?.getDynamicProperty(v))
+                                  );
+                                return properties;
+                              }
+                            })(i) ?? (item.isStackable ? null : {}),
+                            true
+                          )
+                      )
+                    );
+                  } else {
+                    slotsArray = slotsArray.concat(
+                      "slot: " +
+                        [
+                          EquipmentSlot.Head,
+                          EquipmentSlot.Chest,
+                          EquipmentSlot.Legs,
+                          EquipmentSlot.Feet,
+                          EquipmentSlot.Mainhand,
+                          EquipmentSlot.Offhand,
+                        ][i] +
+                        ", item: minecraft:air"
+                    );
+                  }
+                } catch {}
+              }
+              eventData.sender.sendMessage(
+                String(
+                  world
+                    .getPlayers()
+                    .find(
+                      (playerFinders) =>
+                        playerFinders ==
+                        targetSelectorB(
+                          switchTestB.slice(8),
+                          "",
+                          Number(eventData.sender.id)
+                        )
+                    ).name +
+                    "'s Items: \n" +
+                    slotsArray.join("§r§f\n")
+                )
+              );
+            } catch (e) {
+              eventData.sender.sendMessage("§c" + e + e.stack);
+            }})
         break; 
         case !!switchTest.match(/^offlineinfo$$/): 
             eventData.cancel = true;
@@ -2146,11 +2305,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^offlineinvsee$$/): 
             eventData.cancel = true;
-    try{let slotsArray = []; let players = savedPlayer.getSavedPlayers().filter((p)=>(p.name==switchTestB.split(" ").slice(1).join(" "))); if(players.length==0){player.sendMessage("§cError: no players with that name were found")}else{if(players.length>1){player.sendMessage("§cError: multiple saved players with that name were found, with the following uuids: "+[players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id])}else{let player = players[0]; let items = player.items.inventory.concat(player.items.equipment); items.forEach((item)=>{if (item.count != 0) {slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore??[], true)??"[]" + "§r§f, enchantments: " + JSONStringify(item.enchants??"N/A", true)??"N/A"))}else{slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air")}}); ; eventData.sender.sendMessage(String("(format_version: " + player.format_version + ") " + player.name + (world.getAllPlayers().find((p)=>(p.id==player.id))!=undefined?" (Online)":" (last seen: "+new Date(Number(player.lastOnline)+(Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+")") + " Items: \n" + slotsArray.join("§r§f\n")))}}}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+    try{let slotsArray = []; let players = savedPlayer.getSavedPlayers().filter((p)=>(p.name==switchTestB.split(" ").slice(1).join(" "))); if(players.length==0){player.sendMessage("§cError: no players with that name were found")}else{if(players.length>1){player.sendMessage("§cError: multiple saved players with that name were found, with the following uuids: "+[players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id])}else{let player = players[0]; let items = player.items.inventory.concat(player.items.equipment); items.forEach((item)=>{if (item.count != 0) {slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore??[], true) + "§r§f, enchantments: " + JSONStringify(item.enchants??"N/A", true)))}else{slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air")}}); ; eventData.sender.sendMessage(String("(format_version: " + player.format_version + ") " + player.name + (world.getAllPlayers().find((p)=>(p.id==player.id))!=undefined?" (Online)":" (last seen: "+new Date(Number(player.lastOnline)+(Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+")") + " Items: \n" + slotsArray.join("§r§f\n")))}}}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^offlineuuidinvsee$$/): 
             eventData.cancel = true;
-            try{let slotsArray = []; let players = savedPlayer.getSavedPlayers().filter((p)=>(p.id==switchTestB.split(" ").slice(1).join(" "))); if(players.length==0){player.sendMessage("§cError: no players with that uuid were found")}else{let player = players[0]; let items = player.items.inventory.concat(player.items.equipment); items.forEach((item)=>{if (item.count != 0) {slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore??[], true)??"[]" + "§r§f, enchantments: " + JSON.stringify(item.enchants??"N/A")??"N/A"))}else{slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air")}}); ; eventData.sender.sendMessage(String("(format_version: " + player.format_version + ") " + player.name + (world.getAllPlayers().find((p)=>(p.id==player.id))!=undefined?" (Online) ":" (last seen: "+new Date(Number(player.lastOnline)+(Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+")") + " Items: \n" + slotsArray.join("§r§f\n")))}}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{let slotsArray = []; let players = savedPlayer.getSavedPlayers().filter((p)=>(p.id==switchTestB.split(" ").slice(1).join(" "))); if(players.length==0){player.sendMessage("§cError: no players with that uuid were found")}else{let player = players[0]; let items = player.items.inventory.concat(player.items.equipment); items.forEach((item)=>{if (item.count != 0) {slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore??[], true) + "§r§f, enchantments: " + JSON.stringify(item.enchants??"N/A")))}else{slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air")}}); ; eventData.sender.sendMessage(String("(format_version: " + player.format_version + ") " + player.name + (world.getAllPlayers().find((p)=>(p.id==player.id))!=undefined?" (Online) ":" (last seen: "+new Date(Number(player.lastOnline)+(Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+")") + " Items: \n" + slotsArray.join("§r§f\n")))}}catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
         case !!switchTest.match(/^binvsee$$/):
             eventData.cancel = true;
@@ -8319,7 +8478,7 @@ ${command.dp}snapshot list`); return}
     }}else{if(commanda?.type=="custom"){eventData.cancel = true; if((commanda as command).customCommandType=="commands"){system.run(()=>(commanda as command).run(newMessage.slice((commanda as command).customCommandPrefix.length), player, player, event))}else{(commanda as command).run(newMessage.slice((commanda as command).customCommandPrefix.length), player, player, event)}}else{}}}
 export function evaluateSelectors(selector: string, options?: {source?: Block|Entity|Player, rotation?: Vector2, viewDirection?: Vector3, location?: Vector3|DimensionLocation, dimension?: Dimension, indirect?: number|boolean, asDimension?: number|boolean, asWorld?: number|boolean, inAllDimensions?: number|boolean, enableJ?: boolean, enableI?: boolean}){
     if(!!selector.trimStart().replaceAll("\\", "").match(/^(@[aeprs]\s*\[|@[aeprs]\s+)/)){
-        return (!!options)?!!options?.source?!(options.source instanceof Block)?targetSelectorAllListC(selector, "", (options.location??options.source.location).x+" "+(options.location??options.source.location).y+" "+(options.location??options.source.location).z, options.source):targetSelectorAllListD(selector, (options.location??options.source.location).x+" "+(options.location??options.source.location).y+" "+(options.location??options.source.location).z, options.dimension??(options.location as DimensionLocation)?.dimension):(!!options.dimension??(options.location as DimensionLocation)?.dimension)?targetSelectorAllListE(selector, ((options.location??{x: 0, y: 0, z: 0}).x+" "+(options.location??{x: 0, y: 0, z: 0}).y+" "+(options.location??{x: 0, y: 0, z: 0}).z)):targetSelectorAllListD(selector, ((options.location??{x: 0, y: 0, z: 0}).x+" "+(options.location??{x: 0, y: 0, z: 0}).y+" "+(options.location??{x: 0, y: 0, z: 0}).z), options.dimension??(options.location as DimensionLocation)?.dimension):targetSelectorAllListE(selector, "0 0 0")
+        return (!!options)?!!options?.source?!(options.source instanceof Block)?targetSelectorAllListC(selector, "", (options.location??options.source.location).x+" "+(options.location??options.source.location).y+" "+(options.location??options.source.location).z, options.source):targetSelectorAllListD(selector, (options.location??options.source.location).x+" "+(options.location??options.source.location).y+" "+(options.location??options.source.location).z, options.dimension??(options.location as DimensionLocation)?.dimension):(!!(options.dimension??(options.location as DimensionLocation)?.dimension))?targetSelectorAllListE(selector, ((options.location??{x: 0, y: 0, z: 0}).x+" "+(options.location??{x: 0, y: 0, z: 0}).y+" "+(options.location??{x: 0, y: 0, z: 0}).z)):targetSelectorAllListD(selector, ((options.location??{x: 0, y: 0, z: 0}).x+" "+(options.location??{x: 0, y: 0, z: 0}).y+" "+(options.location??{x: 0, y: 0, z: 0}).z), options.dimension??(options.location as DimensionLocation)?.dimension):targetSelectorAllListE(selector, "0 0 0")
     }else if((options?.enableI??true)==true&&!!selector.trimStart().replaceAll("\\", "").match(/^(@i\s*\[|@i\s+)/)){
         return getEntityById(selector.trim().match(/^(?<=@i\s*\[((?:uu)?id=)?(?:")?)[\-\+]?\d(?=(?:")?\])/)[0])
     }else if((options?.enableJ??false)==true&&!!selector.trimStart().replaceAll("\\", "").match(/^(@j\s*\[|@j\s+)/)){
@@ -9057,7 +9216,7 @@ export function evaluateParametersOld(parameters: string[], paramEvalA: string){
                             endCharacter = ")"
                         }
                     }; 
-                    try{args.push(JSON.parse((paramEval.split(endCharacter + " ")[0]+endCharacter) ?? paramEval)); }catch(e){er.push([e, e.stack]); erb.push([String(e), e.stack, i])}; 
+                    try{args.push(JSON.parse(paramEval.split(endCharacter + " ")[0]+endCharacter)); }catch(e){er.push([e, e.stack]); erb.push([String(e), e.stack, i])}; 
                     paramEval = paramEval.split(endCharacter + " ")[1] ?? ""; 
                 }else{
                     if(p=="number"){
