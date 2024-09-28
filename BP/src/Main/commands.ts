@@ -37,6 +37,7 @@ import { uiManager, UIManager } from "@minecraft/server-ui";
 import { commands } from "./commands_list";
 import { ExpireError, TimeoutError } from "./errors";
 import { getCommandHelpPage, getCommandHelpPageExtra, getCommandHelpPageDebug, getCommandHelpPageCustomDebug, helpCommandChatCommandsList, getCommandHelpPageDebugPlus } from "./commands_documentation";
+import { LinkedServerShopCommands, ServerShop } from "../ExtraFeatures/server_shop";
 export const cmdsmetaimport = import.meta
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer
@@ -1882,24 +1883,73 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
     let event = !!params.event?{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}:{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}
     let newMessage = params.newMessage??params.eventData?.message??params.event?.message
     if(params.silentCMD!=true){try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatCommands"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("commandNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + (player.name??(player.nameTag!=""?player.nameTag+"<"+player.id+">":player.typeId+"<"+player.id+">")) + "]: " + newMessage); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getAllChatCommandsNotificationSound.soundId, {pitch: pn.getAllChatCommandsNotificationSound.pitch, volume: pn.getAllChatCommandsNotificationSound.volume}))}catch{}})}catch{}}
-    function hotbarSwap(row: number, preset: number){
+    function hotbarSwap(row: number, preset: number) {
         let inventorye = player.getComponent("inventory") as EntityInventoryComponent
-        let inventoryblock = world.getDimension(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[0]).getBlock({x: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[1]), y: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[2]), z: Number(String(player.getDynamicProperty("hotbarPreset"+preset)).replaceAll(",", "").split(" ")[3])}).getComponent("inventory") as BlockInventoryComponent
-        system.run(()=>{try{for(let i = 0; i < 9; i++){inventorye.container.swapItems(i, i+((row-1)*9), inventoryblock.container)}; /*; eventData.sender.sendMessage(String("l" + slotsArray))*/}catch(e){eventData.sender.sendMessage("§c" + e + " " + e.stack)}})}
-        let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0]
-        let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
-        let commanda = undefined
-        if(params.isBultIn==true){
-            commanda={type: "built-in"}
-        }else if(newMessage.startsWith(config.chatCommandPrefix)){
-            commanda = commands.filter(cmd=>!!switchTest.match(new RegExp(cmd?.escregexp?.v ?? "", this?.escregexp?.f))).find(v=>{let cmd = command.get(v.commandName, "built-in"); if(cmd.settings.enabled){return (params.fromExecute||cmd.testCanPlayerUseCommand(player))}else{return false}})
-            ??commands.filter(cmd=>(cmd?.aliases??[]).length!=0).find(v=>{let cmd = command.get(v.commandName, "built-in"); if((cmd.settings.enabled&&(!!cmd?.aliases?.find?.(vd=>!!switchTest.match(vd.regexp))))){return (params.fromExecute||cmd.testCanPlayerUseCommand(player))}else{return false}})
-            ??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(params.fromExecute||command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))
-        }else if(true){
-            commanda = command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(params.fromExecute||command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))
-        }/*
+        let inventoryblock = world.getDimension(String(player.getDynamicProperty("hotbarPreset" + preset)).replaceAll(",", "").split(" ")[0]).getBlock({ x: Number(String(player.getDynamicProperty("hotbarPreset" + preset)).replaceAll(",", "").split(" ")[1]), y: Number(String(player.getDynamicProperty("hotbarPreset" + preset)).replaceAll(",", "").split(" ")[2]), z: Number(String(player.getDynamicProperty("hotbarPreset" + preset)).replaceAll(",", "").split(" ")[3]) }).getComponent("inventory") as BlockInventoryComponent
+        system.run(() => { try { for (let i = 0; i < 9; i++) { inventorye.container.swapItems(i, i + ((row - 1) * 9), inventoryblock.container) }; /*; eventData.sender.sendMessage(String("l" + slotsArray))*/ } catch (e) { eventData.sender.sendMessage("§c" + e + " " + e.stack) } })
+    }
+    let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0]
+    let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
+    let commanda = undefined
+    if (params.isBultIn == true) {
+        commanda = { type: "built-in" }
+    } else if (newMessage.startsWith(config.chatCommandPrefix)) {
+        commanda =
+            commands
+                .filter((cmd) => !!switchTest.match(new RegExp(cmd?.escregexp?.v ?? "", this?.escregexp?.f)))
+                .find((v) => {
+                    let cmd = command.get(v.commandName, "built-in");
+                    if (cmd.settings.enabled) {
+                        return params.fromExecute || cmd.testCanPlayerUseCommand(player);
+                    } else {
+                        return false;
+                    }
+                }) ??
+            commands
+                .filter((cmd) => (cmd?.aliases ?? []).length != 0)
+                .find((v) => {
+                    let cmd = command.get(v.commandName, "built-in");
+                    if (cmd.settings.enabled && !!cmd?.aliases?.find?.((vd) => !!switchTest.match(vd.regexp))) {
+                        return params.fromExecute || cmd.testCanPlayerUseCommand(player);
+                    } else {
+                        return false;
+                    }
+                }) ??
+            (LinkedServerShopCommands.testCommandIsLinked(newMessage) ? { type: "server_shop" } : undefined) ??
+            command
+                .getCustomCommands()
+                .find(
+                    (v) =>
+                        (v.settings.enabled &&
+                            (v.customCommandPrefix == undefined || v.customCommandPrefix == "") &&
+                            !!switchTest.match(v.regexp)) ||
+                        (v.customCommandPrefix != "" &&
+                            !!v.customCommandPrefix &&
+                            newMessage.split(" ")[0].startsWith(v.customCommandPrefix) &&
+                            !!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp) &&
+                            (params.fromExecute ||
+                                command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))
+                );
+    } else if (true) {
+        commanda =
+            (LinkedServerShopCommands.testCommandIsLinked(newMessage) ? { type: "server_shop" } : undefined) ??
+            command
+                .getCustomCommands()
+                .find(
+                    (v) =>
+                        v.settings.enabled &&
+                        v.customCommandPrefix != "" &&
+                        !!v.customCommandPrefix &&
+                        newMessage.split(" ")[0].startsWith(v.customCommandPrefix) &&
+                        !!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp) &&
+                        (params.fromExecute || command.get(v.commandName, "custom").testCanPlayerUseCommand(player))
+                );
+    }/*
         let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!(switchTest.match((command.get(v.commandName, "built-in").regexp))))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
-    if(commanda?.type=="built-in"){switch (true){
+    if(commanda?.type=="server_shop"){
+        eventData.cancel=true
+        LinkedServerShopCommands.openShopForCommand(newMessage, player.player)
+    }else if(commanda?.type=="built-in"){switch (true){
         case !!switchTest.match(/^give$/): 
             eventData.cancel = true;
             const inventory = player.getComponent("inventory") as EntityInventoryComponent
@@ -8259,6 +8309,11 @@ ${command.dp}snapshot list`); return}
             })
         }
         break; 
+        case !!switchTest.match(/^viewservershops$/): {
+            eventData.cancel=true
+            srun(()=>ServerShop.openPublicShopsSelector(player.player))
+        }
+        break;
         default: 
         //if(){}
     }}else{if(commanda?.type=="custom"){eventData.cancel = true; if((commanda as command).customCommandType=="commands"){system.run(()=>(commanda as command).run(newMessage.slice((commanda as command).customCommandPrefix.length), player, player, event))}else{(commanda as command).run(newMessage.slice((commanda as command).customCommandPrefix.length), player, player, event)}}else{}}}

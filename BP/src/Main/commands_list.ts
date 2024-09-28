@@ -6109,6 +6109,30 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [],
+        formatting_code: "§r§f",
+        commandName: "viewservershops",
+        escregexp: {
+            v: "^viewservershops$"
+        },
+        formats: [
+            {
+                format: "viewservershops"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "shop_system"
+        ],
+        commandSettingsId: "built-inCommandSettings:viewservershops",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
     }
 ] as {type: "built-in"|"custom"|"unknown"; requiredTags: string[]; formatting_code: string; commandName: string; escregexp: {v: string; f?: string; }; formats: command_formats_type_list; command_version: string; description: string; commandSettingsId: string; aliases?: {commandName: string, escregexp?: {v?: string, f?: string}}[]; category?: string|string[]; deprecated?: boolean; functional?: boolean; hidden?: boolean; enabled?: boolean; }[]
 //JSON.stringify([commandsList].sort((a, b)=>a.commandName<b.commandName?-1:a.commandName>b.commandName?1:0), undefined, 4).replaceAll(/"([a-zA-Z\_\-0-9]*)": /g, "$1: "))

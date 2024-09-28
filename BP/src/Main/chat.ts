@@ -32,6 +32,7 @@ import { uiManager, UIManager } from "@minecraft/server-ui";
 import { chatCommands, cmdsEval, command, idGenerator } from "./commands";
 import { ExpireError, TimeoutError } from "./errors";
 import { commands } from "./commands_list";
+import { LinkedServerShopCommands } from "ExtraFeatures/server_shop";
 export const chatmetaimport = import.meta
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer
@@ -257,34 +258,58 @@ export function chatMessage(eventData: ChatSendBeforeEvent, bypassChatInputReque
     let newMessage = eventData.message
     let switchTest = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length).split(" ")[0]
     let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length)
-    let commanda =
-        commands.find(
-            (v) =>
-                newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) &&
-                command.get(v.commandName, "built-in").settings.enabled &&
-                !!switchTest.match(command.get(v.commandName, "built-in").regexp) &&
-                command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)
-        ) ??
-        commands.find(
-            (v) =>
-                newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) &&
-                command.get(v.commandName, "built-in").settings.enabled &&
-                !!command.get(v.commandName, "built-in")?.aliases?.find?.((vd) => !!switchTest.match(vd.regexp)) &&
-                command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)
-        ) ??
-        command
-            .getCustomCommands()
-            .find(
-                (v) =>
-                    (v.settings.enabled &&
-                        (v.customCommandPrefix == undefined || v.customCommandPrefix == "") &&
-                        !!switchTest.match(v.regexp)) ||
-                    (v.customCommandPrefix != "" &&
+    let commanda = undefined
+    if (newMessage.startsWith(config.chatCommandPrefix)) {
+        commanda =
+            commands
+                .filter((cmd) => !!switchTest.match(new RegExp(cmd?.escregexp?.v ?? "", this?.escregexp?.f)))
+                .find((v) => {
+                    let cmd = command.get(v.commandName, "built-in");
+                    if (cmd.settings.enabled) {
+                        return cmd.testCanPlayerUseCommand(player);
+                    } else {
+                        return false;
+                    }
+                }) ??
+            commands
+                .filter((cmd) => (cmd?.aliases ?? []).length != 0)
+                .find((v) => {
+                    let cmd = command.get(v.commandName, "built-in");
+                    if (cmd.settings.enabled && !!cmd?.aliases?.find?.((vd) => !!switchTest.match(vd.regexp))) {
+                        return cmd.testCanPlayerUseCommand(player);
+                    } else {
+                        return false;
+                    }
+                }) ??
+            (LinkedServerShopCommands.testCommandIsLinked(newMessage) ? { type: "server_shop" } : undefined) ??
+            command
+                .getCustomCommands()
+                .find(
+                    (v) =>
+                        (v.settings.enabled &&
+                            (v.customCommandPrefix == undefined || v.customCommandPrefix == "") &&
+                            !!switchTest.match(v.regexp)) ||
+                        (v.customCommandPrefix != "" &&
+                            !!v.customCommandPrefix &&
+                            newMessage.split(" ")[0].startsWith(v.customCommandPrefix) &&
+                            !!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp) &&
+                            (command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))
+                );
+    } else if (true) {
+        commanda =
+            (LinkedServerShopCommands.testCommandIsLinked(newMessage) ? { type: "server_shop" } : undefined) ??
+            command
+                .getCustomCommands()
+                .find(
+                    (v) =>
+                        v.settings.enabled &&
+                        v.customCommandPrefix != "" &&
                         !!v.customCommandPrefix &&
                         newMessage.split(" ")[0].startsWith(v.customCommandPrefix) &&
                         !!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp) &&
-                        command.get(v.commandName, "custom").testCanPlayerUseCommand(player))
-            );/*
+                        (command.get(v.commandName, "custom").testCanPlayerUseCommand(player))
+                );
+    }/*
     let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&!!switchTest.match(command.get(v.commandName, "built-in").regexp)))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
     try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatMessages"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("chatMessageNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + player.name + "]: " + newMessage); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getAllChatMessagesNotificationSound.soundId, {pitch: pn.getAllChatMessagesNotificationSound.pitch, volume: pn.getAllChatMessagesNotificationSound.volume}))}catch{}})}catch{}
     if(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") == true){newMessage = newMessage.escapeCharacters(true)}

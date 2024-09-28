@@ -2,9 +2,9 @@ import { Player, world, Entity, ItemLockMode } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse } from "@minecraft/server-ui";
 import { executeCommandPlayerW } from "Main/commands";
 import { forceShow, worldBorderSettingsDimensionSelector, settings, extraFeaturesSettings } from "Main/ui";
-import { serverShopSystemSettings } from "./server_shop";
 import { config } from "Main";
 import { showMessage } from "Main/utilities";
+import { ServerShopManager } from "./server_shop";
 export function mainShopSystemSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData();
@@ -19,7 +19,7 @@ export function mainShopSystemSettings(sourceEntitya) {
         let response = r.selection;
         switch (response) {
             case 0:
-                serverShopSystemSettings(sourceEntity);
+                ServerShopManager.serverShopSystemSettings(sourceEntity);
                 break;
             case 1:
                 showMessage(sourceEntity, undefined, "§cSorry, the player shop system does not exist yet.", "Back", "Close").then(r => {
