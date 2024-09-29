@@ -191,13 +191,23 @@ export class ServerShop {
         saveStringToDynamicProperties(JSON.stringify(data), mode + "Shop:" + this.id);
     }
     get buyData() {
-        return JSON.parse(getStringFromDynamicProperties("buyShop:" + this.id));
+        try {
+            return JSON.parse(getStringFromDynamicProperties("buyShop:" + this.id));
+        }
+        catch {
+            return [];
+        }
     }
     set buyData(data) {
         saveStringToDynamicProperties(JSON.stringify(data), "buyShop:" + this.id);
     }
     get sellData() {
-        return JSON.parse(getStringFromDynamicProperties("sellShop:" + this.id));
+        try {
+            return JSON.parse(getStringFromDynamicProperties("sellShop:" + this.id));
+        }
+        catch {
+            return [];
+        }
     }
     set sellData(data) {
         saveStringToDynamicProperties(JSON.stringify(data), "sellShop:" + this.id);

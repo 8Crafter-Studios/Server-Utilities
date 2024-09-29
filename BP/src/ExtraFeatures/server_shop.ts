@@ -218,13 +218,13 @@ export class ServerShop{
         saveStringToDynamicProperties(JSON.stringify(data), mode+"Shop:"+this.id)
     }
     get buyData(){
-        return JSON.parse(getStringFromDynamicProperties("buyShop:"+this.id)) as BuyableShopElement[]
+        try{return JSON.parse(getStringFromDynamicProperties("buyShop:"+this.id)) as BuyableShopElement[]}catch{return []}
     }
     set buyData(data: BuyableShopElement[]){
         saveStringToDynamicProperties(JSON.stringify(data), "buyShop:"+this.id)
     }
     get sellData(){
-        return JSON.parse(getStringFromDynamicProperties("sellShop:"+this.id)) as SellableShopElement[]
+        try{return JSON.parse(getStringFromDynamicProperties("sellShop:"+this.id)) as SellableShopElement[]}catch{return []}
     }
     set sellData(data: SellableShopElement[]){
         saveStringToDynamicProperties(JSON.stringify(data), "sellShop:"+this.id)
