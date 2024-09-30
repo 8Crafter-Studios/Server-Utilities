@@ -550,6 +550,9 @@
          "path" : "dialogue/scene.json"
       },
       {
+         "path" : "entities/inventory.json"
+      },
+      {
          "path" : "recipes/smithing_table/1473minecraft;potion.27.json"
       },
       {
@@ -2620,18 +2623,6 @@
          "path" : "recipes/smithing_table/30minecraft;andesite.json"
       },
       {
-         "path" : "recipes/smithing_table/1065minecraft;lapis_lazuli.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1963minecraft;wolf_spawn_egg.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1344minecraft;ominous_trial_key.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1214minecraft;magenta_wool.json"
-      },
-      {
          "path" : "structures/RedstoneTests/itemframe_override_bedrock.mcstructure"
       },
       {
@@ -2645,6 +2636,18 @@
       },
       {
          "path" : "recipes/smithing_table/113minecraft;arrow.72.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1065minecraft;lapis_lazuli.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1963minecraft;wolf_spawn_egg.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1344minecraft;ominous_trial_key.json"
+      },
+      {
+         "path" : "recipes/smithing_table/1214minecraft;magenta_wool.json"
       },
       {
          "path" : "recipes/smithing_table/1258minecraft;mooshroom_spawn_egg.json"
@@ -3440,15 +3443,6 @@
       },
       {
          "path" : "recipes/smithing_table/1237minecraft;mangrove_wall_sign.json"
-      },
-      {
-         "path" : "recipes/smithing_table/1880minecraft;warped_standing_sign.json"
-      },
-      {
-         "path" : "structures/DoorTests/door_maze.mcstructure"
-      },
-      {
-         "path" : "recipes/smithing_table/1676minecraft;splash_potion.6.json"
       },
       {
          "path" : "recipes/smithing_table/1238minecraft;mangrove_wood.json"
@@ -4822,6 +4816,15 @@
          "path" : "recipes/smithing_table/373minecraft;clock.json"
       },
       {
+         "path" : "recipes/smithing_table/1880minecraft;warped_standing_sign.json"
+      },
+      {
+         "path" : "structures/DoorTests/door_maze.mcstructure"
+      },
+      {
+         "path" : "recipes/smithing_table/1676minecraft;splash_potion.6.json"
+      },
+      {
          "path" : "recipes/smithing_table/1678minecraft;splash_potion.8.json"
       },
       {
@@ -6121,6 +6124,9 @@
          "path" : "scripts/Main/utilities.js"
       },
       {
+         "path" : "scripts/ExtraFeatures/shop_main.js"
+      },
+      {
          "path" : "recipes/smithing_table/374minecraft;coal.json"
       },
       {
@@ -6458,6 +6464,9 @@
       },
       {
          "path" : "scripts/Main/utilities.js.map"
+      },
+      {
+         "path" : "scripts/ExtraFeatures/shop_main.js.map"
       },
       {
          "path" : "recipes/smithing_table/532minecraft;dark_oak_log.json"
@@ -7135,6 +7144,9 @@
          "path" : "recipes/smithing_table/887minecraft;golden_leggings.json"
       },
       {
+         "path" : "src/ExtraFeatures/server_shop.ts"
+      },
+      {
          "path" : "recipes/smithing_table/888minecraft;golden_pickaxe.json"
       },
       {
@@ -7274,6 +7286,9 @@
       },
       {
          "path" : "recipes/smithing_table/953minecraft;hard_purple_stained_glass.json"
+      },
+      {
+         "path" : "src/ExtraFeatures/shop_main.ts"
       },
       {
          "path" : "recipes/smithing_table/954minecraft;hard_purple_stained_glass_pane.json"
@@ -7430,6 +7445,15 @@
       },
       {
          "path" : "scripts/ExtensionTests.js"
+      },
+      {
+         "path" : "structures/SmallMobTests/fence_side.mcstructure"
+      },
+      {
+         "path" : "scripts/ExtraFeatures/server_shop.js"
+      },
+      {
+         "path" : "scripts/ExtraFeatures/server_shop.js.map"
       },
       {
          "path" : "scripts/FireAvoidTests.js"
@@ -8090,9 +8114,6 @@
       },
       {
          "path" : "structures/SmallMobTests/fence_corner.mcstructure"
-      },
-      {
-         "path" : "structures/SmallMobTests/fence_side.mcstructure"
       },
       {
          "path" : "structures/TntTests/cannon.mcstructure"

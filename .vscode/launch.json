@@ -13,7 +13,8 @@
             "generatedSourceRoot": "${workspaceFolder}/BP/scripts",
             "sourceMapRoot": "${workspaceFolder}/BP/scripts",
             "host": "localhost",
-            "port": 19144
+            "port": 19144,
+            "targetModuleUuid": "df6d1955-6175-46b0-be8b-fa11fde32b13"
         },
         {
             "type": "minecraft-js",
@@ -35,7 +36,8 @@
             "generatedSourceRoot": "${workspaceFolder}/BP Preview/scripts",
             "sourceMapRoot": "${workspaceFolder}/BP Preview/scripts",
             "host": "localhost",
-            "port": 19144
+            "port": 19144,
+            "targetModuleUuid": "df6d1955-6175-46b0-be8b-fa11fde32b13"
         },
         {
             "type": "minecraft-js",
@@ -46,7 +48,8 @@
             "generatedSourceRoot": "${workspaceFolder}/BP Preview/scripts",
             "sourceMapRoot": "${workspaceFolder}/BP Preview/scripts",
             "host": "localhost",
-            "port": 19144
+            "port": 19144,
+            "targetModuleUuid": "df6d1955-6175-46b0-be8b-fa11fde32b13"
         }
     ]
 }
