@@ -106,7 +106,7 @@ export class ServerShop{
             form.title(this.title??"");
             const data = tryget(()=>JSON.parse(getStringFromDynamicProperties("sellShop:"+this.id)) as SellableShopElement[])??[]
             form.body(`§6--------------------------------
-§aMoney: $${world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity)??0}
+§aMoney: $${world.scoreboard.getObjective("andexdb:money").getScore(player)??0}
 §6--------------------------------`)
             data.forEach(v=>{
                 form.button(v.title, v.texture)
@@ -129,7 +129,7 @@ export class ServerShop{
             form.title(this.title??"")
             const data = tryget(()=>JSON.parse(getStringFromDynamicProperties("buyShop:"+this.id)) as BuyableShopElement[])??[]
             form.body(`§6--------------------------------
-§aMoney: $${world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity)}
+§aMoney: $${world.scoreboard.getObjective("andexdb:money").getScore(player)}
 §6--------------------------------`)
             data.forEach(v=>{
                 form.button(v.title, v.texture)
@@ -246,7 +246,7 @@ export class ServerShop{
             form.slider(`§a${item.title}\n§gPrice: ${item.price}\n§fHow many would you like to buy?`, 0, item.max??64, item.step??1, item.step??1)
             const r = await forceShow(form, player)
             if(r.canceled==true||(r.formValues[0] as number)==0){return}
-            if(world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity)>=item.price){
+            if(world.scoreboard.getObjective("andexdb:money").getScore(player)>=item.price){
                 if(item.itemType=="newItemStack"){
                     let newItem = new ItemStack(item.itemID, r.formValues[0] as number)
                     newItem.nameTag=item.itemName
@@ -262,7 +262,7 @@ export class ServerShop{
             }else{
                 const form = new MessageFormData
                 form.title("Not Enough Money")
-                form.body(`You do not have enough money to buy this item.\nYou currently have $${world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity)}.\nThe item costs $${item.price}.\nYou need another $${item.price-world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity)} to buy this item.`)
+                form.body(`You do not have enough money to buy this item.\nYou currently have $${world.scoreboard.getObjective("andexdb:money").getScore(player)}.\nThe item costs $${item.price}.\nYou need another $${item.price-world.scoreboard.getObjective("andexdb:money").getScore(player)} to buy this item.`)
                 form.button1("Go Back")
                 form.button2("Close Shop")
                 forceShow(form, player).then(r=>{
