@@ -68,8 +68,10 @@ export class ServerShop {
                 }
                 const item = data[r.selection];
                 if (item.type == "item") {
-                    this.sellItem(player, item).then(() => {
-                        this.openShop(player, "sell");
+                    this.sellItem(player, item).then(v => {
+                        if (v == 1) {
+                            this.openShop(player, "sell");
+                        }
                     });
                 }
                 else if (item.type == "page") {
@@ -100,8 +102,10 @@ export class ServerShop {
                 }
                 const item = data[r.selection];
                 if (item.type == "item") {
-                    this.buyItem(player, item).then(() => {
-                        this.openShop(player, "buy");
+                    this.buyItem(player, item).then(v => {
+                        if (v == 1) {
+                            this.openShop(player, "buy");
+                        }
                     });
                 }
                 else if (item.type == "page") {
@@ -144,8 +148,10 @@ export class ServerShop {
                 }
                 const item = newData[r.selection];
                 if (item.type == "item") {
-                    this.sellItem(player, item).then(() => {
-                        this.openShopPage(player, data, path);
+                    this.sellItem(player, item).then(v => {
+                        if (v == 1) {
+                            this.openShopPage(player, data, path);
+                        }
                     });
                 }
                 else if (item.type == "page") {
@@ -177,8 +183,10 @@ export class ServerShop {
                 }
                 const item = newData[r.selection];
                 if (item.type == "item") {
-                    this.buyItem(player, item).then(() => {
-                        this.openShopPage(player, data, path);
+                    this.buyItem(player, item).then(v => {
+                        if (v == 1) {
+                            this.openShopPage(player, data, path);
+                        }
                     });
                 }
                 else if (item.type == "page") {
@@ -249,8 +257,9 @@ export class ServerShop {
                         newItem.setCanPlaceOn(item.canPlaceOn);
                     }
                     player.getComponent("inventory").container.addItem(newItem);
-                    world.scoreboard.getObjective("andexdb:money").addScore(player.scoreboardIdentity, -item.price);
-                    this.openShop(player, "sell");
+                    world.scoreboard.getObjective("andexdb:money").addScore(player, -item.price);
+                    return 1;
+                    // this.openShop(player, "sell")
                 }
                 else if (item.itemType == "pre-made") { }
             }
@@ -260,12 +269,12 @@ export class ServerShop {
                 form.body(`You do not have enough money to buy this item.\nYou currently have $${tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0}.\nThe item costs $${item.price}.\nYou need another $${item.price - (tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0)} to buy this item.`);
                 form.button1("Go Back");
                 form.button2("Close Shop");
-                forceShow(form, player).then(r => {
-                    if (r.canceled == true || r.selection == 1) {
-                        return;
-                    }
-                    this.openShop(player, "buy");
-                });
+                const r = await forceShow(form, player);
+                if (r.canceled == true || r.selection == 1) {
+                    return;
+                }
+                return 1;
+                // this.openShop(player, "buy")
             }
         }
         catch (e) {
@@ -286,14 +295,15 @@ export class ServerShop {
             items.forEach(v => itemCount += v.amount);
             if (itemCount >= r.formValues[0]) {
                 if (item.itemType == "sellable") {
-                    world.scoreboard.getObjective("andexdb:money").addScore(player.scoreboardIdentity, item.value * r.formValues[0]);
+                    world.scoreboard.getObjective("andexdb:money").addScore(player, item.value * r.formValues[0]);
                     let amountToRemove = r.formValues[0];
                     for (let i = 0; amountToRemove != 0; i++) {
                         let amount = Math.min(amountToRemove, items[i].amount);
                         items[i].amount -= amount;
                         amountToRemove -= amount;
                     }
-                    this.openShop(player, "sell");
+                    return 1;
+                    // this.openShop(player, "sell")
                 }
             }
             else {
@@ -302,12 +312,12 @@ export class ServerShop {
                 form.body(`You do not have ${r.formValues[0]} of this item.\nYou currently have ${itemCount}of this item.\nYou wanted to sell ${r.formValues[0]} of this item.\nYou need another $${r.formValues[0] - itemCount} to buy this item.`);
                 form.button1("Go Back");
                 form.button2("Close Shop");
-                forceShow(form, player).then(r => {
-                    if (r.canceled == true || r.selection == 1) {
-                        return;
-                    }
-                    this.openShop(player, "sell");
-                });
+                const rb = await forceShow(form, player);
+                if (rb.canceled == true || rb.selection == 1) {
+                    return;
+                }
+                return 1;
+                // this.openShop(player, "sell")
             }
         }
         catch (e) {
@@ -798,7 +808,7 @@ export class ServerShopManager {
                     break;
                 case 1:
                     await ServerShopManager.manageServerShop_editItem(sourceEntity, shop, item, itemIndex, mode);
-                    ServerShopManager.manageServerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                    await ServerShopManager.manageServerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
                     break;
                 case 2:
                     const sureOfItemDeletion = await showMessage(sourceEntity, "Are you sure?", "Are you sure you want to delete this item?", "No", "Yes");
@@ -815,7 +825,7 @@ export class ServerShopManager {
                         }
                     }
                     else {
-                        ServerShopManager.manageServerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                        await ServerShopManager.manageServerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
                     }
                     break;
                 case 3:
@@ -1103,7 +1113,7 @@ export class ServerShopManager {
                     break;
                 case 2:
                     await ServerShopManager.manageServerShop_editPage(sourceEntity, shop, page, pageIndex, mode);
-                    ServerShopManager.manageServerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
+                    await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
                     break;
                 case 3:
                     const sureOfItemDeletion = await showMessage(sourceEntity, "Are you sure?", "Are you sure you want to delete this page?", "No", "Yes");
@@ -1120,7 +1130,7 @@ export class ServerShopManager {
                         }
                     }
                     else {
-                        ServerShopManager.manageServerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
+                        await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
                     }
                     break;
                 case 4:
@@ -1363,7 +1373,7 @@ export class ServerShopManager {
                     break;
                 case 1:
                     await ServerShopManager.manageServerShopPage_editItem(sourceEntity, shop, path, item, itemIndex);
-                    ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
+                    await ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
                     break;
                 case 2:
                     const sureOfItemDeletion = await showMessage(sourceEntity, "Are you sure?", "Are you sure you want to delete this item?", "No", "Yes");
@@ -1382,7 +1392,7 @@ export class ServerShopManager {
                         }
                     }
                     else {
-                        ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
+                        await ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
                     }
                     break;
                 case 3:
@@ -1677,7 +1687,7 @@ export class ServerShopManager {
                     break;
                 case 2:
                     await ServerShopManager.manageServerShopPage_editPage(sourceEntity, shop, path, page, pageIndex);
-                    ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
+                    await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
                     break;
                 case 3:
                     const sureOfItemDeletion = await showMessage(sourceEntity, "Are you sure?", "Are you sure you want to delete this page?", "No", "Yes");
@@ -1694,7 +1704,7 @@ export class ServerShopManager {
                         }
                     }
                     else {
-                        ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
+                        await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
                     }
                     break;
                 case 4:
