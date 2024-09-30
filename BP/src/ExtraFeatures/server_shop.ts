@@ -72,6 +72,7 @@ export class ServerShop{
         this.id=config.id
         this.name=config.name
         this.title=config.title
+        this.mainPageBodyText=config.mainPageBodyText
         this.sellShop=config.sellShop??true
         this.buyShop=config.buyShop??true
         this.publicShop=config.publicShop??false
@@ -567,16 +568,17 @@ export class ServerShopManager{
         form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", shop.mainPageBodyText)
         form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, shop.buyShop??true)
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, shop.sellShop??true)
-        form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \viewservershops command, default is false`, shop.sellShop??false)
+        form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \viewservershops command, default is false`, shop.publicShop??false)
         form2.submitButton("Save")
         forceShow(form2, (sourceEntity as Player)).then(t => {
             if (t.canceled) {ServerShopManager.manageServerShop(sourceEntity, shop); return;};
-            let [ name, title, mainPageBodyText, buyShop, sellShop ] = t.formValues as [ name: string, title: string, mainPageBodyText: string, buyShop: boolean, sellShop: boolean ];
+            let [ name, title, mainPageBodyText, buyShop, sellShop, publicShop ] = t.formValues as [ name: string, title: string, mainPageBodyText: string, buyShop: boolean, sellShop: boolean, publicShop: boolean ];
             shop.name=name
             shop.title=title
             shop.mainPageBodyText=mainPageBodyText
             shop.buyShop=buyShop
             shop.sellShop=sellShop
+            shop.publicShop=publicShop
             shop.save()
             ServerShopManager.manageServerShop(sourceEntity, shop); 
         }).catch(e => {
