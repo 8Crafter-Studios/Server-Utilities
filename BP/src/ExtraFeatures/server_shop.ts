@@ -103,7 +103,7 @@ export class ServerShop{
             })
         }else if(mode=="sell"){
             const form = new ActionFormData
-            form.title(this.title);
+            form.title(this.title??"");
             const data = tryget(()=>JSON.parse(getStringFromDynamicProperties("sellShop:"+this.id)) as SellableShopElement[])??[]
             form.body(`§6--------------------------------
 §aMoney: $${world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity)??0}
@@ -126,7 +126,7 @@ export class ServerShop{
             })
         }else if(mode=="buy"){
             const form = new ActionFormData
-            form.title(this.title)
+            form.title(this.title??"")
             const data = tryget(()=>JSON.parse(getStringFromDynamicProperties("buyShop:"+this.id)) as BuyableShopElement[])??[]
             form.body(`§6--------------------------------
 §aMoney: $${world.scoreboard.getObjective("andexdb:money").getScore(player.scoreboardIdentity)}
