@@ -5,6 +5,7 @@ import { forceShow, worldBorderSettingsDimensionSelector, settings, extraFeature
 import { config } from "Main";
 import { showMessage } from "Main/utilities";
 import { ServerShopManager } from "./server_shop";
+import { PlayerShopManager } from "./player_shop";
 
 export function mainShopSystemSettings(sourceEntitya: Entity|executeCommandPlayerW|Player){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
@@ -23,12 +24,7 @@ export function mainShopSystemSettings(sourceEntitya: Entity|executeCommandPlaye
                 ServerShopManager.serverShopSystemSettings(sourceEntity)
             break;
             case 1:
-                showMessage(sourceEntity as Player, undefined, "§cSorry, the player shop system does not exist yet.", "Back", "Close").then(r=>{
-                    if(r.selection==0){
-                        mainShopSystemSettings(sourceEntity)
-                    }
-                })
-                // playerShopSystemSettings(sourceEntity)
+                PlayerShopManager.playerShopSystemSettings(sourceEntity)
             break;
             case 2:
                 showMessage(sourceEntity as Player, undefined, "§cSorry, the sign shop system does not exist yet.", "Back", "Close").then(r=>{

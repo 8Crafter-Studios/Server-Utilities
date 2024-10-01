@@ -426,7 +426,9 @@ export class config {
             get player() {
                 return {
                     get enabled() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.enabled") ?? false); },
-                    set enabled(enabled) { world.setDynamicProperty("andexdbShopSystemSettings:player.enabled", enabled ?? false); }
+                    set enabled(enabled) { world.setDynamicProperty("andexdbShopSystemSettings:player.enabled", enabled ?? false); },
+                    get maxShopsPerPlayer() { return (world.getDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer") ?? -1).toString().toNumber(); },
+                    set maxShopsPerPlayer(maxShopsPerPlayer) { world.setDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer", maxShopsPerPlayer ?? -1); }
                 };
             },
             get sign() {
