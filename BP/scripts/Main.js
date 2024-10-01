@@ -1,5 +1,8 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
+import { system } from "@minecraft/server";
+globalThis.beforeScriptStartTick = system.currentTick;
 export const format_version = "1.23.0-preview.20+BULID.1";
+import "Global";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -57,7 +60,7 @@ export const mainmetaimport = import.meta;
 export const subscribedEvents = {};
 globalThis.tempVariables = {};
 export const editorStickMenuOpeningAsyncCancelActionNumbers = {};
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode, LocationOutOfWorldBoundariesError } from "@minecraft/server";
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode, LocationOutOfWorldBoundariesError } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector, dirmap, diroffsetmap, diroffsetothersmap, generateMinecraftConeBG } from "Main/coordinates";
@@ -112,6 +115,8 @@ SimulatedPlayer;
 Test;
 mcMath;
 globalThis.scriptStartTick = system.currentTick;
+export const modules = { main, coords, cmds, bans, uis, playersave, spawnprot, mcMath };
+globalThis.modules = { main, coords, cmds, bans, uis, playersave, spawnprot, mcMath };
 export let crashEnabled = false;
 export let tempSavedVariables = [];
 export function mainEval(x) { return eval(x); }
@@ -159,9 +164,46 @@ catch (e) {
     console.error(e, e.stack);
 }
 const srununbound = system.run;
+/**
+ * @remarks
+ * Runs a specified function at the next available future time.
+ * This is frequently used to implement delayed behaviors and
+ * game loops. When run within the context of an event handler,
+ * this will generally run the code at the end of the same tick
+ * where the event occurred. When run in other code (a
+ * system.run callout), this will run the function in the next
+ * tick. Note, however, that depending on load on the system,
+ * running in the same or next tick is not guaranteed.
+ *
+ * @param callback
+ * Function callback to run at the next game tick.
+ * @returns
+ * An opaque identifier that can be used with the `clearRun`
+ * function to cancel the execution of this run.
+ * @example trapTick.ts
+ * ```typescript
+ * import { system, world } from '@minecraft/server';
+ *
+ * function printEveryMinute() {
+ *     try {
+ *         // Minecraft runs at 20 ticks per second.
+ *         if (system.currentTick % 1200 === 0) {
+ *             world.sendMessage('Another minute passes...');
+ *         }
+ *     } catch (e) {
+ *         console.warn('Error: ' + e);
+ *     }
+ *
+ *     system.run(printEveryMinute);
+ * }
+ *
+ * printEveryMinute();
+ * ```
+ */
 export const srun = srununbound.bind(system);
 globalThis.srun = srun;
 export const gt = globalThis;
+globalThis.gt = globalThis;
 export class config {
     static get chatCommandsEnabled() { return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled") ?? true); }
     static set chatCommandsEnabled(enabled) { world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled ?? true); }
@@ -4668,208 +4710,6 @@ export function getTopSolidBlock(location, dimension, onlySolid = false) { let b
         return block;
     }
 } ; return undefined; }
-;
-Object.defineProperty(String.prototype, 'escapeCharacters', { value: function (js, unicode, nullchar, uri, quotes, general, colon, x, s) {
-        //:Get primitive copy of string:
-        var str = this.valueOf(); /*
-        console.warn(unescape(str))*/
-        //:Append Characters To End:
-        if (js == true) {
-            try {
-                str = eval("`" + str.replaceAll("`", "\\`") + "`");
-            }
-            catch (e) {
-                console.error(e, e.stack);
-            }
-        }
-        if (general == true) {
-            str = str.replaceAll("\\n", "\n");
-            str = str.replaceAll("\\f", "\f");
-            str = str.replaceAll("\\r", "\r");
-            str = str.replaceAll("\\t", "\t");
-            str = str.replaceAll("\\v", "\v");
-            str = str.replaceAll("\\b", "\b");
-            str = str.replaceAll("\\l", "\u2028");
-            str = str.replaceAll("\\p", "\u2029");
-        }
-        if (quotes == true) {
-            str = str.replaceAll("\\qd", "\"");
-            str = str.replaceAll("\\qs", "\'");
-        }
-        if (colon == true) {
-            str = str.replaceAll("\\cs", "\;");
-            str = str.replaceAll("\\cf", "\:");
-        }
-        if (x == true) {
-            str = str.replaceAll("\\x", "");
-        }
-        if (s == true) {
-            str = str.replaceAll("\\s", "");
-        }
-        if (nullchar == 1) {
-            str = str.replaceAll("\\0", "\0");
-        }
-        if (nullchar == 2) {
-            str = str.replaceAll("\\0", "");
-        }
-        if (unicode == true) {
-            let strarray = ("t" + str).split("\\u");
-            strarray.forEach((values, index) => {
-                if ((/[01][0-9x][0-9A-F]{4}/i.test(values.slice(0, 6))) && (index !== 0)) { /*
-                    console.warn((values.slice(0, 6))); */
-                    strarray[index] = String.fromCodePoint(Number(values.slice(0, 6))) + values.slice(6);
-                }
-                else {
-                    if ((/[+][0-9]{7}/i.test(values.slice(0, 8))) && (index !== 0)) {
-                        strarray[index] = String.fromCodePoint(Number(values.slice(1, 8))) + values.slice(8);
-                    }
-                    else {
-                        if ((/[+][0-9]{6}/i.test(values.slice(0, 7))) && (index !== 0)) {
-                            strarray[index] = String.fromCodePoint(Number(values.slice(1, 7))) + values.slice(7);
-                        }
-                        else {
-                            if ((/[+][0-9]{5}/i.test(values.slice(0, 6))) && (index !== 0)) {
-                                strarray[index] = String.fromCodePoint(Number(values.slice(1, 6))) + values.slice(6);
-                            }
-                            else {
-                                if ((/[+][0-9]{4}/i.test(values.slice(0, 5))) && (index !== 0)) {
-                                    strarray[index] = String.fromCodePoint(Number(values.slice(1, 5))) + values.slice(5);
-                                }
-                                else {
-                                    if ((/[+][0-9]{3}/i.test(values.slice(0, 4))) && (index !== 0)) {
-                                        strarray[index] = String.fromCodePoint(Number(values.slice(1, 4))) + values.slice(4);
-                                    }
-                                    else {
-                                        if ((/[+][0-9]{2}/i.test(values.slice(0, 3))) && (index !== 0)) {
-                                            strarray[index] = String.fromCodePoint(Number(values.slice(1, 3))) + values.slice(3);
-                                        }
-                                        else {
-                                            if ((/[+][0-9]{1}/i.test(values.slice(0, 2))) && (index !== 0)) {
-                                                strarray[index] = String.fromCodePoint(Number(values.slice(1, 2))) + values.slice(2);
-                                            }
-                                            else {
-                                                if (index !== 0) {
-                                                    strarray[index] = "\\u" + values.slice(0);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            str = strarray.join("").slice(1);
-        }
-        if (uri == true) {
-            str = unescape(str);
-        }
-        //:Return modified copy:
-        return (str);
-    } });
-Object.defineProperty(String.prototype, 'escapeCharactersB', { value: function (js, unicode, nullchar, uri, quotes, general, colon, x, s) {
-        //:Get primitive copy of string:
-        var str = this.valueOf(); /*
-        console.warn(unescape(str))*/
-        var eb;
-        eb = undefined;
-        //:Append Characters To End:
-        if (js == true) {
-            try {
-                str = eval("`" + str.replaceAll("`", "\\`") + "`");
-            }
-            catch (e) {
-                eb.push(e);
-                console.error(e, e.stack);
-            }
-        }
-        if (general == true) {
-            str = str.replaceAll("\\n", "\n");
-            str = str.replaceAll("\\f", "\f");
-            str = str.replaceAll("\\r", "\r");
-            str = str.replaceAll("\\t", "\t");
-            str = str.replaceAll("\\v", "\v");
-            str = str.replaceAll("\\b", "\b");
-            str = str.replaceAll("\\l", "\u2028");
-            str = str.replaceAll("\\p", "\u2029");
-        }
-        if (quotes == true) {
-            str = str.replaceAll("\\qd", "\"");
-            str = str.replaceAll("\\qs", "\'");
-        }
-        if (colon == true) {
-            str = str.replaceAll("\\cs", "\;");
-            str = str.replaceAll("\\cf", "\:");
-        }
-        if (x == true) {
-            str = str.replaceAll("\\x", "");
-        }
-        if (s == true) {
-            str = str.replaceAll("\\s", "");
-        }
-        if (nullchar == 1) {
-            str = str.replaceAll("\\0", "\0");
-        }
-        if (nullchar == 2) {
-            str = str.replaceAll("\\0", "");
-        }
-        if (unicode == true) {
-            let strarray = ("t" + str).split("\\u");
-            strarray.forEach((values, index) => {
-                if ((/[01][0-9x][0-9A-F]{4}/i.test(values.slice(0, 6))) && (index !== 0)) { /*
-                    console.warn((values.slice(0, 6))); */
-                    strarray[index] = String.fromCodePoint(Number(values.slice(0, 6))) + values.slice(6);
-                }
-                else {
-                    if ((/[+][0-9]{7}/i.test(values.slice(0, 8))) && (index !== 0)) {
-                        strarray[index] = String.fromCodePoint(Number(values.slice(1, 8))) + values.slice(8);
-                    }
-                    else {
-                        if ((/[+][0-9]{6}/i.test(values.slice(0, 7))) && (index !== 0)) {
-                            strarray[index] = String.fromCodePoint(Number(values.slice(1, 7))) + values.slice(7);
-                        }
-                        else {
-                            if ((/[+][0-9]{5}/i.test(values.slice(0, 6))) && (index !== 0)) {
-                                strarray[index] = String.fromCodePoint(Number(values.slice(1, 6))) + values.slice(6);
-                            }
-                            else {
-                                if ((/[+][0-9]{4}/i.test(values.slice(0, 5))) && (index !== 0)) {
-                                    strarray[index] = String.fromCodePoint(Number(values.slice(1, 5))) + values.slice(5);
-                                }
-                                else {
-                                    if ((/[+][0-9]{3}/i.test(values.slice(0, 4))) && (index !== 0)) {
-                                        strarray[index] = String.fromCodePoint(Number(values.slice(1, 4))) + values.slice(4);
-                                    }
-                                    else {
-                                        if ((/[+][0-9]{2}/i.test(values.slice(0, 3))) && (index !== 0)) {
-                                            strarray[index] = String.fromCodePoint(Number(values.slice(1, 3))) + values.slice(3);
-                                        }
-                                        else {
-                                            if ((/[+][0-9]{1}/i.test(values.slice(0, 2))) && (index !== 0)) {
-                                                strarray[index] = String.fromCodePoint(Number(values.slice(1, 2))) + values.slice(2);
-                                            }
-                                            else {
-                                                if (index !== 0) {
-                                                    strarray[index] = "\\u" + values.slice(0);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            str = strarray.join("").slice(1);
-        }
-        if (uri == true) {
-            str = unescape(str);
-        }
-        //:Return modified copy:
-        return ({ v: str, e: eb });
-    } });
 subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subscribe((event) => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:worldInitialize")));

@@ -2152,7 +2152,12 @@ export function chatCommands(params) {
         let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!(switchTest.match((command.get(v.commandName, "built-in").regexp))))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
     if (commanda?.type == "server_shop") {
         eventData.cancel = true;
-        srun(() => LinkedServerShopCommands.openShopForCommand(newMessage, player.player));
+        if (config.shopSystem.server.enabled) {
+            srun(() => LinkedServerShopCommands.openShopForCommand(newMessage, player.player));
+        }
+        else {
+            player.sendError("§cSystemNotEnabledError: You cannot use this command because the server shop system is not enabled.", true);
+        }
     }
     else if (commanda?.type == "built-in") {
         switch (true) {
@@ -2309,6 +2314,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 else {
                     player.sendMessage(`Removed hotbar preset ${switchTest.slice(5).split(" ")[0]}. `);
                 }
+                break;
+            case !!switchTest.match(/^hlist$/):
+                eventData.cancel = true;
+                player.sendMessage(`Hotbar Presets: \n${player.getDynamicPropertyIds().filter(v => v.startsWith("hotbarPreset")).map(v => `${v.slice(12)}: ${player.getDynamicProperty(v)}`).join("§r\n")}`);
                 break; /*
             case !!switchTest.match(/^h2$/):
                 eventData.cancel = true;
@@ -13898,7 +13907,12 @@ ${command.dp}snapshot list`);
             case !!switchTest.match(/^viewservershops$/):
                 {
                     eventData.cancel = true;
-                    srun(() => ServerShop.openPublicShopsSelector(player.player));
+                    if (config.shopSystem.server.enabled) {
+                        srun(() => ServerShop.openPublicShopsSelector(player.player));
+                    }
+                    else {
+                        player.sendError("§cSystemNotEnabledError: You cannot use this command because the server shop system is not enabled.", true);
+                    }
                 }
                 break;
             default:
@@ -13942,10 +13956,10 @@ export function extractSelectors(str) {
             startIndex = i;
         }
         if (!insideQuotes) {
-            if (str[i] === '[') {
-                stack.push('[');
+            if (str[i] === "[") {
+                stack.push("[");
             }
-            else if (str[i] === ']') {
+            else if (str[i] === "]") {
                 if (stack.length > 0) {
                     stack.pop();
                     if (stack.length === 0 && startIndex !== -1) {
@@ -13958,8 +13972,11 @@ export function extractSelectors(str) {
                     startIndex = -1;
                 }
             }
-            else if (((str[i] !== ' ' && str[i] !== '' && str[i] !== undefined && (i - startIndex) >= 2) || (i == str.length - 1 && (i - startIndex) >= 1)) && startIndex !== -1 && stack.length === 0) {
-                selectors.push(str.substring(startIndex, i + (+(i == str.length - 1))).trim());
+            else if (((str[i] !== " " && str[i] !== "" && str[i] !== undefined && i - startIndex >= 2) ||
+                (i == str.length - 1 && i - startIndex >= 1)) &&
+                startIndex !== -1 &&
+                stack.length === 0) {
+                selectors.push(str.substring(startIndex, i + +(i == str.length - 1)).trim());
                 startIndex = -1;
             }
         }
@@ -14202,7 +14219,7 @@ export function evaluateParameters(commandstring, parameters) {
                         }
                     }
                     else {
-                        if (!!paramEval.trimStart().match(/^@[a-zA-Z]\s*[^\[]/)) {
+                        if (!!paramEval.trimStart().match(/^@[a-zA-Z]\s*(?![\s\[])/)) {
                             let value = paramEval.trimStart().match(/^@[seapvrc]/)[0];
                             paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                             try {

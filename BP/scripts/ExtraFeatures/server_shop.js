@@ -139,7 +139,7 @@ export class ServerShop {
                 }
                 if (r.selection == newData.length) {
                     if (path.slice(0, -1).length == 1) {
-                        this.openShop(player, "both");
+                        this.openShop(player, "sell");
                     }
                     else {
                         this.openShopPage(player, data, path.slice(0, -2));
@@ -172,9 +172,9 @@ export class ServerShop {
                 if (r.canceled == true) {
                     return;
                 }
-                if (r.selection == data.length) {
+                if (r.selection == newData.length) {
                     if (path.slice(0, -1).length == 1) {
-                        this.openShop(player, "both");
+                        this.openShop(player, "buy");
                     }
                     else {
                         this.openShopPage(player, data, path.slice(0, -2));
@@ -240,9 +240,9 @@ export class ServerShop {
             form.slider(`§a${item.title}\n§gPrice: ${item.price}\n§fHow many would you like to buy?`, 0, item.max ?? 64, item.step ?? 1, item.step ?? 1);
             const r = await forceShow(form, player);
             if (r.canceled == true || r.formValues[0] == 0) {
-                return;
+                return 1;
             }
-            if (tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0 >= item.price) {
+            if ((tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0) >= (item.price * r.formValues[0])) {
                 if (item.itemType == "newItemStack") {
                     let newItem = new ItemStack(item.itemID, r.formValues[0]);
                     newItem.nameTag = item.itemName;
@@ -258,20 +258,39 @@ export class ServerShop {
                         newItem.setCanPlaceOn(item.canPlaceOn);
                     }
                     player.getComponent("inventory").container.addItem(newItem);
-                    world.scoreboard.getObjective("andexdb:money").addScore(player, -item.price);
+                    world.scoreboard.getObjective("andexdb:money").addScore(player, -(item.price * r.formValues[0]));
                     return 1;
                     // this.openShop(player, "sell")
                 }
-                else if (item.itemType == "pre-made") { }
+                else if (item.itemType == "giveCommand") {
+                    player.runCommand(`/give @s ${item.itemID} ${r.formValues[0]} ${item.itemData}`);
+                    world.scoreboard.getObjective("andexdb:money").addScore(player, -(item.price * r.formValues[0]));
+                    return 1;
+                    // this.openShop(player, "sell")
+                }
+                else if (item.itemType == "pre-made") {
+                    world.structureManager.place(item.structureID, player.dimension, player.location, { includeBlocks: false, includeEntities: true });
+                    const entity = player.dimension.getEntitiesAtBlockLocation(player.location).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_shop_item_save_id"))) == item.entityID);
+                    if (!!!entity) {
+                        throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${item.entityID} was found inside of the specified structure.`);
+                    }
+                    const itemStack = entity.getComponent("inventory").container.getItem(0);
+                    entity.remove();
+                    for (let i = 0; i < r.formValues[0]; i++) {
+                        player.getComponent("inventory").container.addItem(itemStack);
+                    }
+                    world.scoreboard.getObjective("andexdb:money").addScore(player, -(item.price * r.formValues[0]));
+                    return 1;
+                }
             }
             else {
                 const form = new MessageFormData;
                 form.title("Not Enough Money");
-                form.body(`You do not have enough money to buy this item.\nYou currently have $${tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0}.\nThe item costs $${item.price}.\nYou need another $${item.price - (tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0)} to buy this item.`);
+                form.body(`You do not have enough money to buy this item.\nYou currently have $${tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0}.\nOne of this item costs $${item.price}.\nYou wanted to buy ${r.formValues[0]} of this item.\nThe total price is $${item.price * r.formValues[0]}.\nYou need another $${(item.price * r.formValues[0]) - (tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0)} to buy this item.`);
                 form.button1("Go Back");
                 form.button2("Close Shop");
-                const r = await forceShow(form, player);
-                if (r.canceled == true || r.selection == 1) {
+                const rb = await forceShow(form, player);
+                if (rb.canceled == true || rb.selection == 1) {
                     return;
                 }
                 return 1;
@@ -289,7 +308,7 @@ export class ServerShop {
             form.slider(`§a${item.title}\n§gValue: ${item.value}\n§fHow many would you like to sell?`, 0, item.max ?? 64, item.step ?? 1, item.step ?? 1);
             const r = await forceShow(form, player);
             if (r.canceled == true || r.formValues[0] == 0) {
-                return;
+                return 1;
             }
             const items = containerToContainerSlotArray(player.getComponent("inventory").container).filter(v => v.hasItem() ? v?.typeId == item.itemID : false);
             let itemCount = 0;
@@ -299,8 +318,14 @@ export class ServerShop {
                     world.scoreboard.getObjective("andexdb:money").addScore(player, item.value * r.formValues[0]);
                     let amountToRemove = r.formValues[0];
                     for (let i = 0; amountToRemove != 0; i++) {
-                        let amount = Math.min(amountToRemove, items[i].amount);
-                        items[i].amount -= amount;
+                        const iamount = items[i].amount;
+                        let amount = Math.min(amountToRemove, iamount);
+                        if (amount == iamount) {
+                            items[i].setItem();
+                        }
+                        else {
+                            items[i].amount -= amount;
+                        }
                         amountToRemove -= amount;
                     }
                     return 1;
@@ -310,7 +335,7 @@ export class ServerShop {
             else {
                 const form = new MessageFormData;
                 form.title("Not Enough Items");
-                form.body(`You do not have ${r.formValues[0]} of this item.\nYou currently have ${itemCount}of this item.\nYou wanted to sell ${r.formValues[0]} of this item.\nYou need another $${r.formValues[0] - itemCount} to buy this item.`);
+                form.body(`You do not have ${r.formValues[0]} of this item.\nYou currently have ${itemCount} of this item.\nYou wanted to sell ${r.formValues[0]} of this item.\nYou need another ${r.formValues[0] - itemCount} of this item.`);
                 form.button1("Go Back");
                 form.button2("Close Shop");
                 const rb = await forceShow(form, player);
@@ -401,6 +426,8 @@ export class LinkedServerShopCommands {
     }
 }
 export class ServerShopManager {
+    static get serverShopItemTextureHint() { return this.serverShopItemTextureHints[Math.floor(Math.random() * this.serverShopItemTextureHints.length)]; }
+    static get serverShopPageTextureHint() { return this.serverShopPageTextureHints[Math.floor(Math.random() * this.serverShopPageTextureHints.length)]; }
     static serverShopSystemSettings(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
@@ -495,7 +522,7 @@ export class ServerShopManager {
         form2.textField(`§l§fShop ID§r§c*§f\nThe ID of the shop`, "myShop", "myShop");
         form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", "My Shop");
         form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", "My Shop");
-        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", "My Shop");
+        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "This is my shop.", "This is my shop.");
         form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, true);
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, true);
         form2.submitButton("Save");
@@ -508,9 +535,9 @@ export class ServerShopManager {
             let [id, name, title, mainPageBodyText, buyShop, sellShop] = t.formValues;
             const shop = new ServerShop({
                 id: `shop:${id}`,
-                name: name,
-                title: title,
-                mainPageBodyText: mainPageBodyText,
+                name: JSON.parse("\"" + (name.replaceAll("\"", "\\\"")) + "\""),
+                title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                mainPageBodyText: JSON.parse("\"" + (mainPageBodyText.replaceAll("\"", "\\\"")) + "\""),
                 buyShop: buyShop,
                 sellShop: sellShop
             });
@@ -587,12 +614,12 @@ export class ServerShopManager {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form2 = new ModalFormData();
         form2.title(`${shop.title} Settings`);
-        form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", shop.name);
-        form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", shop.title);
-        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", shop.mainPageBodyText);
+        form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", JSON.stringify(shop.name).slice(1, -1).replaceAll("\\\"", "\""));
+        form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", JSON.stringify(shop.title).slice(1, -1).replaceAll("\\\"", "\""));
+        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", JSON.stringify(shop.mainPageBodyText).slice(1, -1).replaceAll("\\\"", "\""));
         form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, shop.buyShop ?? true);
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, shop.sellShop ?? true);
-        form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \viewservershops command, default is false`, shop.publicShop ?? false);
+        form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewservershops command, default is false`, shop.publicShop ?? false);
         form2.submitButton("Save");
         forceShow(form2, sourceEntity).then(t => {
             if (t.canceled) {
@@ -601,9 +628,9 @@ export class ServerShopManager {
             }
             ;
             let [name, title, mainPageBodyText, buyShop, sellShop, publicShop] = t.formValues;
-            shop.name = name;
-            shop.title = title;
-            shop.mainPageBodyText = mainPageBodyText;
+            shop.name = JSON.parse("\"" + (name.replaceAll("\"", "\\\"")) + "\"");
+            shop.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\"");
+            shop.mainPageBodyText = JSON.parse("\"" + (mainPageBodyText.replaceAll("\"", "\\\"")) + "\"");
             shop.buyShop = buyShop;
             shop.sellShop = sellShop;
             shop.publicShop = publicShop;
@@ -688,14 +715,14 @@ export class ServerShopManager {
                         ["giveCommand", "newItemStack", "pre-made", "pre-made_manual"][(await showActions(sourceEntity, "Select Item Mode", "What mode would you like to create the item in?" +
                             "\n§bGive Command§f: Uses the give command to give players the item, can only do items that are available in commands (so things like minecraft:netherreactor will not work), and can only set item id and data value." +
                             "\n§bNew Item Stack§f: Uses the Script API to create the item, can use any item type even if it is not available in commands (so minecraft:netherreactor will work), also allows you to set the following properties of the item: name, lore, canDestroy, canPlaceOn, lockMode, keepOnDeath." +
-                            "\n§bPre-Made§f: Saves an already existing item from your inventory to the inventory slot of an andexdb:shop_item_storage entity and saves that entity in a structure block, then when a player purchases an item, the structure is loaded and it clones a copy of the item from the entity's inventory to the player's inventory. This will preserve ALL NBT from the item, including any illegal enchantments." +
-                            "\n§bManual Pre-Made§f: Lets you choose the Structure ID of the structure with the andexdb:shop_item_storage entity in it, and the value of the andexdb:shop_item_storage_save_id dynamic property of the andexdb:shop_item_storage entity that has the item in it.", ["Give Command"], ["New Item Stack"], ["Pre-Made"], ["Manual Pre-Made"])).selection] :
+                            "\n§bPre-Made§f: Saves an already existing item from your inventory to the inventory slot of an andexdb:saved_shop_item entity and saves that entity in a structure block, then when a player purchases an item, the structure is loaded and it clones a copy of the item from the entity's inventory to the player's inventory. This will preserve ALL NBT from the item, including any illegal enchantments." +
+                            "\n§bManual Pre-Made§f: Lets you choose the Structure ID of the structure with the andexdb:saved_shop_item entity in it, and the value of the andexdb:saved_shop_item_save_id dynamic property of the andexdb:saved_shop_item entity that has the item in it.", ["Give Command"], ["New Item Stack"], ["Pre-Made"], ["Manual Pre-Made"])).selection] :
                         "sellable";
                     if (type == "pre-made") {
                         const item = await itemSelector(sourceEntity, sourceEntity, ServerShopManager.manageServerShop_contents, sourceEntity, shop, mode);
-                        const entity = sourceEntity.dimension.spawnEntity("andexdb:shop_item_storage", { x: Math.floor(sourceEntity.location.x) + 0.5, y: Math.floor(sourceEntity.location.y) + 0.5, z: Math.floor(sourceEntity.location.z) + 0.5 });
+                        const entity = sourceEntity.dimension.spawnEntity("andexdb:saved_shop_item", { x: Math.floor(sourceEntity.location.x) + 0.5, y: Math.floor(sourceEntity.location.y) + 0.5, z: Math.floor(sourceEntity.location.z) + 0.5 });
                         const entityID = getSuperUniqueID();
-                        entity.setDynamicProperty("andexdb:shop_item_storage_save_id", entityID);
+                        entity.setDynamicProperty("andexdb:saved_shop_item_save_id", entityID);
                         entity.getComponent("inventory").container.setItem(0, item.item.getItem());
                         world.structureManager.createFromWorld("andexdbSavedShopItem:" + entityID, sourceEntity.dimension, {
                             x: Math.floor(sourceEntity.location.x),
@@ -743,6 +770,9 @@ export class ServerShopManager {
                         }
                         ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode);
                     }
+                    else if (!!!type) {
+                        ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode);
+                    }
                     else {
                         await ServerShopManager.manageServerShop_addItem(sourceEntity, shop, type, mode);
                         ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode);
@@ -774,11 +804,11 @@ export class ServerShopManager {
         const form = new ActionFormData;
         form.title("Manage " + item.title);
         form.body(`Type: ${item.itemType}
-    Title: ${item.title}
-    Texture: ${item.texture}
-    ${mode == "buy" ? "Purchase" : "Sell"} Amount Step: ${item.step}
-    Maximum ${mode == "buy" ? "Purchase" : "Sell"} Amount: ${item.max}
-    ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}`);
+Title: ${item.title}
+Texture: ${item.texture}
+${mode == "buy" ? "Purchase" : "Sell"} Amount Step: ${item.step}
+Maximum ${mode == "buy" ? "Purchase" : "Sell"} Amount: ${item.max}
+${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}`);
         form.button("Move Item", "textures/ui/color_plus");
         form.button("Edit Item", "textures/ui/color_plus");
         form.button("Delete Item", "textures/ui/color_plus");
@@ -842,13 +872,13 @@ export class ServerShopManager {
         const form = new ModalFormData;
         form.title("Manage " + item.title);
         if (item.itemType == "newItemStack") {
-            form.textField("§7Buyable Item Type: newItemStack\n§fButton Title§c*", "Stick", item.title);
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick", item.texture);
+            form.textField("§7Buyable Item Type: newItemStack\n§fButton Title§c*", "Stick", JSON.stringify(item.title).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint, JSON.stringify(item.texture).slice(1, -1).replaceAll("\\\"", "\""));
             form.textField("Price§c*", "10", String(item.price));
             form.textField("Purchase Amount Step\n§oDefault is 1", "1", String(item.step ?? 1));
             form.textField("Max Purchase Amount\n§oMax is 255\nDefault is 64", "64", String(item.max ?? 64));
-            form.textField("Item Type§c*", "minecraft:stick", item.itemID);
-            form.textField("Item Name\n§o(escape characters such as \\n are allowed)", "string", !!!item.itemName ? undefined : item.itemName);
+            form.textField("Item Type§c*", "minecraft:stick", JSON.stringify(item.itemID).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Item Name\n§o(escape characters such as \\n are allowed)", "string", !!!item.itemName ? undefined : JSON.stringify(item.itemName).slice(1, -1).replaceAll("\\\"", "\""));
             form.textField("Item Lore\n§o(escape characters such as \\n are allowed)\n(set to [] to clear)", "[\"Line 1\", \"Line 2\"...]", JSON.stringify(item.itemLore));
             form.textField("Can Destroy\n§o(escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSON.stringify(item.canDestroy));
             form.textField("Can Place On\n§o(escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSON.stringify(item.canPlaceOn));
@@ -856,30 +886,30 @@ export class ServerShopManager {
             form.toggle("Keep On Death", item.keepOnDeath);
         }
         else if (item.itemType == "giveCommand") {
-            form.textField("§7Buyable Item Type: giveCommand\n§fButton Title§c*", "Stick", item.title);
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick", item.texture);
+            form.textField("§7Buyable Item Type: giveCommand\n§fButton Title§c*", "Stick", JSON.stringify(item.title).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint, JSON.stringify(item.texture).slice(1, -1).replaceAll("\\\"", "\""));
             form.textField("Price§c*", "10", String(item.price));
             form.textField("Purchase Amount Step\n§oDefault is 1", "1", String(item.step ?? 1));
             form.textField("Max Purchase Amount\n§oDefault is 64", "64", String(item.max ?? 64));
-            form.textField("Item Type§c*", "minecraft:stick", item.itemID);
+            form.textField("Item Type§c*", "minecraft:stick", JSON.stringify(item.itemID).slice(1, -1).replaceAll("\\\"", "\""));
             form.textField("Data Value§c*", "0", String(item.itemData));
         }
         else if (item.itemType == "pre-made") {
-            form.textField("§7Buyable Item Type: pre-made\n§fButton Title§c*", "Stick", item.title);
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick", item.texture);
+            form.textField("§7Buyable Item Type: pre-made\n§fButton Title§c*", "Stick", JSON.stringify(item.title).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint, JSON.stringify(item.texture).slice(1, -1).replaceAll("\\\"", "\""));
             form.textField("Price§c*", "10", String(item.price));
             form.textField("Purchase Amount Step\n§oDefault is 1", "1", String(item.step ?? 1));
             form.textField("Max Purchase Amount\n§oDefault is 64", "64", String(item.max ?? 64));
-            form.textField("Structure ID§c*§f\nThe ID of the 1x1x1 structure that contains the andexdb:saved_shop_item entity that has the saved item in its inventory slot.", "andexdbSavedShopItem:0", item.structureID);
-            form.textField("Entity ID§c*§f\nThe value of the andexdb:saved_shop_item_save_id dynamic property of the andexdb:saved_shop_item that has the saved item in its inventory slot.", "0", item.entityID);
+            form.textField("Structure ID§c*§f\nThe ID of the 1x1x1 structure that contains the andexdb:saved_shop_item entity that has the saved item in its inventory slot.", "andexdbSavedShopItem:0", JSON.stringify(item.structureID).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Entity ID§c*§f\nThe value of the andexdb:saved_shop_item_save_id dynamic property of the andexdb:saved_shop_item that has the saved item in its inventory slot.", "0", JSON.stringify(item.entityID).slice(1, -1).replaceAll("\\\"", "\""));
         }
         else if (item.itemType == "sellable") {
-            form.textField("§7Sellable Item Type: sellable\n§fButton Title§c*", "Stick", item.title);
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick", item.texture);
+            form.textField("§7Sellable Item Type: sellable\n§fButton Title§c*", "Stick", JSON.stringify(item.title).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint, JSON.stringify(item.texture).slice(1, -1).replaceAll("\\\"", "\""));
             form.textField("Value§c*", "10", String(item.value));
             form.textField("Sell Amount Step\n§oDefault is 1", "1", String(item.step ?? 1));
             form.textField("Max Sell Amount\n§oDefault is 64", "64", String(item.max ?? 64));
-            form.textField("Item Type§c*", "minecraft:stick", item.itemID);
+            form.textField("Item Type§c*", "minecraft:stick", JSON.stringify(item.itemID).slice(1, -1).replaceAll("\\\"", "\""));
             // form.textField("Data Value§c*", "0", String(item))
         }
         return await forceShow(form, sourceEntity).then(async (r) => {
@@ -888,13 +918,13 @@ export class ServerShopManager {
                 return r;
             if (item.itemType == "newItemStack") {
                 let [title, texture, price, step, max, itemID, itemName, itemLore, canDestroy, canPlaceOn, lockMode, keepOnDeath] = r.formValues;
-                item.title = title;
-                item.texture = texture;
+                item.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\"");
+                item.texture = JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"");
                 item.price = Number.isNaN(Number(price)) ? 10 : Number(price);
                 item.step = Number.isNaN(Number(step)) ? 10 : Number(step);
                 item.max = Number.isNaN(Number(max)) ? 10 : Number(max);
-                item.itemID = itemID;
-                item.itemName = itemName;
+                item.itemID = JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"")) + "\"");
+                item.itemName = JSON.parse("\"" + (itemName.replaceAll("\"", "\\\"")) + "\"");
                 item.itemLore = JSON.parse(itemLore == "" ? "[]" : itemLore);
                 item.canDestroy = JSON.parse(canDestroy == "" ? "[]" : canDestroy);
                 item.canPlaceOn = JSON.parse(canPlaceOn == "" ? "[]" : canPlaceOn);
@@ -903,32 +933,32 @@ export class ServerShopManager {
             }
             else if (item.itemType == "giveCommand") {
                 let [title, texture, price, step, max, itemID, itemData] = r.formValues;
-                item.title = title;
-                item.texture = texture;
+                item.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\"");
+                item.texture = JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"");
                 item.price = Number.isNaN(Number(price)) ? 10 : Number(price);
                 item.step = Number.isNaN(Number(step)) ? 10 : Number(step);
                 item.max = Number.isNaN(Number(max)) ? 10 : Number(max);
-                item.itemID = itemID;
+                item.itemID = JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"")) + "\"");
                 item.itemData = Number.isNaN(Number(itemData)) ? 10 : Number(itemData);
             }
             else if (item.itemType == "pre-made") {
                 let [title, texture, price, step, max, structureID, entityID] = r.formValues;
-                item.title = title;
-                item.texture = texture;
+                item.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\"");
+                item.texture = JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"");
                 item.price = Number.isNaN(Number(price)) ? 10 : Number(price);
                 item.step = Number.isNaN(Number(step)) ? 10 : Number(step);
                 item.max = Number.isNaN(Number(max)) ? 10 : Number(max);
-                item.structureID = structureID;
-                item.entityID = entityID;
+                item.structureID = JSON.parse("\"" + (structureID.replaceAll("\"", "\\\"")) + "\"");
+                item.entityID = JSON.parse("\"" + (entityID.replaceAll("\"", "\\\"")) + "\"");
             }
             else if (item.itemType == "sellable") {
                 let [title, texture, value, step, max, itemID] = r.formValues;
-                item.title = title;
-                item.texture = texture;
+                item.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\"");
+                item.texture = JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"");
                 item.value = Number.isNaN(Number(value)) ? 10 : Number(value);
                 item.step = Number.isNaN(Number(step)) ? 10 : Number(step);
                 item.max = Number.isNaN(Number(max)) ? 10 : Number(max);
-                item.itemID = itemID;
+                item.itemID = JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"")) + "\"");
             }
             if (mode == "buy") {
                 let newData = shop.buyData;
@@ -949,7 +979,7 @@ export class ServerShopManager {
         form.title("Add Item");
         if (type == "newItemStack") {
             form.textField("§7Buyable Item Type: newItemStack\n§fButton Title§c*", "Stick");
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick");
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint);
             form.textField("Button Index§c*", String(mode == "buy" ? shop.buyData.length : shop.sellData.length), String(mode == "buy" ? shop.buyData.length : shop.sellData.length));
             form.textField("Price§c*", "10", "10");
             form.textField("Purchase Amount Step\n§oDefault is 1", "1", "1");
@@ -964,7 +994,7 @@ export class ServerShopManager {
         }
         else if (type == "giveCommand") {
             form.textField("§7Buyable Item Type: giveCommand\n§fButton Title§c*", "Stick");
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick");
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint);
             form.textField("Button Index§c*", String(mode == "buy" ? shop.buyData.length : shop.sellData.length), String(mode == "buy" ? shop.buyData.length : shop.sellData.length));
             form.textField("Price§c*", "10", "10");
             form.textField("Purchase Amount Step\n§oDefault is 1", "1", "1");
@@ -974,7 +1004,7 @@ export class ServerShopManager {
         }
         else if (type == "pre-made" || type == "pre-made_manual") {
             form.textField("§7Buyable Item Type: pre-made\n§fButton Title§c*", "Stick");
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick");
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint);
             form.textField("Button Index§c*", String(mode == "buy" ? shop.buyData.length : shop.sellData.length), String(mode == "buy" ? shop.buyData.length : shop.sellData.length));
             form.textField("Price§c*", "10", "10");
             form.textField("Purchase Amount Step\n§oDefault is 1", "1", "1");
@@ -984,7 +1014,7 @@ export class ServerShopManager {
         }
         else if (type == "sellable") {
             form.textField("§7Sellable Item Type: sellable\n§fButton Title§c*", "Stick");
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick");
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint);
             form.textField("Button Index§c*", String(mode == "buy" ? shop.buyData.length : shop.sellData.length), String(mode == "buy" ? shop.buyData.length : shop.sellData.length));
             form.textField("Value§c*", "10", "10");
             form.textField("Sell Amount Step\n§oDefault is 1", "1", "1");
@@ -1003,13 +1033,13 @@ export class ServerShopManager {
                 item = {
                     type: "item",
                     itemType: "newItemStack",
-                    title: title,
-                    texture: texture,
+                    title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                    texture: JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\""),
                     price: Number.isNaN(Number(price)) ? 10 : Number(price),
                     step: Number.isNaN(Number(step)) ? 10 : Number(step),
                     max: Number.isNaN(Number(max)) ? 10 : Number(max),
-                    itemID: itemID,
-                    itemName: itemName,
+                    itemID: JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"")) + "\""),
+                    itemName: JSON.parse("\"" + (itemName.replaceAll("\"", "\\\"")) + "\""),
                     itemLore: JSON.parse(itemLore == "" ? "[]" : itemLore),
                     canDestroy: JSON.parse(canDestroy == "" ? "[]" : canDestroy),
                     canPlaceOn: JSON.parse(canPlaceOn == "" ? "[]" : canPlaceOn),
@@ -1022,12 +1052,12 @@ export class ServerShopManager {
                 item = {
                     type: "item",
                     itemType: "giveCommand",
-                    title: title,
-                    texture: texture,
+                    title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                    texture: JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\""),
                     price: Number.isNaN(Number(price)) ? 10 : Number(price),
                     step: Number.isNaN(Number(step)) ? 10 : Number(step),
                     max: Number.isNaN(Number(max)) ? 10 : Number(max),
-                    itemID: itemID,
+                    itemID: JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"")) + "\""),
                     itemData: Number.isNaN(Number(itemData)) ? 10 : Number(itemData)
                 };
             }
@@ -1036,13 +1066,13 @@ export class ServerShopManager {
                 item = {
                     type: "item",
                     itemType: "pre-made",
-                    title: title,
-                    texture: texture,
+                    title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                    texture: JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\""),
                     price: Number.isNaN(Number(price)) ? 10 : Number(price),
                     step: Number.isNaN(Number(step)) ? 10 : Number(step),
                     max: Number.isNaN(Number(max)) ? 10 : Number(max),
-                    structureID: structureID,
-                    entityID: entityID
+                    structureID: JSON.parse("\"" + (structureID.replaceAll("\"", "\\\"")) + "\""),
+                    entityID: JSON.parse("\"" + (entityID.replaceAll("\"", "\\\"") + "\""))
                 };
             }
             else if (type == "sellable") {
@@ -1050,12 +1080,12 @@ export class ServerShopManager {
                 item = {
                     type: "item",
                     itemType: "sellable",
-                    title: title,
-                    texture: texture,
+                    title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                    texture: JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\""),
                     value: Number.isNaN(Number(value)) ? 10 : Number(value),
                     step: Number.isNaN(Number(step)) ? 10 : Number(step),
                     max: Number.isNaN(Number(max)) ? 10 : Number(max),
-                    itemID: itemID
+                    itemID: JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"") + "\""))
                 };
             }
             if (mode == "buy") {
@@ -1076,9 +1106,9 @@ export class ServerShopManager {
         const form = new ActionFormData;
         form.title("Manage " + page.pageTitle);
         form.body(`Page Title: ${page.pageTitle}
-    Page Body: ${page.pageBody}
-    Title: ${page.title}
-    Texture: ${page.texture}`);
+Page Body: ${page.pageBody}
+Title: ${page.title}
+Texture: ${page.texture}`);
         form.button("Edit Contents", "textures/ui/color_plus");
         form.button("Move Page", "textures/ui/color_plus");
         form.button("Edit Page", "textures/ui/color_plus");
@@ -1146,19 +1176,19 @@ export class ServerShopManager {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const form = new ModalFormData;
         form.title("Edit Item");
-        form.textField("§fPage Title§c*", "Items", page.pageTitle);
-        form.textField("§fPage Body§c*", "The items category.", page.pageBody);
-        form.textField("§fButton Title§c*", "Items", page.title);
-        form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/ui/arrowRight", page.texture);
+        form.textField("§fPage Title§c*", "Items", JSON.stringify(page.pageTitle).slice(1, -1).replaceAll("\\\"", "\""));
+        form.textField("§fPage Body§c*", "The items category.", JSON.stringify(page.pageBody).slice(1, -1).replaceAll("\\\"", "\""));
+        form.textField("§fButton Title§c*", "Items", JSON.stringify(page.title).slice(1, -1).replaceAll("\\\"", "\""));
+        form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/ui/arrowRight", JSON.stringify(page.texture).slice(1, -1).replaceAll("\\\"", "\""));
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return r;
             let [pageTitle, pageBody, title, texture] = r.formValues;
-            page.pageTitle = pageTitle,
-                page.pageBody = pageBody,
-                page.title = title,
-                page.texture = texture;
+            page.pageTitle = JSON.parse("\"" + (pageTitle.replaceAll("\"", "\\\"")) + "\""),
+                page.pageBody = JSON.parse("\"" + (pageBody.replaceAll("\"", "\\\"")) + "\""),
+                page.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                page.texture = JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"");
             if (mode == "buy") {
                 let newData = shop.buyData;
                 newData.splice(pageIndex, 1, page);
@@ -1190,11 +1220,11 @@ export class ServerShopManager {
             let [pageTitle, pageBody, title, texture] = r.formValues;
             page = {
                 type: "page",
-                pageTitle: pageTitle,
-                pageBody: pageBody,
-                title: title,
+                pageTitle: JSON.parse("\"" + (pageTitle.replaceAll("\"", "\\\"")) + "\""),
+                pageBody: JSON.parse("\"" + (pageBody.replaceAll("\"", "\\\"")) + "\""),
+                title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
                 data: [],
-                texture: texture
+                texture: JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"")
             };
             if (mode == "buy") {
                 let newData = shop.buyData;
@@ -1245,16 +1275,16 @@ export class ServerShopManager {
             case shopData.length:
                 const type = mode == "buy" ?
                     ["giveCommand", "newItemStack", "pre-made", "pre-made_manual"][(await showActions(sourceEntity, "Select Item Mode", "What mode would you like to create the item in?" +
-                        "§bGive Command§f: Uses the give command to give players the item, can only do items that are available in commands (so things like minecraft:netherreactor will not work), and can only set item id and data value." +
-                        "§bNew Item Stack§f: Uses the Script API to create the item, can use any item type even if it is not available in commands (so minecraft:netherreactor will work), also allows you to set the following properties of the item: name, lore, canDestroy, canPlaceOn, lockMode, keepOnDeath." +
-                        "§bPre-Made§f: Saves an already existing item from your inventory to the inventory slot of an andexdb:shop_item_storage entity and saves that entity in a structure block, then when a player purchases an item, the structure is loaded and it clones a copy of the item from the entity's inventory to the player's inventory. This will preserve ALL NBT from the item, including any illegal enchantments." +
-                        "§bManual Pre-Made§f: Lets you choose the Structure ID of the structure with the andexdb:shop_item_storage entity in it, and the value of the andexdb:shop_item_storage_save_id dynamic property of the andexdb:shop_item_storage entity that has the item in it.")).selection] :
+                        "\n§bGive Command§f: Uses the give command to give players the item, can only do items that are available in commands (so things like minecraft:netherreactor will not work), and can only set item id and data value." +
+                        "\n§bNew Item Stack§f: Uses the Script API to create the item, can use any item type even if it is not available in commands (so minecraft:netherreactor will work), also allows you to set the following properties of the item: name, lore, canDestroy, canPlaceOn, lockMode, keepOnDeath." +
+                        "\n§bPre-Made§f: Saves an already existing item from your inventory to the inventory slot of an andexdb:saved_shop_item entity and saves that entity in a structure block, then when a player purchases an item, the structure is loaded and it clones a copy of the item from the entity's inventory to the player's inventory. This will preserve ALL NBT from the item, including any illegal enchantments." +
+                        "\n§bManual Pre-Made§f: Lets you choose the Structure ID of the structure with the andexdb:saved_shop_item entity in it, and the value of the andexdb:saved_shop_item_save_id dynamic property of the andexdb:saved_shop_item entity that has the item in it.", ["Give Command"], ["New Item Stack"], ["Pre-Made"], ["Manual Pre-Made"])).selection] :
                     "sellable";
                 if (type == "pre-made") {
                     const item = await itemSelector(sourceEntity, sourceEntity, ServerShopManager.manageServerShop_contents, sourceEntity, shop, mode);
-                    const entity = sourceEntity.dimension.spawnEntity("andexdb:shop_item_storage", { x: Math.floor(sourceEntity.location.x) + 0.5, y: Math.floor(sourceEntity.location.y) + 0.5, z: Math.floor(sourceEntity.location.z) + 0.5 });
+                    const entity = sourceEntity.dimension.spawnEntity("andexdb:saved_shop_item", { x: Math.floor(sourceEntity.location.x) + 0.5, y: Math.floor(sourceEntity.location.y) + 0.5, z: Math.floor(sourceEntity.location.z) + 0.5 });
                     const entityID = getSuperUniqueID();
-                    entity.setDynamicProperty("andexdb:shop_item_storage_save_id", entityID);
+                    entity.setDynamicProperty("andexdb:saved_shop_item_save_id", entityID);
                     entity.getComponent("inventory").container.setItem(0, item.item.getItem());
                     world.structureManager.createFromWorld("andexdbSavedShopItem:" + entityID, sourceEntity.dimension, {
                         x: Math.floor(sourceEntity.location.x),
@@ -1269,6 +1299,7 @@ export class ServerShopManager {
                         includeEntities: true,
                         saveMode: StructureSaveMode.World
                     });
+                    entity.remove();
                     const form2 = new ModalFormData;
                     form2.textField("§7Buyable Item Type: pre-made\n§fButton Title§c*", "Stick");
                     form2.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick");
@@ -1281,13 +1312,13 @@ export class ServerShopManager {
                     const itemB = {
                         type: "item",
                         itemType: "pre-made",
-                        title: title,
-                        texture: texture,
+                        title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                        texture: JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\""),
                         price: Number.isNaN(Number(price)) ? 10 : Number(price),
                         step: Number.isNaN(Number(step)) ? 10 : Number(step),
                         max: Number.isNaN(Number(max)) ? 10 : Number(max),
-                        structureID: "andexdbSavedShopItem:" + entityID,
-                        entityID: entityID
+                        structureID: "andexdbSavedShopItem:" + JSON.parse("\"" + (entityID.replaceAll("\"", "\\\"")) + "\""),
+                        entityID: JSON.parse("\"" + (entityID.replaceAll("\"", "\\\"")) + "\"")
                     };
                     let itemIndexB = Number.isNaN(Number(itemIndex)) ? (mode == "buy" ? shop.buyData.length : shop.sellData.length) : Number(itemIndex);
                     if (mode == "buy") {
@@ -1302,32 +1333,33 @@ export class ServerShopManager {
                         newData.splice(itemIndexB, 0, itemB);
                         shop.sellData = data;
                     }
-                    ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path);
+                    await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path);
+                }
+                else if (!!!type) {
+                    await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path);
                 }
                 else {
                     await ServerShopManager.manageServerShopPage_addItem(sourceEntity, shop, path, type);
-                    ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path);
+                    await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path);
                 }
                 break;
             case shopData.length + 1:
                 await ServerShopManager.manageServerShopPage_addPage(sourceEntity, shop, path);
-                ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path);
+                await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path);
                 break;
-            case shopData.length + 2:
-                if (path.slice(0, -1).length == 1) {
-                    ServerShopManager.manageServerShop_managePage(sourceEntity, shop, getPathInObject(shop[(mode + "Data")], path), Number(path.slice(-1)[0]), path[0]);
+            case shopData.length + 2: /*
+                if(path.slice(0, -1).length==1){
+                    await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, getPathInObject(shop[(mode+"Data") as "buyData"|"sellData"], path) as ShopPage, Number(path.slice(-1)[0]), path[0])
                     // manageServerShop_contents(sourceEntity, shop, mode)
-                }
-                else {
-                    ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, getPathInObject(shop[(mode + "Data")], path), Number(path.slice(-1)[0]));
+                }else{
+                    await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, getPathInObject(shop[(mode+"Data") as "buyData"|"sellData"], path) as ShopPage, Number(path.slice(-1)[0]))
                     // manageServerShopPage_contents(sourceEntity, shop, path.slice(0, -2) as [mode, ...string[]])
-                }
-                ;
+                };*/
                 return;
                 break;
             default:
                 shopData[response].type == "item" ? await ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, [...path, "data", String(response)], shopData[response], response) : await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, [...path, "data", String(response)], shopData[response], response);
-                ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path);
+                await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path);
         }
         return r;
     }
@@ -1337,11 +1369,11 @@ export class ServerShopManager {
         const form = new ActionFormData;
         form.title("Manage " + item.title);
         form.body(`Type: ${item.itemType}
-    Title: ${item.title}
-    Texture: ${item.texture}
-    ${mode == "buy" ? "Purchase" : "Sell"} Amount Step: ${item.step}
-    Maximum ${mode == "buy" ? "Purchase" : "Sell"} Amount: ${item.max}
-    ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}`);
+Title: ${item.title}
+Texture: ${item.texture}
+${mode == "buy" ? "Purchase" : "Sell"} Amount Step: ${item.step}
+Maximum ${mode == "buy" ? "Purchase" : "Sell"} Amount: ${item.max}
+${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}`);
         form.button("Move Item", "textures/ui/color_plus");
         form.button("Edit Item", "textures/ui/color_plus");
         form.button("Delete Item", "textures/ui/color_plus");
@@ -1410,13 +1442,13 @@ export class ServerShopManager {
         const form = new ModalFormData;
         form.title("Manage " + item.title);
         if (item.itemType == "newItemStack") {
-            form.textField("§7Buyable Item Type: newItemStack\n§fButton Title§c*", "Stick", item.title);
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick", item.texture);
+            form.textField("§7Buyable Item Type: newItemStack\n§fButton Title§c*", "Stick", JSON.stringify(item.title).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint, JSON.stringify(item.texture).slice(1, -1).replaceAll("\\\"", "\""));
             form.textField("Price§c*", "10", String(item.price));
             form.textField("Purchase Amount Step\n§oDefault is 1", "1", String(item.step ?? 1));
             form.textField("Max Purchase Amount\n§oMax is 255\nDefault is 64", "64", String(item.max ?? 64));
-            form.textField("Item Type§c*", "minecraft:stick", item.itemID);
-            form.textField("Item Name\n§o(escape characters such as \\n are allowed)", "string", !!!item.itemName ? undefined : item.itemName);
+            form.textField("Item Type§c*", "minecraft:stick", JSON.stringify(item.itemID).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Item Name\n§o(escape characters such as \\n are allowed)", "string", !!!item.itemName ? undefined : JSON.stringify(item.itemName).slice(1, -1).replaceAll("\\\"", "\""));
             form.textField("Item Lore\n§o(escape characters such as \\n are allowed)\n(set to [] to clear)", "[\"Line 1\", \"Line 2\"...]", JSON.stringify(item.itemLore));
             form.textField("Can Destroy\n§o(escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSON.stringify(item.canDestroy));
             form.textField("Can Place On\n§o(escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSON.stringify(item.canPlaceOn));
@@ -1424,30 +1456,30 @@ export class ServerShopManager {
             form.toggle("Keep On Death", item.keepOnDeath);
         }
         else if (item.itemType == "giveCommand") {
-            form.textField("§7Buyable Item Type: giveCommand\n§fButton Title§c*", "Stick", item.title);
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick", item.texture);
+            form.textField("§7Buyable Item Type: giveCommand\n§fButton Title§c*", "Stick", JSON.stringify(item.title).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint, JSON.stringify(item.texture).slice(1, -1).replaceAll("\\\"", "\""));
             form.textField("Price§c*", "10", String(item.price));
             form.textField("Purchase Amount Step\n§oDefault is 1", "1", String(item.step ?? 1));
             form.textField("Max Purchase Amount\n§oDefault is 64", "64", String(item.max ?? 64));
-            form.textField("Item Type§c*", "minecraft:stick", item.itemID);
+            form.textField("Item Type§c*", "minecraft:stick", JSON.stringify(item.itemID).slice(1, -1).replaceAll("\\\"", "\""));
             form.textField("Data Value§c*", "0", String(item.itemData));
         }
         else if (item.itemType == "pre-made") {
-            form.textField("§7Buyable Item Type: pre-made\n§fButton Title§c*", "Stick", item.title);
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick", item.texture);
+            form.textField("§7Buyable Item Type: pre-made\n§fButton Title§c*", "Stick", JSON.stringify(item.title).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint, JSON.stringify(item.texture).slice(1, -1).replaceAll("\\\"", "\""));
             form.textField("Price§c*", "10", String(item.price));
             form.textField("Purchase Amount Step\n§oDefault is 1", "1", String(item.step ?? 1));
             form.textField("Max Purchase Amount\n§oDefault is 64", "64", String(item.max ?? 64));
-            form.textField("Structure ID§c*§f\nThe ID of the 1x1x1 structure that contains the andexdb:saved_shop_item entity that has the saved item in its inventory slot.", "andexdbSavedShopItem:0", item.structureID);
-            form.textField("Entity ID§c*§f\nThe value of the andexdb:saved_shop_item_save_id dynamic property of the andexdb:saved_shop_item that has the saved item in its inventory slot.", "0", item.entityID);
+            form.textField("Structure ID§c*§f\nThe ID of the 1x1x1 structure that contains the andexdb:saved_shop_item entity that has the saved item in its inventory slot.", "andexdbSavedShopItem:0", JSON.stringify(item.structureID).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Entity ID§c*§f\nThe value of the andexdb:saved_shop_item_save_id dynamic property of the andexdb:saved_shop_item that has the saved item in its inventory slot.", "0", JSON.stringify(item.entityID).slice(1, -1).replaceAll("\\\"", "\""));
         }
         else if (item.itemType == "sellable") {
-            form.textField("§7Sellable Item Type: sellable\n§fButton Title§c*", "Stick", item.title);
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick", item.texture);
+            form.textField("§7Sellable Item Type: sellable\n§fButton Title§c*", "Stick", JSON.stringify(item.title).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint, JSON.stringify(item.texture).slice(1, -1).replaceAll("\\\"", "\""));
             form.textField("Value§c*", "10", String(item.value));
             form.textField("Sell Amount Step\n§oDefault is 1", "1", String(item.step ?? 1));
             form.textField("Max Sell Amount\n§oDefault is 64", "64", String(item.max ?? 64));
-            form.textField("Item Type§c*", "minecraft:stick", item.itemID);
+            form.textField("Item Type§c*", "minecraft:stick", JSON.stringify(item.itemID).slice(1, -1).replaceAll("\\\"", "\""));
             // form.textField("Data Value§c*", "0", String(item))
         }
         return await forceShow(form, sourceEntity).then(async (r) => {
@@ -1456,13 +1488,13 @@ export class ServerShopManager {
                 return r;
             if (item.itemType == "newItemStack") {
                 let [title, texture, price, step, max, itemID, itemName, itemLore, canDestroy, canPlaceOn, lockMode, keepOnDeath] = r.formValues;
-                item.title = title;
-                item.texture = texture;
+                item.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\"");
+                item.texture = JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"");
                 item.price = Number.isNaN(Number(price)) ? 10 : Number(price);
                 item.step = Number.isNaN(Number(step)) ? 10 : Number(step);
                 item.max = Number.isNaN(Number(max)) ? 10 : Number(max);
-                item.itemID = itemID;
-                item.itemName = itemName;
+                item.itemID = JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"")) + "\"");
+                item.itemName = JSON.parse("\"" + (itemName.replaceAll("\"", "\\\"")) + "\"");
                 item.itemLore = JSON.parse(itemLore == "" ? "[]" : itemLore);
                 item.canDestroy = JSON.parse(canDestroy == "" ? "[]" : canDestroy);
                 item.canPlaceOn = JSON.parse(canPlaceOn == "" ? "[]" : canPlaceOn);
@@ -1471,42 +1503,42 @@ export class ServerShopManager {
             }
             else if (item.itemType == "giveCommand") {
                 let [title, texture, price, step, max, itemID, itemData] = r.formValues;
-                item.title = title;
-                item.texture = texture;
+                item.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\"");
+                item.texture = JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"");
                 item.price = Number.isNaN(Number(price)) ? 10 : Number(price);
                 item.step = Number.isNaN(Number(step)) ? 10 : Number(step);
                 item.max = Number.isNaN(Number(max)) ? 10 : Number(max);
-                item.itemID = itemID;
+                item.itemID = JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"")) + "\"");
                 item.itemData = Number.isNaN(Number(itemData)) ? 10 : Number(itemData);
             }
             else if (item.itemType == "pre-made") {
                 let [title, texture, price, step, max, structureID, entityID] = r.formValues;
-                item.title = title;
-                item.texture = texture;
+                item.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\"");
+                item.texture = JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"");
                 item.price = Number.isNaN(Number(price)) ? 10 : Number(price);
                 item.step = Number.isNaN(Number(step)) ? 10 : Number(step);
                 item.max = Number.isNaN(Number(max)) ? 10 : Number(max);
-                item.structureID = structureID;
-                item.entityID = entityID;
+                item.structureID = JSON.parse("\"" + (structureID.replaceAll("\"", "\\\"")) + "\"");
+                item.entityID = JSON.parse("\"" + (entityID.replaceAll("\"", "\\\"")) + "\"");
             }
             else if (item.itemType == "sellable") {
                 let [title, texture, value, step, max, itemID] = r.formValues;
-                item.title = title;
-                item.texture = texture;
+                item.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\"");
+                item.texture = JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"");
                 item.value = Number.isNaN(Number(value)) ? 10 : Number(value);
                 item.step = Number.isNaN(Number(step)) ? 10 : Number(step);
                 item.max = Number.isNaN(Number(max)) ? 10 : Number(max);
-                item.itemID = itemID;
+                item.itemID = JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"")) + "\"");
             }
             if (mode == "buy") {
                 let data = shop.buyData;
-                let newData = getPathInObject(data, path).data;
+                let newData = getPathInObject(data, path.slice(0, -2)).data;
                 newData.splice(itemIndex, 1, item);
                 shop.buyData = data;
             }
             else if (mode == "sell") {
                 let data = shop.sellData;
-                let newData = getPathInObject(data, path).data;
+                let newData = getPathInObject(data, path.slice(0, -2)).data;
                 newData.splice(itemIndex, 1, item);
                 shop.sellData = data;
             }
@@ -1520,7 +1552,7 @@ export class ServerShopManager {
         form.title("Add Item");
         if (type == "newItemStack") {
             form.textField("§7Buyable Item Type: newItemStack\n§fButton Title§c*", "Stick");
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick");
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint);
             form.textField("Button Index§c*", String(getPathInObject(mode == "buy" ? shop.buyData : shop.sellData, path).data.length), String(getPathInObject(mode == "buy" ? shop.buyData : shop.sellData, path).data.length));
             form.textField("Price§c*", "10", "10");
             form.textField("Purchase Amount Step\n§oDefault is 1", "1", "1");
@@ -1535,7 +1567,7 @@ export class ServerShopManager {
         }
         else if (type == "giveCommand") {
             form.textField("§7Buyable Item Type: giveCommand\n§fButton Title§c*", "Stick");
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick");
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint);
             form.textField("Button Index§c*", String(getPathInObject(mode == "buy" ? shop.buyData : shop.sellData, path).data.length), String(getPathInObject(mode == "buy" ? shop.buyData : shop.sellData, path).data.length));
             form.textField("Price§c*", "10", "10");
             form.textField("Purchase Amount Step\n§oDefault is 1", "1", "1");
@@ -1545,7 +1577,7 @@ export class ServerShopManager {
         }
         else if (type == "pre-made" || type == "pre-made_manual") {
             form.textField("§7Buyable Item Type: pre-made\n§fButton Title§c*", "Stick");
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick");
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint);
             form.textField("Button Index§c*", String(getPathInObject(mode == "buy" ? shop.buyData : shop.sellData, path).data.length), String(getPathInObject(mode == "buy" ? shop.buyData : shop.sellData, path).data.length));
             form.textField("Price§c*", "10", "10");
             form.textField("Purchase Amount Step\n§oDefault is 1", "1", "1");
@@ -1555,7 +1587,7 @@ export class ServerShopManager {
         }
         else if (type == "sellable") {
             form.textField("§7Sellable Item Type: sellable\n§fButton Title§c*", "Stick");
-            form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick");
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.serverShopItemTextureHint);
             form.textField("Button Index§c*", String(getPathInObject(mode == "buy" ? shop.buyData : shop.sellData, path).data.length), String(getPathInObject(mode == "buy" ? shop.buyData : shop.sellData, path).data.length));
             form.textField("Value§c*", "10", "10");
             form.textField("Sell Amount Step\n§oDefault is 1", "1", "1");
@@ -1574,13 +1606,13 @@ export class ServerShopManager {
                 item = {
                     type: "item",
                     itemType: "newItemStack",
-                    title: title,
-                    texture: texture,
+                    title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                    texture: JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\""),
                     price: Number.isNaN(Number(price)) ? 10 : Number(price),
                     step: Number.isNaN(Number(step)) ? 10 : Number(step),
                     max: Number.isNaN(Number(max)) ? 10 : Number(max),
-                    itemID: itemID,
-                    itemName: itemName,
+                    itemID: JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"")) + "\""),
+                    itemName: JSON.parse("\"" + (itemName.replaceAll("\"", "\\\"")) + "\""),
                     itemLore: JSON.parse(itemLore == "" ? "[]" : itemLore),
                     canDestroy: JSON.parse(canDestroy == "" ? "[]" : canDestroy),
                     canPlaceOn: JSON.parse(canPlaceOn == "" ? "[]" : canPlaceOn),
@@ -1593,12 +1625,12 @@ export class ServerShopManager {
                 item = {
                     type: "item",
                     itemType: "giveCommand",
-                    title: title,
-                    texture: texture,
+                    title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                    texture: JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\""),
                     price: Number.isNaN(Number(price)) ? 10 : Number(price),
                     step: Number.isNaN(Number(step)) ? 10 : Number(step),
                     max: Number.isNaN(Number(max)) ? 10 : Number(max),
-                    itemID: itemID,
+                    itemID: JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"")) + "\""),
                     itemData: Number.isNaN(Number(itemData)) ? 10 : Number(itemData)
                 };
             }
@@ -1607,13 +1639,13 @@ export class ServerShopManager {
                 item = {
                     type: "item",
                     itemType: "pre-made",
-                    title: title,
-                    texture: texture,
+                    title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                    texture: JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\""),
                     price: Number.isNaN(Number(price)) ? 10 : Number(price),
                     step: Number.isNaN(Number(step)) ? 10 : Number(step),
                     max: Number.isNaN(Number(max)) ? 10 : Number(max),
-                    structureID: structureID,
-                    entityID: entityID
+                    structureID: JSON.parse("\"" + (structureID.replaceAll("\"", "\\\"")) + "\""),
+                    entityID: JSON.parse("\"" + (entityID.replaceAll("\"", "\\\"")) + "\"")
                 };
             }
             else if (type == "sellable") {
@@ -1621,12 +1653,12 @@ export class ServerShopManager {
                 item = {
                     type: "item",
                     itemType: "sellable",
-                    title: title,
-                    texture: texture,
+                    title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                    texture: JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\""),
                     value: Number.isNaN(Number(value)) ? 10 : Number(value),
                     step: Number.isNaN(Number(step)) ? 10 : Number(step),
                     max: Number.isNaN(Number(max)) ? 10 : Number(max),
-                    itemID: itemID
+                    itemID: JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"")) + "\"")
                 };
             }
             if (mode == "buy") {
@@ -1650,9 +1682,9 @@ export class ServerShopManager {
         const form = new ActionFormData;
         form.title("Manage " + page.pageTitle);
         form.body(`Page Title: ${page.pageTitle}
-    Page Body: ${page.pageBody}
-    Title: ${page.title}
-    Texture: ${page.texture}`);
+Page Body: ${page.pageBody}
+Title: ${page.title}
+Texture: ${page.texture}`);
         form.button("Edit Contents", "textures/ui/color_plus");
         form.button("Move Page", "textures/ui/color_plus");
         form.button("Edit Page", "textures/ui/color_plus");
@@ -1721,28 +1753,28 @@ export class ServerShopManager {
         const mode = path[0];
         const form = new ModalFormData;
         form.title("Edit Page");
-        form.textField("§fPage Title§c*", "Items", page.pageTitle);
-        form.textField("§fPage Body§c*", "The items category.", page.pageBody);
-        form.textField("§fButton Title§c*", "Items", page.title);
-        form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/ui/arrowRight", page.texture);
+        form.textField("§fPage Title§c*", "Items", JSON.stringify(page.pageTitle).slice(1, -1).replaceAll("\\\"", "\""));
+        form.textField("§fPage Body§c*", "The items category.", JSON.stringify(page.pageBody).slice(1, -1).replaceAll("\\\"", "\""));
+        form.textField("§fButton Title§c*", "Items", JSON.stringify(page.title).slice(1, -1).replaceAll("\\\"", "\""));
+        form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/ui/arrowRight", JSON.stringify(page.texture).slice(1, -1).replaceAll("\\\"", "\""));
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return r;
             let [pageTitle, pageBody, title, texture] = r.formValues;
-            page.pageTitle = pageTitle,
-                page.pageBody = pageBody,
-                page.title = title,
-                page.texture = texture;
+            page.pageTitle = JSON.parse("\"" + (pageTitle.replaceAll("\"", "\\\"")) + "\""),
+                page.pageBody = JSON.parse("\"" + (pageBody.replaceAll("\"", "\\\"")) + "\""),
+                page.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                page.texture = JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"");
             if (mode == "buy") {
                 let data = shop.buyData;
-                let newData = getPathInObject(data, path).data;
+                let newData = getPathInObject(data, path.slice(0, -2)).data;
                 newData.splice(pageIndex, 1, page);
                 shop.buyData = data;
             }
             else if (mode == "sell") {
                 let data = shop.sellData;
-                let newData = getPathInObject(data, path).data;
+                let newData = getPathInObject(data, path.slice(0, -2)).data;
                 newData.splice(pageIndex, 1, page);
                 shop.sellData = data;
             }
@@ -1768,11 +1800,11 @@ export class ServerShopManager {
             let [pageTitle, pageBody, title, texture] = r.formValues;
             page = {
                 type: "page",
-                pageTitle: pageTitle,
-                pageBody: pageBody,
-                title: title,
+                pageTitle: JSON.parse("\"" + (pageTitle.replaceAll("\"", "\\\"")) + "\""),
+                pageBody: JSON.parse("\"" + (pageBody.replaceAll("\"", "\\\"")) + "\""),
+                title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
                 data: [],
-                texture: texture
+                texture: JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"")
             };
             if (mode == "buy") {
                 let data = shop.buyData;
@@ -1790,4 +1822,6 @@ export class ServerShopManager {
         });
     }
 }
+ServerShopManager.serverShopItemTextureHints = ["textures/items/stick", "textures/blocks/gravel", "textures/blocks/reactor_core_stage_0"];
+ServerShopManager.serverShopPageTextureHints = ["textures/ui/arrowRight"];
 //# sourceMappingURL=server_shop.js.map

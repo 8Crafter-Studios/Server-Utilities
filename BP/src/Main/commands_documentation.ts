@@ -58,9 +58,10 @@ Give all players health boost with the level equal to their XP level:
 "h" = "Swaps your hotbar with the specified hotbar preset, optionally specifying a row of the container block to swap your hotbar with. ",
 "h#" = "Swaps your hotbar with the specified hotbar preset, optionally specifying a row of the container block to swap your hotbar with. ",
 "heal" = "Heals entities. ",
-"health" = "Modifies the health of entities. ",
-"home" = "Sets/Removes/Warps to a home. ",
-"hset" = "Sets a hotbar preset. ",
+"health" = "Modifies the health of entities.",
+"hlist" = "Lists all of your currently saved hotbar presets.",
+"home" = "Sets/Removes/Warps to a home.",
+"hset" = "Sets a hotbar preset.",
 "idtfill" = "Fills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. ",
 "ifill" = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ",
 "ifillb" = "Fills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. ",
@@ -340,15 +341,15 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 "gmr": `${command.dp}gmr`,
 "gms": `${command.dp}gms`,
 "gohome": `${command.dp}gohome <homeName: text>`,
-"h": `${command.dp}h<presetId: float> [containerRow: float[?=0]]`,
+"h": `${command.dp}h <presetId: float> [containerRow: float[?=0]]`,
 "h#": `${command.dp}h<presetId: float> [containerRow: float[?=0]]`,
 "heal": `${command.dp}heal [targets: target[allowMultiple=true]]`,
-"health": `${command.dp}health <health: number> [targets: target[allowMultiple=true]]`,
+"health": `${command.dp}health <health: int> [targets: target[allowMultiple=true]]`,
 "home": `${command.dp}home <mode: set|remove|go|warp|teleport> <homeName: text>
 ${command.dp}home clear
 ${command.dp}home removeall
 ${command.dp}home list`,
-"hset": `${command.dp}hset <presetID: float> [dimensionId: string] [x: float] [y: float] [z: float]`,
+"hset": `${command.dp}hset <presetID: float> [dimensionId: string[?=~]] [location: x y z[?=~~~]]`,
 "idtfill": `${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block|random> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]

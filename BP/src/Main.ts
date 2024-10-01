@@ -1,5 +1,8 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
+import { system } from "@minecraft/server";
+globalThis.beforeScriptStartTick=system.currentTick
 export const format_version = "1.23.0-preview.20+BULID.1";
+import "Global"
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -58,7 +61,7 @@ export const subscribedEvents = {} as {[eventName: string]: Function}
 globalThis.tempVariables={}
 export const editorStickMenuOpeningAsyncCancelActionNumbers = {} as {[id: string]: number}
 
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode, LocationOutOfWorldBoundariesError } from "@minecraft/server";
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode, LocationOutOfWorldBoundariesError } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector, dirmap, diroffsetmap, diroffsetothersmap, generateMinecraftConeBG } from "Main/coordinates";
@@ -113,11 +116,13 @@ SimulatedPlayer
 Test
 mcMath
 globalThis.scriptStartTick=system.currentTick
+export const modules = {main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
+globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 export let crashEnabled = false
 export let tempSavedVariables = []
 export function mainEval(x: string){return eval(x)}
 export function indirectMainEval(x: string){return eval?.(x)}
-export function mainRun(x: (...args)=>any, ...args){return x(...args)}
+export function mainRun(x: (...args: any[])=>any, ...args: any[]){return x(...args)}
 export function spawnBlockSurroundingParticleForPlayer(player: Player, location: Vector3, textures: {default?: string, up?: string, down?: string, north?: string, south?: string, east?: string, west?: string}){
     player.spawnParticle(textures.up??textures.default, Vector.add(location, {x: 0.5, y: 1.001, z: 0.5}))
     player.spawnParticle(textures.north??textures.default, Vector.add(location, {x: 0.5, y: 0.5, z: -0.001}))
@@ -158,9 +163,46 @@ world.setDynamicProperty("format_version", format_version)
 try{eval(String(world.getDynamicProperty("evalEvents:scriptInitialize")))}catch(e){console.error(e, e.stack)}
 
 const srununbound = system.run
+/**
+ * @remarks
+ * Runs a specified function at the next available future time.
+ * This is frequently used to implement delayed behaviors and
+ * game loops. When run within the context of an event handler,
+ * this will generally run the code at the end of the same tick
+ * where the event occurred. When run in other code (a
+ * system.run callout), this will run the function in the next
+ * tick. Note, however, that depending on load on the system,
+ * running in the same or next tick is not guaranteed.
+ *
+ * @param callback
+ * Function callback to run at the next game tick.
+ * @returns
+ * An opaque identifier that can be used with the `clearRun`
+ * function to cancel the execution of this run.
+ * @example trapTick.ts
+ * ```typescript
+ * import { system, world } from '@minecraft/server';
+ *
+ * function printEveryMinute() {
+ *     try {
+ *         // Minecraft runs at 20 ticks per second.
+ *         if (system.currentTick % 1200 === 0) {
+ *             world.sendMessage('Another minute passes...');
+ *         }
+ *     } catch (e) {
+ *         console.warn('Error: ' + e);
+ *     }
+ *
+ *     system.run(printEveryMinute);
+ * }
+ *
+ * printEveryMinute();
+ * ```
+ */
 export const srun = srununbound.bind(system)
 globalThis.srun = srun
 export const gt = globalThis
+globalThis.gt=globalThis
 export class config{
     static get chatCommandsEnabled(){return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled")??true)}
     static set chatCommandsEnabled(enabled: boolean|undefined){world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled??true)}
@@ -636,7 +678,7 @@ export function flatPath(directoryObject: { [k: string]: any }, startingPath: st
     }
     return flatPathObject(directoryObject, startingPath);
 }
-export function getPathInObject(directoryObject: {[k: string]: any}|any[], path: string[] = ["input"]){let a: any; a = directoryObject; path.slice(1).forEach(v=>a = a[v]); return a}/*
+export function getPathInObject(directoryObject: {[k: string]: any}|any[], path: (string|number)[] = ["input"]){let a: any; a = directoryObject; path.slice(1).forEach(v=>a = a[v]); return a}/*
 /execute as @e [type=andexsa:custom_arrow] at @s run /scriptevent andexdb:scriptEval let sl = sourceEntity.location; let ol = sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2", "npc", "armor_stand"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location; let d = {x: ol.x-sl.x, y: ol.y-sl.y, z: ol.z-sl.z}; eval("if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.x)*Number(d.x!=0)*d.x, y: Math.abs(1/d.x)*Number(d.y!=0)*d.y, z: Math.abs(1/d.x)*Number(d.z!=0)*d.z})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.y)*Number(d.x!=0)*d.x, y: Math.abs(1/d.y)*Number(d.y!=0)*d.y, z: Math.abs(1/d.y)*Number(d.z!=0)*d.z})}else{sourceEntity.getComponent('projectile').shoot({x: Math.abs(1/d.z)*Number(d.x!=0)*d.x, y: Math.abs(1/d.z)*Number(d.y!=0)*d.y, z: Math.abs(1/d.z)*Number(d.z!=0)*d.z})}}}; ");*//*
 import("Main").then(a=>{Object.entries(a)})*/
 export function scanForBlockType(from: Vector3, to: Vector3, dimension: Dimension, block: string, returnMode?: ""|"Vector3"|"Block"){let blockType = BlockTypes.get(block).id; if((returnMode??"")==""||(returnMode??"")=="Vector3"){return Array.from(new BlockVolume({x: from.x, y: from.y, z: from.z}, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).filter(v=>dimension.getBlock(v).typeId==blockType)}else{return Array.from(new BlockVolume(from, {x: to.x, y: from.y, z: to.z}).getBlockLocationIterator()).map(v=>dimension.getBlock(v)).filter(v=>v.typeId==blockType)}}; 
@@ -3591,163 +3633,6 @@ export function getNextTopSolidBlockBelowPosition(location: Vector3, dimension: 
 }
 export function getGroundSolidBlock(location: Vector3, dimension: Dimension, onlySolid: boolean = false){let block = dimension.getBlock({x: location.x, y: Math.max(Math.min(location.y, dimension.heightRange.max), dimension.heightRange.min), z: location.z}); while(block.y >= dimension.heightRange.min){if(onlySolid?!block.isSolid:block.isAir){block = block.below(1)}else{return block}}; return undefined}
 export function getTopSolidBlock(location: Vector3, dimension: Dimension, onlySolid: boolean = false){let block = dimension.getBlock({x: location.x, y: dimension.heightRange.max, z: location.z}); while(block.y >= dimension.heightRange.min){if(onlySolid?!block.isSolid:block.isAir){block = block.below(1)}else{return block}}; return undefined}
-declare global {
-    interface String {
-        escapeCharacters(js?: boolean, unicode?: boolean, nullchar?: number, uri?: boolean, quotes?: boolean, general?: boolean, colon?: boolean, x?: boolean, s?: boolean): string;
-        escapeCharactersB(js?: boolean, unicode?: boolean, nullchar?: number, uri?: boolean, quotes?: boolean, general?: boolean, colon?: boolean, x?: boolean, s?: boolean): {v: string, e?: Error[]};
-    }}; 
-Object.defineProperty(String.prototype, 'escapeCharacters', {value: function (js: boolean, unicode: boolean, nullchar: number, uri: boolean, quotes: boolean, general: boolean, colon: boolean, x: boolean, s: boolean){
-
-    //:Get primitive copy of string:
-    var str = this.valueOf();/*
-    console.warn(unescape(str))*/
-
-    //:Append Characters To End:
-    if(js == true){
-    try{str = eval("`" + str.replaceAll("`", "\\`") + "`"); }catch(e){console.error(e, e.stack)}
-    }
-    if(general == true){
-    str = str.replaceAll("\\n", "\n");
-    str = str.replaceAll("\\f", "\f");
-    str = str.replaceAll("\\r", "\r");
-    str = str.replaceAll("\\t", "\t");
-    str = str.replaceAll("\\v", "\v");
-    str = str.replaceAll("\\b", "\b");
-    str = str.replaceAll("\\l", "\u2028");
-    str = str.replaceAll("\\p", "\u2029");
-    }
-    if(quotes == true){
-    str = str.replaceAll("\\qd", "\"");
-    str = str.replaceAll("\\qs", "\'");
-    }
-    if(colon == true){
-    str = str.replaceAll("\\cs", "\;");
-    str = str.replaceAll("\\cf", "\:");
-    }
-    if(x == true){
-    str = str.replaceAll("\\x", "");
-    }
-    if(s == true){
-    str = str.replaceAll("\\s", "");
-    }
-    if(nullchar == 1){str = str.replaceAll("\\0", "\0");}
-    if(nullchar == 2){str = str.replaceAll("\\0", "");}
-    if(unicode == true){
-    let strarray = ("t" + str).split("\\u")
-    strarray.forEach((values, index)=>{/*console.warn(/[0-9A-F]{2}/i.test(values.slice(0, 6))); */
-    if((/[01][0-9x][0-9A-F]{4}/i.test(values.slice(0, 6))) && (index !== 0)){/*
-        console.warn((values.slice(0, 6))); */
-        strarray[index] = String.fromCodePoint(Number(values.slice(0, 6))) + values.slice(6)
-    }else{
-        if((/[+][0-9]{7}/i.test(values.slice(0, 8))) && (index !== 0)){
-            strarray[index] = String.fromCodePoint(Number(values.slice(1, 8))) + values.slice(8)
-        }else{
-            if((/[+][0-9]{6}/i.test(values.slice(0, 7))) && (index !== 0)){
-                strarray[index] = String.fromCodePoint(Number(values.slice(1, 7))) + values.slice(7)
-            }else{
-                if((/[+][0-9]{5}/i.test(values.slice(0, 6))) && (index !== 0)){
-                    strarray[index] = String.fromCodePoint(Number(values.slice(1, 6))) + values.slice(6)
-                }else{
-                    if((/[+][0-9]{4}/i.test(values.slice(0, 5))) && (index !== 0)){
-                        strarray[index] = String.fromCodePoint(Number(values.slice(1, 5))) + values.slice(5)
-                    }else{
-                        if((/[+][0-9]{3}/i.test(values.slice(0, 4))) && (index !== 0)){
-                            strarray[index] = String.fromCodePoint(Number(values.slice(1, 4))) + values.slice(4)
-                        }else{
-                            if((/[+][0-9]{2}/i.test(values.slice(0, 3))) && (index !== 0)){
-                                strarray[index] = String.fromCodePoint(Number(values.slice(1, 3))) + values.slice(3)
-                            }else{
-                                if((/[+][0-9]{1}/i.test(values.slice(0, 2))) && (index !== 0)){
-                                    strarray[index] = String.fromCodePoint(Number(values.slice(1, 2))) + values.slice(2)
-                                }else{
-        if(index !== 0){
-            strarray[index] = "\\u" + values.slice(0)
-        }}}}}}}}
-    }})
-    str = strarray.join("").slice(1)
-    }
-    if(uri == true){str = unescape(str);}
-
-    //:Return modified copy:
-    return( str );
-}});
-Object.defineProperty(String.prototype, 'escapeCharactersB', {value: function (js: boolean, unicode: boolean, nullchar: number, uri: boolean, quotes: boolean, general: boolean, colon: boolean, x: boolean, s: boolean){
-
-    //:Get primitive copy of string:
-    var str = this.valueOf();/*
-    console.warn(unescape(str))*/
-    var eb: Error[]
-    eb = undefined
-
-    //:Append Characters To End:
-    if(js == true){
-    try{str = eval("`" + str.replaceAll("`", "\\`") + "`"); }catch(e){eb.push(e); console.error(e, e.stack)}
-    }
-    if(general == true){
-    str = str.replaceAll("\\n", "\n");
-    str = str.replaceAll("\\f", "\f");
-    str = str.replaceAll("\\r", "\r");
-    str = str.replaceAll("\\t", "\t");
-    str = str.replaceAll("\\v", "\v");
-    str = str.replaceAll("\\b", "\b");
-    str = str.replaceAll("\\l", "\u2028");
-    str = str.replaceAll("\\p", "\u2029");
-    }
-    if(quotes == true){
-    str = str.replaceAll("\\qd", "\"");
-    str = str.replaceAll("\\qs", "\'");
-    }
-    if(colon == true){
-    str = str.replaceAll("\\cs", "\;");
-    str = str.replaceAll("\\cf", "\:");
-    }
-    if(x == true){
-    str = str.replaceAll("\\x", "");
-    }
-    if(s == true){
-    str = str.replaceAll("\\s", "");
-    }
-    if(nullchar == 1){str = str.replaceAll("\\0", "\0");}
-    if(nullchar == 2){str = str.replaceAll("\\0", "");}
-    if(unicode == true){
-    let strarray = ("t" + str).split("\\u")
-    strarray.forEach((values, index)=>{/*console.warn(/[0-9A-F]{2}/i.test(values.slice(0, 6))); */
-    if((/[01][0-9x][0-9A-F]{4}/i.test(values.slice(0, 6))) && (index !== 0)){/*
-        console.warn((values.slice(0, 6))); */
-        strarray[index] = String.fromCodePoint(Number(values.slice(0, 6))) + values.slice(6)
-    }else{
-        if((/[+][0-9]{7}/i.test(values.slice(0, 8))) && (index !== 0)){
-            strarray[index] = String.fromCodePoint(Number(values.slice(1, 8))) + values.slice(8)
-        }else{
-            if((/[+][0-9]{6}/i.test(values.slice(0, 7))) && (index !== 0)){
-                strarray[index] = String.fromCodePoint(Number(values.slice(1, 7))) + values.slice(7)
-            }else{
-                if((/[+][0-9]{5}/i.test(values.slice(0, 6))) && (index !== 0)){
-                    strarray[index] = String.fromCodePoint(Number(values.slice(1, 6))) + values.slice(6)
-                }else{
-                    if((/[+][0-9]{4}/i.test(values.slice(0, 5))) && (index !== 0)){
-                        strarray[index] = String.fromCodePoint(Number(values.slice(1, 5))) + values.slice(5)
-                    }else{
-                        if((/[+][0-9]{3}/i.test(values.slice(0, 4))) && (index !== 0)){
-                            strarray[index] = String.fromCodePoint(Number(values.slice(1, 4))) + values.slice(4)
-                        }else{
-                            if((/[+][0-9]{2}/i.test(values.slice(0, 3))) && (index !== 0)){
-                                strarray[index] = String.fromCodePoint(Number(values.slice(1, 3))) + values.slice(3)
-                            }else{
-                                if((/[+][0-9]{1}/i.test(values.slice(0, 2))) && (index !== 0)){
-                                    strarray[index] = String.fromCodePoint(Number(values.slice(1, 2))) + values.slice(2)
-                                }else{
-        if(index !== 0){
-            strarray[index] = "\\u" + values.slice(0)
-        }}}}}}}}
-    }})
-    str = strarray.join("").slice(1)
-    }
-    if(uri == true){str = unescape(str);}
-
-    //:Return modified copy:
-    return( {v: str, e: eb} );
-}});
 
 subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subscribe((event) => {
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:worldInitialize")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("worldInitializeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}

@@ -1946,7 +1946,11 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
         let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!(switchTest.match((command.get(v.commandName, "built-in").regexp))))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
     if(commanda?.type=="server_shop"){
         eventData.cancel=true
-        srun(()=>LinkedServerShopCommands.openShopForCommand(newMessage, player.player))
+        if(config.shopSystem.server.enabled){
+            srun(()=>LinkedServerShopCommands.openShopForCommand(newMessage, player.player))
+        }else{
+            player.sendError("§cSystemNotEnabledError: You cannot use this command because the server shop system is not enabled.", true)
+        }
     }else if(commanda?.type=="built-in"){switch (true){
         case !!switchTest.match(/^give$/): 
             eventData.cancel = true;
@@ -2047,6 +2051,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             player.setDynamicProperty("hotbarPreset"+Number(switchTestB.slice(5).split(" ")[0]), (switchTestB?.split(" ")?.slice(2)[0] ?? undefined)+" "+coordinates.x+" "+coordinates.y+" "+coordinates.z); }else{player.setDynamicProperty("hotbarPreset"+Number(switchTestB.slice(5).split(" ")[0])); }/*
             hotbarSwap(Number(newMessage.slice(2)) % 3, Math.ceil(Number(newMessage.slice(2))/3)); */
             if((switchTestB?.split(" ")?.slice(2)?.join(" ") ?? undefined) != undefined){player.sendMessage(`Set hotbar preset ${switchTestB.slice(5).split(" ")[0]} to dimension: ${(switchTestB?.split(" ")?.slice(2)?.join(" ") ?? undefined).replaceAll(",", "").split(" ")[0]}, x: ${coordinates.x}, y: ${coordinates.y}, z: ${coordinates.z}. `)}else{player.sendMessage(`Removed hotbar preset ${switchTest.slice(5).split(" ")[0]}. `)}
+        break; 
+        case !!switchTest.match(/^hlist$/): 
+            eventData.cancel = true;
+            player.sendMessage(`Hotbar Presets: \n${player.getDynamicPropertyIds().filter(v=>v.startsWith("hotbarPreset")).map(v=>`${v.slice(12)}: ${player.getDynamicProperty(v)}`).join("§r\n")}`)
         break; /*
         case !!switchTest.match(/^h2$/): 
             eventData.cancel = true;
@@ -8470,7 +8478,11 @@ ${command.dp}snapshot list`); return}
         break; 
         case !!switchTest.match(/^viewservershops$/): {
             eventData.cancel=true
-            srun(()=>ServerShop.openPublicShopsSelector(player.player))
+            if(config.shopSystem.server.enabled){
+                srun(()=>ServerShop.openPublicShopsSelector(player.player))
+            }else{
+                player.sendError("§cSystemNotEnabledError: You cannot use this command because the server shop system is not enabled.", true)
+            }
         }
         break;
         default: 
@@ -8500,21 +8512,26 @@ export function extractSelectors(str: string) {
             startIndex = i;
         }
         if (!insideQuotes) {
-            if (str[i] === '[') {
-                stack.push('[');
-            } else if (str[i] === ']') {
+            if (str[i] === "[") {
+                stack.push("[");
+            } else if (str[i] === "]") {
                 if (stack.length > 0) {
                     stack.pop();
                     if (stack.length === 0 && startIndex !== -1) {
-                        selectors.push(str.substring(startIndex, i+1));
+                        selectors.push(str.substring(startIndex, i + 1));
                         startIndex = -1;
                     }
                 } else {
                     // Invalid selector, reset startIndex
                     startIndex = -1;
                 }
-            } else if (((str[i] !== ' ' && str[i] !== '' && str[i] !== undefined && (i-startIndex)>=2)||(i==str.length-1 && (i-startIndex)>=1))&& startIndex !== -1 && stack.length === 0) {
-                selectors.push(str.substring(startIndex, i+(+(i==str.length-1))).trim());
+            } else if (
+                ((str[i] !== " " && str[i] !== "" && str[i] !== undefined && i - startIndex >= 2) ||
+                    (i == str.length - 1 && i - startIndex >= 1)) &&
+                startIndex !== -1 &&
+                stack.length === 0
+            ) {
+                selectors.push(str.substring(startIndex, i + +(i == str.length - 1)).trim());
                 startIndex = -1;
             }
         }
@@ -8854,7 +8871,7 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
                     paramEval = paramEval.trimStart().split(" ").slice(1).join(" ").trimStart();
                 }
             }else{
-                if(!!paramEval.trimStart().match(/^@[a-zA-Z]\s*[^\[]/)){
+                if(!!paramEval.trimStart().match(/^@[a-zA-Z]\s*(?![\s\[])/)){
                     let value = paramEval.trimStart().match(/^@[seapvrc]/)[0];
                     paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                     try {

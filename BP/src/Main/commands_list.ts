@@ -3039,6 +3039,32 @@ export const commands = [
     },
     {
         type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
+        commandName: "hlist",
+        escregexp: {
+            v: "^hlist$"
+        },
+        formats: [
+            {
+                format: "hlist"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "Lists all of your currently saved hotbar presets.",
+        category: [
+            "containers/inventories"
+        ],
+        commandSettingsId: "built-inCommandSettings:hlist",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
         requiredTags: [],
         formatting_code: "§r§f",
         commandName: "home",
@@ -3074,7 +3100,7 @@ export const commands = [
         },
         formats: [
             {
-                format: "hset <presetId: float> [dimensionId: string] [x: float] [y: float] [z: float]"
+                format: "hset <presetId: float> [dimensionId: string] [location: x y z]"
             }
         ],
         command_version: "1.0.0",
