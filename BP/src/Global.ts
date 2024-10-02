@@ -86,6 +86,57 @@ declare global {
         get __proto__(): Boolean
         set __proto__(prototype: Object|null)
     }
+    interface BigInt {
+    
+        /** Returns a number representation of an object. */
+        toNumber(): number;
+    
+        /** Returns a bigint representation of an object. */
+        toBigInt(): this;
+    
+        /** Returns a boolean representation of an object. */
+        toBoolean(): boolean;
+
+        toRomanNumerals(limits?: [min: number, max: number], valueFor0?: string): string;
+    
+        /** Runs the Math.floor() function on the number. */
+        floor(): number;
+    
+        /** Runs the Math.round() function on the number. */
+        round(): number;
+    
+        /** Runs the Math.ceil() function on the number. */
+        ceil(): number;
+
+        /** The initial value of Number.prototype.constructor is the standard built-in Number constructor. */
+        constructor: Function;
+    
+        /**
+         * Determines whether an object has a property with the specified name.
+         * @param v A property name.
+         */
+        hasOwnProperty(v: PropertyKey): boolean;
+    
+        /**
+         * Determines whether an object exists in another object's prototype chain.
+         * @param v Another object whose prototype chain is to be checked.
+         */
+        isPrototypeOf(v: Object): boolean;
+    
+        /**
+         * Determines whether a specified property is enumerable.
+         * @param v A property name.
+         */
+        propertyIsEnumerable(v: PropertyKey): boolean;
+        __defineGetter__<P extends keyof this>(prop: P, func: ()=>any): undefined
+        __defineSetter__<P extends keyof this>(prop: P, func: (val: any)=>void): undefined
+        __defineGetter__<P extends string>(prop: P, func: ()=>any): undefined
+        __defineSetter__<P extends string>(prop: P, func: (val: any)=>void): undefined
+        __lookupGetter__<P extends keyof this>(prop: P): (()=>this[P])|undefined
+        __lookupSetter__<P extends keyof this>(prop: P): ((val: this[P])=>void)|undefined
+        get __proto__(): Boolean
+        set __proto__(prototype: Object|null)
+    }
     interface Boolean {
         toFormattedString(): "§aTrue"|"§cFalse"
         toFormattedStringB(): "§2True"|"§4False"

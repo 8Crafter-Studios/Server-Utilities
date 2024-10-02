@@ -72,9 +72,9 @@ export type PlayerSavedShopItem = {
      * This is also used as the limit for the remainingStock property
      * and this is the maximum value for the buy amount slider.
      */
-    maxStackSize?: number
-    remainingStock?: number
-    itemDetails?: {
+    maxStackSize: number
+    remainingStock: number
+    itemDetails: {
         typeId: ItemStack["typeId"]
         nameTag?: ItemStack["nameTag"]
         loreLineCount: ReturnType<ItemStack["getLore"]>["length"]/*
@@ -88,10 +88,11 @@ export type PlayerSavedShopItem = {
     }
     texture?: string
     title: string
+    playerID: `${number}`
     structureID: string
     entityID: string
     price: number
-    step?: number
+    step: number
     type: "player_shop_item"
     itemType: "player_shop_saved"
 }
@@ -99,16 +100,14 @@ export type PlayerSavedShopItem = {
  * An item for the sell section of the PlayerShop.
  */
 export type PlayerSellableShopItem = {
-    amountWanted?: number
+    amountWanted: number
+    currentAmount: number
     texture?: string
     title: string
-    structureID: string
-    entityID: string
+    playerID: `${number}`
     itemID: string
-    itemData?: number
     value: number
-    step?: number
-    max?: number
+    step: number
     type: "player_shop_item"
     itemType: "player_shop_sellable"
 }

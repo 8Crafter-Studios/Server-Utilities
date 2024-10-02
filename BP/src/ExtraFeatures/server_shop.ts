@@ -84,7 +84,8 @@ export class ServerShop{
             mainPageBodyText: this.mainPageBodyText,
             title: this.title,
             sellShop: this.sellShop,
-            buyShop: this.buyShop
+            buyShop: this.buyShop,
+            publicShop: this.publicShop
         }))
     }
     openShop(player: Player, mode: "buy"|"sell"|"both"|"none" = (this.sellShop&&this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both"){
@@ -307,7 +308,7 @@ export class ServerShop{
                 if(item.itemType=="sellable"){
                     world.scoreboard.getObjective("andexdb:money").addScore(player, item.value*(r.formValues[0] as number))
                     let amountToRemove = r.formValues[0] as number
-                    for(let i = 0; amountToRemove!=0; i++){
+                    for(let i = 0; amountToRemove>0; i++){
                         const iamount = items[i].amount
                         let amount = Math.min(amountToRemove, iamount)
                         if(amount==iamount){items[i].setItem()}else{items[i].amount-=amount}
@@ -1283,8 +1284,8 @@ Texture: ${page.texture}`
                         price: Number.isNaN(Number(price))?10:Number(price),
                         step: Number.isNaN(Number(step))?10:Number(step),
                         max: Number.isNaN(Number(max))?10:Number(max),
-                        structureID: "andexdbSavedShopItem:"+JSON.parse("\""+(entityID.replaceAll("\"", "\\\""))+"\""),
-                        entityID: JSON.parse("\""+(entityID.replaceAll("\"", "\\\""))+"\"")
+                        structureID: "andexdbSavedShopItem:"+entityID,
+                        entityID: entityID
                     }
                     let itemIndexB = Number.isNaN(Number(itemIndex))?(mode=="buy"?shop.buyData.length:shop.sellData.length):Number(itemIndex)
                     if(mode=="buy"){
