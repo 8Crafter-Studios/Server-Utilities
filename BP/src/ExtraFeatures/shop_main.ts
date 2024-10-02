@@ -1,4 +1,4 @@
-import { Player, world, Entity, ItemLockMode } from "@minecraft/server";
+import { Player, world, Entity, ItemLockMode, ItemStack, ItemEnchantableComponent, ItemDurabilityComponent, ItemCooldownComponent } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse } from "@minecraft/server-ui";
 import { executeCommandPlayerW } from "Main/commands";
 import { forceShow, worldBorderSettingsDimensionSelector, settings, extraFeaturesSettings } from "Main/ui";
@@ -45,10 +45,73 @@ export function mainShopSystemSettings(sourceEntitya: Entity|executeCommandPlaye
 }
 
 export type ShopElement = SellableShopElement|BuyableShopElement
+export type PlayerShopElement = PlayerShopPage|PlayerSavedShopItem|PlayerSellableShopItem
+export type PlayerSellableShopElement = PlayerShopPage|PlayerSellableShopItem
+export type PlayerBuyableShopElement = PlayerShopPage|PlayerSavedShopItem
 export type SellableShopElement = ShopPage|SellableShopItem
 export type BuyableShopElement = ShopPage|ShopItem
 export type ShopItem = SavedShopItem|NewItemStackShopItem|GiveCommandShopItem
 
+/**
+ * A player shop page.
+ */
+export type PlayerShopPage = {
+    texture?: string
+    pageTitle: string
+    pageBody: string
+    title: string
+    data: PlayerShopElement[]
+    type: "player_shop_page"
+}
+/**
+ * A player shop item saved in a structure block.
+ */
+export type PlayerSavedShopItem = {
+    /**
+     * The maximum stack size of the item.
+     * This is also used as the limit for the remainingStock property
+     * and this is the maximum value for the buy amount slider.
+     */
+    maxStackSize?: number
+    remainingStock?: number
+    itemDetails?: {
+        typeId: ItemStack["typeId"]
+        nameTag?: ItemStack["nameTag"]
+        loreLineCount: ReturnType<ItemStack["getLore"]>["length"]/*
+        canDestroyLength: ReturnType<ItemStack["getCanDestroy"]>["length"]
+        canPlaceOnLength: ReturnType<ItemStack["getCanPlaceOn"]>["length"]*/
+        enchantments: ReturnType<ItemEnchantableComponent["getEnchantments"]>|"N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+        maxDurability: ItemDurabilityComponent["maxDurability"]
+        damage: ItemDurabilityComponent["damage"]
+        keepOnDeath: ItemStack["keepOnDeath"]
+        lockMode: ItemStack["lockMode"]
+    }
+    texture?: string
+    title: string
+    structureID: string
+    entityID: string
+    price: number
+    step?: number
+    type: "player_shop_item"
+    itemType: "player_shop_saved"
+}
+/**
+ * An item for the sell section of the PlayerShop.
+ */
+export type PlayerSellableShopItem = {
+    amountWanted?: number
+    texture?: string
+    title: string
+    structureID: string
+    entityID: string
+    itemID: string
+    itemData?: number
+    value: number
+    step?: number
+    max?: number
+    type: "player_shop_item"
+    itemType: "player_shop_sellable"
+}
 /**
  * A shop page. 
  */
@@ -64,6 +127,8 @@ export type ShopPage = {
  * A shop item saved in a structure block. 
  */
 export type SavedShopItem = {
+    maxStackSize?: number
+    remainingStock?: number
     texture?: string
     title: string
     structureID: string
@@ -114,7 +179,7 @@ export type GiveCommandShopItem = {
  * An item for the sell section of the ServerShop. 
  */
 export type SellableShopItem = {
-    sellLimit?: number
+    amountWanted?: number
     texture?: string
     title: string
     itemID: string

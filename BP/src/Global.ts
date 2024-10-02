@@ -41,10 +41,12 @@ declare global {
         toNumber(): this;
     
         /** Returns a bigint representation of an object. */
-        toBigInt(): this;
+        toBigInt(): bigint;
     
         /** Returns a boolean representation of an object. */
         toBoolean(): boolean;
+
+        toRomanNumerals(limits?: [min: number, max: number], valueFor0?: string): string;
     
         /** Runs the Math.floor() function on the number. */
         floor(): number;
@@ -389,7 +391,7 @@ Object.defineProperties(String.prototype, {
 });
 Object.defineProperties(Number.prototype, {
     toNumber: {
-        value: function (): number{
+        value: function toNumber(): number{
             return this
         },
         configurable: true,
@@ -397,7 +399,7 @@ Object.defineProperties(Number.prototype, {
         writable: true
     },
     toBigInt: {
-        value: function (): bigint{
+        value: function toBigInt(): bigint{
             return BigInt(this)
         },
         configurable: true,
@@ -405,8 +407,43 @@ Object.defineProperties(Number.prototype, {
         writable: true
     },
     toBoolean: {
-        value: function (): boolean{
+        value: function toBoolean(): boolean{
             return Number.isNaN(this)?false:((this/2).round()==1)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toRomanNumerals: {
+        value: function toRomanNumerals(limits: [min: number, max: number] = [1, 10], valueFor0: string = "0"): string{
+            if((this>limits[1])||(this<limits[0])||((this as number)!=(this as number).floor())){return (this as number).toString()}
+            var romanMatrix = [
+                [1000n, 'M'],
+                [900n, 'CM'],
+                [500n, 'D'],
+                [400n, 'CD'],
+                [100n, 'C'],
+                [90n, 'XC'],
+                [50n, 'L'],
+                [40n, 'XL'],
+                [10n, 'X'],
+                [9n, 'IX'],
+                [5n, 'V'],
+                [4n, 'IV'],
+                [1n, 'I']
+              ] as const;
+              
+              function convertToRoman(num: bigint): string {
+                if (num === 0n) {
+                  return valueFor0;
+                }
+                for (var i = 0; i < romanMatrix.length; i++) {
+                  if (num >= romanMatrix[i][0]) {
+                    return romanMatrix[i][1] + convertToRoman(num - romanMatrix[i][0]);
+                  }
+                }
+              }
+              return (((this as number)<0)?"-":"")+convertToRoman((this as number).toBigInt())
         },
         configurable: true,
         enumerable: true,
