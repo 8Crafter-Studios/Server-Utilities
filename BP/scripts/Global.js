@@ -1,3 +1,4 @@
+import { Entity } from "@minecraft/server";
 ;
 Object.defineProperty(String.prototype, 'escapeCharacters', {
     value: function (js, unicode, nullchar, uri, quotes, general, colon, x, s) {
@@ -243,7 +244,7 @@ Object.defineProperties(String.prototype, {
 });
 Object.defineProperties(Number.prototype, {
     toNumber: {
-        value: function () {
+        value: function toNumber() {
             return this;
         },
         configurable: true,
@@ -251,7 +252,7 @@ Object.defineProperties(Number.prototype, {
         writable: true
     },
     toBigInt: {
-        value: function () {
+        value: function toBigInt() {
             return BigInt(this);
         },
         configurable: true,
@@ -259,8 +260,44 @@ Object.defineProperties(Number.prototype, {
         writable: true
     },
     toBoolean: {
-        value: function () {
+        value: function toBoolean() {
             return Number.isNaN(this) ? false : ((this / 2).round() == 1);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toRomanNumerals: {
+        value: function toRomanNumerals(limits = [1, 10], valueFor0 = "0") {
+            if ((this > limits[1]) || (this < limits[0]) || (this != this.floor())) {
+                return this.toString();
+            }
+            var romanMatrix = [
+                [1000n, 'M'],
+                [900n, 'CM'],
+                [500n, 'D'],
+                [400n, 'CD'],
+                [100n, 'C'],
+                [90n, 'XC'],
+                [50n, 'L'],
+                [40n, 'XL'],
+                [10n, 'X'],
+                [9n, 'IX'],
+                [5n, 'V'],
+                [4n, 'IV'],
+                [1n, 'I']
+            ];
+            function convertToRoman(num) {
+                if (num === 0n) {
+                    return valueFor0;
+                }
+                for (var i = 0; i < romanMatrix.length; i++) {
+                    if (num >= romanMatrix[i][0]) {
+                        return romanMatrix[i][1] + convertToRoman(num - romanMatrix[i][0]);
+                    }
+                }
+            }
+            return ((this < 0) ? "-" : "") + convertToRoman(this.toBigInt());
         },
         configurable: true,
         enumerable: true,
@@ -394,5 +431,4 @@ Object.defineProperty(Error.prototype, 'stringify', {
         return this + " " + this.stack;
     }
 });
-export {};
 //# sourceMappingURL=Global.js.map

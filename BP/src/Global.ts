@@ -1,4 +1,4 @@
-import type { Player } from "@minecraft/server";
+import { type Player, Entity } from "@minecraft/server";
 import type { modules } from "Main";
 declare global {
     interface String {
@@ -247,6 +247,11 @@ declare global {
         var modulesa: typeof modules
     }
 };
+declare module '@minecraft/server' {
+    interface Entity {/*
+        id: `${number}`*/
+    }
+}
 Object.defineProperty(String.prototype, 'escapeCharacters', {
     value: function (js: boolean, unicode: boolean, nullchar: number, uri: boolean, quotes: boolean, general: boolean, colon: boolean, x: boolean, s: boolean){
 
