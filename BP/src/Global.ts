@@ -1,5 +1,5 @@
 import { type Player, Entity } from "@minecraft/server";
-import type { modules } from "Main";
+import type { modules as modulesa } from "Main";
 declare global {
     interface String {
         escapeCharacters(js?: boolean, unicode?: boolean, nullchar?: number, uri?: boolean, quotes?: boolean, general?: boolean, colon?: boolean, x?: boolean, s?: boolean): string;
@@ -9,7 +9,7 @@ declare global {
         toNumber(): number|undefined;
     
         /** Returns a bigint representation of an object. */
-        toBigInt(): bigint;
+        toBigInt(): bigint|undefined;
     
         /** Returns a boolean representation of an object. */
         toBoolean(): boolean;
@@ -25,6 +25,7 @@ declare global {
          * @param v A property name.
          */
         hasOwnProperty(v: PropertyKey): boolean;
+        hasOwnProperty(v: keyof this): boolean;
     
         /**
          * Determines whether an object exists in another object's prototype chain.
@@ -60,6 +61,24 @@ declare global {
 
         toRomanNumerals(limits?: [min: number, max: number], valueFor0?: string): string;
     
+        /** Returns whether or not the number is NaN. */
+        isNaN(): boolean;
+    
+        /** Returns whether or not the number is finite. */
+        isFinite(): boolean;
+    
+        /** Returns whether or not the number is an integer. */
+        isInteger(): boolean;
+    
+        /** Returns whether or not the number is a safe integer. */
+        isSafeInteger(): boolean;
+    
+        /** Returns whether or not the number is even. */
+        isEven(): boolean;
+    
+        /** Returns whether or not the number is odd. */
+        isOdd(): boolean;
+    
         /** Runs the Math.floor() function on the number. */
         floor(): number;
     
@@ -77,6 +96,7 @@ declare global {
          * @param v A property name.
          */
         hasOwnProperty(v: PropertyKey): boolean;
+        hasOwnProperty(v: keyof this): boolean;
     
         /**
          * Determines whether an object exists in another object's prototype chain.
@@ -110,7 +130,7 @@ declare global {
         /** Returns a boolean representation of an object. */
         toBoolean(): boolean;
 
-        toRomanNumerals(limits?: [min: number, max: number], valueFor0?: string): string;
+        toRomanNumerals(limits?: [min: bigint, max: bigint], valueFor0n?: string): string;
 
         /** The initial value of Number.prototype.constructor is the standard built-in Number constructor. */
         constructor: Function;
@@ -156,8 +176,11 @@ declare global {
         /** Returns a number representation of an object. */
         toNumber(): 0|1;
     
+        /** Returns a number representation of an object. */
+        toBigInt(): 0n|1n;
+    
         /** Returns a boolean representation of an object. */
-        toBoolean(): this;
+        toBoolean(): boolean;
 
         /** The initial value of Boolean.prototype.constructor is the standard built-in Boolean constructor. */
         constructor: Function;
@@ -208,7 +231,10 @@ declare global {
         get __proto__(): Object
         set __proto__(prototype: Object|null)
     }
-    module globalThis {
+    interface Error {
+        stringify(): string
+    }
+    namespace globalThis {
         /**
          * @remarks
          * Runs a specified function at the next available future time.
@@ -251,15 +277,18 @@ declare global {
         var beforeScriptStartTick: number;
         var scriptStartTick: number;
         class InternalError extends Error{}
-        function tfsa(player: Player): boolean
+        function tfsa(sdsa284f83kd_38pqnv_38_f_0_vmewd_19mvndifekod_f8ufv4m3ddm1c0nvh289cmfue8hd9mjf3: unknown): unknown
         var tempVariables: {[key: PropertyKey]: any}
         var gt: typeof globalThis
-        var modulesa: typeof modules
+        var modules: typeof modulesa
     }
 };
 declare module '@minecraft/server' {
     interface Entity {/*
         id: `${number}`*/
+    }
+    interface ItemStack {
+        hasComponent(componentId: keyof ItemComponentTypeMap): boolean;
     }
 }
 Object.defineProperty(String.prototype, 'escapeCharacters', {
@@ -435,7 +464,7 @@ Object.defineProperties(String.prototype, {
         writable: true
     },
     toBigInt: {
-        value: function toBigInt(): bigint{
+        value: function toBigInt(): bigint|undefined{
             var str: string = this
             return Number.isNaN(Number(str))?undefined:BigInt(this)
         },
@@ -491,7 +520,7 @@ Object.defineProperties(Number.prototype, {
     },
     toRomanNumerals: {
         value: function toRomanNumerals(limits: [min: number, max: number] = [1, 10], valueFor0: string = "0"): string{
-            if((this>limits[1])||(this<limits[0])||((this as number)!=(this as number).floor())){return (this as number).toString()}
+            if((this>limits[1])||(this<limits[0])||!(this as number).isInteger()||(this as number).isNaN()){return (this as number).toString()}
             var romanMatrix = [
                 [1000n, 'M'],
                 [900n, 'CM'],
@@ -519,6 +548,38 @@ Object.defineProperties(Number.prototype, {
                 }
               }
               return (((this as number)<0)?"-":"")+convertToRoman((this as number).toBigInt())
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    isNaN: {
+        value: function isNaN(): boolean{
+            return Number.isNaN(this)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    isFinite: {
+        value: function isFinite(): boolean{
+            return Number.isFinite(this)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    isInteger: {
+        value: function isInteger(): boolean{
+            return Number.isInteger(this)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    isSafeInteger: {
+        value: function isSafeInteger(): boolean{
+            return Number.isSafeInteger(this)
         },
         configurable: true,
         enumerable: true,
@@ -568,7 +629,7 @@ Object.defineProperties(Number.prototype, {
 Object.defineProperties(BigInt.prototype, {
     toNumber: {
         value: function toNumber(): number{
-            return this
+            return Number(this)
         },
         configurable: true,
         enumerable: true,
@@ -576,7 +637,7 @@ Object.defineProperties(BigInt.prototype, {
     },
     toBigInt: {
         value: function toBigInt(): bigint{
-            return BigInt(this)
+            return this
         },
         configurable: true,
         enumerable: true,
@@ -584,7 +645,7 @@ Object.defineProperties(BigInt.prototype, {
     },
     toBoolean: {
         value: function toBoolean(): boolean{
-            return Number.isNaN(this)?false:((this%2n)==1n)
+            return (this%2n)==1n
         },
         configurable: true,
         enumerable: true,
@@ -677,7 +738,15 @@ Object.defineProperties(Boolean.prototype, {/*
     },*/
     toNumber: {
         value: function (): 0|1{
-            return +this.valueOf() as 0|1
+            return +this as 0|1
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toBigInt: {
+        value: function (): 0n|1n{
+            return BigInt(+this) as 0n|1n
         },
         configurable: true,
         enumerable: true,

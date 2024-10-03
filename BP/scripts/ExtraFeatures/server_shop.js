@@ -7,6 +7,7 @@ import { forceShow, itemSelector, settings, worldBorderSettingsDimensionSelector
 import { getStringFromDynamicProperties, getSuperUniqueID, saveStringToDynamicProperties, showActions, showMessage, tryget, tryrun } from "Main/utilities";
 import { mainShopSystemSettings } from "./shop_main";
 import { Vector } from "Main/coordinates";
+import { MoneySystem } from "./money";
 export class ServerShop {
     constructor(config) {
         this.id = config.id;
@@ -52,7 +53,7 @@ export class ServerShop {
             form.title(this.title ?? "");
             const data = tryget(() => JSON.parse(getStringFromDynamicProperties("sellShop:" + this.id))) ?? [];
             form.body(`§6--------------------------------
-§aMoney: $${tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0}
+§aMoney: $${MoneySystem.get(player.id).money}
 §6--------------------------------`);
             data.forEach(v => {
                 form.button(v.title, v.texture);
@@ -86,7 +87,7 @@ export class ServerShop {
             form.title(this.title ?? "");
             const data = tryget(() => JSON.parse(getStringFromDynamicProperties("buyShop:" + this.id))) ?? [];
             form.body(`§6--------------------------------
-§aMoney: $${tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0}
+§aMoney: $${MoneySystem.get(player.id).money}
 §6--------------------------------`);
             data.forEach(v => {
                 form.button(v.title, v.texture);
@@ -243,7 +244,7 @@ export class ServerShop {
             if (r.canceled == true || r.formValues[0] == 0) {
                 return 1;
             }
-            if ((tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0) >= (item.price * r.formValues[0])) {
+            if ((MoneySystem.get(player.id).money) >= (item.price * r.formValues[0])) {
                 if (item.itemType == "newItemStack") {
                     let newItem = new ItemStack(item.itemID, r.formValues[0]);
                     newItem.nameTag = item.itemName;
@@ -259,13 +260,13 @@ export class ServerShop {
                         newItem.setCanPlaceOn(item.canPlaceOn);
                     }
                     player.getComponent("inventory").container.addItem(newItem);
-                    world.scoreboard.getObjective("andexdb:money").addScore(player, -(item.price * r.formValues[0]));
+                    MoneySystem.get(player.id).removeMoney((item.price * r.formValues[0]));
                     return 1;
                     // this.openShop(player, "sell")
                 }
                 else if (item.itemType == "giveCommand") {
                     player.runCommand(`/give @s ${item.itemID} ${r.formValues[0]} ${item.itemData}`);
-                    world.scoreboard.getObjective("andexdb:money").addScore(player, -(item.price * r.formValues[0]));
+                    MoneySystem.get(player.id).removeMoney((item.price * r.formValues[0]));
                     return 1;
                     // this.openShop(player, "sell")
                 }
@@ -280,14 +281,14 @@ export class ServerShop {
                     for (let i = 0; i < r.formValues[0]; i++) {
                         player.getComponent("inventory").container.addItem(itemStack);
                     }
-                    world.scoreboard.getObjective("andexdb:money").addScore(player, -(item.price * r.formValues[0]));
+                    MoneySystem.get(player.id).removeMoney((item.price * r.formValues[0]));
                     return 1;
                 }
             }
             else {
                 const form = new MessageFormData;
                 form.title("Not Enough Money");
-                form.body(`You do not have enough money to buy this item.\nYou currently have $${tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0}.\nOne of this item costs $${item.price}.\nYou wanted to buy ${r.formValues[0]} of this item.\nThe total price is $${item.price * r.formValues[0]}.\nYou need another $${(item.price * r.formValues[0]) - (tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0)} to buy this item.`);
+                form.body(`You do not have enough money to buy this item.\nYou currently have $${MoneySystem.get(player.id).money}.\nOne of this item costs $${item.price}.\nYou wanted to buy ${r.formValues[0]} of this item.\nThe total price is $${item.price * r.formValues[0]}.\nYou need another $${(item.price * r.formValues[0]).toBigInt() - (MoneySystem.get(player.id).money)} to buy this item.`);
                 form.button1("Go Back");
                 form.button2("Close Shop");
                 const rb = await forceShow(form, player);
@@ -316,7 +317,7 @@ export class ServerShop {
             items.forEach(v => itemCount += v.amount);
             if (itemCount >= r.formValues[0]) {
                 if (item.itemType == "sellable") {
-                    world.scoreboard.getObjective("andexdb:money").addScore(player, item.value * r.formValues[0]);
+                    MoneySystem.get(player.id).addMoney(item.value * r.formValues[0]);
                     let amountToRemove = r.formValues[0];
                     for (let i = 0; amountToRemove > 0; i++) {
                         const iamount = items[i].amount;

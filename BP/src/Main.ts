@@ -91,6 +91,10 @@ import *  as cmdslist from "Main/commands_list";
 import *  as cmdsdocs from "Main/commands_documentation";
 import *  as utils from "Main/utilities";
 import *  as errors from "Main/errors";
+import *  as shopmain from "ExtraFeatures/shop_main";
+import *  as servershop from "ExtraFeatures/server_shop";
+import *  as playershop from "ExtraFeatures/player_shop";
+import *  as moneysystem from "ExtraFeatures/money";
 import mcMath from "@minecraft/math.js";/*
 import { disableWatchdog } from "@minecraft/debug-utilities";*/
 import { listoftransformrecipes } from "transformrecipes";
@@ -116,8 +120,46 @@ SimulatedPlayer
 Test
 mcMath
 globalThis.scriptStartTick=system.currentTick
-export const modules = {main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
-globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
+export const modules = {
+    main,
+    coords,
+    cmds,
+    bans,
+    uis,
+    playersave,
+    spawnprot,
+    mcMath,
+    chat,
+    cmdutils,
+    cmdslist,
+    cmdsdocs,
+    utils,
+    errors,
+    shopmain,
+    servershop,
+    playershop,
+    moneysystem
+}
+globalThis.modules={
+    main,
+    coords,
+    cmds,
+    bans,
+    uis,
+    playersave,
+    spawnprot,
+    mcMath,
+    chat,
+    cmdutils,
+    cmdslist,
+    cmdsdocs,
+    utils,
+    errors,
+    shopmain,
+    servershop,
+    playershop,
+    moneysystem
+}
 export let crashEnabled = false
 export let tempSavedVariables = []
 export function mainEval(x: string){return eval(x)}
@@ -427,7 +469,13 @@ export class config{
                     get enabled(){return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.enabled") ?? false)},
                     set enabled(enabled: boolean|undefined){world.setDynamicProperty("andexdbShopSystemSettings:player.enabled", enabled??false)},
                     get maxShopsPerPlayer(){return (world.getDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer") ?? -1).toString().toNumber()},
-                    set maxShopsPerPlayer(maxShopsPerPlayer: number|undefined){world.setDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer", maxShopsPerPlayer??-1)}
+                    set maxShopsPerPlayer(maxShopsPerPlayer: number|undefined){world.setDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer", maxShopsPerPlayer??-1)},
+                    get allowSellingLockInSlotItems(){return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.allowSellingLockInSlotItems") ?? false)},
+                    set allowSellingLockInSlotItems(allowSellingLockInSlotItems: boolean|undefined){world.setDynamicProperty("andexdbShopSystemSettings:player.allowSellingLockInSlotItems", allowSellingLockInSlotItems??false)},
+                    get allowSellingLockInInventoryItems(){return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.allowSellingLockInInventoryItems") ?? false)},
+                    set allowSellingLockInInventoryItems(allowSellingLockInInventoryItems: boolean|undefined){world.setDynamicProperty("andexdbShopSystemSettings:player.allowSellingLockInInventoryItems", allowSellingLockInInventoryItems??false)},
+                    get allowSellingKeepOnDeathItems(){return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.allowSellingKeepOnDeathItems") ?? true)},
+                    set allowSellingKeepOnDeathItems(allowSellingKeepOnDeathItems: boolean|undefined){world.setDynamicProperty("andexdbShopSystemSettings:player.allowSellingKeepOnDeathItems", allowSellingKeepOnDeathItems??true)}
                 }
             },
             get sign(){

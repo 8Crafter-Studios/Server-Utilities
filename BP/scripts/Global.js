@@ -278,7 +278,7 @@ Object.defineProperties(Number.prototype, {
     },
     toRomanNumerals: {
         value: function toRomanNumerals(limits = [1, 10], valueFor0 = "0") {
-            if ((this > limits[1]) || (this < limits[0]) || (this != this.floor())) {
+            if ((this > limits[1]) || (this < limits[0]) || !this.isInteger() || this.isNaN()) {
                 return this.toString();
             }
             var romanMatrix = [
@@ -307,6 +307,38 @@ Object.defineProperties(Number.prototype, {
                 }
             }
             return ((this < 0) ? "-" : "") + convertToRoman(this.toBigInt());
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    isNaN: {
+        value: function isNaN() {
+            return Number.isNaN(this);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    isFinite: {
+        value: function isFinite() {
+            return Number.isFinite(this);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    isInteger: {
+        value: function isInteger() {
+            return Number.isInteger(this);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    isSafeInteger: {
+        value: function isSafeInteger() {
+            return Number.isSafeInteger(this);
         },
         configurable: true,
         enumerable: true,
@@ -356,7 +388,7 @@ Object.defineProperties(Number.prototype, {
 Object.defineProperties(BigInt.prototype, {
     toNumber: {
         value: function toNumber() {
-            return this;
+            return Number(this);
         },
         configurable: true,
         enumerable: true,
@@ -364,7 +396,7 @@ Object.defineProperties(BigInt.prototype, {
     },
     toBigInt: {
         value: function toBigInt() {
-            return BigInt(this);
+            return this;
         },
         configurable: true,
         enumerable: true,
@@ -372,7 +404,7 @@ Object.defineProperties(BigInt.prototype, {
     },
     toBoolean: {
         value: function toBoolean() {
-            return Number.isNaN(this) ? false : ((this % 2n) == 1n);
+            return (this % 2n) == 1n;
         },
         configurable: true,
         enumerable: true,
@@ -458,7 +490,15 @@ Object.defineProperties(BigInt.prototype, {
 Object.defineProperties(Boolean.prototype, {
     toNumber: {
         value: function () {
-            return +this.valueOf();
+            return +this;
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toBigInt: {
+        value: function () {
+            return BigInt(+this);
         },
         configurable: true,
         enumerable: true,

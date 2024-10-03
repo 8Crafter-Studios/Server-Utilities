@@ -7,6 +7,8 @@ import { forceShow, itemSelector, settings, worldBorderSettingsDimensionSelector
 import { getStringFromDynamicProperties, getSuperUniqueID, saveStringToDynamicProperties, showActions, showMessage, tryget, tryrun } from "Main/utilities";
 import { type PlayerShopElement, mainShopSystemSettings, type PlayerShopPage, type PlayerSavedShopItem, type PlayerSellableShopElement, type PlayerBuyableShopElement, type PlayerSellableShopItem } from "./shop_main";
 import { Vector } from "Main/coordinates";
+import { MoneySystem } from "./money";
+import { StorageFullError } from "Main/errors";
 
 export type playerShopConfig = {
     /**
@@ -118,7 +120,7 @@ export class PlayerShop{
             form.title(this.title??"");
             const data = tryget(()=>JSON.parse(getStringFromDynamicProperties("sellShop:"+this.id)) as PlayerSellableShopElement[])??[]
             form.body(`§6--------------------------------
-§aMoney: $${tryget(()=>world.scoreboard.getObjective("andexdb:money").getScore(player))??0}
+§aMoney: $${MoneySystem.get(player.id).money}
 §6--------------------------------`)
             data.forEach(v=>{
                 form.button(v.title, v.texture)
@@ -141,7 +143,7 @@ export class PlayerShop{
             form.title(this.title??"")
             const data = tryget(()=>JSON.parse(getStringFromDynamicProperties("buyShop:"+this.id)) as PlayerBuyableShopElement[])??[]
             form.body(`§6--------------------------------
-§aMoney: $${tryget(()=>world.scoreboard.getObjective("andexdb:money").getScore(player))??0}
+§aMoney: $${MoneySystem.get(player.id).money}
 §6--------------------------------`)
             data.forEach(v=>{
                 form.button(v.title, v.texture)
@@ -255,20 +257,64 @@ export class PlayerShop{
         try{
             const infoForm = new ActionFormData
             infoForm.title("Item Details")
-            infoForm.body(`§a${item.title}
+            infoForm.body(
+`§a${item.title}
+§r§6Stock: ${item.remainingStock}
 §r§gPrice: ${item.price}
 §r§bItem Type: §a${item.itemDetails.typeId}
 §r§bItem Name: §a${item.itemDetails.nameTag}
 §r§bLore: §c${item.itemDetails.loreLineCount} Lines
 §r§bEnchantments: §d{
 ${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.map(v=>v.type+" "+v.level.toRomanNumerals()).join("\n"):item.itemDetails.enchantments}
-}`)
+}`
+            )
+            infoForm.button("Proceed to buy item")
+            infoForm.button("More Details")
+            infoForm.button("Back")
+            const ifr = await forceShow(infoForm, player)
+            if(ifr.canceled||ifr.selection==2){return 1}
+            if(ifr.selection==1){
+                world.structureManager.place(item.structureID, player.dimension, Vector.add(player.location, {x: 0, y: 10, z: 0}), {includeBlocks: false, includeEntities: true})
+                const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, {x: 0, y: 10, z: 0})).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id")))==item.entityID)
+                if(!!!entity){
+                    throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${item.entityID} was found inside of the specified structure.`)
+                }
+                const itemStack = entity.getComponent("inventory").container.getItem(0)
+                entity.remove()
+                const infoFormB = new ActionFormData
+                infoFormB.title("Item Details")
+                infoFormB.body(
+`§a${item.title}
+§r§6Stock: ${item.remainingStock}
+§r§gPrice: ${item.price}
+§r§bItem Type: §a${itemStack.typeId}
+§r§bItem Name: §a${itemStack.nameTag}
+§r§bLore: §a${JSON.stringify(itemStack.getLore(), undefined, 1)}
+§r§bCan Destroy: §a${JSON.stringify(itemStack.getCanDestroy(), undefined, 1)}
+§r§bCan Place On: §a${JSON.stringify(itemStack.getCanPlaceOn(), undefined, 1)}
+§r§bLock Mode: §a${itemStack.lockMode}
+§r§bKeep On Death: ${itemStack.keepOnDeath.toFormattedString()}
+§r§bDynamic Properties: §r${tryget(()=>`${itemStack.getDynamicPropertyTotalByteCount()} Bytes: \n`+JSON.stringify(Object.fromEntries(itemStack.getDynamicPropertyIds().map(v=>["§r"+v, itemStack.getDynamicProperty(v)])), undefined, 1))??"N/A"}${
+itemStack.hasComponent("durability")?`\n§r§bDurability: ${itemStack.getComponent("durability").damage<(itemStack.getComponent("durability").maxDurability/3)?"§a":itemStack.getComponent("durability").damage<(itemStack.getComponent("durability").maxDurability/1.5)?"§e":"§c"}{itemStack.getComponent("durability").maxDurability-itemStack.getComponent("durability").damage}/${itemStack.getComponent("durability").maxDurability}`:""}${
+itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.getComponent("potion").potionEffectType}
+§r§bPotion Liquid Type: §9${itemStack.getComponent("potion").potionLiquidType}
+§r§bPotion Modifier Type: §e${itemStack.getComponent("potion").potionModifierType}`:""}
+§r§bEnchantments: ${item.itemDetails.enchantments instanceof Array?"\n§d["+item.itemDetails.enchantments.map(v=>v.type+" "+v.level.toRomanNumerals()).join("\n")+"\n]":item.itemDetails.enchantments}`
+                )
+                infoFormB.button("Proceed to buy item")
+                infoFormB.button("Back")
+                const ifrb = await forceShow(infoFormB, player)
+                if(ifrb.canceled||ifrb.selection==1){return 1}
+            }
+            if(item.remainingStock==0){
+                return (await showMessage(player, "Out Of Stock", "This item is out of stock.", "Go Back", "Close Shop")).selection==0
+            }
             const form = new ModalFormData
             form.title("Buy "+item.title)
             form.slider(`§a${item.title}\n§r§gPrice: ${item.price}\n\n§fHow many would you like to buy?`, 0, item.remainingStock??64, item.step??1, item.step??1)
             const r = await forceShow(form, player)
             if(r.canceled==true||(r.formValues[0] as number)==0){return 1}
-            if((tryget(()=>world.scoreboard.getObjective("andexdb:money").getScore(player))??0)>=(item.price*(r.formValues[0] as number))){
+            if(MoneySystem.get(player.id).money>=(item.price*(r.formValues[0] as number))){
                 if(item.itemType=="player_shop_saved"){
                     world.structureManager.place(item.structureID, player.dimension, Vector.add(player.location, {x: 0, y: 10, z: 0}), {includeBlocks: false, includeEntities: true})
                     const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, {x: 0, y: 10, z: 0})).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id")))==item.entityID)
@@ -284,27 +330,47 @@ ${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.m
                         entity.getComponent("inventory").container.getSlot(0).amount-=(r.formValues[0] as number)
                     }
                     try{world.structureManager.delete(item.structureID)}catch{}
-                    world.structureManager.createFromWorld(
-                        item.structureID,
-                        player.dimension,
-                        {
-                            x: Math.floor(player.location.x),
-                            y: Math.floor(player.location.y)+10,
-                            z: Math.floor(player.location.z)
-                        },
-                        {
-                            x: Math.floor(player.location.x)+1,
-                            y: Math.floor(player.location.y)+11,
-                            z: Math.floor(player.location.z)+1
-                        },
-                        {
-                            includeBlocks: false,
-                            includeEntities: true,
-                            saveMode: StructureSaveMode.World
-                        }
-                    )
-                    entity.remove()
-                    item.remainingStock-=(r.formValues[0] as number)
+                    /**
+                     * This makes the script temporarily teleport the other entities away so that when it saves the storage entity, it can't save and possibly duplicate other entities. 
+                     */
+                    var otherEntities = tryget(()=>player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, {x: 0, y: 10, z: 0})).filter(v=>v.id!=entity.id))??[]
+                    var locs = otherEntities.map(v=>v.location)
+                    otherEntities.forEach(v=>tryrun(()=>v.teleport(Vector.add(v.location, {x: 0, y: 50, z: 0}))))
+                    try{
+                        world.structureManager.createFromWorld(
+                            item.structureID,
+                            player.dimension,
+                            {
+                                x: Math.floor(player.location.x),
+                                y: Math.floor(player.location.y)+10,
+                                z: Math.floor(player.location.z)
+                            },
+                            {
+                                x: Math.floor(player.location.x)+1,
+                                y: Math.floor(player.location.y)+11,
+                                z: Math.floor(player.location.z)+1
+                            },
+                            {
+                                includeBlocks: false,
+                                includeEntities: true,
+                                saveMode: StructureSaveMode.World
+                            }
+                        )
+                        item.remainingStock-=(r.formValues[0] as number)
+
+                        player.getComponent("inventory").container.addItem(itemStack)
+                        MoneySystem.get(player.id).removeMoney(item.price*(r.formValues[0] as number))
+                        MoneySystem.get(item.playerID).addMoney(item.price*(r.formValues[0] as number))
+                    }catch(e){
+                        return (await showMessage(player, "An Error Has Occured", e instanceof Error ? e.stringify() : e+" "+e?.stack, "Go Back", "Close Shop")).selection==0
+                    }finally{
+                        try{
+                            otherEntities.forEach((v, i)=>tryrun(()=>v.teleport(locs[i], {keepVelocity: false})))
+                        }catch{}
+                        try{
+                            entity.remove()
+                        }catch{}
+                    }
                     if(path[0]=="buy"){
                         let data = this.buyData
                         let newData = getPathInObject(data, path.slice(0, -2)).data as PlayerBuyableShopElement[]
@@ -316,15 +382,12 @@ ${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.m
                         newData.splice(itemIndex, 1, item as any)
                         this.sellData=data
                     }
-
-                    player.getComponent("inventory").container.addItem(itemStack)
-                    world.scoreboard.getObjective("andexdb:money").addScore(player, -(item.price*(r.formValues[0] as number)))
                     return 1
                 }
             }else{
                 const form = new MessageFormData
                 form.title("Not Enough Money")
-                form.body(`You do not have enough money to buy this item.\nYou currently have $${tryget(()=>world.scoreboard.getObjective("andexdb:money").getScore(player))??0}.\nOne of this item costs $${item.price}.\nYou wanted to buy ${r.formValues[0]} of this item.\nThe total price is $${item.price*(r.formValues[0] as number)}.\nYou need another $${(item.price*(r.formValues[0] as number))-(tryget(()=>world.scoreboard.getObjective("andexdb:money").getScore(player))??0)} to buy this item.`)
+                form.body(`You do not have enough money to buy this item.\nYou currently have $${MoneySystem.get(player.id).money}.\nOne of this item costs $${item.price}.\nYou wanted to buy ${r.formValues[0]} of this item.\nThe total price is $${item.price*(r.formValues[0] as number)}.\nYou need another $${(item.price*(r.formValues[0] as number)).toBigInt()-MoneySystem.get(player.id).money} to buy this item.`)
                 form.button1("Go Back")
                 form.button2("Close Shop")
                 const rb = await forceShow(form, player)
@@ -369,15 +432,36 @@ ${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.m
                             }
                         )
                     }
-                    world.scoreboard.getObjective("andexdb:money").addScore(player, item.value*(r.formValues[0] as number))
                     let amountToRemove = r.formValues[0] as number
                     world.structureManager.place("andexdbPlayerShopRecievedShopItemsStorage:"+item.playerID, player.dimension, Vector.add(player.location, {x: 0, y: 10, z: 0}), {includeBlocks: false, includeEntities: true})
-                    /**
-                     * @todo Make the script temporarily teleport the other entities away so that when it saves the storage entity, it can't save and possibly duplicate other entities. 
-                     */
                     const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, {x: 0, y: 10, z: 0})).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:recievedShopItemsStoragePlayerID")))==item.playerID)
                     if(!!!entity){
                         throw new ReferenceError(`Unable to get the item.`)
+                    }
+                    const testItemStack = new ItemStack(item.itemID)
+                    if(entity.getComponent("inventory").container.emptySlotsCount<=((r.formValues[0] as number)/testItemStack.maxAmount)){
+                        let availableSpace = entity.getComponent("inventory").container.emptySlotsCount*testItemStack.maxAmount
+                        containerToItemStackArray(entity.getComponent("inventory").container).forEach(v=>{
+                            try{
+                                if(!!!v){
+                                    return
+                                }else if((v.amount==0)||(v.amount==v.maxAmount)||!v.isStackableWith(testItemStack)){
+                                    return
+                                }else{
+                                    availableSpace+=v.maxAmount-v.amount
+                                }
+                            }catch(e){
+                                if(e instanceof Error){
+                                    console.error(e.stringify())
+                                }else{
+                                    console.error(e, e?.stack)
+                                }
+                            }
+                        })
+                        if((r.formValues[0] as number)>availableSpace){
+                            entity.remove()
+                            throw new StorageFullError("The shop owner does not have enough storage left for the items that you are selling, the shop owner must collect their items before and more items can be sold to them.")
+                        }
                     }
                     try{
                         for(let i = 0; (amountToRemove>0)&&(i<items.length); i++){
@@ -389,11 +473,21 @@ ${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.m
                                 entity.getComponent("inventory").container.addItem(recievingItem)
                                 if(amount==iamount){items[i].setItem()}else{items[i].amount-=amount}
                                 amountToRemove-=amount
+                                item.amountWanted-=amount
+                                item.currentAmount+=amount
+                                MoneySystem.get(player.id).addMoney(item.value*(r.formValues[0] as number))
+                                MoneySystem.get(item.playerID).removeMoney(item.value*(r.formValues[0] as number))
                             }catch(e){
                                 try{player.sendMessage(e+" "+e?.stack)}catch{console.error(e, e?.stack)}
                             }
                         }
                         try{world.structureManager.delete("andexdbPlayerShopRecievedShopItemsStorage:"+item.playerID)}catch{}
+                        /**
+                         * This makes the script temporarily teleport the other entities away so that when it saves the storage entity, it can't save and possibly duplicate other entities. 
+                         */
+                        var otherEntities = tryget(()=>player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, {x: 0, y: 10, z: 0})).filter(v=>v.id!=entity.id))??[]
+                        var locs = otherEntities.map(v=>v.location)
+                        otherEntities.forEach(v=>tryrun(()=>v.teleport(Vector.add(v.location, {x: 0, y: 50, z: 0}))))
                         world.structureManager.createFromWorld(
                             "andexdbPlayerShopRecievedShopItemsStorage:"+item.playerID,
                             player.dimension,
@@ -414,11 +508,17 @@ ${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.m
                             }
                         )
                     }catch(e){
+                        if(e instanceof StorageFullError){
+                            return (await showMessage(player, "Out Of Storage", e.message, "Go Back", "Close Shop")).selection==0
+                        }
                         try{player.sendMessage(e+" "+e?.stack)}catch{console.error(e, e?.stack)}
                     }finally{
-                        entity.remove()
-                        item.amountWanted-=(r.formValues[0] as number)
-                        item.currentAmount+=(r.formValues[0] as number)
+                        try{
+                            otherEntities.forEach((v, i)=>tryrun(()=>v.teleport(locs[i], {keepVelocity: false})))
+                        }catch{}
+                        try{
+                            entity.remove()
+                        }catch{}
                         if(path[0]=="buy"){
                             let data = this.buyData
                             let newData = getPathInObject(data, path.slice(0, -2)).data as PlayerBuyableShopElement[]
