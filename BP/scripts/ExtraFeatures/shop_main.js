@@ -11,7 +11,7 @@ export function mainShopSystemSettings(sourceEntitya) {
     let form = new ActionFormData();
     form.title("Shop Sytem Settings");
     form.button("Server Shop\n" + (config.shopSystem.server.enabled ? "§aEnabled" : "§cDisabled"), "textures/ui/servers");
-    form.button("§cPlayer Shop\n" + (config.shopSystem.player.enabled ? "§aEnabled" : "§cDisabled"), "textures/ui/icon_multiplayer");
+    form.button("Player Shop\n" + (config.shopSystem.player.enabled ? "§aEnabled" : "§cDisabled"), "textures/ui/icon_multiplayer");
     form.button("§cSign Shop\n" + (config.shopSystem.sign.enabled ? "§aEnabled" : "§cDisabled"), "textures/ui/icon_sign");
     form.button("Back", "textures/ui/arrow_left");
     forceShow(form, sourceEntity).then(r => {

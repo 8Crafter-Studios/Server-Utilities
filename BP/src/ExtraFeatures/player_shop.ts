@@ -270,17 +270,42 @@ ${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.m
             if(r.canceled==true||(r.formValues[0] as number)==0){return 1}
             if((tryget(()=>world.scoreboard.getObjective("andexdb:money").getScore(player))??0)>=(item.price*(r.formValues[0] as number))){
                 if(item.itemType=="player_shop_saved"){
-                    world.structureManager.place(item.structureID, player.dimension, player.location, {includeBlocks: false, includeEntities: true})
-                    const entity = player.dimension.getEntitiesAtBlockLocation(player.location).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id")))==item.entityID)
+                    world.structureManager.place(item.structureID, player.dimension, Vector.add(player.location, {x: 0, y: 10, z: 0}), {includeBlocks: false, includeEntities: true})
+                    const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, {x: 0, y: 10, z: 0})).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id")))==item.entityID)
                     if(!!!entity){
                         throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${item.entityID} was found inside of the specified structure.`)
                     }
                     const itemStack = entity.getComponent("inventory").container.getItem(0)
+                    if(itemStack.amount==(r.formValues[0] as number)){
+                        entity.getComponent("inventory").container.setItem(0)
+                    }else if(itemStack.amount<(r.formValues[0] as number)){
+                        return
+                    }else{
+                        entity.getComponent("inventory").container.getSlot(0).amount-=(r.formValues[0] as number)
+                    }
+                    try{world.structureManager.delete(item.structureID)}catch{}
+                    world.structureManager.createFromWorld(
+                        item.structureID,
+                        player.dimension,
+                        {
+                            x: Math.floor(player.location.x),
+                            y: Math.floor(player.location.y)+10,
+                            z: Math.floor(player.location.z)
+                        },
+                        {
+                            x: Math.floor(player.location.x)+1,
+                            y: Math.floor(player.location.y)+11,
+                            z: Math.floor(player.location.z)+1
+                        },
+                        {
+                            includeBlocks: false,
+                            includeEntities: true,
+                            saveMode: StructureSaveMode.World
+                        }
+                    )
                     entity.remove()
 
-                    for(let i = 0; i<(r.formValues[0] as number); i++){
-                        player.getComponent("inventory").container.addItem(itemStack)
-                    }
+                    player.getComponent("inventory").container.addItem(itemStack)
                     world.scoreboard.getObjective("andexdb:money").addScore(player, -(item.price*(r.formValues[0] as number)))
                     return 1
                 }
@@ -692,7 +717,7 @@ export class PlayerShopManager{
                             price: Number.isNaN(Number(price))?10:Number(price),
                             step: Math.min(Number.isNaN(Number(step))?1:Number(step), item.item.maxAmount),
                             maxStackSize: item.item.maxAmount,
-                            structureID: "andexdbSavedShopItem:"+entityID,
+                            structureID: "andexdbSavedPlayerShopItem:"+entityID,
                             entityID: entityID,
                             remainingStock: item.item.amount,
                             itemDetails: {
@@ -793,6 +818,14 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as PlayerSavedShopItem).pric
                     const sureOfItemDeletion = await showMessage(sourceEntity as Player, "Are you sure?", "Are you sure you want to delete this item?", "No", "Yes")
                     if(sureOfItemDeletion.selection==1){
                         if(mode=="buy"){
+                            world.structureManager.place((item as PlayerSavedShopItem).structureID, sourceEntity.dimension, sourceEntity.location, {includeBlocks: false, includeEntities: true})
+                            const entity = sourceEntity.dimension.getEntitiesAtBlockLocation(sourceEntity.location).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id")))==(item as PlayerSavedShopItem).entityID)
+                            if(!!entity){
+                                const itemStack = entity.getComponent("inventory").container.getItem(0)
+                                entity.remove()
+                                sourceEntity.dimension.spawnItem(itemStack, sourceEntity.location)
+                            }
+                            world.structureManager.delete((item as PlayerSavedShopItem).structureID)
                             let newData = shop.buyData
                             newData.splice(itemIndex, 1)
                             shop.buyData=newData

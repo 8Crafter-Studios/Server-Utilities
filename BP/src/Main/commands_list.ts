@@ -6140,6 +6140,30 @@ export const commands = [
         type: "built-in",
         requiredTags: [],
         formatting_code: "§r§f",
+        commandName: "viewplayershops",
+        escregexp: {
+            v: "^viewplayershops$"
+        },
+        formats: [
+            {
+                format: "viewplayershops"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "shop_system"
+        ],
+        commandSettingsId: "built-inCommandSettings:viewplayershops",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [],
+        formatting_code: "§r§f",
         commandName: "viewservershops",
         escregexp: {
             v: "^viewservershops$"

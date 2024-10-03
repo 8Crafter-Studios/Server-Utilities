@@ -8,6 +8,10 @@
       "is_experimental": false
     },
     "components": {
+      "minecraft:collision_box": {
+        "height": 0,
+        "width": 0
+      },
       "minecraft:inventory": {
         "container_type": "inventory",
         "can_be_siphoned_from": true,

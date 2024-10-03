@@ -30,7 +30,9 @@ import * as utils from "./utilities";
 import * as errors from "./errors";
 import * as cmdsdocs from "./commands_documentation";
 import * as cmdslist from "./commands_list";
+import * as shopmain from "../ExtraFeatures/shop_main";
 import * as servershop from "../ExtraFeatures/server_shop";
+import * as playershop from "../ExtraFeatures/player_shop";
 // import *  as shopmain from "../ExtraFeatures/shop_main";
 import mcMath from "@minecraft/math.js";
 import { uiManager, UIManager } from "@minecraft/server-ui";
@@ -38,6 +40,7 @@ import { commands } from "./commands_list";
 import { ExpireError, TimeoutError } from "./errors";
 import { getCommandHelpPage, getCommandHelpPageExtra, getCommandHelpPageDebug, getCommandHelpPageCustomDebug, helpCommandChatCommandsList, getCommandHelpPageDebugPlus } from "./commands_documentation";
 import { LinkedServerShopCommands, ServerShop } from "../ExtraFeatures/server_shop";
+import { PlayerShop } from "ExtraFeatures/player_shop";
 export const cmdsmetaimport = import.meta;
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer;
@@ -13902,6 +13905,17 @@ ${command.dp}snapshot list`);
                         const argsa = evaluateParameters(switchTestB, ["presetText"]);
                         evalExecuteCommand(argsa.extra);
                     });
+                }
+                break;
+            case !!switchTest.match(/^viewplayershops$/):
+                {
+                    eventData.cancel = true;
+                    if (config.shopSystem.player.enabled) {
+                        srun(() => PlayerShop.openPublicShopsSelector(player.player));
+                    }
+                    else {
+                        player.sendError("§cSystemNotEnabledError: You cannot use this command because the server shop system is not enabled.", true);
+                    }
                 }
                 break;
             case !!switchTest.match(/^viewservershops$/):
