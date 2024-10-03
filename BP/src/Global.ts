@@ -8,6 +8,9 @@ declare global {
         /** Returns a number representation of an object. */
         toNumber(): number|undefined;
     
+        /** Returns a bigint representation of an object. */
+        toBigInt(): bigint;
+    
         /** Returns a boolean representation of an object. */
         toBoolean(): boolean;
 
@@ -34,11 +37,20 @@ declare global {
          * @param v A property name.
          */
         propertyIsEnumerable(v: PropertyKey): boolean;
+        propertyIsEnumerable(v: keyof this): boolean;
+        __defineGetter__<P extends keyof this>(prop: P, func: ()=>any): undefined
+        __defineSetter__<P extends keyof this>(prop: P, func: (val: any)=>void): undefined
+        __defineGetter__<P extends string>(prop: P, func: ()=>any): undefined
+        __defineSetter__<P extends string>(prop: P, func: (val: any)=>void): undefined
+        __lookupGetter__<P extends keyof this>(prop: P): (()=>this[P])|undefined
+        __lookupSetter__<P extends keyof this>(prop: P): ((val: this[P])=>void)|undefined
+        get __proto__(): String
+        set __proto__(prototype: Object|null)
     }
     interface Number {
     
         /** Returns a number representation of an object. */
-        toNumber(): this;
+        toNumber(): ReturnType<this["valueOf"]>;
     
         /** Returns a bigint representation of an object. */
         toBigInt(): bigint;
@@ -77,13 +89,14 @@ declare global {
          * @param v A property name.
          */
         propertyIsEnumerable(v: PropertyKey): boolean;
+        propertyIsEnumerable(v: keyof this): boolean;
         __defineGetter__<P extends keyof this>(prop: P, func: ()=>any): undefined
         __defineSetter__<P extends keyof this>(prop: P, func: (val: any)=>void): undefined
         __defineGetter__<P extends string>(prop: P, func: ()=>any): undefined
         __defineSetter__<P extends string>(prop: P, func: (val: any)=>void): undefined
         __lookupGetter__<P extends keyof this>(prop: P): (()=>this[P])|undefined
         __lookupSetter__<P extends keyof this>(prop: P): ((val: this[P])=>void)|undefined
-        get __proto__(): Boolean
+        get __proto__(): Number
         set __proto__(prototype: Object|null)
     }
     interface BigInt {
@@ -92,21 +105,12 @@ declare global {
         toNumber(): number;
     
         /** Returns a bigint representation of an object. */
-        toBigInt(): this;
+        toBigInt(): ReturnType<this["valueOf"]>;
     
         /** Returns a boolean representation of an object. */
         toBoolean(): boolean;
 
         toRomanNumerals(limits?: [min: number, max: number], valueFor0?: string): string;
-    
-        /** Runs the Math.floor() function on the number. */
-        floor(): number;
-    
-        /** Runs the Math.round() function on the number. */
-        round(): number;
-    
-        /** Runs the Math.ceil() function on the number. */
-        ceil(): number;
 
         /** The initial value of Number.prototype.constructor is the standard built-in Number constructor. */
         constructor: Function;
@@ -116,6 +120,7 @@ declare global {
          * @param v A property name.
          */
         hasOwnProperty(v: PropertyKey): boolean;
+        hasOwnProperty(v: keyof this): boolean;
     
         /**
          * Determines whether an object exists in another object's prototype chain.
@@ -128,13 +133,14 @@ declare global {
          * @param v A property name.
          */
         propertyIsEnumerable(v: PropertyKey): boolean;
+        propertyIsEnumerable(v: keyof this): boolean;
         __defineGetter__<P extends keyof this>(prop: P, func: ()=>any): undefined
         __defineSetter__<P extends keyof this>(prop: P, func: (val: any)=>void): undefined
         __defineGetter__<P extends string>(prop: P, func: ()=>any): undefined
         __defineSetter__<P extends string>(prop: P, func: (val: any)=>void): undefined
         __lookupGetter__<P extends keyof this>(prop: P): (()=>this[P])|undefined
         __lookupSetter__<P extends keyof this>(prop: P): ((val: this[P])=>void)|undefined
-        get __proto__(): Boolean
+        get __proto__(): BigInt
         set __proto__(prototype: Object|null)
     }
     interface Boolean {
@@ -167,6 +173,7 @@ declare global {
          * @param v A property name.
          */
         hasOwnProperty(v: PropertyKey): boolean;
+        hasOwnProperty(v: keyof this): boolean;
     
         /**
          * Determines whether an object exists in another object's prototype chain.
@@ -179,6 +186,7 @@ declare global {
          * @param v A property name.
          */
         propertyIsEnumerable(v: PropertyKey): boolean;
+        propertyIsEnumerable(v: keyof this): boolean;
         __defineGetter__<P extends keyof this>(prop: P, func: ()=>any): undefined
         __defineSetter__<P extends keyof this>(prop: P, func: (val: any)=>void): undefined
         __defineGetter__<P extends string>(prop: P, func: ()=>any): undefined
@@ -189,13 +197,15 @@ declare global {
         set __proto__(prototype: Object|null)
     }
     interface Object {
+        hasOwnProperty(v: keyof this): boolean;
+        propertyIsEnumerable(v: keyof this): boolean;
         __defineGetter__<P extends keyof this|string>(prop: P, func: Function): undefined
         __defineSetter__<P extends keyof this|string>(prop: P, func: (val: any)=>any): undefined
         __defineGetter__<P extends string>(prop: P, func: ()=>any): undefined
         __defineSetter__<P extends string>(prop: P, func: (val: any)=>void): undefined
         __lookupGetter__<P extends keyof this>(prop: P): (()=>this[P])|undefined
         __lookupSetter__<P extends keyof this>(prop: P): ((val: this[P])=>this[P])|undefined
-        get __proto__(): Boolean
+        get __proto__(): Object
         set __proto__(prototype: Object|null)
     }
     module globalThis {
@@ -417,8 +427,17 @@ Object.defineProperty(String.prototype, 'escapeCharactersB', {
 Object.defineProperties(String.prototype, {
     toNumber: {
         value: function (): number|undefined{
-            var str: string = this.valueOf()
+            var str: string = this
             return Number.isNaN(Number(str))?undefined:Number(str)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toBigInt: {
+        value: function toBigInt(): bigint{
+            var str: string = this
+            return Number.isNaN(Number(str))?undefined:BigInt(this)
         },
         configurable: true,
         enumerable: true,
@@ -464,7 +483,7 @@ Object.defineProperties(Number.prototype, {
     },
     toBoolean: {
         value: function toBoolean(): boolean{
-            return Number.isNaN(this)?false:((this/2).round()==1)
+            return Number.isNaN(this)?false:((this%2).round()==1)
         },
         configurable: true,
         enumerable: true,
@@ -507,7 +526,7 @@ Object.defineProperties(Number.prototype, {
     },
     isEven: {
         value: function isEven(): boolean{
-            return Number.isNaN(this)?false:((this/2).round()==0)
+            return Number.isNaN(this)?false:((this%2).round()==0)
         },
         configurable: true,
         enumerable: true,
@@ -515,7 +534,7 @@ Object.defineProperties(Number.prototype, {
     },
     isOdd: {
         value: function isOdd(): boolean{
-            return Number.isNaN(this)?false:((this/2).round()==1)
+            return Number.isNaN(this)?false:((this%2).round()==1)
         },
         configurable: true,
         enumerable: true,
@@ -545,6 +564,107 @@ Object.defineProperties(Number.prototype, {
         enumerable: true,
         writable: true
     }
+});
+Object.defineProperties(BigInt.prototype, {
+    toNumber: {
+        value: function toNumber(): number{
+            return this
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toBigInt: {
+        value: function toBigInt(): bigint{
+            return BigInt(this)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toBoolean: {
+        value: function toBoolean(): boolean{
+            return Number.isNaN(this)?false:((this%2n)==1n)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toRomanNumerals: {
+        value: function toRomanNumerals(limits: [min: bigint, max: bigint] = [1n, 10n], valueFor0n: string = "0"): string{
+            if((this>limits[1])||(this<limits[0])){return (this as bigint).toString()}
+            var romanMatrix = [
+                [1000n, 'M'],
+                [900n, 'CM'],
+                [500n, 'D'],
+                [400n, 'CD'],
+                [100n, 'C'],
+                [90n, 'XC'],
+                [50n, 'L'],
+                [40n, 'XL'],
+                [10n, 'X'],
+                [9n, 'IX'],
+                [5n, 'V'],
+                [4n, 'IV'],
+                [1n, 'I']
+              ] as const;
+              
+              function convertToRoman(num: bigint): string {
+                if (num === 0n) {
+                  return valueFor0n;
+                }
+                for (var i = 0; i < romanMatrix.length; i++) {
+                  if (num >= romanMatrix[i][0]) {
+                    return romanMatrix[i][1] + convertToRoman(num - romanMatrix[i][0]);
+                  }
+                }
+              }
+              return (((this as bigint)<0)?"-":"")+convertToRoman((this as bigint).toBigInt())
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    isEven: {
+        value: function isEven(): boolean{
+            return (this%2n)==0n
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    isOdd: {
+        value: function isOdd(): boolean{
+            return (this%2n)==1n
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    }/*,
+    floor: {
+        value: function (): number{
+            return Math.floor(this)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    round: {
+        value: function (): number{
+            return Math.round(this)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    ceil: {
+        value: function (): number{
+            return Math.ceil(this)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    }*/
 });
 Object.defineProperties(Boolean.prototype, {/*
     toString: {

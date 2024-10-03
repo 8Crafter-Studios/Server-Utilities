@@ -258,7 +258,7 @@ export function JSONParse(JSONString: string, keepUndefined: boolean = true) {
     a = recursiveFind(a);
     return a;
 };
-export function JSONStringify(JSONObject: Object, keepUndefined: boolean = false, space?: string|number) {
+export function JSONStringify(JSONObject: any, keepUndefined: boolean = false, space?: string|number) {
     if(JSONObject==undefined){return keepUndefined?"undefined":""}
     return JSON.stringify(JSONObject, function(k, v) {
         if (v === Infinity) return "{{Infinity}}";

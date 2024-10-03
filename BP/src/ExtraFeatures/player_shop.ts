@@ -129,7 +129,7 @@ export class PlayerShop{
                 if(r.selection==data.length){this.openShop(player, "both"); return}
                 const item = data[r.selection]
                 if(item.type=="player_shop_item"){
-                    this.sellItem(player, item).then(v=>{
+                    this.sellItem(player, item, [mode], r.selection).then(v=>{
                         if(v==1){this.openShop(player, "sell")}
                     })
                 }else if(item.type=="player_shop_page"){
@@ -152,7 +152,7 @@ export class PlayerShop{
                 if(r.selection==data.length){this.openShop(player, "both"); return}
                 const item = data[r.selection]
                 if(item.type=="player_shop_item"){
-                    this.buyItem(player, item).then(v=>{
+                    this.buyItem(player, item, [mode], r.selection).then(v=>{
                         if(v==1){this.openShop(player, "buy")}
                     })
                 }else if(item.type=="player_shop_page"){
@@ -190,7 +190,7 @@ export class PlayerShop{
                 }
                 const item = newData[r.selection]
                 if(item.type=="player_shop_item"){
-                    this.sellItem(player, item).then(v=>{
+                    this.sellItem(player, item, path, r.selection).then(v=>{
                         if(v==1){this.openShopPage(player, data, path)}
                     })
                 }else if(item.type=="player_shop_page"){
@@ -217,7 +217,7 @@ export class PlayerShop{
                 }
                 const item = newData[r.selection]
                 if(item.type=="player_shop_item"){
-                    this.buyItem(player, item).then(v=>{
+                    this.buyItem(player, item, path, r.selection).then(v=>{
                         if(v==1){this.openShopPage(player, data, path)}
                     })
                 }else if(item.type=="player_shop_page"){
@@ -251,7 +251,7 @@ export class PlayerShop{
     static getIds(){
         return world.getDynamicPropertyIds().filter(v=>v.startsWith("playerShop:"))
     }
-    async buyItem(player: Player, item: PlayerSavedShopItem){
+    async buyItem(player: Player, item: PlayerSavedShopItem, path: ["buy"|"sell", ...(string|number)[]], itemIndex: number){
         try{
             const infoForm = new ActionFormData
             infoForm.title("Item Details")
@@ -304,6 +304,18 @@ ${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.m
                         }
                     )
                     entity.remove()
+                    item.remainingStock-=(r.formValues[0] as number)
+                    if(path[0]=="buy"){
+                        let data = this.buyData
+                        let newData = getPathInObject(data, path.slice(0, -2)).data as PlayerBuyableShopElement[]
+                        newData.splice(itemIndex, 1, item as PlayerSavedShopItem)
+                        this.buyData=data
+                    }else if(path[0]=="sell"){
+                        let data = this.sellData
+                        let newData = getPathInObject(data, path.slice(0, -2)).data as PlayerSellableShopElement[]
+                        newData.splice(itemIndex, 1, item as any)
+                        this.sellData=data
+                    }
 
                     player.getComponent("inventory").container.addItem(itemStack)
                     world.scoreboard.getObjective("andexdb:money").addScore(player, -(item.price*(r.formValues[0] as number)))
@@ -322,7 +334,7 @@ ${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.m
             }
         }catch(e){console.error(e, e.stack)}
     }
-    async sellItem(player: Player, item: PlayerSellableShopItem){
+    async sellItem(player: Player, item: PlayerSellableShopItem, path: ["buy"|"sell", ...(string|number)[]], itemIndex: number){
         try{
             const form = new ModalFormData
             form.title("Sell "+item.title)
@@ -405,6 +417,19 @@ ${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.m
                         try{player.sendMessage(e+" "+e?.stack)}catch{console.error(e, e?.stack)}
                     }finally{
                         entity.remove()
+                        item.amountWanted-=(r.formValues[0] as number)
+                        item.currentAmount+=(r.formValues[0] as number)
+                        if(path[0]=="buy"){
+                            let data = this.buyData
+                            let newData = getPathInObject(data, path.slice(0, -2)).data as PlayerBuyableShopElement[]
+                            newData.splice(itemIndex, 1, item as any)
+                            this.buyData=data
+                        }else if(path[0]=="sell"){
+                            let data = this.sellData
+                            let newData = getPathInObject(data, path.slice(0, -2)).data as PlayerSellableShopElement[]
+                            newData.splice(itemIndex, 1, item as PlayerSellableShopItem)
+                            this.sellData=data
+                        }
                     }
                     return 1
                     // this.openShop(player, "sell")

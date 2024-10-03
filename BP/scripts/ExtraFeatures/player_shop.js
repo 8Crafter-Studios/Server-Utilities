@@ -72,7 +72,7 @@ export class PlayerShop {
                 }
                 const item = data[r.selection];
                 if (item.type == "player_shop_item") {
-                    this.sellItem(player, item).then(v => {
+                    this.sellItem(player, item, [mode], r.selection).then(v => {
                         if (v == 1) {
                             this.openShop(player, "sell");
                         }
@@ -106,7 +106,7 @@ export class PlayerShop {
                 }
                 const item = data[r.selection];
                 if (item.type == "player_shop_item") {
-                    this.buyItem(player, item).then(v => {
+                    this.buyItem(player, item, [mode], r.selection).then(v => {
                         if (v == 1) {
                             this.openShop(player, "buy");
                         }
@@ -152,7 +152,7 @@ export class PlayerShop {
                 }
                 const item = newData[r.selection];
                 if (item.type == "player_shop_item") {
-                    this.sellItem(player, item).then(v => {
+                    this.sellItem(player, item, path, r.selection).then(v => {
                         if (v == 1) {
                             this.openShopPage(player, data, path);
                         }
@@ -187,7 +187,7 @@ export class PlayerShop {
                 }
                 const item = newData[r.selection];
                 if (item.type == "player_shop_item") {
-                    this.buyItem(player, item).then(v => {
+                    this.buyItem(player, item, path, r.selection).then(v => {
                         if (v == 1) {
                             this.openShopPage(player, data, path);
                         }
@@ -236,7 +236,7 @@ export class PlayerShop {
     static getIds() {
         return world.getDynamicPropertyIds().filter(v => v.startsWith("playerShop:"));
     }
-    async buyItem(player, item) {
+    async buyItem(player, item, path, itemIndex) {
         try {
             const infoForm = new ActionFormData;
             infoForm.title("Item Details");
@@ -257,7 +257,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             }
             if ((tryget(() => world.scoreboard.getObjective("andexdb:money").getScore(player)) ?? 0) >= (item.price * r.formValues[0])) {
                 if (item.itemType == "player_shop_saved") {
-                    world.structureManager.place(item.structureID, player.dimension, player.location, { includeBlocks: false, includeEntities: true });
+                    world.structureManager.place(item.structureID, player.dimension, Vector.add(player.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
                     const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == item.entityID);
                     if (!!!entity) {
                         throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${item.entityID} was found inside of the specified structure.`);
@@ -290,6 +290,19 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                         saveMode: StructureSaveMode.World
                     });
                     entity.remove();
+                    item.remainingStock -= r.formValues[0];
+                    if (path[0] == "buy") {
+                        let data = this.buyData;
+                        let newData = getPathInObject(data, path.slice(0, -2)).data;
+                        newData.splice(itemIndex, 1, item);
+                        this.buyData = data;
+                    }
+                    else if (path[0] == "sell") {
+                        let data = this.sellData;
+                        let newData = getPathInObject(data, path.slice(0, -2)).data;
+                        newData.splice(itemIndex, 1, item);
+                        this.sellData = data;
+                    }
                     player.getComponent("inventory").container.addItem(itemStack);
                     world.scoreboard.getObjective("andexdb:money").addScore(player, -(item.price * r.formValues[0]));
                     return 1;
@@ -313,7 +326,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             console.error(e, e.stack);
         }
     }
-    async sellItem(player, item) {
+    async sellItem(player, item, path, itemIndex) {
         try {
             const form = new ModalFormData;
             form.title("Sell " + item.title);
@@ -407,6 +420,20 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                     }
                     finally {
                         entity.remove();
+                        item.amountWanted -= r.formValues[0];
+                        item.currentAmount += r.formValues[0];
+                        if (path[0] == "buy") {
+                            let data = this.buyData;
+                            let newData = getPathInObject(data, path.slice(0, -2)).data;
+                            newData.splice(itemIndex, 1, item);
+                            this.buyData = data;
+                        }
+                        else if (path[0] == "sell") {
+                            let data = this.sellData;
+                            let newData = getPathInObject(data, path.slice(0, -2)).data;
+                            newData.splice(itemIndex, 1, item);
+                            this.sellData = data;
+                        }
                     }
                     return 1;
                     // this.openShop(player, "sell")

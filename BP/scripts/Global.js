@@ -214,8 +214,17 @@ Object.defineProperty(String.prototype, 'escapeCharactersB', {
 Object.defineProperties(String.prototype, {
     toNumber: {
         value: function () {
-            var str = this.valueOf();
+            var str = this;
             return Number.isNaN(Number(str)) ? undefined : Number(str);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toBigInt: {
+        value: function toBigInt() {
+            var str = this;
+            return Number.isNaN(Number(str)) ? undefined : BigInt(this);
         },
         configurable: true,
         enumerable: true,
@@ -261,7 +270,7 @@ Object.defineProperties(Number.prototype, {
     },
     toBoolean: {
         value: function toBoolean() {
-            return Number.isNaN(this) ? false : ((this / 2).round() == 1);
+            return Number.isNaN(this) ? false : ((this % 2).round() == 1);
         },
         configurable: true,
         enumerable: true,
@@ -305,7 +314,7 @@ Object.defineProperties(Number.prototype, {
     },
     isEven: {
         value: function isEven() {
-            return Number.isNaN(this) ? false : ((this / 2).round() == 0);
+            return Number.isNaN(this) ? false : ((this % 2).round() == 0);
         },
         configurable: true,
         enumerable: true,
@@ -313,7 +322,7 @@ Object.defineProperties(Number.prototype, {
     },
     isOdd: {
         value: function isOdd() {
-            return Number.isNaN(this) ? false : ((this / 2).round() == 1);
+            return Number.isNaN(this) ? false : ((this % 2).round() == 1);
         },
         configurable: true,
         enumerable: true,
@@ -343,6 +352,108 @@ Object.defineProperties(Number.prototype, {
         enumerable: true,
         writable: true
     }
+});
+Object.defineProperties(BigInt.prototype, {
+    toNumber: {
+        value: function toNumber() {
+            return this;
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toBigInt: {
+        value: function toBigInt() {
+            return BigInt(this);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toBoolean: {
+        value: function toBoolean() {
+            return Number.isNaN(this) ? false : ((this % 2n) == 1n);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toRomanNumerals: {
+        value: function toRomanNumerals(limits = [1n, 10n], valueFor0n = "0") {
+            if ((this > limits[1]) || (this < limits[0])) {
+                return this.toString();
+            }
+            var romanMatrix = [
+                [1000n, 'M'],
+                [900n, 'CM'],
+                [500n, 'D'],
+                [400n, 'CD'],
+                [100n, 'C'],
+                [90n, 'XC'],
+                [50n, 'L'],
+                [40n, 'XL'],
+                [10n, 'X'],
+                [9n, 'IX'],
+                [5n, 'V'],
+                [4n, 'IV'],
+                [1n, 'I']
+            ];
+            function convertToRoman(num) {
+                if (num === 0n) {
+                    return valueFor0n;
+                }
+                for (var i = 0; i < romanMatrix.length; i++) {
+                    if (num >= romanMatrix[i][0]) {
+                        return romanMatrix[i][1] + convertToRoman(num - romanMatrix[i][0]);
+                    }
+                }
+            }
+            return ((this < 0) ? "-" : "") + convertToRoman(this.toBigInt());
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    isEven: {
+        value: function isEven() {
+            return (this % 2n) == 0n;
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    isOdd: {
+        value: function isOdd() {
+            return (this % 2n) == 1n;
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    } /*,
+    floor: {
+        value: function (): number{
+            return Math.floor(this)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    round: {
+        value: function (): number{
+            return Math.round(this)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    ceil: {
+        value: function (): number{
+            return Math.ceil(this)
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true
+    }*/
 });
 Object.defineProperties(Boolean.prototype, {
     toNumber: {
