@@ -15,7 +15,7 @@ export function mainShopSystemSettings(sourceEntitya: Entity|executeCommandPlaye
     form.button("Player Shop\n"+(config.shopSystem.player.enabled?"§aEnabled":"§cDisabled"), "textures/ui/icon_multiplayer");
     form.button("§cSign Shop\n"+(config.shopSystem.sign.enabled?"§aEnabled":"§cDisabled"), "textures/ui/icon_sign");
     form.button("Back", "textures/ui/arrow_left");
-    forceShow(form, (sourceEntity as Player)).then(r => {
+    forceShow(form, (sourceEntity as Player)).then(async r => {
         if (r.canceled) return;
 
         let response = r.selection;
@@ -24,7 +24,8 @@ export function mainShopSystemSettings(sourceEntitya: Entity|executeCommandPlaye
                 ServerShopManager.serverShopSystemSettings(sourceEntity)
             break;
             case 1:
-                PlayerShopManager.playerShopSystemSettings(sourceEntity)
+                await PlayerShopManager.playerShopSystemSettings(sourceEntity)
+                mainShopSystemSettings(sourceEntity)
             break;
             case 2:
                 showMessage(sourceEntity as Player, undefined, "§cSorry, the sign shop system does not exist yet.", "Back", "Close").then(r=>{

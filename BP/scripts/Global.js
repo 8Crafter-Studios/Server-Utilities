@@ -1,4 +1,7 @@
+import { system } from "@minecraft/server";
 import { Entity } from "@minecraft/server";
+import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
+import { forceShow } from "Main/ui";
 ;
 Object.defineProperty(String.prototype, 'escapeCharacters', {
     value: function (js, unicode, nullchar, uri, quotes, general, colon, x, s) {
@@ -215,7 +218,7 @@ Object.defineProperties(String.prototype, {
     toNumber: {
         value: function () {
             var str = this;
-            return Number.isNaN(Number(str)) ? undefined : Number(str);
+            return Number.isNaN(Number(str)) ? str.toLowerCase() == "infinity" ? Infinity : str.toLowerCase() == "-infinity" ? -Infinity : undefined : Number(str);
         },
         configurable: true,
         enumerable: true,
@@ -580,6 +583,51 @@ Object.defineProperties(Boolean.prototype, {
 Object.defineProperty(Error.prototype, 'stringify', {
     value: function stringify() {
         return this + " " + this.stack;
-    }
+    },
+    configurable: true,
+    enumerable: true,
+    writable: true
+});
+Object.defineProperty(ActionFormData.prototype, 'forceShow', {
+    value: async function forceShow(player, timeout) {
+        const timeoutTicks = system.currentTick + (timeout ?? 9999);
+        while (system.currentTick <= timeoutTicks) {
+            const r = await this.show(player);
+            if (r.cancelationReason != "UserBusy" || r.canceled == false) {
+                return r;
+            }
+        }
+    },
+    configurable: true,
+    enumerable: true,
+    writable: true
+});
+Object.defineProperty(ModalFormData.prototype, 'forceShow', {
+    value: async function forceShow(player, timeout) {
+        const timeoutTicks = system.currentTick + (timeout ?? 9999);
+        while (system.currentTick <= timeoutTicks) {
+            const r = await this.show(player);
+            if (r.cancelationReason != "UserBusy" || r.canceled == false) {
+                return r;
+            }
+        }
+    },
+    configurable: true,
+    enumerable: true,
+    writable: true
+});
+Object.defineProperty(MessageFormData.prototype, 'forceShow', {
+    value: async function forceShow(player, timeout) {
+        const timeoutTicks = system.currentTick + (timeout ?? 9999);
+        while (system.currentTick <= timeoutTicks) {
+            const r = await this.show(player);
+            if (r.cancelationReason != "UserBusy" || r.canceled == false) {
+                return r;
+            }
+        }
+    },
+    configurable: true,
+    enumerable: true,
+    writable: true
 });
 //# sourceMappingURL=Global.js.map

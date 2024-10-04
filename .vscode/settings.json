@@ -1,4 +1,5 @@
 {
     "problems.showCurrentInStatus": true,
-    "editor.suggest.showStatusBar": true
+    "editor.suggest.showStatusBar": true,
+    "typescript.tsserver.maxTsServerMemory": 40000
 }

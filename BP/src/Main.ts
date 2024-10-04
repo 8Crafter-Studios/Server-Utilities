@@ -280,10 +280,19 @@ export class config{
     static set protectedAreasRefreshRate(protectedAreasRefreshRate: number|undefined){world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate))?20:Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate??20))))}
     static get playerDataRefreshRate(){return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 5)}
     static set playerDataRefreshRate(playerDataRefreshRate: number|undefined){world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate))?5:Math.min(1000, Math.max(1, Number(playerDataRefreshRate??5))))}
+    /**
+     * @todo Move to {@link config.ui.pages}.
+     */
     static get maxPlayersPerManagePlayersPage(){return Number(world.getDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage") ?? 10)}
     static set maxPlayersPerManagePlayersPage(maxPlayersPerManagePlayersPage: number|undefined){world.setDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage", Math.min(1000, Math.max(1, maxPlayersPerManagePlayersPage??10)))}
+    /**
+     * @todo Move to {@link config.ui.pages}.
+     */
     static get maxBansPerManageBansPage(){return Number(world.getDynamicProperty("andexdbSettings:maxBansPerManageBansPage") ?? 10)}
     static set maxBansPerManageBansPage(maxBansPerManageBansPage: number|undefined){world.setDynamicProperty("andexdbSettings:maxBansPerManageBansPage", maxBansPerManageBansPage??10)}
+    /**
+     * @todo Move to {@link config.ui.pages}.
+     */
     static get maxHomesPerManageHomesPage(){return Number(world.getDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage") ?? 10)}
     static set maxHomesPerManageHomesPage(maxHomesPerManageHomesPage: number|undefined){world.setDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage", maxHomesPerManageHomesPage??10)}
     static get artificialLagMS(){return Number(world.getDynamicProperty("andexdbSettings:artificialLagMS") ?? 0)}
@@ -482,6 +491,24 @@ export class config{
                 return {
                     get enabled(){return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:sign.enabled") ?? false)},
                     set enabled(enabled: boolean|undefined){world.setDynamicProperty("andexdbShopSystemSettings:sign.enabled", enabled??false)}
+                }
+            }
+        }
+    }
+    static get ui(){
+        return {
+            get main(){
+                return {
+                }
+            },
+            get pages(){
+                return {
+                }
+            },
+            get other(){
+                return {
+                    get useStarWarsReference404Page(){return Boolean(world.getDynamicProperty("andexdbUISettings:other.useStarWarsReference404Page") ?? false)},
+                    set useStarWarsReference404Page(useStarWarsReference404Page: boolean|undefined){world.setDynamicProperty("andexdbUISettings:other.useStarWarsReference404Page", useStarWarsReference404Page??false)}
                 }
             }
         }

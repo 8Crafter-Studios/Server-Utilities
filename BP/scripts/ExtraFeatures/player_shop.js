@@ -19,6 +19,7 @@ export class PlayerShop {
         this.buyShop = config.buyShop ?? true;
         this.publicShop = config.publicShop ?? false;
         this.playerID = config.playerID;
+        this.playerName = config.playerName;
     }
     save() {
         world.setDynamicProperty(this.id, JSON.stringify({
@@ -29,25 +30,30 @@ export class PlayerShop {
             sellShop: this.sellShop,
             buyShop: this.buyShop,
             publicShop: this.publicShop,
-            playerID: this.playerID
+            playerID: this.playerID,
+            playerName: this.playerName
         }));
     }
-    openShop(player, mode = (this.sellShop && this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both") {
+    async openShop(player, mode = (this.sellShop && this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both") {
         if (mode == "both") {
             const form = new ActionFormData;
             form.title(this.title);
+            form.body(`Shop Owner: ${this.playerName}`);
             form.button("Buy");
             form.button("Sell");
             form.button("Cancel");
-            forceShow(form, player).then(r => {
+            return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true || r.selection == 2) {
-                    return;
+                    return 1;
                 }
                 if (r.selection == 0) {
-                    this.openShop(player, "buy");
+                    return await this.openShop(player, "buy");
                 }
                 else if (r.selection == 1) {
-                    this.openShop(player, "sell");
+                    return await this.openShop(player, "sell");
+                }
+                else {
+                    return 1;
                 }
             });
         }
@@ -64,24 +70,27 @@ export class PlayerShop {
             if (this.buyShop) {
                 form.button("Back");
             }
-            forceShow(form, player).then(r => {
+            return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true) {
-                    return;
+                    return 1;
                 }
                 if (r.selection == data.length) {
-                    this.openShop(player, "both");
-                    return;
+                    return 1;
                 }
                 const item = data[r.selection];
                 if (item.type == "player_shop_item") {
-                    this.sellItem(player, item, [mode], r.selection).then(v => {
-                        if (v == 1) {
-                            this.openShop(player, "sell");
-                        }
-                    });
+                    if ((await this.sellItem(player, item, [mode], r.selection) /*.then(v=>{
+                        if(v==1){return 1}
+                    })*/) == 1) {
+                        return await this.openShop(player, mode);
+                    }
+                    else {
+                        return 0;
+                    }
                 }
                 else if (item.type == "player_shop_page") {
-                    this.openShopPage(player, data, ["sell", String(r.selection)]);
+                    await this.openShopPage(player, data, ["sell", String(r.selection)]);
+                    return await this.openShop(player, mode);
                 }
             });
         }
@@ -98,37 +107,44 @@ export class PlayerShop {
             if (this.sellShop) {
                 form.button("Back");
             }
-            forceShow(form, player).then(r => {
+            return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true) {
-                    return;
+                    return 1;
                 }
                 if (r.selection == data.length) {
-                    this.openShop(player, "both");
-                    return;
+                    return 1;
                 }
                 const item = data[r.selection];
                 if (item.type == "player_shop_item") {
-                    this.buyItem(player, item, [mode], r.selection).then(v => {
-                        if (v == 1) {
-                            this.openShop(player, "buy");
-                        }
-                    });
+                    if ((await this.buyItem(player, item, [mode], r.selection) /*.then(v=>{
+                        if(v==1){this.openShop(player, "buy")}
+                    }*/) == 1) {
+                        return await this.openShop(player, mode);
+                    }
+                    else {
+                        return 0;
+                    }
                 }
                 else if (item.type == "player_shop_page") {
-                    this.openShopPage(player, data, ["buy", String(r.selection)]);
+                    if ((await this.openShopPage(player, data, ["buy", String(r.selection)])) == 1) {
+                        return await this.openShop(player, mode);
+                    }
+                    else {
+                        return 0;
+                    }
                 }
             });
         }
         else if (mode == "none") {
             const form = new MessageFormData;
-            form.title("404: Invalid Page");
-            form.body("The page you are looking for does not exist. ");
+            form.title(config.ui.other.useStarWarsReference404Page ? "404: A Jedi has altered your mind." : "404: Invalid Page");
+            form.body(config.ui.other.useStarWarsReference404Page ? "Jedi: This is not the page you are looking for." : "The page you are looking for does not exist. ");
             form.button1("Ok");
             form.button2("Cancel");
-            forceShow(form, player);
+            return ((await forceShow(form, player)).selection == 0).toNumber();
         }
     }
-    openShopPage(player, data, path) {
+    async openShopPage(player, data, path) {
         const mode = path[0];
         if (mode == "sell") {
             const form = new ActionFormData;
@@ -138,30 +154,36 @@ export class PlayerShop {
                 form.button(v.title, v.texture);
             });
             form.button("Back");
-            forceShow(form, player).then(r => {
+            return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true) {
-                    return;
+                    return 1;
                 }
-                if (r.selection == newData.length) {
-                    if (path.slice(0, -1).length == 1) {
-                        this.openShop(player, "sell");
-                    }
-                    else {
-                        this.openShopPage(player, data, path.slice(0, -2));
-                    }
-                    ;
-                    return;
+                if (r.selection == newData.length) { /*
+                    if(path.slice(0, -1).length==1){
+                        this.openShop(player, "sell")
+                    }else{
+                        this.openShopPage(player, data, path.slice(0, -2) as [typeof path[0], ...string[]])
+                    };*/
+                    return 1;
                 }
                 const item = newData[r.selection];
                 if (item.type == "player_shop_item") {
-                    this.sellItem(player, item, path, r.selection).then(v => {
-                        if (v == 1) {
-                            this.openShopPage(player, data, path);
-                        }
-                    });
+                    if ((await this.sellItem(player, item, path, r.selection) /*.then(v=>{
+                        if(v==1){this.openShopPage(player, data, path)}
+                    })*/) == 1) {
+                        return await this.openShopPage(player, data, path);
+                    }
+                    else {
+                        return 0;
+                    }
                 }
                 else if (item.type == "player_shop_page") {
-                    this.openShopPage(player, data, [...path, "data", String(r.selection)]);
+                    if ((await this.openShopPage(player, data, [...path, "data", String(r.selection)])) == 1) {
+                        return await this.openShopPage(player, data, path);
+                    }
+                    else {
+                        return 0;
+                    }
                 }
             });
         }
@@ -173,30 +195,36 @@ export class PlayerShop {
                 form.button(v.title, v.texture);
             });
             form.button("Back");
-            forceShow(form, player).then(r => {
+            return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true) {
-                    return;
+                    return 1;
                 }
-                if (r.selection == newData.length) {
-                    if (path.slice(0, -1).length == 1) {
-                        this.openShop(player, "buy");
-                    }
-                    else {
-                        this.openShopPage(player, data, path.slice(0, -2));
-                    }
-                    ;
-                    return;
+                if (r.selection == newData.length) { /*
+                    if(path.slice(0, -1).length==1){
+                        this.openShop(player, "buy")
+                    }else{
+                        this.openShopPage(player, data, path.slice(0, -2) as [typeof path[0], ...string[]])
+                    };*/
+                    return 1;
                 }
                 const item = newData[r.selection];
                 if (item.type == "player_shop_item") {
-                    this.buyItem(player, item, path, r.selection).then(v => {
-                        if (v == 1) {
-                            this.openShopPage(player, data, path);
-                        }
-                    });
+                    if ((await this.buyItem(player, item, path, r.selection) /*.then(v=>{
+                        if(v==1){this.openShopPage(player, data, path)}
+                    })*/) == 1) {
+                        return await this.openShopPage(player, data, path);
+                    }
+                    else {
+                        return 0;
+                    }
                 }
                 else if (item.type == "player_shop_page") {
-                    this.openShopPage(player, data, [...path, "data", String(r.selection)]);
+                    if ((await this.openShopPage(player, data, [...path, "data", String(r.selection)])) == 1) {
+                        return await this.openShopPage(player, data, path);
+                    }
+                    else {
+                        return 0;
+                    }
                 }
             });
         }
@@ -237,6 +265,12 @@ export class PlayerShop {
     }
     static getIds() {
         return world.getDynamicPropertyIds().filter(v => v.startsWith("playerShop:"));
+    }
+    static getIdsForPlayer(playerID) {
+        return world.getDynamicPropertyIds().filter(v => v.startsWith("playerShop:" + playerID + ":"));
+    }
+    static getAllForPlayer(playerID) {
+        return this.getIdsForPlayer(playerID).map(v => new PlayerShop(JSON.parse(String(world.getDynamicProperty(v)))));
     }
     async buyItem(player, item, path, itemIndex) {
         try {
@@ -290,7 +324,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                 }
             }
             if (item.remainingStock == 0) {
-                return (await showMessage(player, "Out Of Stock", "This item is out of stock.", "Go Back", "Close Shop")).selection == 0;
+                return ((await showMessage(player, "Out Of Stock", "This item is out of stock.", "Go Back", "Close Shop")).selection == 0).toNumber();
             }
             const form = new ModalFormData;
             form.title("Buy " + item.title);
@@ -346,7 +380,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                         MoneySystem.get(item.playerID).addMoney(item.price * r.formValues[0]);
                     }
                     catch (e) {
-                        return (await showMessage(player, "An Error Has Occured", e instanceof Error ? e.stringify() : e + " " + e?.stack, "Go Back", "Close Shop")).selection == 0;
+                        return ((await showMessage(player, "An Error Has Occured", e instanceof Error ? e.stringify() : e + " " + e?.stack, "Go Back", "Close Shop")).selection == 0).toNumber();
                     }
                     finally {
                         try {
@@ -512,7 +546,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                     }
                     catch (e) {
                         if (e instanceof StorageFullError) {
-                            return (await showMessage(player, "Out Of Storage", e.message, "Go Back", "Close Shop")).selection == 0;
+                            return ((await showMessage(player, "Out Of Storage", e.message, "Go Back", "Close Shop")).selection == 0).toNumber();
                         }
                         try {
                             player.sendMessage(e + " " + e?.stack);
@@ -565,127 +599,167 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             console.error(e, e.stack);
         }
     }
-    static openPublicShopsSelector(sourceEntitya) {
+    static async openPublicShopsSelector(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
-        form.title("Public Player Shops");
+        form.title("Player Shops");
         const shopsList = (PlayerShop.getAll() ?? []).filter(s => s.publicShop == true);
         if (shopsList.length == 0) {
-            form.body("There are currently no publicly available player shops.");
+            form.body("There are currently no player shops.");
         }
         shopsList.forEach(s => {
             form.button(s.name ?? s.title ?? s.id);
         });
+        form.button("Manage My Shops", "textures/ui/book_edit");
+        if (sourceEntity.hasTag("admin")) {
+            form.button("Manage All Shops\n§cAdmins Only", "textures/ui/op_crown");
+            form.button("Player Shop System Settings\n§cAdmins Only", "textures/ui/icon_setting");
+        }
         form.button("Close", "textures/ui/crossout"); /*
         form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
-        forceShow(form, sourceEntity).then(r => {
+        return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return;
+                return 1;
             let response = r.selection;
             switch (response) {
                 case shopsList.length:
-                    return;
+                    await PlayerShopManager.managePlayerShops(sourceEntity, false);
+                    return await PlayerShop.openPublicShopsSelector(sourceEntity);
+                    break;
+                case sourceEntity.hasTag("admin") ? shopsList.length + 1 : -1:
+                    await PlayerShopManager.managePlayerShops(sourceEntity, true);
+                    return await PlayerShop.openPublicShopsSelector(sourceEntity);
+                    break;
+                case sourceEntity.hasTag("admin") ? shopsList.length + 2 : -2:
+                    await PlayerShopManager.playerShopSystemSettings(sourceEntity);
+                    return await PlayerShop.openPublicShopsSelector(sourceEntity);
+                    break;
+                case shopsList.length + 1 + (+sourceEntity.hasTag("admin")) * 2:
+                    return 1;
                     break;
                 default:
-                    shopsList[response].openShop(sourceEntity);
+                    await shopsList[response].openShop(sourceEntity);
+                    return await PlayerShop.openPublicShopsSelector(sourceEntity);
             }
         }).catch(e => {
             console.error(e, e.stack);
+            return 0;
         });
     }
 }
 export class PlayerShopManager {
     static get playerShopItemTextureHint() { return this.playerShopItemTextureHints[Math.floor(Math.random() * this.playerShopItemTextureHints.length)]; }
     static get playerShopPageTextureHint() { return this.playerShopPageTextureHints[Math.floor(Math.random() * this.playerShopPageTextureHints.length)]; }
-    static playerShopSystemSettings(sourceEntitya) {
+    static async playerShopSystemSettings(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
         form.title("Player Shop System");
         form.body("The player shop system is " + (config.shopSystem.player.enabled ? "§aEnabled" : "§cDisabled"));
-        form.button("Manage Shops", "textures/ui/store_home_icon");
+        form.button("Manage Your Shops", "textures/ui/store_home_icon");
+        form.button("Manage All Shops", "textures/ui/store_home_icon");
         form.button("Main Settings", "textures/ui/icon_setting");
         form.button("§cShop Item Settings", "textures/ui/icon_items");
         form.button("Back", "textures/ui/arrow_left");
-        forceShow(form, sourceEntity).then(r => {
+        return await forceShow(form, sourceEntity).then(async (r) => {
             if (r.canceled)
-                return;
+                return 1;
             let response = r.selection;
             switch (response) {
                 case 0:
-                    PlayerShopManager.managePlayerShops(sourceEntity);
+                    await PlayerShopManager.managePlayerShops(sourceEntity, false);
+                    return await PlayerShopManager.playerShopSystemSettings(sourceEntity);
                     break;
                 case 1:
-                    PlayerShopManager.playerShopSystemSettings_main(sourceEntity);
+                    await PlayerShopManager.managePlayerShops(sourceEntity, true);
+                    return await PlayerShopManager.playerShopSystemSettings(sourceEntity);
                     break;
                 case 2:
-                    showMessage(sourceEntity, undefined, "§cSorry, the shop item does not exist yet.", "Back", "Close").then(r => {
+                    await PlayerShopManager.playerShopSystemSettings_main(sourceEntity);
+                    return await PlayerShopManager.playerShopSystemSettings(sourceEntity);
+                    break;
+                case 3:
+                    return await showMessage(sourceEntity, undefined, "§cSorry, the shop item does not exist yet.", "Back", "Close").then(async (r) => {
                         if (r.selection == 0) {
-                            PlayerShopManager.playerShopSystemSettings(sourceEntity);
+                            return await PlayerShopManager.playerShopSystemSettings(sourceEntity);
                         }
+                        return 0;
                     });
                     // shopItemSettings(sourceEntity)
                     break;
-                case 3:
-                    mainShopSystemSettings(sourceEntity);
+                case 4:
+                    // mainShopSystemSettings(sourceEntity)
+                    return 1;
                     break;
                 default:
+                    return 0;
             }
         }).catch(e => {
             console.error(e, e.stack);
+            return 0;
         });
     }
-    static playerShopSystemSettings_main(sourceEntitya) {
+    static async playerShopSystemSettings_main(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form2 = new ModalFormData();
         form2.title(`Player Shop System Settings`);
         form2.toggle(`§l§fEnabled§r§f\nWhether or not the player shop system is enabled, default is false`, config.shopSystem.player.enabled);
+        form2.toggle(`§l§fAllow Selling Slot Locked Items§r§f\nWhether or players can sell items that are locked to a specific slot in their inventory, default is false`, config.shopSystem.player.allowSellingLockInSlotItems);
+        form2.toggle(`§l§fAllow Selling Inventory Locked Items§r§f\nWhether or players can sell items that are locked to inventory, default is false`, config.shopSystem.player.allowSellingLockInInventoryItems);
+        form2.toggle(`§l§fAllow Selling Keep On Death Items§r§f\nWhether or players can sell items that have the keep on death property set to true, default is true`, config.shopSystem.player.allowSellingKeepOnDeathItems);
+        form2.textField(`§l§fMax Shops Per Player§r§f\nThe maximum number of shops each player can have, default is 5`, config.shopSystem.player.maxShopsPerPlayer.toString());
         form2.submitButton("Save");
-        forceShow(form2, sourceEntity).then(t => {
+        return await forceShow(form2, sourceEntity).then(t => {
             if (t.canceled) {
-                PlayerShopManager.playerShopSystemSettings(sourceEntity);
-                return;
+                return 1;
             }
             ;
-            let [enabled] = t.formValues;
+            let [enabled, allowSellingLockInSlotItems, allowSellingLockInInventoryItems, allowSellingKeepOnDeathItems, maxShopsPerPlayer] = t.formValues;
             config.shopSystem.player.enabled = enabled;
-            PlayerShopManager.playerShopSystemSettings(sourceEntity);
+            config.shopSystem.player.allowSellingLockInSlotItems = allowSellingLockInSlotItems;
+            config.shopSystem.player.allowSellingLockInInventoryItems = allowSellingLockInInventoryItems;
+            config.shopSystem.player.allowSellingKeepOnDeathItems = allowSellingKeepOnDeathItems;
+            config.shopSystem.player.maxShopsPerPlayer = maxShopsPerPlayer.toNumber();
+            return 1;
         }).catch(e => {
             console.error(e, e.stack);
+            return 1;
         });
     }
-    static managePlayerShops(sourceEntitya) {
+    static async managePlayerShops(sourceEntitya, all = false) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
         form.title("Manage Player Shops");
         form.body("The player shop system is " + (config.shopSystem.player.enabled ? "§aEnabled" : "§cDisabled"));
-        const shopsList = PlayerShop.getAll();
+        const shopsList = all ? PlayerShop.getAll() : PlayerShop.getAll().filter(v => v.playerID == sourceEntity.id);
         shopsList.forEach(s => {
             form.button(s.name ?? s.title ?? s.id);
         });
         form.button("New Shop", "textures/ui/color_plus");
         form.button("Back", "textures/ui/arrow_left"); /*
         form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
-        forceShow(form, sourceEntity).then(r => {
+        return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return;
             let response = r.selection;
             switch (response) {
                 case shopsList.length:
-                    PlayerShopManager.addPlayerShop(sourceEntity);
+                    return await PlayerShopManager.addPlayerShop(sourceEntity);
                     break;
                 case shopsList.length + 1:
-                    PlayerShopManager.playerShopSystemSettings(sourceEntity);
+                    return 1;
+                    // await PlayerShopManager.playerShopSystemSettings(sourceEntity) as 0|1
                     break;
                 default:
-                    PlayerShopManager.managePlayerShop(sourceEntity, shopsList[response]);
+                    return await PlayerShopManager.managePlayerShop(sourceEntity, shopsList[response]);
             }
         }).catch(e => {
             console.error(e, e.stack);
+            return 1;
         });
     }
-    static addPlayerShop(sourceEntitya) {
+    static async addPlayerShop(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form2 = new ModalFormData();
         form2.title(`Player Shop System Settings`);
@@ -697,13 +771,12 @@ export class PlayerShopManager {
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, true); /*
         form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewplayershops command, default is true`, true)*/
         form2.submitButton("Save");
-        forceShow(form2, sourceEntity).then(t => {
+        return await forceShow(form2, sourceEntity).then(async (t) => {
             if (t.canceled) {
-                PlayerShopManager.managePlayerShops(sourceEntity);
-                return;
+                return 1;
             }
             ;
-            let [id, name, title, mainPageBodyText, buyShop, sellShop, publicShop] = t.formValues;
+            let [id, name, title, mainPageBodyText, buyShop, sellShop /*, publicShop*/] = t.formValues;
             const shop = new PlayerShop({
                 id: `playerShop:${sourceEntity.id}:${id}`,
                 name: JSON.parse("\"" + (name.replaceAll("\"", "\\\"")) + "\""),
@@ -712,49 +785,51 @@ export class PlayerShopManager {
                 buyShop: buyShop,
                 sellShop: sellShop,
                 publicShop: true,
-                playerID: sourceEntity.id
+                playerID: sourceEntity.id,
+                playerName: sourceEntity.name ?? sourceEntity.nameTag
             });
             shop.save();
-            PlayerShopManager.managePlayerShop(sourceEntity, shop);
+            return 1;
         }).catch(e => {
             console.error(e, e.stack);
+            return 0;
         });
     }
-    static managePlayerShop(sourceEntitya, shop) {
+    static async managePlayerShop(sourceEntitya, shop) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
         form.title("Manage " + shop.title);
         form.body(`ID: ${shop.id}
-    Display Name: ${shop.name}
-    Title: ${shop.title}
-    Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
-    §fIs Sell Shop: ${shop.sellShop ? "§aTrue" : "§cFalse"}`);
+Display Name: ${shop.name}
+Title: ${shop.title}
+Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
+§rIs Sell Shop: ${shop.sellShop ? "§aTrue" : "§cFalse"}`);
         form.button("Manage Items/Pages", "textures/ui/color_plus");
         form.button("Shop Settings", "textures/ui/color_plus");
         form.button("View Shop", "textures/ui/color_plus");
         form.button("Back", "textures/ui/arrow_left");
-        forceShow(form, sourceEntity).then(async (r) => {
+        return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return;
+                return 1;
             let response = r.selection;
             switch (response) {
                 case 0:
                     if (shop.buyShop && shop.sellShop) {
-                        PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, (await showMessage(sourceEntity, "Manage Buy or Sell Shop", "Would you like to edit the buy shop or the sell shop?\nThe buy shop is where players buy items, while the sell shop is where players sell items.", "Edit Buy Shop", "Edit Sell Shop")).selection == 0 ? "buy" : "sell");
+                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, (await showMessage(sourceEntity, "Manage Buy or Sell Shop", "Would you like to edit the buy shop or the sell shop?\nThe buy shop is where players buy items, while the sell shop is where players sell items.", "Edit Buy Shop", "Edit Sell Shop")).selection == 0 ? "buy" : "sell");
                     }
                     else if (shop.buyShop) {
-                        PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, "buy");
+                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, "buy");
                     }
                     else if (shop.sellShop) {
-                        PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, "sell");
+                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, "sell");
                     }
                     else {
-                        showMessage(sourceEntity, "§cInvalid Shop Settings", "§cError: Invalid Shop Settings.\nA shop cannot have both the §eBuy Shop§c and §eSell Shop§c options disabled.", "Edit Buy Shop", "Edit Sell Shop");
+                        return (await showMessage(sourceEntity, "§cInvalid Shop Settings", "§cError: Invalid Shop Settings.\nA shop cannot have both the §eBuy Shop§c and §eSell Shop§c options disabled.", "Back", "Close")).selection == 0;
                     }
                     break;
                 case 1:
-                    PlayerShopManager.managePlayerShop_settings(sourceEntity, shop);
+                    return await PlayerShopManager.managePlayerShop_settings(sourceEntity, shop);
                     break;
                 case 2:
                     if (shop.buyShop && shop.sellShop) {
@@ -769,17 +844,21 @@ export class PlayerShopManager {
                     else {
                         shop.openShop(sourceEntity, "none");
                     }
+                    return 0;
                     break;
                 case 3:
-                    PlayerShopManager.managePlayerShops(sourceEntity);
+                    // PlayerShopManager.managePlayerShops(sourceEntity)
+                    return 1;
                     break;
                 default:
+                    return 0;
             }
         }).catch(e => {
             console.error(e, e.stack);
+            return 1;
         });
     }
-    static managePlayerShop_settings(sourceEntitya, shop) {
+    static async managePlayerShop_settings(sourceEntitya, shop) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form2 = new ModalFormData();
         form2.title(`${shop.title} Settings`);
@@ -790,10 +869,10 @@ export class PlayerShopManager {
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, shop.sellShop ?? true); /*
         form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewplayershops command, default is true`, shop.publicShop??true)*/
         form2.submitButton("Save");
-        forceShow(form2, sourceEntity).then(t => {
+        return await forceShow(form2, sourceEntity).then(async (t) => {
             if (t.canceled) {
                 PlayerShopManager.managePlayerShop(sourceEntity, shop);
-                return;
+                return 1;
             }
             ;
             let [name, title, mainPageBodyText, buyShop, sellShop /*, publicShop*/] = t.formValues;
@@ -804,12 +883,14 @@ export class PlayerShopManager {
             shop.sellShop = sellShop;
             shop.publicShop = shop.publicShop;
             shop.save();
-            PlayerShopManager.managePlayerShop(sourceEntity, shop);
+            // PlayerShopManager.managePlayerShop(sourceEntity, shop); 
+            return 1;
         }).catch(e => {
             console.error(e, e.stack);
+            return 1;
         });
     }
-    static managePlayerShop_contents(sourceEntitya, shop, mode = "buy") {
+    static async managePlayerShop_contents(sourceEntitya, shop, mode = "buy") {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
         form.title(`Manage ${shop.title ?? ""} Contents`);
@@ -822,9 +903,9 @@ export class PlayerShopManager {
         form.button("Add Item", "textures/ui/color_plus");
         form.button("Add Page", "textures/ui/color_plus");
         form.button("Back", "textures/ui/arrow_left");
-        forceShow(form, sourceEntity).then(async (r) => {
+        return await forceShow(form, sourceEntity).then(async (r) => {
             if (r.canceled)
-                return;
+                return 1;
             let response = r.selection;
             switch (response) {
                 case shopData.length:
@@ -891,33 +972,35 @@ export class PlayerShopManager {
                             newData.splice(itemIndexB, 0, itemB);
                             shop.sellData = newData;
                         }
-                        PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
                     }
                     else if (!!!type) {
-                        PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
                     }
                     else {
                         await PlayerShopManager.managePlayerShop_addItem(sourceEntity, shop, type, mode);
-                        PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
                     }
                     break;
                 case shopData.length + 1:
                     await PlayerShopManager.managePlayerShop_addPage(sourceEntity, shop, mode);
-                    PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                    return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
                     break;
                 case shopData.length + 2:
-                    PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    // PlayerShopManager.managePlayerShop(sourceEntity, shop)
+                    return 1;
                     break;
                 default:
                     shopData[response].type == "player_shop_item" ? await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, shopData[response], response, mode) : await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, shopData[response], response, mode);
-                    PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                    return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
             }
         }).catch(async (e) => {
             try {
-                await showMessage(sourceEntity, "§cError", `§c${e} ${e.stack}`, "Back", "Close");
+                return (await showMessage(sourceEntity, "§cError", `§c${e} ${e.stack}`, "Back", "Close")).selection == 0;
             }
             catch {
                 console.error(e, e.stack);
+                return 0;
             }
             ;
         });

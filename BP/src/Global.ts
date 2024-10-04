@@ -1,5 +1,8 @@
+import { system } from "@minecraft/server";
 import { type Player, Entity } from "@minecraft/server";
+import { ActionFormData, MessageFormData, ModalFormData, type ActionFormResponse, type MessageFormResponse, type ModalFormResponse } from "@minecraft/server-ui";
 import type { modules as modulesa } from "Main";
+import { forceShow } from "Main/ui";
 declare global {
     interface String {
         escapeCharacters(js?: boolean, unicode?: boolean, nullchar?: number, uri?: boolean, quotes?: boolean, general?: boolean, colon?: boolean, x?: boolean, s?: boolean): string;
@@ -290,6 +293,36 @@ declare module '@minecraft/server' {
     interface ItemStack {
         hasComponent(componentId: keyof ItemComponentTypeMap): boolean;
     }
+    interface ActionFormData {
+        /**
+         * Forces a form to show even if the player has another form or menu open.
+         * If the player has another form or menu open then it will wait until they close it.
+         * @param {Player} player The player to show the form to
+         * @param {number} timeout The number of ticks before the function will give up and throw an error, it defaults to 9999
+         * @returns {ActionFormResponse|undefined} The response of the form
+         */
+        forceShow(player: Player, timeout?: number): Promise<ActionFormResponse>
+    }
+    interface ModalFormData {
+        /**
+         * Forces a form to show even if the player has another form or menu open.
+         * If the player has another form or menu open then it will wait until they close it.
+         * @param {Player} player The player to show the form to
+         * @param {number} timeout The number of ticks before the function will give up and throw an error, it defaults to 9999
+         * @returns {ModalFormResponse|undefined} The response of the form
+         */
+        forceShow(player: Player, timeout?: number): Promise<ModalFormResponse>
+    }
+    interface MessageFormData {
+        /**
+         * Forces a form to show even if the player has another form or menu open.
+         * If the player has another form or menu open then it will wait until they close it.
+         * @param {Player} player The player to show the form to
+         * @param {number} timeout The number of ticks before the function will give up and throw an error, it defaults to 9999
+         * @returns {MessageFormResponse|undefined} The response of the form
+         */
+        forceShow(player: Player, timeout?: number): Promise<MessageFormResponse>
+    }
 }
 Object.defineProperty(String.prototype, 'escapeCharacters', {
     value: function (js: boolean, unicode: boolean, nullchar: number, uri: boolean, quotes: boolean, general: boolean, colon: boolean, x: boolean, s: boolean){
@@ -457,7 +490,7 @@ Object.defineProperties(String.prototype, {
     toNumber: {
         value: function (): number|undefined{
             var str: string = this
-            return Number.isNaN(Number(str))?undefined:Number(str)
+            return Number.isNaN(Number(str))?str.toLowerCase()=="infinity"?Infinity:str.toLowerCase()=="-infinity"?-Infinity:undefined:Number(str)
         },
         configurable: true,
         enumerable: true,
@@ -828,5 +861,44 @@ Object.defineProperties(Boolean.prototype, {/*
 Object.defineProperty(Error.prototype, 'stringify', {
     value: function stringify(){
         return this+" "+this.stack
-    }
+    },
+    configurable: true,
+    enumerable: true,
+    writable: true
+})
+Object.defineProperty(ActionFormData.prototype, 'forceShow', {
+    value: async function forceShow(player: Player, timeout?: number): Promise<ActionFormResponse> {
+        const timeoutTicks = system.currentTick + (timeout ?? 9999)
+        while (system.currentTick <= timeoutTicks){
+            const r = await (this as ActionFormData).show(player as any)
+            if(r.cancelationReason != "UserBusy"||r.canceled == false){return r as any}
+        }
+    },
+    configurable: true,
+    enumerable: true,
+    writable: true
+})
+Object.defineProperty(ModalFormData.prototype, 'forceShow', {
+    value: async function forceShow(player: Player, timeout?: number): Promise<ModalFormResponse> {
+        const timeoutTicks = system.currentTick + (timeout ?? 9999)
+        while (system.currentTick <= timeoutTicks){
+            const r = await (this as ModalFormData).show(player as any)
+            if(r.cancelationReason != "UserBusy"||r.canceled == false){return r as any}
+        }
+    },
+    configurable: true,
+    enumerable: true,
+    writable: true
+})
+Object.defineProperty(MessageFormData.prototype, 'forceShow', {
+    value: async function forceShow(player: Player, timeout?: number): Promise<MessageFormResponse> {
+        const timeoutTicks = system.currentTick + (timeout ?? 9999)
+        while (system.currentTick <= timeoutTicks){
+            const r = await (this as MessageFormData).show(player as any)
+            if(r.cancelationReason != "UserBusy"||r.canceled == false){return r as any}
+        }
+    },
+    configurable: true,
+    enumerable: true,
+    writable: true
 })
