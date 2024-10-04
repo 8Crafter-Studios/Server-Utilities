@@ -23,7 +23,6 @@ import * as cmdutils from "./command_utilities";
 import * as utils from "./utilities";
 import * as errors from "./errors";
 import mcMath from "@minecraft/math.js";
-import { tryget, tryrun } from "./utilities";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -101,7 +100,7 @@ import("Main").then(v => {
             catch (e) {
                 console.error(e, e.stack);
             }
-        }, v.config.protectedAreasRefreshRate ?? 20);
+        }, v.config.system.protectedAreasRefreshRate ?? 20);
     }
     catch (e) {
         console.error(e, e.stack);

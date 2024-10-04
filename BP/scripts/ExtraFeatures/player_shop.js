@@ -4,7 +4,7 @@ import { config, getPathInObject } from "Main";
 import { containerToContainerSlotArray, containerToItemStackArray } from "Main/command_utilities";
 import { command, executeCommandPlayerW } from "Main/commands";
 import { forceShow, itemSelector, settings, worldBorderSettingsDimensionSelector } from "Main/ui";
-import { getStringFromDynamicProperties, getSuperUniqueID, saveStringToDynamicProperties, showActions, showMessage, tryget, tryrun } from "Main/utilities";
+import { getStringFromDynamicProperties, getSuperUniqueID, saveStringToDynamicProperties, showActions, showMessage } from "Main/utilities";
 import { mainShopSystemSettings } from "./shop_main";
 import { Vector } from "Main/coordinates";
 import { MoneySystem } from "./money";
@@ -707,7 +707,7 @@ export class PlayerShopManager {
         form2.toggle(`§l§fAllow Selling Slot Locked Items§r§f\nWhether or players can sell items that are locked to a specific slot in their inventory, default is false`, config.shopSystem.player.allowSellingLockInSlotItems);
         form2.toggle(`§l§fAllow Selling Inventory Locked Items§r§f\nWhether or players can sell items that are locked to inventory, default is false`, config.shopSystem.player.allowSellingLockInInventoryItems);
         form2.toggle(`§l§fAllow Selling Keep On Death Items§r§f\nWhether or players can sell items that have the keep on death property set to true, default is true`, config.shopSystem.player.allowSellingKeepOnDeathItems);
-        form2.textField(`§l§fMax Shops Per Player§r§f\nThe maximum number of shops each player can have, default is 5`, config.shopSystem.player.maxShopsPerPlayer.toString());
+        form2.textField(`§l§fMax Shops Per Player§r§f\nThe maximum number of shops each player can have, setting it to -1 will result in there being no maximum, default is 5`, "5", config.shopSystem.player.maxShopsPerPlayer.toString());
         form2.submitButton("Save");
         return await forceShow(form2, sourceEntity).then(t => {
             if (t.canceled) {

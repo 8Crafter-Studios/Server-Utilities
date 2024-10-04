@@ -4,7 +4,7 @@ import { config, getPathInObject } from "Main";
 import { containerToContainerSlotArray, containerToItemStackArray } from "Main/command_utilities";
 import { command, executeCommandPlayerW } from "Main/commands";
 import { forceShow, itemSelector, settings, worldBorderSettingsDimensionSelector } from "Main/ui";
-import { getStringFromDynamicProperties, getSuperUniqueID, saveStringToDynamicProperties, showActions, showMessage, tryget, tryrun } from "Main/utilities";
+import { getStringFromDynamicProperties, getSuperUniqueID, saveStringToDynamicProperties, showActions, showMessage } from "Main/utilities";
 import { mainShopSystemSettings } from "./shop_main";
 import { Vector } from "Main/coordinates";
 import { MoneySystem } from "./money";

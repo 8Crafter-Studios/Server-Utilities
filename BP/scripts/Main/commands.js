@@ -6,7 +6,7 @@ import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
-import { JSONParse, JSONParseOld, JSONStringify, JSONStringifyOld, arrayify, asend, bsend, catchtry, cerror, cinfo, clamp24HoursTo12Hours, clog, utilsmetaimport, combineObjects, csend, cullEmpty, cullNull, cullUndefined, customModulo, cwarn, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, pasend, pbsend, pcsend, perror, psend, roundPlaceNumberObject, send, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, tryget, tryrun, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
+import { arrayify, clamp24HoursTo12Hours, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
 import { clearContainer, cmdutilsmetaimport, containerToContainerSlotArray, containerToItemStackArray, entityToContainerSlotArray, fillContainer, fillmodetypeenum, getPlayerHeldItemSlot, getPlayerselectedSlotIndex, getSlotFromParsedSlot, IllegalItemTypes, inventorySwap, inventorySwapB, inventorySwapC, itemJSONPropertiesEval, itemJSONPropertiesEvalCT, JunkItemTypes, OpItemTypes, parseSlot, rangeToIntArray, targetSelector, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListD, targetSelectorAllListE, targetSelectorB, EquipmentSlots, OtherEquipmentSlots, blockToContainerSlotArray, blockToContainerSlotListObject, blockToItemStackArray, componentTypeEnum, durabilityComponentTypeEnum, enchantableComponentTypeEnum, entityToContainerSlotArrayB, entityToContainerSlotListObject, entityToItemStackArray, equippableToContainerSlotArray, equippableToItemStackArray, getEntityHeldItemSlot, getEquipment, getInventory, propertyTypeEnum } from "./command_utilities";
 import * as GameTest from "@minecraft/server-gametest";
@@ -5277,7 +5277,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^home$/):
                 {
                     eventData.cancel = true;
-                    if (config.homeSystemEnabled) {
+                    if (config.homeSystem.homeSystemEnabled) {
                         let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);
                         let args = [...argsa.args, argsa.extra];
                         switch (String(args[1])) {
@@ -5350,7 +5350,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^gohome$/):
                 {
                     eventData.cancel = true;
-                    if (config.homeSystemEnabled) {
+                    if (config.homeSystem.homeSystemEnabled) {
                         let argsa = evaluateParameters(switchTestB, ["presetText"]);
                         if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == argsa.extra)) {
                             srun(() => player.teleport(Home.get("home:" + player.id + ":" + argsa.extra).location, { dimension: Home.get("home:" + player.id + ":" + argsa.extra).location.dimension }));
@@ -5380,14 +5380,25 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 {
                     eventData.cancel = true;
                     // /scriptevent andexdb:spawnSimulatedPlayer t§ee§as§ft §4P§dl§layer|~~~|overworld|~~~
-                    if (config.tpaSystemEnabled) {
+                    if (config.tpaSystem.tpaSystemEnabled) {
                         srun(() => {
                             let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args;
                             args[1].trim().startsWith("@");
                             let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player")[0];
                             if (!!target) {
                                 //requestChatInput(player, "a").then(v=>psend(player, "as")); srun(()=>requestChatInput(player, "b").then(v=>psend(player, "bs"))); 
-                                requestConditionalChatInput(target, (player, message) => (message.toLowerCase().trim() == "y" || message.toLowerCase().trim() == "n"), { requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.`, expireMs: 60000 }).then(t => {
+                                player.sendMessage(`§aSent a teleport request to "${target.name}".`);
+                                requestConditionalChatInput(target, (player, message) => message.toLowerCase().trim() == "y" || message.toLowerCase().trim() == "n", {
+                                    requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in ${config.tpaSystem.timeoutDuration == 60
+                                        ? "1 minute"
+                                        : (config.tpaSystem.timeoutDuration / 60).floor() == 1
+                                            ? `1 minute and ${(config.tpaSystem.timeoutDuration % 60).floor()} second${(config.tpaSystem.timeoutDuration % 60).floor() != 1 ? "s" : ""}`
+                                            : (config.tpaSystem.timeoutDuration / 60).floor() == 0
+                                                ? `${(config.tpaSystem.timeoutDuration % 60).floor()} second${(config.tpaSystem.timeoutDuration % 60).floor() != 1 ? "s" : ""}`
+                                                : `${(config.tpaSystem.timeoutDuration / 60).floor()} minutes and ${(config.tpaSystem.timeoutDuration % 60).floor()} second${(config.tpaSystem.timeoutDuration % 60).floor() != 1 ? "s" : ""}`}.`,
+                                    expireMs: config.tpaSystem.timeoutDuration * 1000,
+                                })
+                                    .then((t) => {
                                     if (t.toLowerCase().trim() == "y") {
                                         player.teleport(target.location, { dimension: target.dimension });
                                         target.sendMessage(`§aAccepted teleport request from "${player.name}".`);
@@ -5397,16 +5408,19 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                         target.sendMessage(`§cDenied "${player.name}"'s teleport request.`);
                                         player.sendMessage(`§c"${target.name}" denied your teleport request.`);
                                     }
-                                }).catch(e => { if (e instanceof TimeoutError) {
-                                    psend(target, `§c${player.name}'s teleport request timed out.`);
-                                    psend(player, `§cThe teleport request to ${target.name} timed out.`);
-                                }
-                                else if (e instanceof ExpireError) {
-                                    psend(target, `§c${player.name}'s teleport request expired.`);
-                                    psend(player, `§cThe teleport request to ${target.name} expired.`);
-                                }
-                                else
-                                    psend(player, "§c" + e + " " + e.stack); });
+                                })
+                                    .catch((e) => {
+                                    if (e instanceof TimeoutError) {
+                                        psend(target, `§c${player.name}'s teleport request timed out.`);
+                                        psend(player, `§cThe teleport request to ${target.name} timed out.`);
+                                    }
+                                    else if (e instanceof ExpireError) {
+                                        psend(target, `§c${player.name}'s teleport request expired.`);
+                                        psend(player, `§cThe teleport request to ${target.name} expired.`);
+                                    }
+                                    else
+                                        psend(player, "§c" + e + " " + e.stack);
+                                });
                             }
                             else {
                                 player.sendMessage(`§cError: Unable to find player.`);
@@ -5420,7 +5434,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 break; /*
             case !!switchTest.match(/^tpablock$/): {
                 eventData.cancel = true;
-                if(config.tpaSystemEnabled){
+                if(config.tpaSystem.tpaSystemEnabled){
                     srun(()=>{
                     let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args
                     let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v=>v.typeId=="minecraft:player")[0] as Player

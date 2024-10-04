@@ -23,7 +23,6 @@ import *  as cmdutils from "./command_utilities";
 import *  as utils from "./utilities";
 import *  as errors from "./errors";
 import mcMath from "@minecraft/math.js";
-import { tryget, tryrun } from "./utilities";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -65,7 +64,7 @@ import("Main").then(v=>{try{system.runInterval( () => {
     try{noBlockBreakAreas = getAreas("noBlockBreakArea:")} catch(e){console.error(e, e.stack);}
     try{protectedAreas = getAreas("protectedArea:")} catch(e){console.error(e, e.stack);}
     try{noBlockPlaceAreas = getAreas("noBlockPlaceArea:")} catch(e){console.error(e, e.stack);}
-}, v.config.protectedAreasRefreshRate??20)} catch(e){console.error(e, e.stack);}})
+}, v.config.system.protectedAreasRefreshRate??20)} catch(e){console.error(e, e.stack);}})
 export function getType(areaGroup: string, type: number){return areaGroup.split("|").filter((q)=>(q.split(", ")[6] == String(type))).join("|"); }; 
 export function getAreas(prefix: string){
     let a = world.getDynamicPropertyIds().filter((dpi)=>(dpi.startsWith(prefix)))

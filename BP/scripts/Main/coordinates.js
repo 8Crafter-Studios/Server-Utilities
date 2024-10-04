@@ -23,7 +23,7 @@ import * as errors from "./errors";
 import mcMath from "@minecraft/math.js";
 import { vTStr } from "Main/commands";
 import { targetSelectorAllListC, targetSelectorAllListE } from "./command_utilities";
-import { shuffle, tryget } from "./utilities";
+import { shuffle } from "./utilities";
 import { NoSelectorMatchesError } from "./errors";
 mcServer;
 mcServerUi; /*

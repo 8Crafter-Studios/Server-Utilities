@@ -22,7 +22,6 @@ import *  as cmdutils from "./command_utilities";
 import *  as utils from "./utilities";
 import *  as errors from "./errors";
 import mcMath from "@minecraft/math.js";
-import { tryget } from "./utilities";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -136,4 +135,4 @@ static getSavedPlayer(savedPlayerId: string){let playerString = String(world.get
 static getSavedPlayers(){let players: savedPlayer[]; players = []; savedPlayer.getSavedPlayerIds().forEach((b)=>{players.push(savedPlayer.getSavedPlayer(b))}); return players}
 static getSavedPlayersAlphabeticalOrder(){let players: savedPlayer[]; players = []; savedPlayer.getSavedPlayerIds().forEach((b)=>{players.push(savedPlayer.getSavedPlayer(b))}); return players.sort((a, b)=>1-(2*Number([String(a.name.toLowerCase()), String(b.name.toLowerCase())].sort()[0]==String(a.name.toLowerCase()))))}
 }
-import("Main").then(v=>system.runInterval(()=>{if(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true){world.getAllPlayers().forEach((p)=>{savedPlayer.savePlayer(p)})}}, v.config.playerDataRefreshRate??5))
+import("Main").then(v=>system.runInterval(()=>{if(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true){world.getAllPlayers().forEach((p)=>{savedPlayer.savePlayer(p)})}}, v.config.system.playerDataRefreshRate??5))

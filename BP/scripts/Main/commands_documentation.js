@@ -1,6 +1,5 @@
 import { Player, world, Entity } from "@minecraft/server";
 import { command, executeCommandPlayerW } from "./commands";
-import { tryget } from "./utilities";
 export var commanddescriptions;
 (function (commanddescriptions) {
     //"ban" = "Bans a player. ",

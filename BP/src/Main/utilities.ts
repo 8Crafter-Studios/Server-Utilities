@@ -144,143 +144,11 @@ export function formatTime(date: Date, timeZoneOffset: number = 0){const dateb =
  * @version 1.0.1
  */
 export function formatDateTime(date: Date, timeZoneOffset: number = 0){const dateb = new Date(date.valueOf()+(timeZoneOffset*3600000)); return `${dateb.getUTCMonth().toString().padStart(2, "0")}/${dateb.getUTCDay().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()} ${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")} ${dateb.getUTCHours()>11?"P":"A"}M`}
-/**
- * Better Version of JSON.parse() that is able to read undefined, NaN, Infinity, and -Infinity values. 
- * @param {string} text A valid JSON string (with undefined, NaN, Infinity, and -Infinity values allowed). 
- * @param {boolean} keepUndefined Whether or not to include undefined variables when parsing, defaults to true. 
- * @returns {any} The parsed JSON data. 
- */
-export function JSONParseOld(text: string, keepUndefined: boolean = true){let g = []; let h = []; let a = JSON.parse(text.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"'), function(k, v) {
-   if (v === '{{Infinity}}') return Infinity;
-   else if (v === '{{-Infinity}}') return -Infinity;
-   else if (v === '{{NaN}}') return NaN;
-   else if (v === '{{undefined}}') {g.push(k); if(keepUndefined){return v}else{undefined}};
-   h.push(k); 
-   return v;
-   }); g.forEach((v, i)=>{let b = Object.entries(a); b[b.findIndex(b=>b[0]==v)]=[v, undefined]; a=Object.fromEntries(b)}); {let b = Object.entries(a); b.filter(b=>!!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)).forEach((v, i)=>{console.log(v, i); b[b.findIndex(b=>b[0]==v[0])]=[v[0], String(v[1]).replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}')]; a=Object.fromEntries(b)})}; return a; }
-/**
- * Better Version of JSON.stringify() that is able to save undefined, NaN, Infinity, and -Infinity values. 
- * @param {any} value A JavaScript value, usually an object or array, to be converted (with undefined, NaN, Infinity, and -Infinity values allowed). 
- * @param {boolean} keepUndefined Whether or not to include undefined variables when stringifying, defaults to false. 
- * @param {string|number} space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
- * @returns {any} The JSON string. 
- */
-export function JSONStringifyOld(value: any, keepUndefined: boolean = false, space?: string|number){return JSON.stringify(value, function(k, v) {
-    if (v === Infinity) return "{{Infinity}}";
-    else if (v === -Infinity) return "{{-Infinity}}";
-    else if (Number.isNaN(v)) return "{{NaN}}";
-    else if (v === undefined && keepUndefined) return "{{undefined}}";
-    if(String(v).match(/^{{(Infinity|NaN|-Infinity|undefined)}}$/)){v=v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}')}
-    return v;
-    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"'); }
-export function JSONParse(JSONString: string, keepUndefined: boolean = true) {
-    let g = [];
-    let h = [];
-    if(JSONString==undefined){let nothing; return nothing}
-    if(JSONString=="undefined"){return undefined}
-    if(JSONString=="Infinity"){return Infinity}
-    if(JSONString=="-Infinity"){return -Infinity}
-    if(JSONString=="NaN"){return NaN}
-    if(JSONString=="null"){return null}
-    if(JSONString.match(/^\-?\d+n$/g)){return BigInt(JSONString.slice(0, -1))}
-    let a = JSON.parse(JSONString.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"').replace(/(?<=(?:[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\[)[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*),(?:\s*)|[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*)\[(?:\s*)))(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?=(?:\s*)[,\]](?:\s*))/g, '"{{$1}}"').replace(/^(Infinity|NaN|-Infinity|undefined|\-?\d+n)$/g, '"{{$1}}"'), function(k, v) {
-        if (v === '{{Infinity}}') return Infinity;
-        else if (v === '{{-Infinity}}') return -Infinity;
-        else if (v === '{{NaN}}') return NaN;
-        else if (v === '{{undefined}}') {
-            g.push(k);
-            if (keepUndefined) {
-                return v
-            } else {
-                undefined
-            }
-        }
-        else if (tryget(()=>v.match(/^{{\-?\d+n}}$/g))??false) return BigInt(v.slice(2, -3));
-        h.push(k);
-        return v;
-    });
-
-    function recursiveFind(a) {
-        if (a instanceof Array) {
-            let b = a;
-            b.forEach((v, i) => {
-                if (v instanceof Array || v instanceof Object) {
-                    b[i] = recursiveFind(v);
-                    return
-                };
-                if (String(v) == "{{undefined}}") {
-                    b[i] = undefined;
-                    return
-                };
-            });
-            a = b;
-
-            {
-                let b = a;
-                !!b.forEach((va, i) => {
-                    if (String(va).match(/^{{"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"}}$/)) {
-                        b[i] = va.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?:}}"}})$/g, '{{$1}}');
-                    }
-                    a = b
-                })
-            };
-        } else if (a instanceof Object) {
-            let b = Object.entries(a);
-            b.forEach((v, i) => {
-                if (v[1] instanceof Object || v[1] instanceof Array) {
-                    b[i] = [v[0], recursiveFind(v[1])];
-                    return
-                };
-                if (String(v[1]) == "{{undefined}}") {
-                    b[i] = [v[0], undefined];
-                    return
-                };
-            });
-            a = Object.fromEntries(b);
-            {
-                let b = Object.entries(a);
-                b.filter(b => !!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"}}$/)).forEach((v, i) => {
-                    b[b.findIndex(b => b[0] == v[0])] = [v[0], (v[1] as any).replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?:}}"}})$/g, '{{$1}}')];
-                    a = Object.fromEntries(b)
-                })
-            };
-        } else if (typeof a === "string") {
-            if (a == "{{undefined}}") {
-                a = undefined
-            } else {
-                if (a.match(/^{{"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"}}$/)) {
-                    a = a.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?:}}"}})$/g, '{{$1}}');
-                }
-            }
-        };
-        return a
-    }
-    a = recursiveFind(a);
-    return a;
-};
-export function JSONStringify(JSONObject: any, keepUndefined: boolean = false, space?: string|number) {
-    if(JSONObject==undefined){return keepUndefined?"undefined":""}
-    return JSON.stringify(JSONObject, function(k, v) {
-        if (v === Infinity) return "{{Infinity}}";
-        else if (v === -Infinity) return "{{-Infinity}}";
-        else if (Number.isNaN(v)) return "{{NaN}}";
-        else if (v === undefined && keepUndefined) return "{{undefined}}";
-        else if (typeof v === "function") return {$function: v.toString()};
-        else if (typeof v === "bigint") return "{{"+v.toString()+"n}}";
-        if (String(v).match(/^{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}$/)) {
-            v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}$/g, '{{"{{$1}}"}}')
-        }
-        return v;
-    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
-};
 
 export function objectify(object: Object|any[]){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=objectify(v[1])}else if(v[1] instanceof Object){entries[i][1]=objectify(v[1])}}); return Object.fromEntries(entries)}; 
 export function arrayify(object: Object|any[]){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=arrayify(v[1])}else if(v[1] instanceof Object){entries[i][1]=arrayify(v[1])}}); return entries}; 
 export function stringify(object: Object|any[], entriesmode: boolean|1|0 = 0, escapedarrayorobjecttag: boolean|1|0 = 0, objectifyinfinity: boolean|1|0 = 0, objectifynan: boolean|1|0 = 0, objectifyundefined: boolean|1|0 = 0, objectifynull: boolean|1|0 = 0, recursivemode: boolean|1|0 = 0){let entries = Object.entries(object); entries.forEach((v, i)=>{if(v[1] instanceof Array){entries[i][1]=stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1)}else if(v[1] instanceof Object){entries[i][1]=stringify(v[1], entriesmode, escapedarrayorobjecttag, objectifyinfinity, objectifynan, objectifynull, objectifyundefined, 1)}else if(v[1] instanceof Function){entries[i][1]={escval: (v[1] as Function).toString()}}else if(v[1] == Infinity&&Boolean(objectifyinfinity)){entries[i][1]={escval: "Infinity"}}else if(v[1] == -Infinity&&Boolean(objectifyinfinity)){entries[i][1]={escval: "-Infinity"}}else if(Number.isNaN(v[1])&&Boolean(objectifynan)){entries[i][1]={escval: "NaN"}}else if(v[1] == undefined&&Boolean(objectifyundefined)){entries[i][1]={escval: "undefined"}}else if(v[1] == null&&Boolean(objectifynull)){entries[i][1]={escval: "null"}}}); return recursivemode?((Boolean(escapedarrayorobjecttag)&&(((object instanceof Array)&&!Boolean(entriesmode))||((object instanceof Object)&&Boolean(entriesmode))))?(Boolean(entriesmode)?{escobj: entries}:{escarray: Object.fromEntries(entries)}):(Boolean(entriesmode)?entries:Object.fromEntries(entries))):JSONStringify(Boolean(entriesmode)?entries:Object.fromEntries(entries), true)}; 
 
-export function cullNull<T extends any[]>(array: T){return array.filter(v=>v!==null)}
-export function cullUndefined<T extends any[]>(array: T){return array.filter(v=>v!==undefined)}
-export function cullEmpty<T extends any[]>(array: T){return array.filter(v=>!!v)}
 export function shuffle<a>(array: a[]) {
     var m = array.length, t, i;
     while (m) {
@@ -292,22 +160,6 @@ export function shuffle<a>(array: a[]) {
     return array as a[]
 }
 
-export function tryget<T>(callbackfn: ()=>T){try{return callbackfn() as T}catch{}}
-export function tryrun(callbackfn: ()=>any){try{callbackfn()}catch{}}
-export function catchtry(trycallbackfn: ()=>any, catchcallbackfn: (e: Error)=>any = (e)=>console.error(e, e.stack), finallycallbackfn: (v)=>any = (v)=>{return v}){let v: any; v = undefined; try{v = trycallbackfn()}catch(e){v = catchcallbackfn(e)??v}finally{return finallycallbackfn(v)??v}}; 
-export function cinfo(...data: any[]){console.info(data)}; 
-export function clog(...data: any[]){console.log(data)}; 
-export function cwarn(...data: any[]){console.warn(data)}; 
-export function cerror(...data: any[]){console.error(data)}; 
-export function send(message: string){world.sendMessage(message)}; 
-export function asend(value: any){world.sendMessage(String(value))}; 
-export function bsend(value: any){world.sendMessage(JSONStringify(value, true))}; 
-export function csend(value: any){world.sendMessage(JSON.stringify(value))}; 
-export function psend(player: Player|executeCommandPlayerW, value: string){player.sendMessage(value)}; 
-export function pasend(player: Player|executeCommandPlayerW, value: any){player.sendMessage(String(value))}; 
-export function pbsend(player: Player|executeCommandPlayerW, value: any){player.sendMessage(JSONStringify(value, true))}; 
-export function pcsend(player: Player|executeCommandPlayerW, value: any){player.sendMessage(JSON.stringify(value))}; 
-export function perror(player: Player|executeCommandPlayerW, error: Error, prefix: string = "§c"){player.sendMessage(prefix+error+" "+error.stack)}; 
 export function splitTextByMaxProperyLength(string: string){let length = string.length/32767; let substringlist: string[]; substringlist = []; for(let i = 0; i < Math.ceil(length); i++){substringlist.push(string.slice((i-1)*32767, i==Math.ceil(length)?string.length:i*32767))}; return substringlist}; 
 
 export function getParametersFromString(string: string) {

@@ -1,7 +1,5 @@
-import { system } from "@minecraft/server";
-import { Entity } from "@minecraft/server";
+import { system, Entity, world } from "@minecraft/server";
 import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
-import { forceShow } from "Main/ui";
 ;
 Object.defineProperty(String.prototype, 'escapeCharacters', {
     value: function (js, unicode, nullchar, uri, quotes, general, colon, x, s) {
@@ -630,4 +628,273 @@ Object.defineProperty(MessageFormData.prototype, 'forceShow', {
     enumerable: true,
     writable: true
 });
+/**
+ * Better Version of JSON.parse() that is able to read undefined, NaN, Infinity, and -Infinity values.
+ * @param {string} text A valid JSON string (with undefined, NaN, Infinity, and -Infinity values allowed).
+ * @param {boolean} keepUndefined Whether or not to include undefined variables when parsing, defaults to true.
+ * @returns {any} The parsed JSON data.
+ */
+globalThis.JSONParseOld = function JSONParseOld(text, keepUndefined = true) {
+    let g = [];
+    let h = [];
+    let a = JSON.parse(text.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"'), function (k, v) {
+        if (v === '{{Infinity}}')
+            return Infinity;
+        else if (v === '{{-Infinity}}')
+            return -Infinity;
+        else if (v === '{{NaN}}')
+            return NaN;
+        else if (v === '{{undefined}}') {
+            g.push(k);
+            if (keepUndefined) {
+                return v;
+            }
+            else {
+                undefined;
+            }
+        }
+        ;
+        h.push(k);
+        return v;
+    });
+    g.forEach((v, i) => { let b = Object.entries(a); b[b.findIndex(b => b[0] == v)] = [v, undefined]; a = Object.fromEntries(b); });
+    {
+        let b = Object.entries(a);
+        b.filter(b => !!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)).forEach((v, i) => { console.log(v, i); b[b.findIndex(b => b[0] == v[0])] = [v[0], String(v[1]).replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}')]; a = Object.fromEntries(b); });
+    }
+    ;
+    return a;
+};
+/**
+ * Better Version of JSON.stringify() that is able to save undefined, NaN, Infinity, and -Infinity values.
+ * @param {any} value A JavaScript value, usually an object or array, to be converted (with undefined, NaN, Infinity, and -Infinity values allowed).
+ * @param {boolean} keepUndefined Whether or not to include undefined variables when stringifying, defaults to false.
+ * @param {string|number} space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
+ * @returns {any} The JSON string.
+ */
+globalThis.JSONStringifyOld = function JSONStringifyOld(value, keepUndefined = false, space) {
+    return JSON.stringify(value, function (k, v) {
+        if (v === Infinity)
+            return "{{Infinity}}";
+        else if (v === -Infinity)
+            return "{{-Infinity}}";
+        else if (Number.isNaN(v))
+            return "{{NaN}}";
+        else if (v === undefined && keepUndefined)
+            return "{{undefined}}";
+        if (String(v).match(/^{{(Infinity|NaN|-Infinity|undefined)}}$/)) {
+            v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}');
+        }
+        return v;
+    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
+};
+globalThis.JSONParse = function JSONParse(JSONString, keepUndefined = true) {
+    let g = [];
+    let h = [];
+    if (JSONString == undefined) {
+        let nothing;
+        return nothing;
+    }
+    if (JSONString == "undefined") {
+        return undefined;
+    }
+    if (JSONString == "Infinity") {
+        return Infinity;
+    }
+    if (JSONString == "-Infinity") {
+        return -Infinity;
+    }
+    if (JSONString == "NaN") {
+        return NaN;
+    }
+    if (JSONString == "null") {
+        return null;
+    }
+    if (JSONString.match(/^\-?\d+n$/g)) {
+        return BigInt(JSONString.slice(0, -1));
+    }
+    let a = JSON.parse(JSONString.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"').replace(/(?<=(?:[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\[)[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*),(?:\s*)|[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*)\[(?:\s*)))(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?=(?:\s*)[,\]](?:\s*))/g, '"{{$1}}"').replace(/^(Infinity|NaN|-Infinity|undefined|\-?\d+n)$/g, '"{{$1}}"'), function (k, v) {
+        if (v === '{{Infinity}}')
+            return Infinity;
+        else if (v === '{{-Infinity}}')
+            return -Infinity;
+        else if (v === '{{NaN}}')
+            return NaN;
+        else if (v === '{{undefined}}') {
+            g.push(k);
+            if (keepUndefined) {
+                return v;
+            }
+            else {
+                undefined;
+            }
+        }
+        else if (tryget(() => v.match(/^{{\-?\d+n}}$/g)) ?? false)
+            return BigInt(v.slice(2, -3));
+        h.push(k);
+        return v;
+    });
+    function recursiveFind(a) {
+        if (a instanceof Array) {
+            let b = a;
+            b.forEach((v, i) => {
+                if (v instanceof Array || v instanceof Object) {
+                    b[i] = recursiveFind(v);
+                    return;
+                }
+                ;
+                if (String(v) == "{{undefined}}") {
+                    b[i] = undefined;
+                    return;
+                }
+                ;
+            });
+            a = b;
+            {
+                let b = a;
+                !!b.forEach((va, i) => {
+                    if (String(va).match(/^{{"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"}}$/)) {
+                        b[i] = va.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?:}}"}})$/g, '{{$1}}');
+                    }
+                    a = b;
+                });
+            }
+            ;
+        }
+        else if (a instanceof Object) {
+            let b = Object.entries(a);
+            b.forEach((v, i) => {
+                if (v[1] instanceof Object || v[1] instanceof Array) {
+                    b[i] = [v[0], recursiveFind(v[1])];
+                    return;
+                }
+                ;
+                if (String(v[1]) == "{{undefined}}") {
+                    b[i] = [v[0], undefined];
+                    return;
+                }
+                ;
+            });
+            a = Object.fromEntries(b);
+            {
+                let b = Object.entries(a);
+                b.filter(b => !!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"}}$/)).forEach((v, i) => {
+                    b[b.findIndex(b => b[0] == v[0])] = [v[0], v[1].replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?:}}"}})$/g, '{{$1}}')];
+                    a = Object.fromEntries(b);
+                });
+            }
+            ;
+        }
+        else if (typeof a === "string") {
+            if (a == "{{undefined}}") {
+                a = undefined;
+            }
+            else {
+                if (a.match(/^{{"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"}}$/)) {
+                    a = a.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?:}}"}})$/g, '{{$1}}');
+                }
+            }
+        }
+        ;
+        return a;
+    }
+    a = recursiveFind(a);
+    return a;
+};
+globalThis.JSONStringify = function JSONStringify(JSONObject, keepUndefined = false, space) {
+    if (JSONObject == undefined) {
+        return keepUndefined ? "undefined" : "";
+    }
+    return JSON.stringify(JSONObject, function (k, v) {
+        if (v === Infinity)
+            return "{{Infinity}}";
+        else if (v === -Infinity)
+            return "{{-Infinity}}";
+        else if (Number.isNaN(v))
+            return "{{NaN}}";
+        else if (v === undefined && keepUndefined)
+            return "{{undefined}}";
+        else if (typeof v === "function")
+            return { $function: v.toString() };
+        else if (typeof v === "bigint")
+            return "{{" + v.toString() + "n}}";
+        if (String(v).match(/^{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}$/)) {
+            v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}$/g, '{{"{{$1}}"}}');
+        }
+        return v;
+    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
+};
+globalThis.cullNull = function cullNull(array) {
+    return array.filter(v => v !== null);
+};
+globalThis.cullUndefined = function cullUndefined(array) {
+    return array.filter(v => v !== undefined);
+};
+globalThis.cullEmpty = function cullEmpty(array) {
+    return array.filter(v => !!v);
+};
+globalThis.tryget = function tryget(callbackfn) {
+    try {
+        return callbackfn();
+    }
+    catch { }
+};
+globalThis.tryrun = function tryrun(callbackfn) {
+    try {
+        callbackfn();
+    }
+    catch { }
+};
+globalThis.catchtry = function catchtry(trycallbackfn, catchcallbackfn = (e) => console.error(e, e.stack), finallycallbackfn = (v) => { return v; }) {
+    let v;
+    v = undefined;
+    try {
+        v = trycallbackfn();
+    }
+    catch (e) {
+        v = catchcallbackfn(e) ?? v;
+    }
+    finally {
+        return finallycallbackfn(v) ?? v;
+    }
+};
+globalThis.cinfo = function cinfo(...data) {
+    console.info(data);
+};
+globalThis.clog = function clog(...data) {
+    console.log(data);
+};
+globalThis.cwarn = function cwarn(...data) {
+    console.warn(data);
+};
+globalThis.cerror = function cerror(...data) {
+    console.error(data);
+};
+globalThis.send = function send(message) {
+    world.sendMessage(message);
+};
+globalThis.asend = function asend(value) {
+    world.sendMessage(String(value));
+};
+globalThis.bsend = function bsend(value) {
+    world.sendMessage(JSONStringify(value, true));
+};
+globalThis.csend = function csend(value) {
+    world.sendMessage(JSON.stringify(value));
+};
+globalThis.psend = function psend(player, value) {
+    player.sendMessage(value);
+};
+globalThis.pasend = function pasend(player, value) {
+    player.sendMessage(String(value));
+};
+globalThis.pbsend = function pbsend(player, value) {
+    player.sendMessage(JSONStringify(value, true));
+};
+globalThis.pcsend = function pcsend(player, value) {
+    player.sendMessage(JSON.stringify(value));
+};
+globalThis.perror = function perror(player, error, prefix = "§c") {
+    player.sendMessage(prefix + (tryget(() => error.stringify()) ?? (error + " " + error.stack)));
+};
 //# sourceMappingURL=Global.js.map

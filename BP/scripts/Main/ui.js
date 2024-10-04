@@ -28,7 +28,6 @@ import mcMath from "@minecraft/math.js";
 import { chatCommands, command, commandSettings, command_settings_format_version, commands_format_version, evaluateParameters, executeCommandPlayerW, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
 import { chatMessage, chatSend } from "./chat";
 import { targetSelectorAllListC } from "./command_utilities";
-import { cullEmpty, JSONParse, JSONStringify, tryget, tryrun } from "./utilities";
 import { commands } from "./commands_list";
 import { mainShopSystemSettings } from "ExtraFeatures/shop_main";
 mcServer;
@@ -774,7 +773,7 @@ export function globalSettings(sourceEntitya) {
     form2.toggle("§l§fautoEscapeChatMessages§r§f\nEvaluates escape codes in the chat automatically, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") ?? false));
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
-    form2.toggle("§l§fchatDisplayTimeStamp§r§f\nSets whether or not to put a timestamp before every chat message, default is false", config.chatDisplayTimeStamp);*/
+    form2.toggle("§l§fchatDisplayTimeStamp§r§f\nSets whether or not to put a timestamp before every chat message, default is false", config.chatRanks.chatDisplayTimeStamp);*/
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
@@ -841,8 +840,8 @@ export function chatRanksSettings(sourceEntitya) {
     form2.toggle("§l§fautoEscapeChatMessages§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fEvaluates escape codes in the chat automatically, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") ?? false));
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
-    form2.toggle("§l§fchatDisplayTimeStamp§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fSets whether or not to put a timestamp before every chat message, default is false", config.chatDisplayTimeStamp);
-    form2.toggle("§l§fshowRanksOnPlayerNameTags§r§f\nSets whether or not to show player's ranks on their name tag, default is false", config.showRanksOnPlayerNameTags);
+    form2.toggle("§l§fchatDisplayTimeStamp§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fSets whether or not to put a timestamp before every chat message, default is false", config.chatRanks.chatDisplayTimeStamp);
+    form2.toggle("§l§fshowRanksOnPlayerNameTags§r§f\nSets whether or not to show player's ranks on their name tag, default is false", config.chatRanks.showRanksOnPlayerNameTags);
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -873,7 +872,7 @@ export function chatRanksSettings(sourceEntitya) {
         world.setDynamicProperty("andexdbSettings:autoURIEscapeChatMessages", autoURIEscapeChatMessages);
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes);
         world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStamp);
-        config.showRanksOnPlayerNameTags = showRanksOnPlayerNameTags;
+        config.chatRanks.showRanksOnPlayerNameTags = showRanksOnPlayerNameTags;
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -883,8 +882,8 @@ export function scriptSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     form2.title("Script Settings");
-    form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 5", "integer from 1-1000", String(config.playerDataRefreshRate));
-    form2.textField("§l§fprotectedAreasRefreshRate§r§f\nThe interval at which to update list the saved protected areas, decreasing this number may increase lag, the default is 20", "integer from 1-1000000", String(config.protectedAreasRefreshRate));
+    form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 5", "integer from 1-1000", String(config.system.playerDataRefreshRate));
+    form2.textField("§l§fprotectedAreasRefreshRate§r§f\nThe interval at which to update list the saved protected areas, decreasing this number may increase lag, the default is 20", "integer from 1-1000000", String(config.system.protectedAreasRefreshRate));
     form2.dropdown("§l§fundoClipboardMode§r§f\nWhether to save undo history in memory or to the world files, memory will cause undo history to be cleared upon restarting the world/realm/server, the default is Memory", ["Memory", "World"], ["Memory", "World"].indexOf(String(config.undoClipboardMode)));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
@@ -897,8 +896,8 @@ export function scriptSettings(sourceEntitya) {
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [playerDataRefreshRate, protectedAreasRefreshRate, undoClipboardMode] = t.formValues;
-        config.playerDataRefreshRate = Number(playerDataRefreshRate);
-        config.protectedAreasRefreshRate = Number(protectedAreasRefreshRate);
+        config.system.playerDataRefreshRate = Number(playerDataRefreshRate);
+        config.system.protectedAreasRefreshRate = Number(protectedAreasRefreshRate);
         config.undoClipboardMode = (["Memory", "World"][Number(undoClipboardMode)] ?? "Memory");
         settings(sourceEntity);
     }).catch(e => {
@@ -912,7 +911,7 @@ export function uiSettings(sourceEntitya) {
     "andexdbSettings:autoURIEscapeChatMessages";
     "andexdbSettings:allowChatEscapeCodes";
     form2.title("UI Settings");
-    form2.textField("§l§fmaxPlayersPerManagePlayersPage§r§f\nThe maximum number of players to display at once on the manage players menu, the default is 10", "integer from 1-1000", String(config.maxPlayersPerManagePlayersPage));
+    form2.textField("§l§fmaxPlayersPerManagePlayersPage§r§f\nThe maximum number of players to display at once on the manage players menu, the default is 10", "integer from 1-1000", String(config.ui.pages.maxPlayersPerManagePlayersPage));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -924,7 +923,7 @@ export function uiSettings(sourceEntitya) {
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [maxPlayersPerManagePlayersPage] = t.formValues;
-        config.maxPlayersPerManagePlayersPage = Number(maxPlayersPerManagePlayersPage);
+        config.ui.pages.maxPlayersPerManagePlayersPage = Number(maxPlayersPerManagePlayersPage);
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -934,8 +933,8 @@ export function homeSystemSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     form2.title("Home System Settings [§cExperimental§r]");
-    form2.toggle("§l§fHome System Enabled§r§f", config.homeSystemEnabled);
-    form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.maxHomesPerPlayer));
+    form2.toggle("§l§fHome System Enabled§r§f", config.homeSystem.homeSystemEnabled);
+    form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.homeSystem.maxHomesPerPlayer));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -947,8 +946,8 @@ export function homeSystemSettings(sourceEntitya) {
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [homeSystemEnabled, maxHomesPerPlayer] = t.formValues;
-        config.homeSystemEnabled = homeSystemEnabled;
-        config.maxHomesPerPlayer = String(maxHomesPerPlayer).toLowerCase() == "infinity" ? Infinity : Number(maxHomesPerPlayer);
+        config.homeSystem.homeSystemEnabled = homeSystemEnabled;
+        config.homeSystem.maxHomesPerPlayer = String(maxHomesPerPlayer).toLowerCase() == "infinity" ? Infinity : Number(maxHomesPerPlayer);
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -958,8 +957,9 @@ export function tpaSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     form2.title("TPA System Settings [§cExperimental§r]");
-    form2.toggle("§l§fEnable TPA System", config.tpaSystemEnabled);
-    //form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.maxHomesPerPlayer));
+    form2.toggle("§l§fEnable TPA System", config.tpaSystem.tpaSystemEnabled);
+    form2.textField("§l§fSeconds Until Request Times Out§r§o\ndefault is 60", "int", config.tpaSystem.timeoutDuration.toString());
+    //form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.homeSystem.maxHomesPerPlayer));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -970,9 +970,10 @@ export function tpaSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [tpaSystemEnabled] = t.formValues;
-        config.tpaSystemEnabled = tpaSystemEnabled;
-        //config.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
+        let [tpaSystemEnabled, timeoutDuration] = t.formValues;
+        config.tpaSystem.tpaSystemEnabled = tpaSystemEnabled;
+        config.tpaSystem.timeoutDuration = timeoutDuration.toNumber();
+        //config.homeSystem.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -1276,11 +1277,11 @@ export function antispamSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     form2.title("Anti-Spam Settings [§cExperimental§r]");
-    form2.toggle("§l§fAnti-Spam Enabled§r§f", config.antispamEnabled);
-    form2.toggle("§l§fReset Anti-Spam Mute Timer Upon Attempted Message Send While Muted§r§f", config.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute);
-    form2.textField("§l§fWait time before player can send another chat message in seconds§r§f", "60", String(config.waitTimeAfterAntispamActivation));
-    form2.textField("§f(The anti-spam will only activate if the player sends a number of messages equal to (§bMessage count to trigger anti-spam§f) and those messages each had a delay of at most (§bMaximum time between messages§f) seconds between them)\n§lMaximum time between messages, §r§f", "5", String(config.maxTimeBewteenMessagesToTriggerAntiSpam));
-    form2.slider("§l§fMessage count to trigger anti-spam, defaults to 4§r§f", 1, 100, 1, config.antispamTriggerMessageCount);
+    form2.toggle("§l§fAnti-Spam Enabled§r§f", config.antiSpamSystem.antispamEnabled);
+    form2.toggle("§l§fReset Anti-Spam Mute Timer Upon Attempted Message Send While Muted§r§f", config.antiSpamSystem.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute);
+    form2.textField("§l§fWait time before player can send another chat message in seconds§r§f", "60", String(config.antiSpamSystem.waitTimeAfterAntispamActivation));
+    form2.textField("§f(The anti-spam will only activate if the player sends a number of messages equal to (§bMessage count to trigger anti-spam§f) and those messages each had a delay of at most (§bMaximum time between messages§f) seconds between them)\n§lMaximum time between messages, §r§f", "5", String(config.antiSpamSystem.maxTimeBewteenMessagesToTriggerAntiSpam));
+    form2.slider("§l§fMessage count to trigger anti-spam, defaults to 4§r§f", 1, 100, 1, config.antiSpamSystem.antispamTriggerMessageCount);
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -1292,11 +1293,11 @@ export function antispamSettings(sourceEntitya) {
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [antispamEnabled, restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute, waitTimeAfterAntispamActivation, maxTimeBewteenMessagesToTriggerAntiSpam, antispamTriggerMessageCount] = t.formValues;
-        config.antispamEnabled = antispamEnabled;
-        config.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute = restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute;
-        config.waitTimeAfterAntispamActivation = isNaN(Number(waitTimeAfterAntispamActivation)) ? 60 : Number(waitTimeAfterAntispamActivation);
-        config.maxTimeBewteenMessagesToTriggerAntiSpam = isNaN(Number(maxTimeBewteenMessagesToTriggerAntiSpam)) ? 5 : Number(maxTimeBewteenMessagesToTriggerAntiSpam);
-        config.antispamTriggerMessageCount = Number(antispamTriggerMessageCount);
+        config.antiSpamSystem.antispamEnabled = antispamEnabled;
+        config.antiSpamSystem.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute = restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute;
+        config.antiSpamSystem.waitTimeAfterAntispamActivation = isNaN(Number(waitTimeAfterAntispamActivation)) ? 60 : Number(waitTimeAfterAntispamActivation);
+        config.antiSpamSystem.maxTimeBewteenMessagesToTriggerAntiSpam = isNaN(Number(maxTimeBewteenMessagesToTriggerAntiSpam)) ? 5 : Number(maxTimeBewteenMessagesToTriggerAntiSpam);
+        config.antiSpamSystem.antispamTriggerMessageCount = Number(antispamTriggerMessageCount);
         moderationSettings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -3917,7 +3918,7 @@ export function editorStickC(sourceEntitya, includeLiquidBlocks = false, include
     });
 } /*
 export function evalAutoScriptSettings(sourceEntity: Entity|Player){}*/
-export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = config.maxPlayersPerManagePlayersPage ?? 10) {
+export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = config.ui.pages.maxPlayersPerManagePlayersPage ?? 10) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData;
     const page = Math.max(0, pagen);

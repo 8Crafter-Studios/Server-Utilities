@@ -6,7 +6,7 @@ import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
-import { JSONParse, JSONParseOld, JSONStringify, JSONStringifyOld, arrayify, asend, bsend, catchtry, cerror, cinfo, clamp24HoursTo12Hours, clog, utilsmetaimport, combineObjects, csend, cullEmpty, cullNull, cullUndefined, customModulo, cwarn, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, pasend, pbsend, pcsend, perror, psend, roundPlaceNumberObject, send, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, tryget, tryrun, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
+import { arrayify, clamp24HoursTo12Hours, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
 import { cmdutilsmetaimport, targetSelector, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListD, targetSelectorAllListE, targetSelectorB } from "./command_utilities";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -516,13 +516,13 @@ export function chatSend(params) {
     let eventData = params.eventData;
     let event = params.event;
     let newMessage = params.newMessage;
-    if (config.antispamEnabled) {
+    if (config.antiSpamSystem.antispamEnabled) {
         if (!player.hasTag("canBypassAntiSpam")) {
             if ( /*
                 globalThis["lastChatMessage" + player.id] == event.message &&*/Date.now() - (globalThis["lastChatTime" + player.id] ?? 0) <
-                config.waitTimeAfterAntispamActivation * 1000) {
+                config.antiSpamSystem.waitTimeAfterAntispamActivation * 1000) {
                 globalThis["msgAmountOfSpam" + player.id] = (globalThis["msgAmountOfSpam" + player.id] ?? 0) + 1;
-                if (globalThis["msgAmountOfSpam" + player.id] >= config.antispamTriggerMessageCount) {
+                if (globalThis["msgAmountOfSpam" + player.id] >= config.antiSpamSystem.antispamTriggerMessageCount) {
                     returnBeforeChatSend = true;
                     event.cancel = true;
                     player.sendMessage("§cStop Spamming");

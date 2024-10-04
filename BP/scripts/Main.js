@@ -99,7 +99,7 @@ import { disableWatchdog } from "@minecraft/debug-utilities";*/
 import { listoftransformrecipes } from "transformrecipes";
 import { chatMessage, patternColors, patternColorsMap, patternFunctionList, evaluateChatColorType, chatSend } from "Main/chat";
 import { targetSelectorAllListE, targetSelectorB, targetSelectorAllListC, clearContainer } from "Main/command_utilities";
-import { tryget, customModulo, psend, JSONStringify, bsend } from "Main/utilities";
+import { customModulo } from "Main/utilities";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -120,7 +120,11 @@ Test;
 mcMath;
 globalThis.scriptStartTick = system.currentTick;
 export const modules = {
+    mcServer,
+    mcServerUi,
+    GameTest,
     main,
+    transformrecipes,
     coords,
     cmds,
     bans,
@@ -139,26 +143,7 @@ export const modules = {
     playershop,
     moneysystem
 };
-globalThis.modules = {
-    main,
-    coords,
-    cmds,
-    bans,
-    uis,
-    playersave,
-    spawnprot,
-    mcMath,
-    chat,
-    cmdutils,
-    cmdslist,
-    cmdsdocs,
-    utils,
-    errors,
-    shopmain,
-    servershop,
-    playershop,
-    moneysystem
-};
+globalThis.modules = modules;
 export let crashEnabled = false;
 export let tempSavedVariables = [];
 export function mainEval(x) { return eval(x); }
@@ -246,6 +231,9 @@ export const srun = srununbound.bind(system);
 globalThis.srun = srun;
 export const gt = globalThis;
 globalThis.gt = globalThis;
+/**
+ * A class containing the configuration information for the add-on.
+ */
 export class config {
     static get chatCommandsEnabled() { return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled") ?? true); }
     static set chatCommandsEnabled(enabled) { world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled ?? true); }
@@ -253,51 +241,8 @@ export class config {
     static set chatCommandPrefix(prefix) { world.setDynamicProperty("andexdbSettings:chatCommandPrefix", prefix ?? "\\"); }
     static get validChatCommandPrefixes() { return String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? ""); }
     static set validChatCommandPrefixes(prefixes) { world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", prefixes ?? ""); }
-    static get homeSystemEnabled() { return Boolean(world.getDynamicProperty("homeSystemSettings:homeSystemEnabled") ?? false); }
-    static set homeSystemEnabled(enabled) { world.setDynamicProperty("homeSystemSettings:homeSystemEnabled", enabled ?? false); }
-    static get maxHomesPerPlayer() { return world.getDynamicProperty("homeSystemSettings:maxHomesPerPlayer") == -1 ? Infinity : Number(world.getDynamicProperty("homeSystemSettings:maxHomesPerPlayer") ?? Infinity); }
-    static set maxHomesPerPlayer(maxHomes) { world.setDynamicProperty("homeSystemSettings:maxHomesPerPlayer", (maxHomes ?? Infinity) == Infinity ? -1 : maxHomes); }
-    static get tpaSystemEnabled() { return Boolean(world.getDynamicProperty("tpaSystemSettings:tpaSystemEnabled") ?? world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled") ?? false); }
-    static set tpaSystemEnabled(enabled) { world.setDynamicProperty("tpaSystemSettings:tpaSystemEnabled", enabled ?? false); }
-    static get antispamEnabled() { return Boolean(world.getDynamicProperty("antispamSettings:antispamEnabled") ?? false); }
-    static set antispamEnabled(enabled) { world.setDynamicProperty("antispamSettings:antispamEnabled", enabled ?? false); }
-    static get restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute() { return Boolean(world.getDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute") ?? false); }
-    static set restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute(restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute) { world.setDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute", restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute ?? false); }
-    static get waitTimeAfterAntispamActivation() { return isNaN(Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation"))) ? 60 : Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation") ?? 60); }
-    static set waitTimeAfterAntispamActivation(waitTimeInSeconds) { world.setDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation", waitTimeInSeconds ?? 60); }
-    static get maxTimeBewteenMessagesToTriggerAntiSpam() { return isNaN(Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam"))) ? 5 : Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam") ?? 5); }
-    static set maxTimeBewteenMessagesToTriggerAntiSpam(maxTimeInSeconds) { world.setDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam", maxTimeInSeconds ?? 5); }
-    static get antispamTriggerMessageCount() { return isNaN(Number(world.getDynamicProperty("antispamSettings:antispamTriggerMessageCount"))) ? 4 : Number(gwdp("antispamSettings:antispamTriggerMessageCount") ?? 4); }
-    static set antispamTriggerMessageCount(messageCount) { world.setDynamicProperty("antispamSettings:antispamTriggerMessageCount", messageCount ?? 4); }
-    static get timeZone() { return isNaN(Number(world.getDynamicProperty("andexdbSettings:timeZone"))) ? 0 : Number(world.getDynamicProperty("andexdbSettings:timeZone") ?? 0); }
-    static set timeZone(timeZone) { world.setDynamicProperty("andexdbSettings:timeZone", timeZone ?? 0); }
     static get invalidChatCommandAction() { return isNaN(Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction"))) ? 0 : Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 0); }
     static set invalidChatCommandAction(invalidChatCommandAction) { world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction ?? 0); }
-    static get chatDisplayTimeStamp() { return Boolean(world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false); }
-    static set chatDisplayTimeStamp(chatDisplayTimeStampEnabled) { world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled ?? false); }
-    static get showRanksOnPlayerNameTags() { return Boolean(world.getDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags") ?? false); }
-    static set showRanksOnPlayerNameTags(showRanksOnPlayerNameTags) { world.setDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags", showRanksOnPlayerNameTags ?? false); }
-    static get protectedAreasRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 20); }
-    static set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 20 : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 20)))); }
-    static get playerDataRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 5); }
-    static set playerDataRefreshRate(playerDataRefreshRate) { world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate)) ? 5 : Math.min(1000, Math.max(1, Number(playerDataRefreshRate ?? 5)))); }
-    /**
-     * @todo Move to {@link config.ui.pages}.
-     */
-    static get maxPlayersPerManagePlayersPage() { return Number(world.getDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage") ?? 10); }
-    static set maxPlayersPerManagePlayersPage(maxPlayersPerManagePlayersPage) { world.setDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage", Math.min(1000, Math.max(1, maxPlayersPerManagePlayersPage ?? 10))); }
-    /**
-     * @todo Move to {@link config.ui.pages}.
-     */
-    static get maxBansPerManageBansPage() { return Number(world.getDynamicProperty("andexdbSettings:maxBansPerManageBansPage") ?? 10); }
-    static set maxBansPerManageBansPage(maxBansPerManageBansPage) { world.setDynamicProperty("andexdbSettings:maxBansPerManageBansPage", maxBansPerManageBansPage ?? 10); }
-    /**
-     * @todo Move to {@link config.ui.pages}.
-     */
-    static get maxHomesPerManageHomesPage() { return Number(world.getDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage") ?? 10); }
-    static set maxHomesPerManageHomesPage(maxHomesPerManageHomesPage) { world.setDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage", maxHomesPerManageHomesPage ?? 10); }
-    static get artificialLagMS() { return Number(world.getDynamicProperty("andexdbSettings:artificialLagMS") ?? 0); }
-    static set artificialLagMS(artificialLagMS) { world.setDynamicProperty("andexdbSettings:artificialLagMS", artificialLagMS ?? 0); }
     static get undoClipboardMode() { return String(world.getDynamicProperty("andexdbSettings:undoClipboardMode") ?? StructureSaveMode.Memory); }
     static set undoClipboardMode(undoClipboardMode) { world.setDynamicProperty("andexdbSettings:undoClipboardMode", undoClipboardMode ?? StructureSaveMode.Memory); }
     static get spawnCommandLocation() { const v = tryget(() => JSON.parse(String(world.getDynamicProperty("andexdbSettings:spawnCommandLocation") ?? '{x: null, y: null, z: null, dimension: "overworld"}'))) ?? { x: null, y: null, z: null, dimension: "overworld" }; return tryget(() => ({ x: v.x, y: v.y, z: v.z, dimension: dimensionsb[String(v.dimension)] ?? overworld })) ?? { x: null, y: null, z: null, dimension: overworld }; }
@@ -478,8 +423,8 @@ export class config {
                 return {
                     get enabled() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.enabled") ?? false); },
                     set enabled(enabled) { world.setDynamicProperty("andexdbShopSystemSettings:player.enabled", enabled ?? false); },
-                    get maxShopsPerPlayer() { return (world.getDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer") ?? -1).toString().toNumber(); },
-                    set maxShopsPerPlayer(maxShopsPerPlayer) { world.setDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer", maxShopsPerPlayer ?? -1); },
+                    get maxShopsPerPlayer() { return (world.getDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer") ?? 5).toString().toNumber(); },
+                    set maxShopsPerPlayer(maxShopsPerPlayer) { world.setDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer", maxShopsPerPlayer ?? 5); },
                     get allowSellingLockInSlotItems() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.allowSellingLockInSlotItems") ?? false); },
                     set allowSellingLockInSlotItems(allowSellingLockInSlotItems) { world.setDynamicProperty("andexdbShopSystemSettings:player.allowSellingLockInSlotItems", allowSellingLockInSlotItems ?? false); },
                     get allowSellingLockInInventoryItems() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.allowSellingLockInInventoryItems") ?? false); },
@@ -496,13 +441,70 @@ export class config {
             }
         };
     }
+    static get homeSystem() {
+        return {
+            get homeSystemEnabled() { return Boolean(world.getDynamicProperty("homeSystemSettings:homeSystemEnabled") ?? false); },
+            set homeSystemEnabled(enabled) { world.setDynamicProperty("homeSystemSettings:homeSystemEnabled", enabled ?? false); },
+            get maxHomesPerPlayer() { return world.getDynamicProperty("homeSystemSettings:maxHomesPerPlayer") == -1 ? Infinity : Number(world.getDynamicProperty("homeSystemSettings:maxHomesPerPlayer") ?? Infinity); },
+            set maxHomesPerPlayer(maxHomes) { world.setDynamicProperty("homeSystemSettings:maxHomesPerPlayer", (maxHomes ?? Infinity) == Infinity ? -1 : maxHomes); }
+        };
+    }
+    static get tpaSystem() {
+        return {
+            get tpaSystemEnabled() { return Boolean(world.getDynamicProperty("tpaSystemSettings:tpaSystemEnabled") ?? world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled") ?? false); },
+            set tpaSystemEnabled(enabled) { world.setDynamicProperty("tpaSystemSettings:tpaSystemEnabled", enabled ?? false); },
+            /**
+             * The number of seconds after a teleport request is sent before it will time out.
+             */
+            get timeoutDuration() { return isNaN(Number(world.getDynamicProperty("tpaSystemSettings:timeoutDuration"))) ? 60 : Number(world.getDynamicProperty("tpaSystemSettings:timeoutDuration") ?? 60); },
+            set timeoutDuration(timeoutDuration) { world.setDynamicProperty("tpaSystemSettings:timeoutDuration", timeoutDuration ?? 60); }
+        };
+    }
+    static get chatRanks() {
+        return {
+            get chatDisplayTimeStamp() { return Boolean(world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false); },
+            set chatDisplayTimeStamp(chatDisplayTimeStampEnabled) { world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled ?? false); },
+            get showRanksOnPlayerNameTags() { return Boolean(world.getDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags") ?? false); },
+            set showRanksOnPlayerNameTags(showRanksOnPlayerNameTags) { world.setDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags", showRanksOnPlayerNameTags ?? false); }
+        };
+    }
+    static get antiSpamSystem() {
+        return {
+            get antispamEnabled() { return Boolean(world.getDynamicProperty("antispamSettings:antispamEnabled") ?? false); },
+            set antispamEnabled(enabled) { world.setDynamicProperty("antispamSettings:antispamEnabled", enabled ?? false); },
+            get restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute() { return Boolean(world.getDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute") ?? false); },
+            set restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute(restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute) { world.setDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute", restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute ?? false); },
+            get waitTimeAfterAntispamActivation() { return isNaN(Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation"))) ? 60 : Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation") ?? 60); },
+            set waitTimeAfterAntispamActivation(waitTimeInSeconds) { world.setDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation", waitTimeInSeconds ?? 60); },
+            get maxTimeBewteenMessagesToTriggerAntiSpam() { return isNaN(Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam"))) ? 5 : Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam") ?? 5); },
+            set maxTimeBewteenMessagesToTriggerAntiSpam(maxTimeInSeconds) { world.setDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam", maxTimeInSeconds ?? 5); },
+            get antispamTriggerMessageCount() { return isNaN(Number(world.getDynamicProperty("antispamSettings:antispamTriggerMessageCount"))) ? 4 : Number(gwdp("antispamSettings:antispamTriggerMessageCount") ?? 4); },
+            set antispamTriggerMessageCount(messageCount) { world.setDynamicProperty("antispamSettings:antispamTriggerMessageCount", messageCount ?? 4); }
+        };
+    }
     static get ui() {
         return {
             get main() {
                 return {};
             },
             get pages() {
-                return {};
+                return {
+                    /**
+                     * Moved from {@link config} to {@link config.ui.pages} in version 1.23.0-preview.20+BUILD.1 on 10/04/2024 at 3:10:37 PM PDT.
+                     */
+                    get maxPlayersPerManagePlayersPage() { return Number(world.getDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage") ?? 10); },
+                    set maxPlayersPerManagePlayersPage(maxPlayersPerManagePlayersPage) { world.setDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage", Math.min(1000, Math.max(1, maxPlayersPerManagePlayersPage ?? 10))); },
+                    /**
+                     * Moved from {@link config} to {@link config.ui.pages} in version 1.23.0-preview.20+BUILD.1 on 10/04/2024 at 3:10:37 PM PDT.
+                     */
+                    get maxBansPerManageBansPage() { return Number(world.getDynamicProperty("andexdbSettings:maxBansPerManageBansPage") ?? 10); },
+                    set maxBansPerManageBansPage(maxBansPerManageBansPage) { world.setDynamicProperty("andexdbSettings:maxBansPerManageBansPage", maxBansPerManageBansPage ?? 10); },
+                    /**
+                     * Moved from {@link config} to {@link config.ui.pages} in version 1.23.0-preview.20+BUILD.1 on 10/04/2024 at 3:10:37 PM PDT.
+                     */
+                    get maxHomesPerManageHomesPage() { return Number(world.getDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage") ?? 10); },
+                    set maxHomesPerManageHomesPage(maxHomesPerManageHomesPage) { world.setDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage", maxHomesPerManageHomesPage ?? 10); }
+                };
             },
             get other() {
                 return {
@@ -512,8 +514,23 @@ export class config {
             }
         };
     }
-    static reset() { }
+    static get system() {
+        return {
+            get artificialLagMS() { return Number(world.getDynamicProperty("andexdbSettings:artificialLagMS") ?? 0); },
+            set artificialLagMS(artificialLagMS) { world.setDynamicProperty("andexdbSettings:artificialLagMS", artificialLagMS ?? 0); },
+            get timeZone() { return isNaN(Number(world.getDynamicProperty("andexdbSettings:timeZone"))) ? 0 : Number(world.getDynamicProperty("andexdbSettings:timeZone") ?? 0); },
+            set timeZone(timeZone) { world.setDynamicProperty("andexdbSettings:timeZone", timeZone ?? 0); },
+            get playerDataRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 5); },
+            set playerDataRefreshRate(playerDataRefreshRate) { world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate)) ? 5 : Math.min(1000, Math.max(1, Number(playerDataRefreshRate ?? 5)))); },
+            get protectedAreasRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 20); },
+            set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 20 : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 20)))); }
+        };
+    }
+    static reset() {
+        // Object.entries(Object.getOwnPropertyDescriptors(this)).filter(v=>v[1].hasOwnProperty("get")).flatMap(v=>v[1].hasOwnProperty("set")?v[1]:v[1]["get"]())
+    }
 }
+globalThis.config = config;
 export class worldPlayers {
     static get savedPlayers() {
         return savedPlayer.getSavedPlayers();
@@ -7593,7 +7610,7 @@ try {
                         ;
                     }
                     catch (e) { }
-                    if (config.showRanksOnPlayerNameTags && !playerList2[index].hasTag("doNotSetNameTag")) {
+                    if (config.chatRanks.showRanksOnPlayerNameTags && !playerList2[index].hasTag("doNotSetNameTag")) {
                         let nameFormatting = "";
                         let nameGradientMode = undefined;
                         let showDimension = false;
@@ -7830,8 +7847,8 @@ try {
         catch (e) {
             console.error(e, e.stack);
         }
-        if (config.artificialLagMS != 0 && !isNaN(config.artificialLagMS)) {
-            const endTime = Date.now() + config.artificialLagMS;
+        if (config.system.artificialLagMS != 0 && !isNaN(config.system.artificialLagMS)) {
+            const endTime = Date.now() + config.system.artificialLagMS;
             while (Date.now() < endTime) { }
         }
     }, 2);
