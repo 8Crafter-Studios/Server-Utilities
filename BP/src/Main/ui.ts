@@ -748,6 +748,10 @@ export function scriptSettings(sourceEntitya: Entity|executeCommandPlayerW|Playe
     form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 5", "integer from 1-1000", String(config.system.playerDataRefreshRate));
     form2.textField("§l§fprotectedAreasRefreshRate§r§f\nThe interval at which to update list the saved protected areas, decreasing this number may increase lag, the default is 20", "integer from 1-1000000", String(config.system.protectedAreasRefreshRate));
     form2.dropdown("§l§fundoClipboardMode§r§f\nWhether to save undo history in memory or to the world files, memory will cause undo history to be cleared upon restarting the world/realm/server, the default is Memory", ["Memory", "World"], ["Memory", "World"].indexOf(String(config.undoClipboardMode)));
+    form2.toggle("§l§fdebugMode§r§f\nWhether debug mode is enabled or not, the default is false", config.system.debugMode);
+    if(config.system.debugMode){
+        form2.textField("§l§cartificialLagMS§r§c\nThe number of milliseconds of artificial lag to cause each tick. §eWARNING!: THIS IS VERY DANGEROUS AND COULD RESULT IN YOUR WORLD BEING SOFT-LOCKED IF SET TO AN EXTREMELY HIGH VALUE, BECAUSE OF THIS, THIS INPUT WILL ONLY ALLOW VALUES UP TO 10000 MILLISECONDS, TO SET IT HIGHER YOU MUST USE THE SCRIPT EVAL TO SET THE §bconfig.system.artificialLagMS§e PROPERTY TO THE DESIRED VALUE", "int", String(config.system.artificialLagMS));
+    }
     form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
@@ -755,10 +759,14 @@ export function scriptSettings(sourceEntitya: Entity|executeCommandPlayerW|Playe
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
-        let [ playerDataRefreshRate, protectedAreasRefreshRate, undoClipboardMode ] = t.formValues;
-        config.system.playerDataRefreshRate=Number(playerDataRefreshRate)
-        config.system.protectedAreasRefreshRate=Number(protectedAreasRefreshRate)
-        config.undoClipboardMode=(["Memory", "World"][Number(undoClipboardMode)]??"Memory") as StructureSaveMode
+        let [ playerDataRefreshRate, protectedAreasRefreshRate, undoClipboardMode, debugMode, artificialLagMS ] = t.formValues as [ playerDataRefreshRate: string, protectedAreasRefreshRate: string, undoClipboardMode: 0|1, debugMode: boolean, artificialLagMS: string ];
+        config.system.playerDataRefreshRate=playerDataRefreshRate.toNumber()
+        config.system.protectedAreasRefreshRate=protectedAreasRefreshRate.toNumber()
+        config.undoClipboardMode=(["Memory", "World"][undoClipboardMode]??"Memory") as StructureSaveMode
+        if(config.system.debugMode&&!(config.system.artificialLagMS==artificialLagMS.toNumber())){
+            config.system.artificialLagMS=Math.min(artificialLagMS.toNumber(), 10000)
+        }
+        config.system.debugMode=debugMode
         settings(sourceEntity); 
 }).catch(e => {
     console.error(e, e.stack);
@@ -771,6 +779,7 @@ export function uiSettings(sourceEntitya: Entity|executeCommandPlayerW|Player){
     "andexdbSettings:allowChatEscapeCodes"
     form2.title("UI Settings")
     form2.textField("§l§fmaxPlayersPerManagePlayersPage§r§f\nThe maximum number of players to display at once on the manage players menu, the default is 10", "integer from 1-1000", String(config.ui.pages.maxPlayersPerManagePlayersPage));
+    form2.toggle("§l§fuseStarWarsReference404Page§r§f\nWhether or not to use the Star Wars reference version of the 404 page, the default is false", config.ui.other.useStarWarsReference404Page);
     form2.submitButton("Save")
     forceShow(form2, (sourceEntity as Player)).then(to => {
         let t = (to as ModalFormResponse)
@@ -778,8 +787,9 @@ export function uiSettings(sourceEntitya: Entity|executeCommandPlayerW|Player){
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
-        let [ maxPlayersPerManagePlayersPage ] = t.formValues;
-        config.ui.pages.maxPlayersPerManagePlayersPage=Number(maxPlayersPerManagePlayersPage)
+        let [ maxPlayersPerManagePlayersPage, useStarWarsReference404Page ] = t.formValues as [ maxPlayersPerManagePlayersPage: string, useStarWarsReference404Page: boolean ];
+        config.ui.pages.maxPlayersPerManagePlayersPage=maxPlayersPerManagePlayersPage.toNumber()
+        config.ui.other.useStarWarsReference404Page=useStarWarsReference404Page
         settings(sourceEntity); 
 }).catch(e => {
     console.error(e, e.stack);

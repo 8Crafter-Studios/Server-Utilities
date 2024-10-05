@@ -87,27 +87,27 @@ export class PlayerShop{
      */
     playerName?: string
     constructor(config: playerShopConfig){
-        this.id=config.id
-        this.name=config.name
-        this.title=config.title
-        this.mainPageBodyText=config.mainPageBodyText
+        this.id=config.id??null
+        this.name=config.name??null
+        this.title=config.title??null
+        this.mainPageBodyText=config.mainPageBodyText??null
         this.sellShop=config.sellShop??true
         this.buyShop=config.buyShop??true
-        this.publicShop=config.publicShop??false
-        this.playerID=config.playerID
-        this.playerName=config.playerName
+        this.publicShop=config.publicShop??true
+        this.playerID=config.playerID??null
+        this.playerName=config.playerName??null
     }
     save(){
         world.setDynamicProperty(this.id, JSON.stringify({
-            id: this.id,
-            name: this.name,
-            mainPageBodyText: this.mainPageBodyText,
-            title: this.title,
-            sellShop: this.sellShop,
-            buyShop: this.buyShop,
-            publicShop: this.publicShop,
-            playerID: this.playerID,
-            playerName: this.playerName
+            id: this.id??null,
+            name: this.name??null,
+            mainPageBodyText: this.mainPageBodyText??null,
+            title: this.title??null,
+            sellShop: this.sellShop??true,
+            buyShop: this.buyShop??true,
+            publicShop: this.publicShop??true,
+            playerID: this.playerID??null,
+            playerName: this.playerName??null
         }))
     }
     async openShop(player: Player, mode: "buy"|"sell"|"both"|"none" = (this.sellShop&&this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both"): Promise<0|1>{
@@ -881,17 +881,17 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
 §rIs Sell Shop: ${shop.sellShop?"§aTrue":"§cFalse"}
 §rOwner UUID: ${shop.playerID}
 §rOwner Name: ${shop.playerName}`)
-        form.button("Manage Items/Pages", "textures/ui/color_plus");
-        form.button("Shop Settings", "textures/ui/color_plus");
-        form.button("Withdraw Items", "textures/ui/color_plus");
-        form.button("View Shop", "textures/ui/color_plus");
+        form.button("Manage Items/Pages", "textures/ui/book_edit_default");
+        form.button("Shop Settings", "textures/ui/icon_setting");
+        form.button("Withdraw Items", "textures/ui/download_backup");
+        form.button("View Shop", "textures/ui/feedIcon");
         if(config.system.debugMode){
-            form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/color_plus");
+            form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
             form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
             form.button("Edit JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
-            form.button("Raw Buy Shop Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/color_plus");
+            form.button("Raw Buy Shop Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
             form.button("Edit Buy Shop JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
-            form.button("Raw Sell Shop Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/color_plus");
+            form.button("Raw Sell Shop Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
             form.button("Edit Sell Shop JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
         }
         form.button("Back", "textures/ui/arrow_left");
@@ -1140,8 +1140,8 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
         shopData.forEach(s=>{
             form.button(s.title, s.texture)
         })
-        form.button("Add Item", "textures/ui/color_plus");
-        form.button("Add Page", "textures/ui/color_plus");
+        form.button("Add Item", "textures/ui/book_addpicture_default");
+        form.button("Add Page", "textures/ui/book_addtextpage_default");
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             if (r.canceled) return 1;
@@ -1504,10 +1504,10 @@ Page Body: ${page.pageBody}
 Title: ${page.title}
 Texture: ${page.texture}`
         )
-        form.button("Edit Contents", "textures/ui/color_plus");
-        form.button("Move Page", "textures/ui/color_plus");
-        form.button("Edit Page", "textures/ui/color_plus");
-        form.button("Delete Page", "textures/ui/color_plus");
+        form.button("Edit Contents", "textures/ui/bookshelf_flat");
+        form.button("Move Page", "textures/ui/move");
+        form.button("Edit Page", "textures/ui/book_edit_default");
+        form.button("Delete Page", "textures/ui/book_trash_default");
         if(config.system.debugMode){
             form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
             form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
@@ -1697,8 +1697,8 @@ Texture: ${page.texture}`
         shopData.forEach(s=>{
             form.button(s.title, s.texture)
         })
-        form.button("Add Item", "textures/ui/color_plus");
-        form.button("Add Page", "textures/ui/color_plus");
+        form.button("Add Item", "textures/ui/book_addpicture_default");
+        form.button("Add Page", "textures/ui/book_addtextpage_default");
         form.button("Back", "textures/ui/arrow_left");
         let r: ActionFormResponse = undefined
         try{
@@ -1829,9 +1829,9 @@ Texture: ${page.texture}`
             Current Amount: ${item.currentAmount}`}
             ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as PlayerSavedShopItem).price:(item as PlayerSellableShopItem).value}`
         )
-        form.button("Move Item", "textures/ui/color_plus");
-        form.button("Edit Item", "textures/ui/color_plus");
-        form.button("Delete Item", "textures/ui/color_plus");
+        form.button("Move Item", "textures/ui/move");
+        form.button("Edit Item", "textures/ui/book_edit_default");
+        form.button("Delete Item", "textures/ui/book_trash_default");
         if(config.system.debugMode){
             form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
             form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
@@ -2073,10 +2073,10 @@ Page Body: ${page.pageBody}
 Title: ${page.title}
 Texture: ${page.texture}`
         )
-        form.button("Edit Contents", "textures/ui/color_plus");
-        form.button("Move Page", "textures/ui/color_plus");
-        form.button("Edit Page", "textures/ui/color_plus");
-        form.button("Delete Page", "textures/ui/color_plus");
+        form.button("Edit Contents", "textures/ui/bookshelf_flat");
+        form.button("Move Page", "textures/ui/move");
+        form.button("Edit Page", "textures/ui/book_edit_default");
+        form.button("Delete Page", "textures/ui/book_trash_default");
         if(config.system.debugMode){
             form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
             form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
