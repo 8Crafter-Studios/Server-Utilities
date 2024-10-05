@@ -279,7 +279,10 @@ export class ServerShop {
                     const itemStack = entity.getComponent("inventory").container.getItem(0);
                     entity.remove();
                     for (let i = 0; i < r.formValues[0]; i++) {
-                        player.getComponent("inventory").container.addItem(itemStack);
+                        let b = player.getComponent("inventory").container.addItem(itemStack);
+                        if (!!b) {
+                            catchtry(() => player.dimension.spawnItem(b, player.location));
+                        }
                     }
                     MoneySystem.get(player.id).removeMoney((item.price * r.formValues[0]));
                     return 1;
@@ -312,7 +315,15 @@ export class ServerShop {
             if (r.canceled == true || r.formValues[0] == 0) {
                 return 1;
             }
-            const items = containerToContainerSlotArray(player.getComponent("inventory").container).filter(v => v.hasItem() ? v?.typeId == item.itemID : false);
+            const items = containerToContainerSlotArray(player.getComponent("inventory").container)
+                .filter((v) => (v.hasItem() ? v?.typeId == item.itemID : false))
+                .filter((v) => !((v.lockMode == "inventory" &&
+                !config.shopSystem.player
+                    .allowSellingLockInInventoryItems) ||
+                (v.lockMode == "slot" &&
+                    !config.shopSystem.player.allowSellingLockInSlotItems) ||
+                (v.keepOnDeath &&
+                    !config.shopSystem.player.allowSellingKeepOnDeathItems)));
             let itemCount = 0;
             items.forEach(v => itemCount += v.amount);
             if (itemCount >= r.formValues[0]) {
@@ -558,10 +569,10 @@ export class ServerShopManager {
     Title: ${shop.title}
     Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
     §fIs Sell Shop: ${shop.sellShop ? "§aTrue" : "§cFalse"}`);
-        form.button("Manage Items/Pages", "textures/ui/color_plus");
+        form.button("Manage Items/Pages", "textures/ui/book_edit_default");
         form.button(`${LinkedServerShopCommands.testShopHasLinkedCommand(shop.id) ? "Edit" : "Add"} Linked Command\n${LinkedServerShopCommands.testShopHasLinkedCommand(shop.id) ? LinkedServerShopCommands.LinkedCommands.find(c => c[1] == shop.id) : "Not Set"}`, "textures/ui/color_plus");
-        form.button("Shop Settings", "textures/ui/color_plus");
-        form.button("View Shop", "textures/ui/color_plus");
+        form.button("Shop Settings", "textures/ui/icon_setting");
+        form.button("View Shop", "textures/ui/feedIcon");
         form.button("Back", "textures/ui/arrow_left");
         forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
@@ -704,8 +715,8 @@ export class ServerShopManager {
         shopData.forEach(s => {
             form.button(s.title, s.texture);
         });
-        form.button("Add Item", "textures/ui/color_plus");
-        form.button("Add Page", "textures/ui/color_plus");
+        form.button("Add Item", "textures/ui/book_addpicture_default");
+        form.button("Add Page", "textures/ui/book_addtextpage_default");
         form.button("Back", "textures/ui/arrow_left");
         forceShow(form, sourceEntity).then(async (r) => {
             if (r.canceled)
@@ -811,9 +822,9 @@ Texture: ${item.texture}
 ${mode == "buy" ? "Purchase" : "Sell"} Amount Step: ${item.step}
 Maximum ${mode == "buy" ? "Purchase" : "Sell"} Amount: ${item.max}
 ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}`);
-        form.button("Move Item", "textures/ui/color_plus");
-        form.button("Edit Item", "textures/ui/color_plus");
-        form.button("Delete Item", "textures/ui/color_plus");
+        form.button("Move Item", "textures/ui/move");
+        form.button("Edit Item", "textures/ui/book_edit_default");
+        form.button("Delete Item", "textures/ui/book_trash_default");
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
@@ -1111,10 +1122,10 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
 Page Body: ${page.pageBody}
 Title: ${page.title}
 Texture: ${page.texture}`);
-        form.button("Edit Contents", "textures/ui/color_plus");
-        form.button("Move Page", "textures/ui/color_plus");
-        form.button("Edit Page", "textures/ui/color_plus");
-        form.button("Delete Page", "textures/ui/color_plus");
+        form.button("Edit Contents", "textures/ui/bookshelf_flat");
+        form.button("Move Page", "textures/ui/move");
+        form.button("Edit Page", "textures/ui/book_edit_default");
+        form.button("Delete Page", "textures/ui/book_trash_default");
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
@@ -1253,8 +1264,8 @@ Texture: ${page.texture}`);
         shopData.forEach(s => {
             form.button(s.title, s.texture);
         });
-        form.button("Add Item", "textures/ui/color_plus");
-        form.button("Add Page", "textures/ui/color_plus");
+        form.button("Add Item", "textures/ui/book_addpicture_default");
+        form.button("Add Page", "textures/ui/book_addtextpage_default");
         form.button("Back", "textures/ui/arrow_left");
         let r = undefined;
         try {
@@ -1376,9 +1387,9 @@ Texture: ${item.texture}
 ${mode == "buy" ? "Purchase" : "Sell"} Amount Step: ${item.step}
 Maximum ${mode == "buy" ? "Purchase" : "Sell"} Amount: ${item.max}
 ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}`);
-        form.button("Move Item", "textures/ui/color_plus");
-        form.button("Edit Item", "textures/ui/color_plus");
-        form.button("Delete Item", "textures/ui/color_plus");
+        form.button("Move Item", "textures/ui/move");
+        form.button("Edit Item", "textures/ui/book_edit_default");
+        form.button("Delete Item", "textures/ui/book_trash_default");
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
@@ -1687,10 +1698,10 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
 Page Body: ${page.pageBody}
 Title: ${page.title}
 Texture: ${page.texture}`);
-        form.button("Edit Contents", "textures/ui/color_plus");
-        form.button("Move Page", "textures/ui/color_plus");
-        form.button("Edit Page", "textures/ui/color_plus");
-        form.button("Delete Page", "textures/ui/color_plus");
+        form.button("Edit Contents", "textures/ui/bookshelf_flat");
+        form.button("Move Page", "textures/ui/move");
+        form.button("Edit Page", "textures/ui/book_edit_default");
+        form.button("Delete Page", "textures/ui/book_trash_default");
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form

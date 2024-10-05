@@ -375,7 +375,10 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                             saveMode: StructureSaveMode.World
                         });
                         item.remainingStock -= r.formValues[0];
-                        player.getComponent("inventory").container.addItem(itemStack);
+                        let b = player.getComponent("inventory").container.addItem(itemStack);
+                        if (!!b) {
+                            catchtry(() => player.dimension.spawnItem(b, player.location));
+                        }
                         MoneySystem.get(player.id).removeMoney(item.price * r.formValues[0]);
                         MoneySystem.get(item.playerID).addMoney(item.price * r.formValues[0]);
                     }
@@ -434,7 +437,15 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             if (r.canceled == true || r.formValues[0] == 0) {
                 return 1;
             }
-            const items = containerToContainerSlotArray(player.getComponent("inventory").container).filter(v => v.hasItem() ? v?.typeId == item.itemID : false);
+            const items = containerToContainerSlotArray(player.getComponent("inventory").container)
+                .filter((v) => (v.hasItem() ? v?.typeId == item.itemID : false))
+                .filter((v) => !((v.lockMode == "inventory" &&
+                !config.shopSystem.player
+                    .allowSellingLockInInventoryItems) ||
+                (v.lockMode == "slot" &&
+                    !config.shopSystem.player.allowSellingLockInSlotItems) ||
+                (v.keepOnDeath &&
+                    !config.shopSystem.player.allowSellingKeepOnDeathItems)));
             let itemCount = 0;
             items.forEach(v => itemCount += v.amount);
             if (itemCount >= r.formValues[0]) {
@@ -895,10 +906,10 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
 §rIs Sell Shop: ${shop.sellShop ? "§aTrue" : "§cFalse"}
 §rOwner UUID: ${shop.playerID}
 §rOwner Name: ${shop.playerName}`);
-        form.button("Manage Items/Pages", "textures/ui/color_plus");
-        form.button("Shop Settings", "textures/ui/color_plus");
-        form.button("Withdraw Items", "textures/ui/color_plus");
-        form.button("View Shop", "textures/ui/color_plus");
+        form.button("Manage Items/Pages", "textures/ui/book_edit_default");
+        form.button("Shop Settings", "textures/ui/icon_setting");
+        form.button("Withdraw Items", "textures/ui/download_backup");
+        form.button("View Shop", "textures/ui/feedIcon");
         if (config.system.debugMode) {
             form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
             form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
@@ -1168,8 +1179,8 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
         shopData.forEach(s => {
             form.button(s.title, s.texture);
         });
-        form.button("Add Item", "textures/ui/color_plus");
-        form.button("Add Page", "textures/ui/color_plus");
+        form.button("Add Item", "textures/ui/book_addpicture_default");
+        form.button("Add Page", "textures/ui/book_addtextpage_default");
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, sourceEntity).then(async (r) => {
             if (r.canceled)
@@ -1180,6 +1191,21 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     const type = mode == "buy" ? "player_shop_saved" : "player_shop_sellable";
                     if (type == "player_shop_saved") {
                         const item = await itemSelector(sourceEntity, sourceEntity, PlayerShopManager.managePlayerShop_contents, sourceEntity, shop, mode);
+                        if ((!item.item.hasItem()) ||
+                            !((item?.item?.lockMode == "inventory" &&
+                                !config.shopSystem.player
+                                    .allowSellingLockInInventoryItems) ||
+                                (item?.item?.lockMode == "slot" &&
+                                    !config.shopSystem.player.allowSellingLockInSlotItems) ||
+                                (item?.item?.keepOnDeath &&
+                                    !config.shopSystem.player.allowSellingKeepOnDeathItems))) {
+                            if ((await showMessage(sourceEntity, "", `You cannot sell this item because ${(item.item?.lockMode == "inventory" && !config.shopSystem.player.allowSellingLockInInventoryItems) ? "selling items that are locked to your inventory is disabled" : (item.item?.lockMode == "slot" && !config.shopSystem.player.allowSellingLockInSlotItems) ? "selling items that are locked to a specific inventory slot is disabled" : (item.item?.keepOnDeath && !config.shopSystem.player.allowSellingKeepOnDeathItems) ? "selling items that have the keep on death property is disabled" : "that slot is empty"}`, "Back", "Close")).selection != 0) {
+                                return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                            }
+                            else {
+                                return 0;
+                            }
+                        }
                         const entity = sourceEntity.dimension.spawnEntity("andexdb:saved_shop_item", { x: Math.floor(sourceEntity.location.x) + 0.5, y: Math.floor(sourceEntity.location.y) + 10.5, z: Math.floor(sourceEntity.location.z) + 0.5 });
                         const entityID = getSuperUniqueID();
                         entity.setDynamicProperty("andexdb:saved_player_shop_item_save_id", entityID);
@@ -1282,16 +1308,25 @@ Title: ${item.title}
 Texture: ${item.texture}
 ${mode == "buy" ? "Purchase" : "Sell"} Amount Step: ${item.step}
 ${item.itemType == "player_shop_saved" ? `Maximum Stock: ${item.maxStackSize}
-${item.remainingStock}` : `Amount Still Wanted: ${item.amountWanted}
+Remaining Stock: ${item.remainingStock}` : `Amount Still Wanted: ${item.amountWanted}
 Current Amount: ${item.currentAmount}`}
 ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}`);
         form.button("Move Item", "textures/ui/move");
         form.button("Edit Item", "textures/ui/book_edit_default");
         form.button("Delete Item", "textures/ui/book_trash_default");
+        if ((mode == "buy") && (item?.remainingStock < item?.maxStackSize)) {
+            /**
+             * @todo Add the correct texture.
+             */
+            form.button("Restock Item", "textures/ui/restock_item");
+        }
         if (config.system.debugMode) {
             form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
             form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
             form.button("Edit JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+            if (mode == "buy") {
+                form.button("Load Structure\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/xyz_axis");
+            }
         }
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, sourceEntity).then(async (r) => {
@@ -1346,16 +1381,193 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                             newData.splice(itemIndex, 1);
                             shop.sellData = newData;
                         }
+                        return 1;
                     }
                     else {
                         return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
                     }
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 3 : -3:
+                case ((mode == "buy") && (item?.remainingStock < item?.maxStackSize)) ? 3 : -3:
+                    {
+                        const itemb = await itemSelector(sourceEntity, sourceEntity, PlayerShopManager.managePlayerShop_contents, sourceEntity, shop, mode);
+                        if ((!itemb.item.hasItem())) {
+                            if ((await showMessage(sourceEntity, "", `You cannot restock this item with the selected slot because that slot is empty`, "Back", "Close")).selection != 1) {
+                                return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                            }
+                            else {
+                                return 0;
+                            }
+                        }
+                        world.structureManager.place(item.structureID, sourceEntity.dimension, sourceEntity.location, { includeBlocks: false, includeEntities: true });
+                        const entity = sourceEntity.dimension.getEntitiesAtBlockLocation(sourceEntity.location).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == item.entityID);
+                        if (!!entity) {
+                            const itemc = item;
+                            const player = sourceEntity;
+                            const itemStack = entity.getComponent("inventory").container.getItem(0);
+                            entity.remove();
+                            if (!!!itemStack) {
+                                if ((!itemb.item.hasItem()) ||
+                                    !((itemb?.item?.lockMode == "inventory" &&
+                                        !config.shopSystem.player
+                                            .allowSellingLockInInventoryItems) ||
+                                        (itemb?.item?.lockMode == "slot" &&
+                                            !config.shopSystem.player.allowSellingLockInSlotItems) ||
+                                        (itemb?.item?.keepOnDeath &&
+                                            !config.shopSystem.player.allowSellingKeepOnDeathItems))) {
+                                    if ((await showMessage(sourceEntity, "", `You cannot restock this item with the selected item because ${(itemb.item?.lockMode == "inventory" && !config.shopSystem.player.allowSellingLockInInventoryItems) ? "selling items that are locked to your inventory is disabled" : (itemb.item?.lockMode == "slot" && !config.shopSystem.player.allowSellingLockInSlotItems) ? "selling items that are locked to a specific inventory slot is disabled" : (itemb.item?.keepOnDeath && !config.shopSystem.player.allowSellingKeepOnDeathItems) ? "selling items that have the keep on death property is disabled" : "that slot is empty"}.`, "Back", "Close")).selection != 0) {
+                                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                                    }
+                                    else {
+                                        return 0;
+                                    }
+                                }
+                                if (itemc.itemDetails.typeId != itemb.item.typeId) {
+                                    if ((await showMessage(sourceEntity, "", `You cannot restock this item with the selected item because they are different item types.`, "Back", "Close")).selection != 0) {
+                                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                                    }
+                                    else {
+                                        return 0;
+                                    }
+                                }
+                                world.structureManager.place(itemc.structureID, player.dimension, Vector.add(player.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
+                                const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == itemc.entityID);
+                                if (!!!entity) {
+                                    throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${itemc.entityID} was found inside of the specified structure.`);
+                                }
+                                const leftOverItemStack = entity.getComponent("inventory").container.addItem(itemb.item.getItem());
+                                const itemStackB = entity.getComponent("inventory").container.getItem(0);
+                                itemb.item.setItem(leftOverItemStack);
+                                try {
+                                    world.structureManager.delete(itemc.structureID);
+                                }
+                                catch { }
+                                /**
+                                 * This makes the script temporarily teleport the other entities away so that when it saves the storage entity, it can't save and possibly duplicate other entities.
+                                 */
+                                var otherEntities = tryget(() => player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).filter(v => v.id != entity.id)) ?? [];
+                                var locs = otherEntities.map(v => v.location);
+                                otherEntities.forEach(v => tryrun(() => v.teleport(Vector.add(v.location, { x: 0, y: 50, z: 0 }))));
+                                try {
+                                    world.structureManager.createFromWorld(itemc.structureID, player.dimension, {
+                                        x: Math.floor(player.location.x),
+                                        y: Math.floor(player.location.y) + 10,
+                                        z: Math.floor(player.location.z)
+                                    }, {
+                                        x: Math.floor(player.location.x) + 1,
+                                        y: Math.floor(player.location.y) + 11,
+                                        z: Math.floor(player.location.z) + 1
+                                    }, {
+                                        includeBlocks: false,
+                                        includeEntities: true,
+                                        saveMode: StructureSaveMode.World
+                                    });
+                                    itemc.remainingStock = itemStackB.amount;
+                                    itemc.itemDetails = {
+                                        damage: tryget(() => itemb.item.getItem().getComponent("durability").damage) ?? NaN,
+                                        maxDurability: tryget(() => itemb.item.getItem().getComponent("durability").maxDurability) ?? NaN,
+                                        keepOnDeath: itemb.item.keepOnDeath,
+                                        lockMode: itemb.item.lockMode,
+                                        loreLineCount: itemb.item.getLore().length,
+                                        typeId: itemb.item.typeId,
+                                        nameTag: itemb.item.nameTag ?? null,
+                                        enchantments: tryget(() => itemb.item.getItem().getComponent("enchantable").getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                                    };
+                                    let newData = shop.buyData;
+                                    newData.splice(itemIndex, 1, itemc);
+                                    shop.buyData = newData;
+                                }
+                                catch (e) {
+                                    return ((await showMessage(player, "An Error Has Occured", e instanceof Error ? e.stringify() : e + " " + e?.stack, "Go Back", "Close Shop")).selection == 1).toNumber();
+                                }
+                                finally {
+                                    try {
+                                        otherEntities.forEach((v, i) => tryrun(() => v.teleport(locs[i], { keepVelocity: false })));
+                                    }
+                                    catch { }
+                                    try {
+                                        entity.remove();
+                                    }
+                                    catch { }
+                                }
+                            }
+                            else if (itemStack.isStackableWith(itemb.item.getItem())) {
+                                world.structureManager.place(itemc.structureID, player.dimension, Vector.add(player.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
+                                const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == itemc.entityID);
+                                if (!!!entity) {
+                                    throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${itemc.entityID} was found inside of the specified structure.`);
+                                }
+                                const leftOverItemStack = entity.getComponent("inventory").container.addItem(itemb.item.getItem());
+                                const itemStackB = entity.getComponent("inventory").container.getItem(0);
+                                itemb.item.setItem(leftOverItemStack);
+                                try {
+                                    world.structureManager.delete(itemc.structureID);
+                                }
+                                catch { }
+                                /**
+                                 * This makes the script temporarily teleport the other entities away so that when it saves the storage entity, it can't save and possibly duplicate other entities.
+                                 */
+                                var otherEntities = tryget(() => player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).filter(v => v.id != entity.id)) ?? [];
+                                var locs = otherEntities.map(v => v.location);
+                                otherEntities.forEach(v => tryrun(() => v.teleport(Vector.add(v.location, { x: 0, y: 50, z: 0 }))));
+                                try {
+                                    world.structureManager.createFromWorld(itemc.structureID, player.dimension, {
+                                        x: Math.floor(player.location.x),
+                                        y: Math.floor(player.location.y) + 10,
+                                        z: Math.floor(player.location.z)
+                                    }, {
+                                        x: Math.floor(player.location.x) + 1,
+                                        y: Math.floor(player.location.y) + 11,
+                                        z: Math.floor(player.location.z) + 1
+                                    }, {
+                                        includeBlocks: false,
+                                        includeEntities: true,
+                                        saveMode: StructureSaveMode.World
+                                    });
+                                    itemc.remainingStock += itemStackB.amount;
+                                    let newData = shop.buyData;
+                                    newData.splice(itemIndex, 1, itemc);
+                                    shop.buyData = newData;
+                                }
+                                catch (e) {
+                                    return ((await showMessage(player, "An Error Has Occured", e instanceof Error ? e.stringify() : e + " " + e?.stack, "Go Back", "Close Shop")).selection == 1).toNumber();
+                                }
+                                finally {
+                                    try {
+                                        otherEntities.forEach((v, i) => tryrun(() => v.teleport(locs[i], { keepVelocity: false })));
+                                    }
+                                    catch { }
+                                    try {
+                                        entity.remove();
+                                    }
+                                    catch { }
+                                }
+                            }
+                            else {
+                                if ((await showMessage(sourceEntity, "", `You cannot restock this item with the selected slot because the two items are not stackable with each other`, "Back", "Close")).selection != 0) {
+                                    return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                                }
+                                else {
+                                    return 0;
+                                }
+                            }
+                            return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, itemc, itemIndex, mode);
+                        }
+                        else {
+                            if ((await showMessage(sourceEntity, "", `Something went wrong and the entity that stores this item cannot be found in its structure. Please try again later. If the issue persists then the item is gone and you should just delete it.`, "Back", "Close")).selection != 1) {
+                                return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                            }
+                            else {
+                                return 0;
+                            }
+                        }
+                        return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                    }
+                    break;
+                case ((sourceEntity.hasTag("admin") && config.system.debugMode) ? 3 : -3) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
                     await showActions(sourceEntity, "Debug Info", `Raw Item Data: \n${JSON.stringify(item, undefined, 2)}`, ["Done"]);
                     return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 4 : -4:
+                case ((sourceEntity.hasTag("admin") && config.system.debugMode) ? 4 : -4) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
                     const formb = new ModalFormData().title("Edit Raw Item Data");
                     let data = Object.entries(item);
                     data.forEach(v => formb.textField(v[0], typeof v[1], JSON.stringify(v[1])));
@@ -1376,7 +1588,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                     }
                     return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, newItemData, itemIndex, mode);
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 5 : -5:
+                case ((sourceEntity.hasTag("admin") && config.system.debugMode) ? 5 : -5) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
                     const formc = new ModalFormData().title("Edit JSON Item Data");
                     let datab = Object.entries(item);
                     formc.textField("JSON", "JSON", JSON.stringify(datab));
@@ -1397,18 +1609,26 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                     }
                     return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, newItemDataB, itemIndex, mode);
                     break;
-                case 3 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3):
+                case ((sourceEntity.hasTag("admin") && config.system.debugMode && mode == "buy") ? 6 : -6) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
+                    world.structureManager.place(item.structureID, sourceEntity.dimension, sourceEntity.location, { includeBlocks: false, includeEntities: true });
+                    if ((await showMessage(sourceEntity, "", `The structure has "§a${item.structureID}§r" been loaded. Would you like to close the shop?`, "Close Shop", "Go Back")).selection != 0) {
+                        return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                    }
+                    else {
+                        return 0;
+                    }
+                    break;
+                case 3 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3) + (+(sourceEntity.hasTag("admin") && config.system.debugMode && mode == "buy")) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
                     return 1;
                     break;
                 default:
                     return 0;
             }
-            return r;
+            return 1;
         });
     }
     /**
      * Opens the UI for editing a player shop item.
-     * @todo
      * @param sourceEntitya The player editing the shop item.
      * @param shop The player shop that the shop item is in.
      * @param item The shop item that the player is editing.
@@ -1474,7 +1694,6 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
     }
     /**
      * Opens the UI for editing a player shop item.
-     * @todo
      * @param sourceEntitya The player editing the shop item.
      * @param shop The player shop that the shop item is in.
      * @param type The type of the shop item that the player is adding.
@@ -1537,10 +1756,10 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
 Page Body: ${page.pageBody}
 Title: ${page.title}
 Texture: ${page.texture}`);
-        form.button("Edit Contents", "textures/ui/color_plus");
-        form.button("Move Page", "textures/ui/color_plus");
-        form.button("Edit Page", "textures/ui/color_plus");
-        form.button("Delete Page", "textures/ui/color_plus");
+        form.button("Edit Contents", "textures/ui/bookshelf_flat");
+        form.button("Move Page", "textures/ui/move");
+        form.button("Edit Page", "textures/ui/book_edit_default");
+        form.button("Delete Page", "textures/ui/book_trash_default");
         if (config.system.debugMode) {
             form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
             form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
@@ -1735,8 +1954,8 @@ Texture: ${page.texture}`);
         shopData.forEach(s => {
             form.button(s.title, s.texture);
         });
-        form.button("Add Item", "textures/ui/color_plus");
-        form.button("Add Page", "textures/ui/color_plus");
+        form.button("Add Item", "textures/ui/book_addpicture_default");
+        form.button("Add Page", "textures/ui/book_addtextpage_default");
         form.button("Back", "textures/ui/arrow_left");
         let r = undefined;
         try {
@@ -1759,7 +1978,22 @@ Texture: ${page.texture}`);
             case shopData.length:
                 const type = mode == "buy" ? "player_shop_saved" : "player_shop_sellable";
                 if (type == "player_shop_saved") {
-                    const item = await itemSelector(sourceEntity, sourceEntity, PlayerShopManager.managePlayerShop_contents, sourceEntity, shop, mode);
+                    const item = await itemSelector(sourceEntity, sourceEntity, () => 1 /*, PlayerShopManager.managePlayerShop_contents, sourceEntity, shop, mode*/);
+                    if ((!item.item.hasItem()) ||
+                        !((item?.item?.lockMode == "inventory" &&
+                            !config.shopSystem.player
+                                .allowSellingLockInInventoryItems) ||
+                            (item?.item?.lockMode == "slot" &&
+                                !config.shopSystem.player.allowSellingLockInSlotItems) ||
+                            (item?.item?.keepOnDeath &&
+                                !config.shopSystem.player.allowSellingKeepOnDeathItems))) {
+                        if ((await showMessage(sourceEntity, "", `You cannot sell this item because ${(item.item?.lockMode == "inventory" && !config.shopSystem.player.allowSellingLockInInventoryItems) ? "selling items that are locked to your inventory is disabled" : (item.item?.lockMode == "slot" && !config.shopSystem.player.allowSellingLockInSlotItems) ? "selling items that are locked to a specific inventory slot is disabled" : (item.item?.keepOnDeath && !config.shopSystem.player.allowSellingKeepOnDeathItems) ? "selling items that have the keep on death property is disabled" : "that slot is empty"}`, "Back", "Close")).selection != 0) {
+                            return await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
+                        }
+                        else {
+                            return 0;
+                        }
+                    }
                     const entity = sourceEntity.dimension.spawnEntity("andexdb:saved_shop_item", { x: Math.floor(sourceEntity.location.x) + 0.5, y: Math.floor(sourceEntity.location.y) + 10.5, z: Math.floor(sourceEntity.location.z) + 0.5 });
                     const entityID = getSuperUniqueID();
                     entity.setDynamicProperty("andexdb:saved_player_shop_item_save_id", entityID);
@@ -1863,13 +2097,22 @@ Texture: ${page.texture}`);
             ${item.remainingStock}` : `Amount Still Wanted: ${item.amountWanted}
             Current Amount: ${item.currentAmount}`}
             ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}`);
-        form.button("Move Item", "textures/ui/color_plus");
-        form.button("Edit Item", "textures/ui/color_plus");
-        form.button("Delete Item", "textures/ui/color_plus");
+        form.button("Move Item", "textures/ui/move");
+        form.button("Edit Item", "textures/ui/book_edit_default");
+        form.button("Delete Item", "textures/ui/book_trash_default");
+        if ((mode == "buy") && (item?.remainingStock < item?.maxStackSize)) {
+            /**
+             * @todo Add the correct texture.
+             */
+            form.button("Restock Item", "textures/ui/restock_item");
+        }
         if (config.system.debugMode) {
             form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
             form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
             form.button("Edit JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+            if (mode == "buy") {
+                form.button("Load Structure\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/xyz_axis");
+            }
         }
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, sourceEntity).then(async (r) => {
@@ -1934,11 +2177,188 @@ Texture: ${page.texture}`);
                         return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
                     }
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 3 : -3:
+                case ((mode == "buy") && (item?.remainingStock < item?.maxStackSize)) ? 3 : -3:
+                    {
+                        const itemb = await itemSelector(sourceEntity, sourceEntity, PlayerShopManager.managePlayerShop_contents, sourceEntity, shop, mode);
+                        if ((!itemb.item.hasItem())) {
+                            if ((await showMessage(sourceEntity, "", `You cannot restock this item with the selected slot because that slot is empty`, "Back", "Close")).selection != 1) {
+                                return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                            }
+                            else {
+                                return 0;
+                            }
+                        }
+                        world.structureManager.place(item.structureID, sourceEntity.dimension, sourceEntity.location, { includeBlocks: false, includeEntities: true });
+                        const entity = sourceEntity.dimension.getEntitiesAtBlockLocation(sourceEntity.location).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == item.entityID);
+                        if (!!entity) {
+                            const itemc = item;
+                            const player = sourceEntity;
+                            const itemStack = entity.getComponent("inventory").container.getItem(0);
+                            entity.remove();
+                            if (!!!itemStack) {
+                                if ((!itemb.item.hasItem()) ||
+                                    !((itemb?.item?.lockMode == "inventory" &&
+                                        !config.shopSystem.player
+                                            .allowSellingLockInInventoryItems) ||
+                                        (itemb?.item?.lockMode == "slot" &&
+                                            !config.shopSystem.player.allowSellingLockInSlotItems) ||
+                                        (itemb?.item?.keepOnDeath &&
+                                            !config.shopSystem.player.allowSellingKeepOnDeathItems))) {
+                                    if ((await showMessage(sourceEntity, "", `You cannot restock this item with the selected item because ${(itemb.item?.lockMode == "inventory" && !config.shopSystem.player.allowSellingLockInInventoryItems) ? "selling items that are locked to your inventory is disabled" : (itemb.item?.lockMode == "slot" && !config.shopSystem.player.allowSellingLockInSlotItems) ? "selling items that are locked to a specific inventory slot is disabled" : (itemb.item?.keepOnDeath && !config.shopSystem.player.allowSellingKeepOnDeathItems) ? "selling items that have the keep on death property is disabled" : "that slot is empty"}.`, "Back", "Close")).selection != 0) {
+                                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                                    }
+                                    else {
+                                        return 0;
+                                    }
+                                }
+                                if (itemc.itemDetails.typeId != itemb.item.typeId) {
+                                    if ((await showMessage(sourceEntity, "", `You cannot restock this item with the selected item because they are different item types.`, "Back", "Close")).selection != 0) {
+                                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                                    }
+                                    else {
+                                        return 0;
+                                    }
+                                }
+                                world.structureManager.place(itemc.structureID, player.dimension, Vector.add(player.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
+                                const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == itemc.entityID);
+                                if (!!!entity) {
+                                    throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${itemc.entityID} was found inside of the specified structure.`);
+                                }
+                                const leftOverItemStack = entity.getComponent("inventory").container.addItem(itemb.item.getItem());
+                                const itemStackB = entity.getComponent("inventory").container.getItem(0);
+                                itemb.item.setItem(leftOverItemStack);
+                                try {
+                                    world.structureManager.delete(itemc.structureID);
+                                }
+                                catch { }
+                                /**
+                                 * This makes the script temporarily teleport the other entities away so that when it saves the storage entity, it can't save and possibly duplicate other entities.
+                                 */
+                                var otherEntities = tryget(() => player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).filter(v => v.id != entity.id)) ?? [];
+                                var locs = otherEntities.map(v => v.location);
+                                otherEntities.forEach(v => tryrun(() => v.teleport(Vector.add(v.location, { x: 0, y: 50, z: 0 }))));
+                                try {
+                                    world.structureManager.createFromWorld(itemc.structureID, player.dimension, {
+                                        x: Math.floor(player.location.x),
+                                        y: Math.floor(player.location.y) + 10,
+                                        z: Math.floor(player.location.z)
+                                    }, {
+                                        x: Math.floor(player.location.x) + 1,
+                                        y: Math.floor(player.location.y) + 11,
+                                        z: Math.floor(player.location.z) + 1
+                                    }, {
+                                        includeBlocks: false,
+                                        includeEntities: true,
+                                        saveMode: StructureSaveMode.World
+                                    });
+                                    itemc.remainingStock = itemStackB.amount;
+                                    itemc.itemDetails = {
+                                        damage: tryget(() => itemb.item.getItem().getComponent("durability").damage) ?? NaN,
+                                        maxDurability: tryget(() => itemb.item.getItem().getComponent("durability").maxDurability) ?? NaN,
+                                        keepOnDeath: itemb.item.keepOnDeath,
+                                        lockMode: itemb.item.lockMode,
+                                        loreLineCount: itemb.item.getLore().length,
+                                        typeId: itemb.item.typeId,
+                                        nameTag: itemb.item.nameTag ?? null,
+                                        enchantments: tryget(() => itemb.item.getItem().getComponent("enchantable").getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                                    };
+                                    let data = shop.buyData;
+                                    let newData = getPathInObject(data, path).data;
+                                    newData.splice(itemIndex, 1, itemc);
+                                    shop.buyData = data;
+                                }
+                                catch (e) {
+                                    return ((await showMessage(player, "An Error Has Occured", e instanceof Error ? e.stringify() : e + " " + e?.stack, "Go Back", "Close Shop")).selection == 1).toNumber();
+                                }
+                                finally {
+                                    try {
+                                        otherEntities.forEach((v, i) => tryrun(() => v.teleport(locs[i], { keepVelocity: false })));
+                                    }
+                                    catch { }
+                                    try {
+                                        entity.remove();
+                                    }
+                                    catch { }
+                                }
+                            }
+                            else if (itemStack.isStackableWith(itemb.item.getItem())) {
+                                world.structureManager.place(itemc.structureID, player.dimension, Vector.add(player.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
+                                const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == itemc.entityID);
+                                if (!!!entity) {
+                                    throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${itemc.entityID} was found inside of the specified structure.`);
+                                }
+                                const leftOverItemStack = entity.getComponent("inventory").container.addItem(itemb.item.getItem());
+                                const itemStackB = entity.getComponent("inventory").container.getItem(0);
+                                itemb.item.setItem(leftOverItemStack);
+                                try {
+                                    world.structureManager.delete(itemc.structureID);
+                                }
+                                catch { }
+                                /**
+                                 * This makes the script temporarily teleport the other entities away so that when it saves the storage entity, it can't save and possibly duplicate other entities.
+                                 */
+                                var otherEntities = tryget(() => player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).filter(v => v.id != entity.id)) ?? [];
+                                var locs = otherEntities.map(v => v.location);
+                                otherEntities.forEach(v => tryrun(() => v.teleport(Vector.add(v.location, { x: 0, y: 50, z: 0 }))));
+                                try {
+                                    world.structureManager.createFromWorld(itemc.structureID, player.dimension, {
+                                        x: Math.floor(player.location.x),
+                                        y: Math.floor(player.location.y) + 10,
+                                        z: Math.floor(player.location.z)
+                                    }, {
+                                        x: Math.floor(player.location.x) + 1,
+                                        y: Math.floor(player.location.y) + 11,
+                                        z: Math.floor(player.location.z) + 1
+                                    }, {
+                                        includeBlocks: false,
+                                        includeEntities: true,
+                                        saveMode: StructureSaveMode.World
+                                    });
+                                    itemc.remainingStock += itemStackB.amount;
+                                    let data = shop.buyData;
+                                    let newData = getPathInObject(data, path).data;
+                                    newData.splice(itemIndex, 1, itemc);
+                                    shop.buyData = data;
+                                }
+                                catch (e) {
+                                    return ((await showMessage(player, "An Error Has Occured", e instanceof Error ? e.stringify() : e + " " + e?.stack, "Go Back", "Close Shop")).selection == 1).toNumber();
+                                }
+                                finally {
+                                    try {
+                                        otherEntities.forEach((v, i) => tryrun(() => v.teleport(locs[i], { keepVelocity: false })));
+                                    }
+                                    catch { }
+                                    try {
+                                        entity.remove();
+                                    }
+                                    catch { }
+                                }
+                            }
+                            else {
+                                if ((await showMessage(sourceEntity, "", `You cannot restock this item with the selected slot because the two items are not stackable with each other`, "Back", "Close")).selection != 0) {
+                                    return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                                }
+                                else {
+                                    return 0;
+                                }
+                            }
+                            return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, itemc, itemIndex, mode);
+                        }
+                        else {
+                            if ((await showMessage(sourceEntity, "", `Something went wrong and the entity that stores this item cannot be found in its structure. Please try again later. If the issue persists then the item is gone and you should just delete it.`, "Back", "Close")).selection != 1) {
+                                return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                            }
+                            else {
+                                return 0;
+                            }
+                        }
+                    }
+                    break;
+                case ((sourceEntity.hasTag("admin") && config.system.debugMode) ? 3 : -3) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
                     await showActions(sourceEntity, "Debug Info", `Raw Item Data: \n${JSON.stringify(item, undefined, 2)}`, ["Done"]);
                     return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 4 : -4:
+                case ((sourceEntity.hasTag("admin") && config.system.debugMode) ? 4 : -4) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
                     const formb = new ModalFormData().title("Edit Raw Item Data");
                     let data = Object.entries(item);
                     data.forEach(v => formb.textField(v[0], typeof v[1], JSON.stringify(v[1])));
@@ -1961,7 +2381,7 @@ Texture: ${page.texture}`);
                     }
                     return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, newItemData, itemIndex);
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 5 : -5:
+                case ((sourceEntity.hasTag("admin") && config.system.debugMode) ? 5 : -5) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
                     const formc = new ModalFormData().title("Edit JSON Item Data");
                     let datab = Object.entries(item);
                     formc.textField("JSON", "JSON", JSON.stringify(datab));
@@ -1984,7 +2404,16 @@ Texture: ${page.texture}`);
                     }
                     return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, newItemDataB, itemIndex);
                     break;
-                case 3 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3):
+                case ((sourceEntity.hasTag("admin") && config.system.debugMode && mode == "buy") ? 6 : -6) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
+                    world.structureManager.place(item.structureID, sourceEntity.dimension, sourceEntity.location, { includeBlocks: false, includeEntities: true });
+                    if ((await showMessage(sourceEntity, "", `The structure has "§a${item.structureID}§r" been loaded. Would you like to close the shop?`, "Close Shop", "Go Back")).selection != 0) {
+                        return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                    }
+                    else {
+                        return 0;
+                    }
+                    break;
+                case 3 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3) + (+(sourceEntity.hasTag("admin") && config.system.debugMode && mode == "buy")) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
                     return 1;
                     break;
                 default:
@@ -2112,10 +2541,10 @@ Texture: ${page.texture}`);
 Page Body: ${page.pageBody}
 Title: ${page.title}
 Texture: ${page.texture}`);
-        form.button("Edit Contents", "textures/ui/color_plus");
-        form.button("Move Page", "textures/ui/color_plus");
-        form.button("Edit Page", "textures/ui/color_plus");
-        form.button("Delete Page", "textures/ui/color_plus");
+        form.button("Edit Contents", "textures/ui/bookshelf_flat");
+        form.button("Move Page", "textures/ui/move");
+        form.button("Edit Page", "textures/ui/book_edit_default");
+        form.button("Delete Page", "textures/ui/book_trash_default");
         if (config.system.debugMode) {
             form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
             form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");

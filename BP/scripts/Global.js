@@ -845,7 +845,7 @@ globalThis.tryrun = function tryrun(callbackfn) {
     }
     catch { }
 };
-globalThis.catchtry = function catchtry(trycallbackfn, catchcallbackfn = (e) => console.error(e, e.stack), finallycallbackfn = (v) => { return v; }) {
+globalThis.catchtry = function catchtry(trycallbackfn, catchcallbackfn = (e) => console.error(e, e?.stack), finallycallbackfn = (v) => { return v; }) {
     let v;
     v = undefined;
     try {

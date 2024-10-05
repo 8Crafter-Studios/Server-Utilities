@@ -277,7 +277,10 @@ export class ServerShop{
                     entity.remove()
 
                     for(let i = 0; i<(r.formValues[0] as number); i++){
-                        player.getComponent("inventory").container.addItem(itemStack)
+                        let b = player.getComponent("inventory").container.addItem(itemStack)
+                        if(!!b){
+                            catchtry(()=>player.dimension.spawnItem(b, player.location))
+                        }
                     }
                     MoneySystem.get(player.id).removeMoney((item.price*(r.formValues[0] as number)))
                     return 1
@@ -302,7 +305,22 @@ export class ServerShop{
             form.slider(`§a${item.title}\n§gValue: ${item.value}\n§fHow many would you like to sell?`, 0, item.max??64, item.step??1, item.step??1)
             const r = await forceShow(form, player)
             if(r.canceled==true||(r.formValues[0] as number)==0){return 1}
-            const items = containerToContainerSlotArray(player.getComponent("inventory").container).filter(v=>v.hasItem()?v?.typeId==item.itemID:false)
+            const items = containerToContainerSlotArray(
+                player.getComponent("inventory").container
+            )
+                .filter((v) => (v.hasItem() ? v?.typeId == item.itemID : false))
+                .filter(
+                    (v) =>
+                        !(
+                            (v.lockMode == "inventory" &&
+                                !config.shopSystem.player
+                                    .allowSellingLockInInventoryItems) ||
+                            (v.lockMode == "slot" &&
+                                !config.shopSystem.player.allowSellingLockInSlotItems) ||
+                            (v.keepOnDeath &&
+                                !config.shopSystem.player.allowSellingKeepOnDeathItems)
+                        )
+                );
             let itemCount = 0
             items.forEach(v=>itemCount+=v.amount)
             if(itemCount>=(r.formValues[0] as number)){

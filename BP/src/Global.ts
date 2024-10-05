@@ -1085,7 +1085,7 @@ globalThis.tryrun = function tryrun(callbackfn: ()=>any){
 }
 globalThis.catchtry = function catchtry<TT extends unknown, CT extends unknown, FT extends unknown>(
     trycallbackfn: ()=>TT,
-    catchcallbackfn: (e: Error)=>CT = (e)=>console.error(e, e.stack) as CT,
+    catchcallbackfn: (e: Error)=>CT = (e)=>console.error(e, e?.stack) as CT,
     finallycallbackfn: (v: TT|ReturnType<typeof catchcallbackfn>|undefined)=>FT = (v: TT|ReturnType<typeof catchcallbackfn>|undefined)=>{return v as FT}
 ): TT|CT|FT|undefined{
     let v: any;
