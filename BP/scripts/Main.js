@@ -523,7 +523,9 @@ export class config {
             get playerDataRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 5); },
             set playerDataRefreshRate(playerDataRefreshRate) { world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate)) ? 5 : Math.min(1000, Math.max(1, Number(playerDataRefreshRate ?? 5)))); },
             get protectedAreasRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 20); },
-            set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 20 : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 20)))); }
+            set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 20 : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 20)))); },
+            get debugMode() { return Boolean(world.getDynamicProperty("andexdbSettings:debugMode") ?? false); },
+            set debugMode(debugMode) { world.setDynamicProperty("andexdbSettings:debugMode", debugMode ?? false); }
         };
     }
     static reset() {

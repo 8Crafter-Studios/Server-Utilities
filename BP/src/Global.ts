@@ -332,6 +332,8 @@ declare module '@minecraft/server' {
          */
         forceShow(player: Player, timeout?: number): Promise<ActionFormResponse>
     }
+}
+declare module '@minecraft/server-ui' {
     interface ModalFormData {
         /**
          * Forces a form to show even if the player has another form or menu open.

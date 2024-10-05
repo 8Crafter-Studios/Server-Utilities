@@ -3,7 +3,7 @@ import { ActionFormData, ActionFormResponse, MessageFormData, ModalFormData } fr
 import { config, getPathInObject } from "Main";
 import { containerToContainerSlotArray, containerToItemStackArray } from "Main/command_utilities";
 import { command, executeCommandPlayerW } from "Main/commands";
-import { forceShow, itemSelector, settings, worldBorderSettingsDimensionSelector } from "Main/ui";
+import { forceShow, itemSelector, onlinePlayerSelector, settings, worldBorderSettingsDimensionSelector } from "Main/ui";
 import { getStringFromDynamicProperties, getSuperUniqueID, saveStringToDynamicProperties, showActions, showMessage } from "Main/utilities";
 import { mainShopSystemSettings } from "./shop_main";
 import { Vector } from "Main/coordinates";
@@ -460,7 +460,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                     world.structureManager.place("andexdbPlayerShopRecievedShopItemsStorage:" + item.playerID, player.dimension, Vector.add(player.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
                     const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:recievedShopItemsStoragePlayerID"))) == item.playerID);
                     if (!!!entity) {
-                        throw new ReferenceError(`Unable to get the item.`);
+                        throw new ReferenceError(`Unable to get the storage entity.`);
                     }
                     const testItemStack = new ItemStack(item.itemID);
                     if (entity.getComponent("inventory").container.emptySlotsCount <= (r.formValues[0] / testItemStack.maxAmount)) {
@@ -736,6 +736,9 @@ export class PlayerShopManager {
             form.button(s.name ?? s.title ?? s.id);
         });
         form.button("New Shop", "textures/ui/color_plus");
+        if (config.system.debugMode) {
+            form.button("New Shop As Another Player\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/color_plus");
+        }
         form.button("Back", "textures/ui/arrow_left"); /*
         form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
         return await forceShow(form, sourceEntity).then(async (r) => {
@@ -745,14 +748,64 @@ export class PlayerShopManager {
             let response = r.selection;
             switch (response) {
                 case shopsList.length:
-                    return await PlayerShopManager.addPlayerShop(sourceEntity);
+                    if (await PlayerShopManager.addPlayerShop(sourceEntity) != 0) {
+                        return await PlayerShopManager.managePlayerShops(sourceEntity, all);
+                    }
+                    else {
+                        return 0;
+                    }
                     break;
-                case shopsList.length + 1:
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? shopsList.length + 1 : -1:
+                    const rb = await showActions(sourceEntity, "Choose Player", undefined, ["Select Online Player"] /*, ["Select Offline Player"]*/, ["Manual"]);
+                    if (rb.canceled) {
+                        return 1;
+                    }
+                    else if (rb.selection == 0) {
+                        const player = await onlinePlayerSelector(sourceEntity, () => { });
+                        if (!!!player) {
+                            return 1;
+                        }
+                        if (await PlayerShopManager.addPlayerShopAsPlayer(sourceEntity, player.id, player.name ?? player.nameTag) != 0) {
+                            return await PlayerShopManager.managePlayerShops(sourceEntity, all);
+                        }
+                        else {
+                            return 0;
+                        }
+                    } /*else if(rb.selection==1){
+                        const player = await offlinePlayerSelector(sourceEntity, ()=>{})
+                        if(!!!player){return 1;}
+                        if((await PlayerShopManager.addPlayerShopAsPlayer(sourceEntity, player.id as `${number}`, player.name??player.nameTag) as 0|1)!=0){
+                            return await PlayerShopManager.managePlayerShops(sourceEntity, all);
+                        }else{
+                            return 0;
+                        }
+                    }*/
+                    else {
+                        const rc = (await new ModalFormData().textField("Player UUID§c*", "UUID").textField("Player Name (Optional)", "Steve").forceShow(sourceEntity));
+                        if (rc.canceled) {
+                            return 1;
+                        }
+                        const [playerID, playerName] = rc.formValues;
+                        if (await PlayerShopManager.addPlayerShopAsPlayer(sourceEntity, playerID, JSON.parse("\"" + (playerName.replaceAll("\"", "\\\"")) + "\"")) != 0) {
+                            return await PlayerShopManager.managePlayerShops(sourceEntity, all);
+                        }
+                        else {
+                            return 0;
+                        }
+                    }
+                    // await PlayerShopManager.playerShopSystemSettings(sourceEntity) as 0|1
+                    break;
+                case shopsList.length + 1 + (+(sourceEntity.hasTag("admin") && config.system.debugMode)):
                     return 1;
                     // await PlayerShopManager.playerShopSystemSettings(sourceEntity) as 0|1
                     break;
                 default:
-                    return await PlayerShopManager.managePlayerShop(sourceEntity, shopsList[response]);
+                    if (await PlayerShopManager.managePlayerShop(sourceEntity, shopsList[response]) != 0) {
+                        return await PlayerShopManager.managePlayerShops(sourceEntity, all);
+                    }
+                    else {
+                        return 0;
+                    }
             }
         }).catch(e => {
             console.error(e, e.stack);
@@ -795,6 +848,42 @@ export class PlayerShopManager {
             return 0;
         });
     }
+    static async addPlayerShopAsPlayer(sourceEntitya, targetPlayerID, targetPlayerName) {
+        const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        let form2 = new ModalFormData();
+        form2.title(`Player Shop System Settings`);
+        form2.textField(`§l§fShop ID§r§c*§f\nThe ID of the shop`, "myShop", "myShop");
+        form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", "My Shop");
+        form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", "My Shop");
+        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "This is my shop.", "This is my shop.");
+        form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, true);
+        form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, true); /*
+        form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewplayershops command, default is true`, true)*/
+        form2.submitButton("Save");
+        return await forceShow(form2, sourceEntity).then(async (t) => {
+            if (t.canceled) {
+                return 1;
+            }
+            ;
+            let [id, name, title, mainPageBodyText, buyShop, sellShop /*, publicShop*/] = t.formValues;
+            const shop = new PlayerShop({
+                id: `playerShop:${targetPlayerID}:${id}`,
+                name: JSON.parse("\"" + (name.replaceAll("\"", "\\\"")) + "\""),
+                title: JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\""),
+                mainPageBodyText: JSON.parse("\"" + (mainPageBodyText.replaceAll("\"", "\\\"")) + "\""),
+                buyShop: buyShop,
+                sellShop: sellShop,
+                publicShop: true,
+                playerID: targetPlayerID,
+                playerName: targetPlayerName
+            });
+            shop.save();
+            return 1;
+        }).catch(e => {
+            console.error(e, e.stack);
+            return 0;
+        });
+    }
     static async managePlayerShop(sourceEntitya, shop) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
@@ -803,10 +892,22 @@ export class PlayerShopManager {
 Display Name: ${shop.name}
 Title: ${shop.title}
 Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
-§rIs Sell Shop: ${shop.sellShop ? "§aTrue" : "§cFalse"}`);
+§rIs Sell Shop: ${shop.sellShop ? "§aTrue" : "§cFalse"}
+§rOwner UUID: ${shop.playerID}
+§rOwner Name: ${shop.playerName}`);
         form.button("Manage Items/Pages", "textures/ui/color_plus");
         form.button("Shop Settings", "textures/ui/color_plus");
+        form.button("Withdraw Items", "textures/ui/color_plus");
         form.button("View Shop", "textures/ui/color_plus");
+        if (config.system.debugMode) {
+            form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/color_plus");
+            form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+            form.button("Edit JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+            form.button("Raw Buy Shop Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/color_plus");
+            form.button("Edit Buy Shop JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+            form.button("Raw Sell Shop Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/color_plus");
+            form.button("Edit Sell Shop JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+        }
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
@@ -816,37 +917,196 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
             switch (response) {
                 case 0:
                     if (shop.buyShop && shop.sellShop) {
-                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, (await showMessage(sourceEntity, "Manage Buy or Sell Shop", "Would you like to edit the buy shop or the sell shop?\nThe buy shop is where players buy items, while the sell shop is where players sell items.", "Edit Buy Shop", "Edit Sell Shop")).selection == 0 ? "buy" : "sell");
+                        if ((await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, (await showMessage(sourceEntity, "Manage Buy or Sell Shop", "Would you like to edit the buy shop or the sell shop?\nThe buy shop is where players buy items, while the sell shop is where players sell items.", "Edit Buy Shop", "Edit Sell Shop")).selection == 0 ? "buy" : "sell")) != 0) {
+                            return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                        }
+                        else {
+                            return 0;
+                        }
                     }
                     else if (shop.buyShop) {
-                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, "buy");
+                        if ((await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, "buy")) != 0) {
+                            return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                        }
+                        else {
+                            return 0;
+                        }
                     }
                     else if (shop.sellShop) {
-                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, "sell");
+                        if ((await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, "sell")) != 0) {
+                            return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                        }
+                        else {
+                            return 0;
+                        }
                     }
                     else {
-                        return (await showMessage(sourceEntity, "§cInvalid Shop Settings", "§cError: Invalid Shop Settings.\nA shop cannot have both the §eBuy Shop§c and §eSell Shop§c options disabled.", "Back", "Close")).selection == 0;
+                        if (((await showMessage(sourceEntity, "§cInvalid Shop Settings", "§cError: Invalid Shop Settings.\nA shop cannot have both the §eBuy Shop§c and §eSell Shop§c options disabled.", "Back", "Close")).selection) != 0) {
+                            return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                        }
+                        else {
+                            return 0;
+                        }
                     }
                     break;
                 case 1:
-                    return await PlayerShopManager.managePlayerShop_settings(sourceEntity, shop);
-                    break;
-                case 2:
-                    if (shop.buyShop && shop.sellShop) {
-                        shop.openShop(sourceEntity, "both");
-                    }
-                    else if (shop.buyShop) {
-                        shop.openShop(sourceEntity, "buy");
-                    }
-                    else if (shop.sellShop) {
-                        shop.openShop(sourceEntity, "sell");
+                    if ((await PlayerShopManager.managePlayerShop_settings(sourceEntity, shop)) != 0) {
+                        return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     }
                     else {
-                        shop.openShop(sourceEntity, "none");
+                        return 0;
                     }
-                    return 0;
+                    break;
+                case 2:
+                    world.structureManager.place("andexdbPlayerShopRecievedShopItemsStorage:" + shop.playerID, sourceEntity.dimension, Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
+                    const entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:recievedShopItemsStoragePlayerID"))) == shop.playerID);
+                    if (!!!entity) {
+                        throw new ReferenceError(`Unable to get the storage entity.`);
+                    }
+                    try {
+                        world.structureManager.delete("andexdbPlayerShopRecievedShopItemsStorage:" + shop.playerID);
+                    }
+                    catch { }
+                    try {
+                        containerToItemStackArray(entity.getComponent("inventory").container).forEach(v => tryrun(() => {
+                            sourceEntity.dimension.spawnItem(v, sourceEntity.location);
+                        }));
+                        entity.getComponent("inventory").container.clearAll();
+                    }
+                    catch { }
+                    /**
+                     * This makes the script temporarily teleport the other entities away so that when it saves the storage entity, it can't save and possibly duplicate other entities.
+                     */
+                    var otherEntities = tryget(() => sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 })).filter(v => v.id != entity.id)) ?? [];
+                    var locs = otherEntities.map(v => v.location);
+                    otherEntities.forEach(v => tryrun(() => v.teleport(Vector.add(v.location, { x: 0, y: 50, z: 0 }))));
+                    world.structureManager.createFromWorld("andexdbPlayerShopRecievedShopItemsStorage:" + shop.playerID, sourceEntity.dimension, {
+                        x: Math.floor(sourceEntity.location.x),
+                        y: Math.floor(sourceEntity.location.y) + 10,
+                        z: Math.floor(sourceEntity.location.z)
+                    }, {
+                        x: Math.floor(sourceEntity.location.x) + 1,
+                        y: Math.floor(sourceEntity.location.y) + 11,
+                        z: Math.floor(sourceEntity.location.z) + 1
+                    }, {
+                        includeBlocks: false,
+                        includeEntities: true,
+                        saveMode: StructureSaveMode.World
+                    });
+                    otherEntities.forEach((v, i) => tryrun(() => v.teleport(locs[i], { keepVelocity: false })));
+                    entity.remove();
+                    return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     break;
                 case 3:
+                    if (shop.buyShop && shop.sellShop) {
+                        if ((await shop.openShop(sourceEntity, "both")) != 0) {
+                            return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                        }
+                        else {
+                            return 0;
+                        }
+                    }
+                    else if (shop.buyShop) {
+                        if ((await shop.openShop(sourceEntity, "buy")) != 0) {
+                            return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                        }
+                        else {
+                            return 0;
+                        }
+                    }
+                    else if (shop.sellShop) {
+                        if ((await shop.openShop(sourceEntity, "sell")) != 0) {
+                            return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                        }
+                        else {
+                            return 0;
+                        }
+                    }
+                    else {
+                        if ((await shop.openShop(sourceEntity, "none")) != 0) {
+                            return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                        }
+                        else {
+                            return 0;
+                        }
+                    }
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 4 : -4:
+                    await showActions(sourceEntity, "Debug Info", `Raw Shop Data: \n${JSON.stringify(shop, undefined, 2)}`, ["Done"]);
+                    return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 5 : -5:
+                    const formb = new ModalFormData().title("Edit Raw Shop Data");
+                    let data = Object.entries(JSON.parse(JSON.stringify(shop)));
+                    data.forEach(v => formb.textField(v[0], typeof v[1], JSON.stringify(v[1])));
+                    const rd = await formb.forceShow(sourceEntity);
+                    if (rd.canceled) {
+                        return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    }
+                    let newData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues[i])]));
+                    shop.id = newData.id;
+                    shop.title = newData.title;
+                    shop.mainPageBodyText = newData.mainPageBodyText;
+                    shop.name = newData.name;
+                    shop.buyShop = newData.buyShop;
+                    shop.sellShop = newData.sellShop;
+                    shop.publicShop = newData.publicShop;
+                    shop.playerID = newData.playerID;
+                    shop.playerName = newData.playerName;
+                    shop.save();
+                    return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 6 : -6:
+                    const formc = new ModalFormData().title("Edit JSON Shop Data");
+                    formc.textField("JSON", "JSON", JSON.stringify(shop));
+                    const re = await formc.forceShow(sourceEntity);
+                    if (re.canceled) {
+                        return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    }
+                    let newDataB = JSON.parse(re.formValues[0]);
+                    shop.id = newDataB.id;
+                    shop.title = newDataB.title;
+                    shop.mainPageBodyText = newDataB.mainPageBodyText;
+                    shop.name = newDataB.name;
+                    shop.buyShop = newDataB.buyShop;
+                    shop.sellShop = newDataB.sellShop;
+                    shop.publicShop = newDataB.publicShop;
+                    shop.playerID = newDataB.playerID;
+                    shop.playerName = newDataB.playerName;
+                    shop.save();
+                    return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 7 : -7:
+                    await showActions(sourceEntity, "Debug Info", `Raw Buy Shop Data: \n${JSON.stringify(shop.buyData, undefined, 2)}`, ["Done"]);
+                    return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 8 : -8:
+                    const formd = new ModalFormData().title("Edit JSON Buy Shop Data");
+                    formd.textField("JSON", "JSON", JSON.stringify(shop.buyData));
+                    const rf = await formd.forceShow(sourceEntity);
+                    if (rf.canceled) {
+                        return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    }
+                    let newDataC = JSON.parse(rf.formValues[0]);
+                    shop.sellData = newDataC;
+                    return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 9 : -9:
+                    await showActions(sourceEntity, "Debug Info", `Raw Sell Shop Data: \n${JSON.stringify(shop.sellData, undefined, 2)}`, ["Done"]);
+                    return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 10 : -10:
+                    const forme = new ModalFormData().title("Edit JSON Sell Shop Data");
+                    forme.textField("JSON", "JSON", JSON.stringify(shop.sellData));
+                    const rg = await forme.forceShow(sourceEntity);
+                    if (rg.canceled) {
+                        return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    }
+                    let newDataD = JSON.parse(rg.formValues[0]);
+                    shop.sellData = newDataD;
+                    return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    break;
+                case 4 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 7):
                     // PlayerShopManager.managePlayerShops(sourceEntity)
                     return 1;
                     break;
@@ -868,6 +1128,10 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
         form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, shop.buyShop ?? true);
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, shop.sellShop ?? true); /*
         form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewplayershops command, default is true`, shop.publicShop??true)*/
+        if (config.system.debugMode) {
+            form2.textField(`§l§fOwner ID\n§c(Only Editable By Admins) §8(Only Editable While Debug Mode Is Enabled)`, shop.playerID, shop.playerID);
+            form2.textField(`§l§fOwner Name\n§c(Only Editable By Admins) §8(Only Editable While Debug Mode Is Enabled)`, JSON.stringify(shop.playerName).slice(1, -1).replaceAll("\\\"", "\""), JSON.stringify(shop.playerName).slice(1, -1).replaceAll("\\\"", "\""));
+        }
         form2.submitButton("Save");
         return await forceShow(form2, sourceEntity).then(async (t) => {
             if (t.canceled) {
@@ -875,13 +1139,17 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                 return 1;
             }
             ;
-            let [name, title, mainPageBodyText, buyShop, sellShop /*, publicShop*/] = t.formValues;
+            let [name, title, mainPageBodyText, buyShop, sellShop /*, publicShop*/, playerID, playerName] = t.formValues;
             shop.name = JSON.parse("\"" + (name.replaceAll("\"", "\\\"")) + "\"");
             shop.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\"");
             shop.mainPageBodyText = JSON.parse("\"" + (mainPageBodyText.replaceAll("\"", "\\\"")) + "\"");
             shop.buyShop = buyShop;
             shop.sellShop = sellShop;
             shop.publicShop = shop.publicShop;
+            if (config.system.debugMode) {
+                shop.playerID = playerID;
+                shop.playerName = JSON.parse("\"" + (playerName.replaceAll("\"", "\\\"")) + "\"");
+            }
             shop.save();
             // PlayerShopManager.managePlayerShop(sourceEntity, shop); 
             return 1;
@@ -1017,14 +1285,19 @@ ${item.itemType == "player_shop_saved" ? `Maximum Stock: ${item.maxStackSize}
 ${item.remainingStock}` : `Amount Still Wanted: ${item.amountWanted}
 Current Amount: ${item.currentAmount}`}
 ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}`);
-        form.button("Move Item", "textures/ui/color_plus");
-        form.button("Edit Item", "textures/ui/color_plus");
-        form.button("Delete Item", "textures/ui/color_plus");
+        form.button("Move Item", "textures/ui/move");
+        form.button("Edit Item", "textures/ui/book_edit_default");
+        form.button("Delete Item", "textures/ui/book_trash_default");
+        if (config.system.debugMode) {
+            form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
+            form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+            form.button("Edit JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+        }
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return r;
+                return 1;
             let response = r.selection;
             switch (response) {
                 case 0:
@@ -1044,11 +1317,13 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                             newData.splice(Number(r.formValues[0]), 0, item);
                             shop.sellData = newData;
                         }
+                        return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, Number(r.formValues[0]), mode);
                     }
+                    return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
                     break;
                 case 1:
                     await PlayerShopManager.managePlayerShop_editItem(sourceEntity, shop, item, itemIndex, mode);
-                    await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                    return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
                     break;
                 case 2:
                     const sureOfItemDeletion = await showMessage(sourceEntity, "Are you sure?", "Are you sure you want to delete this item?", "No", "Yes");
@@ -1073,12 +1348,60 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                         }
                     }
                     else {
-                        await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                        return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
                     }
                     break;
-                case 3:
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 3 : -3:
+                    await showActions(sourceEntity, "Debug Info", `Raw Item Data: \n${JSON.stringify(item, undefined, 2)}`, ["Done"]);
+                    return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 4 : -4:
+                    const formb = new ModalFormData().title("Edit Raw Item Data");
+                    let data = Object.entries(item);
+                    data.forEach(v => formb.textField(v[0], typeof v[1], JSON.stringify(v[1])));
+                    const rd = await formb.forceShow(sourceEntity);
+                    if (rd.canceled) {
+                        return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                    }
+                    let newItemData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues[i])]));
+                    if (mode == "buy") {
+                        let newData = shop.buyData;
+                        newData.splice(itemIndex, 1, newItemData);
+                        shop.buyData = newData;
+                    }
+                    else if (mode == "sell") {
+                        let newData = shop.sellData;
+                        newData.splice(itemIndex, 1, newItemData);
+                        shop.sellData = newData;
+                    }
+                    return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, newItemData, itemIndex, mode);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 5 : -5:
+                    const formc = new ModalFormData().title("Edit JSON Item Data");
+                    let datab = Object.entries(item);
+                    formc.textField("JSON", "JSON", JSON.stringify(datab));
+                    const re = await formc.forceShow(sourceEntity);
+                    if (re.canceled) {
+                        return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                    }
+                    let newItemDataB = JSON.parse(re.formValues[0]);
+                    if (mode == "buy") {
+                        let newData = shop.buyData;
+                        newData.splice(itemIndex, 1, newItemDataB);
+                        shop.buyData = newData;
+                    }
+                    else if (mode == "sell") {
+                        let newData = shop.sellData;
+                        newData.splice(itemIndex, 1, newItemDataB);
+                        shop.sellData = newData;
+                    }
+                    return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, newItemDataB, itemIndex, mode);
+                    break;
+                case 3 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3):
+                    return 1;
                     break;
                 default:
+                    return 0;
             }
             return r;
         });
@@ -1218,16 +1541,21 @@ Texture: ${page.texture}`);
         form.button("Move Page", "textures/ui/color_plus");
         form.button("Edit Page", "textures/ui/color_plus");
         form.button("Delete Page", "textures/ui/color_plus");
+        if (config.system.debugMode) {
+            form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
+            form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+            form.button("Edit JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+        }
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return r;
+                return 1;
             let response = r.selection;
             switch (response) {
                 case 0:
                     await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, [mode, String(pageIndex)]);
-                    await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
+                    return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
                     break;
                 case 1:
                     const form2 = new ModalFormData;
@@ -1246,11 +1574,13 @@ Texture: ${page.texture}`);
                             newData.splice(Number(r.formValues[0]), 0, page);
                             shop.sellData = newData;
                         }
+                        return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, Number(r.formValues[0]), mode);
                     }
+                    return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
                     break;
                 case 2:
                     await PlayerShopManager.managePlayerShop_editPage(sourceEntity, shop, page, pageIndex, mode);
-                    await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
+                    return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
                     break;
                 case 3:
                     const sureOfItemDeletion = await showMessage(sourceEntity, "Are you sure?", "Are you sure you want to delete this page?", "No", "Yes");
@@ -1265,16 +1595,65 @@ Texture: ${page.texture}`);
                             newData.splice(pageIndex, 1);
                             shop.sellData = newData;
                         }
+                        return 1;
                     }
                     else {
-                        await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
+                        return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
                     }
                     break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 3 : -3:
+                    await showActions(sourceEntity, "Debug Info", `Raw Page Data: \n${JSON.stringify(page, undefined, 2)}`, ["Done"]);
+                    return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 4 : -4:
+                    const formb = new ModalFormData().title("Edit Raw Page Data");
+                    let data = Object.entries(page);
+                    data.forEach(v => formb.textField(v[0], typeof v[1], JSON.stringify(v[1])));
+                    const rd = await formb.forceShow(sourceEntity);
+                    if (rd.canceled) {
+                        return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
+                    }
+                    let newItemData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues[i])]));
+                    if (mode == "buy") {
+                        let newData = shop.buyData;
+                        newData.splice(pageIndex, 1, newItemData);
+                        shop.buyData = newData;
+                    }
+                    else if (mode == "sell") {
+                        let newData = shop.sellData;
+                        newData.splice(pageIndex, 1, newItemData);
+                        shop.sellData = newData;
+                    }
+                    return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, newItemData, pageIndex, mode);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 5 : -5:
+                    const formc = new ModalFormData().title("Edit JSON Page Data");
+                    let datab = Object.entries(page);
+                    formc.textField("JSON", "JSON", JSON.stringify(datab));
+                    const re = await formc.forceShow(sourceEntity);
+                    if (re.canceled) {
+                        return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
+                    }
+                    let newItemDataB = JSON.parse(re.formValues[0]);
+                    if (mode == "buy") {
+                        let newData = shop.buyData;
+                        newData.splice(pageIndex, 1, newItemDataB);
+                        shop.buyData = newData;
+                    }
+                    else if (mode == "sell") {
+                        let newData = shop.sellData;
+                        newData.splice(pageIndex, 1, newItemDataB);
+                        shop.sellData = newData;
+                    }
+                    return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, newItemDataB, pageIndex, mode);
+                    break;
                 case 4:
+                    return 1;
                     break;
                 default:
+                    return 0;
             }
-            return r;
+            return 1;
         });
     }
     static async managePlayerShop_editPage(sourceEntitya, shop, page, pageIndex, mode) {
@@ -1288,7 +1667,7 @@ Texture: ${page.texture}`);
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return r;
+                return 1;
             let [pageTitle, pageBody, title, texture] = r.formValues;
             page.pageTitle = JSON.parse("\"" + (pageTitle.replaceAll("\"", "\\\"")) + "\""),
                 page.pageBody = JSON.parse("\"" + (pageBody.replaceAll("\"", "\\\"")) + "\""),
@@ -1304,7 +1683,7 @@ Texture: ${page.texture}`);
                 newData.splice(pageIndex, 1, page);
                 shop.sellData = newData;
             }
-            return r;
+            return 1;
         });
     }
     static async managePlayerShop_addPage(sourceEntitya, shop, mode) {
@@ -1319,7 +1698,7 @@ Texture: ${page.texture}`);
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return r;
+                return 1;
             let page = undefined;
             let pageIndex = Number.isNaN(Number(r.formValues[2])) ? 10 : Number(r.formValues[2]);
             let [pageTitle, pageBody, title, texture] = r.formValues;
@@ -1341,7 +1720,7 @@ Texture: ${page.texture}`);
                 newData.splice(pageIndex, 0, page);
                 shop.sellData = newData;
             }
-            return r;
+            return 1;
         });
     }
     static async managePlayerShopPage_contents(sourceEntitya, shop, path) {
@@ -1374,7 +1753,7 @@ Texture: ${page.texture}`);
             return;
         }
         if (r.canceled)
-            return;
+            return 1;
         let response = r.selection;
         switch (response) {
             case shopData.length:
@@ -1441,19 +1820,19 @@ Texture: ${page.texture}`);
                         newData.splice(itemIndexB, 0, itemB);
                         shop.sellData = newData;
                     }
-                    await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
+                    return await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
                 }
                 else if (!!!type) {
-                    await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
+                    return await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
                 }
                 else {
                     await PlayerShopManager.managePlayerShopPage_addItem(sourceEntity, shop, path, type);
-                    await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
+                    return await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
                 }
                 break;
             case shopData.length + 1:
                 await PlayerShopManager.managePlayerShopPage_addPage(sourceEntity, shop, path);
-                await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
+                return await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
                 break;
             case shopData.length + 2: /*
                 if(path.slice(0, -1).length==1){
@@ -1463,13 +1842,13 @@ Texture: ${page.texture}`);
                     await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, getPathInObject(shop[(mode+"Data") as "buyData"|"sellData"], path) as PlayerShopPage, Number(path.slice(-1)[0]))
                     // managePlayerShopPage_contents(sourceEntity, shop, path.slice(0, -2) as [mode, ...string[]])
                 };*/
-                return;
+                return 1;
                 break;
             default:
                 shopData[response].type == "player_shop_item" ? await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, [...path, "data", String(response)], shopData[response], response) : await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, [...path, "data", String(response)], shopData[response], response);
-                await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
+                return await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
         }
-        return r;
+        return 1;
     }
     static async managePlayerShopPage_manageItem(sourceEntitya, shop, path, item, itemIndex) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
@@ -1487,11 +1866,16 @@ Texture: ${page.texture}`);
         form.button("Move Item", "textures/ui/color_plus");
         form.button("Edit Item", "textures/ui/color_plus");
         form.button("Delete Item", "textures/ui/color_plus");
+        if (config.system.debugMode) {
+            form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
+            form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+            form.button("Edit JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+        }
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return r;
+                return 1;
             let response = r.selection;
             switch (response) {
                 case 0:
@@ -1513,11 +1897,13 @@ Texture: ${page.texture}`);
                             newData.splice(Number(r.formValues[0]), 0, item);
                             shop.sellData = data;
                         }
+                        return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, Number(r.formValues[0]));
                     }
+                    return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
                     break;
                 case 1:
                     await PlayerShopManager.managePlayerShopPage_editItem(sourceEntity, shop, path, item, itemIndex);
-                    await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
+                    return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
                     break;
                 case 2:
                     const sureOfItemDeletion = await showMessage(sourceEntity, "Are you sure?", "Are you sure you want to delete this item?", "No", "Yes");
@@ -1542,16 +1928,69 @@ Texture: ${page.texture}`);
                             newData.splice(itemIndex, 1);
                             shop.sellData = data;
                         }
+                        return 1;
                     }
                     else {
-                        await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
+                        return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
                     }
                     break;
-                case 3:
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 3 : -3:
+                    await showActions(sourceEntity, "Debug Info", `Raw Item Data: \n${JSON.stringify(item, undefined, 2)}`, ["Done"]);
+                    return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 4 : -4:
+                    const formb = new ModalFormData().title("Edit Raw Item Data");
+                    let data = Object.entries(item);
+                    data.forEach(v => formb.textField(v[0], typeof v[1], JSON.stringify(v[1])));
+                    const rd = await formb.forceShow(sourceEntity);
+                    if (rd.canceled) {
+                        return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
+                    }
+                    let newItemData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues[i])]));
+                    if (mode == "buy") {
+                        let dataA = shop.buyData;
+                        let newData = getPathInObject(dataA, path).data;
+                        newData.splice(itemIndex, 1, newItemData);
+                        shop.buyData = dataA;
+                    }
+                    else if (mode == "sell") {
+                        let dataA = shop.sellData;
+                        let newData = getPathInObject(dataA, path).data;
+                        newData.splice(itemIndex, 1, newItemData);
+                        shop.sellData = dataA;
+                    }
+                    return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, newItemData, itemIndex);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 5 : -5:
+                    const formc = new ModalFormData().title("Edit JSON Item Data");
+                    let datab = Object.entries(item);
+                    formc.textField("JSON", "JSON", JSON.stringify(datab));
+                    const re = await formc.forceShow(sourceEntity);
+                    if (re.canceled) {
+                        return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
+                    }
+                    let newItemDataB = JSON.parse(re.formValues[0]);
+                    if (mode == "buy") {
+                        let dataA = shop.buyData;
+                        let newData = getPathInObject(dataA, path).data;
+                        newData.splice(itemIndex, 1, newItemDataB);
+                        shop.buyData = dataA;
+                    }
+                    else if (mode == "sell") {
+                        let dataA = shop.sellData;
+                        let newData = getPathInObject(dataA, path).data;
+                        newData.splice(itemIndex, 1, newItemDataB);
+                        shop.sellData = dataA;
+                    }
+                    return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, newItemDataB, itemIndex);
+                    break;
+                case 3 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3):
+                    return 1;
                     break;
                 default:
+                    return 0;
             }
-            return r;
+            return 0;
         });
     }
     static async managePlayerShopPage_editItem(sourceEntitya, shop, path, item, itemIndex) {
@@ -1579,7 +2018,7 @@ Texture: ${page.texture}`);
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return r;
+                return 1;
             if (item.itemType == "player_shop_saved") {
                 let [title, texture, price, step] = r.formValues;
                 item.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\"");
@@ -1610,7 +2049,7 @@ Texture: ${page.texture}`);
                 newData.splice(itemIndex, 1, item);
                 shop.sellData = data;
             }
-            return r;
+            return 1;
         });
     }
     static async managePlayerShopPage_addItem(sourceEntitya, shop, path, type) {
@@ -1631,7 +2070,7 @@ Texture: ${page.texture}`);
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return r;
+                return 1;
             let item = undefined;
             let itemIndex = Number.isNaN(Number(r.formValues[2])) ? 10 : Number(r.formValues[2]);
             if (type == "player_shop_sellable") {
@@ -1646,7 +2085,7 @@ Texture: ${page.texture}`);
                     amountWanted: Number.isNaN(Number(max)) ? 10 : Number(max),
                     itemID: JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"") + "\"")),
                     currentAmount: 0,
-                    playerID: sourceEntity.id
+                    playerID: shop.playerID ?? sourceEntity.id
                 };
             }
             if (mode == "buy") {
@@ -1661,7 +2100,7 @@ Texture: ${page.texture}`);
                 newData.splice(itemIndex, 0, item);
                 shop.sellData = data;
             }
-            return r;
+            return 1;
         });
     }
     static async managePlayerShopPage_managePage(sourceEntitya, shop, path, page, pageIndex) {
@@ -1677,16 +2116,21 @@ Texture: ${page.texture}`);
         form.button("Move Page", "textures/ui/color_plus");
         form.button("Edit Page", "textures/ui/color_plus");
         form.button("Delete Page", "textures/ui/color_plus");
+        if (config.system.debugMode) {
+            form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
+            form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+            form.button("Edit JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+        }
         form.button("Back", "textures/ui/arrow_left");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return r;
+                return 1;
             let response = r.selection;
             switch (response) {
                 case 0:
                     await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
-                    await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
+                    return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
                     break;
                 case 1:
                     const form2 = new ModalFormData;
@@ -1705,11 +2149,13 @@ Texture: ${page.texture}`);
                             newData.splice(Number(r.formValues[0]), 0, page);
                             shop.sellData = newData;
                         }
+                        return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, Number(r.formValues[0]));
                     }
+                    return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
                     break;
                 case 2:
                     await PlayerShopManager.managePlayerShopPage_editPage(sourceEntity, shop, path, page, pageIndex);
-                    await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
+                    return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
                     break;
                 case 3:
                     const sureOfItemDeletion = await showMessage(sourceEntity, "Are you sure?", "Are you sure you want to delete this page?", "No", "Yes");
@@ -1724,16 +2170,69 @@ Texture: ${page.texture}`);
                             newData.splice(pageIndex, 1);
                             shop.sellData = newData;
                         }
+                        return 1;
                     }
                     else {
-                        await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
+                        return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
                     }
                     break;
-                case 4:
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 4 : -4:
+                    await showActions(sourceEntity, "Debug Info", `Raw Item Data: \n${JSON.stringify(page, undefined, 2)}`, ["Done"]);
+                    return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 5 : -5:
+                    const formb = new ModalFormData().title("Edit Raw Item Data");
+                    let data = Object.entries(page);
+                    data.forEach(v => formb.textField(v[0], typeof v[1], JSON.stringify(v[1])));
+                    const rd = await formb.forceShow(sourceEntity);
+                    if (rd.canceled) {
+                        return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
+                    }
+                    let newItemData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues[i])]));
+                    if (mode == "buy") {
+                        let dataA = shop.buyData;
+                        let newData = getPathInObject(dataA, path).data;
+                        newData.splice(pageIndex, 1, newItemData);
+                        shop.buyData = dataA;
+                    }
+                    else if (mode == "sell") {
+                        let dataA = shop.sellData;
+                        let newData = getPathInObject(dataA, path).data;
+                        newData.splice(pageIndex, 1, newItemData);
+                        shop.sellData = dataA;
+                    }
+                    return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, newItemData, pageIndex);
+                    break;
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 6 : -6:
+                    const formc = new ModalFormData().title("Edit JSON Item Data");
+                    let datab = Object.entries(page);
+                    formc.textField("JSON", "JSON", JSON.stringify(datab));
+                    const re = await formc.forceShow(sourceEntity);
+                    if (re.canceled) {
+                        return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
+                    }
+                    let newItemDataB = JSON.parse(re.formValues[0]);
+                    if (mode == "buy") {
+                        let dataA = shop.buyData;
+                        let newData = getPathInObject(dataA, path).data;
+                        newData.splice(pageIndex, 1, newItemDataB);
+                        shop.buyData = dataA;
+                    }
+                    else if (mode == "sell") {
+                        let dataA = shop.sellData;
+                        let newData = getPathInObject(dataA, path).data;
+                        newData.splice(pageIndex, 1, newItemDataB);
+                        shop.sellData = dataA;
+                    }
+                    return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, newItemDataB, pageIndex);
+                    break;
+                case 4 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3):
+                    return 1;
                     break;
                 default:
+                    return 0;
             }
-            return r;
+            return 1;
         });
     }
     static async managePlayerShopPage_editPage(sourceEntitya, shop, path, page, pageIndex) {
@@ -1748,7 +2247,7 @@ Texture: ${page.texture}`);
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return r;
+                return 1;
             let [pageTitle, pageBody, title, texture] = r.formValues;
             page.pageTitle = JSON.parse("\"" + (pageTitle.replaceAll("\"", "\\\"")) + "\""),
                 page.pageBody = JSON.parse("\"" + (pageBody.replaceAll("\"", "\\\"")) + "\""),
@@ -1766,7 +2265,7 @@ Texture: ${page.texture}`);
                 newData.splice(pageIndex, 1, page);
                 shop.sellData = data;
             }
-            return r;
+            return 1;
         });
     }
     static async managePlayerShopPage_addPage(sourceEntitya, shop, path) {
@@ -1782,7 +2281,7 @@ Texture: ${page.texture}`);
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return r;
+                return 1;
             let page = undefined;
             let pageIndex = Number.isNaN(Number(r.formValues[2])) ? 10 : Number(r.formValues[2]);
             let [pageTitle, pageBody, title, texture] = r.formValues;
@@ -1806,7 +2305,7 @@ Texture: ${page.texture}`);
                 newData.splice(pageIndex, 0, page);
                 shop.sellData = data;
             }
-            return r;
+            return 1;
         });
     }
 }

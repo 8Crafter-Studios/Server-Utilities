@@ -4513,7 +4513,7 @@ export async function onlinePlayerSelector(sourceEntitya, backFunction = mainMen
     let playerslist = world.getAllPlayers();
     playerslist.forEach((p) => { form.button(`${p.name}\n${p.id}` /*, "textures/ui/online"*/); });
     form.button("Back");
-    return forceShow(form, sourceEntity).then(ra => {
+    return await forceShow(form, sourceEntity).then(ra => {
         let r = ra;
         if (r.canceled) {
             return;
@@ -4521,7 +4521,7 @@ export async function onlinePlayerSelector(sourceEntitya, backFunction = mainMen
         ;
         switch (r.selection) {
             case playerslist.length:
-                return backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
+                return tryget(() => backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity]))));
                 break;
             default:
                 return playerslist[r.selection];

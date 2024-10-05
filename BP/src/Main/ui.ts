@@ -3095,19 +3095,19 @@ export function manageCommands(sourceEntitya: Entity|executeCommandPlayerW|Playe
 }
 //1320
 //2013
-export async function onlinePlayerSelector(sourceEntitya: Entity|executeCommandPlayerW|Player, backFunction: Function = mainMenu, ...functionargs: any){
+export async function onlinePlayerSelector(sourceEntitya: Entity|executeCommandPlayerW|Player, backFunction: Function = mainMenu, ...functionargs: any): Promise<Player|undefined>{
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form = new ActionFormData; 
     form.title("Select Player"); 
     let playerslist = world.getAllPlayers(); 
     playerslist.forEach((p)=>{form.button(`${p.name}\n${p.id}`/*, "textures/ui/online"*/)}); 
     form.button("Back"); 
-    return forceShow(form, sourceEntity as Player).then(ra=>{
+    return await forceShow(form, sourceEntity as Player).then(ra=>{
         let r = (ra as ActionFormResponse); 
         if(r.canceled){return}; 
         switch(r.selection){
             case playerslist.length: 
-            return backFunction(...(functionargs.length==0?[(sourceEntity as Player)]:(functionargs??[(sourceEntity as Player)])))
+            return tryget(()=>backFunction(...(functionargs.length==0?[(sourceEntity as Player)]:(functionargs??[(sourceEntity as Player)]))))
             break
             default: 
             return playerslist[r.selection]
