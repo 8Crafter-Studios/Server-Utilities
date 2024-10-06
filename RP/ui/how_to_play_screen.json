@@ -554,7 +554,7 @@
     "controls": [
       {
         "paragraph_1@how_to_play_common.paragraph": {
-          "$text": "§cTHIS VERSION OF THIS ADD-ON WILL ONLY WORK FOR MINECRAFT §a1.21.2x §c(ex. §a1.21.20§c or §a1.21.21§c). \nIf you are on a different version of minecraft, please update this pack to the correct version for the version of Minecraft that you are playing on. \n§eThis add-on breaks every medium-sized update (ex. 1.21.0, 1.21.20, 1.21.30, or 1.21.40) and must be updated whenever that happens. \n§bYour data will be preserved when updating the pack to a newer version. "
+          "$text": "§cTHIS VERSION OF THIS ADD-ON WILL ONLY WORK FOR MINECRAFT §a1.21.3x §c(ex. §a1.21.30§c or §a1.21.31§c). \nIf you are on a different version of minecraft, please update this pack to the correct version for the version of Minecraft that you are playing on. \n§eThis add-on breaks every medium-sized update (ex. 1.21.0, 1.21.20, 1.21.30, or 1.21.40) and must be updated whenever that happens. \n§bYour data will be preserved when updating the pack to a newer version. "
         }
       },
       { "padding_1@how_to_play_common.padding": {} },
@@ -570,7 +570,7 @@
       },
       {
         "paragraph_2_all_required_experimental_toggles@how_to_play_common.paragraph": {
-          "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \nUpcoming Creator Features\nBeta APIs\nCreator Cameras: New Third Person Presets\nCreator Cameras: Focus Target Camera\nBundles"
+          "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \n  ∙ Upcoming Creator Features\n  ∙ Beta APIs\n  ∙ Creator Cameras: New Third Person Presets\n  ∙ Creator Cameras: Focus Target Camera\n  ∙ Bundles"
         }
       },
       {
@@ -596,7 +596,7 @@
       },
       {
         "paragraph_3b@how_to_play_common.paragraph": {
-          "$text": "1. Get the .mcaddon file for the new version. \n2. Import it into minecraft. \n3. Go on the edit world screen for the world that you want to update the add-on on. \n4. Deactivate the old version of the add-on. \n5. Activate the new version of the add-on. (Make sure that you activate the behavior pack first or else it might glitch and show taht both the resource and behavior packs are on, when only the resource pack is on, which you will see if you go to the main menu and then back into the edit world screen again.)\n6. Go back to the main menu. \n7. Go into the edit world screen again and insure that both the resource and behavior packs are active. "
+          "$text": "1. Get the .mcaddon file for the new version. \n2. Import it into minecraft. \n3. Go on the edit world screen for the world that you want to update the add-on on. \n4. Deactivate the old version of the add-on. \n5. Activate the new version of the add-on. (Make sure that you activate the behavior pack first or else it might glitch and show that both the resource and behavior packs are on, when only the resource pack is on, which you will see if you go to the main menu and then back into the edit world screen again.)\n6. Go back to the main menu. \n7. Go into the edit world screen again and insure that both the resource and behavior packs are active. "
         }
       },
       {
@@ -934,7 +934,7 @@
       },
       {
           "paragraph_5@how_to_play_common.paragraph": {
-              "$text": "Some commands like home, help, and tpa default to not requiring any tags to use them, so anyone can use them. "
+              "$text": "Some commands like \\home, \\help, and \\tpa default to not requiring any tags to use them, so anyone can use them. "
           }
       },
       {
@@ -944,7 +944,7 @@
       },
       {
           "paragraph_7@how_to_play_common.paragraph": {
-              "$text": "For all built-in chat commands you can just type §b\\help cmd§r followed by the name of the command and it will display what the command does, the syntax of it, and what any flag parameters on the command do. For example if you wanted to see how to use the giveb command you would do §b\\help cmd giveb§r and for the replace command you would do §b\\help cmd replace§r. "
+              "$text": "For all built-in chat commands you can just type §b\\help cmd§r followed by the name of the command and it will display what the command does, the syntax of it, and what any flag parameters on the command do. For example if you wanted to see how to use the \\giveb command you would do §b\\help cmd giveb§r and for the \\\\replace command you would do §b\\help cmd \\\\replace§r. "
           }
       }
     ]
@@ -1075,7 +1075,7 @@
       },
       {
           "paragraph_17@how_to_play_common.paragraph": {
-              "$text": "Even if you choose not to include the name parameter, you can still include the escapeCodesEnabled parameter either."
+              "$text": "Even if you choose not to include the name parameter, you can still include the escapeCodesEnabled parameter."
           }
       },
       {
@@ -1110,12 +1110,12 @@
       },
       {
           "paragraph_23@how_to_play_common.paragraph": {
-              "$text": "Ignorable parameters are written as a dash followed by a string of characters enclosed in square brackets like this: [-tfsa]"
+              "$text": "Flags parameters are written as a dash followed by a string of characters enclosed in square brackets like this: [-tfsa]"
           }
       },
       {
           "paragraph_24@how_to_play_common.paragraph": {
-              "$text": "For an ignorable parameter, it has no specified parameter type. Instead, you just either put nothing and ignore the parameter, or you put a dash followed by the flags you want to enable, each flag is its own unique character, you can type these characters in any order, and you can include any combination of them that you like, however if you put a dash there then you must include at least one flag. "
+              "$text": "For a flags parameter, it has no specified parameter type. Instead, you just either put nothing and ignore the parameter, or you put a dash followed by the flags you want to enable, each flag is its own unique character, you can type these characters in any order, and you can include any combination of them that you like, however if you put a dash there then you must include at least one flag. "
           }
       },
       {
@@ -1140,12 +1140,12 @@
       },
       {
           "paragraph_28@how_to_play_common.paragraph": {
-              "$text": "parameterName: parameterType"
+              "$text": "  ∙ parameterName: parameterType"
           }
       },
       {
           "paragraph_29@how_to_play_common.paragraph": {
-              "$text": "parameterName: parameterType[parameterRestrictions]"
+              "$text": "  ∙ parameterName: parameterType[parameterRestrictions]"
           }
       },
       {
