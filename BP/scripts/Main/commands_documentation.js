@@ -326,7 +326,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
     "getbans": `${command.dp}getbans`,
     "getidbans": `${command.dp}getidbans`,
     "getnamebans": `${command.dp}getnamebans`,
-    "getuuid": `${command.dp}getuuid <target: target[allowMultiple=false]>`,
+    "getuuid": `${command.dp}getuuid <targets: target[allowMultiple=true]>`,
     "gma": `${command.dp}gma`,
     "gmc": `${command.dp}gmc`,
     "gmd": `${command.dp}gmd`,

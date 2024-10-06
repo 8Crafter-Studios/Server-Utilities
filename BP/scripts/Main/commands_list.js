@@ -2588,7 +2588,7 @@ export const commands = [
         },
         formats: [
             {
-                format: "getuuid <targetSelector: targetSelector>"
+                format: "getuuid <targets: target[allowMultiple=true]>"
             }
         ],
         command_version: "1.0.2",

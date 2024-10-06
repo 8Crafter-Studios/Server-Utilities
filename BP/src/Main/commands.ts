@@ -3812,7 +3812,20 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^getuuid$/): 
             eventData.cancel = true;
-            try{system.runTimeout(()=>{eventData.sender.sendMessage(String(targetSelector(switchTestB.split(" ").slice(1).join(" "), "", Number(eventData.sender.id))))}, 2); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+            try{
+                system.runTimeout(()=>{
+                    player.sendMessage(
+                        targetSelectorAllListC(
+                            switchTestB.split(" ").slice(1).join(" "),
+                            "",
+                            vTStr(player.location),
+                            player.player
+                        ).map(v=>v.id).join("\n")
+                    )
+                }, 2); 
+            }catch(e){
+                eventData.sender.sendMessage("§c" + e + e.stack)
+            }
             
         break; 
         case !!switchTest.match(/^run$/): 
