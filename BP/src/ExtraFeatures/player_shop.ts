@@ -1,4 +1,4 @@
-import { ItemLockMode, ItemStack, Player, world, Entity, StructureSaveMode, ItemType } from "@minecraft/server";
+import { ItemLockMode, ItemStack, Player, world, Entity, StructureSaveMode, ItemType, InvalidStructureError } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { config, getPathInObject } from "Main";
 import { containerToContainerSlotArray, containerToItemStackArray } from "Main/command_utilities";
@@ -968,7 +968,7 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
         form.button("Manage Items/Pages", "textures/ui/book_edit_default");
         form.button("Shop Settings", "textures/ui/icon_setting");
         form.button("Withdraw Items", "textures/ui/download_backup");
-        form.button("Regenerate Storage Entity", "textures/ui/ui_debug");
+        form.button("Regenerate Storage Entity", "textures/ui/structure_block_load"/*textures/ui/ui_debug_glyph_color*/);
         form.button("View Shop", "textures/ui/feedIcon");
         if(config.system.debugMode){
             form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
@@ -1021,7 +1021,13 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                     }
                 break;
                 case 2:
-                    world.structureManager.place("andexdbPlayerShopRecievedShopItemsStorage:"+shop.playerID, sourceEntity.dimension, Vector.add(sourceEntity.location, {x: 0, y: 10, z: 0}), {includeBlocks: false, includeEntities: true})
+                    try{world.structureManager.place("andexdbPlayerShopRecievedShopItemsStorage:"+shop.playerID, sourceEntity.dimension, Vector.add(sourceEntity.location, {x: 0, y: 10, z: 0}), {includeBlocks: false, includeEntities: true})}catch(e){
+                        if(e instanceof InvalidStructureError){
+                            shop.createStorageEntity(sourceEntity as Player)
+                        }else{
+                            throw(e)
+                        }
+                    }
                     const entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, {x: 0, y: 10, z: 0})).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:recievedShopItemsStoragePlayerID")))==shop.playerID)
                     if(!!!entity){
                         throw new ReferenceError(`Unable to get the storage entity.`)
@@ -1065,7 +1071,7 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop)
                 break;
                 case 3:
-                    if((await showMessage(sourceEntity as Player, "Are You Sure?", "Are you sure you want to do this? You should only do this if people are getting errors saying that it was \"Unable to get the storage entity\" while they were selling items in your shop. §eCAUTION!: DOING THIS WILL RESULT IN ANY ITEMS THAT PLAYERS HAVE SOLD TO YOU IN YOUR SHOP, THAT YOU HAVEN'T WITHDRAWN, BEING DELETED!", "Cancel", "I'm Sure")).selection==1){
+                    if((await showMessage(sourceEntity as Player, "Are You Sure?", "Are you sure you want to do this? You should only do this if people are getting errors saying that it was \"Unable to get the storage entity\" while they are trying to sell items in your shop. §eCAUTION!: DOING THIS WILL RESULT IN ANY ITEMS THAT PLAYERS HAVE SOLD TO YOU IN YOUR SHOP, THAT YOU HAVEN'T WITHDRAWN, BEING DELETED!", "Cancel", "I'm Sure")).selection==1){
                         await shop.createStorageEntity(sourceEntity as Player)
                     }
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop)
@@ -1922,8 +1928,8 @@ Texture: ${page.texture}`
     static async managePlayerShop_editPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: PlayerShop, page: PlayerShopPage, pageIndex: number, mode: mode): Promise<1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const form = new ModalFormData;
-        form.title("Edit Item");
-        form.textField("§fPage Title§c*", "Items", JSON.stringify(page.pageTitle).slice(1, -1).replaceAll("\\\"", "\""))
+        form.title("Edit Page");
+        form.textField("§fPage Title§c*", "Category: Items", JSON.stringify(page.pageTitle).slice(1, -1).replaceAll("\\\"", "\""))
         form.textField("§fPage Body§c*", "The items category.", JSON.stringify(page.pageBody).slice(1, -1).replaceAll("\\\"", "\""))
         form.textField("§fButton Title§c*", "Items", JSON.stringify(page.title).slice(1, -1).replaceAll("\\\"", "\""))
         form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/ui/arrowRight", JSON.stringify(page.texture).slice(1, -1).replaceAll("\\\"", "\""))
@@ -1952,8 +1958,8 @@ Texture: ${page.texture}`
     static async managePlayerShop_addPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: PlayerShop, mode: mode): Promise<1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const form = new ModalFormData;
-        form.title("Add Item");
-        form.textField("§fPage Title§c*", "Items")
+        form.title("Add Page");
+        form.textField("§fPage Title§c*", "Category: Items")
         form.textField("§fPage Body§c*", "The items category.")
         form.textField("§fButton Title§c*", "Items")
         form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/ui/arrowRight")
@@ -2708,7 +2714,7 @@ Texture: ${page.texture}`
         const mode = path[0]
         const form = new ModalFormData;
         form.title("Edit Page");
-        form.textField("§fPage Title§c*", "Items", JSON.stringify(page.pageTitle).slice(1, -1).replaceAll("\\\"", "\""))
+        form.textField("§fPage Title§c*", "Category: Items", JSON.stringify(page.pageTitle).slice(1, -1).replaceAll("\\\"", "\""))
         form.textField("§fPage Body§c*", "The items category.", JSON.stringify(page.pageBody).slice(1, -1).replaceAll("\\\"", "\""))
         form.textField("§fButton Title§c*", "Items", JSON.stringify(page.title).slice(1, -1).replaceAll("\\\"", "\""))
         form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/ui/arrowRight", JSON.stringify(page.texture).slice(1, -1).replaceAll("\\\"", "\""))
@@ -2741,7 +2747,7 @@ Texture: ${page.texture}`
         const mode = path[0]
         const form = new ModalFormData;
         form.title("Add Page");
-        form.textField("§fPage Title§c*", "Items")
+        form.textField("§fPage Title§c*", "Category: Items")
         form.textField("§fPage Body§c*", "The items category.")
         form.textField("§fButton Title§c*", "Items")
         form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/ui/arrowRight")
