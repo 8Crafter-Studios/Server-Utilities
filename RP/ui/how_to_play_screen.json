@@ -1473,7 +1473,7 @@
     "$glyph_texture": "textures/ui/8Crafter",
     "$glyph_color_texture": "textures/ui/ImpulseSquare",
     "$section_topic": "andexdbCommandsParameters",
-    "$button_text": "Commands Parameters",
+    "$button_text": "Parameter types",
     "$title_text": "andexdb.commandsParameters"
   },
 
