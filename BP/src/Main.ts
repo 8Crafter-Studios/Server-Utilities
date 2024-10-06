@@ -153,10 +153,12 @@ declare global {
     namespace globalThis {
         var modules: typeof main.modules
         var config: typeof main.config
+        var tempSavedVariables: any[]
+        var crashEnabled: boolean
     }
 }
-export let crashEnabled = false
-export let tempSavedVariables = []
+globalThis.crashEnabled = false
+globalThis.tempSavedVariables = []
 export function mainEval(x: string){return eval(x)}
 export function indirectMainEval(x: string){return eval?.(x)}
 export function mainRun(x: (...args: any[])=>any, ...args: any[]){return x(...args)}
@@ -188,16 +190,40 @@ let test1c = [1, "ID:1", "text"] as Mutable<typeof test1a>*/
 export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]/*
 disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
 system.beforeEvents.watchdogTerminate.subscribe(e => {try{
-    if(crashEnabled == true){}else{if(world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") == true){}else{
-  e.cancel = true;
-  console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`);}}
+    if(crashEnabled == true){
+        return;
+    }else{
+        if(world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") == true){
+            return;
+        }else{
+            e.cancel = true;
+            console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`);
+            try{
+                world.getAllPlayers().filter(p=>
+                    p.hasTag("getWatchdogTerminationCancelWarnings")
+                ).forEach(p=>
+                    p.sendMessage(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`)
+                );
+            }catch{};
+        }}
     }catch{
-  e.cancel = true;
-  console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`);
+        e.cancel = true;
+        console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`);
+        try{
+            world.getAllPlayers().filter(p=>
+                p.hasTag("getWatchdogTerminationCancelWarnings")
+            ).forEach(p=>
+                p.sendMessage(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`)
+            );
+        }catch{};
     }
 });
 world.setDynamicProperty("format_version", format_version)
-try{eval(String(world.getDynamicProperty("evalEvents:scriptInitialize")))}catch(e){console.error(e, e.stack)}
+try{
+    eval(String(world.getDynamicProperty("evalEvents:scriptInitialize")))
+}catch(e){
+    console.error(e, e.stack)
+}
 
 const srununbound = system.run
 /**
@@ -535,7 +561,12 @@ export class config{
             get protectedAreasRefreshRate(){return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 20)},
             set protectedAreasRefreshRate(protectedAreasRefreshRate: number|undefined){world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate))?20:Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate??20))))},
             get debugMode(){return Boolean(world.getDynamicProperty("andexdbSettings:debugMode") ?? false)},
-            set debugMode(debugMode: boolean|undefined){world.setDynamicProperty("andexdbSettings:debugMode", debugMode??false)}
+            set debugMode(debugMode: boolean|undefined){world.setDynamicProperty("andexdbSettings:debugMode", debugMode??false)},
+            /**
+             * It is reccommended to leave this set to false.
+             */
+            get allowWatchdogTerminationCrash(){return Boolean(world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") ?? false)},
+            set allowWatchdogTerminationCrash(allowWatchdogTerminationCrash: boolean|undefined){world.setDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash", allowWatchdogTerminationCrash??false)}
         }
     }
     static reset(){
