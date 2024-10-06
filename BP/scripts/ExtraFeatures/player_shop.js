@@ -582,7 +582,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                             entity.remove();
                         }
                         catch { }
-                        if (path.length == 0) {
+                        if (path.length == 1) {
                             if (path[0] == "buy") {
                                 let data = this.buyData;
                                 data.splice(itemIndex, 1, item);

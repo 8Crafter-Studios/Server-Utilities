@@ -586,7 +586,7 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
                         try{
                             entity.remove()
                         }catch{}
-                        if(path.length==0){
+                        if(path.length==1){
                             if(path[0]=="buy"){
                                 let data = this.buyData
                                 data.splice(itemIndex, 1, item as any)
