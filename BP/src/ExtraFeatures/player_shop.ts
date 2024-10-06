@@ -586,16 +586,28 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
                         try{
                             entity.remove()
                         }catch{}
-                        if(path[0]=="buy"){
-                            let data = this.buyData
-                            let newData = getPathInObject(data, path.slice(0, -2)).data as PlayerBuyableShopElement[]
-                            newData.splice(itemIndex, 1, item as any)
-                            this.buyData=data
-                        }else if(path[0]=="sell"){
-                            let data = this.sellData
-                            let newData = getPathInObject(data, path.slice(0, -2)).data as PlayerSellableShopElement[]
-                            newData.splice(itemIndex, 1, item as PlayerSellableShopItem)
-                            this.sellData=data
+                        if(path.length==0){
+                            if(path[0]=="buy"){
+                                let data = this.buyData
+                                data.splice(itemIndex, 1, item as any)
+                                this.buyData=data
+                            }else if(path[0]=="sell"){
+                                let data = this.sellData
+                                data.splice(itemIndex, 1, item as PlayerSellableShopItem)
+                                this.sellData=data
+                            }
+                        }else{
+                            if(path[0]=="buy"){
+                                let data = this.buyData
+                                let newData = getPathInObject(data, path.slice(0, -2)).data as PlayerBuyableShopElement[]
+                                newData.splice(itemIndex, 1, item as any)
+                                this.buyData=data
+                            }else if(path[0]=="sell"){
+                                let data = this.sellData
+                                let newData = getPathInObject(data, path.slice(0, -2)).data as PlayerSellableShopElement[]
+                                newData.splice(itemIndex, 1, item as PlayerSellableShopItem)
+                                this.sellData=data
+                            }
                         }
                     }
                     return 1

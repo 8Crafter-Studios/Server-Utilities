@@ -582,17 +582,31 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                             entity.remove();
                         }
                         catch { }
-                        if (path[0] == "buy") {
-                            let data = this.buyData;
-                            let newData = getPathInObject(data, path.slice(0, -2)).data;
-                            newData.splice(itemIndex, 1, item);
-                            this.buyData = data;
+                        if (path.length == 0) {
+                            if (path[0] == "buy") {
+                                let data = this.buyData;
+                                data.splice(itemIndex, 1, item);
+                                this.buyData = data;
+                            }
+                            else if (path[0] == "sell") {
+                                let data = this.sellData;
+                                data.splice(itemIndex, 1, item);
+                                this.sellData = data;
+                            }
                         }
-                        else if (path[0] == "sell") {
-                            let data = this.sellData;
-                            let newData = getPathInObject(data, path.slice(0, -2)).data;
-                            newData.splice(itemIndex, 1, item);
-                            this.sellData = data;
+                        else {
+                            if (path[0] == "buy") {
+                                let data = this.buyData;
+                                let newData = getPathInObject(data, path.slice(0, -2)).data;
+                                newData.splice(itemIndex, 1, item);
+                                this.buyData = data;
+                            }
+                            else if (path[0] == "sell") {
+                                let data = this.sellData;
+                                let newData = getPathInObject(data, path.slice(0, -2)).data;
+                                newData.splice(itemIndex, 1, item);
+                                this.sellData = data;
+                            }
                         }
                     }
                     return 1;
