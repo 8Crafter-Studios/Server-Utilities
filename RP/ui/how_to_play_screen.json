@@ -259,6 +259,12 @@
       { "andexdb_anti_spam_system_button@how_to_play.andexdb_anti_spam_system_button": { "$toggle_group_forced_index": 916 } },
       { "andexdb_home_system_button@how_to_play.andexdb_home_system_button": { "$toggle_group_forced_index": 909 } },
       { "andexdb_tpa_system_button@how_to_play.andexdb_tpa_system_button": { "$toggle_group_forced_index": 910 } },
+      { "andexdb_world_border_system_button@how_to_play.andexdb_world_border_system_button": { "$toggle_group_forced_index": 922 } },/*
+      { "andexdb_money_system_button@how_to_play.andexdb_money_system_button": { "$toggle_group_forced_index": 923 } },*/
+      { "andexdb_server_shop_system_button@how_to_play.andexdb_server_shop_system_button": { "$toggle_group_forced_index": 924 } },
+      { "andexdb_player_shop_system_button@how_to_play.andexdb_player_shop_system_button": { "$toggle_group_forced_index": 925 } },/*
+      { "andexdb_sign_shop_system_button@how_to_play.andexdb_sign_shop_system_button": { "$toggle_group_forced_index": 926 } },*//*
+      { "andexdb_trade_request_system_button@how_to_play.andexdb_trade_request_system_button": { "$toggle_group_forced_index": 927 } },*/
       
       { "andexdb_items_block_entities_category@how_to_play.andexdb_topic_category": { "$category": "Items/Blocks/Entities" } },
       { "andexdb_items_button@how_to_play.andexdb_items_button": { "$toggle_group_forced_index": 911 } },
@@ -266,11 +272,15 @@
       { "andexdb_entities_button@how_to_play.andexdb_entities_button": { "$toggle_group_forced_index": 913 } },
 
       { "andexdb_commands_category@how_to_play.andexdb_topic_category": { "$category": "Commands" } },
-      { "andexdb_commands_basics_button@how_to_play.andexdb_commands_basics_button": { "$toggle_group_forced_index": 915 } },
-      { "andexdb_commands_parameters_basics_button@how_to_play.andexdb_commands_parameters_basics_button": { "$toggle_group_forced_index": 916 } },
-      { "andexdb_commands_parameters_button@how_to_play.andexdb_commands_parameters_button": { "$toggle_group_forced_index": 917 } },
-      { "andexdb_commands_button@how_to_play.andexdb_commands_button": { "$toggle_group_forced_index": 914 } },
-      { "andexdb_custom_commands_button@how_to_play.andexdb_custom_commands_button": { "$toggle_group_forced_index": 918 } },
+      { "andexdb_commands_basics_button@how_to_play.andexdb_commands_basics_button": { "$toggle_group_forced_index": 917} },
+      { "andexdb_commands_parameters_basics_button@how_to_play.andexdb_commands_parameters_basics_button": { "$toggle_group_forced_index": 918 } },
+      { "andexdb_commands_parameters_button@how_to_play.andexdb_commands_parameters_button": { "$toggle_group_forced_index": 919 } },
+      { "andexdb_commands_button@how_to_play.andexdb_commands_button": { "$toggle_group_forced_index": 920 } },
+      { "andexdb_custom_commands_button@how_to_play.andexdb_custom_commands_button": { "$toggle_group_forced_index": 921 } },/*
+
+      { "andexdb_worldedit_category@how_to_play.andexdb_topic_category": { "$category": "WorldEdit" } },
+      { "andexdb_worldedit_basics_button@how_to_play.andexdb_worldedit_basics_button": { "$toggle_group_forced_index": 928 } },
+      { "andexdb_worldedit_commands_button@how_to_play.andexdb_worldedit_commands_button": { "$toggle_group_forced_index": 929 } },*/
 
       { "andexdb_settings_category@how_to_play.andexdb_topic_category": { "$category": "Settings" } },
       { "andexdb_settings_button@how_to_play.andexdb_settings_button": { "$toggle_group_forced_index": 901 } },
@@ -282,7 +292,7 @@
       { "andexdb_personal_settings_button@how_to_play.andexdb_personal_settings_button": { "$toggle_group_forced_index": 907 } },
       { "andexdb_notifications_settings_button@how_to_play.andexdb_notifications_settings_button": { "$toggle_group_forced_index": 908 } }
     ]
-  },
+  },/*
 
   "andexdb_section_content_panels": {
     "type": "stack_panel",
@@ -322,7 +332,7 @@
         }
       }
     ]
-  },
+  },*/
 
   "how_to_play_section_content_panels": {
     "type": "stack_panel",
@@ -433,6 +443,12 @@
       { "andexdb_anti_spam_system_section@how_to_play.andexdb_anti_spam_system_section": {} },
       { "andexdb_home_system_section@how_to_play.andexdb_home_system_section": {} },
       { "andexdb_tpa_system_section@how_to_play.andexdb_tpa_system_section": {} },
+      { "andexdb_world_border_system_section@how_to_play.andexdb_world_border_system_section": {} },/*
+      { "andexdb_money_system_section@how_to_play.andexdb_money_system_section": {} },*/
+      { "andexdb_server_shop_system_section@how_to_play.andexdb_server_shop_system_section": {} },
+      { "andexdb_player_shop_system_section@how_to_play.andexdb_player_shop_system_section": {} },/*
+      { "andexdb_sign_shop_system_section@how_to_play.andexdb_sign_shop_system_section": {} },*//*
+      { "andexdb_trade_request_system_section@how_to_play.andexdb_trade_request_system_section": {} },*/
             
       { "andexdb_settings_section@how_to_play.andexdb_settings_section": {} },
       { "andexdb_global_settings_section@how_to_play.andexdb_global_settings_section": {} },
@@ -657,7 +673,7 @@
     "$button_text": "Items",
     "$title_text": "Items"
   },
-
+// to-do
   "andexdb_items_section@how_to_play_common.main_sections": {
     "bindings": [
       {
@@ -833,6 +849,11 @@
           "paragraph_20@how_to_play_common.paragraph": {
               "$text": "Item Id: andexdb:entity_debug_stick"
           }
+      },
+      {
+        "paragraph_21@how_to_play_common.paragraph": {
+          "$text": "Note: This section is incomplete and will be finished in a future update."
+        }
       }
     ]
   },
@@ -2243,6 +2264,110 @@
           "bullet_point_paragraph_1@how_to_play_common.paragraph": {
               "$text": "  · Use `\\tpa <target>` to request to teleport to a player. This will send a message to that player. If they type \"n\" in chat or do nothing for 1 minute, the request will be denied. If they type \"y\" in chat, you will be teleported to them."
           }
+      }
+    ]
+  },
+
+  "andexdb_world_border_system_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/xyz_axis",
+    "$section_topic": "andexdbWorldBorderSystem",
+    "$button_text": "World Border System",
+    "$title_text": "andexdb.worldBorderSystem"
+  },
+// to-do
+  "andexdb_world_border_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbWorldBorderSystem_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "This section will be filled out in a future update. "
+        }
+      }
+    ]
+  },
+
+  "andexdb_server_shop_system_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/servers"/*"textures/ui/store_home_icon"*/,
+    "$section_topic": "andexdbServerShopSystem",
+    "$button_text": "Server Shop System",
+    "$title_text": "andexdb.serverShopSystem"
+  },
+// to-do
+  "andexdb_server_shop_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbServerShopSystem_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "This section will be filled out in a future update. "
+        }
+      }
+    ]
+  },
+
+  "andexdb_player_shop_system_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/icon_multiplayer"/*"textures/ui/store_home_icon"*/,
+    "$section_topic": "andexdbPlayerShopSystem",
+    "$button_text": "Player Shop System",
+    "$title_text": "andexdb.playerShopSystem"
+  },
+// to-do
+  "andexdb_player_shop_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbPlayerShopSystem_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "This section will be filled out in a future update. "
+        }
+      }
+    ]
+  },
+
+  "andexdb_sign_shop_system_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/icon_sign"/*"textures/ui/store_home_icon"*/,
+    "$section_topic": "andexdbSignShopSystem",
+    "$button_text": "Sign Shop System",
+    "$title_text": "andexdb.signShopSystem"
+  },
+// to-do
+  "andexdb_sign_shop_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbSignShopSystem_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "This section will be filled out in a future update. "
+        }
       }
     ]
   },
