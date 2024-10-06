@@ -461,7 +461,7 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
             .filter((v) => (v.hasItem() ? v?.typeId == item.itemID : false))
             .filter(
                 (v) =>
-                    (
+                    !(
                         (v.lockMode == "inventory" &&
                             !config.shopSystem.player
                                 .allowSellingLockInInventoryItems) ||

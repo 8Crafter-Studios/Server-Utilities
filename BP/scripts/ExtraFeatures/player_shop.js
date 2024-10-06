@@ -439,7 +439,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             }
             const items = containerToContainerSlotArray(player.getComponent("inventory").container)
                 .filter((v) => (v.hasItem() ? v?.typeId == item.itemID : false))
-                .filter((v) => ((v.lockMode == "inventory" &&
+                .filter((v) => !((v.lockMode == "inventory" &&
                 !config.shopSystem.player
                     .allowSellingLockInInventoryItems) ||
                 (v.lockMode == "slot" &&
