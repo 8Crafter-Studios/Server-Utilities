@@ -714,7 +714,7 @@ export class commandSettings{
     get parsed(){return JSONParse(String(world.getDynamicProperty(this.commandSettingsId)))}
     get enabled(){return this?.parsed?.enabled as boolean ?? this?.defaultSettings?.enabled ?? true}
     set enabled(enabled){this.enabled = enabled}
-    get requiredTags(){return this?.parsed?.requiredTags as string[] ?? ["canUseChatCommands"]}
+    get requiredTags(){return this?.parsed?.requiredTags as string[] ?? this.defaultSettings.requiredTags ?? ["canUseChatCommands"]}
     set requiredTags(requiredTags){this.requiredTags = requiredTags}
     get requiredPermissionLevel(){return this?.parsed?.requiredPermissionLevel as string|number ?? 0}
     set requiredPermissionLevel(requiredPermissionLevel: string|number|undefined){this.requiredPermissionLevel = requiredPermissionLevel}

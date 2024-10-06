@@ -2593,7 +2593,7 @@ export const commands = [
                 format: "getuuid <targets: target[allowMultiple=true]>"
             }
         ],
-        command_version: "1.0.2",
+        command_version: "2.0.0",
         description: "",
         category: [
             "entities"

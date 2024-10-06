@@ -800,7 +800,7 @@ export class commandSettings {
     get parsed() { return JSONParse(String(world.getDynamicProperty(this.commandSettingsId))); }
     get enabled() { return this?.parsed?.enabled ?? this?.defaultSettings?.enabled ?? true; }
     set enabled(enabled) { this.enabled = enabled; }
-    get requiredTags() { return this?.parsed?.requiredTags ?? ["canUseChatCommands"]; }
+    get requiredTags() { return this?.parsed?.requiredTags ?? this.defaultSettings.requiredTags ?? ["canUseChatCommands"]; }
     set requiredTags(requiredTags) { this.requiredTags = requiredTags; }
     get requiredPermissionLevel() { return this?.parsed?.requiredPermissionLevel ?? 0; }
     set requiredPermissionLevel(requiredPermissionLevel) { this.requiredPermissionLevel = requiredPermissionLevel; }
