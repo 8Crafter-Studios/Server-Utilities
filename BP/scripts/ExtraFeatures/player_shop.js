@@ -439,7 +439,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             }
             const items = containerToContainerSlotArray(player.getComponent("inventory").container)
                 .filter((v) => (v.hasItem() ? v?.typeId == item.itemID : false))
-                .filter((v) => !((v.lockMode == "inventory" &&
+                .filter((v) => ((v.lockMode == "inventory" &&
                 !config.shopSystem.player
                     .allowSellingLockInInventoryItems) ||
                 (v.lockMode == "slot" &&
@@ -450,26 +450,33 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             items.forEach(v => itemCount += v.amount);
             if (itemCount >= r.formValues[0]) {
                 if (item.itemType == "player_shop_sellable") {
-                    if (!!!world.structureManager.get("andexdbPlayerShopRecievedShopItemsStorage:" + item.playerID)) {
-                        const entity = player.dimension.spawnEntity("andexdb:player_shop_recieved_shop_items_storage", { x: Math.floor(player.location.x) + 0.5, y: Math.floor(player.location.y) + 0.5, z: Math.floor(player.location.z) + 0.5 });
-                        entity.setDynamicProperty("andexdb:recievedShopItemsStoragePlayerID", item.playerID);
-                        world.structureManager.createFromWorld("andexdbPlayerShopRecievedShopItemsStorage:" + item.playerID, player.dimension, {
-                            x: Math.floor(player.location.x),
-                            y: Math.floor(player.location.y) + 10,
-                            z: Math.floor(player.location.z)
-                        }, {
-                            x: Math.floor(player.location.x) + 1,
-                            y: Math.floor(player.location.y) + 11,
-                            z: Math.floor(player.location.z) + 1
-                        }, {
-                            includeBlocks: false,
-                            includeEntities: true,
-                            saveMode: StructureSaveMode.World
-                        });
+                    if (!!!world.structureManager.get("andexdbPlayerShopRecievedShopItemsStorage:" + item.playerID)) { /*
+                        const entity = player.dimension.spawnEntity("andexdb:player_shop_recieved_shop_items_storage", {x: Math.floor(player.location.x)+0.5, y: Math.floor(player.location.y)+0.5, z: Math.floor(player.location.z)+0.5})
+                        entity.setDynamicProperty("andexdb:recievedShopItemsStoragePlayerID", item.playerID)
+                        world.structureManager.createFromWorld(
+                            "andexdbPlayerShopRecievedShopItemsStorage:"+item.playerID,
+                            player.dimension,
+                            {
+                                x: Math.floor(player.location.x),
+                                y: Math.floor(player.location.y)+10,
+                                z: Math.floor(player.location.z)
+                            },
+                            {
+                                x: Math.floor(player.location.x)+1,
+                                y: Math.floor(player.location.y)+11,
+                                z: Math.floor(player.location.z)+1
+                            },
+                            {
+                                includeBlocks: false,
+                                includeEntities: true,
+                                saveMode: StructureSaveMode.World
+                            }
+                        )*/
+                        this.createStorageEntity(player);
                     }
                     let amountToRemove = r.formValues[0];
-                    world.structureManager.place("andexdbPlayerShopRecievedShopItemsStorage:" + item.playerID, player.dimension, Vector.add(player.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
-                    const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:recievedShopItemsStoragePlayerID"))) == item.playerID);
+                    world.structureManager.place("andexdbPlayerShopRecievedShopItemsStorage:" + item.playerID, player.dimension, Vector.add(Vector.floor(player.location), { x: 0.5, y: 10.5, z: 0.5 }), { includeBlocks: false, includeEntities: true });
+                    const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(Vector.floor(player.location), { x: 0.5, y: 10.5, z: 0.5 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:recievedShopItemsStoragePlayerID"))) == item.playerID);
                     if (!!!entity) {
                         throw new ReferenceError(`Unable to get the storage entity.`);
                     }
@@ -538,7 +545,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                         /**
                          * This makes the script temporarily teleport the other entities away so that when it saves the storage entity, it can't save and possibly duplicate other entities.
                          */
-                        var otherEntities = tryget(() => player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).filter(v => v.id != entity.id)) ?? [];
+                        var otherEntities = tryget(() => player.dimension.getEntitiesAtBlockLocation(Vector.add(Vector.floor(player.location), { x: 0.5, y: 10.5, z: 0.5 })).filter(v => v.id != entity.id)) ?? [];
                         var locs = otherEntities.map(v => v.location);
                         otherEntities.forEach(v => tryrun(() => v.teleport(Vector.add(v.location, { x: 0, y: 50, z: 0 }))));
                         world.structureManager.createFromWorld("andexdbPlayerShopRecievedShopItemsStorage:" + item.playerID, player.dimension, {
@@ -608,6 +615,53 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
         }
         catch (e) {
             console.error(e, e.stack);
+        }
+    }
+    async createStorageEntity(player = world.getAllPlayers().find(v => v.id == this.playerID)) {
+        const entity = player.dimension.spawnEntity("andexdb:player_shop_recieved_shop_items_storage", Vector.add(Vector.floor(player.location), { x: 0.5, y: 10.5, z: 0.5 }));
+        entity.setDynamicProperty("andexdb:recievedShopItemsStoragePlayerID", this.playerID);
+        try {
+            /**
+             * This makes the script temporarily teleport the other entities away so that when it saves the storage entity, it can't save and possibly duplicate other entities.
+             */
+            var otherEntities = tryget(() => player.dimension.getEntitiesAtBlockLocation(Vector.add(Vector.floor(player.location), { x: 0.5, y: 10.5, z: 0.5 })).filter(v => v.id != entity.id)) ?? [];
+            var locs = otherEntities.map(v => v.location);
+            otherEntities.forEach(v => tryrun(() => v.teleport(Vector.add(v.location, { x: 0, y: 50, z: 0 }))));
+            try {
+                world.structureManager.delete("andexdbPlayerShopRecievedShopItemsStorage:" + this.playerID);
+            }
+            catch { }
+            world.structureManager.createFromWorld("andexdbPlayerShopRecievedShopItemsStorage:" + this.playerID, player.dimension, {
+                x: Math.floor(player.location.x),
+                y: Math.floor(player.location.y) + 10,
+                z: Math.floor(player.location.z)
+            }, {
+                x: Math.floor(player.location.x) + 1,
+                y: Math.floor(player.location.y) + 11,
+                z: Math.floor(player.location.z) + 1
+            }, {
+                includeBlocks: false,
+                includeEntities: true,
+                saveMode: StructureSaveMode.World
+            });
+        }
+        catch (e) {
+            try {
+                player.sendMessage(e + " " + e?.stack);
+            }
+            catch {
+                console.error(e, e?.stack);
+            }
+        }
+        finally {
+            try {
+                otherEntities.forEach((v, i) => tryrun(() => v.teleport(locs[i], { keepVelocity: false })));
+            }
+            catch { }
+            try {
+                entity.remove();
+            }
+            catch { }
         }
     }
     static async openPublicShopsSelector(sourceEntitya) {
@@ -909,6 +963,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
         form.button("Manage Items/Pages", "textures/ui/book_edit_default");
         form.button("Shop Settings", "textures/ui/icon_setting");
         form.button("Withdraw Items", "textures/ui/download_backup");
+        form.button("Regenerate Storage Entity", "textures/ui/ui_debug");
         form.button("View Shop", "textures/ui/feedIcon");
         if (config.system.debugMode) {
             form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
@@ -1009,6 +1064,12 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     break;
                 case 3:
+                    if ((await showMessage(sourceEntity, "Are You Sure?", "Are you sure you want to do this? You should only do this if people are getting errors saying that it was \"Unable to get the storage entity\" while they were selling items in your shop. §eCAUTION!: DOING THIS WILL RESULT IN ANY ITEMS THAT PLAYERS HAVE SOLD TO YOU IN YOUR SHOP, THAT YOU HAVEN'T WITHDRAWN, BEING DELETED!", "Cancel", "I'm Sure")).selection == 1) {
+                        await shop.createStorageEntity(sourceEntity);
+                    }
+                    return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
+                    break;
+                case 4:
                     if (shop.buyShop && shop.sellShop) {
                         if ((await shop.openShop(sourceEntity, "both")) != 0) {
                             return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
@@ -1042,11 +1103,11 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                         }
                     }
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 4 : -4:
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 5 : -5:
                     await showActions(sourceEntity, "Debug Info", `Raw Shop Data: \n${JSON.stringify(shop, undefined, 2)}`, ["Done"]);
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 5 : -5:
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 6 : -6:
                     const formb = new ModalFormData().title("Edit Raw Shop Data");
                     let data = Object.entries(JSON.parse(JSON.stringify(shop)));
                     data.forEach(v => formb.textField(v[0], typeof v[1], JSON.stringify(v[1])));
@@ -1067,7 +1128,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     shop.save();
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 6 : -6:
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 7 : -7:
                     const formc = new ModalFormData().title("Edit JSON Shop Data");
                     formc.textField("JSON", "JSON", JSON.stringify(shop));
                     const re = await formc.forceShow(sourceEntity);
@@ -1087,11 +1148,11 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     shop.save();
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 7 : -7:
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 8 : -8:
                     await showActions(sourceEntity, "Debug Info", `Raw Buy Shop Data: \n${JSON.stringify(shop.buyData, undefined, 2)}`, ["Done"]);
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 8 : -8:
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 9 : -0:
                     const formd = new ModalFormData().title("Edit JSON Buy Shop Data");
                     formd.textField("JSON", "JSON", JSON.stringify(shop.buyData));
                     const rf = await formd.forceShow(sourceEntity);
@@ -1102,11 +1163,11 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     shop.sellData = newDataC;
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 9 : -9:
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 10 : -10:
                     await showActions(sourceEntity, "Debug Info", `Raw Sell Shop Data: \n${JSON.stringify(shop.sellData, undefined, 2)}`, ["Done"]);
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 10 : -10:
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 11 : -11:
                     const forme = new ModalFormData().title("Edit JSON Sell Shop Data");
                     forme.textField("JSON", "JSON", JSON.stringify(shop.sellData));
                     const rg = await forme.forceShow(sourceEntity);
@@ -1117,7 +1178,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     shop.sellData = newDataD;
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     break;
-                case 4 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 7):
+                case 5 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 7):
                     // PlayerShopManager.managePlayerShops(sourceEntity)
                     return 1;
                     break;
