@@ -1169,19 +1169,19 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                 case shopData.length:
                     const type: "player_shop_saved"|"player_shop_sellable" = mode=="buy"?"player_shop_saved":"player_shop_sellable"
                     if(type=="player_shop_saved"){
-                        const item = await itemSelector(sourceEntity, sourceEntity, PlayerShopManager.managePlayerShop_contents, sourceEntity, shop, mode)
+                        const item = await itemSelector(sourceEntity, sourceEntity, ()=>{}/*, PlayerShopManager.managePlayerShop_contents, sourceEntity, shop, mode*/)
                         if((!item.item.hasItem())||
                             !(
-                                (item?.item?.lockMode == "inventory" &&
-                                    !config.shopSystem.player
-                                        .allowSellingLockInInventoryItems) ||
-                                (item?.item?.lockMode == "slot" &&
-                                    !config.shopSystem.player.allowSellingLockInSlotItems) ||
-                                (item?.item?.keepOnDeath &&
-                                    !config.shopSystem.player.allowSellingKeepOnDeathItems)
+                                ((item?.item?.lockMode == "inventory") &&
+                                    (!config.shopSystem.player
+                                        .allowSellingLockInInventoryItems)) ||
+                                ((item?.item?.lockMode == "slot") &&
+                                    (!config.shopSystem.player.allowSellingLockInSlotItems)) ||
+                                ((item?.item?.keepOnDeath == true) &&
+                                    (!config.shopSystem.player.allowSellingKeepOnDeathItems))
                             )
                         ){
-                            if((await showMessage(sourceEntity as Player, "", `You cannot sell this item because ${(item.item?.lockMode=="inventory"&&!config.shopSystem.player.allowSellingLockInInventoryItems)?"selling items that are locked to your inventory is disabled":(item.item?.lockMode=="slot"&&!config.shopSystem.player.allowSellingLockInSlotItems)?"selling items that are locked to a specific inventory slot is disabled":(item.item?.keepOnDeath&&!config.shopSystem.player.allowSellingKeepOnDeathItems)?"selling items that have the keep on death property is disabled":"that slot is empty"}`, "Back", "Close")).selection!=0){
+                            if((await showMessage(sourceEntity as Player, "", `You cannot sell this item because ${((item.item?.lockMode=="inventory")&&!config.shopSystem.player.allowSellingLockInInventoryItems)?"selling items that are locked to your inventory is disabled":((item.item?.lockMode=="slot")&&!config.shopSystem.player.allowSellingLockInSlotItems)?"selling items that are locked to a specific inventory slot is disabled":((item.item?.keepOnDeath==true)&&!config.shopSystem.player.allowSellingKeepOnDeathItems)?"selling items that have the keep on death property is disabled":(!item.item.hasItem())?"that slot is empty":"of an unknown reason"}`, "Back", "Close")).selection!=0){
                                 return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode)
                             }else{
                                 return 0;
