@@ -1297,7 +1297,7 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                             }
                         )
                         const form2 = new ModalFormData;
-                        form2.textField("§7Buyable Item Type: pre-made\n§fButton Title§c*", "Stick")
+                        form2.textField("§7Buyable Item Type: player_shop_saved\n§fButton Title§c*", "Stick")
                         form2.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick")
                         form2.textField("Button Index§c*", String(mode=="buy"?shop.buyData.length:shop.sellData.length), String(mode=="buy"?shop.buyData.length:shop.sellData.length))
                         form2.textField("Price§c*", "10", "10"); 
@@ -2073,7 +2073,7 @@ Texture: ${page.texture}`
                         }
                     )
                     const form2 = new ModalFormData;
-                    form2.textField("§7Buyable Item Type: pre-made\n§fButton Title§c*", "Stick")
+                    form2.textField("§7Buyable Item Type: player_shop_saved\n§fButton Title§c*", "Stick")
                     form2.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/items/stick")
                     form2.textField("Button Index§c*", String(mode=="buy"?shop.buyData.length:shop.sellData.length), String(mode=="buy"?shop.buyData.length:shop.sellData.length))
                     form2.textField("Price§c*", "10", "10"); 

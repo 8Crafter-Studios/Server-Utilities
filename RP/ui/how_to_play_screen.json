@@ -555,7 +555,7 @@
   "andexdb_installation_button@how_to_play.andexdb_help_button": {
     "$section_topic": "andexdbInstallation",
     "$button_text": "Installation/Setup",
-    "$title_text": "Installation/Setup"
+    "$title_text": "andexdb.installationSlashSetup"
   },
 
   "andexdb_installation_section@how_to_play_common.main_sections": {
@@ -671,7 +671,7 @@
     "$glyph_color_texture": "textures/ui/icon_recipe_item",
     "$section_topic": "andexdbItems",
     "$button_text": "Items",
-    "$title_text": "Items"
+    "$title_text": "andexdb.items"
   },
 // to-do
   "andexdb_items_section@how_to_play_common.main_sections": {
@@ -686,7 +686,7 @@
     "controls": [
       { "padding_1@how_to_play_common.padding": {} },
       {
-          "first_setup_section_header@how_to_play_common.subsection_title": {
+          "debug_sticks_section_header@how_to_play_common.subsection_title": {
             "$text": "§dDebug Sticks§r"
           }
       },
@@ -850,6 +850,12 @@
               "$text": "Item Id: andexdb:entity_debug_stick"
           }
       },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+          "other_items_section_header@how_to_play_common.subsection_title": {
+            "$text": "§bOther Items§r"
+          }
+      },
       {
         "paragraph_21@how_to_play_common.paragraph": {
           "$text": "Note: This section is incomplete and will be finished in a future update."
@@ -863,7 +869,7 @@
     "$glyph_color_texture": "textures/blocks/grass_side_carried",
     "$section_topic": "andexdbBlocks",
     "$button_text": "Blocks",
-    "$title_text": "Blocks"
+    "$title_text": "andexdb.blocks"
   },
 // to-do
   "andexdb_blocks_section@how_to_play_common.main_sections": {
@@ -889,7 +895,7 @@
     "$glyph_color_texture": "textures/ui/icon_panda",
     "$section_topic": "andexdbEntities",
     "$button_text": "Entities",
-    "$title_text": "Entities"
+    "$title_text": "andexdb.entities"
   },
 // to-do
   "andexdb_entities_section@how_to_play_common.main_sections": {
@@ -1574,7 +1580,7 @@
       },
       {
           "paragraph_8@how_to_play_common.paragraph": {
-              "$text": "A string. Can be either a string of text with no spaces, or a JSON formatted string. (ex. \"some text\nanother line of text \\uE359 and the unicode character U+E359\" or myStringOfText_With-0-Spaces)"
+              "$text": "A string. Can be either a string of text with no spaces, or a JSON formatted string. (ex. \"some text\\nanother line of text \\uE359 and the unicode character U+E359\" or myStringOfText_With-0-Spaces)"
           }
       },
       {
@@ -1806,7 +1812,7 @@
       },
       {
           "paragraph_34@how_to_play_common.paragraph": {
-              "$text": "//to-do"
+              "$text": "// to-do"
           }
       },
       {
@@ -1820,13 +1826,28 @@
           }
       },
       {
+          "paragraph_34a@how_to_play_common.paragraph": {
+              "$text": "// to-do"
+          }
+      },
+      {
           "header_25@how_to_play_common.header": {
               "$text": "SingleBlockMask"
           }
       },
       {
+          "paragraph_34b@how_to_play_common.paragraph": {
+              "$text": "// to-do"
+          }
+      },
+      {
           "header_26@how_to_play_common.header": {
               "$text": "BlockType"
+          }
+      },
+      {
+          "paragraph_34c@how_to_play_common.paragraph": {
+              "$text": "// to-do"
           }
       },
       {
@@ -2276,7 +2297,7 @@
     "$title_text": "andexdb.worldBorderSystem"
   },
 // to-do
-  "andexdb_world_border_section@how_to_play_common.main_sections": {
+  "andexdb_world_border_system_section@how_to_play_common.main_sections": {
     "bindings": [
       {
         "binding_type": "view",
@@ -2288,7 +2309,7 @@
     "controls": [
       {
         "paragraph_1@how_to_play_common.paragraph": {
-          "$text": "This section will be filled out in a future update. "
+          "$text": "To set up the world border system just go to §bMain Menu > Settings > Extra Features > World Border§r and then select the dimension you want to set the world border for, then choose all of the settings that you want."
         }
       }
     ]
@@ -2302,7 +2323,7 @@
     "$title_text": "andexdb.serverShopSystem"
   },
 // to-do
-  "andexdb_server_shop_section@how_to_play_common.main_sections": {
+  "andexdb_server_shop_system_section@how_to_play_common.main_sections": {
     "bindings": [
       {
         "binding_type": "view",
@@ -2328,7 +2349,7 @@
     "$title_text": "andexdb.playerShopSystem"
   },
 // to-do
-  "andexdb_player_shop_section@how_to_play_common.main_sections": {
+  "andexdb_player_shop_system_section@how_to_play_common.main_sections": {
     "bindings": [
       {
         "binding_type": "view",
@@ -2354,7 +2375,7 @@
     "$title_text": "andexdb.signShopSystem"
   },
 // to-do
-  "andexdb_sign_shop_section@how_to_play_common.main_sections": {
+  "andexdb_sign_shop_system_section@how_to_play_common.main_sections": {
     "bindings": [
       {
         "binding_type": "view",
@@ -2460,7 +2481,7 @@
     "$glyph_color_texture": "textures/ui/debug_glyph_color",
     "$section_topic": "andexdbScriptSettings",
     "$button_text": "Script Settings",
-    "$title_text": "Script Settings"
+    "$title_text": "andexdb.scriptSettings"
   },
 // to-do
   "andexdb_script_settings_section@how_to_play_common.main_sections": {
