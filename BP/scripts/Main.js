@@ -259,8 +259,8 @@ export class config {
     static set chatCommandPrefix(prefix) { world.setDynamicProperty("andexdbSettings:chatCommandPrefix", prefix ?? "\\"); }
     static get validChatCommandPrefixes() { return String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? ""); }
     static set validChatCommandPrefixes(prefixes) { world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", prefixes ?? ""); }
-    static get invalidChatCommandAction() { return isNaN(Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction"))) ? 0 : Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 0); }
-    static set invalidChatCommandAction(invalidChatCommandAction) { world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction ?? 0); }
+    static get invalidChatCommandAction() { return isNaN(Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction"))) ? 3 : Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 3); }
+    static set invalidChatCommandAction(invalidChatCommandAction) { world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction ?? 3); }
     static get undoClipboardMode() { return String(world.getDynamicProperty("andexdbSettings:undoClipboardMode") ?? StructureSaveMode.Memory); }
     static set undoClipboardMode(undoClipboardMode) { world.setDynamicProperty("andexdbSettings:undoClipboardMode", undoClipboardMode ?? StructureSaveMode.Memory); }
     static get spawnCommandLocation() { const v = tryget(() => JSON.parse(String(world.getDynamicProperty("andexdbSettings:spawnCommandLocation") ?? '{x: null, y: null, z: null, dimension: "overworld"}'))) ?? { x: null, y: null, z: null, dimension: "overworld" }; return tryget(() => ({ x: v.x, y: v.y, z: v.z, dimension: dimensionsb[String(v.dimension)] ?? overworld })) ?? { x: null, y: null, z: null, dimension: overworld }; }
