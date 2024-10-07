@@ -312,9 +312,9 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
 §r§bCan Place On: §a${JSON.stringify(itemStack.getCanPlaceOn(), undefined, 1)}
 §r§bLock Mode: §a${itemStack.lockMode}
 §r§bKeep On Death: ${itemStack.keepOnDeath.toFormattedString()}
-§r§bDynamic Properties: §r${tryget(() => `${itemStack.getDynamicPropertyTotalByteCount()} Bytes: \n` + JSON.stringify(Object.fromEntries(itemStack.getDynamicPropertyIds().map(v => ["§r" + v, itemStack.getDynamicProperty(v)])), undefined, 1)) ?? "N/A"}${itemStack.hasComponent("durability") ? `\n§r§bDurability: ${itemStack.getComponent("durability").damage < (itemStack.getComponent("durability").maxDurability / 3) ? "§a" : itemStack.getComponent("durability").damage < (itemStack.getComponent("durability").maxDurability / 1.5) ? "§e" : "§c"}{itemStack.getComponent("durability").maxDurability-itemStack.getComponent("durability").damage}/${itemStack.getComponent("durability").maxDurability}` : ""}${itemStack.hasComponent("potion") ? `\n§r§bPotion Effect Type: §d${itemStack.getComponent("potion").potionEffectType}
-§r§bPotion Liquid Type: §9${itemStack.getComponent("potion").potionLiquidType}
-§r§bPotion Modifier Type: §e${itemStack.getComponent("potion").potionModifierType}` : ""}
+§r§bDynamic Properties: §r${tryget(() => `${itemStack.getDynamicPropertyTotalByteCount()} Bytes: \n` + JSON.stringify(Object.fromEntries(itemStack.getDynamicPropertyIds().map(v => ["§r" + v, itemStack.getDynamicProperty(v)])), undefined, 1)) ?? "N/A"}${itemStack.hasComponent("durability") ? `\n§r§bDurability: ${itemStack.getComponent("durability").damage < (itemStack.getComponent("durability").maxDurability / 3) ? "§a" : itemStack.getComponent("durability").damage < (itemStack.getComponent("durability").maxDurability / 1.5) ? "§e" : "§c"}{itemStack.getComponent("durability").maxDurability-itemStack.getComponent("durability").damage}/${itemStack.getComponent("durability").maxDurability}` : ""}${itemStack.hasComponent("potion") ? `\n§r§bPotion Effect Type: §d${itemStack.getComponent("potion").potionEffectType.id}
+§r§bPotion Liquid Type: §9${itemStack.getComponent("potion").potionLiquidType.id}
+§r§bPotion Modifier Type: §e${itemStack.getComponent("potion").potionModifierType.id}` : ""}
 §r§bEnchantments: ${item.itemDetails.enchantments instanceof Array ? "\n§d[" + item.itemDetails.enchantments.map(v => v.type.id + " " + v.level.toRomanNumerals()).join("\n") + "\n]" : item.itemDetails.enchantments}`);
                 infoFormB.button("Proceed to buy item");
                 infoFormB.button("Back");
@@ -433,7 +433,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                 form.button2("Close Shop");
                 const rb = await forceShow(form, player);
                 if (rb.canceled == true || rb.selection == 1) {
-                    return;
+                    return 0;
                 }
                 return 1;
                 // this.openShop(player, "buy")
@@ -447,7 +447,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
         try {
             const form = new ModalFormData;
             form.title("Sell " + item.title);
-            form.slider(`§a${item.title}\n§gValue: ${item.value}\n§fHow many would you like to sell?`, 0, item.amountWanted ?? 64, item.step ?? 1, item.step ?? 1);
+            form.slider(`§a${item.title}\n§gValue: ${item.value}${item.amountWanted <= 0 ? "\n§cThe owner of this shop is not accepting any more of this item." : ""}\n§fHow many would you like to sell?`, 0, Math.min(item.amountWanted ?? 64, 64 * (item.step ?? 1)), Math.min(item.step ?? 1, item.amountWanted), Math.min(item.step ?? 1, item.amountWanted));
             const r = await forceShow(form, player);
             if (r.canceled == true || r.formValues[0] == 0) {
                 return 1;
@@ -464,6 +464,18 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             let itemCount = 0;
             items.forEach(v => itemCount += v.amount);
             if (itemCount >= r.formValues[0]) {
+                if (MoneySystem.get(item.playerID).money < (item.value.toBigInt() * r.formValues[0].toBigInt())) {
+                    const form = new MessageFormData;
+                    form.title("Owner Has Insufficient Funds");
+                    form.body(`The owner of this shop does not have enough money to pay you for this item.\nThey currently have $${MoneySystem.get(item.playerID).money}.\nOne of this item is worth $${item.value}.\nYou wanted to sell ${r.formValues[0]} of this item.\nThe total value is $${item.value * r.formValues[0]}.\nThey need another $${(item.value * r.formValues[0]).toBigInt() - MoneySystem.get(item.playerID).money} to pay you for this item.\nThe number of this item that they can currently pay you for is $${MoneySystem.get(item.playerID).money / item.value.toBigInt()}`);
+                    form.button1("Go Back");
+                    form.button2("Close Shop");
+                    const rb = await forceShow(form, player);
+                    if (rb.canceled == true || rb.selection == 1) {
+                        return 0;
+                    }
+                    return 1;
+                }
                 if (item.itemType == "player_shop_sellable") {
                     if (!!!world.structureManager.get("andexdbPlayerShopRecievedShopItemsStorage:" + item.playerID)) { /*
                         const entity = player.dimension.spawnEntity("andexdb:player_shop_recieved_shop_items_storage", {x: Math.floor(player.location.x)+0.5, y: Math.floor(player.location.y)+0.5, z: Math.floor(player.location.z)+0.5})
@@ -637,7 +649,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                 form.button2("Close Shop");
                 const rb = await forceShow(form, player);
                 if (rb.canceled == true || rb.selection == 1) {
-                    return;
+                    return 0;
                 }
                 return 1;
                 // this.openShop(player, "sell")

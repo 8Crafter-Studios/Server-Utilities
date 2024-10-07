@@ -1,4 +1,4 @@
-import { Player, world, Entity, ItemLockMode, ItemStack, ItemEnchantableComponent, ItemDurabilityComponent, ItemCooldownComponent } from "@minecraft/server";
+import { Player, world, Entity, ItemLockMode, ItemStack, ItemEnchantableComponent, ItemDurabilityComponent, ItemCooldownComponent, type Enchantment, PotionEffectType } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse } from "@minecraft/server-ui";
 import { executeCommandPlayerW } from "Main/commands";
 import { forceShow, worldBorderSettingsDimensionSelector, settings, extraFeaturesSettings } from "Main/ui";
@@ -111,6 +111,83 @@ export type PlayerSellableShopItem = {
     step: number
     type: "player_shop_item"
     itemType: "player_shop_sellable"
+    /**
+     * @todo
+     */
+    format_version?: "1.0.0"
+}|{
+    amountWanted: number
+    currentAmount: number
+    texture?: string
+    title: string
+    playerID: `${number}`
+    itemID: string
+    extraRestrictions: {
+        /**
+         * @todo
+         */
+        dataValue?: number
+        /**
+         * @todo
+         */
+        minimumDurability?: number
+        /**
+         * @todo
+         */
+        maximumDurability?: number
+        /**
+         * @todo
+         */
+        requiredEnchantments?: ({type: string, minLevel: number, maxLevel: number}|{type: string, level: number})[]
+        /**
+         * @todo
+         */
+        potionEffectType?: string
+        /**
+         * @todo
+         */
+        potionLiquidType?: string
+        /**
+         * @todo
+         */
+        potionModifierType?: string
+        /**
+         * @todo
+         */
+        keepOnDeath?: boolean
+        /**
+         * @todo
+         */
+        lockMode?: ItemLockMode
+        /**
+         * @todo
+         */
+        canPlaceOn?: string[]
+        /**
+         * @todo
+         */
+        canDestroy?: string[]
+        /**
+         * @todo
+         */
+        dynamicProperties?: [string, string|number|boolean][]
+        /**
+         * @todo
+         */
+        nameTag?: string
+        /**
+         * @todo
+         */
+        lore?: string[]
+    }
+    value: number
+    step: number
+    type: "player_shop_item"
+    itemType: "player_shop_sellable"
+    /**
+     * @todo
+     */
+    format_version: "2.0.0"
 }
 /**
  * A shop page. 
