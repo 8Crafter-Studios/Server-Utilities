@@ -302,7 +302,10 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                 entity.remove();
                 const infoFormB = new ActionFormData;
                 infoFormB.title("Item Details");
-                infoFormB.body(`§a${item.title}
+                infoFormB.body(!!!itemStack ? `§a${item.title}
+§r§6Stock: ${item.remainingStock}
+§r§gPrice: ${item.price}
+§r§cThe rest of the information could not be obtained as this item is currently out of stock.` : `§a${item.title}
 §r§6Stock: ${item.remainingStock}
 §r§gPrice: ${item.price}
 §r§bItem Type: §a${itemStack.typeId}
@@ -345,7 +348,17 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                         entity.getComponent("inventory").container.setItem(0);
                     }
                     else if (itemStack.amount < r.formValues[0]) {
-                        return;
+                        const form = new MessageFormData;
+                        form.title("Not Enough Stock");
+                        form.body(`You cannot buy ${r.formValues[0]} of this item because there ${itemStack.amount == 1 ? "is" : "are"} only ${itemStack.amount} of it left in stock.`);
+                        form.button1("Go Back");
+                        form.button2("Close Shop");
+                        const rb = await forceShow(form, player);
+                        if (rb.canceled == true || rb.selection == 1) {
+                            return 0;
+                        }
+                        return 1;
+                        // this.openShop(player, "buy")
                     }
                     else {
                         entity.getComponent("inventory").container.getSlot(0).amount -= r.formValues[0];
@@ -375,6 +388,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                             saveMode: StructureSaveMode.World
                         });
                         item.remainingStock -= r.formValues[0];
+                        itemStack.amount = r.formValues[0];
                         let b = player.getComponent("inventory").container.addItem(itemStack);
                         if (!!b) {
                             catchtry(() => player.dimension.spawnItem(b, player.location));
@@ -395,7 +409,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                         }
                         catch { }
                     }
-                    console.warn(path);
+                    // console.warn(path)
                     if (path.length < 2) {
                         if (path[0] == "buy") {
                             let data = this.buyData;
@@ -609,7 +623,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                             entity.remove();
                         }
                         catch { }
-                        console.warn(path);
+                        // console.warn(path)
                         if (path.length < 2) {
                             if (path[0] == "buy") {
                                 let data = this.buyData;
