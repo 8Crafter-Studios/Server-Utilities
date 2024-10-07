@@ -46,8 +46,8 @@ export function mainShopSystemSettings(sourceEntitya: Entity|executeCommandPlaye
 }
 
 export type ShopElement = SellableShopElement|BuyableShopElement
-export type PlayerShopElement = PlayerShopPage|PlayerSavedShopItem|PlayerSellableShopItem
-export type PlayerSellableShopElement = PlayerShopPage|PlayerSellableShopItem
+export type PlayerShopElement = PlayerShopPage|PlayerSavedShopItem|PlayerSellableShopItem|PlayerSellableAdvancedShopItem
+export type PlayerSellableShopElement = PlayerShopPage|PlayerSellableShopItem|PlayerSellableAdvancedShopItem
 export type PlayerBuyableShopElement = PlayerShopPage|PlayerSavedShopItem
 export type SellableShopElement = ShopPage|SellableShopItem
 export type BuyableShopElement = ShopPage|ShopItem
@@ -115,7 +115,11 @@ export type PlayerSellableShopItem = {
      * @todo
      */
     format_version?: "1.0.0"
-}|{
+}
+/**
+ * An advanced item for the sell section of the PlayerShop.
+ */
+export type PlayerSellableAdvancedShopItem = {
     amountWanted: number
     currentAmount: number
     texture?: string
@@ -138,7 +142,28 @@ export type PlayerSellableShopItem = {
         /**
          * @todo
          */
+        requiredEnchantmentsMode?: "ignore"|"exact"|"allow_additional"
+        /**
+         * Enchantments that are required to be on the item.
+         * 
+         * This is ignored when {@link PlayerSellableAdvancedShopItem.extraRestrictions PlayerSellableAdvancedShopItem.extraRestrictions.requiredEnchantmentsMode} is set to "ignore".
+         * @todo
+         */
         requiredEnchantments?: ({type: string, minLevel: number, maxLevel: number}|{type: string, level: number})[]
+        /**
+         * Additional enchantments that can be on the item but are actually optional.
+         * 
+         * This only applies when {@link PlayerSellableAdvancedShopItem.extraRestrictions PlayerSellableAdvancedShopItem.extraRestrictions.requiredEnchantmentsMode} is set to "exact".
+         * @todo
+         */
+        optionalAdditionalEnchantments?: ({type: string, minLevel: number, maxLevel: number}|{type: string, level: number})[]
+        /**
+         * Enchantment types that are not allowed to be on the item.
+         * 
+         * This only applies when {@link PlayerSellableAdvancedShopItem.extraRestrictions PlayerSellableAdvancedShopItem.extraRestrictions.requiredEnchantmentsMode} is set to "allow_additional".
+         * @todo
+         */
+        excludedEnchantmentTypes?: string[]
         /**
          * @todo
          */
@@ -183,7 +208,7 @@ export type PlayerSellableShopItem = {
     value: number
     step: number
     type: "player_shop_item"
-    itemType: "player_shop_sellable"
+    itemType: "player_shop_sellable_advanced"
     /**
      * @todo
      */

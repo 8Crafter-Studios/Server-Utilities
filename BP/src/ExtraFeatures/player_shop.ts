@@ -5,7 +5,7 @@ import { containerToContainerSlotArray, containerToItemStackArray } from "Main/c
 import { command, executeCommandPlayerW } from "Main/commands";
 import { forceShow, itemSelector, onlinePlayerSelector, settings, worldBorderSettingsDimensionSelector } from "Main/ui";
 import { getStringFromDynamicProperties, getSuperUniqueID, saveStringToDynamicProperties, showActions, showMessage } from "Main/utilities";
-import { type PlayerShopElement, mainShopSystemSettings, type PlayerShopPage, type PlayerSavedShopItem, type PlayerSellableShopElement, type PlayerBuyableShopElement, type PlayerSellableShopItem } from "./shop_main";
+import { type PlayerShopElement, mainShopSystemSettings, type PlayerShopPage, type PlayerSavedShopItem, type PlayerSellableShopElement, type PlayerBuyableShopElement, type PlayerSellableShopItem, type PlayerSellableAdvancedShopItem } from "./shop_main";
 import { Vector } from "Main/coordinates";
 import { MoneySystem } from "./money";
 import { StorageFullError } from "Main/errors";
@@ -1380,8 +1380,11 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                     return 1
                 break;
                 default:
-                    shopData[response].type=="player_shop_item"?await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, shopData[response] as PlayerSellableShopItem|PlayerSavedShopItem, response, mode):await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, shopData[response] as PlayerShopPage, response, mode)
-                    return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode)
+                    if((shopData[response].type=="player_shop_item"?await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, shopData[response] as PlayerSellableShopItem|PlayerSavedShopItem, response, mode):await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, shopData[response] as PlayerShopPage, response, mode))==1){
+                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                    }else{
+                        return 0;
+                    }
     
             }
         }).catch(async e => {
@@ -1765,6 +1768,62 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as PlayerSavedShopItem).pric
             }else if(mode=="sell"){
                 let newData = shop.sellData
                 newData.splice(itemIndex, 1, item as PlayerSellableShopItem)
+                shop.sellData=newData
+            }
+            return r
+        });
+    }
+    /**
+     * Opens the UI for editing a player shop item.
+     * @param sourceEntitya The player editing the shop item.
+     * @param shop The player shop that the shop item is in.
+     * @param item The shop item that the player is editing.
+     * @param itemIndex The index of the shop item that is being edited in the shop page, it is zero-indexed. 
+     * @param mode Whether this is a buy or sell shop.
+     * @returns The chosen options in the edit item screen. 
+     */
+    static async managePlayerShop_editAdvancedItem<mode extends "sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: PlayerShop, item: PlayerSellableAdvancedShopItem, itemIndex: number, mode: mode){
+        const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
+        const form = new ModalFormData;
+        form.title("Edit "+item.title);
+        if(item.itemType=="player_shop_sellable_advanced"){
+            form.textField("§7Sellable Item Type: player_shop_sellable_advanced\n§fButton Title§c*", "Stick", JSON.stringify(item.title).slice(1, -1).replaceAll("\\\"", "\""))
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.playerShopItemTextureHint, JSON.stringify(item.texture).slice(1, -1).replaceAll("\\\"", "\""))
+            form.textField("Value§c*", "10", String(item.value)); 
+            form.textField("Sell Amount Step\n§oDefault is 1\nCannot be higher than the \"Amount Wanted\" value", "1", String(item.step??1)); 
+            form.textField("Amount Wanted\n§oDefault is 64", "64", String(item.amountWanted??64)); 
+            form.textField("Item Type§c*", "minecraft:stick", JSON.stringify(item.itemID).slice(1, -1).replaceAll("\\\"", "\""))
+            // form.textField("Data Value§c*", "0", String(item))
+            form.toggle("Ignore Name Tag", !!!item.extraRestrictions.nameTag)
+            form.textField("Name Tag\nType: string", "No name tag", item.extraRestrictions.nameTag??"")
+            form.toggle("Ignore Lore", !!!item.extraRestrictions.lore)
+            form.textField("Lore\nType: JSONArray", "No lore", !!item.extraRestrictions.lore?JSON.stringify(item.extraRestrictions.lore):"")
+            form.toggle("Ignore Can Place On", !!!item.extraRestrictions.canPlaceOn)
+            form.textField("Can Place On\nType: JSONArray", "No can place on", !!item.extraRestrictions.canPlaceOn?JSON.stringify(item.extraRestrictions.canPlaceOn):"")
+            form.toggle("Ignore Can Destroy", !!!item.extraRestrictions.canDestroy)
+            form.textField("Can Destroy\nType: JSONArray", "No can destroy", !!item.extraRestrictions.canDestroy?JSON.stringify(item.extraRestrictions.canDestroy):"")
+            form.dropdown("Keep On Death", ["Ignore keep on death", "Require keep on death", "Require not keep on death"], !!item.extraRestrictions.keepOnDeath?+item.extraRestrictions.keepOnDeath:0)
+            form.dropdown("Lock Mode", ["Ignore lock mode", "Require inventory lock", "Require slot lock", "Require no lock"], !!item.extraRestrictions.lockMode?[undefined, "inventory", "slot", "none"].indexOf(item.extraRestrictions.lockMode):0)
+            form.textField("Minimum Durability\nLeave blank to ignore minimum durability\nType: int", "Ignore minimum durability", String(item.extraRestrictions.minimumDurability??""))
+            form.textField("Maximum Durability\nLeave blank to ignore maximum durability\nType: int", "Ignore maximum durability", String(item.extraRestrictions.maximumDurability??""))
+        }
+        return await forceShow(form, (sourceEntity as Player)).then(async r => {
+            // This will stop the code when the player closes the form
+            if (r.canceled) return r;
+    
+            if(item.itemType=="player_shop_sellable_advanced"){
+                let [title, texture, value, step, amountWanted, itemID] = r.formValues as [title: string, texture: string, value: string, step: string, amountWanted: string, itemID: string];
+                item.title=JSON.parse("\""+(title.replaceAll("\"", "\\\""))+"\"")
+                item.texture=JSON.parse("\""+(texture.replaceAll("\"", "\\\""))+"\"")
+                item.value=Number.isNaN(Number(value))?10:Number(value)
+                item.step=Number.isNaN(Number(step))?10:Number(step)
+                item.amountWanted=+Number.isNaN(Number(amountWanted))?10:Number(amountWanted)
+                item.itemID=JSON.parse("\""+(itemID.replaceAll("\"", "\\\""))+"\"")
+                item.extraRestrictions.
+            }
+            if(mode=="sell"){
+                let newData = shop.sellData
+                newData.splice(itemIndex, 1, item as PlayerSellableAdvancedShopItem)
                 shop.sellData=newData
             }
             return r
@@ -2163,8 +2222,11 @@ Texture: ${page.texture}`
                 return 1;
             break;
             default:
-                shopData[response].type=="player_shop_item"?await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, [...path, "data", String(response)], shopData[response] as any, response):await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, [...path, "data", String(response)], shopData[response] as PlayerShopPage, response)
-                return await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path)
+                if((shopData[response].type=="player_shop_item"?await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, [...path, "data", String(response)], shopData[response] as any, response):await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, [...path, "data", String(response)], shopData[response] as PlayerShopPage, response))==1){
+                    return await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
+                }else{
+                    return 0;
+                }
     
         }
         return 1
@@ -2280,8 +2342,8 @@ Texture: ${page.texture}`
                         const itemStack = entity.getComponent("inventory").container.getItem(0)
                         entity.remove()
                         if(!!!itemStack){
-                            if((!itemb.item.hasItem())||
-                                !(
+                            if(
+                                (
                                     (itemb?.item?.lockMode == "inventory" &&
                                         !config.shopSystem.player
                                             .allowSellingLockInInventoryItems) ||
@@ -2291,7 +2353,7 @@ Texture: ${page.texture}`
                                         !config.shopSystem.player.allowSellingKeepOnDeathItems)
                                 )
                             ){
-                                if((await showMessage(sourceEntity as Player, "", `You cannot restock this item with the selected item because ${(itemb.item?.lockMode=="inventory"&&!config.shopSystem.player.allowSellingLockInInventoryItems)?"selling items that are locked to your inventory is disabled":(itemb.item?.lockMode=="slot"&&!config.shopSystem.player.allowSellingLockInSlotItems)?"selling items that are locked to a specific inventory slot is disabled":(itemb.item?.keepOnDeath&&!config.shopSystem.player.allowSellingKeepOnDeathItems)?"selling items that have the keep on death property is disabled":"that slot is empty"}.`, "Back", "Close")).selection!=0){
+                                if((await showMessage(sourceEntity as Player, "", `You cannot restock this item with the selected item because ${(itemb.item?.lockMode=="inventory"&&!config.shopSystem.player.allowSellingLockInInventoryItems)?"selling items that are locked to your inventory is disabled":(itemb.item?.lockMode=="slot"&&!config.shopSystem.player.allowSellingLockInSlotItems)?"selling items that are locked to a specific inventory slot is disabled":(itemb.item?.keepOnDeath&&!config.shopSystem.player.allowSellingKeepOnDeathItems)?"selling items that have the keep on death property is disabled":"of an unknown reason"}.`, "Back", "Close")).selection!=0){
                                     return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode)
                                 }else{
                                     return 0;
@@ -2309,6 +2371,7 @@ Texture: ${page.texture}`
                             if(!!!entity){
                                 throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${itemc.entityID} was found inside of the specified structure.`)
                             }
+                            // const itemStackC = itemb.item.getItem()
                             const leftOverItemStack = entity.getComponent("inventory").container.addItem(itemb.item.getItem())
                             const itemStackB = entity.getComponent("inventory").container.getItem(0)
                             itemb.item.setItem(leftOverItemStack)
@@ -2341,14 +2404,14 @@ Texture: ${page.texture}`
                                 )
                                 itemc.remainingStock=itemStackB.amount
                                 itemc.itemDetails={
-                                    damage: tryget(()=>itemb.item.getItem().getComponent("durability").damage)??NaN,
-                                    maxDurability: tryget(()=>itemb.item.getItem().getComponent("durability").maxDurability)??NaN,
-                                    keepOnDeath: itemb.item.keepOnDeath,
-                                    lockMode: itemb.item.lockMode,
-                                    loreLineCount: itemb.item.getLore().length,
-                                    typeId: itemb.item.typeId,
-                                    nameTag: itemb.item.nameTag??null,
-                                    enchantments: tryget(()=>itemb.item.getItem().getComponent("enchantable").getEnchantments())??"N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                                    damage: tryget(()=>itemStackB.getComponent("durability").damage)??NaN,
+                                    maxDurability: tryget(()=>itemStackB.getComponent("durability").maxDurability)??NaN,
+                                    keepOnDeath: itemStackB.keepOnDeath,
+                                    lockMode: itemStackB.lockMode,
+                                    loreLineCount: itemStackB.getLore().length,
+                                    typeId: itemStackB.typeId,
+                                    nameTag: itemStackB.nameTag??null,
+                                    enchantments: tryget(()=>itemStackB.getComponent("enchantable").getEnchantments())??"N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
                                 }
                                 let data = shop.buyData
                                 let newData = getPathInObject(data, path).data as PlayerBuyableShopElement[]
@@ -2430,6 +2493,7 @@ Texture: ${page.texture}`
                             return 0;
                         }
                     }
+                    return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode)
                 }
                 break;
                 case ((sourceEntity.hasTag("admin")&&config.system.debugMode)?3:-3)+(+((mode=="buy")&&((item as PlayerSavedShopItem)?.remainingStock<(item as PlayerSavedShopItem)?.maxStackSize))):
