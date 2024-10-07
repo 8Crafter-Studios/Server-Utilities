@@ -1568,7 +1568,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                                 if (!!!entity) {
                                     throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${itemc.entityID} was found inside of the specified structure.`);
                                 }
-                                const itemStackC = itemb.item.getItem();
+                                // const itemStackC = itemb.item.getItem()
                                 const leftOverItemStack = entity.getComponent("inventory").container.addItem(itemb.item.getItem());
                                 const itemStackB = entity.getComponent("inventory").container.getItem(0);
                                 itemb.item.setItem(leftOverItemStack);
@@ -1598,14 +1598,14 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                                     });
                                     itemc.remainingStock = itemStackB.amount;
                                     itemc.itemDetails = {
-                                        damage: tryget(() => itemStackC.getComponent("durability").damage) ?? NaN,
-                                        maxDurability: tryget(() => itemStackC.getComponent("durability").maxDurability) ?? NaN,
-                                        keepOnDeath: itemb.item.keepOnDeath,
-                                        lockMode: itemStackC.lockMode,
-                                        loreLineCount: itemStackC.getLore().length,
-                                        typeId: itemStackC.typeId,
-                                        nameTag: itemStackC.nameTag ?? null,
-                                        enchantments: tryget(() => itemStackC.getComponent("enchantable").getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                                        damage: tryget(() => itemStackB.getComponent("durability").damage) ?? NaN,
+                                        maxDurability: tryget(() => itemStackB.getComponent("durability").maxDurability) ?? NaN,
+                                        keepOnDeath: itemStackB.keepOnDeath,
+                                        lockMode: itemStackB.lockMode,
+                                        loreLineCount: itemStackB.getLore().length,
+                                        typeId: itemStackB.typeId,
+                                        nameTag: itemStackB.nameTag ?? null,
+                                        enchantments: tryget(() => itemStackB.getComponent("enchantable").getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
                                     };
                                     let newData = shop.buyData;
                                     newData.splice(itemIndex, 1, itemc);
