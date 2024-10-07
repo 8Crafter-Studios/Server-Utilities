@@ -110,7 +110,7 @@ export class PlayerShop{
             playerName: this.playerName??null
         }))
     }
-    async openShop(player: Player, mode: "buy"|"sell"|"both"|"none" = (this.sellShop&&this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both"): Promise<0|1>{
+    async openShop(player: Player, mode: "buy"|"sell"|"both"|"none" = (this.sellShop&&this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "none"): Promise<0|1>{
         if(mode=="both"){
             const form = new ActionFormData
             form.title(this.title)
@@ -193,7 +193,7 @@ export class PlayerShop{
             form.body(config.ui.other.useStarWarsReference404Page?"Jedi: This is not the page you are looking for.":"The page you are looking for does not exist. ")
             form.button1("Ok")
             form.button2("Cancel")
-            return ((await forceShow(form, player)).selection==0).toNumber()
+            return ((await forceShow(form, player)).selection!=1).toNumber()
         }
     }
     async openShopPage<mode extends "buy"|"sell">(player: Player, data: (mode extends "buy" ? PlayerBuyableShopElement[] : PlayerSellableShopElement[]), path: [mode, ...string[]]): Promise<0|1>{
@@ -313,7 +313,7 @@ export class PlayerShop{
 §r§bItem Name: §a${item.itemDetails.nameTag}
 §r§bLore: §c${item.itemDetails.loreLineCount} Lines
 §r§bEnchantments: §d{
-${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.map(v=>v.type+" "+v.level.toRomanNumerals()).join("\n"):item.itemDetails.enchantments}
+${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.map(v=>v.type.id+" "+v.level.toRomanNumerals()).join("\n"):item.itemDetails.enchantments}
 }`
             )
             infoForm.button("Proceed to buy item")
@@ -347,7 +347,7 @@ itemStack.hasComponent("durability")?`\n§r§bDurability: ${itemStack.getCompone
 itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.getComponent("potion").potionEffectType}
 §r§bPotion Liquid Type: §9${itemStack.getComponent("potion").potionLiquidType}
 §r§bPotion Modifier Type: §e${itemStack.getComponent("potion").potionModifierType}`:""}
-§r§bEnchantments: ${item.itemDetails.enchantments instanceof Array?"\n§d["+item.itemDetails.enchantments.map(v=>v.type+" "+v.level.toRomanNumerals()).join("\n")+"\n]":item.itemDetails.enchantments}`
+§r§bEnchantments: ${item.itemDetails.enchantments instanceof Array?"\n§d["+item.itemDetails.enchantments.map(v=>v.type.id+" "+v.level.toRomanNumerals()).join("\n")+"\n]":item.itemDetails.enchantments}`
                 )
                 infoFormB.button("Proceed to buy item")
                 infoFormB.button("Back")
@@ -422,7 +422,8 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
                             entity.remove()
                         }catch{}
                     }
-                    if(path.length==1){
+                    console.warn(path)
+                    if(path.length<2){
                         if(path[0]=="buy"){
                             let data = this.buyData
                             data.splice(itemIndex, 1, item as PlayerSavedShopItem)
@@ -555,7 +556,7 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
                                 item.amountWanted-=amount
                                 item.currentAmount+=amount
                                 MoneySystem.get(player.id).addMoney(item.value*(r.formValues[0] as number))
-                                MoneySystem.get(item.playerID).removeMoney(item.value*(r.formValues[0] as number))
+                                MoneySystem.get(item.playerID??this.playerID).removeMoney(item.value*(r.formValues[0] as number))
                             }catch(e){
                                 try{player.sendMessage(e+" "+e?.stack)}catch{console.error(e, e?.stack)}
                             }
@@ -598,7 +599,8 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
                         try{
                             entity.remove()
                         }catch{}
-                        if(path.length==1){
+                        console.warn(path)
+                        if(path.length<2){
                             if(path[0]=="buy"){
                                 let data = this.buyData
                                 data.splice(itemIndex, 1, item as any)
@@ -719,8 +721,9 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
                     return 1
                 break;
                 default:
-                    await shopsList[response].openShop(sourceEntity as Player)
-                    return await PlayerShop.openPublicShopsSelector(sourceEntity)
+                    if((await shopsList[response].openShop(sourceEntity as Player))!=0){
+                        return await PlayerShop.openPublicShopsSelector(sourceEntity)
+                    }
             }
         }).catch(e => {
             console.error(e, e.stack);
@@ -889,9 +892,9 @@ export class PlayerShopManager{
         let form2 = new ModalFormData();
         form2.title(`Player Shop System Settings`)
         form2.textField(`§l§fShop ID§r§c*§f\nThe ID of the shop`, "myShop", "myShop")
-        form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", "My Shop")
-        form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", "My Shop")
-        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "This is my shop.", "This is my shop.")
+        form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop.`, `${(sourceEntity as Player).name??sourceEntity.nameTag}'s Shop`, `${(sourceEntity as Player).name??sourceEntity.nameTag}'s Shop`)
+        form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, `${(sourceEntity as Player).name??sourceEntity.nameTag}'s Shop`, `${(sourceEntity as Player).name??sourceEntity.nameTag}'s Shop`)
+        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, `This is ${(sourceEntity as Player).name??sourceEntity.nameTag}'s shop.`, `This is ${(sourceEntity as Player).name??sourceEntity.nameTag}'s shop.`)
         form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, true)
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, true)/*
         form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewplayershops command, default is true`, true)*/
@@ -1195,9 +1198,9 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form2 = new ModalFormData();
         form2.title(`${shop.title} Settings`)
-        form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", JSON.stringify(shop.name).slice(1, -1).replaceAll("\\\"", "\""))
-        form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", JSON.stringify(shop.title).slice(1, -1).replaceAll("\\\"", "\""))
-        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", JSON.stringify(shop.mainPageBodyText).slice(1, -1).replaceAll("\\\"", "\""))
+        form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop`, "My Shop", JSON.stringify(shop.name??"").slice(1, -1).replaceAll("\\\"", "\""))
+        form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", JSON.stringify(shop.title??"").slice(1, -1).replaceAll("\\\"", "\""))
+        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", JSON.stringify(shop.mainPageBodyText??"").slice(1, -1).replaceAll("\\\"", "\""))
         form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, shop.buyShop??true)
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, shop.sellShop??true)/*
         form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewplayershops command, default is true`, shop.publicShop??true)*/
@@ -1469,8 +1472,8 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as PlayerSavedShopItem).pric
                         const itemStack = entity.getComponent("inventory").container.getItem(0)
                         entity.remove()
                         if(!!!itemStack){
-                            if((!itemb.item.hasItem())||
-                                !(
+                            if(
+                                (
                                     (itemb?.item?.lockMode == "inventory" &&
                                         !config.shopSystem.player
                                             .allowSellingLockInInventoryItems) ||
@@ -1480,7 +1483,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as PlayerSavedShopItem).pric
                                         !config.shopSystem.player.allowSellingKeepOnDeathItems)
                                 )
                             ){
-                                if((await showMessage(sourceEntity as Player, "", `You cannot restock this item with the selected item because ${(itemb.item?.lockMode=="inventory"&&!config.shopSystem.player.allowSellingLockInInventoryItems)?"selling items that are locked to your inventory is disabled":(itemb.item?.lockMode=="slot"&&!config.shopSystem.player.allowSellingLockInSlotItems)?"selling items that are locked to a specific inventory slot is disabled":(itemb.item?.keepOnDeath&&!config.shopSystem.player.allowSellingKeepOnDeathItems)?"selling items that have the keep on death property is disabled":"that slot is empty"}.`, "Back", "Close")).selection!=0){
+                                if((await showMessage(sourceEntity as Player, "", `You cannot restock this item with the selected item because ${(itemb.item?.lockMode=="inventory"&&!config.shopSystem.player.allowSellingLockInInventoryItems)?"selling items that are locked to your inventory is disabled":(itemb.item?.lockMode=="slot"&&!config.shopSystem.player.allowSellingLockInSlotItems)?"selling items that are locked to a specific inventory slot is disabled":(itemb.item?.keepOnDeath&&!config.shopSystem.player.allowSellingKeepOnDeathItems)?"selling items that have the keep on death property is disabled":"of an unknown reason"}.`, "Back", "Close")).selection!=0){
                                     return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode)
                                 }else{
                                     return 0;
@@ -1498,6 +1501,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as PlayerSavedShopItem).pric
                             if(!!!entity){
                                 throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${itemc.entityID} was found inside of the specified structure.`)
                             }
+                            const itemStackC = itemb.item.getItem()
                             const leftOverItemStack = entity.getComponent("inventory").container.addItem(itemb.item.getItem())
                             const itemStackB = entity.getComponent("inventory").container.getItem(0)
                             itemb.item.setItem(leftOverItemStack)
@@ -1530,14 +1534,14 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as PlayerSavedShopItem).pric
                                 )
                                 itemc.remainingStock=itemStackB.amount
                                 itemc.itemDetails={
-                                    damage: tryget(()=>itemb.item.getItem().getComponent("durability").damage)??NaN,
-                                    maxDurability: tryget(()=>itemb.item.getItem().getComponent("durability").maxDurability)??NaN,
+                                    damage: tryget(()=>itemStackC.getComponent("durability").damage)??NaN,
+                                    maxDurability: tryget(()=>itemStackC.getComponent("durability").maxDurability)??NaN,
                                     keepOnDeath: itemb.item.keepOnDeath,
-                                    lockMode: itemb.item.lockMode,
-                                    loreLineCount: itemb.item.getLore().length,
-                                    typeId: itemb.item.typeId,
-                                    nameTag: itemb.item.nameTag??null,
-                                    enchantments: tryget(()=>itemb.item.getItem().getComponent("enchantable").getEnchantments())??"N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                                    lockMode: itemStackC.lockMode,
+                                    loreLineCount: itemStackC.getLore().length,
+                                    typeId: itemStackC.typeId,
+                                    nameTag: itemStackC.nameTag??null,
+                                    enchantments: tryget(()=>itemStackC.getComponent("enchantable").getEnchantments())??"N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
                                 }
                                 let newData = shop.buyData
                                 newData.splice(itemIndex, 1, itemc)

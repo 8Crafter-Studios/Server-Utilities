@@ -4,7 +4,7 @@ import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates,
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
-import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications } from "./ui.js";
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications, extraFeaturesSettings, worldBorderSettings } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
 import { arrayify, clamp24HoursTo12Hours, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
@@ -40,8 +40,9 @@ import { uiManager, UIManager } from "@minecraft/server-ui";
 import { commands } from "./commands_list";
 import { ExpireError, TimeoutError } from "./errors";
 import { getCommandHelpPage, getCommandHelpPageExtra, getCommandHelpPageDebug, getCommandHelpPageCustomDebug, helpCommandChatCommandsList, getCommandHelpPageDebugPlus } from "./commands_documentation";
-import { LinkedServerShopCommands, ServerShop } from "../ExtraFeatures/server_shop";
-import { PlayerShop } from "ExtraFeatures/player_shop";
+import { LinkedServerShopCommands, ServerShop, ServerShopManager } from "../ExtraFeatures/server_shop";
+import { PlayerShop, PlayerShopManager } from "ExtraFeatures/player_shop";
+import { mainShopSystemSettings } from "../ExtraFeatures/shop_main";
 export const cmdsmetaimport = import.meta
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer
@@ -63,6 +64,7 @@ export function cmdsEval(x: string, eventData?, bypassChatInputRequests?, runret
 export function indirectCmdsEval(x: string){return eval?.(x)}
 export function cmdsRun(x: (...args)=>any, ...args){return x(...args)}
 export const disconnectingPlayers = [] as string[]
+export type commandCategory = "items"|"misc"|"invsee"|"players"|"containers/inventories"|"entities"|"warps"|"world"|"uis"|"shop_system"|"dangerous"|"Entity Scale Add-On"|"built-in"|"custom"|"all"
 export let idGeneratorIndex = 0
 export function idGenerator() {
     let id = "id"+idGeneratorIndex+"Time"+Date.now()
@@ -681,7 +683,9 @@ getBan(banId: string){let banString = String(world.getDynamicProperty(banId)).sp
 static get(commandName: string, type: "built-in"|"custom"|"unknown" = "built-in"){try{if(type=="built-in"){return new command({type: type, commandName: commandName})}else{if(type=="custom"){return new command({type: type, commandName: commandName})}else{return new command({type: type, commandName: commandName})}}}catch(e){console.error(e, e.stack)}}
 static findBuiltIn(commandString: string, returnCommandInsteadOfAlias: boolean = false){let b = commands.find(v=>!!commandString.match(new command(v).regexp))??(()=>{let a = commands.find(v=>!!v.aliases?.find(vb=>!!commandString.match(new command(v).aliases.find(vc=>vc.commandName==vb.commandName).regexp))); if(!!a){return returnCommandInsteadOfAlias?a:{index: a.aliases?.findIndex(vb=>!!commandString.match(new command(a).aliases?.find?.(vc=>vc.commandName==vb.commandName)?.regexp)), alias: new cmds.command(a)?.aliases?.find(vb=>!!commandString.match(new command(a).aliases?.find?.(vc=>vc.commandName==vb.commandName)?.regexp)), aliasTo: a}}else{return}})(); return b}
 static getDefaultCommands(noSort: boolean = false){try{if(noSort){return commands.map((v)=>new command({type: "built-in", commandName: v.commandName}))}else{return commands.sort((a, b) => (a.commandName < b.commandName)?-1:(a.commandName > b.commandName)?1:0).map((v)=>new command({type: "built-in", commandName: v.commandName}))}}catch(e){console.error(e, e.stack)}}
-static getDefaultCommandsOfCategory(category: string, noSort: boolean = false){try{if(noSort){return commands.filter(v=>typeof v.category == "string"?category==v.category:v.category.includes(category)).map((v)=>new command({type: "built-in", commandName: v.commandName}))}else{return commands.filter(v=>typeof v.category == "string"?category==v.category:v.category.includes(category)).sort((a, b) => (a.commandName < b.commandName)?-1:(a.commandName > b.commandName)?1:0).map((v)=>new command({type: "built-in", commandName: v.commandName}))}}catch(e){console.error(e, e.stack)}}
+static getDefaultCommandsOfCategory(category: commandCategory, noSort?: boolean): cmds.command[];
+static getDefaultCommandsOfCategory(category: string, noSort?: boolean): cmds.command[];
+static getDefaultCommandsOfCategory(category: commandCategory, noSort: boolean = false){try{if(noSort){return commands.filter(v=>typeof v.category == "string"?category==v.category:v.category.includes(category)).map((v)=>new command({type: "built-in", commandName: v.commandName}))}else{return commands.filter(v=>typeof v.category == "string"?category==v.category:v.category.includes(category)).sort((a, b) => (a.commandName < b.commandName)?-1:(a.commandName > b.commandName)?1:0).map((v)=>new command({type: "built-in", commandName: v.commandName}))}}catch(e){console.error(e, e.stack)}}
 static getCommandAliases(){try{return Object.fromEntries(commands.filter(v=>(v.aliases?.length??0)!=0).map((v)=>([new command({type: "built-in", commandName: v.commandName}).commandName, new command({type: "built-in", commandName: v.commandName}).aliases])))}catch(e){console.error(e, e.stack)}}
 static getCustomCommands(noSort: boolean = false){try{if(noSort){return world.getDynamicPropertyIds().filter(v=>v.startsWith("customCommand:")).map((v)=>new command({type: "custom", commandName: v.slice(14)}))}else{return world.getDynamicPropertyIds().filter(v=>v.startsWith("customCommand:")).map((v)=>new command({type: "custom", commandName: v.slice(14)})).sort((a, b) => (a.commandName < b.commandName)?-1:(a.commandName > b.commandName)?1:0)}}catch(e){console.error(e, e.stack)}}/*
 static getBans(){let bans: ban[]; bans = []; ban.getBanIds().forEach((b)=>{try{bans.push(ban.getBan(b))}catch(e){console.error(e, e.stack)}}); return {idBans: bans.filter((b)=>(b.type=="id")), nameBans: bans.filter((b)=>(b.type=="name")), allBans: bans}}
@@ -1884,7 +1888,7 @@ export function chatCommands(params: {returnBeforeChatSend: boolean|undefined, p
     let eventData = !!params.eventData?{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}:{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}
     let event = !!params.event?{get sender(){return player}, get cancel(){return params.event.cancel}, set cancel(cancel: boolean){params.event.cancel=cancel}, get targets(){return params.event.targets}, get message(){return params.event.message}}:{get sender(){return player}, get cancel(){return params.eventData.cancel}, set cancel(cancel: boolean){params.eventData.cancel=cancel}, get targets(){return params.eventData.targets}, get message(){return params.eventData.message}}
     let newMessage = params.newMessage??params.eventData?.message??params.event?.message
-    if(params.silentCMD!=true){try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatCommands"))).forEach((p)=>{try{p.sendMessage("[§l§dServer§r§f]"+(world.getDynamicProperty("commandNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + (player.name??(player.nameTag!=""?player.nameTag+"<"+player.id+">":player.typeId+"<"+player.id+">")) + "]: " + newMessage); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getAllChatCommandsNotificationSound.soundId, {pitch: pn.getAllChatCommandsNotificationSound.pitch, volume: pn.getAllChatCommandsNotificationSound.volume}))}catch{}})}catch{}}
+    if(params.silentCMD!=true){try{world.getAllPlayers().filter((p)=>(p.hasTag("getAllChatCommands"))).forEach((p)=>{try{p.sendMessage("§r§f[§l§dServer§r§f]"+(world.getDynamicProperty("commandNotificationSpacer")??world.getDynamicProperty("serverNotificationSpacer")??"")+"[" + (player.name??(player.nameTag!=""?player.nameTag+"<"+player.id+">":player.typeId+"<"+player.id+">")) + "]: " + newMessage); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getAllChatCommandsNotificationSound.soundId, {pitch: pn.getAllChatCommandsNotificationSound.pitch, volume: pn.getAllChatCommandsNotificationSound.volume}))}catch{}})}catch{}}
     function hotbarSwap(row: number, preset: number) {
         let inventorye = player.getComponent("inventory") as EntityInventoryComponent
         let inventoryblock = world.getDimension(String(player.getDynamicProperty("hotbarPreset" + preset)).replaceAll(",", "").split(" ")[0]).getBlock({ x: Number(String(player.getDynamicProperty("hotbarPreset" + preset)).replaceAll(",", "").split(" ")[1]), y: Number(String(player.getDynamicProperty("hotbarPreset" + preset)).replaceAll(",", "").split(" ")[2]), z: Number(String(player.getDynamicProperty("hotbarPreset" + preset)).replaceAll(",", "").split(" ")[3]) }).getComponent("inventory") as BlockInventoryComponent
@@ -4638,6 +4642,26 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             eventData.cancel = true;
             try{system.run(()=>settings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break; 
+        case !!switchTest.match(/^extrafeaturessettings$/)||!!switchTest.match(/^extrasettings$/): 
+            eventData.cancel = true;
+            try{system.run(()=>extraFeaturesSettings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break; 
+        case !!switchTest.match(/^worldbordersettings$/)||!!switchTest.match(/^wbsettings$/): 
+            eventData.cancel = true;
+            try{system.run(()=>worldBorderSettings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break; 
+        case !!switchTest.match(/^shopsystemsettings$/)||!!switchTest.match(/^shopsyssettings$/): 
+            eventData.cancel = true;
+            try{system.run(()=>mainShopSystemSettings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break; 
+        case !!switchTest.match(/^servershopsystemsettings$/)||!!switchTest.match(/^servershopsyssettings$/)||!!switchTest.match(/^srvrshopsyssettings$/): 
+            eventData.cancel = true;
+            try{system.run(()=>ServerShopManager.serverShopSystemSettings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break; 
+        case !!switchTest.match(/^playershopsystemsettings$/)||!!switchTest.match(/^playershopsyssettings$/)||!!switchTest.match(/^plyrshopsyssettings$/): 
+            eventData.cancel = true;
+            try{system.run(()=>PlayerShopManager.playerShopSystemSettings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break; 
         case !!switchTest.match(/^editorstick$/): 
             eventData.cancel = true;
             try{system.run(()=>editorStick(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
@@ -4654,6 +4678,40 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             eventData.cancel = true;
             try{system.run(()=>notificationsSettings(player)); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
         break;  // coming very soon now! 
+       /*case !!switchTest.match(/^closeuis$/): 
+            eventData.cancel = true;
+            try{system.run(()=>world.getAllPlayers().forEach(p=>uiManager.closeAllForms(p))); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+        break; */
+        case !!switchTest.match(/^closeuis$/): 
+        {
+            eventData.cancel = true;
+            const args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+            const players = world.getAllPlayers();
+            if((args[1]??"").trim()==""){
+                try{
+                    system.run(()=>
+                        players.forEach(p=>
+                            uiManager.closeAllForms(p)
+                        )
+                    );
+                }catch(e){
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+            }else{
+                const playerids = players.map(p=>p.id);
+                const targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(p=>playerids.includes(p.id)) as Player[];
+                try{
+                    system.run(()=>
+                        targets.forEach(p=>
+                            uiManager.closeAllForms(p)
+                        )
+                    );
+                }catch(e){
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+            }
+        }
+        break; 
         case !!switchTest.match(/^datapickblock$/)||!!switchTest.match(/^dpb$/): 
             eventData.cancel = true;
             try{let item = player.getBlockFromViewDirection({includeLiquidBlocks: true, includePassableBlocks: true}).block.getItemStack(1, true); system.run(()=>{player.getComponent("inventory").container.addItem(item); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}

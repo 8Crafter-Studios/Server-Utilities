@@ -519,23 +519,25 @@ export class ServerShopManager{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form2 = new ModalFormData();
         form2.title(`Server Shop System Settings`)
-        form2.textField(`§l§fShop ID§r§c*§f\nThe ID of the shop`, "myShop", "myShop")
-        form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", "My Shop")
-        form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", "My Shop")
-        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "This is my shop.", "This is my shop.")
+        form2.textField(`§l§fShop ID§r§c*§f\nThe ID of the shop\nThis ID must be unique, all server shops must have different IDs.`, "string")
+        form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "Main Server Shop", "Main Server Shop")
+        form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "Main Server Shop", "Main Server Shop")
+        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "This is the main server shop.", "This is main server shop.")
         form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, true)
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, true)
+        form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewservershops command, default is true`, true)
         form2.submitButton("Save")
         forceShow(form2, (sourceEntity as Player)).then(t => {
             if (t.canceled) {ServerShopManager.manageServerShops(sourceEntity); return;};
-            let [ id, name, title, mainPageBodyText, buyShop, sellShop ] = t.formValues as [ id: string, name: string, title: string, mainPageBodyText: string, buyShop: boolean, sellShop: boolean ];
+            let [ id, name, title, mainPageBodyText, buyShop, sellShop, publicShop ] = t.formValues as [ id: string, name: string, title: string, mainPageBodyText: string, buyShop: boolean, sellShop: boolean, publicShop: boolean ];
             const shop = new ServerShop({
                 id: `shop:${id}`,
                 name: JSON.parse("\""+(name.replaceAll("\"", "\\\""))+"\""),
                 title: JSON.parse("\""+(title.replaceAll("\"", "\\\""))+"\""),
                 mainPageBodyText: JSON.parse("\""+(mainPageBodyText.replaceAll("\"", "\\\""))+"\""),
                 buyShop: buyShop,
-                sellShop: sellShop
+                sellShop: sellShop,
+                publicShop: publicShop
             })
             
             shop.save()
@@ -550,12 +552,12 @@ export class ServerShopManager{
         let form = new ActionFormData();
         form.title("Manage "+shop.title);
         form.body(`ID: ${shop.id}
-    Display Name: ${shop.name}
-    Title: ${shop.title}
-    Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
-    §fIs Sell Shop: ${shop.sellShop?"§aTrue":"§cFalse"}`)
+Display Name: ${shop.name}
+Title: ${shop.title}
+Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
+§rIs Sell Shop: ${shop.sellShop?"§aTrue":"§cFalse"}`)
         form.button("Manage Items/Pages", "textures/ui/book_edit_default");
-        form.button(`${LinkedServerShopCommands.testShopHasLinkedCommand(shop.id)?"Edit":"Add"} Linked Command\n${LinkedServerShopCommands.testShopHasLinkedCommand(shop.id)?LinkedServerShopCommands.LinkedCommands.find(c=>c[1]==shop.id):"Not Set"}`, "textures/ui/color_plus");
+        form.button(`${LinkedServerShopCommands.testShopHasLinkedCommand(shop.id)?"Edit":"Add"} Linked Command\n${LinkedServerShopCommands.testShopHasLinkedCommand(shop.id)?LinkedServerShopCommands.LinkedCommands.find(c=>c[1]==shop.id):"Not Set"}`, LinkedServerShopCommands.testShopHasLinkedCommand(shop.id)?"textures/ui/book_edit_default":"textures/ui/color_plus");
         form.button("Shop Settings", "textures/ui/icon_setting");
         form.button("View Shop", "textures/ui/feedIcon");
         form.button("Back", "textures/ui/arrow_left");
@@ -607,12 +609,12 @@ export class ServerShopManager{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form2 = new ModalFormData();
         form2.title(`${shop.title} Settings`)
-        form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop\n§o§7Currently only shows up in the menu to edit the shops.`, "My Shop", JSON.stringify(shop.name).slice(1, -1).replaceAll("\\\"", "\""))
-        form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", JSON.stringify(shop.title).slice(1, -1).replaceAll("\\\"", "\""))
-        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", JSON.stringify(shop.mainPageBodyText).slice(1, -1).replaceAll("\\\"", "\""))
+        form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop`, "My Shop", JSON.stringify(shop.name??"").slice(1, -1).replaceAll("\\\"", "\""))
+        form2.textField(`§l§fPage Title§r§f\nThe title that shows at the top of the main page for this shop`, "My Shop", JSON.stringify(shop.title??"").slice(1, -1).replaceAll("\\\"", "\""))
+        form2.textField(`§l§fPage Body Text§r§f\nThe message that shows at right above the list of buttons at the top of the main page for this shop`, "My Shop", JSON.stringify(shop.mainPageBodyText??"").slice(1, -1).replaceAll("\\\"", "\""))
         form2.toggle(`§l§fIs Buy Shop§r§f\nWhether or not players can buy items in this shop, default is true`, shop.buyShop??true)
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, shop.sellShop??true)
-        form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewservershops command, default is false`, shop.publicShop??false)
+        form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewservershops command, default is true`, shop.publicShop??true)
         form2.submitButton("Save")
         forceShow(form2, (sourceEntity as Player)).then(t => {
             if (t.canceled) {ServerShopManager.manageServerShop(sourceEntity, shop); return;};

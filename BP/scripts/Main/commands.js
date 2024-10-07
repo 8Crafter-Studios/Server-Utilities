@@ -4,7 +4,7 @@ import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates,
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
-import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications } from "./ui.js";
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications, extraFeaturesSettings, worldBorderSettings } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
 import { arrayify, clamp24HoursTo12Hours, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
@@ -40,8 +40,9 @@ import { uiManager, UIManager } from "@minecraft/server-ui";
 import { commands } from "./commands_list";
 import { ExpireError, TimeoutError } from "./errors";
 import { getCommandHelpPage, getCommandHelpPageExtra, getCommandHelpPageDebug, getCommandHelpPageCustomDebug, helpCommandChatCommandsList, getCommandHelpPageDebugPlus } from "./commands_documentation";
-import { LinkedServerShopCommands, ServerShop } from "../ExtraFeatures/server_shop";
-import { PlayerShop } from "ExtraFeatures/player_shop";
+import { LinkedServerShopCommands, ServerShop, ServerShopManager } from "../ExtraFeatures/server_shop";
+import { PlayerShop, PlayerShopManager } from "ExtraFeatures/player_shop";
+import { mainShopSystemSettings } from "../ExtraFeatures/shop_main";
 export const cmdsmetaimport = import.meta;
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer;
@@ -2077,7 +2078,7 @@ export function chatCommands(params) {
     if (params.silentCMD != true) {
         try {
             world.getAllPlayers().filter((p) => (p.hasTag("getAllChatCommands"))).forEach((p) => { try {
-                p.sendMessage("[§l§dServer§r§f]" + (world.getDynamicProperty("commandNotificationSpacer") ?? world.getDynamicProperty("serverNotificationSpacer") ?? "") + "[" + (player.name ?? (player.nameTag != "" ? player.nameTag + "<" + player.id + ">" : player.typeId + "<" + player.id + ">")) + "]: " + newMessage);
+                p.sendMessage("§r§f[§l§dServer§r§f]" + (world.getDynamicProperty("commandNotificationSpacer") ?? world.getDynamicProperty("serverNotificationSpacer") ?? "") + "[" + (player.name ?? (player.nameTag != "" ? player.nameTag + "<" + player.id + ">" : player.typeId + "<" + player.id + ">")) + "]: " + newMessage);
                 let pn = new PlayerNotifications(p);
                 srun(() => p.playSound(pn.getAllChatCommandsNotificationSound.soundId, { pitch: pn.getAllChatCommandsNotificationSound.pitch, volume: pn.getAllChatCommandsNotificationSound.volume }));
             }
@@ -5972,6 +5973,51 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
                 break;
+            case !!switchTest.match(/^extrafeaturessettings$/) || !!switchTest.match(/^extrasettings$/):
+                eventData.cancel = true;
+                try {
+                    system.run(() => extraFeaturesSettings(player));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
+            case !!switchTest.match(/^worldbordersettings$/) || !!switchTest.match(/^wbsettings$/):
+                eventData.cancel = true;
+                try {
+                    system.run(() => worldBorderSettings(player));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
+            case !!switchTest.match(/^shopsystemsettings$/) || !!switchTest.match(/^shopsyssettings$/):
+                eventData.cancel = true;
+                try {
+                    system.run(() => mainShopSystemSettings(player));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
+            case !!switchTest.match(/^servershopsystemsettings$/) || !!switchTest.match(/^servershopsyssettings$/) || !!switchTest.match(/^srvrshopsyssettings$/):
+                eventData.cancel = true;
+                try {
+                    system.run(() => ServerShopManager.serverShopSystemSettings(player));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
+            case !!switchTest.match(/^playershopsystemsettings$/) || !!switchTest.match(/^playershopsyssettings$/) || !!switchTest.match(/^plyrshopsyssettings$/):
+                eventData.cancel = true;
+                try {
+                    system.run(() => PlayerShopManager.playerShopSystemSettings(player));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
             case !!switchTest.match(/^editorstick$/):
                 eventData.cancel = true;
                 try {
@@ -6008,6 +6054,35 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
                 break; // coming very soon now! 
+            /*case !!switchTest.match(/^closeuis$/):
+                 eventData.cancel = true;
+                 try{system.run(()=>world.getAllPlayers().forEach(p=>uiManager.closeAllForms(p))); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+             break; */
+            case !!switchTest.match(/^closeuis$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+                    const players = world.getAllPlayers();
+                    if ((args[1] ?? "").trim() == "") {
+                        try {
+                            system.run(() => players.forEach(p => uiManager.closeAllForms(p)));
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        }
+                    }
+                    else {
+                        const playerids = players.map(p => p.id);
+                        const targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(p => playerids.includes(p.id));
+                        try {
+                            system.run(() => targets.forEach(p => uiManager.closeAllForms(p)));
+                        }
+                        catch (e) {
+                            eventData.sender.sendMessage("§c" + e + e.stack);
+                        }
+                    }
+                }
+                break;
             case !!switchTest.match(/^datapickblock$/) || !!switchTest.match(/^dpb$/):
                 eventData.cancel = true;
                 try {

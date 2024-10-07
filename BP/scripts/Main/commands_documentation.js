@@ -13,6 +13,8 @@ export var commanddescriptions;
     commanddescriptions["clearenderchest"] = "Clears a player's ender chest. ";
     commanddescriptions["clearenderchestslot"] = "Clears a slot of a player's ender chest. ";
     commanddescriptions["cloneitem"] = "Clones the item in your hand to the specified player's inventory. ";
+    commanddescriptions["closeuis"] = "Closes any open script form uis for one or more players.";
+    commanddescriptions["closeui"] = "Closes any open script form uis for one or more players.";
     commanddescriptions["cmdui"] = "Opens up a menu where you can type a chat command to run with no character limits. ";
     commanddescriptions["compressitems"] = "Compresses your inventory into 2 chests and inserts those chests into your inventory. ";
     commanddescriptions["compressitemsshulker"] = "Compresses your inventory into 2 shulker boxes and inserts those shulker boxes into your inventory. ";
@@ -28,9 +30,12 @@ export var commanddescriptions;
     commanddescriptions["ecinvsee"] = "Scans a player's ender chest and displays the contents of it. ";
     commanddescriptions["ecinvseec"] = "Scans a player's ender chest and displays the contents of it. ";
     commanddescriptions["enderchest"] = "Spawns an ender chest where you are standing. ";
-    commanddescriptions["eval"] = "Runs the specified J\u0430vaScript / Script API code. This can be very useful for doing things such as running more advanced commands with J\u0430vaScript variables and conditions, or running commands with J\u0430vaScript escape codes(for example to put multiple lines of text in the name of an entity or use special unicode characters in commands without needing to copy and paste them into your game). (Note: The names of the server modules are mcServer for the minecraft/Server module, mcServerUI for the minecraft/ServerUI module, and GameTest for the minecraft/GameTest module). Here are some examples:\n\nSend a tellraw command message:\n\\eval world.sendMessage(\"Example message\\nNew Line\\nSender's Name: \" + player.name + \"\\nToken Emoji: \\uE105\")\n\nGive all players health boost with the level equal to their XP level:\n\\eval world.getAllPlayers().forEach((p)=>{p.addEffect(\"health_boost\", 200, {amplifier: player.level, showParticles: false}); })";
+    // special a that causes text to use noto sans instead of mojangles: а
+    commanddescriptions["eval"] = "Runs the specified JavaScript / Script API code. This can be very useful for doing things such as running more advanced commands with JavaScript variables and conditions, or running commands with JavaScript escape codes(for example to put multiple lines of text in the name of an entity or use special unicode characters in commands without needing to copy and paste them into your game). (Note: The names of the server modules are mcServer for the minecraft/Server module, mcServerUI for the minecraft/ServerUI module, and GameTest for the minecraft/GameTest module). Here are some examples:\n\nSend a tellraw command message:\n\\eval world.sendMessage(\"Example message\\nNew Line\\nSender's Name: \" + player.name + \"\\nToken Emoji: \\uE105\")\n\nGive all players health boost with the level equal to their XP level:\n\\eval world.getAllPlayers().forEach((p)=>{p.addEffect(\"health_boost\", 200, {amplifier: player.level, showParticles: false}); })";
     commanddescriptions["execute"] = "Executes a command on behalf of one or more entities. ";
     commanddescriptions["extinguish"] = "Extinguishes fire and soul fire in the specified radius. ";
+    commanddescriptions["extrafeaturessettings"] = "Opens up the extra features settings menu.";
+    commanddescriptions["extrasettings"] = "Opens up the extra features settings menu.";
     commanddescriptions["fill"] = "Fills all or parts of a reigon with a specific block, can use any block type including NBT Editor only ones. ";
     commanddescriptions["fillillegal"] = "Fills a player's inventory with illegal items. ";
     commanddescriptions["fillinventory"] = "Fills a player's inventory with items based on the provided itemJSON. ";
@@ -102,6 +107,9 @@ export var commanddescriptions;
     commanddescriptions["offlineinvsee"] = "Displays the saved contents of the specified player's inventory. ";
     commanddescriptions["offlineuuidinvsee"] = "Displays the saved contents of the inventory of the player with the specified UUID. ";
     //"permaban" = "Permanently bans a player. ",
+    commanddescriptions["playershopsyssettings"] = "Opens up the player shop system settings menu.";
+    commanddescriptions["playershopsystemsettings"] = "Opens up the player shop system settings menu.";
+    commanddescriptions["plyrshopsyssettings"] = "Opens up the player shop system settings menu.";
     commanddescriptions["printlayers"] = "Displays a list of all the non-air blocks at your specified x and z coordinates. ";
     commanddescriptions["rank"] = "Manages ranks stored in players. ";
     commanddescriptions["remexp"] = "Removes explosive blocks and entities in the specified radius, the radius defaults to 10 if not specified. Removes TNT and respawn anchors if in the overworld, removes TNT and beds if in the nether, and removes TNT, beds, and respawn anchors if in the end.";
@@ -116,14 +124,19 @@ export var commanddescriptions;
     commanddescriptions["selinfo"] = "Displays info about the current selection. ";
     commanddescriptions["seli"] = "Displays info about the current selection. ";
     commanddescriptions["sendui"] = "Opens up a menu where you can type a chat message to send with no character limits. ";
+    commanddescriptions["servershopsyssettings"] = "Opens up the server shop system settings menu.";
+    commanddescriptions["servershopsystemsettings"] = "Opens up the server shop system settings menu.";
     commanddescriptions["setitem"] = "Creates a new stack of the specified item type of the specified size in the specified slot of the specified player's inventory. Note: The item parameter can be set to any valid item id, even ones that can't be used with the normal vanilla /give, such as ones that require an NBT editor to obtain, for example you could use minecraft:netherreactor to get a Nether Reactor Core. The count parameter can be any value from 0-255.";
     commanddescriptions["setitemb"] = "Replaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. ";
     commanddescriptions["setnametag"] = "Sets the name tag of a player or entity. ";
     commanddescriptions["setplayernametag"] = "Sets the name tag of a player or entity. ";
     commanddescriptions["setentitynametag"] = "Sets the name tag of a player or entity. ";
-    commanddescriptions["settings"] = "Opens up the settings menu. ";
-    commanddescriptions["shuffleinventory"] = "Shuffles the inventory of the specified player. ";
+    commanddescriptions["settings"] = "Opens up the settings menu.";
+    commanddescriptions["shopsyssettings"] = "Opens up the shop system settings menu.";
+    commanddescriptions["shopsystemsettings"] = "Opens up the shop system settings menu.";
+    commanddescriptions["shuffleinventory"] = "Shuffles the inventory of the specified player.";
     commanddescriptions["spawn"] = "Teleports you to spawn. ";
+    commanddescriptions["srvrshopsyssettings"] = "Opens up the server shop system settings menu.";
     commanddescriptions["structure"] = "Manages structures. ";
     commanddescriptions["summon"] = "Summons entities. ";
     commanddescriptions["swapinventories"] = "Swaps the inventories of 2 players. ";
@@ -144,6 +157,8 @@ export var commanddescriptions;
     //"unban" = "Unbans a player. ",
     commanddescriptions["up"] = "Teleports up the specified number of blocks and places glass below you if placeGlass is not set to false. ";
     commanddescriptions["version"] = "Displays the format version of the add-on. ";
+    commanddescriptions["viewplayershops"] = "Opens up the list of public player shops.";
+    commanddescriptions["viewservershops"] = "Opens up the list of public server shops.";
     commanddescriptions["warp"] = "Warps to the specified global warp. ";
     commanddescriptions["warplist"] = "Lists all global warps. ";
     commanddescriptions["warplistdetails"] = "Lists all global warps with more details. ";
@@ -151,10 +166,12 @@ export var commanddescriptions;
     commanddescriptions["warpremove"] = "Removes the specified global warp. ";
     commanddescriptions["warpreset"] = "Removes all global warps. ";
     commanddescriptions["warpset"] = "Sets a global warp. ";
+    commanddescriptions["wbsettings"] = "Opens up the world border system settings menu.";
     commanddescriptions["w"] = "Warps to the specified private warp. ";
     commanddescriptions["wlist"] = "Lists all private warps. ";
     commanddescriptions["wlistdetails"] = "Lists all private warps with more details. ";
     commanddescriptions["wlistrawdata"] = "Lists the raw data of the private warps. ";
+    commanddescriptions["worldbordersettings"] = "Opens up the world border system settings menu.";
     commanddescriptions["wremove"] = "Removes the specified private warp. ";
     commanddescriptions["wreset"] = "Removes all private warps. ";
     commanddescriptions["wset"] = "Sets a private warp. ";
@@ -221,6 +238,8 @@ export const commandsyntaxes = {
     "clearenderchest": `clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
     "clearenderchestslot": `clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
     "cloneitem": `${command.dp}cloneitem [toPlayer: target|~]`,
+    "closeuis": `${command.dp}closeuis`,
+    "closeui": `${command.dp}closeui`,
     "cmdui": `${command.dp}cmdui`,
     "compressitems": `${command.dp}compressitems [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
     "compressitemsshulker": `${command.dp}compressitemsshulker [mode: inventory|hotbar|armor|equipment|all] [target: string|~]`,
@@ -253,10 +272,11 @@ ${command.dp}... matchdimension <origin: target> ...
 ${command.dp}... if block <position: x y z> <block: Block> <blockStates: block states> ...
 ${command.dp}... if entity <target: target> ...
 ${command.dp}... run <command: command>`,
-    "ext": `${command.dp}ext [radius: number[?=10]]`,
-    "extinguish": `${command.dp}extinguish [radius: number[?=10]]`,
-    "ex": `${command.dp}ex [radius: number[?=10]]`,
-    "remfire": `${command.dp}remfire [radius: number[?=10]]`,
+    "ext": `${command.dp}ext [radius: float[?=10]]`,
+    "extinguish": `${command.dp}extinguish [radius: float[?=10]]`,
+    "extrafeaturessettings": `${command.dp}extrafeaturessettings`,
+    "ex": `${command.dp}ex [radius: float[?=10]]`,
+    "remfire": `${command.dp}remfire [radius: float[?=10]]`,
     "fill": `${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`,
     "fillillegal": `${command.dp}fillillegal [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
     "fillinventory": `${command.dp}fillinventory <itemJSON: itemJSON> [stackCount: int|fill|replaceall|replacefill] [target: string|~]`,
@@ -545,6 +565,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
     "offlineinvsee": `${command.dp}offlineinvsee <playerName: string>`,
     "offlineuuidinvsee": `${command.dp}offlineuuidinvsee <playerUUID: int>`,
     "printlayers": `${command.dp}printlayers`,
+    "playershopsystemsettings": `${command.dp}playershopsystemsettings`,
     "rank": `${command.dp}rank <players: target> <mode: add|remove> <tag: string>\n${command.dp}rank <players: target> clear`,
     "remexp": `${command.dp}remexp [radius: number]`,
     "replacenear": `${command.dp}repalcenear <radius: number> <replaceTileName: Block> <replaceBlockStates: block states> <tileName: Block> <blockStates: block states>`,
@@ -554,6 +575,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
     "scnendchst": `${command.dp}scnendchst [targets: target|~]`,
     "scnendchstc": `${command.dp}scnendchstc [target: string|~]`,
     "sendui": `${command.dp}sendui`,
+    "servershopsystemsettings": `${command.dp}servershopsystemsettings`,
     "setitem": `${command.dp}setitem <item: itemType> <amount: int> <slot: int>`,
     "setitemb": `${command.dp}setitemb <itemJSON: itemJSON> <slot: int>
 simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
@@ -614,6 +636,7 @@ stack of 255 sharpness 1 wooden swords: {"minecraft:components": {"enchantable":
 sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept on death with the name "§4Storage Hog Axe§r" and the lore "§eTakes\\nUp\\nYour\\nInventory§r" (with the \\n as line break characters) that says lol in the chat and damages the user when used: {"minecraft:components": {"enchantable": {"add": [{"level": 1, "type": "sharpness"}, {"type": "fortune", "level": 3}, {"type": "efficiency", "level": 5}]}}, "id": "iron_axe", "count": 72, "keepondeath": true, "lockMode": "inventory", "name": "§r§4Storage Hog Axe§r§f", "lore": ["§r§eTakes\\nUp§r§f","§r§eYour\\nInventory§r§f"], "dynamicProperties": {"code": "world.sendMessage('lol'); event.source.runCommandAsync(\\"/damage @s 1 thorns entity @s\\")"}}
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`,
     "settings": `${command.dp}settings`,
+    "shopsystemsettings": `${command.dp}shopsystemsettings`,
     "spawn": `${command.dp}spawn`,
     "shuffleinventory": `${command.dp}shuffleinventory <playerTarget: target|~>`,
     "structure": `${command.dp}structure createempty <structureName: string> <sizeX: float> <sizeY: float> <sizeZ: float> [saveMode: memory|disk]
@@ -646,6 +669,8 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
     "up": `${command.dp}up [placeGlass: bool[?=true]]`,
     "ver": `${command.dp}ver`,
     "version": `${command.dp}version`,
+    "viewservershops": `${command.dp}viewservershops`,
+    "viewplayershops": `${command.dp}viewplayershops`,
     "warp": `${command.dp}warp <name: escapableString>`,
     "warplist": `${command.dp}warplist`,
     "warplistdetails": `${command.dp}warplistdetails`,
@@ -657,6 +682,7 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
     "wlist": `${command.dp}wlist`,
     "wlistdetails": `${command.dp}wlistdetails`,
     "wlistrawdata": `${command.dp}wlistrawdata`,
+    "worldbordersettings": `${command.dp}worldbordersettings`,
     "wremove": `${command.dp}wremove <name: escapableString>`,
     "wreset": `${command.dp}wreset`,
     "wset": `${command.dp}wset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
@@ -898,6 +924,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .clearenderchest - §oClears a player's ender chest. §r
 .clearenderchestslot - §oClears a slot of a player's ender chest. §r
 .cloneitem - §oClones the item in your hand to the specified player's inventory. §r
+.closeuis - §oCloses any open script form uis for one or more players.§r
 .cmdui - §oOpens up a menu where you can type a chat command to run with no character limits. §r
 .compressitems - §oCompresses your inventory into 2 chests and inserts those chests into your inventory. §r
 .compressitemsshulker - §oCompresses your inventory into 2 shulker boxes and inserts those shulker boxes into your inventory. §r
@@ -913,6 +940,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .eval - §oRuns the specified JavaScript Script/ScriptAPI Code. §r
 .execute - §oExecutes a command on behalf of one or more entities. §r
 .extinguish - §oExtinguishes fire in the specified radius. §r
+.extrafeaturessettings - §oOpens up the extra features settings menu. §r
 .fill - §oFills all or parts of a reigon with a specific block, can use any block type including NBT Editor only ones. §r
 .fillillegal - §oFills a player's inventory with illegal items. §r
 .fillinventory - §oFills a player's inventory with items based on the provided itemJSON. §r
@@ -968,6 +996,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .offlineuuidinfo - §oDisplays the saved player data of the player with the specified UUID. §r
 .offlineinvsee - §oDisplays the saved contents of the specified player's inventory. §r
 .offlineuuidinvsee - §oDisplays the saved contents of the inventory of the player with the specified UUID. §r
+.playershopsystemsettings - §oOpens up the player shop system settings menu. §r
 .printlayers - §oDisplays a list of all the blocks at your specified x and z coordinates. §r
 .rank - §oManages ranks stored in players. §r
 .remexp - §oRemoves explosive blocks in the specified radius. §r
@@ -978,9 +1007,12 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .scanenderchest - §oScans a player's ender chest and displays the contents of it. §r
 .scnendchst - §oScans a player's ender chest and displays the contents of it. §r
 .sendui - §oOpens up a menu where you can type a chat message to send with no character limits. §r
+.servershopsystemsettings - §oOpens up the server shop system settings menu. §r
 .setitem - §oReplaces the item stack in the specified inventory slot with an item stack with a specified type and stack size. §r
 .setitemb - §oReplaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. §r
 .settings - §oOpens up the settings menu. §r
+.shopsyssettings - §oOpens up the shop system settings menu. §r
+.shopsystemsettings - §oOpens up the shop system settings menu. §r
 .shuffleinventory - §oShuffles the inventory of the specified player. §r
 .structure - §oManages structures. §r
 .summon - §oSummons entities. §r
@@ -997,9 +1029,12 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .tpdeny - §oDenies a player's teleport request. §r
 .transferitem - §oTransfers the item in your hand to the specified player's inventory. §r
 .tz - §oSets your timezone to the specific UTC offset in hours. §r
-.up - §oTeleports up the specified number of blocks and places glass below you if placeGlass is not set to false. §r
+.up - §oTeleports up the specified number of blocks and places glass below you if placeGlass is not set to false. 
+.ver - §oDisplays the format version of the add-on. §r
 .version - §oDisplays the format version of the add-on. §r
 .vthru - §oTeleports to teh other side of the wall/floor/ceilling that you are looking at. §r
+.viewplayershops - §oOpens up the list of public player shops. §r
+.viewservershops - §oOpens up the list of public server shops. §r
 .warp - §oWarps to the specified global warp. §r
 .warplist - §oLists all global warps. §r
 .warplistdetails - §oLists all global warps with more details. §r
@@ -1011,6 +1046,8 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .wlist - §oLists all private warps. §r
 .wlistdetails - §oLists all private warps with more details. §r
 .wlistrawdata - §oLists the raw data of the private warps. §r
+.wbsettings - §oOpens up the world border system settings menu. §r
+.worldbordersettings - §oOpens up the world border system settings menu. §r
 .wremove - §oRemoves the specified private warp. §r
 .wreset - §oRemoves all private warps. §r
 .wset - §oSets a private warp. §r

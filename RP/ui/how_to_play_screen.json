@@ -1471,6 +1471,16 @@
           "paragraph_83@how_to_play_common.paragraph": {
               "$text": "Whether or not this parameter is case-sensitive. "
           }
+      },
+      {
+          "paragraph_84@how_to_play_common.paragraph": {
+              "$text": "§lplayersOnly=boolean§r"
+          }
+      },
+      {
+          "paragraph_85@how_to_play_common.paragraph": {
+              "$text": "Whether or not this target parameter only allows targeting players. "
+          }
       }
     ]
   },

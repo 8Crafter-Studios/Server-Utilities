@@ -367,7 +367,7 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
     let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&!!switchTest.match(command.get(v.commandName, "built-in").regexp)))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
     try {
         world.getAllPlayers().filter((p) => (p.hasTag("getAllChatMessages"))).forEach((p) => { try {
-            p.sendMessage("[§l§dServer§r§f]" + (world.getDynamicProperty("chatMessageNotificationSpacer") ?? world.getDynamicProperty("serverNotificationSpacer") ?? "") + "[" + player.name + "]: " + newMessage);
+            p.sendMessage("§r§f[§l§dServer§r§f]" + (world.getDynamicProperty("chatMessageNotificationSpacer") ?? world.getDynamicProperty("serverNotificationSpacer") ?? "") + "[" + player.name + "]: " + newMessage);
             let pn = new PlayerNotifications(p);
             srun(() => p.playSound(pn.getAllChatMessagesNotificationSound.soundId, { pitch: pn.getAllChatMessagesNotificationSound.pitch, volume: pn.getAllChatMessagesNotificationSound.volume }));
         }
@@ -1084,20 +1084,20 @@ export function chatSend(params) {
         String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "]"))
         .join(String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "));
     let name = !!player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:"))) ?
-        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") +
+        String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r<") +
             (!!nameGradientMode ?
                 evaluateChatColorType(player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
                     .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length), nameGradientMode) :
                 player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
                     .slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length)) +
-            String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") :
+            String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r>") :
         player.hasTag("chatHideNameTag") ? "" :
-            player.hasTag("chatUseNameTag") ? String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") +
+            player.hasTag("chatUseNameTag") ? String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r<") +
                 (!!nameGradientMode ? evaluateChatColorType(player.nameTag, nameGradientMode) : player.nameTag) +
-                String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") :
-                String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") +
+                String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r>") :
+                String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r<") +
                     (!!nameGradientMode ? evaluateChatColorType(player.name, nameGradientMode) : player.name) +
-                    String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>");
+                    String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r>");
     let nameb = !!player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:"))) ?
         (!!nameGradientMode ?
             evaluateChatColorType(player.getTags().find(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
@@ -1112,7 +1112,7 @@ export function chatSend(params) {
     for (let index in player.getTags()) {
             if (player.getTags()[Number(index)].startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"))) { rank = (rank + String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "[") + player.getTags()[Number(index)].slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + String(player.getDynamicProperty("andexdbPersonalSettings:rankDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "]")) }
             if (player.getTags()[Number(index)] == ("chatHideNameTag")) { name = ""; rankMode = 1 } else {
-            if (player.getTags()[Number(index)].startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")) && rankMode !== 1) { name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r§f<") + player.getTags()[Number(index)].slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length) + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "); rankMode = 2 } else {
+            if (player.getTags()[Number(index)].startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")) && rankMode !== 1) { name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "§r<") + player.getTags()[Number(index)].slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length) + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r>") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "); rankMode = 2 } else {
             if (player.getTags()[Number(index)] == ("chatUseNameTag") && rankMode !== 1 && rankMode !== 2) { name = String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplayPrefix") ?? world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<") + player.nameTag + String(player.getDynamicProperty("andexdbPersonalSettings:nameDisplaySuffix") ?? world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? ">") + String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "); rankMode = 3 } } }
     }*/
     try {
@@ -1150,59 +1150,59 @@ export function chatSend(params) {
             }
             else if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "custom_advanced") {
                 rank = player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-                    .map((t, index, array) => { let rank = t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length); let tags = player.getTags(); return eval(`\`${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]")}\``); /*Function("rank, tags", `return ${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]")}`)(rank, player.getTags())*/ }).join(String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
+                    .map((t, index, array) => { let rank = t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length); let tags = player.getTags(); return eval(`\`${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r]")}\``); /*Function("rank, tags", `return ${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r]")}`)(rank, player.getTags())*/ }).join(String(player.getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
                 if (rank == "") {
                     let tags = player.getTags();
                     rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                 }
                 const ranks = rank;
                 let name = nameb;
-                messageOutput = eval(`\`${String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ?? "§r§f${showDimension?`[${dimension}] `:\"\"}${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r§f${(ranks!=\"\")?\" \":\"\"}<${name}§r§f> ${message}")}\``);
+                messageOutput = eval(`\`${String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ?? "§r${showDimension?`[${dimension}] `:\"\"}${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r${(ranks!=\"\")?\" \":\"\"}<${name}§r> ${message}")}\``);
             }
             else if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "style_1") {
                 rank = player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-                    .map(t => "[§r§f" + t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + "§r§f]").join(" ");
+                    .map(t => "[§r" + t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + "§r]").join(" ");
                 if (rank == "") {
                     let tags = player.getTags();
                     rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                 }
-                messageOutput = `§r§f${showDimension ? `[${dimension}] ` : ""}${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}§r§f ` : ""}${name != "" ? `<${nameFormatting}${nameb}§r§f> ` : ""}${messageFormatting}${message}`;
+                messageOutput = `§r${showDimension ? `[${dimension}] ` : ""}${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}§r ` : ""}${name != "" ? `<${nameFormatting}${nameb}§r> ` : ""}${messageFormatting}${message}`;
             }
             else if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "style_2") {
                 rank = player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-                    .map(t => "[§r§f" + t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + "§r§8]").join(" ");
+                    .map(t => "[§r" + t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + "§r§8]").join(" ");
                 if (rank == "") {
                     let tags = player.getTags();
                     rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                 }
-                messageOutput = `§r§8${showDimension ? `[${dimension}] ` : ""}${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}§r ` : ""}${name != "" ? `§r§f${nameFormatting}${nameb}§r§8 ${separatorFormatting}` : `§r§8${separatorFormatting}`}»§r §f${messageFormatting}${message}`;
+                messageOutput = `§r§8${showDimension ? `[${dimension}] ` : ""}${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}§r ` : ""}${name != "" ? `§r${nameFormatting}${nameb}§r§8 ${separatorFormatting}` : `§r§8${separatorFormatting}`}»§r §f${messageFormatting}${message}`;
             }
             else if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "style_3") {
                 rank = player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-                    .map(t => "[§r§f" + t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + "§r§8]").join(" ");
+                    .map(t => "[§r" + t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + "§r§8]").join(" ");
                 if (rank == "") {
                     let tags = player.getTags();
                     rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                 }
-                messageOutput = `§r§8${showDimension ? `[${dimension}] ` : ""}${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}§r§f ` : ""}§r§f${name != "" ? `${nameFormatting}${nameb}§r§f ${separatorFormatting}` : `${separatorFormatting}`}>>§r §f${messageFormatting}${message}`;
+                messageOutput = `§r§8${showDimension ? `[${dimension}] ` : ""}${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}§r ` : ""}§r${name != "" ? `${nameFormatting}${nameb}§r ${separatorFormatting}` : `${separatorFormatting}`}>>§r §f${messageFormatting}${message}`;
             }
             else if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "style_4") {
                 rank = player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-                    .map(t => "[§r§f" + t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + "§r§7]").join(" ");
+                    .map(t => "[§r" + t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length) + "§r§7]").join(" ");
                 if (rank == "") {
                     let tags = player.getTags();
                     rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                 }
-                messageOutput = `§r§7${showDimension ? `[${dimension}] ` : ""}${timestamp != "" ? `[${timestamp}]` : ""}${rank != "" ? ` ${rank}` : ""}§r§7${name != "" ? ` ${nameFormatting}${nameb}§r§7` : ""}§l ${separatorFormatting}>§r§l §r§f${messageFormatting}${message}`;
+                messageOutput = `§r§7${showDimension ? `[${dimension}] ` : ""}${timestamp != "" ? `[${timestamp}]` : ""}${rank != "" ? ` ${rank}` : ""}§r§7${name != "" ? ` ${nameFormatting}${nameb}§r§7` : ""}§l ${separatorFormatting}>§r§l §r${messageFormatting}${message}`;
             }
             else if (String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple") == "style_5") {
-                rank = "[§r§f" + player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-                    .map(t => t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length)).join("§r§f,") + "§r§f]";
-                if (rank == "[§r§f§r§f]") {
+                rank = "[§r" + player.getTags().filter(t => t.startsWith(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
+                    .map(t => t.slice(String(player.getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length)).join("§r,") + "§r]";
+                if (rank == "[§r§r]") {
                     let tags = player.getTags();
                     rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                 }
-                messageOutput = `§r§f${showDimension ? `[${dimension}] ` : ""}s${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}` : ""}§r§7${name != "" ? ` ${nameFormatting}${nameb}§r§7` : ""}${separatorFormatting}:§r §f${messageFormatting}${message}`;
+                messageOutput = `§r${showDimension ? `[${dimension}] ` : ""}s${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}` : ""}§r§7${name != "" ? ` ${nameFormatting}${nameb}§r§7` : ""}${separatorFormatting}:§r §f${messageFormatting}${message}`;
             }
             try {
                 eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendBeforeModifiedMessageSend")));
