@@ -536,7 +536,7 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
      * @see {@link PlayerShop.openPublicShopsSelector}
      * @param sourceEntitya 
      */
-    static openPublicShopsSelector(sourceEntitya: Entity|executeCommandPlayerW|Player){
+    static async openPublicShopsSelector(sourceEntitya: Entity|executeCommandPlayerW|Player): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form = new ActionFormData();
         form.title("Public Server Shops");
@@ -549,20 +549,25 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
         })
         form.button("Close", "textures/ui/crossout");/*
         form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
-        forceShow(form, (sourceEntity as Player)).then(r => {
+        return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
             if (r.canceled) return;
     
             let response = r.selection;
             switch (response) {
                 case shopsList.length:
-                    return
+                    return 0;
                 break;
                 default:
-                    shopsList[response].openShop(sourceEntity as Player)
+                    if((await shopsList[response].openShop(sourceEntity as Player))==1){
+                        return await ServerShop.openPublicShopsSelector(sourceEntity);
+                    }else{
+                        return 0;
+                    }
             }
         }).catch(e => {
             console.error(e, e.stack);
+            return 0;
         });
     }
 }
@@ -637,7 +642,6 @@ export class ServerShopManager{
      */
     static get serverShopPageTextureHint(){return this.serverShopPageTextureHints[Math.floor(Math.random()*this.serverShopPageTextureHints.length)]}
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.playerShopSystemSettings}.
      * @see {@link PlayerShopManager.playerShopSystemSettings}
      * @param sourceEntitya 
@@ -697,39 +701,39 @@ export class ServerShopManager{
                 default:
                     return 1;
             }
+            return 1
         }).catch(e => {
             console.error(e, e.stack);
             return 1;
         });
     }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.playerShopSystemSettings_main}.
      * @see {@link PlayerShopManager.playerShopSystemSettings_main}
      * @param sourceEntitya 
      */
-    static serverShopSystemSettings_main(sourceEntitya: Entity|executeCommandPlayerW|Player){
+    static async serverShopSystemSettings_main(sourceEntitya: Entity|executeCommandPlayerW|Player): Promise<1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form2 = new ModalFormData();
         form2.title(`Server Shop System Settings`)
         form2.toggle(`§l§fEnabled§r§f\nWhether or not the server shop system is enabled, default is false`, config.shopSystem.server.enabled)
         form2.submitButton("Save")
-        forceShow(form2, (sourceEntity as Player)).then(t => {
-            if (t.canceled) {ServerShopManager.serverShopSystemSettings(sourceEntity); return;};
+        return await forceShow(form2, (sourceEntity as Player)).then(t => {
+            if (t.canceled) {return 1;};
             let [ enabled ] = t.formValues as [ enabled: boolean ];
             config.shopSystem.server.enabled=enabled
-            ServerShopManager.serverShopSystemSettings(sourceEntity); 
+            return 1
         }).catch(e => {
             console.error(e, e.stack);
-        });
+            return 1
+        }) as 1;
     }
     
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShops}.
      * @param sourceEntitya 
      */
-    static manageServerShops(sourceEntitya: Entity|executeCommandPlayerW|Player){
+    static async manageServerShops(sourceEntitya: Entity|executeCommandPlayerW|Player): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form = new ActionFormData();
         form.title("Manage Server Shops");
@@ -742,24 +746,37 @@ export class ServerShopManager{
         form.button("Back", "textures/ui/arrow_left");
         form.button("Close", "textures/ui/crossout");/*
         form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
-        forceShow(form, (sourceEntity as Player)).then(r => {
+        return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return;
+            if (r.canceled) return 1;
     
             let response = r.selection;
             switch (response) {
                 case shopsList.length:
-                    ServerShopManager.addServerShop(sourceEntity)
+                    if((await ServerShopManager.addServerShop(sourceEntity))==1){
+                        return await ServerShopManager.manageServerShops(sourceEntity)
+                    }else{
+                        return 0
+                    }
                 break;
                 case shopsList.length+1:
-                    ServerShopManager.serverShopSystemSettings(sourceEntity)
+                    return 1
+                break;
+                case shopsList.length+2:
+                    return 0
                 break;
                 default:
-                    ServerShopManager.manageServerShop(sourceEntity, shopsList[response])
+                    if((await ServerShopManager.manageServerShop(sourceEntity, shopsList[response]))==1){
+                        return await ServerShopManager.manageServerShops(sourceEntity)
+                    }else{
+                        return 0
+                    }
     
             }
+            return 1
         }).catch(e => {
             console.error(e, e.stack);
+            return 1
         });
     }
     
@@ -768,7 +785,7 @@ export class ServerShopManager{
      * @todo Copy over the updated code from {@link PlayerShopManager.addPlayerShop}.
      * @param sourceEntitya 
      */
-    static addServerShop(sourceEntitya: Entity|executeCommandPlayerW|Player){
+    static async addServerShop(sourceEntitya: Entity|executeCommandPlayerW|Player): Promise<1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form2 = new ModalFormData();
         form2.title(`Server Shop System Settings`)
@@ -780,8 +797,8 @@ export class ServerShopManager{
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, true)
         form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewservershops command, default is true`, true)
         form2.submitButton("Save")
-        forceShow(form2, (sourceEntity as Player)).then(t => {
-            if (t.canceled) {ServerShopManager.manageServerShops(sourceEntity); return;};
+        return await forceShow(form2, (sourceEntity as Player)).then(t => {
+            if (t.canceled) {return 1;};
             let [ id, name, title, mainPageBodyText, buyShop, sellShop, publicShop ] = t.formValues as [ id: string, name: string, title: string, mainPageBodyText: string, buyShop: boolean, sellShop: boolean, publicShop: boolean ];
             const shop = new ServerShop({
                 id: `shop:${id}`,
@@ -794,14 +811,14 @@ export class ServerShopManager{
             })
             
             shop.save()
-            ServerShopManager.manageServerShop(sourceEntity, shop); 
+            return 1
         }).catch(e => {
             console.error(e, e.stack);
-        });
+            return 1
+        }) as 1;
     }
     
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop}.
      * @param sourceEntitya 
      * @param shop 

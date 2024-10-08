@@ -541,7 +541,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
      * @see {@link PlayerShop.openPublicShopsSelector}
      * @param sourceEntitya
      */
-    static openPublicShopsSelector(sourceEntitya) {
+    static async openPublicShopsSelector(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
         form.title("Public Server Shops");
@@ -554,20 +554,26 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
         });
         form.button("Close", "textures/ui/crossout"); /*
         form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
-        forceShow(form, sourceEntity).then(r => {
+        return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return;
             let response = r.selection;
             switch (response) {
                 case shopsList.length:
-                    return;
+                    return 0;
                     break;
                 default:
-                    shopsList[response].openShop(sourceEntity);
+                    if ((await shopsList[response].openShop(sourceEntity)) == 1) {
+                        return await ServerShop.openPublicShopsSelector(sourceEntity);
+                    }
+                    else {
+                        return 0;
+                    }
             }
         }).catch(e => {
             console.error(e, e.stack);
+            return 0;
         });
     }
 }
@@ -632,7 +638,6 @@ export class ServerShopManager {
      */
     static get serverShopPageTextureHint() { return this.serverShopPageTextureHints[Math.floor(Math.random() * this.serverShopPageTextureHints.length)]; }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.playerShopSystemSettings}.
      * @see {@link PlayerShopManager.playerShopSystemSettings}
      * @param sourceEntitya
@@ -695,42 +700,41 @@ export class ServerShopManager {
                 default:
                     return 1;
             }
+            return 1;
         }).catch(e => {
             console.error(e, e.stack);
             return 1;
         });
     }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.playerShopSystemSettings_main}.
      * @see {@link PlayerShopManager.playerShopSystemSettings_main}
      * @param sourceEntitya
      */
-    static serverShopSystemSettings_main(sourceEntitya) {
+    static async serverShopSystemSettings_main(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form2 = new ModalFormData();
         form2.title(`Server Shop System Settings`);
         form2.toggle(`§l§fEnabled§r§f\nWhether or not the server shop system is enabled, default is false`, config.shopSystem.server.enabled);
         form2.submitButton("Save");
-        forceShow(form2, sourceEntity).then(t => {
+        return await forceShow(form2, sourceEntity).then(t => {
             if (t.canceled) {
-                ServerShopManager.serverShopSystemSettings(sourceEntity);
-                return;
+                return 1;
             }
             ;
             let [enabled] = t.formValues;
             config.shopSystem.server.enabled = enabled;
-            ServerShopManager.serverShopSystemSettings(sourceEntity);
+            return 1;
         }).catch(e => {
             console.error(e, e.stack);
+            return 1;
         });
     }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShops}.
      * @param sourceEntitya
      */
-    static manageServerShops(sourceEntitya) {
+    static async manageServerShops(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
         form.title("Manage Server Shops");
@@ -743,23 +747,38 @@ export class ServerShopManager {
         form.button("Back", "textures/ui/arrow_left");
         form.button("Close", "textures/ui/crossout"); /*
         form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
-        forceShow(form, sourceEntity).then(r => {
+        return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return;
+                return 1;
             let response = r.selection;
             switch (response) {
                 case shopsList.length:
-                    ServerShopManager.addServerShop(sourceEntity);
+                    if ((await ServerShopManager.addServerShop(sourceEntity)) == 1) {
+                        return await ServerShopManager.manageServerShops(sourceEntity);
+                    }
+                    else {
+                        return 0;
+                    }
                     break;
                 case shopsList.length + 1:
-                    ServerShopManager.serverShopSystemSettings(sourceEntity);
+                    return 1;
+                    break;
+                case shopsList.length + 2:
+                    return 0;
                     break;
                 default:
-                    ServerShopManager.manageServerShop(sourceEntity, shopsList[response]);
+                    if ((await ServerShopManager.manageServerShop(sourceEntity, shopsList[response])) == 1) {
+                        return await ServerShopManager.manageServerShops(sourceEntity);
+                    }
+                    else {
+                        return 0;
+                    }
             }
+            return 1;
         }).catch(e => {
             console.error(e, e.stack);
+            return 1;
         });
     }
     /**
@@ -767,7 +786,7 @@ export class ServerShopManager {
      * @todo Copy over the updated code from {@link PlayerShopManager.addPlayerShop}.
      * @param sourceEntitya
      */
-    static addServerShop(sourceEntitya) {
+    static async addServerShop(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form2 = new ModalFormData();
         form2.title(`Server Shop System Settings`);
@@ -779,10 +798,9 @@ export class ServerShopManager {
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, true);
         form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewservershops command, default is true`, true);
         form2.submitButton("Save");
-        forceShow(form2, sourceEntity).then(t => {
+        return await forceShow(form2, sourceEntity).then(t => {
             if (t.canceled) {
-                ServerShopManager.manageServerShops(sourceEntity);
-                return;
+                return 1;
             }
             ;
             let [id, name, title, mainPageBodyText, buyShop, sellShop, publicShop] = t.formValues;
@@ -796,13 +814,13 @@ export class ServerShopManager {
                 publicShop: publicShop
             });
             shop.save();
-            ServerShopManager.manageServerShop(sourceEntity, shop);
+            return 1;
         }).catch(e => {
             console.error(e, e.stack);
+            return 1;
         });
     }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop}.
      * @param sourceEntitya
      * @param shop

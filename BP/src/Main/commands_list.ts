@@ -5115,7 +5115,7 @@ export const commands = [
             }
         ],
         formats: [],
-        command_version: "1.0.2",
+        command_version: "1.1.0",
         description: "",
         category: [
             "misc"

@@ -641,6 +641,9 @@ examples:
 stack of 255 sharpness 1 wooden swords: {"minecraft:components": {"enchantable": {"add": {"level": 1, "type": "sharpness"}}}, "id": "wooden_sword", "count": 255}
 sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept on death with the name "§4Storage Hog Axe§r" and the lore "§eTakes\\nUp\\nYour\\nInventory§r" (with the \\n as line break characters) that says lol in the chat and damages the user when used: {"minecraft:components": {"enchantable": {"add": [{"level": 1, "type": "sharpness"}, {"type": "fortune", "level": 3}, {"type": "efficiency", "level": 5}]}}, "id": "iron_axe", "count": 72, "keepondeath": true, "lockMode": "inventory", "name": "§r§4Storage Hog Axe§r§f", "lore": ["§r§eTakes\\nUp§r§f","§r§eYour\\nInventory§r§f"], "dynamicProperties": {"code": "world.sendMessage('lol'); event.source.runCommandAsync(\\"/damage @s 1 thorns entity @s\\")"}}
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`,
+"setnametag": `${command.dp}setnametag [targets: target[?=@s,allowMultiple=true]] [nameTag: string[?=""]]`,
+"setplayernametag": `${command.dp}setplayernametag [targets: target[?=@s,allowMultiple=true]] [nameTag: string[?=""]]`,
+"setentitynametag": `${command.dp}setentitynametag [targets: target[?=@s,allowMultiple=true]] [nameTag: string[?=""]]`,
 "settings": `${command.dp}settings`,
 "shopsystemsettings": `${command.dp}shopsystemsettings`,
 "spawn": `${command.dp}spawn`,
@@ -1015,6 +1018,9 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .servershopsystemsettings - §oOpens up the server shop system settings menu. §r
 .setitem - §oReplaces the item stack in the specified inventory slot with an item stack with a specified type and stack size. §r
 .setitemb - §oReplaces the item stack in the specified inventory slot with an item stack based on the provided itemJSON. §r
+.setnametag - §oSets the name tag of a player or entity.§r
+.setplayernametag - §oSets the name tag of a player or entity.§r
+.setentitynametag - §oSets the name tag of a player or entity.§r
 .settings - §oOpens up the settings menu. §r
 .shopsyssettings - §oOpens up the shop system settings menu. §r
 .shopsystemsettings - §oOpens up the shop system settings menu. §r

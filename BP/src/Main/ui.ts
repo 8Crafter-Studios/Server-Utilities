@@ -1,5 +1,5 @@
 import { Player, system, world, Entity, type DimensionLocation, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, type ExplosionOptions, GameRules, GameRule, type RawMessage, StructureSaveMode } from "@minecraft/server";
-import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
+import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason, uiManager } from "@minecraft/server-ui";
 import { getUICustomForm, format_version, srun, dimensionTypeDisplayFormatting, config, dimensionsd, dimensions, dimensionse, dimensionTypeDisplayFormattingB } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
@@ -249,6 +249,18 @@ export async function infiniteUI(player: Player): Promise<any|Error>{
             ()=>infiniteUI(player),
             e=>(console.error(e, e?.stack), e)
         )
+}
+export function infiniteUIv2(player: Player): number{
+    return system.runInterval(async ()=>{
+        uiManager.closeAllForms(player);
+        return await new ActionFormData()
+            .title("Infinite Form")
+            .body("You are now trapped in an infinite form.")
+            .button("Okay")
+            .forceShow(player, 5)
+        },
+        5
+    )
 }
 export function mainMenu(sourceEntitya: Entity|executeCommandPlayerW|Player){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya

@@ -5524,9 +5524,9 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         else
                             targets.forEach(target => {
                                 try {
-                                    const name = target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">");
-                                    target.nameTag = args[2];
-                                    player.sendMessage(`Set the name of ${name} to ${JSON.stringify(args[2])}. `);
+                                    const name = target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag + "<" + target.id + ">") ?? (target.typeId + "<" + target.id + ">");
+                                    target.nameTag = args[2] ?? "";
+                                    player.sendMessage(`Set the name of ${name} to ${JSON.stringify(args[2] ?? "")}. `);
                                 }
                                 catch (e) {
                                     player.sendMessage("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
@@ -14146,7 +14146,11 @@ export function evaluateParameters(commandstring, parameters) {
                 break;
             case p.type == "string":
                 {
-                    if (paramEval.trimStart().startsWith("\"")) {
+                    if (paramEval.trimStart().startsWith("\"\"")) {
+                        argumentsa.push("");
+                        paramEval = paramEval.trimStart().slice(2);
+                    }
+                    else if (paramEval.trimStart().startsWith("\"")) {
                         let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
                         paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
                         try {
