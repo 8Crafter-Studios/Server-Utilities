@@ -122,7 +122,11 @@ globalThis.scriptStartTick = system.currentTick;
 export const modules = {
     mcServer,
     mcServerUi,
-    GameTest,
+    GameTest, /*
+    mcServerAdmin,
+    mcDebugUtilities,
+    mcCommon,
+    mcVanillaData,*/
     main,
     transformrecipes,
     coords,

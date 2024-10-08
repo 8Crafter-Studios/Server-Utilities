@@ -38,27 +38,42 @@ export class PlayerShop {
             playerName: this.playerName ?? null
         }));
     }
-    async openShop(player, mode = (this.sellShop && this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "none") {
+    async openShop(player, mode = (this.sellShop && this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "none", showBackButton = true) {
         if (mode == "both") {
             const form = new ActionFormData;
             form.title(this.title);
-            form.body(`Shop Owner: ${this.playerName}`);
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(player.id).money}
+§6--------------------------------
+Shop Owner: ${this.playerName}${!!this?.mainPageBodyText ? "\n§r" + this.mainPageBodyText : ""}`);
             form.button("Buy");
             form.button("Sell");
-            form.button("Cancel");
+            if (showBackButton) {
+                form.button("Back", "textures/ui/arrow_left");
+            }
             form.button("Close", "textures/ui/crossout");
             return await forceShow(form, player).then(async (r) => {
-                if (r.canceled == true || r.selection == 2) {
+                if (r.canceled == true || r.selection == (showBackButton ? 2 : -2)) {
                     return 1;
                 }
-                if (r.selection == 3) {
+                if (r.selection == 2 + (+showBackButton)) {
                     return 0;
                 }
                 if (r.selection == 0) {
-                    return await this.openShop(player, "buy");
+                    if ((await this.openShop(player, "buy", true)) == 1) {
+                        return await this.openShop(player, "both", showBackButton);
+                    }
+                    else {
+                        return 0;
+                    }
                 }
                 else if (r.selection == 1) {
-                    return await this.openShop(player, "sell");
+                    if ((await this.openShop(player, "sell", true)) == 1) {
+                        return await this.openShop(player, "both", showBackButton);
+                    }
+                    else {
+                        return 0;
+                    }
                 }
                 else {
                     return 1;
@@ -71,11 +86,11 @@ export class PlayerShop {
             const data = tryget(() => JSON.parse(getStringFromDynamicProperties("sellShop:" + this.id))) ?? [];
             form.body(`§6--------------------------------
 §aMoney: $${MoneySystem.get(player.id).money}
-§6--------------------------------`);
+§6--------------------------------${!!this?.mainSellPageBodyText ? "\n§r" + this.mainSellPageBodyText : ""}`);
             data.forEach(v => {
                 form.button(v.title, v.texture);
             });
-            if (this.buyShop) {
+            if (showBackButton) {
                 form.button("Back", "textures/ui/arrow_left");
             }
             form.button("Close", "textures/ui/crossout");
@@ -83,10 +98,10 @@ export class PlayerShop {
                 if (r.canceled == true) {
                     return 1;
                 }
-                if (r.selection == (this.buyShop ? data.length : -1)) {
+                if (r.selection == (showBackButton ? data.length : -1)) {
                     return 1;
                 }
-                if (r.selection == data.length + (+this.buyShop)) {
+                if (r.selection == data.length + (+showBackButton)) {
                     return 0;
                 }
                 const item = data[r.selection];
@@ -94,7 +109,7 @@ export class PlayerShop {
                     if ((await this.sellItem(player, item, [mode], r.selection) /*.then(v=>{
                         if(v==1){return 1}
                     })*/) == 1) {
-                        return await this.openShop(player, mode);
+                        return await this.openShop(player, mode, showBackButton);
                     }
                     else {
                         return 0;
@@ -102,7 +117,7 @@ export class PlayerShop {
                 }
                 else if (item.type == "player_shop_page") {
                     if ((await this.openShopPage(player, data, ["sell", String(r.selection)])) == 1) {
-                        return await this.openShop(player, mode);
+                        return await this.openShop(player, mode, showBackButton);
                     }
                     else {
                         return 0;
@@ -116,11 +131,11 @@ export class PlayerShop {
             const data = tryget(() => JSON.parse(getStringFromDynamicProperties("buyShop:" + this.id))) ?? [];
             form.body(`§6--------------------------------
 §aMoney: $${MoneySystem.get(player.id).money}
-§6--------------------------------`);
+§6--------------------------------${!!this?.mainBuyPageBodyText ? "\n§r" + this.mainBuyPageBodyText : ""}`);
             data.forEach(v => {
                 form.button(v.title, v.texture);
             });
-            if (this.sellShop) {
+            if (showBackButton) {
                 form.button("Back", "textures/ui/arrow_left");
             }
             form.button("Close", "textures/ui/crossout");
@@ -128,10 +143,10 @@ export class PlayerShop {
                 if (r.canceled == true) {
                     return 1;
                 }
-                if (r.selection == (this.sellShop ? data.length : -1)) {
+                if (r.selection == (showBackButton ? data.length : -1)) {
                     return 1;
                 }
-                if (r.selection == data.length + (+this.sellShop)) {
+                if (r.selection == data.length + (+showBackButton)) {
                     return 0;
                 }
                 const item = data[r.selection];
@@ -139,7 +154,7 @@ export class PlayerShop {
                     if ((await this.buyItem(player, item, [mode], r.selection) /*.then(v=>{
                         if(v==1){this.openShop(player, "buy")}
                     }*/) == 1) {
-                        return await this.openShop(player, mode);
+                        return await this.openShop(player, mode, showBackButton);
                     }
                     else {
                         return 0;
@@ -147,7 +162,7 @@ export class PlayerShop {
                 }
                 else if (item.type == "player_shop_page") {
                     if ((await this.openShopPage(player, data, ["buy", String(r.selection)])) == 1) {
-                        return await this.openShop(player, mode);
+                        return await this.openShop(player, mode, showBackButton);
                     }
                     else {
                         return 0;
@@ -168,8 +183,22 @@ export class PlayerShop {
         const mode = path[0];
         if (mode == "sell") {
             const form = new ActionFormData;
-            form.title(this.title);
-            let newData = getPathInObject(data, path).data;
+            const pageData = tryget(() => getPathInObject(data, path));
+            if (!!!pageData) {
+                const form = new MessageFormData;
+                form.title(config.ui.other.useStarWarsReference404Page ? "404: A Jedi has altered your mind." : "404: Invalid Page");
+                form.body(config.ui.other.useStarWarsReference404Page ? "Jedi: This is not the page you are looking for." : "The page you are looking for does not exist. ");
+                form.button1("Ok");
+                form.button2("Cancel");
+                return ((await forceShow(form, player)).selection != 1).toNumber();
+            }
+            if (!!pageData?.pageTitle) {
+                form.title(pageData.pageTitle);
+            }
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(player.id).money}
+§6--------------------------------${!!pageData?.pageBody ? "\n§r" + pageData.pageBody : ""}`);
+            let newData = pageData?.data;
             newData.forEach(v => {
                 form.button(v.title, v.texture);
             });
@@ -213,8 +242,22 @@ export class PlayerShop {
         }
         else if (mode == "buy") {
             const form = new ActionFormData;
-            form.title(this.title);
-            let newData = getPathInObject(data, path).data;
+            const pageData = tryget(() => getPathInObject(data, path));
+            if (!!!pageData) {
+                const form = new MessageFormData;
+                form.title(config.ui.other.useStarWarsReference404Page ? "404: A Jedi has altered your mind." : "404: Invalid Page");
+                form.body(config.ui.other.useStarWarsReference404Page ? "Jedi: This is not the page you are looking for." : "The page you are looking for does not exist. ");
+                form.button1("Ok");
+                form.button2("Cancel");
+                return ((await forceShow(form, player)).selection != 1).toNumber();
+            }
+            if (!!pageData?.pageTitle) {
+                form.title(pageData.pageTitle);
+            }
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(player.id).money}
+§6--------------------------------${!!pageData?.pageBody ? "\n§r" + pageData.pageBody : ""}`);
+            let newData = pageData?.data;
             newData.forEach(v => {
                 form.button(v.title, v.texture);
             });
@@ -862,7 +905,15 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
         form.title("Player Shops");
         const shopsList = (PlayerShop.getAll() ?? []).filter(s => s.publicShop == true);
         if (shopsList.length == 0) {
-            form.body("There are currently no player shops.");
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(sourceEntity.id).money}
+§6--------------------------------
+§rThere are currently no player shops.`);
+        }
+        else {
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(sourceEntity.id).money}
+§6--------------------------------`);
         }
         shopsList.forEach(s => {
             form.button(s.name ?? s.title ?? s.id);

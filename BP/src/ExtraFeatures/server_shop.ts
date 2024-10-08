@@ -129,7 +129,7 @@ export class ServerShop{
      * @param mode The mode to open this shop in.
      * @returns {Promise<0|1>} A promise that will resolve with either a 0 or a 1, a 0 meaning that the previous UI should not be re-opened, and a 1 meaning that it should.
      */
-    async openShop(player: Player, mode: "buy"|"sell"|"both"|"none" = (this.sellShop&&this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both"): Promise<0|1>{
+    async openShop(player: Player, mode: "buy"|"sell"|"both"|"none" = (this.sellShop&&this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both", showBackButton: boolean = true): Promise<0|1>{
         if(mode=="both"){
             const form = new ActionFormData
             if(!!this.title){form.title(this.title)}
@@ -138,23 +138,25 @@ export class ServerShop{
 §6--------------------------------${!!this.mainPageBodyText?"\n§r"+this.mainPageBodyText:""}`)
             form.button("Buy")
             form.button("Sell")
-            form.button("Cancel")
+            if(showBackButton){form.button("Back", "textures/ui/arrow_left");}
             form.button("Close", "textures/ui/crossout");
             return await forceShow(form, player).then(async r=>{
-                if(r.canceled==true||r.selection==2){return 1}
-                if(r.selection==3){return 0}
+                if(r.canceled==true||r.selection==(showBackButton?2:-2)){return 1}
+                if(r.selection==2+(+showBackButton)){return 0}
                 if(r.selection==0){
-                    if((await this.openShop(player, "buy"))==1){
-                        return await this.openShop(player, "both")
+                    if((await this.openShop(player, "buy", true))==1){
+                        return await this.openShop(player, "both", showBackButton)
                     }else{
                         return 0
                     }
                 }else if(r.selection==1){
-                    if((await this.openShop(player, "sell"))==1){
-                        return await this.openShop(player, "both")
+                    if((await this.openShop(player, "sell", true))==1){
+                        return await this.openShop(player, "both", showBackButton)
                     }else{
                         return 0
                     }
+                }else{
+                    return 1
                 }
             })
         }else if(mode=="sell"){
@@ -167,20 +169,20 @@ export class ServerShop{
             data.forEach(v=>{
                 form.button(v.title, v.texture)
             });
-            if(this.buyShop){form.button("Back", "textures/ui/arrow_left");}
+            if(showBackButton){form.button("Back", "textures/ui/arrow_left");}
             form.button("Close", "textures/ui/crossout");
             return await forceShow(form, player).then(async r=>{
                 if(r.canceled==true){return 1}
-                if(r.selection==data.length){return 1}
-                if(r.selection==data.length+1){return 0}
+                if(r.selection==(showBackButton?data.length:-1)){return 1}
+                if(r.selection==data.length+(+showBackButton)){return 0}
                 const item = data[r.selection]
                 if(item.type=="item"){
                     return await this.sellItem(player, item).then(async v=>{
-                        if(v==1){return await this.openShop(player, "sell")}
+                        if(v==1){return await this.openShop(player, "sell", showBackButton)}
                     })
                 }else if(item.type=="page"){
                     if((await this.openShopPage(player, data, ["sell", String(r.selection)])) as any==1){
-                        return await this.openShop(player, "sell")
+                        return await this.openShop(player, "sell", showBackButton)
                     }
                 }
             })
@@ -194,20 +196,20 @@ export class ServerShop{
             data.forEach(v=>{
                 form.button(v.title, v.texture)
             });
-            if(this.sellShop){form.button("Back", "textures/ui/arrow_left");}
+            if(showBackButton){form.button("Back", "textures/ui/arrow_left");}
             form.button("Close", "textures/ui/crossout");
             return await forceShow(form, player).then(async r=>{
                 if(r.canceled==true){return 1}
-                if(r.selection==data.length){return 1}
-                if(r.selection==data.length+1){return 0}
+                if(r.selection==(showBackButton?data.length:-1)){return 1}
+                if(r.selection==data.length+(+showBackButton)){return 0}
                 const item = data[r.selection]
                 if(item.type=="item"){
                     return await this.buyItem(player, item).then(async v=>{
-                        if(v==1){return await this.openShop(player, "buy")}
+                        if(v==1){return await this.openShop(player, "buy", showBackButton)}
                     })
                 }else if(item.type=="page"){
                     if((await this.openShopPage(player, data, ["buy", String(r.selection)])) as any==1){
-                        return await this.openShop(player, "buy")
+                        return await this.openShop(player, "buy", showBackButton)
                     }
                 }
             })
@@ -248,7 +250,7 @@ export class ServerShop{
                 form.button2("Cancel")
                 return ((await forceShow(form, player)).selection!=1).toNumber()
             }
-            if(!!pageData?.title){form.title(pageData.title)}
+            if(!!pageData?.pageTitle){form.title(pageData.pageTitle)}
             form.body(`§6--------------------------------
 §aMoney: $${MoneySystem.get(player.id).money}
 §6--------------------------------${!!pageData?.pageBody?"\n§r"+pageData.pageBody:""}`)
@@ -296,7 +298,7 @@ export class ServerShop{
                 form.button2("Cancel")
                 return ((await forceShow(form, player)).selection!=1).toNumber()
             }
-            if(!!pageData?.title){form.title(pageData.title)}
+            if(!!pageData?.pageTitle){form.title(pageData.pageTitle)}
             form.body(`§6--------------------------------
 §aMoney: $${MoneySystem.get(player.id).money}
 §6--------------------------------${!!pageData?.pageBody?"\n§r"+pageData.pageBody:""}`)
@@ -509,6 +511,20 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
      */
     async sellItem(player: Player, item: SellableShopItem){
         try{
+            const infoForm = new ActionFormData
+            infoForm.title("Item Details")
+            infoForm.body(
+`§a${item.title}
+§r§6Amount Wanted: ${item.amountWanted}
+§r§gvalue: ${item.value}
+§r§bItem Type: §a${item.itemID}`
+            )
+            infoForm.button("Proceed to sell item")
+            infoForm.button("Back", "textures/ui/arrow_left");
+            infoForm.button("Close", "textures/ui/crossout");
+            const ifr = await forceShow(infoForm, player)
+            if(ifr.canceled||ifr.selection==1){return 1}
+            if(ifr.selection==2){return 0}
             const form = new ModalFormData
             form.title("Sell "+item.title)
             form.slider(`§a${item.title}\n§gValue: ${item.value}\n§fHow many would you like to sell?`, 0, item.max??64, item.step??1, item.step??1)
@@ -534,12 +550,13 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
             items.forEach(v=>itemCount+=v.amount)
             if(itemCount>=(r.formValues[0] as number)){
                 if(item.itemType=="sellable"){
-                    MoneySystem.get(player.id).addMoney(item.value*(r.formValues[0] as number))
                     let amountToRemove = r.formValues[0] as number
+                    const playerMoneySystem = MoneySystem.get(player.id)
                     for(let i = 0; amountToRemove>0; i++){
                         const iamount = items[i].amount
                         let amount = Math.min(amountToRemove, iamount)
                         if(amount==iamount){items[i].setItem()}else{items[i].amount-=amount}
+                        playerMoneySystem.addMoney(item.value*amount)
                         amountToRemove-=amount
                     }
                     return 1

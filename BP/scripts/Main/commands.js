@@ -1,4 +1,4 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType, EnchantmentTypes, StructureSaveMode, EntityTypes, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, EntityComponentTypes } from "@minecraft/server";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType, EnchantmentTypes, StructureSaveMode, EntityTypes, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, EntityComponentTypes, PlayerCursorInventoryComponent } from "@minecraft/server";
 import { getTopSolidBlock, arrayToElementList, debugAction, interactable_block, interactable_blockb, customFormUIElement, strToCustomFormUIElement /*,format_version*/, getUICustomForm, worldPlayers, timeZones, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, SemVerString, SemVerMatcher, SemVerValidator, dimensions, dimensionsb, dimensionsc, dimensionsd, dimensionse, fillBlocksHHFGB, fillBlocksHISGGB, fillBlocksHOFGB, fillBlocksHSGGB, flatPath, getGroundSolidBlock, getNextTopSolidBlockAbovePosition, getNextTopSolidBlockBelowPosition, getPathInObject, nether, overworld, scanForBlockType, the_end, v3Multiply, fillBlocksE, fillBlocksF, fillBlocksHDFGB, fillBlocksHFGBM, dimensionTypeDisplayFormattingF } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
@@ -2357,34 +2357,122 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^invsee$$/):
                 eventData.cancel = true;
                 system.run(() => {
-                    const inventoryd2 = world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(switchTestB.slice(7), "", Number(eventData.sender.id)))).getComponent("inventory");
-                    const equipmentd2 = world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(switchTestB.slice(7), "", Number(eventData.sender.id)))).getComponent("equippable");
+                    const player = world
+                        .getPlayers()
+                        .find((playerFinders) => playerFinders ==
+                        targetSelectorB(switchTestB.slice(7), "", Number(eventData.sender.id)));
+                    const inventoryd2 = player.getComponent("inventory");
+                    const equipmentd2 = player.getComponent("equippable");
+                    const cursord2 = player.getComponent("cursor_inventory");
                     try {
                         let slotsArray = [];
                         for (let i = 0; i < inventoryd2.inventorySize; i++) {
                             if (inventoryd2.container.getItem(Number(i)) !== undefined) {
-                                slotsArray = slotsArray.concat(String("slot: " + i + "§r§f, item: " + inventoryd2.container.getItem(Number(i)).typeId + "§r§f, amount: " + inventoryd2.container.getItem(Number(i)).amount + "§r§f, nameTag: " + inventoryd2.container.getItem(Number(i)).nameTag + "§r§f, lore: " + (JSONStringify(inventoryd2.container.getItem(Number(i)).getLore() ?? [], true) ?? "[]") + ", enchantments: " + ((!!inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")) ? (JSONStringify(inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments() ?? [], true) ?? "[]") : "N/A")));
+                                slotsArray = slotsArray.concat(String("slot: " +
+                                    i +
+                                    "§r§f, item: " +
+                                    inventoryd2.container.getItem(Number(i)).typeId +
+                                    "§r§f, amount: " +
+                                    inventoryd2.container.getItem(Number(i)).amount +
+                                    "§r§f, nameTag: " +
+                                    inventoryd2.container.getItem(Number(i)).nameTag +
+                                    "§r§f, lore: " +
+                                    (JSONStringify(inventoryd2.container
+                                        .getItem(Number(i))
+                                        .getLore() ?? [], true) ?? "[]") +
+                                    ", enchantments: " +
+                                    (!!inventoryd2.container
+                                        .getItem(Number(i))
+                                        ?.getComponent("enchantable")
+                                        ? JSONStringify(inventoryd2.container
+                                            .getItem(Number(i))
+                                            ?.getComponent("enchantable")
+                                            ?.getEnchantments() ?? [], true) ?? "[]"
+                                        : "N/A")));
                             }
                             else {
                                 slotsArray = slotsArray.concat("slot: " + i + ", item: minecraft:air");
                             }
                         }
-                        ;
-                        ;
                         for (let i = 0; i < 6; i++) {
                             try {
-                                let item = equipmentd2.getEquipment([EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i]);
+                                let item = equipmentd2.getEquipment([
+                                    EquipmentSlot.Head,
+                                    EquipmentSlot.Chest,
+                                    EquipmentSlot.Legs,
+                                    EquipmentSlot.Feet,
+                                    EquipmentSlot.Mainhand,
+                                    EquipmentSlot.Offhand,
+                                ][i]);
                                 if (item !== undefined) {
-                                    slotsArray = slotsArray.concat(String("slot: " + [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i] + ", item: " + item.typeId + ", amount: " + item.amount + ", nameTag: " + item.nameTag + "§r§f, lore: " + (JSONStringify(item.getLore() ?? [], true)) + "§r§f, enchantments: " + ((!!item.getComponent("enchantable")) ? (JSON.stringify(item?.getComponent("enchantable")?.getEnchantments() ?? []) ?? "[]") : "N/A")));
+                                    slotsArray = slotsArray.concat(String("slot: " +
+                                        [
+                                            EquipmentSlot.Head,
+                                            EquipmentSlot.Chest,
+                                            EquipmentSlot.Legs,
+                                            EquipmentSlot.Feet,
+                                            EquipmentSlot.Mainhand,
+                                            EquipmentSlot.Offhand,
+                                        ][i] +
+                                        ", item: " +
+                                        item.typeId +
+                                        ", amount: " +
+                                        item.amount +
+                                        ", nameTag: " +
+                                        item.nameTag +
+                                        "§r§f, lore: " +
+                                        JSONStringify(item.getLore() ?? [], true) +
+                                        "§r§f, enchantments: " +
+                                        (!!item.getComponent("enchantable")
+                                            ? JSON.stringify(item
+                                                ?.getComponent("enchantable")
+                                                ?.getEnchantments() ?? []) ?? "[]"
+                                            : "N/A")));
                                 }
                                 else {
-                                    slotsArray = slotsArray.concat("slot: " + [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i] + ", item: minecraft:air");
+                                    slotsArray = slotsArray.concat("slot: " +
+                                        [
+                                            EquipmentSlot.Head,
+                                            EquipmentSlot.Chest,
+                                            EquipmentSlot.Legs,
+                                            EquipmentSlot.Feet,
+                                            EquipmentSlot.Mainhand,
+                                            EquipmentSlot.Offhand,
+                                        ][i] +
+                                        ", item: minecraft:air");
                                 }
                             }
                             catch { }
                         }
-                        ;
-                        eventData.sender.sendMessage(String(world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(switchTestB.slice(7), "", Number(eventData.sender.id)))).name + "'s Items: \n" + slotsArray.join("§r§f\n")));
+                        try {
+                            const item = cursord2.item;
+                            if (item !== undefined) {
+                                slotsArray = slotsArray.concat(String("slot: cursor, item: " +
+                                    item.typeId +
+                                    ", amount: " +
+                                    item.amount +
+                                    ", nameTag: " +
+                                    item.nameTag +
+                                    "§r§f, lore: " +
+                                    JSONStringify(item.getLore() ?? [], true) +
+                                    "§r§f, enchantments: " +
+                                    (!!item.getComponent("enchantable")
+                                        ? JSON.stringify(item
+                                            ?.getComponent("enchantable")
+                                            ?.getEnchantments() ?? []) ?? "[]"
+                                        : "N/A")));
+                            }
+                            else {
+                                slotsArray = slotsArray.concat("slot: cursor, item: minecraft:air");
+                            }
+                        }
+                        catch { }
+                        eventData.sender.sendMessage(String(world
+                            .getPlayers()
+                            .find((playerFinders) => playerFinders ==
+                            targetSelectorB(switchTestB.slice(7), "", Number(eventData.sender.id))).name +
+                            "'s Items: \n" +
+                            slotsArray.join("§r§f\n")));
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -2394,8 +2482,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^invseep$$/):
                 eventData.cancel = true;
                 system.run(() => {
-                    const inventoryd2 = world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(switchTestB.slice(8), "", Number(eventData.sender.id)))).getComponent("inventory");
-                    const equipmentd2 = world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(switchTestB.slice(8), "", Number(eventData.sender.id)))).getComponent("equippable");
+                    const player = world
+                        .getPlayers()
+                        .find((playerFinders) => playerFinders ==
+                        targetSelectorB(switchTestB.slice(7), "", Number(eventData.sender.id)));
+                    const inventoryd2 = player.getComponent("inventory");
+                    const equipmentd2 = player.getComponent("equippable");
+                    const cursord2 = player.getComponent("cursor_inventory");
                     try {
                         let slotsArray = [];
                         for (let i = 0; i < inventoryd2.inventorySize; i++) {
@@ -2514,6 +2607,47 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             }
                             catch { }
                         }
+                        try {
+                            const item = cursord2.item;
+                            if (item !== undefined) {
+                                slotsArray = slotsArray.concat(String("slot: cursor, item: " +
+                                    item.typeId +
+                                    ", amount: " +
+                                    item.amount +
+                                    ", nameTag: " +
+                                    item.nameTag +
+                                    "§r§f, lore: " +
+                                    JSONStringify(item.getLore() ?? [], true) +
+                                    "§r§f, enchantments: " +
+                                    (!!item.getComponent("enchantable")
+                                        ? JSON.stringify(item
+                                            ?.getComponent("enchantable")
+                                            ?.getEnchantments() ?? []) ?? "[]"
+                                        : "N/A") +
+                                    ", properties: " +
+                                    JSONStringify(((i) => {
+                                        if ((item
+                                            .getDynamicPropertyIds() ?? []).length == 0) {
+                                            return item
+                                                .isStackable
+                                                ? null
+                                                : {};
+                                        }
+                                        else {
+                                            let properties = {};
+                                            item
+                                                .getDynamicPropertyIds()
+                                                .forEach((v) => (properties[v] = item
+                                                ?.getDynamicProperty(v)));
+                                            return properties;
+                                        }
+                                    }))));
+                            }
+                            else {
+                                slotsArray = slotsArray.concat("slot: cursor, item: minecraft:air");
+                            }
+                        }
+                        catch { }
                         eventData.sender.sendMessage(String(world
                             .getPlayers()
                             .find((playerFinders) => playerFinders ==
