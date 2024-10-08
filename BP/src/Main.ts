@@ -4095,7 +4095,14 @@ if(event.itemStack?.typeId=="andexdb:entity_debug_stick"){
                 )
 }
 });
-world.beforeEvents.playerLeave.subscribe(event => {
+world.beforeEvents.playerLeave.subscribe(event => {/*
+try{
+    console.warn(`Player ${JSON.stringify(event.player.name)}<${event.player.id}> left the game.`)
+}catch{
+    try{
+        console.warn(`${event.player}<${event.player}> left the game.`)
+    }catch{}
+}*/
 try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerLeave")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerLeaveBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
 world.afterEvents.blockExplode.subscribe(event => {
@@ -4685,10 +4692,24 @@ try{eval(String(world.getDynamicProperty("evalAfterEvents:playerInteractWithEnti
 try{if(["minecraft:creeper"].includes(event.target.typeId)&&!!event.itemStack){getPlayersWithTags("getEntityInteractTriggerExplosionNotifications").filter(p=>!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsIn:"+event.target.dimension)&&(!!event.player?!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsBy:"+event.player?.name)&&!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsById:"+event.player.id):!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsWithNoSource"))&&!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsEntityType:"+event.target.typeId)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eexplosiveEntityInteraction§r] ${!!event.player?`${event.player.name??event.player.nameTag} interacted with explosive entity of type "${event.target.typeId}"`:`Explosive entity of type "${event.target.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.target.dimension.id]} at ${vTStr(event.target.location)}${!!event.itemStack?` using ${event.itemStack?.typeId}`:""}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.soundId, {pitch: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.volume}))})}}catch(e){console.error(e, e.stack)}
 });
 world.afterEvents.playerJoin.subscribe(event => {
+try{
+    console.warn(`Player ${JSON.stringify(event.playerName)}<${event.playerId}> joined the game.`)
+}catch{
+    try{
+        console.warn(`${event.playerName}<${event.playerId}> joined the game.`)
+    }catch{}
+}
 if(!!(ban?.getValidBans()?.idBans?.find(_=>_?.playerId==event?.playerId)??ban.getValidBans().nameBans.find(_=>_.playerName==event.playerName))){try{let pName = event?.playerName; let pId = event?.playerId; let b = (ban?.getValidBans()?.idBans?.sort((a: ban, b: ban)=>1-(2*Number(a?.banDate>b?.banDate)))?.find(_=>_?.playerId==event?.playerId)??ban.getValidBans().nameBans?.sort((a: ban, b: ban)=>1-(2*Number(a?.banDate>b?.banDate))).find(_=>_.playerName==event.playerName)); let reason = b?.reason; try{reason = String(eval(b?.reason)?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))?.replaceAll("{timeRemainingMinutes}", String(b?.timeRemaining.minutes))?.replaceAll("{timeRemainingSeconds}", String(b?.timeRemaining.seconds))?.replaceAll("{timeRemainingMilliseconds}", String(b?.timeRemaining.milliseconds))?.replaceAll("{bannedBy}", String(b?.bannedByName))?.replaceAll("{bannedByName}", String(b?.bannedByName))?.replaceAll("{bannedById}", String(b?.bannedById))?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toUTCString()+" GMT"))?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toUTCString()+" GMT"))?.replaceAll("{type}", String(b?.type))?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))??b?.reason)??b?.reason; }catch(e){reason = b?.reason?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))?.replaceAll("{timeRemainingMinutes}", String(b?.timeRemaining.minutes))?.replaceAll("{timeRemainingSeconds}", String(b?.timeRemaining.seconds))?.replaceAll("{timeRemainingMilliseconds}", String(b?.timeRemaining.milliseconds))?.replaceAll("{bannedBy}", String(b?.bannedByName))?.replaceAll("{bannedById}", String(b?.bannedById))?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toUTCString()+" GMT"))?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toUTCString()+" GMT"))?.replaceAll("{type}", String(b?.type))?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))?.escapeCharactersB(true)?.v??b?.reason; }; world.getDimension("overworld").runCommand(`/kick ${JSON.stringify(pName)} ${reason}`); }catch(e){console.error(e, e.stack)}}
 try{eval(String(world.getDynamicProperty("evalAfterEvents:playerJoin")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerJoinAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
 world.afterEvents.playerLeave.subscribe(event => {
+try{
+    console.warn(`Player ${JSON.stringify(event.playerName)}<${event.playerId}> left the game.`)
+}catch{
+    try{
+        console.warn(`${event.playerName}<${event.playerId}> left the game.`)
+    }catch{}
+}
 try{eval(String(world.getDynamicProperty("evalAfterEvents:playerLeave")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerLeaveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
 world.afterEvents.playerPlaceBlock.subscribe(event => {

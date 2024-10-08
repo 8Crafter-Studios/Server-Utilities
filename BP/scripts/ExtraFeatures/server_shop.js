@@ -8,6 +8,9 @@ import { getStringFromDynamicProperties, getSuperUniqueID, saveStringToDynamicPr
 import { mainShopSystemSettings } from "./shop_main";
 import { Vector } from "Main/coordinates";
 import { MoneySystem } from "./money";
+/**
+ * @todo Convert the functions to async functions that return Promise<0|1>.
+ */
 export class ServerShop {
     constructor(config) {
         this.id = config.id;
@@ -29,22 +32,43 @@ export class ServerShop {
             publicShop: this.publicShop
         }));
     }
-    openShop(player, mode = (this.sellShop && this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both") {
+    /**
+     *
+     * @async
+     * @param player
+     * @param mode
+     * @returns
+     */
+    async openShop(player, mode = (this.sellShop && this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both") {
         if (mode == "both") {
             const form = new ActionFormData;
             form.title(this.title);
             form.button("Buy");
             form.button("Sell");
             form.button("Cancel");
-            forceShow(form, player).then(r => {
+            form.button("Close", "textures/ui/crossout");
+            return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true || r.selection == 2) {
-                    return;
+                    return 1;
+                }
+                if (r.selection == 3) {
+                    return 0;
                 }
                 if (r.selection == 0) {
-                    this.openShop(player, "buy");
+                    if ((await this.openShop(player, "buy")) == 1) {
+                        return await this.openShop(player, "both");
+                    }
+                    else {
+                        return 0;
+                    }
                 }
                 else if (r.selection == 1) {
-                    this.openShop(player, "sell");
+                    if ((await this.openShop(player, "sell")) == 1) {
+                        return await this.openShop(player, "both");
+                    }
+                    else {
+                        return 0;
+                    }
                 }
             });
         }
@@ -59,26 +83,31 @@ export class ServerShop {
                 form.button(v.title, v.texture);
             });
             if (this.buyShop) {
-                form.button("Back");
+                form.button("Back", "textures/ui/arrow_left");
             }
-            forceShow(form, player).then(r => {
+            form.button("Close", "textures/ui/crossout");
+            return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true) {
-                    return;
+                    return 1;
                 }
                 if (r.selection == data.length) {
-                    this.openShop(player, "both");
-                    return;
+                    return 1;
+                }
+                if (r.selection == data.length + 1) {
+                    return 0;
                 }
                 const item = data[r.selection];
                 if (item.type == "item") {
-                    this.sellItem(player, item).then(v => {
+                    return await this.sellItem(player, item).then(async (v) => {
                         if (v == 1) {
-                            this.openShop(player, "sell");
+                            return await this.openShop(player, "sell");
                         }
                     });
                 }
                 else if (item.type == "page") {
-                    this.openShopPage(player, data, ["sell", String(r.selection)]);
+                    if ((await this.openShopPage(player, data, ["sell", String(r.selection)])) == 1) {
+                        return await this.openShop(player, "sell");
+                    }
                 }
             });
         }
@@ -93,38 +122,55 @@ export class ServerShop {
                 form.button(v.title, v.texture);
             });
             if (this.sellShop) {
-                form.button("Back");
+                form.button("Back", "textures/ui/arrow_left");
             }
-            forceShow(form, player).then(r => {
+            form.button("Close", "textures/ui/crossout");
+            return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true) {
-                    return;
+                    return 1;
                 }
                 if (r.selection == data.length) {
-                    this.openShop(player, "both");
-                    return;
+                    return 1;
+                }
+                if (r.selection == data.length + 1) {
+                    return 0;
                 }
                 const item = data[r.selection];
                 if (item.type == "item") {
-                    this.buyItem(player, item).then(v => {
+                    return await this.buyItem(player, item).then(async (v) => {
                         if (v == 1) {
-                            this.openShop(player, "buy");
+                            return await this.openShop(player, "buy");
                         }
                     });
                 }
                 else if (item.type == "page") {
-                    this.openShopPage(player, data, ["buy", String(r.selection)]);
+                    if ((await this.openShopPage(player, data, ["buy", String(r.selection)])) == 1) {
+                        return await this.openShop(player, "buy");
+                    }
                 }
             });
         }
-        else if (mode == "none") {
+        else if (mode == "none") { /*
+            const form = new MessageFormData
+            form.title("404: Invalid Page")
+            form.body("The page you are looking for does not exist. ")
+            form.button1("Ok")
+            form.button2("Cancel")
+            forceShow(form, player)*/
             const form = new MessageFormData;
-            form.title("404: Invalid Page");
-            form.body("The page you are looking for does not exist. ");
+            form.title(config.ui.other.useStarWarsReference404Page ? "404: A Jedi has altered your mind." : "404: Invalid Page");
+            form.body(config.ui.other.useStarWarsReference404Page ? "Jedi: This is not the page you are looking for." : "The page you are looking for does not exist. ");
             form.button1("Ok");
             form.button2("Cancel");
-            forceShow(form, player);
+            return ((await forceShow(form, player)).selection != 1).toNumber();
         }
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param player
+     * @param data
+     * @param path
+     */
     openShopPage(player, data, path) {
         const mode = path[0];
         if (mode == "sell") {
@@ -134,7 +180,8 @@ export class ServerShop {
             newData.forEach(v => {
                 form.button(v.title, v.texture);
             });
-            form.button("Back");
+            form.button("Back", "textures/ui/arrow_left");
+            form.button("Close", "textures/ui/crossout");
             forceShow(form, player).then(r => {
                 if (r.canceled == true) {
                     return;
@@ -169,7 +216,8 @@ export class ServerShop {
             newData.forEach(v => {
                 form.button(v.title, v.texture);
             });
-            form.button("Back");
+            form.button("Back", "textures/ui/arrow_left");
+            form.button("Close", "textures/ui/crossout");
             forceShow(form, player).then(r => {
                 if (r.canceled == true) {
                     return;
@@ -235,6 +283,13 @@ export class ServerShop {
     static getIds() {
         return world.getDynamicPropertyIds().filter(v => v.startsWith("shop:"));
     }
+    /**
+     * @todo Make return type be Promise<0|1>.
+     * @async
+     * @param player
+     * @param item
+     * @returns
+     */
     async buyItem(player, item) {
         try {
             const form = new ModalFormData;
@@ -306,6 +361,13 @@ export class ServerShop {
             console.error(e, e.stack);
         }
     }
+    /**
+     * @todo Make return type be Promise<0|1>.
+     * @async
+     * @param player
+     * @param item
+     * @returns
+     */
     async sellItem(player, item) {
         try {
             const form = new ModalFormData;
@@ -363,6 +425,10 @@ export class ServerShop {
             console.error(e, e.stack);
         }
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     */
     static openPublicShopsSelector(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
@@ -438,9 +504,16 @@ export class LinkedServerShopCommands {
         ServerShop.get(this.LinkedCommands.find(c => c[0] == str)[1]).openShop(player);
     }
 }
+/**
+ * @todo Convert the functions to async functions that return Promise<0|1>.
+ */
 export class ServerShopManager {
     static get serverShopItemTextureHint() { return this.serverShopItemTextureHints[Math.floor(Math.random() * this.serverShopItemTextureHints.length)]; }
     static get serverShopPageTextureHint() { return this.serverShopPageTextureHints[Math.floor(Math.random() * this.serverShopPageTextureHints.length)]; }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     */
     static serverShopSystemSettings(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
@@ -450,6 +523,7 @@ export class ServerShopManager {
         form.button("Main Settings", "textures/ui/icon_setting");
         form.button("§cShop Item Settings", "textures/ui/icon_items");
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         forceShow(form, sourceEntity).then(r => {
             if (r.canceled)
                 return;
@@ -478,6 +552,10 @@ export class ServerShopManager {
             console.error(e, e.stack);
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     */
     static serverShopSystemSettings_main(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form2 = new ModalFormData();
@@ -497,6 +575,10 @@ export class ServerShopManager {
             console.error(e, e.stack);
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     */
     static manageServerShops(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
@@ -507,7 +589,8 @@ export class ServerShopManager {
             form.button(s.name ?? s.title ?? s.id);
         });
         form.button("New Shop", "textures/ui/color_plus");
-        form.button("Back", "textures/ui/arrow_left"); /*
+        form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout"); /*
         form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
         forceShow(form, sourceEntity).then(r => {
             // This will stop the code when the player closes the form
@@ -528,6 +611,10 @@ export class ServerShopManager {
             console.error(e, e.stack);
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     */
     static addServerShop(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form2 = new ModalFormData();
@@ -562,6 +649,11 @@ export class ServerShopManager {
             console.error(e, e.stack);
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     */
     static manageServerShop(sourceEntitya, shop) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
@@ -576,6 +668,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
         form.button("Shop Settings", "textures/ui/icon_setting");
         form.button("View Shop", "textures/ui/feedIcon");
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -625,6 +718,11 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
             console.error(e, e.stack);
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     */
     static manageServerShop_settings(sourceEntitya, shop) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form2 = new ModalFormData();
@@ -655,6 +753,11 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
             console.error(e, e.stack);
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     */
     static manageServerShop_editLinkedCommand(sourceEntitya, shop) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form2 = new ModalFormData();
@@ -679,6 +782,12 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
             console.error(e, e.stack);
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @returns
+     */
     static async manageServerShop_addLinkedCommand(sourceEntitya, shop) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form2 = new ModalFormData();
@@ -707,6 +816,12 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
             console.error(e, e.stack);
         }
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param mode
+     */
     static manageServerShop_contents(sourceEntitya, shop, mode = "buy") {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
@@ -720,6 +835,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
         form.button("Add Item", "textures/ui/book_addpicture_default");
         form.button("Add Page", "textures/ui/book_addtextpage_default");
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         forceShow(form, sourceEntity).then(async (r) => {
             if (r.canceled)
                 return;
@@ -814,6 +930,15 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
             ;
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param item
+     * @param itemIndex
+     * @param mode
+     * @returns
+     */
     static async manageServerShop_manageItem(sourceEntitya, shop, item, itemIndex, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const form = new ActionFormData;
@@ -828,6 +953,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
         form.button("Edit Item", "textures/ui/book_edit_default");
         form.button("Delete Item", "textures/ui/book_trash_default");
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -882,6 +1008,15 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
             return r;
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param item
+     * @param itemIndex
+     * @param mode
+     * @returns
+     */
     static async manageServerShop_editItem(sourceEntitya, shop, item, itemIndex, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const form = new ModalFormData;
@@ -988,6 +1123,14 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
             return r;
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param type
+     * @param mode
+     * @returns
+     */
     static async manageServerShop_addItem(sourceEntitya, shop, type, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const form = new ModalFormData;
@@ -1116,6 +1259,15 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
             return r;
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param page
+     * @param pageIndex
+     * @param mode
+     * @returns
+     */
     static async manageServerShop_managePage(sourceEntitya, shop, page, pageIndex, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const form = new ActionFormData;
@@ -1129,6 +1281,7 @@ Texture: ${page.texture}`);
         form.button("Edit Page", "textures/ui/book_edit_default");
         form.button("Delete Page", "textures/ui/book_trash_default");
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -1187,6 +1340,15 @@ Texture: ${page.texture}`);
             return r;
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param page
+     * @param pageIndex
+     * @param mode
+     * @returns
+     */
     static async manageServerShop_editPage(sourceEntitya, shop, page, pageIndex, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const form = new ModalFormData;
@@ -1217,6 +1379,13 @@ Texture: ${page.texture}`);
             return r;
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param mode
+     * @returns
+     */
     static async manageServerShop_addPage(sourceEntitya, shop, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const form = new ModalFormData;
@@ -1254,6 +1423,13 @@ Texture: ${page.texture}`);
             return r;
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param path
+     * @returns
+     */
     static async manageServerShopPage_contents(sourceEntitya, shop, path) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const mode = path[0];
@@ -1269,6 +1445,7 @@ Texture: ${page.texture}`);
         form.button("Add Item", "textures/ui/book_addpicture_default");
         form.button("Add Page", "textures/ui/book_addtextpage_default");
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         let r = undefined;
         try {
             r = await forceShow(form, sourceEntity);
@@ -1378,6 +1555,15 @@ Texture: ${page.texture}`);
         }
         return r;
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param path
+     * @param item
+     * @param itemIndex
+     * @returns
+     */
     static async manageServerShopPage_manageItem(sourceEntitya, shop, path, item, itemIndex) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const mode = path[0];
@@ -1393,6 +1579,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
         form.button("Edit Item", "textures/ui/book_edit_default");
         form.button("Delete Item", "textures/ui/book_trash_default");
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -1451,6 +1638,15 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
             return r;
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param path
+     * @param item
+     * @param itemIndex
+     * @returns
+     */
     static async manageServerShopPage_editItem(sourceEntitya, shop, path, item, itemIndex) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const mode = path[0];
@@ -1560,6 +1756,14 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
             return r;
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param path
+     * @param type
+     * @returns
+     */
     static async manageServerShopPage_addItem(sourceEntitya, shop, path, type) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const mode = path[0];
@@ -1691,6 +1895,15 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
             return r;
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param path
+     * @param page
+     * @param pageIndex
+     * @returns
+     */
     static async manageServerShopPage_managePage(sourceEntitya, shop, path, page, pageIndex) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const mode = path[0];
@@ -1705,6 +1918,7 @@ Texture: ${page.texture}`);
         form.button("Edit Page", "textures/ui/book_edit_default");
         form.button("Delete Page", "textures/ui/book_trash_default");
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -1763,6 +1977,15 @@ Texture: ${page.texture}`);
             return r;
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param path
+     * @param page
+     * @param pageIndex
+     * @returns
+     */
     static async manageServerShopPage_editPage(sourceEntitya, shop, path, page, pageIndex) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const mode = path[0];
@@ -1796,6 +2019,13 @@ Texture: ${page.texture}`);
             return r;
         });
     }
+    /**
+     * @todo Make an async function with return type of Promise<0|1>.
+     * @param sourceEntitya
+     * @param shop
+     * @param path
+     * @returns
+     */
     static async manageServerShopPage_addPage(sourceEntitya, shop, path) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         const mode = path[0];

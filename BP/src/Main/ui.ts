@@ -30,6 +30,8 @@ import { chatMessage, chatSend } from "./chat";
 import { targetSelectorAllListC } from "./command_utilities";
 import { commands } from "./commands_list";
 import { mainShopSystemSettings } from "ExtraFeatures/shop_main";
+import { MoneySystem } from "ExtraFeatures/money";
+import { showMessage } from "./utilities";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -2859,6 +2861,7 @@ export function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|Player
             form2.button("Show Data"); 
             form2.button("Check Inventory"); 
             form2.button("Manage Bans"); 
+            form2.button("Edit Money"); 
             form2.button("§4Manage Permissions§f(§cCOMING SOON!§f)"); 
             form2.button("§4Manage Hotbar Presets§f(§cCOMING SOON!§f)"); 
             form2.button("§4Manage Private Warps§f(§cCOMING SOON!§f)"); 
@@ -2941,6 +2944,21 @@ export function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|Player
                             }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
                         }; 
                     }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+                    break
+                    case 4: {
+                        try{
+                            new ModalFormData().textField("Money", "int", MoneySystem.get(player.id).money.toString()).forceShow(sourceEntity as Player).then(async r=>{
+                                if(!!r.formValues[0].toBigInt()){
+                                    MoneySystem.get(player.id).setMoney(r.formValues[0].toBigInt())
+                                }else{
+                                    await showMessage(sourceEntity as Player, "Invalid Input", "The value you have inputted is not a valid amount of money.", "Okay", "Cancel")
+                                }
+                                managePlayers(sourceEntity, page)
+                            })
+                        }catch(e){
+                            console.error(e, e?.stack)
+                        }
+                    }
                     break
                     case 8: 
                     managePlayers(sourceEntity, page)

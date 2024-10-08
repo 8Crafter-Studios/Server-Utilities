@@ -122,11 +122,7 @@ globalThis.scriptStartTick = system.currentTick;
 export const modules = {
     mcServer,
     mcServerUi,
-    GameTest, /*
-    mcServerAdmin,
-    mcDebugUtilities,
-    mcCommon,
-    mcVanillaData,*/
+    GameTest,
     main,
     transformrecipes,
     coords,
@@ -6244,6 +6240,15 @@ world.afterEvents.playerInteractWithEntity.subscribe(event => {
     }
 });
 world.afterEvents.playerJoin.subscribe(event => {
+    try {
+        console.warn(`Player ${JSON.stringify(event.playerName)}<${event.playerId}> joined the game.`);
+    }
+    catch {
+        try {
+            console.warn(`${event.playerName}<${event.playerId}> joined the game.`);
+        }
+        catch { }
+    }
     if (!!(ban?.getValidBans()?.idBans?.find(_ => _?.playerId == event?.playerId) ?? ban.getValidBans().nameBans.find(_ => _.playerName == event.playerName))) {
         try {
             let pName = event?.playerName;
@@ -6274,6 +6279,15 @@ world.afterEvents.playerJoin.subscribe(event => {
     }
 });
 world.afterEvents.playerLeave.subscribe(event => {
+    try {
+        console.warn(`Player ${JSON.stringify(event.playerName)}<${event.playerId}> left the game.`);
+    }
+    catch {
+        try {
+            console.warn(`${event.playerName}<${event.playerId}> left the game.`);
+        }
+        catch { }
+    }
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerLeave")));
     }

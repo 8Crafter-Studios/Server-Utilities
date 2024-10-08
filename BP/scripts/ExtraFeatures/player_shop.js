@@ -42,9 +42,13 @@ export class PlayerShop {
             form.button("Buy");
             form.button("Sell");
             form.button("Cancel");
+            form.button("Close", "textures/ui/crossout");
             return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true || r.selection == 2) {
                     return 1;
+                }
+                if (r.selection == 3) {
+                    return 0;
                 }
                 if (r.selection == 0) {
                     return await this.openShop(player, "buy");
@@ -68,14 +72,18 @@ export class PlayerShop {
                 form.button(v.title, v.texture);
             });
             if (this.buyShop) {
-                form.button("Back");
+                form.button("Back", "textures/ui/arrow_left");
             }
+            form.button("Close", "textures/ui/crossout");
             return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true) {
                     return 1;
                 }
-                if (r.selection == data.length) {
+                if (r.selection == (this.buyShop ? data.length : -1)) {
                     return 1;
+                }
+                if (r.selection == data.length + (+this.buyShop)) {
+                    return 0;
                 }
                 const item = data[r.selection];
                 if (item.type == "player_shop_item") {
@@ -89,8 +97,12 @@ export class PlayerShop {
                     }
                 }
                 else if (item.type == "player_shop_page") {
-                    await this.openShopPage(player, data, ["sell", String(r.selection)]);
-                    return await this.openShop(player, mode);
+                    if ((await this.openShopPage(player, data, ["sell", String(r.selection)])) == 1) {
+                        return await this.openShop(player, mode);
+                    }
+                    else {
+                        return 0;
+                    }
                 }
             });
         }
@@ -105,14 +117,18 @@ export class PlayerShop {
                 form.button(v.title, v.texture);
             });
             if (this.sellShop) {
-                form.button("Back");
+                form.button("Back", "textures/ui/arrow_left");
             }
+            form.button("Close", "textures/ui/crossout");
             return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true) {
                     return 1;
                 }
-                if (r.selection == data.length) {
+                if (r.selection == (this.sellShop ? data.length : -1)) {
                     return 1;
+                }
+                if (r.selection == data.length + (+this.sellShop)) {
+                    return 0;
                 }
                 const item = data[r.selection];
                 if (item.type == "player_shop_item") {
@@ -153,7 +169,8 @@ export class PlayerShop {
             newData.forEach(v => {
                 form.button(v.title, v.texture);
             });
-            form.button("Back");
+            form.button("Back", "textures/ui/arrow_left");
+            form.button("Close", "textures/ui/crossout");
             return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true) {
                     return 1;
@@ -165,6 +182,9 @@ export class PlayerShop {
                         this.openShopPage(player, data, path.slice(0, -2) as [typeof path[0], ...string[]])
                     };*/
                     return 1;
+                }
+                if (r.selection == newData.length + 1) {
+                    return 0;
                 }
                 const item = newData[r.selection];
                 if (item.type == "player_shop_item") {
@@ -194,7 +214,8 @@ export class PlayerShop {
             newData.forEach(v => {
                 form.button(v.title, v.texture);
             });
-            form.button("Back");
+            form.button("Back", "textures/ui/arrow_left");
+            form.button("Close", "textures/ui/crossout");
             return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true) {
                     return 1;
@@ -206,6 +227,9 @@ export class PlayerShop {
                         this.openShopPage(player, data, path.slice(0, -2) as [typeof path[0], ...string[]])
                     };*/
                     return 1;
+                }
+                if (r.selection == newData.length + 1) {
+                    return 0;
                 }
                 const item = newData[r.selection];
                 if (item.type == "player_shop_item") {
@@ -287,10 +311,14 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
 }`);
             infoForm.button("Proceed to buy item");
             infoForm.button("More Details");
-            infoForm.button("Back");
+            infoForm.button("Back", "textures/ui/arrow_left");
+            infoForm.button("Close", "textures/ui/crossout");
             const ifr = await forceShow(infoForm, player);
             if (ifr.canceled || ifr.selection == 2) {
                 return 1;
+            }
+            if (ifr.selection == 3) {
+                return 0;
             }
             if (ifr.selection == 1) {
                 world.structureManager.place(item.structureID, player.dimension, Vector.add(player.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
@@ -309,7 +337,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
 §r§6Stock: ${item.remainingStock}
 §r§gPrice: ${item.price}
 §r§bItem Type: §a${itemStack.typeId}
-§r§bItem Name: §a${itemStack.nameTag}
+§r§bItem Name: §a${JSON.stringify(itemStack.nameTag)}
 §r§bLore: §a${JSON.stringify(itemStack.getLore(), undefined, 1)}
 §r§bCan Destroy: §a${JSON.stringify(itemStack.getCanDestroy(), undefined, 1)}
 §r§bCan Place On: §a${JSON.stringify(itemStack.getCanPlaceOn(), undefined, 1)}
@@ -321,9 +349,13 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
 §r§bEnchantments: ${item.itemDetails.enchantments instanceof Array ? "\n§d[" + item.itemDetails.enchantments.map(v => v.type.id + " " + v.level.toRomanNumerals()).join("\n") + "\n]" : item.itemDetails.enchantments}`);
                 infoFormB.button("Proceed to buy item");
                 infoFormB.button("Back");
+                infoFormB.button("Close");
                 const ifrb = await forceShow(infoFormB, player);
                 if (ifrb.canceled || ifrb.selection == 1) {
                     return 1;
+                }
+                if (ifrb.selection == 2) {
+                    return 0;
                 }
             }
             if (item.remainingStock == 0) {
@@ -440,6 +472,9 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                 }
             }
             else {
+                // {"Block":{"name":"minecraft:blue_orchid","states": {},"version":7687},"Count":1b,"Damage":0s,"Name": "minecraft:blue_orchid","WasPickedUp":0b,"tag":{"PlantBlock":{"name":"minecraft:blue_orchid","states":{},"version":7687},"display":{"Lore":["(+DATA)"]}}}
+                // {"Block":{"name":"minecraft:flower_pot","states": {},"version":7687},"Count":1b,"Damage":0s,"Name": "minecraft:flower_pot","WasPickedUp":0b,"tag":{"PlantBlock":{"name":"minecraft:blue_orchid","states":{},"version":7687},"display":{"Lore":["(+DATA)"]}}}
+                // {"Block":{"name":"minecraft:flower_pot","states": {},"version":7687},"Count":1b,"Damage":0s,"Name": "minecraft:flower_pot","WasPickedUp":0b,"tag":{"PlantBlock":{"name":"minecraft:reeds","states":{},"version":7687},"display":{"Lore":["(+DATA)"]}}}
                 const form = new MessageFormData;
                 form.title("Not Enough Money");
                 form.body(`You do not have enough money to buy this item.\nYou currently have $${MoneySystem.get(player.id).money}.\nOne of this item costs $${item.price}.\nYou wanted to buy ${r.formValues[0]} of this item.\nThe total price is $${item.price * r.formValues[0]}.\nYou need another $${(item.price * r.formValues[0]).toBigInt() - MoneySystem.get(player.id).money} to buy this item.`);
@@ -459,6 +494,97 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
     }
     async sellItem(player, item, path, itemIndex) {
         try {
+            const infoForm = new ActionFormData;
+            infoForm.title("Item Details");
+            infoForm.body(`§a${item.title}
+§r§6Amount Wanted: ${item.amountWanted}
+§r§gvalue: ${item.value}
+§r§bItem Type: §a${item.itemID}${item.itemType != "player_shop_sellable_advanced" ? "" : `${!!item.extraRestrictions.nameTag ? `
+§r§bRequired Item Name: §a${item.extraRestrictions.nameTag}` : ""}${!!item.extraRestrictions.lore ? `
+§r§bHas Required Lore: §aTrue` : "§r§bHas Required Lore: §cFalse"}`}`);
+            infoForm.button("Proceed to sell item");
+            if (item.itemType == "player_shop_sellable_advanced") {
+                infoForm.button("More Details");
+            }
+            infoForm.button("Back", "textures/ui/arrow_left");
+            infoForm.button("Close", "textures/ui/crossout");
+            const ifr = await forceShow(infoForm, player);
+            if (ifr.canceled || ifr.selection == (1 + (+(item.itemType == "player_shop_sellable_advanced")))) {
+                return 1;
+            }
+            if (ifr.selection == (2 + (+(item.itemType == "player_shop_sellable_advanced")))) {
+                return 0;
+            }
+            if (ifr.selection == (item.itemType == "player_shop_sellable_advanced" ? 1 : -1)) {
+                const infoFormB = new ActionFormData;
+                infoFormB.title("Item Details");
+                infoFormB.body(`§a${item.title}
+§r§6Amount Wanted: ${item.amountWanted}
+§r§gValue: ${item.value}
+§r§bItem Type: §a${item.itemID}${item.itemType != "player_shop_sellable_advanced" ? "" : `${!!item.extraRestrictions.nameTag ? `
+§r§bRequired Item Name: §a${item.extraRestrictions.nameTag}` : ""}${!!item.extraRestrictions.lore ? `
+§r§bRequired Lore: §a${JSON.stringify(item.extraRestrictions.lore, undefined, 1)}` : ""}${!!item.extraRestrictions.lore ? `
+§r§bRequired Can Destroy: §a${JSON.stringify(item.extraRestrictions.canPlaceOn, undefined, 1)}` : ""}${!!item.extraRestrictions.lore ? `
+§r§bRequired Can Place On: §a${JSON.stringify(item.extraRestrictions.canDestroy, undefined, 1)}` : ""}${item.extraRestrictions.requiredEnchantmentsMode == "ignore" ? "" : item.extraRestrictions.requiredEnchantmentsMode == "allow_additional" ? `
+§r§bAllows Additional Enchantments: §aTrue
+§r§aRequired Enchantments: ${item.extraRestrictions.requiredEnchantments instanceof Array
+                    ? "§d{" +
+                        item.extraRestrictions.requiredEnchantments.map(v => v.hasOwnProperty("level")
+                            ? v.type +
+                                " " +
+                                v.level.toRomanNumerals()
+                            : v.type +
+                                " {Min: " +
+                                v.minLevel.toRomanNumerals() +
+                                " Max: " +
+                                v.maxLevel.toRomanNumerals() +
+                                "}").join("\n") +
+                        "}"
+                    : "none"}
+§r§cDisallowed Enchantment Types: §d[${item.extraRestrictions.excludedEnchantmentTypes instanceof Array ? "\n" + item.extraRestrictions.excludedEnchantmentTypes.join("\n") + "\n" : ""}]` : `
+§r§bAllows Additional Enchantments: §cFalse
+§r§aRequired Enchantments: ${item.extraRestrictions.requiredEnchantments instanceof Array
+                    ? "§d{" +
+                        item.extraRestrictions.requiredEnchantments.map(v => v.hasOwnProperty("level")
+                            ? v.type +
+                                " " +
+                                v.level.toRomanNumerals()
+                            : v.type +
+                                " {Min: " +
+                                v.minLevel.toRomanNumerals() +
+                                " Max: " +
+                                v.maxLevel.toRomanNumerals() +
+                                "}").join("\n") +
+                        "}"
+                    : "none"}
+§r§eOptional Enchantments: ${item.extraRestrictions.optionalAdditionalEnchantments instanceof Array
+                    ? "§d{" +
+                        item.extraRestrictions.optionalAdditionalEnchantments.map(v => v.hasOwnProperty("level")
+                            ? v.type +
+                                " " +
+                                v.level.toRomanNumerals()
+                            : v.type +
+                                " {Min: " +
+                                v.minLevel.toRomanNumerals() +
+                                " Max: " +
+                                v.maxLevel.toRomanNumerals() +
+                                "}").join("\n") +
+                        "}"
+                    : "none"}`}`}`);
+                infoFormB.button("Proceed to buy item");
+                infoFormB.button("Back");
+                infoFormB.button("Close");
+                const ifrb = await forceShow(infoFormB, player);
+                if (ifrb.canceled || ifrb.selection == 1) {
+                    return 1;
+                }
+                if (ifrb.selection == 2) {
+                    return 0;
+                }
+            }
+            if (item.amountWanted == 0) {
+                return ((await showMessage(player, "Out Of Stock", "This item is out of stock.", "Go Back", "Close Shop")).selection == 0).toNumber();
+            }
             const form = new ModalFormData;
             form.title("Sell " + item.title);
             form.slider(`§a${item.title}\n§gValue: ${item.value}${item.amountWanted <= 0 ? "\n§cThe owner of this shop is not accepting any more of this item." : ""}\n§fHow many would you like to sell?`, 0, Math.min(item.amountWanted ?? 64, 64 * (item.step ?? 1)), Math.min(item.step ?? 1, item.amountWanted), Math.min(item.step ?? 1, item.amountWanted));
@@ -481,7 +607,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                 if (MoneySystem.get(item.playerID).money < (item.value.toBigInt() * r.formValues[0].toBigInt())) {
                     const form = new MessageFormData;
                     form.title("Owner Has Insufficient Funds");
-                    form.body(`The owner of this shop does not have enough money to pay you for this item.\nThey currently have $${MoneySystem.get(item.playerID).money}.\nOne of this item is worth $${item.value}.\nYou wanted to sell ${r.formValues[0]} of this item.\nThe total value is $${item.value * r.formValues[0]}.\nThey need another $${(item.value * r.formValues[0]).toBigInt() - MoneySystem.get(item.playerID).money} to pay you for this item.\nThe number of this item that they can currently pay you for is $${MoneySystem.get(item.playerID).money / item.value.toBigInt()}`);
+                    form.body(`The owner of this shop does not have enough money to pay you for this item.\nThey currently have $${MoneySystem.get(item.playerID).money}.\nOne of this item is worth $${item.value}.\nYou wanted to sell ${r.formValues[0]} of this item.\nThe total value is $${item.value * r.formValues[0]}.\nThey need another $${(item.value * r.formValues[0]).toBigInt() - MoneySystem.get(item.playerID).money} to pay you for this item.\nThe number of this item that they can currently pay you for is ${MoneySystem.get(item.playerID).money / item.value.toBigInt()}.`);
                     form.button1("Go Back");
                     form.button2("Close Shop");
                     const rb = await forceShow(form, player);
@@ -745,16 +871,28 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             let response = r.selection;
             switch (response) {
                 case shopsList.length:
-                    await PlayerShopManager.managePlayerShops(sourceEntity, false);
-                    return await PlayerShop.openPublicShopsSelector(sourceEntity);
+                    if ((await PlayerShopManager.managePlayerShops(sourceEntity, false)) != 0) {
+                        return await PlayerShop.openPublicShopsSelector(sourceEntity);
+                    }
+                    else {
+                        return 0;
+                    }
                     break;
                 case sourceEntity.hasTag("admin") ? shopsList.length + 1 : -1:
-                    await PlayerShopManager.managePlayerShops(sourceEntity, true);
-                    return await PlayerShop.openPublicShopsSelector(sourceEntity);
+                    if ((await PlayerShopManager.managePlayerShops(sourceEntity, true)) != 0) {
+                        return await PlayerShop.openPublicShopsSelector(sourceEntity);
+                    }
+                    else {
+                        return 0;
+                    }
                     break;
                 case sourceEntity.hasTag("admin") ? shopsList.length + 2 : -2:
-                    await PlayerShopManager.playerShopSystemSettings(sourceEntity);
-                    return await PlayerShop.openPublicShopsSelector(sourceEntity);
+                    if ((await PlayerShopManager.playerShopSystemSettings(sourceEntity)) != 0) {
+                        return await PlayerShop.openPublicShopsSelector(sourceEntity);
+                    }
+                    else {
+                        return 0;
+                    }
                     break;
                 case shopsList.length + 1 + (+sourceEntity.hasTag("admin")) * 2:
                     return 1;
@@ -783,6 +921,7 @@ export class PlayerShopManager {
         form.button("Main Settings", "textures/ui/icon_setting");
         form.button("§cShop Item Settings", "textures/ui/icon_items");
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         return await forceShow(form, sourceEntity).then(async (r) => {
             if (r.canceled)
                 return 1;
@@ -812,6 +951,9 @@ export class PlayerShopManager {
                 case 4:
                     // mainShopSystemSettings(sourceEntity)
                     return 1;
+                    break;
+                case 5:
+                    return 0;
                     break;
                 default:
                     return 0;
@@ -861,7 +1003,8 @@ export class PlayerShopManager {
         if (config.system.debugMode) {
             form.button("New Shop As Another Player\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/color_plus");
         }
-        form.button("Back", "textures/ui/arrow_left"); /*
+        form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout"); /*
         form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
@@ -920,6 +1063,9 @@ export class PlayerShopManager {
                 case shopsList.length + 1 + (+(sourceEntity.hasTag("admin") && config.system.debugMode)):
                     return 1;
                     // await PlayerShopManager.playerShopSystemSettings(sourceEntity) as 0|1
+                    break;
+                case shopsList.length + 2 + (+(sourceEntity.hasTag("admin") && config.system.debugMode)):
+                    return 0;
                     break;
                 default:
                     if (await PlayerShopManager.managePlayerShop(sourceEntity, shopsList[response]) != 0) {
@@ -1032,6 +1178,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
             form.button("Edit Sell Shop JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
         }
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -1249,6 +1396,9 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     // PlayerShopManager.managePlayerShops(sourceEntity)
                     return 1;
                     break;
+                case 6 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 7):
+                    return 0;
+                    break;
                 default:
                     return 0;
             }
@@ -1274,7 +1424,6 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
         form2.submitButton("Save");
         return await forceShow(form2, sourceEntity).then(async (t) => {
             if (t.canceled) {
-                PlayerShopManager.managePlayerShop(sourceEntity, shop);
                 return 1;
             }
             ;
@@ -1310,6 +1459,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
         form.button("Add Item", "textures/ui/book_addpicture_default");
         form.button("Add Page", "textures/ui/book_addtextpage_default");
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         return await forceShow(form, sourceEntity).then(async (r) => {
             if (r.canceled)
                 return 1;
@@ -1419,9 +1569,16 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     // PlayerShopManager.managePlayerShop(sourceEntity, shop)
                     return 1;
                     break;
+                case shopData.length + 3:
+                    return 0;
+                    break;
                 default:
-                    shopData[response].type == "player_shop_item" ? await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, shopData[response], response, mode) : await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, shopData[response], response, mode);
-                    return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                    if ((shopData[response].type == "player_shop_item" ? await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, shopData[response], response, mode) : await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, shopData[response], response, mode)) == 1) {
+                        return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
+                    }
+                    else {
+                        return 0;
+                    }
             }
         }).catch(async (e) => {
             try {
@@ -1464,6 +1621,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
             }
         }
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -1756,6 +1914,9 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                 case 3 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3) + (+(sourceEntity.hasTag("admin") && config.system.debugMode && mode == "buy")) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
                     return 1;
                     break;
+                case 4 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3) + (+(sourceEntity.hasTag("admin") && config.system.debugMode && mode == "buy")) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
+                    return 0;
+                    break;
                 default:
                     return 0;
             }
@@ -1820,6 +1981,62 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                 shop.buyData = newData;
             }
             else if (mode == "sell") {
+                let newData = shop.sellData;
+                newData.splice(itemIndex, 1, item);
+                shop.sellData = newData;
+            }
+            return r;
+        });
+    }
+    /**
+     * Opens the UI for editing a player shop item.
+     * @param sourceEntitya The player editing the shop item.
+     * @param shop The player shop that the shop item is in.
+     * @param item The shop item that the player is editing.
+     * @param itemIndex The index of the shop item that is being edited in the shop page, it is zero-indexed.
+     * @param mode Whether this is a buy or sell shop.
+     * @returns The chosen options in the edit item screen.
+     */
+    static async managePlayerShop_editAdvancedItem(sourceEntitya, shop, item, itemIndex, mode) {
+        const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        const form = new ModalFormData;
+        form.title("Edit " + item.title);
+        if (item.itemType == "player_shop_sellable_advanced") {
+            form.textField("§7Sellable Item Type: player_shop_sellable_advanced\n§fButton Title§c*", "Stick", JSON.stringify(item.title).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Button Icon Texture\n§7Leave blank for no icon.", this.playerShopItemTextureHint, JSON.stringify(item.texture).slice(1, -1).replaceAll("\\\"", "\""));
+            form.textField("Value§c*", "10", String(item.value));
+            form.textField("Sell Amount Step\n§oDefault is 1\nCannot be higher than the \"Amount Wanted\" value", "1", String(item.step ?? 1));
+            form.textField("Amount Wanted\n§oDefault is 64", "64", String(item.amountWanted ?? 64));
+            form.textField("Item Type§c*", "minecraft:stick", JSON.stringify(item.itemID).slice(1, -1).replaceAll("\\\"", "\""));
+            // form.textField("Data Value§c*", "0", String(item))
+            form.toggle("Ignore Name Tag", !!!item.extraRestrictions.nameTag);
+            form.textField("Name Tag\nType: string", "No name tag", JSON.stringify(item.extraRestrictions.nameTag ?? "").slice(1, -1).replaceAll("\\\"", "\""));
+            form.toggle("Ignore Lore", !!!item.extraRestrictions.lore);
+            form.textField("Lore\nType: JSONArray", "No lore", !!item.extraRestrictions.lore ? JSON.stringify(item.extraRestrictions.lore) : "");
+            form.toggle("Ignore Can Place On", !!!item.extraRestrictions.canPlaceOn);
+            form.textField("Can Place On\nType: JSONArray", "No can place on", !!item.extraRestrictions.canPlaceOn ? JSON.stringify(item.extraRestrictions.canPlaceOn) : "");
+            form.toggle("Ignore Can Destroy", !!!item.extraRestrictions.canDestroy);
+            form.textField("Can Destroy\nType: JSONArray", "No can destroy", !!item.extraRestrictions.canDestroy ? JSON.stringify(item.extraRestrictions.canDestroy) : "");
+            form.dropdown("Keep On Death", ["Ignore keep on death", "Require keep on death", "Require not keep on death"], !!item.extraRestrictions.keepOnDeath ? +item.extraRestrictions.keepOnDeath : 0);
+            form.dropdown("Lock Mode", ["Ignore lock mode", "Require inventory lock", "Require slot lock", "Require no lock"], !!item.extraRestrictions.lockMode ? [undefined, "inventory", "slot", "none"].indexOf(item.extraRestrictions.lockMode) : 0);
+            form.textField("Minimum Durability\nLeave blank to ignore minimum durability\nType: int", "Ignore minimum durability", String(item.extraRestrictions.minimumDurability ?? ""));
+            form.textField("Maximum Durability\nLeave blank to ignore maximum durability\nType: int", "Ignore maximum durability", String(item.extraRestrictions.maximumDurability ?? ""));
+        }
+        return await forceShow(form, sourceEntity).then(async (r) => {
+            // This will stop the code when the player closes the form
+            if (r.canceled)
+                return r;
+            if (item.itemType == "player_shop_sellable_advanced") {
+                let [title, texture, value, step, amountWanted, itemID, ignoreNameTag, nameTag, ignoreLore, lore, ignoreCanDestroy, canDestroy, ignoreCanPlaceOn, canPlaceOn, keepOnDeath, lockMode, minimumDurability, maximumDurability] = r.formValues;
+                item.title = JSON.parse("\"" + (title.replaceAll("\"", "\\\"")) + "\"");
+                item.texture = JSON.parse("\"" + (texture.replaceAll("\"", "\\\"")) + "\"");
+                item.value = Number.isNaN(Number(value)) ? 10 : Number(value);
+                item.step = Number.isNaN(Number(step)) ? 10 : Number(step);
+                item.amountWanted = +Number.isNaN(Number(amountWanted)) ? 10 : Number(amountWanted);
+                item.itemID = JSON.parse("\"" + (itemID.replaceAll("\"", "\\\"")) + "\"");
+                item.extraRestrictions.nameTag = ignoreNameTag ? null : JSON.parse("\"" + (nameTag.replaceAll("\"", "\\\"")) + "\"");
+            }
+            if (mode == "sell") {
                 let newData = shop.sellData;
                 newData.splice(itemIndex, 1, item);
                 shop.sellData = newData;
@@ -1901,6 +2118,7 @@ Texture: ${page.texture}`);
             form.button("Edit JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
         }
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -2004,6 +2222,9 @@ Texture: ${page.texture}`);
                 case 4:
                     return 1;
                     break;
+                case 5:
+                    return 0;
+                    break;
                 default:
                     return 0;
             }
@@ -2092,6 +2313,7 @@ Texture: ${page.texture}`);
         form.button("Add Item", "textures/ui/book_addpicture_default");
         form.button("Add Page", "textures/ui/book_addtextpage_default");
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         let r = undefined;
         try {
             r = await forceShow(form, sourceEntity);
@@ -2220,9 +2442,16 @@ Texture: ${page.texture}`);
                 };*/
                 return 1;
                 break;
+            case shopData.length + 3:
+                return 0;
+                break;
             default:
-                shopData[response].type == "player_shop_item" ? await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, [...path, "data", String(response)], shopData[response], response) : await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, [...path, "data", String(response)], shopData[response], response);
-                return await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
+                if ((shopData[response].type == "player_shop_item" ? await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, [...path, "data", String(response)], shopData[response], response) : await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, [...path, "data", String(response)], shopData[response], response)) == 1) {
+                    return await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
+                }
+                else {
+                    return 0;
+                }
         }
         return 1;
     }
@@ -2257,6 +2486,7 @@ Texture: ${page.texture}`);
             }
         }
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -2338,15 +2568,14 @@ Texture: ${page.texture}`);
                             const itemStack = entity.getComponent("inventory").container.getItem(0);
                             entity.remove();
                             if (!!!itemStack) {
-                                if ((!itemb.item.hasItem()) ||
-                                    !((itemb?.item?.lockMode == "inventory" &&
-                                        !config.shopSystem.player
-                                            .allowSellingLockInInventoryItems) ||
-                                        (itemb?.item?.lockMode == "slot" &&
-                                            !config.shopSystem.player.allowSellingLockInSlotItems) ||
-                                        (itemb?.item?.keepOnDeath &&
-                                            !config.shopSystem.player.allowSellingKeepOnDeathItems))) {
-                                    if ((await showMessage(sourceEntity, "", `You cannot restock this item with the selected item because ${(itemb.item?.lockMode == "inventory" && !config.shopSystem.player.allowSellingLockInInventoryItems) ? "selling items that are locked to your inventory is disabled" : (itemb.item?.lockMode == "slot" && !config.shopSystem.player.allowSellingLockInSlotItems) ? "selling items that are locked to a specific inventory slot is disabled" : (itemb.item?.keepOnDeath && !config.shopSystem.player.allowSellingKeepOnDeathItems) ? "selling items that have the keep on death property is disabled" : "that slot is empty"}.`, "Back", "Close")).selection != 0) {
+                                if (((itemb?.item?.lockMode == "inventory" &&
+                                    !config.shopSystem.player
+                                        .allowSellingLockInInventoryItems) ||
+                                    (itemb?.item?.lockMode == "slot" &&
+                                        !config.shopSystem.player.allowSellingLockInSlotItems) ||
+                                    (itemb?.item?.keepOnDeath &&
+                                        !config.shopSystem.player.allowSellingKeepOnDeathItems))) {
+                                    if ((await showMessage(sourceEntity, "", `You cannot restock this item with the selected item because ${(itemb.item?.lockMode == "inventory" && !config.shopSystem.player.allowSellingLockInInventoryItems) ? "selling items that are locked to your inventory is disabled" : (itemb.item?.lockMode == "slot" && !config.shopSystem.player.allowSellingLockInSlotItems) ? "selling items that are locked to a specific inventory slot is disabled" : (itemb.item?.keepOnDeath && !config.shopSystem.player.allowSellingKeepOnDeathItems) ? "selling items that have the keep on death property is disabled" : "of an unknown reason"}.`, "Back", "Close")).selection != 0) {
                                         return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
                                     }
                                     else {
@@ -2366,6 +2595,7 @@ Texture: ${page.texture}`);
                                 if (!!!entity) {
                                     throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${itemc.entityID} was found inside of the specified structure.`);
                                 }
+                                // const itemStackC = itemb.item.getItem()
                                 const leftOverItemStack = entity.getComponent("inventory").container.addItem(itemb.item.getItem());
                                 const itemStackB = entity.getComponent("inventory").container.getItem(0);
                                 itemb.item.setItem(leftOverItemStack);
@@ -2395,14 +2625,14 @@ Texture: ${page.texture}`);
                                     });
                                     itemc.remainingStock = itemStackB.amount;
                                     itemc.itemDetails = {
-                                        damage: tryget(() => itemb.item.getItem().getComponent("durability").damage) ?? NaN,
-                                        maxDurability: tryget(() => itemb.item.getItem().getComponent("durability").maxDurability) ?? NaN,
-                                        keepOnDeath: itemb.item.keepOnDeath,
-                                        lockMode: itemb.item.lockMode,
-                                        loreLineCount: itemb.item.getLore().length,
-                                        typeId: itemb.item.typeId,
-                                        nameTag: itemb.item.nameTag ?? null,
-                                        enchantments: tryget(() => itemb.item.getItem().getComponent("enchantable").getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                                        damage: tryget(() => itemStackB.getComponent("durability").damage) ?? NaN,
+                                        maxDurability: tryget(() => itemStackB.getComponent("durability").maxDurability) ?? NaN,
+                                        keepOnDeath: itemStackB.keepOnDeath,
+                                        lockMode: itemStackB.lockMode,
+                                        loreLineCount: itemStackB.getLore().length,
+                                        typeId: itemStackB.typeId,
+                                        nameTag: itemStackB.nameTag ?? null,
+                                        enchantments: tryget(() => itemStackB.getComponent("enchantable").getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
                                     };
                                     let data = shop.buyData;
                                     let newData = getPathInObject(data, path).data;
@@ -2494,6 +2724,7 @@ Texture: ${page.texture}`);
                                 return 0;
                             }
                         }
+                        return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
                     }
                     break;
                 case ((sourceEntity.hasTag("admin") && config.system.debugMode) ? 3 : -3) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
@@ -2557,6 +2788,9 @@ Texture: ${page.texture}`);
                     break;
                 case 3 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3) + (+(sourceEntity.hasTag("admin") && config.system.debugMode && mode == "buy")) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
                     return 1;
+                    break;
+                case 4 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3) + (+(sourceEntity.hasTag("admin") && config.system.debugMode && mode == "buy")) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
+                    return 0;
                     break;
                 default:
                     return 0;
@@ -2693,6 +2927,7 @@ Texture: ${page.texture}`);
             form.button("Edit JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
         }
         form.button("Back", "textures/ui/arrow_left");
+        form.button("Close", "textures/ui/crossout");
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
@@ -2799,6 +3034,9 @@ Texture: ${page.texture}`);
                     break;
                 case 4 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3):
                     return 1;
+                    break;
+                case 5 + (+(sourceEntity.hasTag("admin") && config.system.debugMode) * 3):
+                    return 0;
                     break;
                 default:
                     return 0;
