@@ -232,8 +232,18 @@ export type ShopPage = {
  * A shop item saved in a structure block. 
  */
 export type SavedShopItem = {
-    maxStackSize?: number
-    remainingStock?: number
+    itemDetails: {
+        typeId: ItemStack["typeId"]
+        nameTag?: ItemStack["nameTag"]
+        loreLineCount: ReturnType<ItemStack["getLore"]>["length"]/*
+        canDestroyLength: ReturnType<ItemStack["getCanDestroy"]>["length"]
+        canPlaceOnLength: ReturnType<ItemStack["getCanPlaceOn"]>["length"]*/
+        enchantments: ReturnType<ItemEnchantableComponent["getEnchantments"]>|"N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+        maxDurability: ItemDurabilityComponent["maxDurability"]
+        damage: ItemDurabilityComponent["damage"]
+        keepOnDeath: ItemStack["keepOnDeath"]
+        lockMode: ItemStack["lockMode"]
+    }
     texture?: string
     title: string
     structureID: string

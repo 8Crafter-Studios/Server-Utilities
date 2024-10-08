@@ -334,9 +334,6 @@ export class ServerShop{
         return world.getDynamicPropertyIds().filter(v=>v.startsWith("shop:"))
     }
     /**
-     * @todo Make return type be Promise<0|1>.
-     * @todo Copy over the menu for the item information from the player shop system.
-     * @todo Copy over the updated code from the player shop system.
      * @see {@link PlayerShop.buyItem}
      * @async
      * @param player 
@@ -345,6 +342,80 @@ export class ServerShop{
      */
     async buyItem(player: Player, item: ShopItem): Promise<0|1>{
         try{
+            const infoForm = new ActionFormData
+            infoForm.title("Item Details")
+            infoForm.body(
+`§a${item.title}
+§r§gPrice: ${item.price}
+§r§bItem Type: §a${item.itemType=="giveCommand"?item.itemID:item.itemType=="newItemStack"?item.itemID:item.itemDetails.typeId}${
+item.itemType=="giveCommand"?"":`\n§r§bItem Name: §a${item.itemType=="newItemStack"?item.itemName:item.itemDetails.nameTag}`}${
+item.itemType=="giveCommand"?"":`\n§r§r§bLore: §c${item.itemType=="newItemStack"?item.itemLore?.length??0:item.itemDetails.loreLineCount} Lines`}${
+item.itemType=="pre-made"?`\n§r§bEnchantments: §d{
+${item.itemDetails.enchantments instanceof Array?item.itemDetails.enchantments.map(v=>v.type.id+" "+v.level.toRomanNumerals()).join("\n"):item.itemDetails.enchantments}
+}`:""}`
+            )
+            infoForm.button("Proceed to buy item")
+            if(item.itemType!="giveCommand"){infoForm.button("More Details")}
+            infoForm.button("Back", "textures/ui/arrow_left");
+            infoForm.button("Close", "textures/ui/crossout");
+            const ifr = await forceShow(infoForm, player)
+            if(ifr.canceled||ifr.selection==1+(+(item.itemType!="giveCommand"))){return 1}
+            if(ifr.selection==2+(+(item.itemType!="giveCommand"))){return 0}
+            if(ifr.selection==((item.itemType!="giveCommand")?1:-1)){
+                const infoFormB = new ActionFormData
+                infoFormB.title("Item Details")
+                if(item.itemType=="pre-made"){
+                    world.structureManager.place(item.structureID, player.dimension, Vector.add(player.location, {x: 0, y: 10, z: 0}), {includeBlocks: false, includeEntities: true})
+                    const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, {x: 0, y: 10, z: 0})).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id")))==item.entityID)
+                    if(!!!entity){
+                        throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${item.entityID} was found inside of the specified structure.`)
+                    }
+                    const itemStack = entity.getComponent("inventory").container.getItem(0)
+                    entity.remove()
+                    infoFormB.body(
+!!!itemStack?`§a${item.title}
+§r§gPrice: ${item.price}
+§r§cSomething went wrong and the rest of the information could not be obtained.`:`§a${item.title}
+§r§gPrice: ${item.price}
+§r§bItem Type: §a${itemStack.typeId}
+§r§bItem Name: §a${JSON.stringify(itemStack.nameTag)}
+§r§bLore: §a${JSON.stringify(itemStack.getLore(), undefined, 1)}
+§r§bCan Destroy: §a${JSON.stringify(itemStack.getCanDestroy(), undefined, 1)}
+§r§bCan Place On: §a${JSON.stringify(itemStack.getCanPlaceOn(), undefined, 1)}
+§r§bLock Mode: §a${itemStack.lockMode}
+§r§bKeep On Death: ${itemStack.keepOnDeath.toFormattedString()}
+§r§bDynamic Properties: §r${tryget(()=>`${itemStack.getDynamicPropertyTotalByteCount()} Bytes: \n`+JSON.stringify(Object.fromEntries(itemStack.getDynamicPropertyIds().map(v=>["§r"+v, itemStack.getDynamicProperty(v)])), undefined, 1))??"N/A"}${
+itemStack.hasComponent("durability")?`\n§r§bDurability: ${itemStack.getComponent("durability").damage<(itemStack.getComponent("durability").maxDurability/3)?"§a":itemStack.getComponent("durability").damage<(itemStack.getComponent("durability").maxDurability/1.5)?"§e":"§c"}{itemStack.getComponent("durability").maxDurability-itemStack.getComponent("durability").damage}/${itemStack.getComponent("durability").maxDurability}`:""}${
+itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.getComponent("potion").potionEffectType.id}
+§r§bPotion Liquid Type: §9${itemStack.getComponent("potion").potionLiquidType.id}
+§r§bPotion Modifier Type: §e${itemStack.getComponent("potion").potionModifierType.id}`:""}
+§r§bEnchantments: ${itemStack.hasComponent("enchantable")?"\n§d["+itemStack.getComponent("enchantable").getEnchantments().map(v=>v.type.id+" "+v.level.toRomanNumerals()).join("\n")+"\n]":"N/A"}`
+                    )
+                }else if(item.itemType=="newItemStack"){
+                    infoFormB.body(
+`§a${item.title}
+§r§6Stock: ${item.remainingStock}
+§r§gPrice: ${item.price}
+§r§bItem Type: §a${item.itemID}
+§r§bItem Name: §a${JSON.stringify(item.itemName)}
+§r§bLore: §a${JSON.stringify(item.itemLore, undefined, 1)}
+§r§bCan Destroy: §a${JSON.stringify(item.canDestroy, undefined, 1)}
+§r§bCan Place On: §a${JSON.stringify(item.canPlaceOn, undefined, 1)}
+§r§bLock Mode: §a${item.lockMode}
+§r§bKeep On Death: ${item.keepOnDeath.toFormattedString()}
+§r§bDynamic Properties: §r${tryget(()=>JSON.stringify(item.dynamicProperties, undefined, 1))??"N/A"}`
+                    )
+                }else{}
+                infoFormB.button("Proceed to buy item")
+                infoFormB.button("Back")
+                infoFormB.button("Close")
+                const ifrb = await forceShow(infoFormB, player)
+                if(ifrb.canceled||ifrb.selection==1){return 1}
+                if(ifrb.selection==2){return 0}
+            }/*
+            if(item.remainingStock==0){
+                return ((await showMessage(player, "Out Of Stock", "This item is out of stock.", "Go Back", "Close Shop")).selection==0).toNumber()
+            }*/
             const form = new ModalFormData
             form.title("Buy "+item.title)
             form.slider(`§a${item.title}\n§gPrice: ${item.price}\n§fHow many would you like to buy?`, 0, item.max??64, item.step??1, item.step??1)
@@ -735,7 +806,7 @@ export class ServerShopManager{
      * @param sourceEntitya 
      * @param shop 
      */
-    static manageServerShop(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop){
+    static async manageServerShop(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form = new ActionFormData();
         form.title("Manage "+shop.title);
@@ -750,48 +821,85 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
         form.button("View Shop", "textures/ui/feedIcon");
         form.button("Back", "textures/ui/arrow_left");
         form.button("Close", "textures/ui/crossout");
-        forceShow(form, (sourceEntity as Player)).then(async r => {
+        return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return;
+            if (r.canceled) return 1;
     
             let response = r.selection;
             switch (response) {
                 case 0:
                     if(shop.buyShop&&shop.sellShop){
-                        ServerShopManager.manageServerShop_contents(sourceEntity, shop, (await showMessage(sourceEntity as Player, "Manage Buy or Sell Shop", "Would you like to edit the buy shop or the sell shop?\nThe buy shop is where players buy items, while the sell shop is where players sell items.", "Edit Buy Shop", "Edit Sell Shop")).selection==0?"buy":"sell")
+                        if((await ServerShopManager.manageServerShop_contents(sourceEntity, shop, (await showMessage(sourceEntity as Player, "Manage Buy or Sell Shop", "Would you like to edit the buy shop or the sell shop?\nThe buy shop is where players buy items, while the sell shop is where players sell items.", "Edit Buy Shop", "Edit Sell Shop")).selection==0?"buy":"sell"))==1){
+                            return await ServerShopManager.manageServerShop(sourceEntity, shop);
+                        }
                     }else if(shop.buyShop){
-                        ServerShopManager.manageServerShop_contents(sourceEntity, shop, "buy")
+                        if((await ServerShopManager.manageServerShop_contents(sourceEntity, shop, "buy"))==1){
+                            return await ServerShopManager.manageServerShop(sourceEntity, shop);
+                        }
                     }else if(shop.sellShop){
-                        ServerShopManager.manageServerShop_contents(sourceEntity, shop, "sell")
+                        if((await ServerShopManager.manageServerShop_contents(sourceEntity, shop, "sell"))==1){
+                            return await ServerShopManager.manageServerShop(sourceEntity, shop);
+                        }
                     }else{
-                        showMessage(sourceEntity as Player, "§cInvalid Shop Settings", "§cError: Invalid Shop Settings.\nA shop cannot have both the §eBuy Shop§c and §eSell Shop§c options disabled.", "Edit Buy Shop", "Edit Sell Shop")
+                        if((await showMessage(sourceEntity as Player, "§cInvalid Shop Settings", "§cError: Invalid Shop Settings.\nA shop cannot have both the §eBuy Shop§c and §eSell Shop§c options disabled.", "Back", "Close")).selection==1){
+                            return await ServerShopManager.manageServerShop(sourceEntity, shop);
+                        }
                     }
+                    return 0;
                 break;
                 case 1:
-                    (LinkedServerShopCommands.testShopHasLinkedCommand(shop.id)?ServerShopManager.manageServerShop_editLinkedCommand:ServerShopManager.manageServerShop_addLinkedCommand)(sourceEntity, shop)
+                    if((await (LinkedServerShopCommands.testShopHasLinkedCommand(shop.id)?ServerShopManager.manageServerShop_editLinkedCommand:ServerShopManager.manageServerShop_addLinkedCommand)(sourceEntity, shop))==1){
+                        return await ServerShopManager.manageServerShop(sourceEntity, shop);
+                    }
+                    return 0;
                 break;
                 case 2:
-                    ServerShopManager.manageServerShop_settings(sourceEntity, shop)
+                    if((await ServerShopManager.manageServerShop_settings(sourceEntity, shop))==1){
+                        return await ServerShopManager.manageServerShop(sourceEntity, shop);
+                    }
+                    return 0;
                 break;
                 case 3:
                     if(shop.buyShop&&shop.sellShop){
-                        shop.openShop(sourceEntity as Player, "both")
+                        if((await shop.openShop(sourceEntity as Player, "both"))==1){
+                            return await ServerShopManager.manageServerShop(sourceEntity, shop);
+                        }else{
+                            return 0;
+                        }
                     }else if(shop.buyShop){
-                        shop.openShop(sourceEntity as Player, "buy")
+                        if((await shop.openShop(sourceEntity as Player, "buy"))==1){
+                            return await ServerShopManager.manageServerShop(sourceEntity, shop);
+                        }else{
+                            return 0;
+                        }
                     }else if(shop.sellShop){
-                        shop.openShop(sourceEntity as Player, "sell")
+                        if((await shop.openShop(sourceEntity as Player, "sell"))==1){
+                            return await ServerShopManager.manageServerShop(sourceEntity, shop);
+                        }else{
+                            return 0;
+                        }
                     }else{
-                        shop.openShop(sourceEntity as Player, "none")
+                        if((await shop.openShop(sourceEntity as Player, "none"))==1){
+                            return await ServerShopManager.manageServerShop(sourceEntity, shop);
+                        }else{
+                            return 0;
+                        }
                     }
                 break;
                 case 4:
-                    ServerShopManager.manageServerShops(sourceEntity)
+                    return 1;
+                break;
+                case 5:
+                    return 0;
                 break;
                 default:
+                    return 1;
     
             }
+            return 1
         }).catch(e => {
             console.error(e, e.stack);
+            return 0
         });
     }
     /**
@@ -800,7 +908,7 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
      * @param sourceEntitya 
      * @param shop 
      */
-    static manageServerShop_settings(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop){
+    static async manageServerShop_settings(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form2 = new ModalFormData();
         form2.title(`${shop.title} Settings`)
@@ -811,8 +919,8 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
         form2.toggle(`§l§fIs Sell Shop§r§f\nWhether or not players can sell items in this shop, default is true`, shop.sellShop??true)
         form2.toggle(`§l§fPublic Shop§r§f\nWhether or not this shop can be accessed by any player through the use of the \\viewservershops command, default is true`, shop.publicShop??true)
         form2.submitButton("Save")
-        forceShow(form2, (sourceEntity as Player)).then(t => {
-            if (t.canceled) {ServerShopManager.manageServerShop(sourceEntity, shop); return;};
+        return await forceShow(form2, (sourceEntity as Player)).then(async t => {
+            if (t.canceled) {return 1;};
             let [ name, title, mainPageBodyText, buyShop, sellShop, publicShop ] = t.formValues as [ name: string, title: string, mainPageBodyText: string, buyShop: boolean, sellShop: boolean, publicShop: boolean ];
             shop.name=JSON.parse("\""+(name.replaceAll("\"", "\\\""))+"\"")
             shop.title=JSON.parse("\""+(title.replaceAll("\"", "\\\""))+"\"")
@@ -821,34 +929,36 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
             shop.sellShop=sellShop
             shop.publicShop=publicShop
             shop.save()
-            ServerShopManager.manageServerShop(sourceEntity, shop); 
+            return 1
         }).catch(e => {
             console.error(e, e.stack);
-        });
+            return 1
+        }) as 1;
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
      * @param sourceEntitya 
      * @param shop 
      */
-    static manageServerShop_editLinkedCommand(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop){
+    static async manageServerShop_editLinkedCommand(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form2 = new ModalFormData();
         form2.title(`Editing Linked Command For ${shop.title}`)
         form2.textField(`§l§fCommand§r§f\nThe command to open this shop, you must include the prefix\nLeave the text box blank to remove the command.`, "\\myshop", LinkedServerShopCommands.LinkedCommands.find(c=>c[1]==shop.id)[0])
         form2.submitButton("Save")
-        forceShow(form2, (sourceEntity as Player)).then(t => {
-            if (t.canceled) {ServerShopManager.manageServerShop(sourceEntity, shop); return;};
+        return await forceShow(form2, (sourceEntity as Player)).then(t => {
+            if (t.canceled) {return 1;};
             let [ command ] = t.formValues as [ command: string ];
             if(command.trim()==""){
                 LinkedServerShopCommands.removeCommandLinkedToShop(shop.id)
             }else{
                 LinkedServerShopCommands.relinkShopIDCommand(shop.id, command.trim().split(" ")[0])
             }
-            ServerShopManager.manageServerShop(sourceEntity, shop); 
+            return 1
         }).catch(e => {
             console.error(e, e.stack);
-        });
+            return 1
+        }) as 1;
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
@@ -856,7 +966,7 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
      * @param shop 
      * @returns 
      */
-    static async manageServerShop_addLinkedCommand(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop){
+    static async manageServerShop_addLinkedCommand(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form2 = new ModalFormData();
         form2.title(`Adding Linked Command For ${shop.title}`)
@@ -864,29 +974,31 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
         form2.submitButton("Save")
         try{
             const t = await forceShow(form2, (sourceEntity as Player))
-            if (t.canceled) {ServerShopManager.manageServerShop(sourceEntity, shop); return;};
+            if (t.canceled) {return 1;};
             let [ command ] = t.formValues as [ command: string ];
             if(command.trim()!=""){
                 LinkedServerShopCommands.addLinkedCommand([command.trim().split(" ")[0], shop.id])
                 ServerShopManager.manageServerShop(sourceEntity, shop); 
+                return 1
             }else{
                 if((await showMessage(sourceEntity as Player, "Invalid Input", "The command cannot be blank.", "Back", "Close")).selection==0){
-                    ServerShopManager.manageServerShop(sourceEntity, shop); 
+                    return 1
                 }
+                return 0
             }
         }catch(e){
             console.error(e, e.stack);
         }
+        return 1
     }
     
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_contents}.
      * @param sourceEntitya 
      * @param shop 
      * @param mode 
      */
-    static manageServerShop_contents(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, mode: "buy"|"sell" = "buy"){
+    static async manageServerShop_contents(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, mode: "buy"|"sell" = "buy"): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form = new ActionFormData();
         form.title(`Manage ${shop.title??""} Contents`);
@@ -899,8 +1011,8 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
         form.button("Add Page", "textures/ui/book_addtextpage_default");
         form.button("Back", "textures/ui/arrow_left");
         form.button("Close", "textures/ui/crossout");
-        forceShow(form, (sourceEntity as Player)).then(async r => {
-            if (r.canceled) return;
+        return await forceShow(form, (sourceEntity as Player)).then(async r => {
+            if (r.canceled) return 1;
     
             let response = r.selection;
             switch (response) {
@@ -965,7 +1077,17 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                             step: Number.isNaN(Number(step))?10:Number(step),
                             max: Number.isNaN(Number(max))?10:Number(max),
                             structureID: "andexdbSavedShopItem:"+entityID,
-                            entityID: entityID
+                            entityID: entityID,
+                            itemDetails: {
+                                damage: tryget(()=>item.item.getItem().getComponent("durability").damage)??NaN,
+                                maxDurability: tryget(()=>item.item.getItem().getComponent("durability").maxDurability)??NaN,
+                                keepOnDeath: item.item.keepOnDeath,
+                                lockMode: item.item.lockMode,
+                                loreLineCount: item.item.getLore().length,
+                                typeId: item.item.typeId,
+                                nameTag: item.item.nameTag,
+                                enchantments: tryget(()=>item.item.getItem().getComponent("enchantable").getEnchantments())??"N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                            }
                         }
                         let itemIndexB = Number.isNaN(Number(itemIndex))?(mode=="buy"?shop.buyData.length:shop.sellData.length):Number(itemIndex)
                         if(mode=="buy"){
@@ -977,33 +1099,42 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                             newData.splice(itemIndexB, 0, itemB as any)
                             shop.sellData=newData
                         }
-                        ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode)
+                        return await ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode)
                     }else if(!!!type){
-                        ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode)
+                        return await ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode)
                     }else{
-                        await ServerShopManager.manageServerShop_addItem(sourceEntity, shop, type, mode)
-                        ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode)
+                        if((await ServerShopManager.manageServerShop_addItem(sourceEntity, shop, type, mode))==1){
+                            return await ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode)
+                        }
+                        return 0
                     }
                 break;
                 case shopData.length+1:
-                    await ServerShopManager.manageServerShop_addPage(sourceEntity, shop, mode)
-                    ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode)
+                    if((await ServerShopManager.manageServerShop_addPage(sourceEntity, shop, mode))==1){
+                        return await ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode)
+                    }
+                    return 0
                 break;
                 case shopData.length+2:
-                    ServerShopManager.manageServerShop(sourceEntity, shop)
+                    return 1
+                break;
+                case shopData.length+3:
+                    return 0
                 break;
                 default:
-                    shopData[response].type=="item"?await ServerShopManager.manageServerShop_manageItem(sourceEntity, shop, shopData[response] as SellableShopItem|ShopItem, response, mode):await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, shopData[response] as ShopPage, response, mode)
-                    ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode)
+                    if((shopData[response].type=="item"?await ServerShopManager.manageServerShop_manageItem(sourceEntity, shop, shopData[response] as SellableShopItem|ShopItem, response, mode):await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, shopData[response] as ShopPage, response, mode))==1){
+                        return await ServerShopManager.manageServerShop_contents(sourceEntity, shop, mode)
+                    }
+                    return 0
     
             }
         }).catch(async e => {
-            try{await showMessage(sourceEntity as Player, "§cError", `§c${e} ${e.stack}`, "Back", "Close")}catch{console.error(e, e.stack);};
+            try{if((await showMessage(sourceEntity as Player, "§cError", `§c${e} ${e.stack}`, "Back", "Close")).selection==1){return 1}else{return 0}}catch{console.error(e, e.stack);};
+            return 0;
         });
     }
     
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_manageItem}.
      * @param sourceEntitya 
      * @param shop 
@@ -1012,7 +1143,7 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
      * @param mode 
      * @returns 
      */
-    static async manageServerShop_manageItem<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number, mode: mode){
+    static async manageServerShop_manageItem<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number, mode: mode): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const form = new ActionFormData;
         form.title("Manage "+item.title);
@@ -1031,7 +1162,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
         form.button("Close", "textures/ui/crossout");
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return r;
+            if (r.canceled) return 1;
     
             let response = r.selection;
             switch (response) {
@@ -1051,11 +1182,15 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                             newData.splice(Number(r.formValues[0]), 0, item as SellableShopItem)
                             shop.sellData=newData
                         }
+                        return await ServerShopManager.manageServerShop_manageItem(sourceEntity, shop, item, Number(r.formValues[0]), mode)
                     }
+                    return await ServerShopManager.manageServerShop_manageItem(sourceEntity, shop, item, itemIndex, mode)
                 break;
                 case 1:
-                    await ServerShopManager.manageServerShop_editItem(sourceEntity, shop, item, itemIndex, mode)
-                    await ServerShopManager.manageServerShop_manageItem(sourceEntity, shop, item, itemIndex, mode)
+                    if((await ServerShopManager.manageServerShop_editItem(sourceEntity, shop, item, itemIndex, mode))==1){
+                        return await ServerShopManager.manageServerShop_manageItem(sourceEntity, shop, item, itemIndex, mode)
+                    }
+                    return 0
                 break;
                 case 2:
                     const sureOfItemDeletion = await showMessage(sourceEntity as Player, "Are you sure?", "Are you sure you want to delete this item?", "No", "Yes")
@@ -1069,20 +1204,25 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                             newData.splice(itemIndex, 1)
                             shop.sellData=newData
                         }
+                        return 1
                     }else{
-                        await ServerShopManager.manageServerShop_manageItem(sourceEntity, shop, item, itemIndex, mode)
+                        return await ServerShopManager.manageServerShop_manageItem(sourceEntity, shop, item, itemIndex, mode)
                     }
                 break;
                 case 3:
+                    return 1
+                break;
+                case 4:
+                    return 0
                 break;
                 default:
+                    return 1
     
             }
-            return r
+            return 1
         });
     }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_editItem}.
      * @param sourceEntitya 
      * @param shop 
@@ -1091,7 +1231,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
      * @param mode 
      * @returns 
      */
-    static async manageServerShop_editItem<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number, mode: mode){
+    static async manageServerShop_editItem<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number, mode: mode): Promise<1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const form = new ModalFormData;
         form.title("Manage "+item.title);
@@ -1135,7 +1275,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
         }
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return r;
+            if (r.canceled) return 1;
     
             if(item.itemType=="newItemStack"){
                 let [title, texture, price, step, max, itemID, itemName, itemLore, canDestroy, canPlaceOn, lockMode, keepOnDeath] = r.formValues as [title: string, texture: string, price: string, step: string, max: string, itemID: string, itemName: string, itemLore: string, canDestroy: string, canPlaceOn: string, none_slot_inventory: 0|1|2, lockMode: boolean];
@@ -1169,6 +1309,28 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                 item.max=Number.isNaN(Number(max))?10:Number(max)
                 item.structureID=JSON.parse("\""+(structureID.replaceAll("\"", "\\\""))+"\"")
                 item.entityID=JSON.parse("\""+(entityID.replaceAll("\"", "\\\""))+"\"")
+                let entity: Entity = undefined
+                let itemStack: ItemStack = undefined
+                try{
+                    world.structureManager.place(structureID, sourceEntity.dimension, Vector.add(sourceEntity.location, {x: 0, y: 10, z: 0}), {includeBlocks: false, includeEntities: true})
+                    entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, {x: 0, y: 10, z: 0})).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id")))==entityID)
+                    if(!!!entity){
+                        throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${entityID} was found inside of the specified structure.`)
+                    }
+                    itemStack = entity.getComponent("inventory").container.getItem(0),
+                    item.itemDetails.damage=!!!itemStack?null:tryget(()=>itemStack.getComponent("durability").damage)??NaN,
+                    item.itemDetails.maxDurability=!!!itemStack?null:tryget(()=>itemStack.getComponent("durability").maxDurability)??NaN,
+                    item.itemDetails.keepOnDeath=!!!itemStack?null:itemStack.keepOnDeath,
+                    item.itemDetails.lockMode=!!!itemStack?null:itemStack.lockMode,
+                    item.itemDetails.loreLineCount=!!!itemStack?null:itemStack.getLore().length,
+                    item.itemDetails.typeId=!!!itemStack?null:itemStack.typeId,
+                    item.itemDetails.nameTag=!!!itemStack?null:itemStack.nameTag,
+                    item.itemDetails.enchantments=!!!itemStack?null:tryget(()=>itemStack.getComponent("enchantable").getEnchantments())??"N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                }catch(e){
+                    console.error(e, e?.stack)
+                }finally{
+                    try{entity.remove()}catch{}
+                }
             }else if(item.itemType=="sellable"){
                 let [title, texture, value, step, max, itemID] = r.formValues as [title: string, texture: string, value: string, step: string, max: string, itemID: string];
                 item.title=JSON.parse("\""+(title.replaceAll("\"", "\\\""))+"\"")
@@ -1187,11 +1349,10 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                 newData.splice(itemIndex, 1, item as SellableShopItem)
                 shop.sellData=newData
             }
-            return r
-        });
+            return 1
+        }) as 1;
     }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_addItem}.
      * @param sourceEntitya 
      * @param shop 
@@ -1199,7 +1360,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
      * @param mode 
      * @returns 
      */
-    static async manageServerShop_addItem<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, type: "pre-made"|"pre-made_manual"|"newItemStack"|"giveCommand"|"sellable", mode: mode){
+    static async manageServerShop_addItem<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, type: "pre-made"|"pre-made_manual"|"newItemStack"|"giveCommand"|"sellable", mode: mode): Promise<1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const form = new ModalFormData;
         form.title("Add Item");
@@ -1247,7 +1408,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
         }
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return r;
+            if (r.canceled) return 1;
             let item: ShopItem|SellableShopItem = undefined
             let itemIndex = Number.isNaN(Number(r.formValues[2]))?10:Number(r.formValues[2])
     
@@ -1284,6 +1445,20 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                 }
             }else if(type=="pre-made"||type=="pre-made_manual"){
                 let [title, texture, itemIndex, price, step, max, structureID, entityID] = r.formValues as [title: string, texture: string, itemIndex: string, price: string, step: string, max: string, structureID: string, entityID: string];
+                let entity: Entity = undefined
+                let itemStack: ItemStack = undefined
+                try{
+                    world.structureManager.place(structureID, sourceEntity.dimension, Vector.add(sourceEntity.location, {x: 0, y: 10, z: 0}), {includeBlocks: false, includeEntities: true})
+                    entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, {x: 0, y: 10, z: 0})).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id")))==entityID)
+                    if(!!!entity){
+                        throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${entityID} was found inside of the specified structure.`)
+                    }
+                    itemStack = entity.getComponent("inventory").container.getItem(0)
+                }catch(e){
+                    console.error(e, e?.stack)
+                }finally{
+                    try{entity.remove()}catch{}
+                }
                 item = {
                     type: "item",
                     itemType: "pre-made",
@@ -1293,7 +1468,17 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                     step: Number.isNaN(Number(step))?10:Number(step),
                     max: Number.isNaN(Number(max))?10:Number(max),
                     structureID: JSON.parse("\""+(structureID.replaceAll("\"", "\\\""))+"\""),
-                    entityID: JSON.parse("\""+(entityID.replaceAll("\"", "\\\"")+"\""))
+                    entityID: JSON.parse("\""+(entityID.replaceAll("\"", "\\\"")+"\"")),
+                    itemDetails: {
+                        damage: !!!itemStack?null:tryget(()=>itemStack.getComponent("durability").damage)??NaN,
+                        maxDurability: !!!itemStack?null:tryget(()=>itemStack.getComponent("durability").maxDurability)??NaN,
+                        keepOnDeath: !!!itemStack?null:itemStack.keepOnDeath,
+                        lockMode: !!!itemStack?null:itemStack.lockMode,
+                        loreLineCount: !!!itemStack?null:itemStack.getLore().length,
+                        typeId: !!!itemStack?null:itemStack.typeId,
+                        nameTag: !!!itemStack?null:itemStack.nameTag,
+                        enchantments: !!!itemStack?null:tryget(()=>itemStack.getComponent("enchantable").getEnchantments())??"N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                    }
                 }
             }else if(type=="sellable"){
                 let [title, texture, itemIndex, value, step, max, itemID] = r.formValues as [title: string, texture: string, itemIndex: string, value: string, step: string, max: string, itemID: string];
@@ -1317,12 +1502,11 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                 newData.splice(itemIndex, 0, item as SellableShopItem)
                 shop.sellData=newData
             }
-            return r
-        });
+            return 1
+        }) as 1;
     }
     
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_managePage}.
      * @param sourceEntitya 
      * @param shop 
@@ -1331,7 +1515,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
      * @param mode 
      * @returns 
      */
-    static async manageServerShop_managePage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, page: ShopPage, pageIndex: number, mode: mode){
+    static async manageServerShop_managePage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, page: ShopPage, pageIndex: number, mode: mode): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const form = new ActionFormData;
         form.title("Manage "+page.pageTitle);
@@ -1349,13 +1533,15 @@ Texture: ${page.texture}`
         form.button("Close", "textures/ui/crossout");
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return r;
+            if (r.canceled) return 1;
     
             let response = r.selection;
             switch (response) {
                 case 0:
-                    await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, [mode, String(pageIndex)])
-                    await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, page, pageIndex, mode)
+                    if((await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, [mode, String(pageIndex)]))==1){
+                        return await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, page, pageIndex, mode)
+                    }
+                    return 0
                 break;
                 case 1:
                     const form2 = new ModalFormData;
@@ -1373,11 +1559,15 @@ Texture: ${page.texture}`
                             newData.splice(Number(r.formValues[0]), 0, page as ShopPage)
                             shop.sellData=newData
                         }
+                        return await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, page, Number(r.formValues[0]), mode)
                     }
+                    return await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, page, pageIndex, mode)
                 break;
                 case 2:
-                    await ServerShopManager.manageServerShop_editPage(sourceEntity, shop, page, pageIndex, mode)
-                    await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, page, pageIndex, mode)
+                    if((await ServerShopManager.manageServerShop_editPage(sourceEntity, shop, page, pageIndex, mode))==1){
+                        return await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, page, pageIndex, mode)
+                    }
+                    return 0
                 break;
                 case 3:
                     const sureOfItemDeletion = await showMessage(sourceEntity as Player, "Are you sure?", "Are you sure you want to delete this page?", "No", "Yes")
@@ -1391,20 +1581,25 @@ Texture: ${page.texture}`
                             newData.splice(pageIndex, 1)
                             shop.sellData=newData
                         }
+                        return 1
                     }else{
-                        await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, page, pageIndex, mode)
+                        return await ServerShopManager.manageServerShop_managePage(sourceEntity, shop, page, pageIndex, mode)
                     }
                 break;
                 case 4:
+                    return 1
+                break;
+                case 5:
+                    return 0
                 break;
                 default:
+                    return 1
     
             }
-            return r
+            return 1
         });
     }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_editPage}.
      * @param sourceEntitya 
      * @param shop 
@@ -1413,7 +1608,7 @@ Texture: ${page.texture}`
      * @param mode 
      * @returns 
      */
-    static async manageServerShop_editPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, page: ShopPage, pageIndex: number, mode: mode){
+    static async manageServerShop_editPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, page: ShopPage, pageIndex: number, mode: mode): Promise<1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const form = new ModalFormData;
         form.title("Edit Item");
@@ -1423,7 +1618,7 @@ Texture: ${page.texture}`
         form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/ui/arrowRight", JSON.stringify(page.texture).slice(1, -1).replaceAll("\\\"", "\""))
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return r;
+            if (r.canceled) return 1;
     
             let [pageTitle, pageBody, title, texture] = r.formValues as [pageTitle: string, pageBody: string, title: string, texture: string];
             
@@ -1440,18 +1635,17 @@ Texture: ${page.texture}`
                 newData.splice(pageIndex, 1, page as ShopPage)
                 shop.sellData=newData
             }
-            return r
-        });
+            return 1
+        }) as 1;
     }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_addPage}.
      * @param sourceEntitya 
      * @param shop 
      * @param mode 
      * @returns 
      */
-    static async manageServerShop_addPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, mode: mode){
+    static async manageServerShop_addPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, mode: mode): Promise<1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const form = new ModalFormData;
         form.title("Add Item");
@@ -1462,7 +1656,7 @@ Texture: ${page.texture}`
         form.textField("Button Index§c*", String(mode=="buy"?shop.buyData.length:shop.sellData.length), String(mode=="buy"?shop.buyData.length:shop.sellData.length))
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return r;
+            if (r.canceled) return 1;
             let page: ShopPage = undefined
             let pageIndex = Number.isNaN(Number(r.formValues[2]))?10:Number(r.formValues[2])
     
@@ -1484,8 +1678,8 @@ Texture: ${page.texture}`
                 newData.splice(pageIndex, 0, page as ShopPage)
                 shop.sellData=newData
             }
-            return r
-        });
+            return 1
+        }) as 1;
     }
     
     /**
@@ -1496,7 +1690,7 @@ Texture: ${page.texture}`
      * @param path 
      * @returns 
      */
-    static async manageServerShopPage_contents<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]]){
+    static async manageServerShopPage_contents<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]]): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const mode = path[0]
         let form = new ActionFormData();
@@ -1516,13 +1710,17 @@ Texture: ${page.texture}`
             r = await forceShow(form, (sourceEntity as Player))
         }catch(e){
             try{
-                await showMessage(sourceEntity as Player, "§cError", `§c${e} ${e.stack}`, "Back", "Close")
+                if((await showMessage(sourceEntity as Player, "§cError", `§c${e} ${e.stack}`, "Back", "Close")).selection!=1){
+                    return 1
+                }else{
+                    return 0
+                }
             }catch{
                 console.error(e, e.stack);
             };
-            return;
+            return 0;
         }
-        if (r.canceled) return;
+        if (r.canceled) return 1;
     
         let response = r.selection;
         switch (response) {
@@ -1602,17 +1800,23 @@ Texture: ${page.texture}`
                         newData.splice(itemIndexB, 0, itemB as any)
                         shop.sellData=data
                     }
-                    await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path)
+                    return await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path)
                 }else if(!!!type){
-                    await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path)
+                    return await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path)
                 }else{
-                    await ServerShopManager.manageServerShopPage_addItem(sourceEntity, shop, path, type)
-                    await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path)
+                    if((await ServerShopManager.manageServerShopPage_addItem(sourceEntity, shop, path, type))==1){
+                        return await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path)
+                    }else{
+                        return 0
+                    }
                 }
             break;
             case shopData.length+1:
-                await ServerShopManager.manageServerShopPage_addPage(sourceEntity, shop, path)
-                await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path)
+                if((await ServerShopManager.manageServerShopPage_addPage(sourceEntity, shop, path))==1){
+                    return await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path);
+                }else{
+                    return 0;
+                }
             break;
             case shopData.length+2:/*
                 if(path.slice(0, -1).length==1){
@@ -1622,14 +1826,17 @@ Texture: ${page.texture}`
                     await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, getPathInObject(shop[(mode+"Data") as "buyData"|"sellData"], path) as ShopPage, Number(path.slice(-1)[0]))
                     // manageServerShopPage_contents(sourceEntity, shop, path.slice(0, -2) as [mode, ...string[]])
                 };*/
-                return;
+                return 1;
             break;
             default:
-                shopData[response].type=="item"?await ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, [...path, "data", String(response)], shopData[response] as any, response):await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, [...path, "data", String(response)], shopData[response] as ShopPage, response)
-                await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path)
+                if((shopData[response].type=="item"?await ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, [...path, "data", String(response)], shopData[response] as any, response):await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, [...path, "data", String(response)], shopData[response] as ShopPage, response))==1){
+                    return await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path);
+                }else{
+                    return 0;
+                }
     
         }
-        return r
+        return 1
     }
     
     /**
@@ -1662,7 +1869,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
         form.button("Close", "textures/ui/crossout");
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return r;
+            if (r.canceled) return 1;
     
             let response = r.selection;
             switch (response) {
@@ -1684,11 +1891,15 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                             newData.splice(Number(r.formValues[0]), 0, item as SellableShopItem)
                             shop.sellData=data
                         }
+                        return await ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, path, item, Number(r.formValues[0]))
                     }
+                    return await ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex)
                 break;
                 case 1:
-                    await ServerShopManager.manageServerShopPage_editItem(sourceEntity, shop, path, item, itemIndex)
-                    await ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex)
+                    if((await ServerShopManager.manageServerShopPage_editItem(sourceEntity, shop, path, item, itemIndex))==1){
+                        return await ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex)
+                    }
+                    return 0
                 break;
                 case 2:
                     const sureOfItemDeletion = await showMessage(sourceEntity as Player, "Are you sure?", "Are you sure you want to delete this item?", "No", "Yes")
@@ -1704,16 +1915,22 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                             newData.splice(itemIndex, 1)
                             shop.sellData=data
                         }
+                        return 1
                     }else{
-                        await ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex)
+                        return await ServerShopManager.manageServerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex)
                     }
                 break;
                 case 3:
+                    return 1
+                break;
+                case 4:
+                    return 0
                 break;
                 default:
+                    return 1
     
             }
-            return r
+            return 1
         });
     }
     /**
@@ -1726,7 +1943,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
      * @param itemIndex 
      * @returns 
      */
-    static async manageServerShopPage_editItem<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]], item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number){
+    static async manageServerShopPage_editItem<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]], item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const mode = path[0]
         const form = new ModalFormData;
@@ -1771,7 +1988,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
         }
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return r;
+            if (r.canceled) return 1;
     
             if(item.itemType=="newItemStack"){
                 let [title, texture, price, step, max, itemID, itemName, itemLore, canDestroy, canPlaceOn, lockMode, keepOnDeath] = r.formValues as [title: string, texture: string, price: string, step: string, max: string, itemID: string, itemName: string, itemLore: string, canDestroy: string, canPlaceOn: string, none_slot_inventory: 0|1|2, lockMode: boolean];
@@ -1805,6 +2022,28 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                 item.max=Number.isNaN(Number(max))?10:Number(max)
                 item.structureID=JSON.parse("\""+(structureID.replaceAll("\"", "\\\""))+"\"")
                 item.entityID=JSON.parse("\""+(entityID.replaceAll("\"", "\\\""))+"\"")
+                let entity: Entity = undefined
+                let itemStack: ItemStack = undefined
+                try{
+                    world.structureManager.place(structureID, sourceEntity.dimension, Vector.add(sourceEntity.location, {x: 0, y: 10, z: 0}), {includeBlocks: false, includeEntities: true})
+                    entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, {x: 0, y: 10, z: 0})).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id")))==entityID)
+                    if(!!!entity){
+                        throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${entityID} was found inside of the specified structure.`)
+                    }
+                    itemStack = entity.getComponent("inventory").container.getItem(0),
+                    item.itemDetails.damage=!!!itemStack?null:tryget(()=>itemStack.getComponent("durability").damage)??NaN,
+                    item.itemDetails.maxDurability=!!!itemStack?null:tryget(()=>itemStack.getComponent("durability").maxDurability)??NaN,
+                    item.itemDetails.keepOnDeath=!!!itemStack?null:itemStack.keepOnDeath,
+                    item.itemDetails.lockMode=!!!itemStack?null:itemStack.lockMode,
+                    item.itemDetails.loreLineCount=!!!itemStack?null:itemStack.getLore().length,
+                    item.itemDetails.typeId=!!!itemStack?null:itemStack.typeId,
+                    item.itemDetails.nameTag=!!!itemStack?null:itemStack.nameTag,
+                    item.itemDetails.enchantments=!!!itemStack?null:tryget(()=>itemStack.getComponent("enchantable").getEnchantments())??"N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                }catch(e){
+                    console.error(e, e?.stack)
+                }finally{
+                    try{entity.remove()}catch{}
+                }
             }else if(item.itemType=="sellable"){
                 let [title, texture, value, step, max, itemID] = r.formValues as [title: string, texture: string, value: string, step: string, max: string, itemID: string];
                 item.title=JSON.parse("\""+(title.replaceAll("\"", "\\\""))+"\"")
@@ -1825,8 +2064,8 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                 newData.splice(itemIndex, 1, item as SellableShopItem)
                 shop.sellData=data
             }
-            return r
-        });
+            return 1
+        }) as 1;
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
@@ -1837,7 +2076,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
      * @param type 
      * @returns 
      */
-    static async manageServerShopPage_addItem<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]], type: "pre-made"|"pre-made_manual"|"newItemStack"|"giveCommand"|"sellable"){
+    static async manageServerShopPage_addItem<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]], type: "pre-made"|"pre-made_manual"|"newItemStack"|"giveCommand"|"sellable"): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const mode = path[0]
         const form = new ModalFormData;
@@ -1886,7 +2125,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
         }
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return r;
+            if (r.canceled) return 1;
             let item: ShopItem|SellableShopItem = undefined
             let itemIndex = Number.isNaN(Number(r.formValues[2]))?10:Number(r.formValues[2])
     
@@ -1923,6 +2162,20 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                 }
             }else if(type=="pre-made"||type=="pre-made_manual"){
                 let [title, texture, itemIndex, price, step, max, structureID, entityID] = r.formValues as [title: string, texture: string, itemIndex: string, price: string, step: string, max: string, structureID: string, entityID: string];
+                let entity: Entity = undefined
+                let itemStack: ItemStack = undefined
+                try{
+                    world.structureManager.place(structureID, sourceEntity.dimension, Vector.add(sourceEntity.location, {x: 0, y: 10, z: 0}), {includeBlocks: false, includeEntities: true})
+                    entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, {x: 0, y: 10, z: 0})).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id")))==entityID)
+                    if(!!!entity){
+                        throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${entityID} was found inside of the specified structure.`)
+                    }
+                    itemStack = entity.getComponent("inventory").container.getItem(0)
+                }catch(e){
+                    console.error(e, e?.stack)
+                }finally{
+                    try{entity.remove()}catch{}
+                }
                 item = {
                     type: "item",
                     itemType: "pre-made",
@@ -1932,7 +2185,17 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                     step: Number.isNaN(Number(step))?10:Number(step),
                     max: Number.isNaN(Number(max))?10:Number(max),
                     structureID: JSON.parse("\""+(structureID.replaceAll("\"", "\\\""))+"\""),
-                    entityID: JSON.parse("\""+(entityID.replaceAll("\"", "\\\""))+"\"")
+                    entityID: JSON.parse("\""+(entityID.replaceAll("\"", "\\\""))+"\""),
+                    itemDetails: {
+                        damage: !!!itemStack?null:tryget(()=>itemStack.getComponent("durability").damage)??NaN,
+                        maxDurability: !!!itemStack?null:tryget(()=>itemStack.getComponent("durability").maxDurability)??NaN,
+                        keepOnDeath: !!!itemStack?null:itemStack.keepOnDeath,
+                        lockMode: !!!itemStack?null:itemStack.lockMode,
+                        loreLineCount: !!!itemStack?null:itemStack.getLore().length,
+                        typeId: !!!itemStack?null:itemStack.typeId,
+                        nameTag: !!!itemStack?null:itemStack.nameTag,
+                        enchantments: !!!itemStack?null:tryget(()=>itemStack.getComponent("enchantable").getEnchantments())??"N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                    }
                 }
             }else if(type=="sellable"){
                 let [title, texture, itemIndex, value, step, max, itemID] = r.formValues as [title: string, texture: string, itemIndex: string, value: string, step: string, max: string, itemID: string];
@@ -1958,12 +2221,11 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
                 newData.splice(itemIndex, 0, item as SellableShopItem)
                 shop.sellData=data
             }
-            return r
-        });
+            return 1
+        }) as 1;
     }
     
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_managePage}.
      * @param sourceEntitya 
      * @param shop 
@@ -1972,7 +2234,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
      * @param pageIndex 
      * @returns 
      */
-    static async manageServerShopPage_managePage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]], page: ShopPage, pageIndex: number){
+    static async manageServerShopPage_managePage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]], page: ShopPage, pageIndex: number): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const mode = path[0]
         const form = new ActionFormData;
@@ -1991,13 +2253,15 @@ Texture: ${page.texture}`
         form.button("Close", "textures/ui/crossout");
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return r;
+            if (r.canceled) return 1;
     
             let response = r.selection;
             switch (response) {
                 case 0:
-                    await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path)
-                    await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, page, pageIndex)
+                    if((await ServerShopManager.manageServerShopPage_contents(sourceEntity, shop, path))==1){
+                        return await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, page, pageIndex)
+                    }
+                    return 0
                 break;
                 case 1:
                     const form2 = new ModalFormData;
@@ -2015,11 +2279,15 @@ Texture: ${page.texture}`
                             newData.splice(Number(r.formValues[0]), 0, page as ShopPage)
                             shop.sellData=newData
                         }
+                        return await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, page, Number(r.formValues[0]))
                     }
+                    return await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, page, pageIndex)
                 break;
                 case 2:
-                    await ServerShopManager.manageServerShopPage_editPage(sourceEntity, shop, path, page, pageIndex)
-                    await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, page, pageIndex)
+                    if((await ServerShopManager.manageServerShopPage_editPage(sourceEntity, shop, path, page, pageIndex))==1){
+                        return await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, page, pageIndex)
+                    }
+                    return 0
                 break;
                 case 3:
                     const sureOfItemDeletion = await showMessage(sourceEntity as Player, "Are you sure?", "Are you sure you want to delete this page?", "No", "Yes")
@@ -2033,20 +2301,25 @@ Texture: ${page.texture}`
                             newData.splice(pageIndex, 1)
                             shop.sellData=newData
                         }
+                        return 1;
                     }else{
-                        await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, page, pageIndex)
+                        return await ServerShopManager.manageServerShopPage_managePage(sourceEntity, shop, path, page, pageIndex)
                     }
                 break;
                 case 4:
+                    return 1
+                break;
+                case 5:
+                    return 0
                 break;
                 default:
+                    return 1
     
             }
-            return r
+            return 1
         });
     }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_editPage}.
      * @param sourceEntitya 
      * @param shop 
@@ -2055,7 +2328,7 @@ Texture: ${page.texture}`
      * @param pageIndex 
      * @returns 
      */
-    static async manageServerShopPage_editPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]], page: ShopPage, pageIndex: number){
+    static async manageServerShopPage_editPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]], page: ShopPage, pageIndex: number): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const mode = path[0]
         const form = new ModalFormData;
@@ -2066,7 +2339,7 @@ Texture: ${page.texture}`
         form.textField("Button Icon Texture\n§7Leave blank for no icon.", "textures/ui/arrowRight", JSON.stringify(page.texture).slice(1, -1).replaceAll("\\\"", "\""))
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return r;
+            if (r.canceled) return 1;
     
             let [pageTitle, pageBody, title, texture] = r.formValues as [pageTitle: string, pageBody: string, title: string, texture: string];
             
@@ -2085,18 +2358,17 @@ Texture: ${page.texture}`
                 newData.splice(pageIndex, 1, page as ShopPage)
                 shop.sellData=data
             }
-            return r
-        });
+            return 1
+        }) as 1;
     }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_addPage}.
      * @param sourceEntitya The player to open the UI for
      * @param shop The shop to add the page to
      * @param path The path in the shop's data that the page will be added to
      * @returns 
      */
-    static async manageServerShopPage_addPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]]){
+    static async manageServerShopPage_addPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]]): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         const mode = path[0]
         const form = new ModalFormData;
@@ -2108,7 +2380,7 @@ Texture: ${page.texture}`
         form.textField("Button Index§c*", String(getPathInObject(mode=="buy"?shop.buyData:shop.sellData, path).data.length), String(getPathInObject(mode=="buy"?shop.buyData:shop.sellData, path).data.length))
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
             // This will stop the code when the player closes the form
-            if (r.canceled) return r;
+            if (r.canceled) return 1;
             let page: ShopPage = undefined
             let pageIndex = Number.isNaN(Number(r.formValues[2]))?10:Number(r.formValues[2])
     
@@ -2132,8 +2404,8 @@ Texture: ${page.texture}`
                 newData.splice(pageIndex, 0, page)
                 shop.sellData=data
             }
-            return r
-        });
+            return 1
+        }) as 1;
     }
 
 }

@@ -354,6 +354,16 @@ declare module '@minecraft/server-ui' {
          */
         forceShow(player: Player, timeout?: number): Promise<MessageFormResponse>
     }
+    interface ActionFormData {
+        /**
+         * Forces a form to show even if the player has another form or menu open.
+         * If the player has another form or menu open then it will wait until they close it.
+         * @param {Player} player The player to show the form to
+         * @param {number} timeout The number of ticks before the function will give up and throw an error, it defaults to 9999
+         * @returns {ActionFormResponse|undefined} The response of the form
+         */
+        forceShow(player: Player, timeout?: number): Promise<ActionFormResponse>
+    }
 }
 Object.defineProperty(String.prototype, 'escapeCharacters', {
     value: function (js: boolean, unicode: boolean, nullchar: number, uri: boolean, quotes: boolean, general: boolean, colon: boolean, x: boolean, s: boolean){
