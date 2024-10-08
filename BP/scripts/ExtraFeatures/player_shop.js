@@ -1400,6 +1400,8 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     shop.id = newData.id;
                     shop.title = newData.title;
                     shop.mainPageBodyText = newData.mainPageBodyText;
+                    shop.mainSellPageBodyText = newData.mainSellPageBodyText;
+                    shop.mainBuyPageBodyText = newData.mainBuyPageBodyText;
                     shop.name = newData.name;
                     shop.buyShop = newData.buyShop;
                     shop.sellShop = newData.sellShop;
@@ -1420,6 +1422,8 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     shop.id = newDataB.id;
                     shop.title = newDataB.title;
                     shop.mainPageBodyText = newDataB.mainPageBodyText;
+                    shop.mainSellPageBodyText = newDataB.mainSellPageBodyText;
+                    shop.mainBuyPageBodyText = newDataB.mainBuyPageBodyText;
                     shop.name = newDataB.name;
                     shop.buyShop = newDataB.buyShop;
                     shop.sellShop = newDataB.sellShop;
@@ -1433,7 +1437,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     await showActions(sourceEntity, "Debug Info", `Raw Buy Shop Data: \n${JSON.stringify(shop.buyData, undefined, 2)}`, ["Done"]);
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     break;
-                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 9 : -0:
+                case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 9 : -9:
                     const formd = new ModalFormData().title("Edit JSON Buy Shop Data");
                     formd.textField("JSON", "JSON", JSON.stringify(shop.buyData));
                     const rf = await formd.forceShow(sourceEntity);

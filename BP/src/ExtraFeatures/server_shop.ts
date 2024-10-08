@@ -887,6 +887,15 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
         form.button(`${LinkedServerShopCommands.testShopHasLinkedCommand(shop.id)?"Edit":"Add"} Linked Command\n${LinkedServerShopCommands.testShopHasLinkedCommand(shop.id)?LinkedServerShopCommands.LinkedCommands.find(c=>c[1]==shop.id):"Not Set"}`, LinkedServerShopCommands.testShopHasLinkedCommand(shop.id)?"textures/ui/book_edit_default":"textures/ui/color_plus");
         form.button("Shop Settings", "textures/ui/icon_setting");
         form.button("View Shop", "textures/ui/feedIcon");
+        if(config.system.debugMode){
+            form.button("Raw Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
+            form.button("Edit Raw\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+            form.button("Edit JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+            form.button("Raw Buy Shop Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
+            form.button("Edit Buy Shop JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+            form.button("Raw Sell Shop Data\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_metatag_default");
+            form.button("Edit Sell Shop JSON\n§c(Admins Only) §8(Debug Mode Only)", "textures/ui/book_edit_default");
+        }
         form.button("Back", "textures/ui/arrow_left");
         form.button("Close", "textures/ui/crossout");
         return await forceShow(form, (sourceEntity as Player)).then(async r => {
@@ -954,10 +963,85 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                         }
                     }
                 break;
-                case 4:
+                case (sourceEntity.hasTag("admin")&&config.system.debugMode)?4:-4:
+                    await showActions(sourceEntity as Player, "Debug Info", `Raw Shop Data: \n${JSON.stringify(shop, undefined, 2)}`, ["Done"])
+                    return await ServerShopManager.manageServerShop(sourceEntity, shop)
+                break;
+                case (sourceEntity.hasTag("admin")&&config.system.debugMode)?5:-5:
+                    const formb = new ModalFormData().title("Edit Raw Shop Data")
+                    let data = Object.entries(JSON.parse(JSON.stringify(shop)))
+                    data.forEach(v=>formb.textField(v[0], typeof v[1], JSON.stringify(v[1])))
+                    const rd = await formb.forceShow(sourceEntity as Player)
+                    if(rd.canceled){
+                        return await ServerShopManager.manageServerShop(sourceEntity, shop)
+                    }
+                    let newData = Object.fromEntries(data.map((v, i)=>[v[0], JSON.parse(rd.formValues[i] as string)]))
+                    shop.id=newData.id
+                    shop.title=newData.title
+                    shop.mainPageBodyText=newData.mainPageBodyText
+                    shop.mainSellPageBodyText=newData.mainSellPageBodyText
+                    shop.mainBuyPageBodyText=newData.mainBuyPageBodyText
+                    shop.name=newData.name
+                    shop.buyShop=newData.buyShop
+                    shop.sellShop=newData.sellShop
+                    shop.publicShop=newData.publicShop
+                    shop.save()
+                    return await ServerShopManager.manageServerShop(sourceEntity, shop)
+                break;
+                case (sourceEntity.hasTag("admin")&&config.system.debugMode)?6:-6:
+                    const formc = new ModalFormData().title("Edit JSON Shop Data")
+                    formc.textField("JSON", "JSON", JSON.stringify(shop))
+                    const re = await formc.forceShow(sourceEntity as Player)
+                    if(re.canceled){
+                        return await ServerShopManager.manageServerShop(sourceEntity, shop)
+                    }
+                    let newDataB = JSON.parse(re.formValues[0] as string) as serverShopConfig
+                    shop.id=newDataB.id
+                    shop.title=newDataB.title
+                    shop.mainPageBodyText=newDataB.mainPageBodyText
+                    shop.mainSellPageBodyText=newDataB.mainSellPageBodyText
+                    shop.mainBuyPageBodyText=newDataB.mainBuyPageBodyText
+                    shop.name=newDataB.name
+                    shop.buyShop=newDataB.buyShop
+                    shop.sellShop=newDataB.sellShop
+                    shop.publicShop=newDataB.publicShop
+                    shop.save()
+                    return await ServerShopManager.manageServerShop(sourceEntity, shop)
+                break;
+                case (sourceEntity.hasTag("admin")&&config.system.debugMode)?7:-7:
+                    await showActions(sourceEntity as Player, "Debug Info", `Raw Buy Shop Data: \n${JSON.stringify(shop.buyData, undefined, 2)}`, ["Done"])
+                    return await ServerShopManager.manageServerShop(sourceEntity, shop)
+                break;
+                case (sourceEntity.hasTag("admin")&&config.system.debugMode)?8:-8:
+                    const formd = new ModalFormData().title("Edit JSON Buy Shop Data")
+                    formd.textField("JSON", "JSON", JSON.stringify(shop.buyData))
+                    const rf = await formd.forceShow(sourceEntity as Player)
+                    if(rf.canceled){
+                        return await ServerShopManager.manageServerShop(sourceEntity, shop)
+                    }
+                    let newDataC = JSON.parse(rf.formValues[0] as string)
+                    shop.sellData=newDataC
+                    return await ServerShopManager.manageServerShop(sourceEntity, shop)
+                break;
+                case (sourceEntity.hasTag("admin")&&config.system.debugMode)?9:-9:
+                    await showActions(sourceEntity as Player, "Debug Info", `Raw Sell Shop Data: \n${JSON.stringify(shop.sellData, undefined, 2)}`, ["Done"])
+                    return await ServerShopManager.manageServerShop(sourceEntity, shop)
+                break;
+                case (sourceEntity.hasTag("admin")&&config.system.debugMode)?10:-10:
+                    const forme = new ModalFormData().title("Edit JSON Sell Shop Data")
+                    forme.textField("JSON", "JSON", JSON.stringify(shop.sellData))
+                    const rg = await forme.forceShow(sourceEntity as Player)
+                    if(rg.canceled){
+                        return await ServerShopManager.manageServerShop(sourceEntity, shop)
+                    }
+                    let newDataD = JSON.parse(rg.formValues[0] as string)
+                    shop.sellData=newDataD
+                    return await ServerShopManager.manageServerShop(sourceEntity, shop)
+                break;
+                case 4+(+(sourceEntity.hasTag("admin")&&config.system.debugMode)*7):
                     return 1;
                 break;
-                case 5:
+                case 5+(+(sourceEntity.hasTag("admin")&&config.system.debugMode)*7):
                     return 0;
                 break;
                 default:
