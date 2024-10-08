@@ -609,6 +609,13 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
         shopsList.forEach(s => {
             form.button(s.name ?? s.title ?? s.id);
         });
+        if (sourceEntity.hasTag("admin")) {
+            /**
+             * @todo Fix this texture.
+             */
+            form.button("Manage Shops\n§cAdmins Only", "textures/ui/op_crown");
+            form.button("Player Shop System Settings\n§cAdmins Only", "textures/ui/icon_setting");
+        }
         form.button("Close", "textures/ui/crossout"); /*
         form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
         return await forceShow(form, sourceEntity).then(async (r) => {
@@ -617,8 +624,24 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                 return;
             let response = r.selection;
             switch (response) {
-                case shopsList.length:
-                    return 0;
+                case sourceEntity.hasTag("admin") ? shopsList.length : -1:
+                    if ((await ServerShopManager.manageServerShops(sourceEntity)) != 0) {
+                        return await ServerShop.openPublicShopsSelector(sourceEntity);
+                    }
+                    else {
+                        return 0;
+                    }
+                    break;
+                case sourceEntity.hasTag("admin") ? shopsList.length + 1 : -2:
+                    if ((await ServerShopManager.serverShopSystemSettings(sourceEntity)) != 0) {
+                        return await ServerShop.openPublicShopsSelector(sourceEntity);
+                    }
+                    else {
+                        return 0;
+                    }
+                    break;
+                case shopsList.length + (+sourceEntity.hasTag("admin")) * 2:
+                    return 1;
                     break;
                 default:
                     if ((await shopsList[response].openShop(sourceEntity)) == 1) {

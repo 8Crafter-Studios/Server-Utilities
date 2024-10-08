@@ -908,8 +908,14 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
         shopsList.forEach(s=>{
             form.button(s.name??s.title??s.id)
         })
+        /**
+         * @todo Fix this texture.
+         */
         form.button("Manage My Shops", "textures/ui/book_edit");
         if(sourceEntity.hasTag("admin")){
+            /**
+             * @todo Fix this texture.
+             */
             form.button("Manage All Shops\n§cAdmins Only", "textures/ui/op_crown");
             form.button("Player Shop System Settings\n§cAdmins Only", "textures/ui/icon_setting");
         }
