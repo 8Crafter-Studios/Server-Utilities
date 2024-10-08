@@ -143,7 +143,10 @@ export class PlayerShop{
         if(mode=="both"){
             const form = new ActionFormData
             form.title(this.title)
-            form.body(`Shop Owner: ${this.playerName}`)
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(player.id).money}
+§6--------------------------------
+Shop Owner: ${this.playerName}${!!this?.mainPageBodyText?"\n§r"+pageData.pageBody:""}`)
             form.button("Buy")
             form.button("Sell")
             form.button("Cancel")
@@ -861,7 +864,14 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
         form.title("Player Shops");
         const shopsList = (PlayerShop.getAll()??[]).filter(s=>s.publicShop==true)
         if(shopsList.length==0){
-            form.body("There are currently no player shops.")
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(sourceEntity.id).money}
+§6--------------------------------
+§rThere are currently no player shops.`)
+        }else{
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(sourceEntity.id).money}
+§6--------------------------------`)
         }
         shopsList.forEach(s=>{
             form.button(s.name??s.title??s.id)

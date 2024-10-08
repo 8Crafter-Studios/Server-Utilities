@@ -133,6 +133,9 @@ export class ServerShop{
         if(mode=="both"){
             const form = new ActionFormData
             if(!!this.title){form.title(this.title)}
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(player.id).money}
+§6--------------------------------${!!this.mainPageBodyText?"\n§r"+this.mainPageBodyText:""}`)
             form.button("Buy")
             form.button("Sell")
             form.button("Cancel")
@@ -160,7 +163,7 @@ export class ServerShop{
             const data = tryget(()=>JSON.parse(getStringFromDynamicProperties("sellShop:"+this.id)) as SellableShopElement[])??[]
             form.body(`§6--------------------------------
 §aMoney: $${MoneySystem.get(player.id).money}
-§6--------------------------------`)
+§6--------------------------------${!!this.mainSellPageBodyText?"\n§r"+this.mainSellPageBodyText:""}`)
             data.forEach(v=>{
                 form.button(v.title, v.texture)
             });
@@ -187,7 +190,7 @@ export class ServerShop{
             const data = tryget(()=>JSON.parse(getStringFromDynamicProperties("buyShop:"+this.id)) as BuyableShopElement[])??[]
             form.body(`§6--------------------------------
 §aMoney: $${MoneySystem.get(player.id).money}
-§6--------------------------------`)
+§6--------------------------------${!!this.mainBuyPageBodyText?"\n§r"+this.mainBuyPageBodyText:""}`)
             data.forEach(v=>{
                 form.button(v.title, v.texture)
             });
@@ -236,8 +239,20 @@ export class ServerShop{
         const mode = path[0]
         if(mode=="sell"){
             const form = new ActionFormData
-            if(!!this.title){form.title(this.title)}
-            let newData = getPathInObject(data, path).data as SellableShopElement[]
+            const pageData: ShopPage|undefined = tryget(()=>getPathInObject(data, path))
+            if(!!!pageData){
+                const form = new MessageFormData
+                form.title(config.ui.other.useStarWarsReference404Page?"404: A Jedi has altered your mind.":"404: Invalid Page")
+                form.body(config.ui.other.useStarWarsReference404Page?"Jedi: This is not the page you are looking for.":"The page you are looking for does not exist. ")
+                form.button1("Ok")
+                form.button2("Cancel")
+                return ((await forceShow(form, player)).selection!=1).toNumber()
+            }
+            if(!!pageData?.title){form.title(pageData.title)}
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(player.id).money}
+§6--------------------------------${!!pageData?.pageBody?"\n§r"+pageData.pageBody:""}`)
+            let newData = pageData?.data as SellableShopElement[]
             newData.forEach(v=>{
                 form.button(v.title, v.texture)
             });
@@ -272,8 +287,20 @@ export class ServerShop{
             })
         }else if(mode=="buy"){
             const form = new ActionFormData
-            if(!!this.title){form.title(this.title)}
-            let newData = getPathInObject(data, path).data as BuyableShopElement[]
+            const pageData: ShopPage|undefined = tryget(()=>getPathInObject(data, path))
+            if(!!!pageData){
+                const form = new MessageFormData
+                form.title(config.ui.other.useStarWarsReference404Page?"404: A Jedi has altered your mind.":"404: Invalid Page")
+                form.body(config.ui.other.useStarWarsReference404Page?"Jedi: This is not the page you are looking for.":"The page you are looking for does not exist. ")
+                form.button1("Ok")
+                form.button2("Cancel")
+                return ((await forceShow(form, player)).selection!=1).toNumber()
+            }
+            if(!!pageData?.title){form.title(pageData.title)}
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(player.id).money}
+§6--------------------------------${!!pageData?.pageBody?"\n§r"+pageData.pageBody:""}`)
+            let newData = pageData?.data as BuyableShopElement[]
             newData.forEach(v=>{
                 form.button(v.title, v.texture)
             });
@@ -542,7 +569,14 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
         form.title("Public Server Shops");
         const shopsList = (ServerShop.getAll()??[]).filter(s=>s.publicShop==true)
         if(shopsList.length==0){
-            form.body("There are currently no publicly available server shops.")
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(sourceEntity.id).money}
+§6--------------------------------
+§rThere are currently no publicly available server shops.`)
+        }else{
+            form.body(`§6--------------------------------
+§aMoney: $${MoneySystem.get(sourceEntity.id).money}
+§6--------------------------------`)
         }
         shopsList.forEach(s=>{
             form.button(s.name??s.title??s.id)
