@@ -10,39 +10,47 @@ import { Vector } from "Main/coordinates";
 import { MoneySystem } from "./money";
 /**
  * @todo Convert the functions to async functions that return Promise<0|1>.
+ * @see {@link PlayerShop}
  */
 export class ServerShop {
     constructor(config) {
-        this.id = config.id;
-        this.name = config.name;
-        this.title = config.title;
-        this.mainPageBodyText = config.mainPageBodyText;
+        this.id = config.id ?? null;
+        this.name = config.name ?? null;
+        this.title = config.title ?? null;
+        this.mainPageBodyText = config.mainPageBodyText ?? null;
+        this.mainBuyPageBodyText = config.mainBuyPageBodyText ?? null;
+        this.mainSellPageBodyText = config.mainSellPageBodyText ?? null;
         this.sellShop = config.sellShop ?? true;
         this.buyShop = config.buyShop ?? true;
         this.publicShop = config.publicShop ?? false;
     }
     save() {
         world.setDynamicProperty(this.id, JSON.stringify({
-            id: this.id,
-            name: this.name,
-            mainPageBodyText: this.mainPageBodyText,
-            title: this.title,
-            sellShop: this.sellShop,
-            buyShop: this.buyShop,
-            publicShop: this.publicShop
+            id: this.id ?? null,
+            name: this.name ?? null,
+            mainPageBodyText: this.mainPageBodyText ?? null,
+            mainBuyPageBodyText: this.mainBuyPageBodyText ?? null,
+            mainSellPageBodyText: this.mainSellPageBodyText ?? null,
+            title: this.title ?? null,
+            sellShop: this.sellShop ?? true,
+            buyShop: this.buyShop ?? true,
+            publicShop: this.publicShop ?? false
         }));
     }
     /**
-     *
+     * Opens the shop UI for the specified player.
+     * @see {@link PlayerShop.openShop}
      * @async
-     * @param player
-     * @param mode
-     * @returns
+     * @param player The player to open the shop UI for.
+     * @param mode The mode to open this shop in.
+     * @returns {Promise<0|1>} A promise that will resolve with either a 0 or a 1, a 0 meaning that the previous UI should not be re-opened, and a 1 meaning that it should.
      */
     async openShop(player, mode = (this.sellShop && this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both") {
         if (mode == "both") {
             const form = new ActionFormData;
-            form.title(this.title);
+            if (!!this.title) {
+                form.title(this.title);
+            }
             form.button("Buy");
             form.button("Sell");
             form.button("Cancel");
@@ -74,7 +82,9 @@ export class ServerShop {
         }
         else if (mode == "sell") {
             const form = new ActionFormData;
-            form.title(this.title ?? "");
+            if (!!this.title) {
+                form.title(this.title);
+            }
             const data = tryget(() => JSON.parse(getStringFromDynamicProperties("sellShop:" + this.id))) ?? [];
             form.body(`§6--------------------------------
 §aMoney: $${MoneySystem.get(player.id).money}
@@ -113,7 +123,9 @@ export class ServerShop {
         }
         else if (mode == "buy") {
             const form = new ActionFormData;
-            form.title(this.title ?? "");
+            if (!!this.title) {
+                form.title(this.title);
+            }
             const data = tryget(() => JSON.parse(getStringFromDynamicProperties("buyShop:" + this.id))) ?? [];
             form.body(`§6--------------------------------
 §aMoney: $${MoneySystem.get(player.id).money}
@@ -166,82 +178,103 @@ export class ServerShop {
         }
     }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
-     * @param player
-     * @param data
-     * @param path
+     * Opens the shop UI for the specified player.
+     * @see {@link PlayerShop.openShopPage}
+     * @async
+     * @param player The player to open the shop UI for.
+     * @param data The object representing this page of the shop.
+     * @param path The path to this page of the shop.
+     * @returns {Promise<0|1>} A promise that will resolve with either a 0 or a 1, a 0 meaning that the previous UI should not be re-opened, and a 1 meaning that it should.
      */
-    openShopPage(player, data, path) {
+    async openShopPage(player, data, path) {
         const mode = path[0];
         if (mode == "sell") {
             const form = new ActionFormData;
-            form.title(this.title);
+            if (!!this.title) {
+                form.title(this.title);
+            }
             let newData = getPathInObject(data, path).data;
             newData.forEach(v => {
                 form.button(v.title, v.texture);
             });
             form.button("Back", "textures/ui/arrow_left");
             form.button("Close", "textures/ui/crossout");
-            forceShow(form, player).then(r => {
+            return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true) {
-                    return;
+                    return 1;
                 }
-                if (r.selection == newData.length) {
-                    if (path.slice(0, -1).length == 1) {
-                        this.openShop(player, "sell");
-                    }
-                    else {
-                        this.openShopPage(player, data, path.slice(0, -2));
-                    }
-                    ;
-                    return;
+                if (r.selection == newData.length) { /*
+                    if(path.slice(0, -1).length==1){
+                        this.openShop(player, "sell")
+                    }else{
+                        this.openShopPage(player, data, path.slice(0, -2) as [typeof path[0], ...string[]])
+                    };*/
+                    return 1;
+                }
+                if (r.selection == newData.length + 1) {
+                    return 0;
                 }
                 const item = newData[r.selection];
                 if (item.type == "item") {
-                    this.sellItem(player, item).then(v => {
+                    return await this.sellItem(player, item).then(async (v) => {
                         if (v == 1) {
-                            this.openShopPage(player, data, path);
+                            return await this.openShopPage(player, data, path);
                         }
+                        return 0;
                     });
                 }
                 else if (item.type == "page") {
-                    this.openShopPage(player, data, [...path, "data", String(r.selection)]);
+                    if ((await this.openShopPage(player, data, [...path, "data", String(r.selection)])) == 1) {
+                        return await this.openShopPage(player, data, path);
+                    }
+                    else {
+                        return 0;
+                    }
                 }
             });
         }
         else if (mode == "buy") {
             const form = new ActionFormData;
-            form.title(this.title);
+            if (!!this.title) {
+                form.title(this.title);
+            }
             let newData = getPathInObject(data, path).data;
             newData.forEach(v => {
                 form.button(v.title, v.texture);
             });
             form.button("Back", "textures/ui/arrow_left");
             form.button("Close", "textures/ui/crossout");
-            forceShow(form, player).then(r => {
+            return await forceShow(form, player).then(async (r) => {
                 if (r.canceled == true) {
-                    return;
+                    return 1;
                 }
-                if (r.selection == newData.length) {
-                    if (path.slice(0, -1).length == 1) {
-                        this.openShop(player, "buy");
-                    }
-                    else {
-                        this.openShopPage(player, data, path.slice(0, -2));
-                    }
-                    ;
-                    return;
+                if (r.selection == newData.length) { /*
+                    if(path.slice(0, -1).length==1){
+                        this.openShop(player, "buy")
+                    }else{
+                        this.openShopPage(player, data, path.slice(0, -2) as [typeof path[0], ...string[]])
+                    };*/
+                    return 1;
+                }
+                if (r.selection == newData.length + 1) {
+                    return 0;
                 }
                 const item = newData[r.selection];
                 if (item.type == "item") {
-                    this.buyItem(player, item).then(v => {
+                    return await this.buyItem(player, item).then(async (v) => {
                         if (v == 1) {
-                            this.openShopPage(player, data, path);
+                            return await this.openShopPage(player, data, path);
                         }
+                        return 0;
                     });
                 }
                 else if (item.type == "page") {
-                    this.openShopPage(player, data, [...path, "data", String(r.selection)]);
+                    if ((await this.openShopPage(player, data, [...path, "data", String(r.selection)])) == 1) {
+                        return await this.openShopPage(player, data, path);
+                    }
+                    else {
+                        return 0;
+                    }
                 }
             });
         }
@@ -285,6 +318,9 @@ export class ServerShop {
     }
     /**
      * @todo Make return type be Promise<0|1>.
+     * @todo Copy over the menu for the item information from the player shop system.
+     * @todo Copy over the updated code from the player shop system.
+     * @see {@link PlayerShop.buyItem}
      * @async
      * @param player
      * @param item
@@ -351,7 +387,7 @@ export class ServerShop {
                 form.button2("Close Shop");
                 const rb = await forceShow(form, player);
                 if (rb.canceled == true || rb.selection == 1) {
-                    return;
+                    return 0;
                 }
                 return 1;
                 // this.openShop(player, "buy")
@@ -363,6 +399,9 @@ export class ServerShop {
     }
     /**
      * @todo Make return type be Promise<0|1>.
+     * @todo Copy over the menu for the item information from the player shop system.
+     * @todo Copy over the updated code from the player shop system.
+     * @see {@link PlayerShop.sellItem}
      * @async
      * @param player
      * @param item
@@ -427,6 +466,7 @@ export class ServerShop {
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @see {@link PlayerShop.openPublicShopsSelector}
      * @param sourceEntitya
      */
     static openPublicShopsSelector(sourceEntitya) {
@@ -506,15 +546,26 @@ export class LinkedServerShopCommands {
 }
 /**
  * @todo Convert the functions to async functions that return Promise<0|1>.
+ * @see {@link PlayerShopManager}
  */
 export class ServerShopManager {
+    /**
+     *
+     * @see {@link PlayerShopManager.playerShopItemTextureHint}
+     */
     static get serverShopItemTextureHint() { return this.serverShopItemTextureHints[Math.floor(Math.random() * this.serverShopItemTextureHints.length)]; }
+    /**
+     *
+     * @see {@link PlayerShopManager.playerShopPageTextureHint}
+     */
     static get serverShopPageTextureHint() { return this.serverShopPageTextureHints[Math.floor(Math.random() * this.serverShopPageTextureHints.length)]; }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.playerShopSystemSettings}.
+     * @see {@link PlayerShopManager.playerShopSystemSettings}
      * @param sourceEntitya
      */
-    static serverShopSystemSettings(sourceEntitya) {
+    static async serverShopSystemSettings(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
         form.title("Server Shop System");
@@ -524,36 +575,63 @@ export class ServerShopManager {
         form.button("§cShop Item Settings", "textures/ui/icon_items");
         form.button("Back", "textures/ui/arrow_left");
         form.button("Close", "textures/ui/crossout");
-        forceShow(form, sourceEntity).then(r => {
+        return await forceShow(form, sourceEntity).then(async (r) => {
             if (r.canceled)
-                return;
+                return 1;
             let response = r.selection;
             switch (response) {
                 case 0:
-                    ServerShopManager.manageServerShops(sourceEntity);
+                    /**
+                     * @todo
+                     */
+                    if ((await ServerShopManager.manageServerShops(sourceEntity)) == 1) {
+                        return await ServerShopManager.serverShopSystemSettings(sourceEntity);
+                    }
+                    else {
+                        return 0;
+                    }
                     break;
                 case 1:
-                    ServerShopManager.serverShopSystemSettings_main(sourceEntity);
+                    /**
+                     * @todo
+                     */
+                    if ((await ServerShopManager.serverShopSystemSettings_main(sourceEntity)) == 1) {
+                        return await ServerShopManager.serverShopSystemSettings(sourceEntity);
+                    }
+                    else {
+                        return 0;
+                    }
                     break;
                 case 2:
-                    showMessage(sourceEntity, undefined, "§cSorry, the shop item does not exist yet.", "Back", "Close").then(r => {
+                    return await showMessage(sourceEntity, undefined, "§cSorry, the shop item does not exist yet.", "Back", "Close").then(async (r) => {
                         if (r.selection == 0) {
-                            ServerShopManager.serverShopSystemSettings(sourceEntity);
+                            return await ServerShopManager.serverShopSystemSettings(sourceEntity);
+                        }
+                        else {
+                            return 0;
                         }
                     });
                     // shopItemSettings(sourceEntity)
                     break;
                 case 3:
-                    mainShopSystemSettings(sourceEntity);
+                    // mainShopSystemSettings(sourceEntity)
+                    return 1;
+                    break;
+                case 4:
+                    return 0;
                     break;
                 default:
+                    return 1;
             }
         }).catch(e => {
             console.error(e, e.stack);
+            return 1;
         });
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.playerShopSystemSettings_main}.
+     * @see {@link PlayerShopManager.playerShopSystemSettings_main}
      * @param sourceEntitya
      */
     static serverShopSystemSettings_main(sourceEntitya) {
@@ -577,6 +655,7 @@ export class ServerShopManager {
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShops}.
      * @param sourceEntitya
      */
     static manageServerShops(sourceEntitya) {
@@ -613,6 +692,7 @@ export class ServerShopManager {
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.addPlayerShop}.
      * @param sourceEntitya
      */
     static addServerShop(sourceEntitya) {
@@ -651,6 +731,7 @@ export class ServerShopManager {
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop}.
      * @param sourceEntitya
      * @param shop
      */
@@ -720,6 +801,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_settings}.
      * @param sourceEntitya
      * @param shop
      */
@@ -818,6 +900,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_contents}.
      * @param sourceEntitya
      * @param shop
      * @param mode
@@ -932,6 +1015,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_manageItem}.
      * @param sourceEntitya
      * @param shop
      * @param item
@@ -1010,6 +1094,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_editItem}.
      * @param sourceEntitya
      * @param shop
      * @param item
@@ -1125,6 +1210,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_addItem}.
      * @param sourceEntitya
      * @param shop
      * @param type
@@ -1261,6 +1347,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_managePage}.
      * @param sourceEntitya
      * @param shop
      * @param page
@@ -1342,6 +1429,7 @@ Texture: ${page.texture}`);
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_editPage}.
      * @param sourceEntitya
      * @param shop
      * @param page
@@ -1381,6 +1469,7 @@ Texture: ${page.texture}`);
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_addPage}.
      * @param sourceEntitya
      * @param shop
      * @param mode
@@ -1425,6 +1514,7 @@ Texture: ${page.texture}`);
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_contents}.
      * @param sourceEntitya
      * @param shop
      * @param path
@@ -1557,6 +1647,7 @@ Texture: ${page.texture}`);
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_manageItem}.
      * @param sourceEntitya
      * @param shop
      * @param path
@@ -1640,6 +1731,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_editItem}.
      * @param sourceEntitya
      * @param shop
      * @param path
@@ -1758,6 +1850,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_addItem}.
      * @param sourceEntitya
      * @param shop
      * @param path
@@ -1897,6 +1990,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_managePage}.
      * @param sourceEntitya
      * @param shop
      * @param path
@@ -1979,6 +2073,7 @@ Texture: ${page.texture}`);
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_editPage}.
      * @param sourceEntitya
      * @param shop
      * @param path
@@ -2021,9 +2116,10 @@ Texture: ${page.texture}`);
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
-     * @param sourceEntitya
-     * @param shop
-     * @param path
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_addPage}.
+     * @param sourceEntitya The player to open the UI for
+     * @param shop The shop to add the page to
+     * @param path The path in the shop's data that the page will be added to
      * @returns
      */
     static async manageServerShopPage_addPage(sourceEntitya, shop, path) {
@@ -2067,6 +2163,14 @@ Texture: ${page.texture}`);
         });
     }
 }
+/**
+ *
+ * @see {@link PlayerShopManager.playerShopItemTextureHints}
+ */
 ServerShopManager.serverShopItemTextureHints = ["textures/items/stick", "textures/blocks/gravel", "textures/blocks/reactor_core_stage_0"];
+/**
+ *
+ * @see {@link PlayerShopManager.playerShopPageTextureHints}
+ */
 ServerShopManager.serverShopPageTextureHints = ["textures/ui/arrowRight"];
 //# sourceMappingURL=server_shop.js.map

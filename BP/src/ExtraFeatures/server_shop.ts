@@ -8,7 +8,11 @@ import { getStringFromDynamicProperties, getSuperUniqueID, saveStringToDynamicPr
 import { type SellableShopElement, type BuyableShopElement, type ShopItem, type SellableShopItem, type ShopElement, mainShopSystemSettings, type ShopPage } from "./shop_main";
 import { Vector } from "Main/coordinates";
 import { MoneySystem } from "./money";
+import type { PlayerShopManager, PlayerShop, playerShopConfig } from "./player_shop"
 
+/**
+ * @see {@link playerShopConfig}
+ */
 export type serverShopConfig = {
     /**
      * The id of the server shop.
@@ -17,31 +21,42 @@ export type serverShopConfig = {
     /**
      * The display name of the server shop. This is displayed on the button for the server shop in the manage server shops menu.
      */
-    name?: string,
+    name?: string|null,
     /**
      * The title of the server shop. This is the title displayed at the top of the UI for the server shop.
      */
-    title: string,
+    title?: string|null,
     /**
      * The body text that is displayed on the main page of the server shop.
      */
-    mainPageBodyText: string,
+    mainPageBodyText?: string|null,
+    /**
+     * The body text that is displayed on the main buy page of the server shop.
+     * @todo
+     */
+    mainBuyPageBodyText?: string|null,
+    /**
+     * The body text that is displayed on the main sell page of the server shop.
+     * @todo
+     */
+    mainSellPageBodyText?: string|null,
     /**
      * Whether or not players can sell items in this shop.
      */
-    sellShop?: boolean,
+    sellShop?: boolean|null,
     /**
      * Whether or not players can buy items in this shop.
      */
-    buyShop?: boolean,
+    buyShop?: boolean|null,
     /**
      * Whether or not this shop can be accessed by any player through the use of the \viewservershops command.
      */
-    publicShop?: boolean
+    publicShop?: boolean|null
 }
 
 /**
  * @todo Convert the functions to async functions that return Promise<0|1>.
+ * @see {@link PlayerShop}
  */
 export class ServerShop{
     /**
@@ -51,15 +66,25 @@ export class ServerShop{
     /**
      * The display name of the server shop. This is displayed on the button for the server shop in the manage server shops menu.
      */
-    name?: string
+    name?: string|null
     /**
      * The title of the server shop. This is the title displayed at the top of the UI for the server shop.
      */
-    title: string
+    title?: string|null
     /**
      * The body text that is displayed on the main page of the server shop.
      */
-    mainPageBodyText: string
+    mainPageBodyText?: string|null
+    /**
+     * The body text that is displayed on the main buy page of the server shop.
+     * @todo
+     */
+    mainBuyPageBodyText?: string|null
+    /**
+     * The body text that is displayed on the main sell page of the server shop.
+     * @todo
+     */
+    mainSellPageBodyText?: string|null
     /**
      * Whether or not players can sell items in this shop.
      */
@@ -73,36 +98,41 @@ export class ServerShop{
      */
     publicShop: boolean
     constructor(config: serverShopConfig){
-        this.id=config.id
-        this.name=config.name
-        this.title=config.title
-        this.mainPageBodyText=config.mainPageBodyText
+        this.id=config.id??null
+        this.name=config.name??null
+        this.title=config.title??null
+        this.mainPageBodyText=config.mainPageBodyText??null
+        this.mainBuyPageBodyText=config.mainBuyPageBodyText??null
+        this.mainSellPageBodyText=config.mainSellPageBodyText??null
         this.sellShop=config.sellShop??true
         this.buyShop=config.buyShop??true
         this.publicShop=config.publicShop??false
     }
     save(){
         world.setDynamicProperty(this.id, JSON.stringify({
-            id: this.id,
-            name: this.name,
-            mainPageBodyText: this.mainPageBodyText,
-            title: this.title,
-            sellShop: this.sellShop,
-            buyShop: this.buyShop,
-            publicShop: this.publicShop
+            id: this.id??null,
+            name: this.name??null,
+            mainPageBodyText: this.mainPageBodyText??null,
+            mainBuyPageBodyText: this.mainBuyPageBodyText??null,
+            mainSellPageBodyText: this.mainSellPageBodyText??null,
+            title: this.title??null,
+            sellShop: this.sellShop??true,
+            buyShop: this.buyShop??true,
+            publicShop: this.publicShop??false
         }))
     }
     /**
-     * 
+     * Opens the shop UI for the specified player.
+     * @see {@link PlayerShop.openShop}
      * @async
-     * @param player 
-     * @param mode 
-     * @returns 
+     * @param player The player to open the shop UI for.
+     * @param mode The mode to open this shop in.
+     * @returns {Promise<0|1>} A promise that will resolve with either a 0 or a 1, a 0 meaning that the previous UI should not be re-opened, and a 1 meaning that it should.
      */
     async openShop(player: Player, mode: "buy"|"sell"|"both"|"none" = (this.sellShop&&this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "both"): Promise<0|1>{
         if(mode=="both"){
             const form = new ActionFormData
-            form.title(this.title)
+            if(!!this.title){form.title(this.title)}
             form.button("Buy")
             form.button("Sell")
             form.button("Cancel")
@@ -126,7 +156,7 @@ export class ServerShop{
             })
         }else if(mode=="sell"){
             const form = new ActionFormData
-            form.title(this.title??"");
+            if(!!this.title){form.title(this.title)}
             const data = tryget(()=>JSON.parse(getStringFromDynamicProperties("sellShop:"+this.id)) as SellableShopElement[])??[]
             form.body(`§6--------------------------------
 §aMoney: $${MoneySystem.get(player.id).money}
@@ -153,7 +183,7 @@ export class ServerShop{
             })
         }else if(mode=="buy"){
             const form = new ActionFormData
-            form.title(this.title??"")
+            if(!!this.title){form.title(this.title)}
             const data = tryget(()=>JSON.parse(getStringFromDynamicProperties("buyShop:"+this.id)) as BuyableShopElement[])??[]
             form.body(`§6--------------------------------
 §aMoney: $${MoneySystem.get(player.id).money}
@@ -194,67 +224,86 @@ export class ServerShop{
         }
     }
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
-     * @param player 
-     * @param data 
-     * @param path 
+     * Opens the shop UI for the specified player.
+     * @see {@link PlayerShop.openShopPage}
+     * @async
+     * @param player The player to open the shop UI for.
+     * @param data The object representing this page of the shop.
+     * @param path The path to this page of the shop.
+     * @returns {Promise<0|1>} A promise that will resolve with either a 0 or a 1, a 0 meaning that the previous UI should not be re-opened, and a 1 meaning that it should.
      */
-    openShopPage<mode extends "buy"|"sell">(player: Player, data: (mode extends "buy" ? BuyableShopElement[] : SellableShopElement[]), path: [mode, ...string[]]){
+    async openShopPage<mode extends "buy"|"sell">(player: Player, data: (mode extends "buy" ? BuyableShopElement[] : SellableShopElement[]), path: [mode, ...string[]]): Promise<0|1>{
         const mode = path[0]
         if(mode=="sell"){
             const form = new ActionFormData
-            form.title(this.title);
+            if(!!this.title){form.title(this.title)}
             let newData = getPathInObject(data, path).data as SellableShopElement[]
             newData.forEach(v=>{
                 form.button(v.title, v.texture)
             });
             form.button("Back", "textures/ui/arrow_left");
             form.button("Close", "textures/ui/crossout");
-            forceShow(form, player).then(r=>{
-                if(r.canceled==true){return}
-                if(r.selection==newData.length){
+            return await forceShow(form, player).then(async r=>{
+                if(r.canceled==true){return 1}
+                if(r.selection==newData.length){/*
                     if(path.slice(0, -1).length==1){
                         this.openShop(player, "sell")
                     }else{
                         this.openShopPage(player, data, path.slice(0, -2) as [typeof path[0], ...string[]])
-                    };
-                    return;
+                    };*/
+                    return 1;
+                }
+                if(r.selection==newData.length+1){
+                    return 0;
                 }
                 const item = newData[r.selection]
                 if(item.type=="item"){
-                    this.sellItem(player, item).then(v=>{
-                        if(v==1){this.openShopPage(player, data, path)}
+                    return await this.sellItem(player, item).then(async v=>{
+                        if(v==1){return await this.openShopPage(player, data, path)}
+                        return 0;
                     })
                 }else if(item.type=="page"){
-                    this.openShopPage(player, data, [...path, "data", String(r.selection)])
+                    if((await this.openShopPage(player, data, [...path, "data", String(r.selection)]))==1){
+                        return await this.openShopPage(player, data, path);
+                    }else{
+                        return 0;
+                    }
                 }
             })
         }else if(mode=="buy"){
             const form = new ActionFormData
-            form.title(this.title)
+            if(!!this.title){form.title(this.title)}
             let newData = getPathInObject(data, path).data as BuyableShopElement[]
             newData.forEach(v=>{
                 form.button(v.title, v.texture)
             });
             form.button("Back", "textures/ui/arrow_left");
             form.button("Close", "textures/ui/crossout");
-            forceShow(form, player).then(r=>{
-                if(r.canceled==true){return}
-                if(r.selection==newData.length){
+            return await forceShow(form, player).then(async r=>{
+                if(r.canceled==true){return 1}
+                if(r.selection==newData.length){/*
                     if(path.slice(0, -1).length==1){
                         this.openShop(player, "buy")
                     }else{
                         this.openShopPage(player, data, path.slice(0, -2) as [typeof path[0], ...string[]])
-                    };
-                    return;
+                    };*/
+                    return 1;
+                }
+                if(r.selection==newData.length+1){
+                    return 0;
                 }
                 const item = newData[r.selection]
                 if(item.type=="item"){
-                    this.buyItem(player, item).then(v=>{
-                        if(v==1){this.openShopPage(player, data, path)}
+                    return await this.buyItem(player, item).then(async v=>{
+                        if(v==1){return await this.openShopPage(player, data, path)}
+                        return 0;
                     })
                 }else if(item.type=="page"){
-                    this.openShopPage(player, data, [...path, "data", String(r.selection)])
+                    if((await this.openShopPage(player, data, [...path, "data", String(r.selection)]))==1){
+                        return await this.openShopPage(player, data, path);
+                    }else{
+                        return 0;
+                    }
                 }
             })
         }
@@ -286,12 +335,15 @@ export class ServerShop{
     }
     /**
      * @todo Make return type be Promise<0|1>.
+     * @todo Copy over the menu for the item information from the player shop system.
+     * @todo Copy over the updated code from the player shop system.
+     * @see {@link PlayerShop.buyItem}
      * @async
      * @param player 
      * @param item 
      * @returns 
      */
-    async buyItem(player: Player, item: ShopItem){
+    async buyItem(player: Player, item: ShopItem): Promise<0|1>{
         try{
             const form = new ModalFormData
             form.title("Buy "+item.title)
@@ -341,7 +393,7 @@ export class ServerShop{
                 form.button1("Go Back")
                 form.button2("Close Shop")
                 const rb = await forceShow(form, player)
-                if(rb.canceled==true||rb.selection==1){return}
+                if(rb.canceled==true||rb.selection==1){return 0}
                 return 1
                 // this.openShop(player, "buy")
             }
@@ -349,6 +401,9 @@ export class ServerShop{
     }
     /**
      * @todo Make return type be Promise<0|1>.
+     * @todo Copy over the menu for the item information from the player shop system.
+     * @todo Copy over the updated code from the player shop system.
+     * @see {@link PlayerShop.sellItem}
      * @async
      * @param player 
      * @param item 
@@ -407,6 +462,7 @@ export class ServerShop{
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @see {@link PlayerShop.openPublicShopsSelector}
      * @param sourceEntitya 
      */
     static openPublicShopsSelector(sourceEntitya: Entity|executeCommandPlayerW|Player){
@@ -486,17 +542,36 @@ export class LinkedServerShopCommands{
 }
 /**
  * @todo Convert the functions to async functions that return Promise<0|1>.
+ * @see {@link PlayerShopManager}
  */
 export class ServerShopManager{
+    /**
+     * 
+     * @see {@link PlayerShopManager.playerShopItemTextureHints}
+     */
     static serverShopItemTextureHints = ["textures/items/stick", "textures/blocks/gravel", "textures/blocks/reactor_core_stage_0"]
+    /**
+     * 
+     * @see {@link PlayerShopManager.playerShopPageTextureHints}
+     */
     static serverShopPageTextureHints = ["textures/ui/arrowRight"]
+    /**
+     * 
+     * @see {@link PlayerShopManager.playerShopItemTextureHint}
+     */
     static get serverShopItemTextureHint(){return this.serverShopItemTextureHints[Math.floor(Math.random()*this.serverShopItemTextureHints.length)]}
+    /**
+     * 
+     * @see {@link PlayerShopManager.playerShopPageTextureHint}
+     */
     static get serverShopPageTextureHint(){return this.serverShopPageTextureHints[Math.floor(Math.random()*this.serverShopPageTextureHints.length)]}
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.playerShopSystemSettings}.
+     * @see {@link PlayerShopManager.playerShopSystemSettings}
      * @param sourceEntitya 
      */
-    static serverShopSystemSettings(sourceEntitya: Entity|executeCommandPlayerW|Player){
+    static async serverShopSystemSettings(sourceEntitya: Entity|executeCommandPlayerW|Player): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form = new ActionFormData();
         form.title("Server Shop System");
@@ -506,36 +581,60 @@ export class ServerShopManager{
         form.button("§cShop Item Settings", "textures/ui/icon_items");
         form.button("Back", "textures/ui/arrow_left");
         form.button("Close", "textures/ui/crossout");
-        forceShow(form, (sourceEntity as Player)).then(r => {
-            if (r.canceled) return;
+        return await forceShow(form, (sourceEntity as Player)).then(async r => {
+            if (r.canceled) return 1;
     
             let response = r.selection;
             switch (response) {
                 case 0:
-                    ServerShopManager.manageServerShops(sourceEntity)
+                    /**
+                     * @todo
+                     */
+                    if((await ServerShopManager.manageServerShops(sourceEntity)) as any==1){
+                        return await ServerShopManager.serverShopSystemSettings(sourceEntity);
+                    }else{
+                        return 0;
+                    }
                 break;
                 case 1:
-                    ServerShopManager.serverShopSystemSettings_main(sourceEntity)
+                    /**
+                     * @todo
+                     */
+                    if((await ServerShopManager.serverShopSystemSettings_main(sourceEntity)) as any==1){
+                        return await ServerShopManager.serverShopSystemSettings(sourceEntity);
+                    }else{
+                        return 0;
+                    }
                 break;
                 case 2:
-                    showMessage(sourceEntity as Player, undefined, "§cSorry, the shop item does not exist yet.", "Back", "Close").then(r=>{
+                    return await showMessage(sourceEntity as Player, undefined, "§cSorry, the shop item does not exist yet.", "Back", "Close").then(async r=>{
                         if(r.selection==0){
-                            ServerShopManager.serverShopSystemSettings(sourceEntity)
+                            return await ServerShopManager.serverShopSystemSettings(sourceEntity)
+                        }else{
+                            return 0;
                         }
                     })
                     // shopItemSettings(sourceEntity)
                 break;
                 case 3:
-                    mainShopSystemSettings(sourceEntity)
+                    // mainShopSystemSettings(sourceEntity)
+                    return 1;
+                break;
+                case 4:
+                    return 0;
                 break;
                 default:
+                    return 1;
             }
         }).catch(e => {
             console.error(e, e.stack);
+            return 1;
         });
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.playerShopSystemSettings_main}.
+     * @see {@link PlayerShopManager.playerShopSystemSettings_main}
      * @param sourceEntitya 
      */
     static serverShopSystemSettings_main(sourceEntitya: Entity|executeCommandPlayerW|Player){
@@ -556,6 +655,7 @@ export class ServerShopManager{
     
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShops}.
      * @param sourceEntitya 
      */
     static manageServerShops(sourceEntitya: Entity|executeCommandPlayerW|Player){
@@ -594,6 +694,7 @@ export class ServerShopManager{
     
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.addPlayerShop}.
      * @param sourceEntitya 
      */
     static addServerShop(sourceEntitya: Entity|executeCommandPlayerW|Player){
@@ -630,6 +731,7 @@ export class ServerShopManager{
     
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop}.
      * @param sourceEntitya 
      * @param shop 
      */
@@ -694,6 +796,7 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_settings}.
      * @param sourceEntitya 
      * @param shop 
      */
@@ -778,6 +881,7 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
     
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_contents}.
      * @param sourceEntitya 
      * @param shop 
      * @param mode 
@@ -900,6 +1004,7 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
     
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_manageItem}.
      * @param sourceEntitya 
      * @param shop 
      * @param item 
@@ -978,6 +1083,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_editItem}.
      * @param sourceEntitya 
      * @param shop 
      * @param item 
@@ -1086,6 +1192,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_addItem}.
      * @param sourceEntitya 
      * @param shop 
      * @param type 
@@ -1216,6 +1323,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
     
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_managePage}.
      * @param sourceEntitya 
      * @param shop 
      * @param page 
@@ -1297,6 +1405,7 @@ Texture: ${page.texture}`
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_editPage}.
      * @param sourceEntitya 
      * @param shop 
      * @param page 
@@ -1336,6 +1445,7 @@ Texture: ${page.texture}`
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_addPage}.
      * @param sourceEntitya 
      * @param shop 
      * @param mode 
@@ -1380,6 +1490,7 @@ Texture: ${page.texture}`
     
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_contents}.
      * @param sourceEntitya 
      * @param shop 
      * @param path 
@@ -1523,6 +1634,7 @@ Texture: ${page.texture}`
     
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_manageItem}.
      * @param sourceEntitya 
      * @param shop 
      * @param path 
@@ -1606,6 +1718,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_editItem}.
      * @param sourceEntitya 
      * @param shop 
      * @param path 
@@ -1717,6 +1830,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_addItem}.
      * @param sourceEntitya 
      * @param shop 
      * @param path 
@@ -1850,6 +1964,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as ShopItem).price:(item as 
     
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_managePage}.
      * @param sourceEntitya 
      * @param shop 
      * @param path 
@@ -1932,6 +2047,7 @@ Texture: ${page.texture}`
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_editPage}.
      * @param sourceEntitya 
      * @param shop 
      * @param path 
@@ -1974,9 +2090,10 @@ Texture: ${page.texture}`
     }
     /**
      * @todo Make an async function with return type of Promise<0|1>.
-     * @param sourceEntitya 
-     * @param shop 
-     * @param path 
+     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_addPage}.
+     * @param sourceEntitya The player to open the UI for
+     * @param shop The shop to add the page to
+     * @param path The path in the shop's data that the page will be added to
      * @returns 
      */
     static async manageServerShopPage_addPage<mode extends "buy"|"sell">(sourceEntitya: Entity|executeCommandPlayerW|Player, shop: ServerShop, path: [mode, ...string[]]){

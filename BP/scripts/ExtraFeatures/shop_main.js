@@ -20,11 +20,14 @@ export function mainShopSystemSettings(sourceEntitya) {
         let response = r.selection;
         switch (response) {
             case 0:
-                ServerShopManager.serverShopSystemSettings(sourceEntity);
+                if ((await ServerShopManager.serverShopSystemSettings(sourceEntity)) == 1) {
+                    mainShopSystemSettings(sourceEntity);
+                }
                 break;
             case 1:
-                await PlayerShopManager.playerShopSystemSettings(sourceEntity);
-                mainShopSystemSettings(sourceEntity);
+                if ((await PlayerShopManager.playerShopSystemSettings(sourceEntity)) == 1) {
+                    mainShopSystemSettings(sourceEntity);
+                }
                 break;
             case 2:
                 showMessage(sourceEntity, undefined, "§cSorry, the sign shop system does not exist yet.", "Back", "Close").then(r => {

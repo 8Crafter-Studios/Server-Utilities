@@ -9,7 +9,12 @@ import { type PlayerShopElement, mainShopSystemSettings, type PlayerShopPage, ty
 import { Vector } from "Main/coordinates";
 import { MoneySystem } from "./money";
 import { StorageFullError } from "Main/errors";
+import type { ServerShop, ServerShopManager, serverShopConfig } from "./server_shop"
 
+/**
+ * 
+ * @see {@link serverShopConfig}
+ */
 export type playerShopConfig = {
     /**
      * The id of the player shop.
@@ -18,37 +23,51 @@ export type playerShopConfig = {
     /**
      * The display name of the player shop. This is displayed on the button for the player shop in the manage player shops menu.
      */
-    name?: string,
+    name?: string|null,
     /**
      * The title of the player shop. This is the title displayed at the top of the UI for the player shop.
      */
-    title?: string,
+    title?: string|null,
     /**
      * The body text that is displayed on the main page of the player shop.
      */
-    mainPageBodyText?: string,
+    mainPageBodyText?: string|null,
+    /**
+     * The body text that is displayed on the main buy page of the server shop.
+     * @todo
+     */
+    mainBuyPageBodyText?: string|null,
+    /**
+     * The body text that is displayed on the main sell page of the server shop.
+     * @todo
+     */
+    mainSellPageBodyText?: string|null,
     /**
      * Whether or not players can sell items in this shop.
      */
-    sellShop: boolean,
+    sellShop?: boolean|null,
     /**
      * Whether or not players can buy items in this shop.
      */
-    buyShop: boolean,
+    buyShop?: boolean|null,
     /**
      * Whether or not this shop can be accessed by any player through the use of the \viewplayershops command.
      */
-    publicShop: boolean
+    publicShop?: boolean|null,
     /**
      * The ID of the player who owns this player shop. 
      */
-    playerID: `${number}`
+    playerID: `${number}`,
     /**
      * The name of the player who owns this player shop. 
      */
     playerName?: string
 }
 
+/**
+ * 
+ * @see {@link ServerShop}
+ */
 export class PlayerShop{
     /**
      * The id of the player shop.
@@ -57,15 +76,25 @@ export class PlayerShop{
     /**
      * The display name of the player shop. This is displayed on the button for the player shop in the manage player shops menu.
      */
-    name?: string
+    name?: string|null
     /**
      * The title of the player shop. This is the title displayed at the top of the UI for the player shop.
      */
-    title?: string
+    title?: string|null
     /**
      * The body text that is displayed on the main page of the player shop.
      */
-    mainPageBodyText?: string
+    mainPageBodyText?: string|null
+    /**
+     * The body text that is displayed on the main buy page of the server shop.
+     * @todo
+     */
+    mainBuyPageBodyText?: string|null
+    /**
+     * The body text that is displayed on the main sell page of the server shop.
+     * @todo
+     */
+    mainSellPageBodyText?: string|null
     /**
      * Whether or not players can sell items in this shop.
      */
@@ -820,6 +849,12 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
             }catch{}
         }
     }
+    /**
+     * @todo Fix the textures for the button icons.
+     * @see {@link ServerShop.openPublicShopsSelector}
+     * @param sourceEntitya 
+     * @returns 
+     */
     static async openPublicShopsSelector(sourceEntitya: Entity|executeCommandPlayerW|Player): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form = new ActionFormData();
@@ -884,6 +919,12 @@ export class PlayerShopManager{
     static playerShopPageTextureHints = ["textures/ui/arrowRight"]
     static get playerShopItemTextureHint(){return this.playerShopItemTextureHints[Math.floor(Math.random()*this.playerShopItemTextureHints.length)]}
     static get playerShopPageTextureHint(){return this.playerShopPageTextureHints[Math.floor(Math.random()*this.playerShopPageTextureHints.length)]}
+    /**
+     * @todo Add the "Shop Item Settings" section.
+     * @see {@link ServerShopManager.serverShopSystemSettings}
+     * @param sourceEntitya 
+     * @returns 
+     */
     static async playerShopSystemSettings(sourceEntitya: Entity|executeCommandPlayerW|Player): Promise<0|1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form = new ActionFormData();
@@ -936,7 +977,7 @@ export class PlayerShopManager{
             return 0
         });
     }
-    static async playerShopSystemSettings_main(sourceEntitya: Entity|executeCommandPlayerW|Player){
+    static async playerShopSystemSettings_main(sourceEntitya: Entity|executeCommandPlayerW|Player): Promise<1>{
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
         let form2 = new ModalFormData();
         form2.title(`Player Shop System Settings`)
@@ -958,7 +999,7 @@ export class PlayerShopManager{
         }).catch(e => {
             console.error(e, e.stack);
             return 1;
-        });
+        }) as 1;
     }
     
     static async managePlayerShops(sourceEntitya: Entity|executeCommandPlayerW|Player, all: boolean = false): Promise<0|1>{
@@ -1859,6 +1900,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as PlayerSavedShopItem).pric
     }
     /**
      * Opens the UI for editing a player shop item.
+     * @see {@link ServerShopManager.manageServerShop_editItem}
      * @param sourceEntitya The player editing the shop item.
      * @param shop The player shop that the shop item is in.
      * @param item The shop item that the player is editing.

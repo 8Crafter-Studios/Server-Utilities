@@ -9,6 +9,10 @@ import { mainShopSystemSettings } from "./shop_main";
 import { Vector } from "Main/coordinates";
 import { MoneySystem } from "./money";
 import { StorageFullError } from "Main/errors";
+/**
+ *
+ * @see {@link ServerShop}
+ */
 export class PlayerShop {
     constructor(config) {
         this.id = config.id ?? null;
@@ -846,6 +850,12 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             catch { }
         }
     }
+    /**
+     * @todo Fix the textures for the button icons.
+     * @see {@link ServerShop.openPublicShopsSelector}
+     * @param sourceEntitya
+     * @returns
+     */
     static async openPublicShopsSelector(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
@@ -911,6 +921,12 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
 export class PlayerShopManager {
     static get playerShopItemTextureHint() { return this.playerShopItemTextureHints[Math.floor(Math.random() * this.playerShopItemTextureHints.length)]; }
     static get playerShopPageTextureHint() { return this.playerShopPageTextureHints[Math.floor(Math.random() * this.playerShopPageTextureHints.length)]; }
+    /**
+     * @todo Add the "Shop Item Settings" section.
+     * @see {@link ServerShopManager.serverShopSystemSettings}
+     * @param sourceEntitya
+     * @returns
+     */
     static async playerShopSystemSettings(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
         let form = new ActionFormData();
@@ -1925,6 +1941,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
     }
     /**
      * Opens the UI for editing a player shop item.
+     * @see {@link ServerShopManager.manageServerShop_editItem}
      * @param sourceEntitya The player editing the shop item.
      * @param shop The player shop that the shop item is in.
      * @param item The shop item that the player is editing.
