@@ -821,7 +821,11 @@ export class executeCommandPlayerW {
             this.modifieddimension = player.dimension;
             this.rotation = player.rotation;
             this.player = (player.entity ?? player.block);
-            this.sendErrorsTo = (sendErrorsTo === null || isNaN(sendErrorsTo)) ? null : sendErrorsTo ?? (player.entity instanceof Player ? player.entity : console);
+            this.sendErrorsTo =
+                sendErrorsTo === null || Number.isNaN(sendErrorsTo)
+                    ? null
+                    : sendErrorsTo ??
+                        (player.entity instanceof Player ? player.entity : console);
             this.block = player.block;
             this.isFromWorldPosition = true;
             this.fromPlayerWorldPosition = player.entity instanceof Player;
@@ -834,6 +838,11 @@ export class executeCommandPlayerW {
         }
         else if (player instanceof Entity) {
             this.player = player;
+            this.sendErrorsTo =
+                sendErrorsTo === null || Number.isNaN(sendErrorsTo)
+                    ? null
+                    : sendErrorsTo ??
+                        (player instanceof Player ? player : console);
             this.modifiedlocation = player.location;
             this.modifieddimension = player.dimension;
             this.rotation = player.getRotation();
@@ -894,6 +903,30 @@ export class executeCommandPlayerW {
                 else if (typeof sest == "function") {
                     this.sendError(error, true, sest());
                 }
+            }
+        }
+    }
+    sendMessageB(message, sendErrorsTo) {
+        const sest = sendErrorsTo ?? this.sendErrorsTo;
+        if (!!sest) {
+            if (sest instanceof Player) {
+                sest.sendMessage(message);
+            }
+            else if (sest instanceof Array) {
+                sest.forEach(v => {
+                    if (v instanceof Player) {
+                        v.sendMessage(message);
+                    }
+                    else if ("warn" in v) {
+                        v.error(message);
+                    }
+                });
+            }
+            else if ("warn" in sest) {
+                sest.error(message);
+            }
+            else if (typeof sest == "function") {
+                this.sendMessageB(message, sest());
             }
         }
     }
@@ -4677,7 +4710,7 @@ sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept 
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`.replaceAll("\n", "")}`);
                         break;
                     case "help itemjsonformatsimplified":
-                        eventData.sender.sendMessage(`simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
+                        player.sendMessageB(`simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
 {
     "name"?: string,
     "lore"?: string[],
@@ -4736,7 +4769,7 @@ sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept 
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`);
                         break;
                     default:
-                        eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 4) + "\": at \"" + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "help >>" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 5) + "<<\"");
+                        player.sendError("§cSyntax error: Unexpected \"" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 4) + "\": at \"" + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "help >>" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 5) + "<<\"", true);
                         break;
                 }
                 break;
@@ -4744,11 +4777,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 eventData.cancel = true;
                 try {
                     system.runTimeout(() => {
-                        player.sendMessage(targetSelectorAllListC(switchTestB.split(" ").slice(1).join(" "), "", vTStr(player.location), player.player).map(v => v.id).join("\n"));
+                        player.sendMessageB(targetSelectorAllListC(switchTestB.split(" ").slice(1).join(" "), "", vTStr(player.location), player.player).map(v => v.id).join("\n"));
                     }, 2);
                 }
                 catch (e) {
-                    eventData.sender.sendMessage("§c" + e + e.stack);
+                    player.sendError("§c" + e + e.stack, true);
                 }
                 break;
             case !!switchTest.match(/^run$/):
@@ -4783,7 +4816,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eval(newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 5));
                 }
                 catch (e) {
-                    eventData.sender.sendMessage("§c" + e + e.stack);
+                    player.sendMessageB("§c" + e + e.stack);
                 }
                 break;
             case !!switchTest.match(/^warpset$/):
@@ -4793,25 +4826,25 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 if (newMessage.split(" ").slice(5).join(" ").escapeCharactersB(true).e == undefined)
                     switch (warpList.find((findWarp) => (findWarp.split(", ")[0] == newMessage.split(" ").slice(5).join(" ") /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c"))) == undefined) {
                         case false: /*
-                        if (newMessage.split(" ").slice(5).join(" ").replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "").replaceAll(", ", " ") == ""){*/ /*eventData.sender.sendMessage("§cError: missing required \"name\" field. "); */ /*break; */ /*}*/
+                        if (newMessage.split(" ").slice(5).join(" ").replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "").replaceAll(", ", " ") == ""){*/ /*player.sendMessageB("§cError: missing required \"name\" field. "); */ /*break; */ /*}*/
                             try {
                                 warpList[warpList.findIndex((warpItem) => (warpItem.split(", ")[0] == newMessage.split(" ").slice(5).join(" ") /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c")))] = String(newMessage.split(" ").slice(5).join(" ").replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "").replaceAll(", ", " ") + ", " + world.getDimension(newMessage.split(" ")[1]).id + ", " + Number(newMessage.split(" ")[2]) + ", " + Number(newMessage.split(" ")[3]) + ", " + Number(newMessage.split(" ")[4]));
                             }
                             catch (e) {
-                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                player.sendMessageB("§c" + e + e.stack);
                                 break;
                             }
                             try {
                                 system.run(() => { world.setDynamicProperty("globalWarpListValues", warpList.join("||||")); });
                             }
                             catch (e) {
-                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                player.sendMessageB("§c" + e + e.stack);
                             }
                             try {
-                                eventData.sender.sendMessage("Set global warp \"" + newMessage.split(" ").slice(5).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\" at dimension: " + newMessage.split(" ")[1] + ", x: " + newMessage.split(" ")[2] + ", y: " + newMessage.split(" ")[3] + ", z: " + newMessage.split(" ")[4] + ". ");
+                                player.sendMessageB("Set global warp \"" + newMessage.split(" ").slice(5).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\" at dimension: " + newMessage.split(" ")[1] + ", x: " + newMessage.split(" ")[2] + ", y: " + newMessage.split(" ")[3] + ", z: " + newMessage.split(" ")[4] + ". ");
                             }
                             catch (e) {
-                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                player.sendMessageB("§c" + e + e.stack);
                             }
                             break;
                         case true:
@@ -4819,19 +4852,19 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 warpList.push(String(newMessage.split(" ").slice(5).join(" ") /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c") + ", " + newMessage.split(" ")[1] + ", " + newMessage.split(" ")[2] + ", " + newMessage.split(" ")[3] + ", " + newMessage.split(" ")[4]));
                             }
                             catch (e) {
-                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                player.sendMessageB("§c" + e + e.stack);
                             }
                             try {
                                 system.run(() => { world.setDynamicProperty("globalWarpListValues", warpList.join("||||")); });
                             }
                             catch (e) {
-                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                player.sendMessageB("§c" + e + e.stack);
                             }
                             try {
-                                eventData.sender.sendMessage("Added global warp \"" + newMessage.split(" ").slice(5).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\" at dimension: " + newMessage.split(" ")[1] + ", x: " + newMessage.split(" ")[2] + ", y: " + newMessage.split(" ")[3] + ", z: " + newMessage.split(" ")[4] + ". ");
+                                player.sendMessageB("Added global warp \"" + newMessage.split(" ").slice(5).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\" at dimension: " + newMessage.split(" ")[1] + ", x: " + newMessage.split(" ")[2] + ", y: " + newMessage.split(" ")[3] + ", z: " + newMessage.split(" ")[4] + ". ");
                             }
                             catch (e) {
-                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                player.sendMessageB("§c" + e + e.stack);
                             }
                             break;
                     }
@@ -4846,21 +4879,21 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             system.run(() => { warpListB[warpListB.findIndex((findWarp) => (findWarp.split(", ")[0].escapeCharacters(true).replaceAll(", ", " ").replaceAll("|", "\\u007c") == newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c")))] = undefined; world.setDynamicProperty("globalWarpListValues", warpListB.join("||||")); });
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         try {
-                            eventData.sender.sendMessage("Removed global warp with name \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\". ");
+                            player.sendMessageB("Removed global warp with name \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\". ");
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         break;
                     case true:
                         try {
-                            eventData.sender.sendMessage("§cError: could not find global warp \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\". ");
+                            player.sendMessageB("§cError: could not find global warp \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\". ");
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         break;
                 }
@@ -4876,27 +4909,27 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             warp = warpListD.find((findWarp) => (findWarp.split(", ")[0].escapeCharacters(true).replaceAll("|", "\\u007c") == newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll("|", "\\u007c"))).split(", ");
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         try {
                             system.run(() => { player.teleport({ x: Number(warp[2]), y: Number(warp[3]), z: Number(warp[4]) }, { dimension: world.getDimension(String(warp[1])), keepVelocity: false }); });
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         try {
-                            eventData.sender.sendMessage("Warped to \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/ + "\". ");
+                            player.sendMessageB("Warped to \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/ + "\". ");
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         break;
                     case true:
                         try {
-                            eventData.sender.sendMessage("§cError: could not find global warp \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/ + "\". ");
+                            player.sendMessageB("§cError: could not find global warp \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/ + "\". ");
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         break;
                 }
@@ -4905,14 +4938,14 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 eventData.cancel = true;
                 let warpListC = String(world.getDynamicProperty("globalWarpListValues")).split("||||");
                 if (warpListC.length == 1) {
-                    eventData.sender.sendMessage("You have no global warps, set them with \\warpset");
+                    player.sendMessageB("You have no global warps, set them with \\warpset");
                 }
                 else {
                     try {
-                        eventData.sender.sendMessage(warpListC.join("\n").escapeCharacters(true));
+                        player.sendMessageB(warpListC.join("\n").escapeCharacters(true));
                     }
                     catch (e) {
-                        eventData.sender.sendMessage("§c" + e + e.stack);
+                        player.sendMessageB("§c" + e + e.stack);
                     }
                 }
                 break;
@@ -4923,24 +4956,24 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     warpListE[i] = warpListE[i].split(", ")[0];
                 }
                 if (warpListE.length == 1) {
-                    eventData.sender.sendMessage("You have no global warps, set them with \\warpset");
+                    player.sendMessageB("You have no global warps, set them with \\warpset");
                 }
                 else {
                     try {
-                        eventData.sender.sendMessage(warpListE.join("\n").escapeCharacters(true));
+                        player.sendMessageB(warpListE.join("\n").escapeCharacters(true));
                     }
                     catch (e) {
-                        eventData.sender.sendMessage("§c" + e + e.stack);
+                        player.sendMessageB("§c" + e + e.stack);
                     }
                 }
                 break;
             case !!switchTest.match(/^warplistrawdata$/):
                 eventData.cancel = true;
                 try {
-                    eventData.sender.sendMessage("Global Warp List Raw Data: \n" + String(world.getDynamicProperty("globalWarpListValues")));
+                    player.sendMessageB("Global Warp List Raw Data: \n" + String(world.getDynamicProperty("globalWarpListValues")));
                 }
                 catch (e) {
-                    eventData.sender.sendMessage("§c" + e + e.stack);
+                    player.sendMessageB("§c" + e + e.stack);
                 }
                 break;
             case !!switchTest.match(/^warpreset$/):
@@ -4949,13 +4982,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     system.run(() => { world.setDynamicProperty("globalWarpListValues"); });
                 }
                 catch (e) {
-                    eventData.sender.sendMessage("§c" + e + e.stack);
+                    player.sendMessageB("§c" + e + e.stack);
                 }
                 try {
-                    eventData.sender.sendMessage("Global warps lists has been reset. ");
+                    player.sendMessageB("Global warps lists has been reset. ");
                 }
                 catch (e) {
-                    eventData.sender.sendMessage("§c" + e + e.stack);
+                    player.sendMessageB("§c" + e + e.stack);
                 }
                 break;
             case !!switchTest.match(/^wset$/):
@@ -5600,7 +5633,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             const rotation = evaluateRotationCoordinates(String(args[7] ?? 0), String(args[6] ?? 0).replace("~", "0"), player.getRotation());
                             const location = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
                             for (let i = 0; i < args[1]; i++) {
-                                let a = player.dimension.spawnEntity(args[2], location, { initialPersistence: args[8] ?? false });
+                                let a = player.dimension.spawnEntity(args[2].replace(/^[^\<\:]+(?=[\<\$])/, "minecraft:$&"), location, { initialPersistence: args[8] ?? false });
                                 a.setRotation(rotation);
                                 a.nameTag = args[9] ?? "";
                             }
@@ -6192,29 +6225,36 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                  eventData.cancel = true;
                  try{system.run(()=>world.getAllPlayers().forEach(p=>uiManager.closeAllForms(p))); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
              break; */
-            case !!switchTest.match(/^closeuis$/):
+            case !!switchTest.match(/^closeuis$/) || !!switchTest.match(/^closeui$/):
                 {
                     eventData.cancel = true;
-                    const args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
-                    const players = world.getAllPlayers();
-                    if ((args[1] ?? "").trim() == "") {
+                    srun(() => {
                         try {
-                            system.run(() => players.forEach(p => uiManager.closeAllForms(p)));
+                            const args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+                            const players = world.getAllPlayers();
+                            if ((args[1] ?? "").trim() == "") {
+                                try {
+                                    system.run(() => players.forEach(p => uiManager.closeAllForms(p)));
+                                }
+                                catch (e) {
+                                    eventData.sender.sendMessage("§c" + e + e.stack);
+                                }
+                            }
+                            else {
+                                const playerids = players.map(p => p.id);
+                                const targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(p => playerids.includes(p.id));
+                                try {
+                                    system.run(() => targets.forEach(p => uiManager.closeAllForms(p)));
+                                }
+                                catch (e) {
+                                    eventData.sender.sendMessage("§c" + e + e.stack);
+                                }
+                            }
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendError(e);
                         }
-                    }
-                    else {
-                        const playerids = players.map(p => p.id);
-                        const targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(p => playerids.includes(p.id));
-                        try {
-                            system.run(() => targets.forEach(p => uiManager.closeAllForms(p)));
-                        }
-                        catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
-                        }
-                    }
+                    });
                 }
                 break;
             case !!switchTest.match(/^datapickblock$/) || !!switchTest.match(/^dpb$/):
@@ -13942,17 +13982,19 @@ ${command.dp}snapshot list`);
                 {
                     eventData.cancel = true;
                     srun(() => {
+                        const argsa = evaluateParameters(switchTestB, ["presetText", "f-fs"]);
+                        const keepFeedback = argsa.args[1].f;
+                        const surpressFeedback = argsa.args[1].s;
                         let wl = [new WorldPosition(tryget(() => player.modifiedlocation ?? player.location) ?? { x: 0, y: 0, z: 0 }, tryget(() => player.rotation ?? player.getRotation()) ?? { x: 0, y: 0 }, tryget(() => player.modifieddimension ?? player.dimension) ?? overworld, player.player, player.block)];
                         function evalExecuteCommand(rest) {
-                            const argsa = evaluateParameters(rest, ["presetText", "f-f"]);
+                            const argsa = evaluateParameters(rest, ["presetText"]);
                             const mode = argsa.args[0];
-                            const keepFeedback = argsa.args[1].f;
                             const resta = argsa.extra;
                             switch ((mode ?? "").toLowerCase()) {
                                 case "as":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.as(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.as(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
@@ -13960,7 +14002,7 @@ ${command.dp}snapshot list`);
                                 case "at":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.at(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.at(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
@@ -13992,7 +14034,7 @@ ${command.dp}snapshot list`);
                                 case "facing":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.facingEntity(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.facingEntity(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
@@ -14000,7 +14042,7 @@ ${command.dp}snapshot list`);
                                 case "facingentity":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.facingEntity(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.facingEntity(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
@@ -14039,7 +14081,7 @@ ${command.dp}snapshot list`);
                                 case "matchlocation":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.matchlocation(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.matchlocation(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
@@ -14047,7 +14089,7 @@ ${command.dp}snapshot list`);
                                 case "matchrotation":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.matchrotation(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.matchrotation(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
@@ -14055,7 +14097,7 @@ ${command.dp}snapshot list`);
                                 case "matchdimension":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.matchdimension(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.matchdimension(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
@@ -14101,7 +14143,7 @@ ${command.dp}snapshot list`);
                                             case "entity":
                                                 {
                                                     const argsb = evaluateParameters(args.extra, ["targetSelector"]);
-                                                    wl = wl.filter(wl => !!targetSelectorAllListC(argsb.args[0], "", vTStr(wl.location), player));
+                                                    wl = wl.filter(wl => !!targetSelectorAllListC(argsb.args[0], "", vTStr(wl.location), wl.entity));
                                                     evalExecuteCommand(argsb.extra);
                                                     return;
                                                 }
@@ -14118,7 +14160,7 @@ ${command.dp}snapshot list`);
                                     break;
                                 case "run":
                                     {
-                                        wl.forEach(wl => chatCommands({ player: new executeCommandPlayerW(wl, keepFeedback ? player.player : undefined), newMessage: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), returnBeforeChatSend: false, event: { sender: wl.entity, message: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), cancel: false }, eventData: { sender: wl.entity, message: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), cancel: false }, fromExecute: true }));
+                                        wl.forEach(wl => chatCommands({ player: new executeCommandPlayerW(wl, surpressFeedback ? null : keepFeedback ? player.player : undefined), newMessage: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), returnBeforeChatSend: false, event: { sender: wl.entity, message: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), cancel: false }, eventData: { sender: wl.entity, message: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), cancel: false }, fromExecute: true }));
                                         return;
                                     }
                                     break;
@@ -14128,7 +14170,6 @@ ${command.dp}snapshot list`);
                                     break;
                             }
                         }
-                        const argsa = evaluateParameters(switchTestB, ["presetText"]);
                         evalExecuteCommand(argsa.extra);
                     });
                 }

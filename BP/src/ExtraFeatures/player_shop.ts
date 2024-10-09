@@ -486,9 +486,9 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
                                 z: Math.floor(player.location.z)
                             },
                             {
-                                x: Math.floor(player.location.x)+1,
-                                y: Math.floor(player.location.y)+11,
-                                z: Math.floor(player.location.z)+1
+                                x: Math.floor(player.location.x),
+                                y: Math.floor(player.location.y)+10,
+                                z: Math.floor(player.location.z)
                             },
                             {
                                 includeBlocks: false,
@@ -703,9 +703,9 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
                                 z: Math.floor(player.location.z)
                             },
                             {
-                                x: Math.floor(player.location.x)+1,
-                                y: Math.floor(player.location.y)+11,
-                                z: Math.floor(player.location.z)+1
+                                x: Math.floor(player.location.x),
+                                y: Math.floor(player.location.y)+10,
+                                z: Math.floor(player.location.z)
                             },
                             {
                                 includeBlocks: false,
@@ -780,9 +780,9 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
                                 z: Math.floor(player.location.z)
                             },
                             {
-                                x: Math.floor(player.location.x)+1,
-                                y: Math.floor(player.location.y)+11,
-                                z: Math.floor(player.location.z)+1
+                                x: Math.floor(player.location.x),
+                                y: Math.floor(player.location.y)+10,
+                                z: Math.floor(player.location.z)
                             },
                             {
                                 includeBlocks: false,
@@ -863,9 +863,9 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
                     z: Math.floor(player.location.z)
                 },
                 {
-                    x: Math.floor(player.location.x)+1,
-                    y: Math.floor(player.location.y)+11,
-                    z: Math.floor(player.location.z)+1
+                    x: Math.floor(player.location.x),
+                    y: Math.floor(player.location.y)+10,
+                    z: Math.floor(player.location.z)
                 },
                 {
                     includeBlocks: false,
@@ -908,15 +908,9 @@ itemStack.hasComponent("potion")?`\n§r§bPotion Effect Type: §d${itemStack.get
         shopsList.forEach(s=>{
             form.button(s.name??s.title??s.id)
         })
-        /**
-         * @todo Fix this texture.
-         */
-        form.button("Manage My Shops", "textures/ui/book_edit");
+        form.button("Manage My Shops", "textures/ui/book_edit_default");
         if(sourceEntity.hasTag("admin")){
-            /**
-             * @todo Fix this texture.
-             */
-            form.button("Manage All Shops\n§cAdmins Only", "textures/ui/op_crown");
+            form.button("Manage All Shops\n§cAdmins Only", "textures/ui/op");
             form.button("Player Shop System Settings\n§cAdmins Only", "textures/ui/icon_setting");
         }
         form.button("Close", "textures/ui/crossout");/*
@@ -1305,9 +1299,9 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                             z: Math.floor(sourceEntity.location.z)
                         },
                         {
-                            x: Math.floor(sourceEntity.location.x)+1,
-                            y: Math.floor(sourceEntity.location.y)+11,
-                            z: Math.floor(sourceEntity.location.z)+1
+                            x: Math.floor(sourceEntity.location.x),
+                            y: Math.floor(sourceEntity.location.y)+10,
+                            z: Math.floor(sourceEntity.location.z)
                         },
                         {
                             includeBlocks: false,
@@ -1353,7 +1347,7 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                     }
                 break;
                 case (sourceEntity.hasTag("admin")&&config.system.debugMode)?5:-5:
-                    await showActions(sourceEntity as Player, "Debug Info", `Raw Shop Data: \n${JSON.stringify(shop, undefined, 2)}`, ["Done"])
+                    await showActions(sourceEntity as Player, "Debug Info", `Raw Shop Data: \n${JSON.stringify(shop, (k, v)=>{if(typeof v == "string"){return "§r"+v+"§r"}else{return v}}, 2)}`, ["Done"])
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop)
                 break;
                 case (sourceEntity.hasTag("admin")&&config.system.debugMode)?6:-6:
@@ -1402,7 +1396,7 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop)
                 break;
                 case (sourceEntity.hasTag("admin")&&config.system.debugMode)?8:-8:
-                    await showActions(sourceEntity as Player, "Debug Info", `Raw Buy Shop Data: \n${JSON.stringify(shop.buyData, undefined, 2)}`, ["Done"])
+                    await showActions(sourceEntity as Player, "Debug Info", `Raw Buy Shop Data: \n${JSON.stringify(shop.buyData, (k, v)=>{if(typeof v == "string"){return "§r"+v+"§r"}else{return v}}, 2)}`, ["Done"])
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop)
                 break;
                 case (sourceEntity.hasTag("admin")&&config.system.debugMode)?9:-9:
@@ -1417,7 +1411,7 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop)
                 break;
                 case (sourceEntity.hasTag("admin")&&config.system.debugMode)?10:-10:
-                    await showActions(sourceEntity as Player, "Debug Info", `Raw Sell Shop Data: \n${JSON.stringify(shop.sellData, undefined, 2)}`, ["Done"])
+                    await showActions(sourceEntity as Player, "Debug Info", `Raw Sell Shop Data: \n${JSON.stringify(shop.sellData, (k, v)=>{if(typeof v == "string"){return "§r"+v+"§r"}else{return v}}, 2)}`, ["Done"])
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop)
                 break;
                 case (sourceEntity.hasTag("admin")&&config.system.debugMode)?11:-11:
@@ -1543,9 +1537,9 @@ Is Buy Shop: ${shop.buyShop?"§aTrue":"§cFalse"}
                                 z: Math.floor(sourceEntity.location.z)
                             },
                             {
-                                x: Math.floor(sourceEntity.location.x)+1,
-                                y: Math.floor(sourceEntity.location.y)+11,
-                                z: Math.floor(sourceEntity.location.z)+1
+                                x: Math.floor(sourceEntity.location.x),
+                                y: Math.floor(sourceEntity.location.y)+10,
+                                z: Math.floor(sourceEntity.location.z)
                             },
                             {
                                 includeBlocks: false,
@@ -1783,9 +1777,9 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as PlayerSavedShopItem).pric
                                         z: Math.floor(player.location.z)
                                     },
                                     {
-                                        x: Math.floor(player.location.x)+1,
-                                        y: Math.floor(player.location.y)+11,
-                                        z: Math.floor(player.location.z)+1
+                                        x: Math.floor(player.location.x),
+                                        y: Math.floor(player.location.y)+10,
+                                        z: Math.floor(player.location.z)
                                     },
                                     {
                                         includeBlocks: false,
@@ -1843,9 +1837,9 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as PlayerSavedShopItem).pric
                                         z: Math.floor(player.location.z)
                                     },
                                     {
-                                        x: Math.floor(player.location.x)+1,
-                                        y: Math.floor(player.location.y)+11,
-                                        z: Math.floor(player.location.z)+1
+                                        x: Math.floor(player.location.x),
+                                        y: Math.floor(player.location.y)+10,
+                                        z: Math.floor(player.location.z)
                                     },
                                     {
                                         includeBlocks: false,
@@ -1886,7 +1880,7 @@ ${mode=="buy"?"Price":"Value"}: ${mode=="buy"?(item as PlayerSavedShopItem).pric
                 }
                 break;
                 case ((sourceEntity.hasTag("admin")&&config.system.debugMode)?3:-3)+(+((mode=="buy")&&((item as PlayerSavedShopItem)?.remainingStock<(item as PlayerSavedShopItem)?.maxStackSize))):
-                    await showActions(sourceEntity as Player, "Debug Info", `Raw Item Data: \n${JSON.stringify(item, undefined, 2)}`, ["Done"])
+                    await showActions(sourceEntity as Player, "Debug Info", `Raw Item Data: \n${JSON.stringify(item, (k, v)=>{if(typeof v == "string"){return "§r"+v+"§r"}else{return v}}, 2)}`, ["Done"])
                     return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode)
                 break;
                 case ((sourceEntity.hasTag("admin")&&config.system.debugMode)?4:-4)+(+((mode=="buy")&&((item as PlayerSavedShopItem)?.remainingStock<(item as PlayerSavedShopItem)?.maxStackSize))):
@@ -2198,7 +2192,7 @@ Texture: ${page.texture}`
                     }
                 break;
                 case (sourceEntity.hasTag("admin")&&config.system.debugMode)?3:-3:
-                    await showActions(sourceEntity as Player, "Debug Info", `Raw Page Data: \n${JSON.stringify(page, undefined, 2)}`, ["Done"])
+                    await showActions(sourceEntity as Player, "Debug Info", `Raw Page Data: \n${JSON.stringify(page, (k, v)=>{if(typeof v == "string"){return "§r"+v+"§r"}else{return v}}, 2)}`, ["Done"])
                     return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode)
                 break;
                 case (sourceEntity.hasTag("admin")&&config.system.debugMode)?4:-4:
@@ -2392,9 +2386,9 @@ Texture: ${page.texture}`
                             z: Math.floor(sourceEntity.location.z)
                         },
                         {
-                            x: Math.floor(sourceEntity.location.x)+1,
-                            y: Math.floor(sourceEntity.location.y)+11,
-                            z: Math.floor(sourceEntity.location.z)+1
+                            x: Math.floor(sourceEntity.location.x),
+                            y: Math.floor(sourceEntity.location.y)+10,
+                            z: Math.floor(sourceEntity.location.z)
                         },
                         {
                             includeBlocks: false,
@@ -2641,9 +2635,9 @@ Texture: ${page.texture}`
                                         z: Math.floor(player.location.z)
                                     },
                                     {
-                                        x: Math.floor(player.location.x)+1,
-                                        y: Math.floor(player.location.y)+11,
-                                        z: Math.floor(player.location.z)+1
+                                        x: Math.floor(player.location.x),
+                                        y: Math.floor(player.location.y)+10,
+                                        z: Math.floor(player.location.z)
                                     },
                                     {
                                         includeBlocks: false,
@@ -2702,9 +2696,9 @@ Texture: ${page.texture}`
                                         z: Math.floor(player.location.z)
                                     },
                                     {
-                                        x: Math.floor(player.location.x)+1,
-                                        y: Math.floor(player.location.y)+11,
-                                        z: Math.floor(player.location.z)+1
+                                        x: Math.floor(player.location.x),
+                                        y: Math.floor(player.location.y)+10,
+                                        z: Math.floor(player.location.z)
                                     },
                                     {
                                         includeBlocks: false,
@@ -2746,7 +2740,7 @@ Texture: ${page.texture}`
                 }
                 break;
                 case ((sourceEntity.hasTag("admin")&&config.system.debugMode)?3:-3)+(+((mode=="buy")&&((item as PlayerSavedShopItem)?.remainingStock<(item as PlayerSavedShopItem)?.maxStackSize))):
-                    await showActions(sourceEntity as Player, "Debug Info", `Raw Item Data: \n${JSON.stringify(item, undefined, 2)}`, ["Done"])
+                    await showActions(sourceEntity as Player, "Debug Info", `Raw Item Data: \n${JSON.stringify(item, (k, v)=>{if(typeof v == "string"){return "§r"+v+"§r"}else{return v}}, 2)}`, ["Done"])
                     return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex)
                 break;
                 case ((sourceEntity.hasTag("admin")&&config.system.debugMode)?4:-4)+(+((mode=="buy")&&((item as PlayerSavedShopItem)?.remainingStock<(item as PlayerSavedShopItem)?.maxStackSize))):
@@ -2995,7 +2989,7 @@ Texture: ${page.texture}`
                     }
                 break;
                 case (sourceEntity.hasTag("admin")&&config.system.debugMode)?4:-4:
-                    await showActions(sourceEntity as Player, "Debug Info", `Raw Item Data: \n${JSON.stringify(page, undefined, 2)}`, ["Done"])
+                    await showActions(sourceEntity as Player, "Debug Info", `Raw Item Data: \n${JSON.stringify(page, (k, v)=>{if(typeof v == "string"){return "§r"+v+"§r"}else{return v}}, 2)}`, ["Done"])
                     return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex)
                 break;
                 case (sourceEntity.hasTag("admin")&&config.system.debugMode)?5:-5:

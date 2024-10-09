@@ -262,6 +262,56 @@ export function infiniteUIv2(player: Player): number{
         5
     )
 }
+export function infiniteUIv3(player: Player, interval: number = 1, title: string = "Infinite Form", body: string = "You are now trapped in an infinite form.", button: string = "Okay"): number{
+    return system.runInterval(
+        async ()=>{
+            uiManager.closeAllForms(player);
+            return await new ActionFormData()
+                .title(title)
+                .body(body)
+                .button(button)
+                .forceShow(player, interval)
+        },
+        interval
+    )
+}
+export function infiniteUIv4(player: Player, interval: number = 1, title: string = "Infinite Form", body: string = "You are now trapped in an infinite form.", button: string = "Okay"): number{
+    return system.runInterval(
+        async ()=>{
+            uiManager.closeAllForms(player);
+            await new ActionFormData()
+                .title(title)
+                .body(body)
+                .button(button)
+                .forceShow(player, interval)
+            uiManager.closeAllForms(player);
+            await new ActionFormData()
+                .title(title)
+                .body(body)
+                .button(button)
+                .forceShow(player, interval)
+            uiManager.closeAllForms(player);
+            await new ActionFormData()
+                .title(title)
+                .body(body)
+                .button(button)
+                .forceShow(player, interval)
+            uiManager.closeAllForms(player);
+            await new ActionFormData()
+                .title(title)
+                .body(body)
+                .button(button)
+                .forceShow(player, interval)
+            uiManager.closeAllForms(player);
+            return await new ActionFormData()
+                .title(title)
+                .body(body)
+                .button(button)
+                .forceShow(player, interval)
+        },
+        interval
+    )
+}
 export function mainMenu(sourceEntitya: Entity|executeCommandPlayerW|Player){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form = new ActionFormData();

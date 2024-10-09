@@ -57,6 +57,7 @@ export var commanddescriptions;
     commanddescriptions["h#"] = "Swaps your hotbar with the specified hotbar preset, optionally specifying a row of the container block to swap your hotbar with. ";
     commanddescriptions["heal"] = "Heals entities. ";
     commanddescriptions["health"] = "Modifies the health of entities.";
+    commanddescriptions["help"] = "Provides help.";
     commanddescriptions["hlist"] = "Lists all of your currently saved hotbar presets.";
     commanddescriptions["home"] = "Sets/Removes/Warps to a home.";
     commanddescriptions["hset"] = "Sets a hotbar preset.";
@@ -255,7 +256,7 @@ export const commandsyntaxes = {
     "ecinvseec": `ecinvseec [target: string|~]`,
     "enderchest": `${command.dp}enderchest`,
     "eval": `${command.dp}eval <ScriptAPICode: JavaScript>`,
-    "execute": `${command.dp}execute ...
+    "execute": `${command.dp}execute [-f] ...
 ${command.dp}... align <axes: string> ...
 ${command.dp}... anchored <eyes|feet> ...
 ${command.dp}... as <origin: target> ...
@@ -358,6 +359,26 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
     "h#": `${command.dp}h<presetId: float> [containerRow: float[?=0]]`,
     "heal": `${command.dp}heal [targets: target[allowMultiple=true]]`,
     "health": `${command.dp}health <health: int> [targets: target[allowMultiple=true]]`,
+    "help": `${command.dp}help
+${command.dp}help scriptevent
+${command.dp}help cmd <command: CommandName>
+${command.dp}help command <command: CommandName>
+${command.dp}help cmdextra <command: CommandName>
+${command.dp}help commandextra <command: CommandName>
+${command.dp}help cmddebug <command: CommandName>
+${command.dp}help commanddebug <command: CommandName>
+${command.dp}help cmddebugplus <command: CommandName>
+${command.dp}help commanddebugplus <command: CommandName>
+${command.dp}help customcmddebug <command: CommandName>
+${command.dp}help customcommanddebug <command: CommandName>
+${command.dp}help chatcommands
+${command.dp}help chatcommandsb
+${command.dp}help javascriptfunctions
+${command.dp}help js <JavaScriptFunctionVariableConstantOrClassName: string>
+${command.dp}help jsfunction <JavaScriptFunctionVariableConstantOrClassName: string>
+${command.dp}help itemjsonformat
+${command.dp}help itemjsonformatcmpr
+${command.dp}help itemjsonformatsimplified`,
     "home": `${command.dp}home <mode: set|remove|go|warp|teleport> <homeName: text>
 ${command.dp}home clear
 ${command.dp}home removeall
@@ -646,6 +667,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 ${command.dp}structure save <structureName: string> <from: x y z> <to: x y z> [saveMode: world|memory] [includeEntities: Boolean] [includeBlocks: Boolean]
 ${command.dp}structure load <structureName: string> <to: x y z> [rotation: 0|90|190|270] [mirror: none|x|z|xz] [includeEntities: Boolean] [includeBlocks: Boolean] [waterlogged: Boolean] [integrity: float] [integritySeed: string] [animationMode: none|blocks|layers] [animationSeconds: float]
 ${command.dp}structure delete <structureName: string>
+${command.dp}structure getinfo <structureName: string>
 ${command.dp}structure copy <copyFromStructureName: string> <copyToStructureName: string>
 ${command.dp}structure copytodisk <structureName: string> <copyToStructureName: string>
 ${command.dp}structure copytomemory <structureName: string> <copyToStructureName: string>
@@ -960,10 +982,14 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .gmp - §oSets your gamemode to spectator. §r
 .gmr - §oSets your gamemode to a random gamemode. §r
 .gms - §oSets your gamemode to survival. §r
-.gohome - §oWarps to a home. §r
-.h# - §oSwaps your hotbar with the specified hotbar preset. §r
-.home - §oSets/Removes/Warps to a home. §r
-.hset - §oSets a hotbar preset. §r
+.gohome - §oWarps to a home.§r
+.h# - §oSwaps your hotbar with the specified hotbar preset.§r
+.heal - §oHeals entities.§r
+.health - §oModifies the health of entities.§r
+.help - §oProvides help.§r
+.hlist - §oLists all of your currently saved hotbar presets.§r
+.home - §oSets/Removes/Warps to a home.§r
+.hset - §oSets a hotbar preset.§r
 .idtfill - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones. §r
 .ifill - §oFills all or parts of a reigon with a specific block, with no limits, can use any block type including NBT Editor only ones. §r
 .ignite - §oIgnites blocks in the specified radius. §r
@@ -1152,7 +1178,7 @@ export function getCommandHelpPage(commandName, player) {
             ? ""
             : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
             ? ""
-            : "\nVersion: " + cmd.formatting_code + cmd.command_version}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            : "\nVersion: " + cmd.formatting_code + cmd.command_version}§r\nType: ${cmd.type}§r\n${!cmd.settings.enabled
             ? "§cDISABLED"
             : "§aENABLED"}${!cmd.isDeprecated
             ? ""
@@ -1172,19 +1198,19 @@ export function getCommandHelpPageExtra(commandName, player) {
             .split("\n")
             .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
             ? ""
-            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            : "§r\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
             ? ""
-            : "\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
+            : "§r\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
             ? ""
-            : "§r§f\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings.defaultSettings
+            : "§r\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings.defaultSettings
             ? ""
-            : "§r§f\nDefault Required Tags: " + JSON.stringify(cmd.settings.defaultSettings.requiredTags)}${!!!cmd.settings.requiredTags
+            : "§r\nDefault Required Tags: " + JSON.stringify(cmd.settings.defaultSettings.requiredTags)}${!!!cmd.settings.requiredTags
             ? ""
-            : "§r§f\nRequired Tags: " + JSON.stringify(cmd.settings.requiredTags)}${!!!cmd.settings.requiresOp
+            : "§r\nRequired Tags: " + JSON.stringify(cmd.settings.requiredTags)}${!!!cmd.settings.requiresOp
             ? ""
-            : "§r§f\nRequires OP: " + JSON.stringify(cmd.settings.requiresOp)}${!!!cmd.settings.requiredPermissionLevel
+            : "§r\nRequires OP: " + JSON.stringify(cmd.settings.requiresOp)}${!!!cmd.settings.requiredPermissionLevel
             ? ""
-            : "§r§f\nRequired Permission Level: " + JSON.stringify(cmd.settings.requiredPermissionLevel)}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            : "§r\nRequired Permission Level: " + JSON.stringify(cmd.settings.requiredPermissionLevel)}§r\nType: ${cmd.type}§r\n${!cmd.settings.enabled
             ? "§cDISABLED"
             : "§aENABLED"}${!cmd.isDeprecated
             ? ""
@@ -1196,7 +1222,7 @@ export function getCommandHelpPageExtra(commandName, player) {
                 : "\n§cYou do not have permission to use this command!"
             : ""}`;
 }
-export function getCommandHelpPageDebug(commandName, player) {
+export function getCommandHelpPageDebug(commandName, player, spacing = 0) {
     let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
     return (!!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version) || cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
@@ -1204,15 +1230,25 @@ export function getCommandHelpPageDebug(commandName, player) {
             .split("\n")
             .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
             ? ""
-            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            : "§r\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
             ? ""
-            : "\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
+            : "§r\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
             ? ""
-            : "§r§f\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings?.defaultSettings
+            : "§r\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings?.defaultSettings
             ? ""
-            : "§r§f\nBuilt-In Raw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings.defaultSettings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}${!!!cmd.settings
+            : "§r\nBuilt-In Raw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings.defaultSettings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)), (k, v) => { if (typeof v == "string") {
+                return "§r" + v + "§r";
+            }
+            else {
+                return v;
+            } }, spacing)}${!!!cmd.settings
             ? ""
-            : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            : "§r\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)), (k, v) => { if (typeof v == "string") {
+                return "§r" + v + "§r";
+            }
+            else {
+                return v;
+            } }, spacing)}§r\nType: ${cmd.type}§r\n${!cmd.settings.enabled
             ? "§cDISABLED"
             : "§aENABLED"}${!cmd.isDeprecated
             ? ""
@@ -1224,7 +1260,7 @@ export function getCommandHelpPageDebug(commandName, player) {
                 : "\n§cYou do not have permission to use this command!"
             : ""}`;
 }
-export function getCommandHelpPageDebugPlus(commandName, player) {
+export function getCommandHelpPageDebugPlus(commandName, player, spacing = 0) {
     let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
     return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
@@ -1232,15 +1268,30 @@ export function getCommandHelpPageDebugPlus(commandName, player) {
             .split("\n")
             .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
             ? ""
-            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            : "§r\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
             ? ""
-            : "\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
+            : "§r\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
             ? ""
-            : "§r§f\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings?.defaultSettings
+            : "§r\nCategories: " + JSON.stringify(cmd.categories, (k, v) => { if (typeof v == "string") {
+                return "§r" + v + "§r";
+            }
+            else {
+                return v;
+            } })}${!!!cmd.settings?.defaultSettings
             ? ""
-            : "§r§f\nBuilt-In Raw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings.defaultSettings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}${!!!cmd.settings
+            : "§r\nBuilt-In Raw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings.defaultSettings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)), (k, v) => { if (typeof v == "string") {
+                return "§r" + v + "§r";
+            }
+            else {
+                return v;
+            } }, spacing)}${!!!cmd.settings
             ? ""
-            : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            : "§r\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)), (k, v) => { if (typeof v == "string") {
+                return "§r" + v + "§r";
+            }
+            else {
+                return v;
+            } }, spacing)}§r\nType: ${cmd.type}§r\n${!cmd.settings.enabled
             ? "§cDISABLED"
             : "§aENABLED"}${!cmd.isDeprecated
             ? ""
@@ -1252,7 +1303,7 @@ export function getCommandHelpPageDebugPlus(commandName, player) {
                 : "\n§cYou do not have permission to use this command!"
             : ""}`;
 }
-export function getCommandHelpPageCustomDebug(commandName, player) {
+export function getCommandHelpPageCustomDebug(commandName, player, spacing = 0) {
     let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "custom");
     return !cmd.settings.isSaved
         ? `§cError: Unknown custom command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it.`
@@ -1260,15 +1311,25 @@ export function getCommandHelpPageCustomDebug(commandName, player) {
             .split("\n")
             .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
             ? ""
-            : "\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
+            : "§r\nFlags:\n" + commandflags[cmd.currentCommandName].split("\n").join("§r\n")}${!!!cmd.command_version
             ? ""
-            : "\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
+            : "§r\nVersion: " + cmd.formatting_code + cmd.command_version}${!!!cmd.category
             ? ""
-            : "§r§f\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings
+            : "§r\nCategories: " + JSON.stringify(cmd.categories)}${!!!cmd.settings
             ? ""
-            : "§r§f\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}${!!!cmd
+            : "§r\nRaw Settings: " + JSON.stringify(Object.fromEntries(Object.entries(cmd.settings).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)), (k, v) => { if (typeof v == "string") {
+                return "§r" + v + "§r";
+            }
+            else {
+                return v;
+            } }, spacing)}${!!!cmd
             ? ""
-            : "§r§f\nRaw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)))}§r§f\nType: ${cmd.type}\n${!cmd.settings.enabled
+            : "§r\nRaw Command Data: " + JSON.stringify(Object.fromEntries(Object.entries(cmd).map(v => v[0] == "formatting_code" ? [v[0], v[1]["replaceAll"]("§", "\uF019")] : v)), (k, v) => { if (typeof v == "string") {
+                return "§r" + v + "§r";
+            }
+            else {
+                return v;
+            } }, spacing)}§r\nType: ${cmd.type}§r\n${!cmd.settings.enabled
             ? "§cDISABLED"
             : "§aENABLED"}${!!player
             ? cmd.testCanPlayerUseCommand(player)

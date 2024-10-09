@@ -337,6 +337,50 @@ export function infiniteUIv2(player) {
             .forceShow(player, 5);
     }, 5);
 }
+export function infiniteUIv3(player, interval = 1, title = "Infinite Form", body = "You are now trapped in an infinite form.", button = "Okay") {
+    return system.runInterval(async () => {
+        uiManager.closeAllForms(player);
+        return await new ActionFormData()
+            .title(title)
+            .body(body)
+            .button(button)
+            .forceShow(player, interval);
+    }, interval);
+}
+export function infiniteUIv4(player, interval = 1, title = "Infinite Form", body = "You are now trapped in an infinite form.", button = "Okay") {
+    return system.runInterval(async () => {
+        uiManager.closeAllForms(player);
+        await new ActionFormData()
+            .title(title)
+            .body(body)
+            .button(button)
+            .forceShow(player, interval);
+        uiManager.closeAllForms(player);
+        await new ActionFormData()
+            .title(title)
+            .body(body)
+            .button(button)
+            .forceShow(player, interval);
+        uiManager.closeAllForms(player);
+        await new ActionFormData()
+            .title(title)
+            .body(body)
+            .button(button)
+            .forceShow(player, interval);
+        uiManager.closeAllForms(player);
+        await new ActionFormData()
+            .title(title)
+            .body(body)
+            .button(button)
+            .forceShow(player, interval);
+        uiManager.closeAllForms(player);
+        return await new ActionFormData()
+            .title(title)
+            .body(body)
+            .button(button)
+            .forceShow(player, interval);
+    }, interval);
+}
 export function mainMenu(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData();

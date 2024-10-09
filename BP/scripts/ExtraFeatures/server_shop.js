@@ -361,9 +361,7 @@ export class ServerShop {
             infoForm.title("Item Details");
             infoForm.body(`§a${item.title}
 §r§gPrice: ${item.price}
-§r§bItem Type: §a${item.itemType == "giveCommand" ? item.itemID : item.itemType == "newItemStack" ? item.itemID : item.itemDetails.typeId}${item.itemType == "giveCommand" ? "" : `\n§r§bItem Name: §a${item.itemType == "newItemStack" ? item.itemName : item.itemDetails.nameTag}`}${item.itemType == "giveCommand" ? "" : `\n§r§r§bLore: §c${item.itemType == "newItemStack" ? item.itemLore?.length ?? 0 : item.itemDetails.loreLineCount} Lines`}${item.itemType == "pre-made" ? `\n§r§bEnchantments: §d{
-${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments.map(v => v.type.id + " " + v.level.toRomanNumerals()).join("\n") : item.itemDetails.enchantments}
-}` : ""}`);
+§r§bItem Type: §a${item.itemType == "giveCommand" ? item.itemID : item.itemType == "newItemStack" ? item.itemID : item.itemDetails?.typeId}${item.itemType == "giveCommand" ? "" : `\n§r§bItem Name: §a${item.itemType == "newItemStack" ? item.itemName : item.itemDetails?.nameTag}`}${item.itemType == "giveCommand" ? "" : `\n§r§r§bLore: §c${item.itemType == "newItemStack" ? item.itemLore?.length ?? 0 : item.itemDetails?.loreLineCount} Lines`}${item.itemType == "pre-made" ? `\n§r§bEnchantments: ${item.itemDetails?.enchantments instanceof Array ? "§d{\n" + item.itemDetails?.enchantments.map(v => v.type.id + " " + v.level.toRomanNumerals()).join("\n") + "\n}" : item.itemDetails?.enchantments}` : ""}`);
             infoForm.button("Proceed to buy item");
             if (item.itemType != "giveCommand") {
                 infoForm.button("More Details");
@@ -382,9 +380,9 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                 infoFormB.title("Item Details");
                 if (item.itemType == "pre-made") {
                     world.structureManager.place(item.structureID, player.dimension, Vector.add(player.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
-                    const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == item.entityID);
+                    const entity = player.dimension.getEntitiesAtBlockLocation(Vector.add(player.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_shop_item_save_id"))) == item.entityID);
                     if (!!!entity) {
-                        throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${item.entityID} was found inside of the specified structure.`);
+                        throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${item.entityID} was found inside of the specified structure.`);
                     }
                     const itemStack = entity.getComponent("inventory").container.getItem(0);
                     entity.remove();
@@ -402,7 +400,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
 §r§bDynamic Properties: §r${tryget(() => `${itemStack.getDynamicPropertyTotalByteCount()} Bytes: \n` + JSON.stringify(Object.fromEntries(itemStack.getDynamicPropertyIds().map(v => ["§r" + v, itemStack.getDynamicProperty(v)])), undefined, 1)) ?? "N/A"}${itemStack.hasComponent("durability") ? `\n§r§bDurability: ${itemStack.getComponent("durability").damage < (itemStack.getComponent("durability").maxDurability / 3) ? "§a" : itemStack.getComponent("durability").damage < (itemStack.getComponent("durability").maxDurability / 1.5) ? "§e" : "§c"}{itemStack.getComponent("durability").maxDurability-itemStack.getComponent("durability").damage}/${itemStack.getComponent("durability").maxDurability}` : ""}${itemStack.hasComponent("potion") ? `\n§r§bPotion Effect Type: §d${itemStack.getComponent("potion").potionEffectType.id}
 §r§bPotion Liquid Type: §9${itemStack.getComponent("potion").potionLiquidType.id}
 §r§bPotion Modifier Type: §e${itemStack.getComponent("potion").potionModifierType.id}` : ""}
-§r§bEnchantments: ${itemStack.hasComponent("enchantable") ? "\n§d[" + itemStack.getComponent("enchantable").getEnchantments().map(v => v.type.id + " " + v.level.toRomanNumerals()).join("\n") + "\n]" : "N/A"}`);
+§r§bEnchantments: ${itemStack.hasComponent("enchantable") ? itemStack.getComponent("enchantable").getEnchantments().length == 0 ? "§d{}" : "\n§d{\n" + itemStack.getComponent("enchantable").getEnchantments().map(v => v.type.id + " " + v.level.toRomanNumerals()).join("\n") + "\n}" : "N/A"}`);
                 }
                 else if (item.itemType == "newItemStack") {
                     infoFormB.body(`§a${item.title}
@@ -610,11 +608,8 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             form.button(s.name ?? s.title ?? s.id);
         });
         if (sourceEntity.hasTag("admin")) {
-            /**
-             * @todo Fix this texture.
-             */
-            form.button("Manage Shops\n§cAdmins Only", "textures/ui/op_crown");
-            form.button("Player Shop System Settings\n§cAdmins Only", "textures/ui/icon_setting");
+            form.button("Manage Shops\n§cAdmins Only", "textures/ui/op");
+            form.button("Server Shop System Settings\n§cAdmins Only", "textures/ui/icon_setting");
         }
         form.button("Close", "textures/ui/crossout"); /*
         form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
@@ -1005,7 +1000,12 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     }
                     break;
                 case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 4 : -4:
-                    await showActions(sourceEntity, "Debug Info", `Raw Shop Data: \n${JSON.stringify(shop, undefined, 2)}`, ["Done"]);
+                    await showActions(sourceEntity, "Debug Info", `Raw Shop Data: \n${JSON.stringify(shop, (k, v) => { if (typeof v == "string") {
+                        return "§r" + v + "§r";
+                    }
+                    else {
+                        return v;
+                    } }, 2)}`, ["Done"]);
                     return await ServerShopManager.manageServerShop(sourceEntity, shop);
                     break;
                 case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 5 : -5:
@@ -1050,7 +1050,12 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     return await ServerShopManager.manageServerShop(sourceEntity, shop);
                     break;
                 case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 7 : -7:
-                    await showActions(sourceEntity, "Debug Info", `Raw Buy Shop Data: \n${JSON.stringify(shop.buyData, undefined, 2)}`, ["Done"]);
+                    await showActions(sourceEntity, "Debug Info", `Raw Buy Shop Data: \n${JSON.stringify(shop.buyData, (k, v) => { if (typeof v == "string") {
+                        return "§r" + v + "§r";
+                    }
+                    else {
+                        return v;
+                    } }, 2)}`, ["Done"]);
                     return await ServerShopManager.manageServerShop(sourceEntity, shop);
                     break;
                 case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 8 : -8:
@@ -1065,7 +1070,12 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     return await ServerShopManager.manageServerShop(sourceEntity, shop);
                     break;
                 case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 9 : -9:
-                    await showActions(sourceEntity, "Debug Info", `Raw Sell Shop Data: \n${JSON.stringify(shop.sellData, undefined, 2)}`, ["Done"]);
+                    await showActions(sourceEntity, "Debug Info", `Raw Sell Shop Data: \n${JSON.stringify(shop.sellData, (k, v) => { if (typeof v == "string") {
+                        return "§r" + v + "§r";
+                    }
+                    else {
+                        return v;
+                    } }, 2)}`, ["Done"]);
                     return await ServerShopManager.manageServerShop(sourceEntity, shop);
                     break;
                 case (sourceEntity.hasTag("admin") && config.system.debugMode) ? 10 : -10:
@@ -1239,9 +1249,9 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                             y: Math.floor(sourceEntity.location.y),
                             z: Math.floor(sourceEntity.location.z)
                         }, {
-                            x: Math.floor(sourceEntity.location.x) + 1,
-                            y: Math.floor(sourceEntity.location.y) + 1,
-                            z: Math.floor(sourceEntity.location.z) + 1
+                            x: Math.floor(sourceEntity.location.x),
+                            y: Math.floor(sourceEntity.location.y),
+                            z: Math.floor(sourceEntity.location.z)
                         }, {
                             includeBlocks: false,
                             includeEntities: true,
@@ -1517,13 +1527,14 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                 let entity = undefined;
                 let itemStack = undefined;
                 try {
-                    world.structureManager.place(structureID, sourceEntity.dimension, Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
-                    entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == entityID);
+                    world.structureManager.place(item.structureID, sourceEntity.dimension, Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
+                    entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_shop_item_save_id"))) == item.entityID);
                     if (!!!entity) {
                         throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${entityID} was found inside of the specified structure.`);
                     }
-                    itemStack = entity.getComponent("inventory").container.getItem(0),
-                        item.itemDetails.damage = !!!itemStack ? null : tryget(() => itemStack.getComponent("durability").damage) ?? NaN,
+                    itemStack = entity.getComponent("inventory").container.getItem(0);
+                    item.itemDetails ??= {};
+                    item.itemDetails.damage = !!!itemStack ? null : tryget(() => itemStack.getComponent("durability").damage) ?? NaN,
                         item.itemDetails.maxDurability = !!!itemStack ? null : tryget(() => itemStack.getComponent("durability").maxDurability) ?? NaN,
                         item.itemDetails.keepOnDeath = !!!itemStack ? null : itemStack.keepOnDeath,
                         item.itemDetails.lockMode = !!!itemStack ? null : itemStack.lockMode,
@@ -1666,7 +1677,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                 let itemStack = undefined;
                 try {
                     world.structureManager.place(structureID, sourceEntity.dimension, Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
-                    entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == entityID);
+                    entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_shop_item_save_id"))) == entityID);
                     if (!!!entity) {
                         throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${entityID} was found inside of the specified structure.`);
                     }
@@ -1971,9 +1982,9 @@ Texture: ${page.texture}`);
                         y: Math.floor(sourceEntity.location.y),
                         z: Math.floor(sourceEntity.location.z)
                     }, {
-                        x: Math.floor(sourceEntity.location.x) + 1,
-                        y: Math.floor(sourceEntity.location.y) + 1,
-                        z: Math.floor(sourceEntity.location.z) + 1
+                        x: Math.floor(sourceEntity.location.x),
+                        y: Math.floor(sourceEntity.location.y),
+                        z: Math.floor(sourceEntity.location.z)
                     }, {
                         includeBlocks: false,
                         includeEntities: true,
@@ -2247,7 +2258,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                 let itemStack = undefined;
                 try {
                     world.structureManager.place(structureID, sourceEntity.dimension, Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
-                    entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == entityID);
+                    entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_shop_item_save_id"))) == entityID);
                     if (!!!entity) {
                         throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${entityID} was found inside of the specified structure.`);
                     }
@@ -2399,7 +2410,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                 let itemStack = undefined;
                 try {
                     world.structureManager.place(structureID, sourceEntity.dimension, Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
-                    entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == entityID);
+                    entity = sourceEntity.dimension.getEntitiesAtBlockLocation(Vector.add(sourceEntity.location, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_shop_item_save_id"))) == entityID);
                     if (!!!entity) {
                         throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${entityID} was found inside of the specified structure.`);
                     }
