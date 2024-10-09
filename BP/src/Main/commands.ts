@@ -8695,9 +8695,11 @@ ${command.dp}snapshot list`); return}
         case !!switchTest.match(/^execute$/): {
             eventData.cancel = true;
             srun(()=>{
-                const argsa = evaluateParameters(switchTestB, ["presetText", "f-fs"])
+                const argsa = evaluateParameters(switchTestB, ["presetText", "f-fsq"])
                 const keepFeedback = argsa.args[1].f
                 const surpressFeedback = argsa.args[1].s
+                const silentCMD = argsa.args[1].q
+                let sendErrorsTo = undefined
                 let wl = [new WorldPosition(tryget(()=>player.modifiedlocation??player.location)??{x: 0, y: 0, z: 0}, tryget(()=>player.rotation??player.getRotation())??{x: 0, y: 0}, tryget(()=>player.modifieddimension??player.dimension)??overworld, player.player, player.block)]
                 function evalExecuteCommand(rest: string){
                     const argsa = evaluateParameters(rest, ["presetText"])
@@ -8714,6 +8716,19 @@ ${command.dp}snapshot list`); return}
                         case "at":{
                             const args = evaluateParameters(resta, ["targetSelector"])
                             wl=wl.map((wl, i)=>wl.at(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat()
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        case "sendfeedbackto":{
+                            const args = evaluateParameters(resta, ["targetSelector"])
+                            wl=wl.map((wl, i)=>wl.setSendErrorsTo(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity)))
+                            evalExecuteCommand(args.extra)
+                            return
+                        }
+                        break;
+                        case "resetfeedbacktarget":{
+                            const args = evaluateParameters(resta, ["targetSelector"])
+                            wl=wl.map((wl, i)=>wl.clearSendErrorsTo())
                             evalExecuteCommand(args.extra)
                             return
                         }
@@ -8852,7 +8867,7 @@ ${command.dp}snapshot list`); return}
                         }
                         break;
                         case "run":{
-                            wl.forEach(wl=>chatCommands({player: new executeCommandPlayerW(wl, surpressFeedback?null:keepFeedback?player.player:undefined), newMessage: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), returnBeforeChatSend: false, event: {sender: wl.entity as Player, message: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), cancel: false}, eventData: {sender: wl.entity as Player, message: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), cancel: false}, fromExecute: true}))
+                            wl.forEach(wl=>chatCommands({player: new executeCommandPlayerW(wl, surpressFeedback?null:keepFeedback?player.player:wl.sendErrorsTo), silentCMD: silentCMD, newMessage: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), returnBeforeChatSend: false, event: {sender: wl.entity as Player, message: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), cancel: false}, eventData: {sender: wl.entity as Player, message: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), cancel: false}, fromExecute: true}))
                             return
                         }
                         break;

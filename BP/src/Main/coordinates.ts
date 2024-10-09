@@ -97,12 +97,14 @@ export class WorldPosition {
     dimension?: Dimension; 
     entity?: Entity; 
     block?: Block; 
-    constructor(location: Vector3, rotation: Vector2, dimension?: DimensionType|Dimension|string, entity?: Entity|Player, block?: Block) {
+    sendErrorsTo?: any
+    constructor(location: Vector3, rotation: Vector2, dimension?: DimensionType|Dimension|string, entity?: Entity|Player, block?: Block, sendErrorsTo?: any) {
         this.location = location; 
         this.rotation = rotation;  
         if(dimension == undefined){}else{this.dimension = world.getDimension((dimension as DimensionType)?.typeId ?? (dimension as Dimension)?.id ?? (dimension as string)); }; 
         this.entity = entity as Entity
-        this.block = block/*
+        this.block = block
+        this.sendErrorsTo = sendErrorsTo/*
         if(dimension.constructor.name == DimensionType.constructor.name){this.dimension = world.getDimension((dimension as DimensionType)?.typeId)}else{this.dimension = world.getDimension((dimension as Dimension)?.id)}; */
     }
     get location() {
@@ -163,6 +165,32 @@ export class WorldPosition {
             }
         }
         return worldpositionlist as WorldPosition[]; 
+    }
+    setSendErrorsTo(target: string|Entity[]|Player[]) {
+        if(target.constructor.name == "Array"){
+            let entities = target as Entity[]; 
+            if(entities.length==0){throw(new NoSelectorMatchesError("No targets matched selector"))}; 
+            this.sendErrorsTo=entities.length==1?entities[0]:entities
+        }else{
+            if(this.entity == undefined){
+                let entities = targetSelectorAllListE(target as string, this.x+" "+this.y+" "+this.z); 
+                if(entities.length==0){throw(new NoSelectorMatchesError("No targets matched selector"))}; 
+                this.sendErrorsTo=entities.length==1?entities[0]:entities
+            }else{
+                let entities = targetSelectorAllListC(target as string, "", this.x+" "+this.y+" "+this.z, this.entity); 
+                if(entities.length==0){throw(new NoSelectorMatchesError("No targets matched selector"))}; 
+                this.sendErrorsTo=entities.length==1?entities[0]:entities
+            }
+        }
+        return this as WorldPosition
+    }
+    clearSendErrorsTo() {
+        this.sendErrorsTo=null
+        return this as WorldPosition
+    }
+    resetSendErrorsTo() {
+        this.sendErrorsTo=undefined
+        return this as WorldPosition
     }
     as(target: string|Entity[]|Player[]) {
         let entitylist: Entity[] = []
