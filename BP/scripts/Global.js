@@ -1,5 +1,6 @@
-import { system, Entity, world } from "@minecraft/server";
+import { system, Entity, world, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, Player } from "@minecraft/server";
 import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
+import { MoneySystem } from "ExtraFeatures/money";
 ;
 Object.defineProperty(String.prototype, 'escapeCharacters', {
     value: function (js, unicode, nullchar, uri, quotes, general, colon, x, s) {
@@ -578,6 +579,61 @@ Object.defineProperties(Boolean.prototype, {
         writable: true
     }
 });
+Object.defineProperties(Entity.prototype, {
+    inventory: {
+        get: function inventory() {
+            return this.getComponent("inventory");
+        },
+        configurable: true,
+        enumerable: true
+    },
+    equippable: {
+        get: function equippable() {
+            return this.getComponent("equippable");
+        },
+        configurable: true,
+        enumerable: true
+    },
+    cursorInventory: {
+        get: function cursorInventory() {
+            return this.getComponent("cursor_inventory");
+        },
+        configurable: true,
+        enumerable: true
+    },
+    heldItem: {
+        get: function heldItem() {
+            if (!!!this.getComponent("equippable")) {
+                return undefined;
+            }
+            else {
+                return this.getComponent("equippable").getEquipment(EquipmentSlot.Mainhand);
+            }
+        },
+        configurable: true,
+        enumerable: true
+    },
+    activeSlot: {
+        get: function activeSlot() {
+            if (!!!this.getComponent("equippable")) {
+                return undefined;
+            }
+            else {
+                return this.getComponent("equippable").getEquipmentSlot(EquipmentSlot.Mainhand);
+            }
+        },
+        configurable: true,
+        enumerable: true
+    },
+    moneySystem: {
+        get: function moneySystem() {
+            return MoneySystem.get(this);
+        },
+        configurable: true,
+        enumerable: true
+    }
+});
+Object.defineProperties(Player.prototype, {});
 Object.defineProperty(Error.prototype, 'stringify', {
     value: function stringify() {
         return this + " " + this.stack;
@@ -627,6 +683,13 @@ Object.defineProperty(MessageFormData.prototype, 'forceShow', {
     configurable: true,
     enumerable: true,
     writable: true
+});
+Object.defineProperty(globalThis, 'players', {
+    get: function player() {
+        return Object.fromEntries(world.getAllPlayers().map(p => [p.name, p]));
+    },
+    configurable: true,
+    enumerable: true
 });
 /**
  * Better Version of JSON.parse() that is able to read undefined, NaN, Infinity, and -Infinity values.
@@ -897,4 +960,68 @@ globalThis.pcsend = function pcsend(player, value) {
 globalThis.perror = function perror(player, error, prefix = "§c") {
     player.sendMessage(prefix + (tryget(() => error.stringify()) ?? (error + " " + error.stack)));
 };
+globalThis.iterateGenerator = function iterateGenerator(extractorGenerator, maxTimePerTick = 1500, whileConditions = true) {
+    let lastYieldTime = Date.now(); // Initialize the last yield time
+    async function iterateGeneratorB(extractorGenerator, lastYieldTime) {
+        let finalResult;
+        while (whileConditions) {
+            const result = extractorGenerator.next();
+            finalResult = result.value;
+            if (!result.done) {
+                // console.log(result.value); // Handle the yielded value
+                if (Date.now() - lastYieldTime >= maxTimePerTick) {
+                    lastYieldTime = Date.now();
+                    await new Promise(resolve => system.run(() => resolve(void null))); // Asynchronously wait for next iteration
+                }
+            }
+            else {
+                break;
+            }
+        }
+        return finalResult;
+    }
+    return iterateGeneratorB(extractorGenerator, lastYieldTime);
+};
+globalThis.completeGenerator = async function completeGenerator(g, maxTimePerTick = 1500, whileConditions = true) {
+    let lastYieldTime = Date.now(); // Initialize the last yield time
+    let finalResult;
+    let returnResult;
+    while (whileConditions) {
+        const result = g.next();
+        if (!result.done) {
+            finalResult = result.value;
+            if (Date.now() - lastYieldTime >= maxTimePerTick) {
+                lastYieldTime = Date.now();
+                await new Promise(resolve => system.run(() => resolve(void null)));
+            }
+        }
+        else {
+            returnResult = result.value;
+            break;
+        }
+    }
+    return { yield: finalResult, return: returnResult };
+};
+globalThis.completeGeneratorB = async function completeGeneratorB(g, maxTimePerTick = 1500, whileConditions = true) {
+    let lastYieldTime = Date.now();
+    var yieldResults = [];
+    let returnResult;
+    while (whileConditions) {
+        const result = g.next();
+        if (!result.done) {
+            yieldResults.push(result.value);
+            if (Date.now() - lastYieldTime >= maxTimePerTick) {
+                lastYieldTime = Date.now();
+                await new Promise(resolve => system.run(() => resolve(void null)));
+            }
+        }
+        else {
+            returnResult = result.value;
+            break;
+        }
+    }
+    return { yield: yieldResults, return: returnResult };
+};
+globalThis.waitTick = async function waitTick() { return new Promise(resolve => system.run(() => resolve(void null))); };
+globalThis.waitTicks = async function waitTicks(ticks = 1) { return new Promise(resolve => system.runTimeout(() => resolve(void null), ticks)); };
 //# sourceMappingURL=Global.js.map

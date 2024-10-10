@@ -1,6 +1,8 @@
-import { system, type Player, Entity, type RawMessage, world } from "@minecraft/server";
+import { system, Entity, type RawMessage, world, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, Player } from "@minecraft/server";
 import { ActionFormData, MessageFormData, ModalFormData, type ActionFormResponse, type MessageFormResponse, type ModalFormResponse } from "@minecraft/server-ui";
+import { MoneySystem } from "ExtraFeatures/money";
 import type { executeCommandPlayerW } from "Main/commands";
+import type { PlayerNotifications } from "Main/ui";
 declare global {
     interface String {
         escapeCharacters(js?: boolean, unicode?: boolean, nullchar?: number, uri?: boolean, quotes?: boolean, general?: boolean, colon?: boolean, x?: boolean, s?: boolean): string;
@@ -313,11 +315,137 @@ declare global {
         function JSONStringifyOld(value: any, keepUndefined?: boolean, space?: string | number): string
         function JSONParse(JSONString: string, keepUndefined?: boolean): any
         function JSONStringify(JSONObject: any, keepUndefined?: boolean, space?: string | number): string
+        function iterateGenerator<TY, TR, TN>(extractorGenerator: Generator<TY, TR, TN>, maxTimePerTick?: number, whileConditions?: boolean | number | string | Function): Promise<TY | TR>
+        function completeGenerator<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick?: number, whileConditions?: boolean | number | string | Function): Promise<{
+            yield: T;
+            return: TReturn;
+        }>
+        function completeGeneratorB<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick?: number, whileConditions?: boolean): Promise<{
+            yield: T[];
+            return: TReturn;
+        }>
+        function waitTick(): Promise<void>
+        function waitTicks(ticks?: number): Promise<void>
+    }
+    class globalThis {
+        static get players(): {[name: string]: Player}
     }
 };
 declare module '@minecraft/server' {
     interface Entity {/*
         id: `${number}`*/
+        /**
+         * Defines this entity's inventory properties.
+         */
+        get inventory(): EntityInventoryComponent|undefined
+        /**
+         * Provides access to a mob's equipment slots. This component
+         * exists for all mob entities.
+         * @example givePlayerElytra.ts
+         * ```typescript
+         * // Gives the player Elytra
+         * import { EquipmentSlot, ItemStack, Player, EntityComponentTypes } from '@minecraft/server';
+         * import { MinecraftItemTypes } from '@minecraft/vanilla-data';
+         *
+         * function giveEquipment(player: Player) {
+         *     const equipmentCompPlayer = player.getComponent(EntityComponentTypes.Equippable);
+         *     if (equipmentCompPlayer) {
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Chest, new ItemStack(MinecraftItemTypes.Elytra));
+         *     }
+         * }
+         * ```
+         * @example givePlayerEquipment.ts
+         * ```typescript
+         * // Gives the player some equipment
+         * import { EquipmentSlot, ItemStack, Player, EntityComponentTypes } from '@minecraft/server';
+         * import { MinecraftItemTypes } from '@minecraft/vanilla-data';
+         *
+         * function giveEquipment(player: Player) {
+         *     const equipmentCompPlayer = player.getComponent(EntityComponentTypes.Equippable);
+         *     if (equipmentCompPlayer) {
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Head, new ItemStack(MinecraftItemTypes.GoldenHelmet));
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Chest, new ItemStack(MinecraftItemTypes.IronChestplate));
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Legs, new ItemStack(MinecraftItemTypes.DiamondLeggings));
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Feet, new ItemStack(MinecraftItemTypes.NetheriteBoots));
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Mainhand, new ItemStack(MinecraftItemTypes.WoodenSword));
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Offhand, new ItemStack(MinecraftItemTypes.Shield));
+         *     } else {
+         *         console.warn('No equipment component found on player');
+         *     }
+         * }
+         * ```
+         */
+        get equippable(): EntityEquippableComponent|undefined
+        /**
+         * Represents the players cursor inventory. Used when moving
+         * items between between containers in the inventory UI. Not
+         * used with touch controls.
+         * 
+         * Only works on players, on non-players it will return undefined.
+         * 
+         * This returns the same value as `Entity.prototype.getComponent("cursor_inventory")`.
+         */
+        get cursorInventory(): PlayerCursorInventoryComponent|undefined
+        get heldItem(): ItemStack|undefined
+        get activeSlot(): ContainerSlot|undefined
+        get moneySystem(): MoneySystem
+        get playerNotifications(): PlayerNotifications
+    }
+    interface Player {/*
+        id: `${number}`*/
+        /**
+         * Defines this entity's inventory properties.
+         */
+        get inventory(): EntityInventoryComponent
+        /**
+         * Provides access to a mob's equipment slots. This component
+         * exists for all mob entities.
+         * @example givePlayerElytra.ts
+         * ```typescript
+         * // Gives the player Elytra
+         * import { EquipmentSlot, ItemStack, Player, EntityComponentTypes } from '@minecraft/server';
+         * import { MinecraftItemTypes } from '@minecraft/vanilla-data';
+         *
+         * function giveEquipment(player: Player) {
+         *     const equipmentCompPlayer = player.getComponent(EntityComponentTypes.Equippable);
+         *     if (equipmentCompPlayer) {
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Chest, new ItemStack(MinecraftItemTypes.Elytra));
+         *     }
+         * }
+         * ```
+         * @example givePlayerEquipment.ts
+         * ```typescript
+         * // Gives the player some equipment
+         * import { EquipmentSlot, ItemStack, Player, EntityComponentTypes } from '@minecraft/server';
+         * import { MinecraftItemTypes } from '@minecraft/vanilla-data';
+         *
+         * function giveEquipment(player: Player) {
+         *     const equipmentCompPlayer = player.getComponent(EntityComponentTypes.Equippable);
+         *     if (equipmentCompPlayer) {
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Head, new ItemStack(MinecraftItemTypes.GoldenHelmet));
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Chest, new ItemStack(MinecraftItemTypes.IronChestplate));
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Legs, new ItemStack(MinecraftItemTypes.DiamondLeggings));
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Feet, new ItemStack(MinecraftItemTypes.NetheriteBoots));
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Mainhand, new ItemStack(MinecraftItemTypes.WoodenSword));
+         *         equipmentCompPlayer.setEquipment(EquipmentSlot.Offhand, new ItemStack(MinecraftItemTypes.Shield));
+         *     } else {
+         *         console.warn('No equipment component found on player');
+         *     }
+         * }
+         * ```
+         */
+        get equippable(): EntityEquippableComponent
+        /**
+         * Represents the players cursor inventory. Used when moving
+         * items between between containers in the inventory UI. Not
+         * used with touch controls.
+         * 
+         * Only works on players, on non-players it will return undefined.
+         * 
+         * This returns the same value as `Player.prototype.getComponent("cursor_inventory")`.
+         */
+        get cursorInventory(): PlayerCursorInventoryComponent
+        get activeSlot(): ContainerSlot
     }
     interface ItemStack {
         hasComponent(componentId: keyof ItemComponentTypeMap): boolean;
@@ -899,6 +1027,60 @@ Object.defineProperties(Boolean.prototype, {/*
         writable: true
     }
 });
+Object.defineProperties(Entity.prototype, {
+    inventory: {
+        get: function inventory(): EntityInventoryComponent|undefined{
+            return (this as Entity).getComponent("inventory")
+        },
+        configurable: true,
+        enumerable: true
+    },
+    equippable: {
+        get: function equippable(): EntityEquippableComponent|undefined{
+            return (this as Entity).getComponent("equippable")
+        },
+        configurable: true,
+        enumerable: true
+    },
+    cursorInventory: {
+        get: function cursorInventory(): PlayerCursorInventoryComponent|undefined{
+            return (this as Entity).getComponent("cursor_inventory")
+        },
+        configurable: true,
+        enumerable: true
+    },
+    heldItem: {
+        get: function heldItem(): ItemStack|undefined{
+            if(!!!(this as Entity).getComponent("equippable")){
+                return undefined
+            }else{
+                return (this as Entity).getComponent("equippable").getEquipment(EquipmentSlot.Mainhand)
+            }
+        },
+        configurable: true,
+        enumerable: true
+    },
+    activeSlot: {
+        get: function activeSlot(): ContainerSlot|undefined{
+            if(!!!(this as Entity).getComponent("equippable")){
+                return undefined
+            }else{
+                return (this as Entity).getComponent("equippable").getEquipmentSlot(EquipmentSlot.Mainhand)
+            }
+        },
+        configurable: true,
+        enumerable: true
+    },
+    moneySystem: {
+        get: function moneySystem(): MoneySystem{
+            return MoneySystem.get(this as Entity)
+        },
+        configurable: true,
+        enumerable: true
+    }
+});
+Object.defineProperties(Player.prototype, {
+});
 Object.defineProperty(Error.prototype, 'stringify', {
     value: function stringify(){
         return this+" "+this.stack
@@ -942,6 +1124,13 @@ Object.defineProperty(MessageFormData.prototype, 'forceShow', {
     configurable: true,
     enumerable: true,
     writable: true
+})
+Object.defineProperty(globalThis, 'players', {
+    get: function player(): {[name: string]: Player} {
+        return Object.fromEntries(world.getAllPlayers().map(p=>[p.name, p]))
+    },
+    configurable: true,
+    enumerable: true
 })
 /**
  * Better Version of JSON.parse() that is able to read undefined, NaN, Infinity, and -Infinity values. 
@@ -1147,3 +1336,66 @@ globalThis.pcsend = function pcsend(player: Player|executeCommandPlayerW, value:
 globalThis.perror = function perror(player: Player|executeCommandPlayerW, error: Error, prefix: string = "§c"){
     player.sendMessage(prefix+(tryget(()=>error.stringify())??(error+" "+error.stack)))
 }; 
+globalThis.iterateGenerator = function iterateGenerator<TY, TR, TN>(extractorGenerator: Generator<TY, TR, TN>, maxTimePerTick=1500, whileConditions: boolean|number|string|Function=true){
+    let lastYieldTime = Date.now(); // Initialize the last yield time
+    async function iterateGeneratorB<TY, TR, TN>(extractorGenerator: Generator<TY, TR, TN>, lastYieldTime: number) {
+        let finalResult: TY | TR;
+        while (whileConditions) {
+            const result = extractorGenerator.next();
+            finalResult = result.value;
+            if (!result.done) {
+                // console.log(result.value); // Handle the yielded value
+                if (Date.now() - lastYieldTime >= maxTimePerTick) {
+                    lastYieldTime = Date.now();
+                    await new Promise(resolve => system.run(()=>resolve(void null))); // Asynchronously wait for next iteration
+                }
+            } else {
+                break;
+            }
+        }
+        return finalResult;
+    }
+    return iterateGeneratorB(extractorGenerator, lastYieldTime)
+}
+
+globalThis.completeGenerator = async function completeGenerator<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick=1500, whileConditions: boolean|number|string|Function=true) {
+    let lastYieldTime = Date.now(); // Initialize the last yield time
+    let finalResult: T;
+    let returnResult: TReturn;
+    while (whileConditions) {
+        const result = g.next();
+        if (!result.done) {
+            finalResult = result.value as T;
+            if (Date.now() - lastYieldTime >= maxTimePerTick) {
+                lastYieldTime = Date.now();
+                await new Promise(resolve => system.run(()=>resolve(void null)));
+            }
+        } else {
+            returnResult = result.value;
+            break;
+        }
+    }
+    return {yield: finalResult, return: returnResult};
+}
+
+globalThis.completeGeneratorB = async function completeGeneratorB<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick=1500, whileConditions=true) {
+    let lastYieldTime = Date.now();
+    var yieldResults = [] as T[];
+    let returnResult: TReturn;
+    while (whileConditions) {
+        const result = g.next();
+        if (!result.done) {
+            yieldResults.push(result.value as T);
+            if (Date.now() - lastYieldTime >= maxTimePerTick) {
+                lastYieldTime = Date.now();
+                await new Promise(resolve => system.run(()=>resolve(void null)));
+            }
+        } else {
+            returnResult = result.value;
+            break;
+        }
+    }
+    return {yield: yieldResults, return: returnResult};
+}
+globalThis.waitTick = async function waitTick(): Promise<void>{return new Promise(resolve => system.run(()=>resolve(void null)))}
+globalThis.waitTicks = async function waitTicks(ticks: number=1): Promise<void>{return new Promise(resolve => system.runTimeout(()=>resolve(void null), ticks))}

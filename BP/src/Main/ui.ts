@@ -995,6 +995,15 @@ export class PlayerNotifications{
     get getEntityInteractTriggerExplosionNotificationsNotificationSound(){return JSON.parse(String(this.player.getDynamicProperty("getEntityInteractTriggerExplosionNotificationsNotificationSound")??'{"soundId": "none"}'))}
     set getEntityInteractTriggerExplosionNotificationsNotificationSound(value: {soundId: string, pitch?: number, volume?: number}){this.player.setDynamicProperty("getEntityInteractTriggerExplosionNotificationsNotificationSound", JSON.stringify(value, undefined, 0))}
 }
+Object.defineProperties(Entity.prototype, {
+    playerNotifications: {
+        get: function playerNotifications(): PlayerNotifications{
+            return new PlayerNotifications(this as Entity)
+        },
+        configurable: true,
+        enumerable: true
+    }
+});
 export function notificationsSettings(sourceEntitya: Entity|executeCommandPlayerW|Player){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form2 = new ModalFormData();

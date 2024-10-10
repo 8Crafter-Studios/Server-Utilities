@@ -43,6 +43,7 @@ import { getCommandHelpPage, getCommandHelpPageExtra, getCommandHelpPageDebug, g
 import { LinkedServerShopCommands, ServerShop, ServerShopManager } from "../ExtraFeatures/server_shop";
 import { PlayerShop, PlayerShopManager } from "ExtraFeatures/player_shop";
 import { mainShopSystemSettings } from "../ExtraFeatures/shop_main";
+import { MoneySystem } from "../ExtraFeatures/money";
 export const cmdsmetaimport = import.meta
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer
@@ -867,6 +868,35 @@ export class executeCommandPlayerW{
                 this.sendMessageB(message as string, sest())
             }
         }
+    }
+    get inventory(): EntityInventoryComponent|undefined{
+        return (this).getComponent("inventory")
+    }
+    get equippable(): EntityEquippableComponent|undefined{
+        return (this).getComponent("equippable")
+    }
+    get cursorInventory(): PlayerCursorInventoryComponent|undefined{
+        return (this).getComponent("cursor_inventory")
+    }
+    get heldItem(): ItemStack|undefined{
+        if(!!!(this).getComponent("equippable")){
+            return undefined
+        }else{
+            return (this).getComponent("equippable").getEquipment(EquipmentSlot.Mainhand)
+        }
+    }
+    get activeSlot(): ContainerSlot|undefined{
+        if(!!!(this).getComponent("equippable")){
+            return undefined
+        }else{
+            return (this).getComponent("equippable").getEquipmentSlot(EquipmentSlot.Mainhand)
+        }
+    }
+    get moneySystem(): MoneySystem{
+        return MoneySystem.get(this.player.id)
+    }
+    get playerNotifications(): PlayerNotifications{
+        return new PlayerNotifications(this.player)
     }
     get dimensionLocation(){return Object.assign(this.location, {dimension: this.dimension})}
     get dimension(){return this.modifieddimension??this.player?.dimension}
@@ -1782,69 +1812,6 @@ export function* extractIntArrayBGenerator(s: string, revivement: string = "-1",
     yield s.replace(",]", "]"); // Yield the final modified string
     return s.replace(",]", "]"); 
 }
-export function iterateGenerator<TY, TR, TN>(extractorGenerator: Generator<TY, TR, TN>, maxTimePerTick=1500, whileConditions: boolean|number|string|Function=true){
-    let lastYieldTime = Date.now(); // Initialize the last yield time
-    async function iterateGeneratorB<TY, TR, TN>(extractorGenerator: Generator<TY, TR, TN>, lastYieldTime) {
-        let finalResult;
-        while (whileConditions) {
-            const result = extractorGenerator.next();
-            finalResult = result.value;
-            if (!result.done) {
-                console.log(result.value); // Handle the yielded value
-                if (Date.now() - lastYieldTime >= maxTimePerTick) {
-                    lastYieldTime = Date.now();
-                    await new Promise(resolve => system.run(()=>resolve(void null))); // Asynchronously wait for next iteration
-                }
-            } else {
-                break;
-            }
-        }
-        return finalResult;
-    }
-    return iterateGeneratorB(extractorGenerator, lastYieldTime)
-}
-
-export async function completeGenerator<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick=1500, whileConditions: boolean|number|string|Function=true) {
-    let lastYieldTime = Date.now(); // Initialize the last yield time
-    let finalResult: T;
-    let returnResult: TReturn;
-    while (whileConditions) {
-        const result = g.next();
-        if (!result.done) {
-            finalResult = result.value as T;
-            if (Date.now() - lastYieldTime >= maxTimePerTick) {
-                lastYieldTime = Date.now();
-                await new Promise(resolve => system.run(()=>resolve(void null)));
-            }
-        } else {
-            returnResult = result.value;
-            break;
-        }
-    }
-    return {yield: finalResult, return: returnResult};
-}
-
-export async function completeGeneratorB<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick=1500, whileConditions=true) {
-    let lastYieldTime = Date.now();
-    var yieldResults = [] as T[];
-    let returnResult: TReturn;
-    while (whileConditions) {
-        const result = g.next();
-        if (!result.done) {
-            yieldResults.push(result.value as T);
-            if (Date.now() - lastYieldTime >= maxTimePerTick) {
-                lastYieldTime = Date.now();
-                await new Promise(resolve => system.run(()=>resolve(void null)));
-            }
-        } else {
-            returnResult = result.value;
-            break;
-        }
-    }
-    return {yield: yieldResults, return: returnResult};
-}
-export async function waitTick(){return new Promise(resolve => system.run(()=>resolve(void null)))}
-export async function waitTicks(ticks: number=1){return new Promise(resolve => system.runTimeout(()=>resolve(void null), ticks))}
 
 export function compressIntArray(arry: number[], replacement: string ="-1"){return compressIntArrayB(JSON.stringify(arry.map(v=>(v??-1).toString(36)), undefined, 0).replaceAll('"', ""), replacement)}
 export function extractIntArray(arry: string, revivement: string ="-1"){return extractIntArrayB(arry, revivement).replaceAll(" ", "").slice(1, -1).split(",").map(v=>Number.parseInt(v, 36))}
@@ -8727,9 +8694,8 @@ ${command.dp}snapshot list`); return}
                         }
                         break;
                         case "resetfeedbacktarget":{
-                            const args = evaluateParameters(resta, ["targetSelector"])
                             wl=wl.map((wl, i)=>wl.clearSendErrorsTo())
-                            evalExecuteCommand(args.extra)
+                            evalExecuteCommand(resta)
                             return
                         }
                         break;
@@ -8872,7 +8838,7 @@ ${command.dp}snapshot list`); return}
                         }
                         break;
                         default:
-                            player.sendMessage(`§cSyntax error: Unexpected "${mode}": at "${switchTestB.slice(-10-rest.length, -rest.length)}>>${rest}<<"`)
+                            player.sendMessageB(`§cSyntax error: Unexpected "${mode}": at "${switchTestB.slice(-10-rest.length, -rest.length)}>>${rest}<<"`)
                             return
                         break;
                     }

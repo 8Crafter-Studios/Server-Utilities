@@ -43,6 +43,7 @@ import { getCommandHelpPage, getCommandHelpPageExtra, getCommandHelpPageDebug, g
 import { LinkedServerShopCommands, ServerShop, ServerShopManager } from "../ExtraFeatures/server_shop";
 import { PlayerShop, PlayerShopManager } from "ExtraFeatures/player_shop";
 import { mainShopSystemSettings } from "../ExtraFeatures/shop_main";
+import { MoneySystem } from "../ExtraFeatures/money";
 export const cmdsmetaimport = import.meta;
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer;
@@ -929,6 +930,37 @@ export class executeCommandPlayerW {
                 this.sendMessageB(message, sest());
             }
         }
+    }
+    get inventory() {
+        return (this).getComponent("inventory");
+    }
+    get equippable() {
+        return (this).getComponent("equippable");
+    }
+    get cursorInventory() {
+        return (this).getComponent("cursor_inventory");
+    }
+    get heldItem() {
+        if (!!!(this).getComponent("equippable")) {
+            return undefined;
+        }
+        else {
+            return (this).getComponent("equippable").getEquipment(EquipmentSlot.Mainhand);
+        }
+    }
+    get activeSlot() {
+        if (!!!(this).getComponent("equippable")) {
+            return undefined;
+        }
+        else {
+            return (this).getComponent("equippable").getEquipmentSlot(EquipmentSlot.Mainhand);
+        }
+    }
+    get moneySystem() {
+        return MoneySystem.get(this.player.id);
+    }
+    get playerNotifications() {
+        return new PlayerNotifications(this.player);
     }
     get dimensionLocation() { return Object.assign(this.location, { dimension: this.dimension }); }
     get dimension() { return this.modifieddimension ?? this.player?.dimension; }
@@ -1887,70 +1919,6 @@ export function* extractIntArrayBGenerator(s, revivement = "-1", maxTimePerTick 
     yield s.replace(",]", "]"); // Yield the final modified string
     return s.replace(",]", "]");
 }
-export function iterateGenerator(extractorGenerator, maxTimePerTick = 1500, whileConditions = true) {
-    let lastYieldTime = Date.now(); // Initialize the last yield time
-    async function iterateGeneratorB(extractorGenerator, lastYieldTime) {
-        let finalResult;
-        while (whileConditions) {
-            const result = extractorGenerator.next();
-            finalResult = result.value;
-            if (!result.done) {
-                console.log(result.value); // Handle the yielded value
-                if (Date.now() - lastYieldTime >= maxTimePerTick) {
-                    lastYieldTime = Date.now();
-                    await new Promise(resolve => system.run(() => resolve(void null))); // Asynchronously wait for next iteration
-                }
-            }
-            else {
-                break;
-            }
-        }
-        return finalResult;
-    }
-    return iterateGeneratorB(extractorGenerator, lastYieldTime);
-}
-export async function completeGenerator(g, maxTimePerTick = 1500, whileConditions = true) {
-    let lastYieldTime = Date.now(); // Initialize the last yield time
-    let finalResult;
-    let returnResult;
-    while (whileConditions) {
-        const result = g.next();
-        if (!result.done) {
-            finalResult = result.value;
-            if (Date.now() - lastYieldTime >= maxTimePerTick) {
-                lastYieldTime = Date.now();
-                await new Promise(resolve => system.run(() => resolve(void null)));
-            }
-        }
-        else {
-            returnResult = result.value;
-            break;
-        }
-    }
-    return { yield: finalResult, return: returnResult };
-}
-export async function completeGeneratorB(g, maxTimePerTick = 1500, whileConditions = true) {
-    let lastYieldTime = Date.now();
-    var yieldResults = [];
-    let returnResult;
-    while (whileConditions) {
-        const result = g.next();
-        if (!result.done) {
-            yieldResults.push(result.value);
-            if (Date.now() - lastYieldTime >= maxTimePerTick) {
-                lastYieldTime = Date.now();
-                await new Promise(resolve => system.run(() => resolve(void null)));
-            }
-        }
-        else {
-            returnResult = result.value;
-            break;
-        }
-    }
-    return { yield: yieldResults, return: returnResult };
-}
-export async function waitTick() { return new Promise(resolve => system.run(() => resolve(void null))); }
-export async function waitTicks(ticks = 1) { return new Promise(resolve => system.runTimeout(() => resolve(void null), ticks)); }
 export function compressIntArray(arry, replacement = "-1") { return compressIntArrayB(JSON.stringify(arry.map(v => (v ?? -1).toString(36)), undefined, 0).replaceAll('"', ""), replacement); }
 export function extractIntArray(arry, revivement = "-1") { return extractIntArrayB(arry, revivement).replaceAll(" ", "").slice(1, -1).split(",").map(v => Number.parseInt(v, 36)); }
 export async function extractIntArrayG(arry, revivement = "-1", maxTimePerTick = 1500) { return (await completeGenerator(extractIntArrayBGenerator(arry, revivement, maxTimePerTick), maxTimePerTick - 250)).return.replaceAll(" ", "").slice(1, -1).split(",").map(v => Number.parseInt(v, 36)); }
@@ -13982,9 +13950,11 @@ ${command.dp}snapshot list`);
                 {
                     eventData.cancel = true;
                     srun(() => {
-                        const argsa = evaluateParameters(switchTestB, ["presetText", "f-fs"]);
+                        const argsa = evaluateParameters(switchTestB, ["presetText", "f-fsq"]);
                         const keepFeedback = argsa.args[1].f;
                         const surpressFeedback = argsa.args[1].s;
+                        const silentCMD = argsa.args[1].q;
+                        let sendErrorsTo = undefined;
                         let wl = [new WorldPosition(tryget(() => player.modifiedlocation ?? player.location) ?? { x: 0, y: 0, z: 0 }, tryget(() => player.rotation ?? player.getRotation()) ?? { x: 0, y: 0 }, tryget(() => player.modifieddimension ?? player.dimension) ?? overworld, player.player, player.block)];
                         function evalExecuteCommand(rest) {
                             const argsa = evaluateParameters(rest, ["presetText"]);
@@ -13999,11 +13969,24 @@ ${command.dp}snapshot list`);
                                         return;
                                     }
                                     break;
-                                case "at":
+                                case "at": {
+                                    const args = evaluateParameters(resta, ["targetSelector"]);
+                                    wl = wl.map((wl, i) => wl.at(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
+                                    evalExecuteCommand(args.extra);
+                                    return;
+                                }
+                                case "sendfeedbackto":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.at(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
+                                        wl = wl.map((wl, i) => wl.setSendErrorsTo(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity)));
                                         evalExecuteCommand(args.extra);
+                                        return;
+                                    }
+                                    break;
+                                case "resetfeedbacktarget":
+                                    {
+                                        wl = wl.map((wl, i) => wl.clearSendErrorsTo());
+                                        evalExecuteCommand(resta);
                                         return;
                                     }
                                     break;
@@ -14160,12 +14143,12 @@ ${command.dp}snapshot list`);
                                     break;
                                 case "run":
                                     {
-                                        wl.forEach(wl => chatCommands({ player: new executeCommandPlayerW(wl, surpressFeedback ? null : keepFeedback ? player.player : undefined), newMessage: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), returnBeforeChatSend: false, event: { sender: wl.entity, message: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), cancel: false }, eventData: { sender: wl.entity, message: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), cancel: false }, fromExecute: true }));
+                                        wl.forEach(wl => chatCommands({ player: new executeCommandPlayerW(wl, surpressFeedback ? null : keepFeedback ? player.player : wl.sendErrorsTo), silentCMD: silentCMD, newMessage: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), returnBeforeChatSend: false, event: { sender: wl.entity, message: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), cancel: false }, eventData: { sender: wl.entity, message: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), cancel: false }, fromExecute: true }));
                                         return;
                                     }
                                     break;
                                 default:
-                                    player.sendMessage(`§cSyntax error: Unexpected "${mode}": at "${switchTestB.slice(-10 - rest.length, -rest.length)}>>${rest}<<"`);
+                                    player.sendMessageB(`§cSyntax error: Unexpected "${mode}": at "${switchTestB.slice(-10 - rest.length, -rest.length)}>>${rest}<<"`);
                                     return;
                                     break;
                             }
