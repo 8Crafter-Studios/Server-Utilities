@@ -3976,10 +3976,10 @@ export const dimensionse = ["overworld", "nether", "the_end"] as ["overworld", "
  * @property the_end: The End
  */
 export const dimensionsf = {"minecraft:overworld": world.getDimension("overworld"), "minecraft:nether": world.getDimension("nether"), "minecraft:the_end": world.getDimension("the_end"), "overworld": world.getDimension("overworld"), "nether": world.getDimension("nether"), "the_end": world.getDimension("the_end")}
+
 /**
  * @remarks The overworld dimension object. 
  */
-
 export const overworld = world.getDimension("overworld")
 /**
  * @remarks The nether dimension object. 
@@ -3989,6 +3989,26 @@ export const nether = world.getDimension("nether")
  * @remarks The end dimension object. 
  */
 export const the_end = world.getDimension("the_end")
+Object.defineProperties(globalThis, {
+    overworld: {
+        value: overworld,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    nether: {
+        value: nether,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    the_end: {
+        value: the_end,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    }
+})
 subscribedEvents.beforeEffectAdd = world.beforeEvents.effectAdd.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalBeforeEvents:effectAdd")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("effectAddBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });

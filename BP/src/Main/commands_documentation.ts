@@ -262,7 +262,7 @@ export const commandsyntaxes = {
 "ecinvseec": `ecinvseec [target: string|~]`,
 "enderchest": `${command.dp}enderchest`,
 "eval": `${command.dp}eval <ScriptAPICode: JavaScript>`,
-"execute": `${command.dp}execute [-fsq] ...
+"execute": `${command.dp}execute [-fsqbc] ...
 ${command.dp}... align <axes: string> ...
 ${command.dp}... anchored <eyes|feet> ...
 ${command.dp}... as <origin: target> ...
@@ -944,7 +944,9 @@ t: spawn in a ticking area before running the undo command
 h: makes the copied structure be pasted at your current location instead of the selected location`,
 "execute": `f: sends the feedback of the commands to the source of the execute command instead of the targeted entity
 s: silences all command feedback
-q: runs the commands in silent mode so that each entity does not send a notification in the chat to players with the getAllChatCommands tag`
+q: runs the commands in silent mode so that each entity does not send a notification in the chat to players with the getAllChatCommands tag
+b: specifies that the command that will be run by the execute command is a built-in command, specifying this may reduce the lag caused by the command, if you are using this to run a built-in command in a repeating command block then this should be used
+c: specifies that the command that will be run by the execute command is a custom command, specifying this may reduce the lag caused by the command, if you are using this to run a custom command in a repeating command block then this should be used`
 }
 export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .align - §oCenters you on the x and z axis on the block you are currently at. §r

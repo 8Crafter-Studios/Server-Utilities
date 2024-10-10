@@ -110,7 +110,7 @@ export class WorldPosition {
         return this.rotx + " " + this.roty;
     }
     get locationrotation() {
-        return { x: this.x, y: this.y, z: this.z, rotx: this.rotx, roty: this.roty };
+        return { x: this.x, y: this.y, z: this.z, rotX: this.rotx, rotY: this.roty };
     }
     get directionvector() {
         return anglesToDirectionVectorDeg(this.rotx, this.roty);
@@ -471,11 +471,47 @@ export function getDistance(point1, point2) {
     const deltaZ = point2.z - point1.z;
     return Math.sqrt(deltaX ** 2 + deltaY ** 2 + deltaZ ** 2);
 }
+/**
+ * @deprecated Use {@link getChunkIndexC} instead.
+ * @param location
+ * @returns
+ */
 export function getChunkIndex(location) { return { x: Math.floor(location.x / 16), y: Math.floor(location.z / 16) }; }
+/**
+ * @deprecated Use {@link getChunkIndexC} instead.
+ * @param x
+ * @param z
+ * @returns
+ */
 export function getChunkIndexB(x, z) { return { x: Math.floor(x / 16), y: Math.floor(z / 16) }; }
+/**
+ * @deprecated
+ * @param location
+ * @returns
+ */
 export function getChunkIndexC(location) { return { x: Math.floor(location.x / 16), y: Math.floor(location.y / 16) }; }
+/**
+ * The newest and recommended version of this function to use.
+ * @param location
+ * @returns A VectorXZ object containg the chunk index.
+ */
+export function getChunkIndexD(location) { return { x: Math.floor(location.x / 16), z: Math.floor(location.z / 16) }; }
+/**
+ * @deprecated Use {@link chunkIndexToBoundingBoxXZ} instead.
+ * @param chunkIndex
+ * @param heightRange
+ * @returns
+ */
 export function chunkIndexToBoundingBox(chunkIndex, heightRange = [-64, 320]) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange[0], z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange[1], z: Math.round((chunkIndex.y * 16) + 15) } }; }
+/**
+ * @deprecated Use {@link chunkIndexToBoundingBoxXZB} instead.
+ * @param chunkIndex
+ * @param heightRange
+ * @returns
+ */
 export function chunkIndexToBoundingBoxB(chunkIndex, heightRange = { min: -64, max: 320 }) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange.min, z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange.max, z: Math.round((chunkIndex.y * 16) + 15) } }; }
+export function chunkIndexToBoundingBoxXZ(chunkIndex, heightRange = [-64, 320]) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange[0], z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange[1], z: Math.round((chunkIndex.y * 16) + 15) } }; }
+export function chunkIndexToBoundingBoxXZB(chunkIndex, heightRange = { min: -64, max: 320 }) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange.min, z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange.max, z: Math.round((chunkIndex.y * 16) + 15) } }; }
 export function doBoundingBoxesIntersect(box1, box2) {
     // Check for intersection along each axis
     const intersectX = (box1.min.x <= box2.max.x && box1.max.x >= box2.min.x);
@@ -484,6 +520,22 @@ export function doBoundingBoxesIntersect(box1, box2) {
     // If all axes intersect, the bounding boxes intersect
     return intersectX && intersectY && intersectZ;
 }
+Object.defineProperties(Entity.prototype, {
+    directionvector: {
+        get: function directionvector() {
+            return anglesToDirectionVectorDeg(this.rotx, this.roty);
+        },
+        configurable: true,
+        enumerable: true
+    },
+    chunkIndex: {
+        get: function chunkIndex() {
+            return getChunkIndexD(this.xz);
+        },
+        configurable: true,
+        enumerable: true
+    }
+});
 export function VSTR(vector1, vector2) { return { from: { x: Math.min(vector1.x, vector2.x), y: Math.min(vector1.y, vector2.y), z: Math.min(vector1.z, vector2.z) }, to: { x: Math.max(vector1.x, vector2.x), y: Math.max(vector1.y, vector2.y), z: Math.max(vector1.z, vector2.z) } }; }
 export const approximatelyEqual = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
 export const approxEqual = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;

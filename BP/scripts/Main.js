@@ -5064,6 +5064,26 @@ export const nether = world.getDimension("nether");
  * @remarks The end dimension object.
  */
 export const the_end = world.getDimension("the_end");
+Object.defineProperties(globalThis, {
+    overworld: {
+        value: overworld,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    nether: {
+        value: nether,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    the_end: {
+        value: the_end,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    }
+});
 subscribedEvents.beforeEffectAdd = world.beforeEvents.effectAdd.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:effectAdd")));

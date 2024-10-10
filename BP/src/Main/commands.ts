@@ -1,6 +1,6 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, type BlockComponentTypeMap, EntityComponentTypes, PlayerCursorInventoryComponent } from "@minecraft/server";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, type Enchantment, type DimensionLocation, type Vector3, type Vector2, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, type RawMessage, type MusicOptions, type PlayerSoundOptions, type EntityApplyDamageOptions, type EntityApplyDamageByProjectileOptions, MolangVariableMap, type BlockRaycastOptions, type EntityComponentTypeMap, EffectType, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, EnchantmentTypes, StructureSaveMode, EntityTypes, type BlockRaycastHit, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, type BlockComponentTypeMap, EntityComponentTypes, PlayerCursorInventoryComponent, type VectorXZ, type VectorYZ } from "@minecraft/server";
 import { getTopSolidBlock, arrayToElementList, debugAction, interactable_block, interactable_blockb, customFormUIElement, strToCustomFormUIElement/*,format_version*/, getUICustomForm, worldPlayers, timeZones, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, SemVerString, SemVerMatcher, SemVerValidator, dimensions, dimensionsb, dimensionsc, dimensionsd, dimensionse, fillBlocksHHFGB, fillBlocksHISGGB, fillBlocksHOFGB, fillBlocksHSGGB, flatPath, getGroundSolidBlock, getNextTopSolidBlockAbovePosition, getNextTopSolidBlockBelowPosition, getPathInObject, nether, overworld, scanForBlockType, the_end, v3Multiply, fillBlocksE, fillBlocksF, fillBlocksHDFGB, fillBlocksHFGBM, dimensionTypeDisplayFormattingF } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, } from "./coordinates";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, type ILocalTeleport, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, type RotationLocation, getChunkIndexD, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
@@ -901,6 +901,35 @@ export class executeCommandPlayerW{
     get dimensionLocation(){return Object.assign(this.location, {dimension: this.dimension})}
     get dimension(){return this.modifieddimension??this.player?.dimension}
     get location(){return this.modifiedlocation??this.player?.location}
+    get locationstring(): `${number} ${number} ${number}` {
+        return this.x+" "+this.y+" "+this.z as `${number} ${number} ${number}`; 
+    }
+    get rotationstring(): `${number} ${number}` {
+        return this.rotx+" "+this.roty as `${number} ${number}`; 
+    }
+    get locationrotation(): RotationLocation {
+        return {x: this.x, y: this.y, z: this.z, rotX: this.rotx, rotY: this.roty}; 
+    }
+    get directionvector() {
+        return anglesToDirectionVectorDeg(this.rotx, this.roty) as Vector3; 
+    }
+    get xy(): Vector2 {
+        return {x: this.x, y: this.y}; 
+    }
+    get yz(): VectorYZ {
+        return {y: this.y, z: this.z}; 
+    }
+    get xz(): VectorXZ {
+        return {x: this.x, z: this.z}; 
+    }
+    get chunkIndex(): VectorXZ {
+        return getChunkIndexD(this.xz); 
+    }
+    get x(){return this.modifiedlocation?.x??this.player?.location?.x}
+    get y(){return this.modifiedlocation?.y??this.player?.location?.y}
+    get z(){return this.modifiedlocation?.z??this.player?.location?.z}
+    get rotx(){return this.rotation?.x??this.player?.getRotation?.()?.x}
+    get roty(){return this.rotation?.y??this.player?.getRotation?.()?.y}
     get camera(){return this.player?.camera}
     get isEmoting(){return this.player?.isEmoting}
     get isFlying(){return this.player?.isFlying}
@@ -8662,10 +8691,12 @@ ${command.dp}snapshot list`); return}
         case !!switchTest.match(/^execute$/): {
             eventData.cancel = true;
             srun(()=>{
-                const argsa = evaluateParameters(switchTestB, ["presetText", "f-fsq"])
+                const argsa = evaluateParameters(switchTestB, ["presetText", "f-fsqbc"])
                 const keepFeedback = argsa.args[1].f
                 const surpressFeedback = argsa.args[1].s
                 const silentCMD = argsa.args[1].q
+                const builtIn = argsa.args[1].b
+                const custom = argsa.args[1].c
                 let sendErrorsTo = undefined
                 let wl = [new WorldPosition(tryget(()=>player.modifiedlocation??player.location)??{x: 0, y: 0, z: 0}, tryget(()=>player.rotation??player.getRotation())??{x: 0, y: 0}, tryget(()=>player.modifieddimension??player.dimension)??overworld, player.player, player.block)]
                 function evalExecuteCommand(rest: string){
@@ -8833,7 +8864,7 @@ ${command.dp}snapshot list`); return}
                         }
                         break;
                         case "run":{
-                            wl.forEach(wl=>chatCommands({player: new executeCommandPlayerW(wl, surpressFeedback?null:keepFeedback?player.player:wl.sendErrorsTo), silentCMD: silentCMD, newMessage: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), returnBeforeChatSend: false, event: {sender: wl.entity as Player, message: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), cancel: false}, eventData: {sender: wl.entity as Player, message: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), cancel: false}, fromExecute: true}))
+                            wl.forEach(wl=>chatCommands({player: new executeCommandPlayerW(wl, surpressFeedback?null:keepFeedback?player.player:wl.sendErrorsTo), silentCMD: silentCMD, isBultIn: builtIn, isCustom: custom, newMessage: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), returnBeforeChatSend: false, event: {sender: wl.entity as Player, message: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), cancel: false}, eventData: {sender: wl.entity as Player, message: resta.trimStart().startsWith("\\")?resta.trimStart():"\\"+resta.trimStart(), cancel: false}, fromExecute: true}))
                             return
                         }
                         break;

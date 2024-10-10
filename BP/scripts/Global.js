@@ -1,4 +1,4 @@
-import { system, Entity, world, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, Player } from "@minecraft/server";
+import { system, Entity, world, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, Player, Dimension } from "@minecraft/server";
 import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { MoneySystem } from "ExtraFeatures/money";
 ;
@@ -629,6 +629,78 @@ Object.defineProperties(Entity.prototype, {
         get: function moneySystem() {
             return MoneySystem.get(this);
         },
+        configurable: true,
+        enumerable: true
+    },
+    dimensionLocation: {
+        get: function dimensionLocation() { return { x: this.x, y: this.y, z: this.z, dimension: this.dimension }; },
+        configurable: true,
+        enumerable: true
+    },
+    locationstring: {
+        get: function locationstring() {
+            return this.x + " " + this.y + " " + this.z;
+        },
+        configurable: true,
+        enumerable: true
+    },
+    rotationstring: {
+        get: function rotationstring() {
+            return this.rotx + " " + this.roty;
+        },
+        configurable: true,
+        enumerable: true
+    },
+    locationrotation: {
+        get: function locationrotation() {
+            return { x: this.x, y: this.y, z: this.z, rotX: this.rotx, rotY: this.roty };
+        },
+        configurable: true,
+        enumerable: true
+    },
+    xy: {
+        get: function xy() {
+            return { x: this.x, y: this.y };
+        },
+        configurable: true,
+        enumerable: true
+    },
+    yz: {
+        get: function yz() {
+            return { y: this.y, z: this.z };
+        },
+        configurable: true,
+        enumerable: true
+    },
+    xz: {
+        get: function xz() {
+            return { x: this.x, z: this.z };
+        },
+        configurable: true,
+        enumerable: true
+    },
+    x: {
+        get: function x() { return this.location.x; },
+        configurable: true,
+        enumerable: true
+    },
+    y: {
+        get: function y() { return this.location.y; },
+        configurable: true,
+        enumerable: true
+    },
+    z: {
+        get: function z() { return this.location.z; },
+        configurable: true,
+        enumerable: true
+    },
+    rotx: {
+        get: function rotx() { return this.getRotation().x; },
+        configurable: true,
+        enumerable: true
+    },
+    roty: {
+        get: function roty() { return this.getRotation().y; },
         configurable: true,
         enumerable: true
     }

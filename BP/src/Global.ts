@@ -1,7 +1,8 @@
-import { system, Entity, type RawMessage, world, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, Player } from "@minecraft/server";
+import { system, Entity, type RawMessage, world, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, Player, type Vector3, type VectorXZ, type Vector2, type VectorYZ, Dimension } from "@minecraft/server";
 import { ActionFormData, MessageFormData, ModalFormData, type ActionFormResponse, type MessageFormResponse, type ModalFormResponse } from "@minecraft/server-ui";
 import { MoneySystem } from "ExtraFeatures/money";
 import type { executeCommandPlayerW } from "Main/commands";
+import type { RotationLocation } from "Main/coordinates";
 import type { PlayerNotifications } from "Main/ui";
 declare global {
     interface String {
@@ -328,6 +329,9 @@ declare global {
         function waitTicks(ticks?: number): Promise<void>
     }
     class globalThis {
+        static get overworld(): Dimension&{typeId: "minecraft:overworld"};
+        static get nether(): Dimension&{typeId: "minecraft:nether"};
+        static get the_end(): Dimension&{typeId: "minecraft:the_end"};
         static get players(): {[name: string]: Player}
     }
 };
@@ -390,6 +394,20 @@ declare module '@minecraft/server' {
         get activeSlot(): ContainerSlot|undefined
         get moneySystem(): MoneySystem
         get playerNotifications(): PlayerNotifications
+        get dimensionLocation(): DimensionLocation
+        get locationstring(): `${number} ${number} ${number}`
+        get rotationstring(): `${number} ${number}`
+        get locationrotation(): RotationLocation
+        get directionvector(): Vector3
+        get xy(): Vector2
+        get yz(): VectorYZ
+        get xz(): VectorXZ
+        get chunkIndex(): VectorXZ
+        get x(): number
+        get y(): number
+        get z(): number
+        get rotx(): number
+        get roty(): number
     }
     interface Player {/*
         id: `${number}`*/
@@ -450,15 +468,9 @@ declare module '@minecraft/server' {
     interface ItemStack {
         hasComponent(componentId: keyof ItemComponentTypeMap): boolean;
     }
-    interface ActionFormData {
-        /**
-         * Forces a form to show even if the player has another form or menu open.
-         * If the player has another form or menu open then it will wait until they close it.
-         * @param {Player} player The player to show the form to
-         * @param {number} timeout The number of ticks before the function will give up and throw an error, it defaults to 9999
-         * @returns {ActionFormResponse|undefined} The response of the form
-         */
-        forceShow(player: Player, timeout?: number): Promise<ActionFormResponse>
+    interface VectorYZ {
+        y: number;
+        z: number;
     }
 }
 declare module '@minecraft/server-ui' {
@@ -1075,6 +1087,78 @@ Object.defineProperties(Entity.prototype, {
         get: function moneySystem(): MoneySystem{
             return MoneySystem.get(this as Entity)
         },
+        configurable: true,
+        enumerable: true
+    },
+    dimensionLocation: {
+        get: function dimensionLocation(){return {x: this.x, y: this.y, z: this.z, dimension: this.dimension}},
+        configurable: true,
+        enumerable: true
+    },
+    locationstring: {
+        get: function locationstring() {
+            return this.x+" "+this.y+" "+this.z; 
+        },
+        configurable: true,
+        enumerable: true
+    },
+    rotationstring: {
+        get: function rotationstring() {
+            return this.rotx+" "+this.roty; 
+        },
+        configurable: true,
+        enumerable: true
+    },
+    locationrotation: {
+        get: function locationrotation(): RotationLocation {
+            return {x: this.x, y: this.y, z: this.z, rotX: this.rotx, rotY: this.roty}; 
+        },
+        configurable: true,
+        enumerable: true
+    },
+    xy: {
+        get: function xy(): Vector2 {
+            return {x: this.x, y: this.y}; 
+        },
+        configurable: true,
+        enumerable: true
+    },
+    yz: {
+        get: function yz(): VectorYZ {
+            return {y: this.y, z: this.z}; 
+        },
+        configurable: true,
+        enumerable: true
+    },
+    xz: {
+        get: function xz(): VectorXZ {
+            return {x: this.x, z: this.z}; 
+        },
+        configurable: true,
+        enumerable: true
+    },
+    x: {
+        get: function x(){return this.location.x},
+        configurable: true,
+        enumerable: true
+    },
+    y: {
+        get: function y(){return this.location.y},
+        configurable: true,
+        enumerable: true
+    },
+    z: {
+        get: function z(){return this.location.z},
+        configurable: true,
+        enumerable: true
+    },
+    rotx: {
+        get: function rotx(){return this.getRotation().x},
+        configurable: true,
+        enumerable: true
+    },
+    roty: {
+        get: function roty(){return this.getRotation().y},
         configurable: true,
         enumerable: true
     }

@@ -400,12 +400,64 @@
       ]
   },
 
-  "custom_input@settings_common.option_text_edit_b": {
+  "multiline_toggle@common.checkbox": {/*
+    "$option_binding_name": "#toggle_state",*/
+    "toggle_name": "multiline_toggle",
+    "toggle_grid_collection_name": "multiline_toggle",
+    "anchor_from": "top_right",
+    "anchor_to": "top_right"
+  },
+  "custom_input": {
+    "type": "panel",
+    "controls": [
+      { "multiline_toggle@server_form.multiline_toggle": { "layer": 2 } },
+      { "custom_input_a@server_form.custom_input_a": { "layer": 2 } },
+      { "custom_input_b@server_form.custom_input_b": { "layer": 2 } }
+    ]
+  },
+
+  "custom_input_a@settings_common.option_text_edit_b": {
     "$option_label": "#custom_text",
     "$option_place_holder_text": "#custom_placeholder_text",
     "$text_edit_box_placeholder_content_binding_name": "$option_place_holder_text",
     "$text_edit_box_placeholder_content_binding_type": "collection",
     "$text_edit_box_grid_collection_name": "custom_form",
+
+    "$max_text_edit_length": 100000000,
+    "$multiline": false,/*
+    "$multilinename": "multiline", 
+    "enabled_newline": "not ((#custom_placeholder_text - $multilinename) = #custom_placeholder_text)", */
+
+    "$text_edit_box_content_binding_type": "collection",
+    "$text_edit_box_content_binding_name": "#custom_input_text",
+
+    "$option_binding_name": "#custom_input_text",
+    "$text_box_enabled_binding_name": "#custom_input_enabled",
+    "$text_box_name": "custom_input",
+    "$label_bindings": [
+      {
+        "binding_name": "#custom_text",
+        "binding_type": "collection",
+        "binding_collection_name": "custom_form"
+      }
+    ],
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "multiline_toggle",
+        "source_property_name": "(not #toggle_state)",
+        "target_property_name": "#visible"
+      }
+    ]
+  },
+
+  "custom_input_b@settings_common.option_text_edit_b": {
+    "$option_label": "#custom_text",
+    "$option_place_holder_text": "#custom_placeholder_text",
+    "$text_edit_box_placeholder_content_binding_name": "$option_place_holder_text",
+    "$text_edit_box_placeholder_content_binding_type": "collection",
+    "$text_edit_box_grid_collection_name": "custom_form",
+    "$multiline": true,
 
     "$max_text_edit_length": 100000000,/*
     "$multilinename": "multiline", 
@@ -422,6 +474,14 @@
         "binding_name": "#custom_text",
         "binding_type": "collection",
         "binding_collection_name": "custom_form"
+      }
+    ],
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "multiline_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
       }
     ]
   }
