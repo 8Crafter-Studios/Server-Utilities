@@ -247,277 +247,140 @@
           "size": [ "100%", "100%c" ],
           "controls": [
             {
-              "text_box_mode_toggle_panel": {
-                "type": "stack_panel",
-                "orientation": "horizontal",
+              "multiline_text_box_enabled_toggle": {
+                "type": "panel",
                 "size": [ "100%", "15px" ],/*
                 "anchor_from": "top_right",
                 "anchor_to": "top_right",*/
                 "controls": [
                   {
-                    "default_text_box_enabled_toggle@common_toggles.light_ui_toggle": {
-                      "anchor_from": "top_left",
-                      "anchor_to": "top_left",
-                      "size": [ "33.3333%", "15px" ],
-            
-                      "$button_type_panel|default": "how_to_play_common.toggle_button_control_b",
-                      "$checked_control": "common_toggles.toggle_checked",
-                      "$radio_toggle_group": true,
-                      "$toggle_name": "text_box_input_type",
-                      "$toggle_group_default_selected": 0,
-                      "$toggle_group_forced_index": 0,
-                      "$button_text": "Default",
-            
-                      "$toggle_tab_focus_binding_type": "view",
-                      "$toggle_tab_focus_binding_name": "#navigation_tab_focus_precedence",
-                      "$toggle_on_hover_binding_type": "view",
-                      "$toggle_on_hover_binding_name": "#toggle_on_hover",
-            
-                      "$toggle_view_binding_name": "DefaultMode"/*,
-                      "$toggle_property_bag": {
-                        "#panel_title": "Vanilla Help Menu"
-                      },
-                      "button_mappings": [
-                        {
-                          "from_button_id": "button.menu_select",
-                          "to_button_id": "button.menu_select",
-                          "mapping_type": "pressed"
-                        },
-                        {
-                          "from_button_id": "button.back",
-                          "to_button_id": "button.menu_select",
-                          "mapping_type": "global"
-                        },
-                        {
-                          "from_button_id": "button.menu",
-                          "to_button_id": "button.menu_select",
-                          "mapping_type": "global"
-                        }
-                      ]*/
+                    "title_panel": {
+                      "type": "label",
+                      "size": [ "default", 10 ],
+                      "anchor_from": "left_middle",
+                      "anchor_to": "left_middle",
+                      "text": "Multiline",
+                      "offset": [ 2, -1 ],
+                      "color": "$title_text_color",
+                      "layer": 2
                     }
                   },
                   {
-                    "multiline_text_box_enabled_toggle@common_toggles.light_ui_toggle": {
-                      "anchor_from": "top_left",
-                      "anchor_to": "top_left",
-                      "size": [ "33.3333%", "15px" ],
-            
-                      "$button_type_panel|default": "how_to_play_common.toggle_button_control_b",
-                      "$checked_control": "common_toggles.toggle_checked",
-                      "$radio_toggle_group": true,
-                      "$toggle_name": "text_box_input_type",
-                      "$toggle_group_default_selected": 0,
-                      "$toggle_group_forced_index": 1,
-                      "$button_text": "Multiline",
-            
-                      "$toggle_tab_focus_binding_type": "view",
-                      "$toggle_tab_focus_binding_name": "#navigation_tab_focus_precedence",
-                      "$toggle_on_hover_binding_type": "view",
-                      "$toggle_on_hover_binding_name": "#toggle_on_hover",
-            
-                      "$toggle_view_binding_name": "MultilineMode"/* ,
-                      "$toggle_property_bag": {
-                        "#panel_title": "Vanilla Help Menu"
-                      },
-                      "button_mappings": [
+                    "toggle_panel": {
+                      "type": "panel",
+                      "size": [ "100%c", "100%c" ],
+                      "anchor_from": "left_middle",
+                      "anchor_to": "left_middle",
+                      "controls": [
                         {
-                          "from_button_id": "button.menu_select",
-                          "to_button_id": "button.menu_select",
-                          "mapping_type": "pressed"
-                        },
-                        {
-                          "from_button_id": "button.back",
-                          "to_button_id": "button.menu_select",
-                          "mapping_type": "global"
-                        },
-                        {
-                          "from_button_id": "button.menu",
-                          "to_button_id": "button.menu_select",
-                          "mapping_type": "global"
+                          "multiline_toggle@common.checkbox": {/*
+                            "$option_binding_name": "#toggle_state",*/
+                            "toggle_name": "multiline_toggle",
+                            "toggle_grid_collection_name": "multiline_toggle",
+                            "anchor_from": "top_right",
+                            "anchor_to": "top_right",
+                            "size": [ "100%c", "100%c" ],	
+                            "offset": [ 45, -1 ],	
+                            "bindings": [	
+                              {	
+                                "binding_name": "(not #gamepad_helper_visible)",	
+                                "binding_name_override": "#visible"	
+                              }
+                            ]
+                          }
                         }
-                      ] */
+                      ]	
+                    }	
+                  },	
+                  {	
+                    "gamepad_y_button": {	
+                      "type": "panel",	
+                      "size": [ 24, 17 ],	
+                      "offset": [ 6, -1 ],	
+                      "controls": [	
+                        {	
+                          "icon@common.gamepad_helper_y": {	
+                            "$icon_description_bind_type": "none"	
+                          }	
+                        }	
+                      ],	
+                      "bindings": [	
+                        {	
+                          "binding_name": "#gamepad_helper_visible",	
+                          "binding_name_override": "#visible"	
+                        }	
+                      ]	
+                    }	
+                  },
+                  {
+                    "title_panel_b": {
+                      "type": "label",
+                      "size": [ "default", 10 ],
+                      "text": "Scrollable",
+                      "anchor_from": "right_middle",
+                      "anchor_to": "right_middle",
+                      "offset": [ -13, -1 ],
+                      "color": "$title_text_color",
+                      "layer": 2
                     }
                   },
                   {
-                    "scrollable_text_box_enabled_toggle@common_toggles.light_ui_toggle": {
-                      "anchor_from": "top_left",
-                      "anchor_to": "top_left",
-                      "size": [ "33.3333%", "15px" ],
-            
-                      "$button_type_panel|default": "how_to_play_common.toggle_button_control_b",
-                      "$checked_control": "common_toggles.toggle_checked",
-                      "$radio_toggle_group": true,
-                      "$toggle_name": "text_box_input_type",
-                      "$toggle_group_default_selected": 0,
-                      "$toggle_group_forced_index": 2,
-                      "$button_text": "Scrollable",
-            
-                      "$toggle_tab_focus_binding_type": "view",
-                      "$toggle_tab_focus_binding_name": "#navigation_tab_focus_precedence",
-                      "$toggle_on_hover_binding_type": "view",
-                      "$toggle_on_hover_binding_name": "#toggle_on_hover",
-            
-                      "$toggle_view_binding_name": "ScrollableMode"/* ,
-                      "$toggle_property_bag": {
-                        "#panel_title": "Vanilla Help Menu"
-                      },
-                      "button_mappings": [
+                    "toggle_panel_b": {
+                      "type": "panel",
+                      "size": [ "100%c", "100%c" ],
+                      "anchor_from": "right_middle",
+                      "anchor_to": "right_middle",
+                      "controls": [
                         {
-                          "from_button_id": "button.menu_select",
-                          "to_button_id": "button.menu_select",
-                          "mapping_type": "pressed"
-                        },
-                        {
-                          "from_button_id": "button.back",
-                          "to_button_id": "button.menu_select",
-                          "mapping_type": "global"
-                        },
-                        {
-                          "from_button_id": "button.menu",
-                          "to_button_id": "button.menu_select",
-                          "mapping_type": "global"
+                          "scrollable_toggle@common.checkbox": {/*
+                            "$option_binding_name": "#toggle_state",*/
+                            "toggle_name": "scrollable_toggle",
+                            "toggle_grid_collection_name": "scrollable_toggle",
+                            "anchor_from": "top_right",
+                            "anchor_to": "top_right",
+                            "size": [ "100%c", "100%c" ],	
+                            "offset": [ 0, -1 ],	
+                            "bindings": [	
+                              {	
+                                "binding_name": "(not #gamepad_helper_visible)",	
+                                "binding_name_override": "#visible"	
+                              },
+                              {
+                                "binding_type": "view",
+                                "source_control_name": "multiline_toggle",
+                                "source_property_name": "#toggle_state",
+                                "target_property_name": "#enabled"/*,
+                                "resolve_sibling_scope": true*/
+                              }
+                            ]
+                          }
                         }
-                      ] */
-                    }
-                  }
-                ]
+                      ]	
+                    }	
+                  },	
+                  {	
+                    "gamepad_y_button_b": {	
+                      "type": "panel",	
+                      "size": [ 24, 17 ],	
+                      "offset": [ 6, -1 ],	
+                      "controls": [	
+                        {	
+                          "icon@common.gamepad_helper_y": {	
+                            "$icon_description_bind_type": "none"	
+                          }	
+                        }	
+                      ],	
+                      "bindings": [	
+                        {	
+                          "binding_name": "#gamepad_helper_visible",	
+                          "binding_name_override": "#visible"	
+                        }	
+                      ]	
+                    }	
+                  }	
+                ]	
               }
             },
-            // {
-            //   "multiline_text_box_enabled_toggle": {
-            //     "type": "panel",
-            //     "size": [ "100%", "15px" ],/*
-            //     "anchor_from": "top_right",
-            //     "anchor_to": "top_right",*/
-            //     "controls": [
-            //       {
-            //         "title_panel": {
-            //           "type": "label",
-            //           "size": [ "default", 10 ],
-            //           "anchor_from": "left_middle",
-            //           "anchor_to": "left_middle",
-            //           "text": "Multiline",
-            //           "offset": [ 2, -1 ],
-            //           "color": "$title_text_color",
-            //           "layer": 2
-            //         }
-            //       },
-            //       {
-            //         "toggle_panel": {
-            //           "type": "panel",
-            //           "size": [ "100%c", "100%c" ],
-            //           "anchor_from": "left_middle",
-            //           "anchor_to": "left_middle",
-            //           "controls": [
-            //             {
-            //               "multiline_toggle@common.checkbox": {/*
-            //                 "$option_binding_name": "#toggle_state",*/
-            //                 "toggle_name": "multiline_toggle",
-            //                 "toggle_grid_collection_name": "multiline_toggle",
-            //                 "anchor_from": "top_right",
-            //                 "anchor_to": "top_right",
-            //                 "size": [ "100%c", "100%c" ],	
-            //                 "offset": [ 45, -1 ],	
-            //                 "bindings": [	
-            //                   {	
-            //                     "binding_name": "(not #gamepad_helper_visible)",	
-            //                     "binding_name_override": "#visible"	
-            //                   }
-            //                 ]
-            //               }
-            //             }
-            //           ]	
-            //         }	
-            //       },	
-            //       {	
-            //         "gamepad_y_button": {	
-            //           "type": "panel",	
-            //           "size": [ 24, 17 ],	
-            //           "offset": [ 6, -1 ],	
-            //           "controls": [	
-            //             {	
-            //               "icon@common.gamepad_helper_y": {	
-            //                 "$icon_description_bind_type": "none"	
-            //               }	
-            //             }	
-            //           ],	
-            //           "bindings": [	
-            //             {	
-            //               "binding_name": "#gamepad_helper_visible",	
-            //               "binding_name_override": "#visible"	
-            //             }	
-            //           ]	
-            //         }	
-            //       },
-            //       {
-            //         "title_panel_b": {
-            //           "type": "label",
-            //           "size": [ "default", 10 ],
-            //           "text": "Scrollable",
-            //           "anchor_from": "right_middle",
-            //           "anchor_to": "right_middle",
-            //           "offset": [ -13, -1 ],
-            //           "color": "$title_text_color",
-            //           "layer": 2
-            //         }
-            //       },
-            //       {
-            //         "toggle_panel_b": {
-            //           "type": "panel",
-            //           "size": [ "100%c", "100%c" ],
-            //           "anchor_from": "right_middle",
-            //           "anchor_to": "right_middle",
-            //           "controls": [
-            //             {
-            //               "scrollable_toggle@common.checkbox": {/*
-            //                 "$option_binding_name": "#toggle_state",*/
-            //                 "toggle_name": "scrollable_toggle",
-            //                 "toggle_grid_collection_name": "scrollable_toggle",
-            //                 "anchor_from": "top_right",
-            //                 "anchor_to": "top_right",
-            //                 "size": [ "100%c", "100%c" ],	
-            //                 "offset": [ 0, -1 ],	
-            //                 "bindings": [	
-            //                   {	
-            //                     "binding_name": "(not #gamepad_helper_visible)",	
-            //                     "binding_name_override": "#visible"	
-            //                   },
-            //                   {
-            //                     "binding_type": "view",
-            //                     "source_control_name": "multiline_toggle",
-            //                     "source_property_name": "#toggle_state",
-            //                     "target_property_name": "#enabled"/*,
-            //                     "resolve_sibling_scope": true*/
-            //                   }
-            //                 ]
-            //               }
-            //             }
-            //           ]	
-            //         }	
-            //       },	
-            //       {	
-            //         "gamepad_y_button_b": {	
-            //           "type": "panel",	
-            //           "size": [ 24, 17 ],	
-            //           "offset": [ 6, -1 ],	
-            //           "controls": [	
-            //             {	
-            //               "icon@common.gamepad_helper_y": {	
-            //                 "$icon_description_bind_type": "none"	
-            //               }	
-            //             }	
-            //           ],	
-            //           "bindings": [	
-            //             {	
-            //               "binding_name": "#gamepad_helper_visible",	
-            //               "binding_name_override": "#visible"	
-            //             }	
-            //           ]	
-            //         }	
-            //       }	
-            //     ]	
-            //   }
-            // },
             {
               "option_label_panel": {
                 "type": "panel",
@@ -579,14 +442,19 @@
                 "bindings": [
                   {
                     "binding_type": "view",
-                    "source_control_name": "DefaultMode",
-                    "source_property_name": "#toggle_state",
+                    "source_control_name": "multiline_toggle",
+                    "source_property_name": "(not #toggle_state)",
                     "target_property_name": "#visible",
                     "resolve_sibling_scope": true
                   }
                 ]
               }
             },
+            {
+              "multine_panel": {
+                "type": "panel",
+                "size": [ "100%", "120px" ],
+                "controls": [
             {
               "text_box_multiline@settings_common.option_text_edit_control": {
                 "$multiline": true,
@@ -596,34 +464,36 @@
                 "bindings": [
                   {
                     "binding_type": "view",
-                    "source_control_name": "MultilineMode",
-                    "source_property_name": "#toggle_state",
-                    "target_property_name": "#visible",
-                    "resolve_sibling_scope": true
+                          "source_control_name": "scrollable_toggle",
+                          "source_property_name": "(not #toggle_state)",
+                          "target_property_name": "#visible"/*,
+                          "resolve_sibling_scope": true*/
                   }
                 ]
               }
             },
-            {
-              "text_box_scrollable_multiline_panel": {
-                "type": "panel",
-                "size": [
-                  "100%",
-                  "120px"
-                ],
-                "controls": [
                   {
                     "text_box_scrollable_multiline@common.text_scroll": {
+                      "max_length": "$max_text_edit_length",
                       "$multiline": true,
                       "anchor_from": "top_left",
-                      "anchor_to": "top_left"
+                      "anchor_to": "top_left",
+                      "bindings": [
+                        {
+                          "binding_type": "view",
+                          "source_control_name": "scrollable_toggle",
+                          "source_property_name": "#toggle_state",
+                          "target_property_name": "#visible"/*,
+                          "resolve_sibling_scope": true*/
+                        }
+                      ]
                     }
                   }
                 ],
                 "bindings": [
                   {
                     "binding_type": "view",
-                    "source_control_name": "ScrollableMode",
+                    "source_control_name": "multiline_toggle",
                     "source_property_name": "#toggle_state",
                     "target_property_name": "#visible",
                     "resolve_sibling_scope": true
