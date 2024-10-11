@@ -185,5 +185,131 @@
         "mapping_type": "focused"
       }
     ]
+  },
+
+  "multiline_text_edit_control@common.multiline_text_edit_box": {
+    "anchor_from": "center",
+    "anchor_to": "center"/*,
+    "$place_holder_text": "npcscreen.addtext",
+    "property_bag": {
+      "#property_field": "#item_name"
+    }*/
+  },
+  
+  "multiline_scrolling_text_box_content@common.multiline_text_edit_control": {
+    "$enabled|default": true,
+    "size": [ "100%", "100%cm" ],
+    "enabled": "$enabled",
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "$text_background_default": "common.edit_box_indent",
+    "$text_background_hover": "common.edit_box_indent_hover",/*
+    "$text_box_text_color": "$npc_dialog_text_color",*//*
+    "$text_box_name": "student_message_bubble",*/
+    "$text_edit_box_content_binding_name": "#dialogtext",
+    // "$color": "$npc_dialog_text_color",
+    "$disabled_alpha": 1,
+    "max_length": "$max_text_edit_length",
+    "$max_text_edit_length|default": 1000,
+    "constrain_to_rect": false,
+
+    "$shadow": false,
+    "$font_size": "normal",
+    "$color|default": [ 1, 1, 1, 1 ],
+    "$alpha|default": 1.0,
+    "$disabled_alpha|default": 0.5,
+    "$text_offset|default": [ 0, 0 ],
+    "$text_edit_box_placeholder_content_binding_name": "#placeholder_dialog_text",
+    "$text_alpha": 1,
+    "$locked_text_alpha": "$disabled_alpha",
+    "$locked_color": "$color",/*
+    "variables": [
+      {
+        // Clear placeholder text for non-worldbuilders so they don't see "add text here" when they don't have permission to add text
+        "requires": "(not $is_worldbuilder)",
+        "$place_holder_text": "",
+        "$enabled": false
+      }
+    ],*/
+    // Clear enabled binding, we're using a variable
+    "bindings": [
+    ],
+    "locked_control": "locked",
+    "default_control": "default",
+    "hover_control": "hover",
+    "pressed_control": "pressed",
+    "text_control": "label",
+    "place_holder_control": "place_holder",
+    "controls": [
+      {
+        "label@common.text_edit_box_label": {
+          "layer": 1,
+          "size": [ "100%", "default" ],
+          "anchor_from": "top_left",
+          "anchor_to": "top_left"
+        }
+      },
+      {
+        "visibility_panel": {
+          "type": "panel",
+          "size": [ "100%", "100%c" ],
+          "anchor_from": "top_left",
+          "anchor_to": "top_left",
+          "controls": [
+            {
+              "place_holder@common.text_edit_box_place_holder_label": {
+                "layer": 1,
+                "size": [ "100%", "default" ],
+                "anchor_from": "top_left",
+                "anchor_to": "top_left"
+              }
+            }
+          ],
+
+          "bindings": [
+            {
+              "binding_type": "view",
+              "source_control_name": "label",
+              "source_property_name": "(#item_name = '')",
+              "target_property_name": "#visible",
+              "resolve_sibling_scope": true
+            }
+          ]
+        }
+      }/*,
+      { "background@common.empty_panel": { "size": [ "100%", "100%sm" ] } } */,
+      {
+        "locked": {
+          "type": "panel",
+          "$disabled_color|default": "$color",
+          "controls": [
+            {
+              "edit_box_indent@$text_background_default": {
+                "$color": "$disabled_color",
+                "$alpha": "$disabled_alpha"
+              }
+            }
+          ]
+        }
+      },
+      { "default@$text_background_default": {} },
+      { "hover@$text_background_hover": {} },
+      { "pressed@$text_background_hover": {} }
+    ]
+  },
+
+  "text_scroll@common.scrolling_panel": {
+    "size": [ "100% - 10px", "100% - 11px" ],
+    "$always_handle_scrolling": false,
+    "$scrollbar_always_visible": true,
+    "$jump_to_bottom_on_update": true,
+    "$scrolling_content": "common.multiline_scrolling_text_box_content",
+    "$scroll_box_visible_touch": false,
+    "$show_background": true,
+    "$scroll_bar_left_padding_size": [ 0, 0 ],
+    "$scroll_bar_right_padding_size": [ 0, 0 ],
+    "$scroll_size": [ 5, "100%" ],
+    "$scroll_size_touch": "$scroll_size",
+    "offset": [ 0, -1 ]
   }
 }
