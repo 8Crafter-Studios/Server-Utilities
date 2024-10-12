@@ -339,20 +339,7 @@
                             "anchor_from": "top_right",
                             "anchor_to": "top_right",
                             "size": [ "100%c", "100%c" ],	
-                            "offset": [ 0, -1 ],	
-                            "bindings": [	
-                              {	
-                                "binding_name": "(not #gamepad_helper_visible)",	
-                                "binding_name_override": "#visible"	
-                              },
-                              {
-                                "binding_type": "view",
-                                "source_control_name": "multiline_toggle",
-                                "source_property_name": "#toggle_state",
-                                "target_property_name": "#enabled"/*,
-                                "resolve_sibling_scope": true*/
-                              }
-                            ]
+                            "offset": [ 0, -1 ]
                           }
                         }
                       ]	
@@ -451,10 +438,27 @@
               }
             },
             {
-              "multine_panel": {
+              "scrollable_panel": {
                 "type": "panel",
-                "size": [ "100%", "120px" ],
-                "controls": [
+                "size": [ "100%", "0px" ],
+                "bindings": [
+                  {
+                    "binding_type": "view",
+                    "source_control_name": "scrollable_toggle",
+                    "source_property_name": "#toggle_state",
+                    "target_property_name": "#visible",
+                    "resolve_sibling_scope": true
+                  },
+                  {
+                    "binding_type": "view",
+                    "source_control_name": "multiline_toggle",
+                    "source_property_name": "#toggle_state",
+                    "target_property_name": "#enabled",
+                    "resolve_sibling_scope": true
+                  }
+                ]
+              }
+            },
             {
               "text_box_multiline@settings_common.option_text_edit_control": {
                 "$multiline": true,
@@ -464,37 +468,50 @@
                 "bindings": [
                   {
                     "binding_type": "view",
-                          "source_control_name": "scrollable_toggle",
-                          "source_property_name": "(not #toggle_state)",
-                          "target_property_name": "#visible"/*,
-                          "resolve_sibling_scope": true*/
+                    "source_control_name": "scrollable_panel",
+                    "source_property_name": "((not #visible) and #enabled)",
+                    "target_property_name": "#visible",
+                    "resolve_sibling_scope": true
                   }
                 ]
               }
             },
+            {
+              "multine_panel": {
+                "type": "panel",
+                "size": [ "100%", "120px" ],
+                "controls": [
                   {
-                    "text_box_scrollable_multiline@common.text_scroll": {
-                      "max_length": "$max_text_edit_length",
+                    "text_box_scrollable_multiline@common.text_scroll": {/*
+                      "max_length": "$max_text_edit_length",*/
                       "$multiline": true,
                       "anchor_from": "top_left",
                       "anchor_to": "top_left",
-                      "bindings": [
-                        {
-                          "binding_type": "view",
-                          "source_control_name": "scrollable_toggle",
-                          "source_property_name": "#toggle_state",
-                          "target_property_name": "#visible"/*,
-                          "resolve_sibling_scope": true*/
-                        }
-                      ]
+                      "$option_text_edit_control_size|default": [ "100%", "120px" ],
+                      "$text_edit_box_content_binding_name": "$option_binding_name",
+                      "$text_edit_box_binding_collection_name": "$option_binding_name",
+                      "$text_edit_box_binding_type": "global",
+                      "$text_box_enabled_binding_name": "$option_enabled_binding_name",
+                      "$place_holder_text": "$option_place_holder_text",
+                      "$text_box_tts_header": "$option_label",
+                      "$tts_override_control_value|default": " ",/*
+                      "tts_override_control_value": "$tts_override_control_value",*/
+                      "$place_holder_control": "settings_common.text_edit_box_place_holder_label_b"
                     }
-                  }
+                  }/*,
+                  {
+                    "background@$scroll_background_image_control": {
+                      "anchor_to": "top_left",
+                      "anchor_from": "top_left",
+                      "size": [ "100%", "100%" ]
+                    }
+                  }*/
                 ],
                 "bindings": [
                   {
                     "binding_type": "view",
-                    "source_control_name": "multiline_toggle",
-                    "source_property_name": "#toggle_state",
+                    "source_control_name": "scrollable_panel",
+                    "source_property_name": "(#visible and #enabled)",
                     "target_property_name": "#visible",
                     "resolve_sibling_scope": true
                   }
