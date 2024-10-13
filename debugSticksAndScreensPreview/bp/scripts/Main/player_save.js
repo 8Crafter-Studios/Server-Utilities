@@ -22,7 +22,6 @@ import * as cmdutils from "./command_utilities";
 import * as utils from "./utilities";
 import * as errors from "./errors";
 import mcMath from "@minecraft/math.js";
-import { tryget } from "./utilities";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -103,5 +102,5 @@ getBan(banId: string){let banString = String(world.getDynamicProperty(banId)).sp
 }
 import("Main").then(v => system.runInterval(() => { if (world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true) {
     world.getAllPlayers().forEach((p) => { savedPlayer.savePlayer(p); });
-} }, v.config.playerDataRefreshRate ?? 5));
+} }, v.config.system.playerDataRefreshRate ?? 5));
 //# sourceMappingURL=player_save.js.map

@@ -1,5 +1,8 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-export const format_version = "1.22.0-preview.20+BULID.1";
+import { system } from "@minecraft/server";
+globalThis.beforeScriptStartTick = system.currentTick;
+export const format_version = "1.23.0";
+import "Global";
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -57,7 +60,7 @@ export const mainmetaimport = import.meta;
 export const subscribedEvents = {};
 globalThis.tempVariables = {};
 export const editorStickMenuOpeningAsyncCancelActionNumbers = {};
-import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, system, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode, LocationOutOfWorldBoundariesError } from "@minecraft/server";
+import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode, LocationOutOfWorldBoundariesError } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, generateCircleCoordinatesB, drawMinecraftCircle, drawMinecraftSphere, generateMinecraftSphere, generateHollowSphere, degradeArray, generateMinecraftTunnel, generateMinecraftSphereB, generateMinecraftSphereBG, generateMinecraftSphereBGIdGenerator, generateMinecraftSphereBGProgress, generateHollowSphereBG, generatorProgressIdGenerator, generatorProgress, generateMinecraftSemiSphereBG, generateDomeBG, generateMinecraftOvoidBG, generateMinecraftOvoidCG, generateSolidOvoid, generateSolidOvoidBG, generateSkygridBG, generateInverseSkygridBG, generateFillBG, generateWallsFillBG, generateHollowFillBG, generateOutlineFillBG, Vector, dirmap, diroffsetmap, diroffsetothersmap, generateMinecraftConeBG } from "Main/coordinates";
@@ -87,12 +90,16 @@ import * as cmdslist from "Main/commands_list";
 import * as cmdsdocs from "Main/commands_documentation";
 import * as utils from "Main/utilities";
 import * as errors from "Main/errors";
+import * as shopmain from "ExtraFeatures/shop_main";
+import * as servershop from "ExtraFeatures/server_shop";
+import * as playershop from "ExtraFeatures/player_shop";
+import * as moneysystem from "ExtraFeatures/money";
 import mcMath from "@minecraft/math.js"; /*
 import { disableWatchdog } from "@minecraft/debug-utilities";*/
 import { listoftransformrecipes } from "transformrecipes";
 import { chatMessage, patternColors, patternColorsMap, patternFunctionList, evaluateChatColorType, chatSend } from "Main/chat";
 import { targetSelectorAllListE, targetSelectorB, targetSelectorAllListC, clearContainer } from "Main/command_utilities";
-import { tryget, customModulo, psend, JSONStringify, bsend } from "Main/utilities";
+import { customModulo } from "Main/utilities";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -112,8 +119,33 @@ SimulatedPlayer;
 Test;
 mcMath;
 globalThis.scriptStartTick = system.currentTick;
-export let crashEnabled = false;
-export let tempSavedVariables = [];
+export const modules = {
+    mcServer,
+    mcServerUi,
+    GameTest,
+    main,
+    transformrecipes,
+    coords,
+    cmds,
+    bans,
+    uis,
+    playersave,
+    spawnprot,
+    mcMath,
+    chat,
+    cmdutils,
+    cmdslist,
+    cmdsdocs,
+    utils,
+    errors,
+    shopmain,
+    servershop,
+    playershop,
+    moneysystem
+};
+globalThis.modules = modules;
+globalThis.crashEnabled = false;
+globalThis.tempSavedVariables = [];
 export function mainEval(x) { return eval(x); }
 export function indirectMainEval(x) { return eval?.(x); }
 export function mainRun(x, ...args) { return x(...args); }
@@ -137,18 +169,32 @@ export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TA
 disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
 system.beforeEvents.watchdogTerminate.subscribe(e => {
     try {
-        if (crashEnabled == true) { }
+        if (crashEnabled == true) {
+            return;
+        }
         else {
-            if (world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") == true) { }
+            if (world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") == true) {
+                return;
+            }
             else {
                 e.cancel = true;
                 console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`);
+                try {
+                    world.getAllPlayers().filter(p => p.hasTag("getWatchdogTerminationCancelWarnings")).forEach(p => p.sendMessage(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`));
+                }
+                catch { }
+                ;
             }
         }
     }
     catch {
         e.cancel = true;
         console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`);
+        try {
+            world.getAllPlayers().filter(p => p.hasTag("getWatchdogTerminationCancelWarnings")).forEach(p => p.sendMessage(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`));
+        }
+        catch { }
+        ;
     }
 });
 world.setDynamicProperty("format_version", format_version);
@@ -159,9 +205,49 @@ catch (e) {
     console.error(e, e.stack);
 }
 const srununbound = system.run;
+/**
+ * @remarks
+ * Runs a specified function at the next available future time.
+ * This is frequently used to implement delayed behaviors and
+ * game loops. When run within the context of an event handler,
+ * this will generally run the code at the end of the same tick
+ * where the event occurred. When run in other code (a
+ * system.run callout), this will run the function in the next
+ * tick. Note, however, that depending on load on the system,
+ * running in the same or next tick is not guaranteed.
+ *
+ * @param callback
+ * Function callback to run at the next game tick.
+ * @returns
+ * An opaque identifier that can be used with the `clearRun`
+ * function to cancel the execution of this run.
+ * @example trapTick.ts
+ * ```typescript
+ * import { system, world } from '@minecraft/server';
+ *
+ * function printEveryMinute() {
+ *     try {
+ *         // Minecraft runs at 20 ticks per second.
+ *         if (system.currentTick % 1200 === 0) {
+ *             world.sendMessage('Another minute passes...');
+ *         }
+ *     } catch (e) {
+ *         console.warn('Error: ' + e);
+ *     }
+ *
+ *     system.run(printEveryMinute);
+ * }
+ *
+ * printEveryMinute();
+ * ```
+ */
 export const srun = srununbound.bind(system);
 globalThis.srun = srun;
 export const gt = globalThis;
+globalThis.gt = globalThis;
+/**
+ * A class containing the configuration information for the add-on.
+ */
 export class config {
     static get chatCommandsEnabled() { return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled") ?? true); }
     static set chatCommandsEnabled(enabled) { world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled ?? true); }
@@ -169,42 +255,8 @@ export class config {
     static set chatCommandPrefix(prefix) { world.setDynamicProperty("andexdbSettings:chatCommandPrefix", prefix ?? "\\"); }
     static get validChatCommandPrefixes() { return String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? ""); }
     static set validChatCommandPrefixes(prefixes) { world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", prefixes ?? ""); }
-    static get homeSystemEnabled() { return Boolean(world.getDynamicProperty("homeSystemSettings:homeSystemEnabled") ?? false); }
-    static set homeSystemEnabled(enabled) { world.setDynamicProperty("homeSystemSettings:homeSystemEnabled", enabled ?? false); }
-    static get maxHomesPerPlayer() { return world.getDynamicProperty("homeSystemSettings:maxHomesPerPlayer") == -1 ? Infinity : Number(world.getDynamicProperty("homeSystemSettings:maxHomesPerPlayer") ?? Infinity); }
-    static set maxHomesPerPlayer(maxHomes) { world.setDynamicProperty("homeSystemSettings:maxHomesPerPlayer", (maxHomes ?? Infinity) == Infinity ? -1 : maxHomes); }
-    static get tpaSystemEnabled() { return Boolean(world.getDynamicProperty("tpaSystemSettings:tpaSystemEnabled") ?? world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled") ?? false); }
-    static set tpaSystemEnabled(enabled) { world.setDynamicProperty("tpaSystemSettings:tpaSystemEnabled", enabled ?? false); }
-    static get antispamEnabled() { return Boolean(world.getDynamicProperty("antispamSettings:antispamEnabled") ?? false); }
-    static set antispamEnabled(enabled) { world.setDynamicProperty("antispamSettings:antispamEnabled", enabled ?? false); }
-    static get restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute() { return Boolean(world.getDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute") ?? false); }
-    static set restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute(restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute) { world.setDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute", restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute ?? false); }
-    static get waitTimeAfterAntispamActivation() { return isNaN(Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation"))) ? 60 : Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation") ?? 60); }
-    static set waitTimeAfterAntispamActivation(waitTimeInSeconds) { world.setDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation", waitTimeInSeconds ?? 60); }
-    static get maxTimeBewteenMessagesToTriggerAntiSpam() { return isNaN(Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam"))) ? 5 : Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam") ?? 5); }
-    static set maxTimeBewteenMessagesToTriggerAntiSpam(maxTimeInSeconds) { world.setDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam", maxTimeInSeconds ?? 5); }
-    static get antispamTriggerMessageCount() { return isNaN(Number(world.getDynamicProperty("antispamSettings:antispamTriggerMessageCount"))) ? 4 : Number(gwdp("antispamSettings:antispamTriggerMessageCount") ?? 4); }
-    static set antispamTriggerMessageCount(messageCount) { world.setDynamicProperty("antispamSettings:antispamTriggerMessageCount", messageCount ?? 4); }
-    static get timeZone() { return isNaN(Number(world.getDynamicProperty("andexdbSettings:timeZone"))) ? 0 : Number(world.getDynamicProperty("andexdbSettings:timeZone") ?? 0); }
-    static set timeZone(timeZone) { world.setDynamicProperty("andexdbSettings:timeZone", timeZone ?? 0); }
-    static get invalidChatCommandAction() { return isNaN(Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction"))) ? 0 : Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 0); }
-    static set invalidChatCommandAction(invalidChatCommandAction) { world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction ?? 0); }
-    static get chatDisplayTimeStamp() { return Boolean(world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false); }
-    static set chatDisplayTimeStamp(chatDisplayTimeStampEnabled) { world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled ?? false); }
-    static get showRanksOnPlayerNameTags() { return Boolean(world.getDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags") ?? false); }
-    static set showRanksOnPlayerNameTags(showRanksOnPlayerNameTags) { world.setDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags", showRanksOnPlayerNameTags ?? false); }
-    static get protectedAreasRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 20); }
-    static set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 20 : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 20)))); }
-    static get playerDataRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 5); }
-    static set playerDataRefreshRate(playerDataRefreshRate) { world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate)) ? 5 : Math.min(1000, Math.max(1, Number(playerDataRefreshRate ?? 5)))); }
-    static get maxPlayersPerManagePlayersPage() { return Number(world.getDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage") ?? 10); }
-    static set maxPlayersPerManagePlayersPage(maxPlayersPerManagePlayersPage) { world.setDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage", Math.min(1000, Math.max(1, maxPlayersPerManagePlayersPage ?? 10))); }
-    static get maxBansPerManageBansPage() { return Number(world.getDynamicProperty("andexdbSettings:maxBansPerManageBansPage") ?? 10); }
-    static set maxBansPerManageBansPage(maxBansPerManageBansPage) { world.setDynamicProperty("andexdbSettings:maxBansPerManageBansPage", maxBansPerManageBansPage ?? 10); }
-    static get maxHomesPerManageHomesPage() { return Number(world.getDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage") ?? 10); }
-    static set maxHomesPerManageHomesPage(maxHomesPerManageHomesPage) { world.setDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage", maxHomesPerManageHomesPage ?? 10); }
-    static get artificialLagMS() { return Number(world.getDynamicProperty("andexdbSettings:artificialLagMS") ?? 0); }
-    static set artificialLagMS(artificialLagMS) { world.setDynamicProperty("andexdbSettings:artificialLagMS", artificialLagMS ?? 0); }
+    static get invalidChatCommandAction() { return isNaN(Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction"))) ? 3 : Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 3); }
+    static set invalidChatCommandAction(invalidChatCommandAction) { world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction ?? 3); }
     static get undoClipboardMode() { return String(world.getDynamicProperty("andexdbSettings:undoClipboardMode") ?? StructureSaveMode.Memory); }
     static set undoClipboardMode(undoClipboardMode) { world.setDynamicProperty("andexdbSettings:undoClipboardMode", undoClipboardMode ?? StructureSaveMode.Memory); }
     static get spawnCommandLocation() { const v = tryget(() => JSON.parse(String(world.getDynamicProperty("andexdbSettings:spawnCommandLocation") ?? '{x: null, y: null, z: null, dimension: "overworld"}'))) ?? { x: null, y: null, z: null, dimension: "overworld" }; return tryget(() => ({ x: v.x, y: v.y, z: v.z, dimension: dimensionsb[String(v.dimension)] ?? overworld })) ?? { x: null, y: null, z: null, dimension: overworld }; }
@@ -373,8 +425,133 @@ export class config {
             }
         };
     }
-    static reset() { }
+    static get shopSystem() {
+        return {
+            get server() {
+                return {
+                    get enabled() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:server.enabled") ?? false); },
+                    set enabled(enabled) { world.setDynamicProperty("andexdbShopSystemSettings:server.enabled", enabled ?? false); }
+                };
+            },
+            get player() {
+                return {
+                    get enabled() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.enabled") ?? false); },
+                    set enabled(enabled) { world.setDynamicProperty("andexdbShopSystemSettings:player.enabled", enabled ?? false); },
+                    get maxShopsPerPlayer() { return (world.getDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer") ?? 5).toString().toNumber(); },
+                    set maxShopsPerPlayer(maxShopsPerPlayer) { world.setDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer", maxShopsPerPlayer ?? 5); },
+                    get allowSellingLockInSlotItems() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.allowSellingLockInSlotItems") ?? false); },
+                    set allowSellingLockInSlotItems(allowSellingLockInSlotItems) { world.setDynamicProperty("andexdbShopSystemSettings:player.allowSellingLockInSlotItems", allowSellingLockInSlotItems ?? false); },
+                    get allowSellingLockInInventoryItems() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.allowSellingLockInInventoryItems") ?? false); },
+                    set allowSellingLockInInventoryItems(allowSellingLockInInventoryItems) { world.setDynamicProperty("andexdbShopSystemSettings:player.allowSellingLockInInventoryItems", allowSellingLockInInventoryItems ?? false); },
+                    get allowSellingKeepOnDeathItems() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:player.allowSellingKeepOnDeathItems") ?? true); },
+                    set allowSellingKeepOnDeathItems(allowSellingKeepOnDeathItems) { world.setDynamicProperty("andexdbShopSystemSettings:player.allowSellingKeepOnDeathItems", allowSellingKeepOnDeathItems ?? true); }
+                };
+            },
+            get sign() {
+                return {
+                    get enabled() { return Boolean(world.getDynamicProperty("andexdbShopSystemSettings:sign.enabled") ?? false); },
+                    set enabled(enabled) { world.setDynamicProperty("andexdbShopSystemSettings:sign.enabled", enabled ?? false); }
+                };
+            }
+        };
+    }
+    static get homeSystem() {
+        return {
+            get homeSystemEnabled() { return Boolean(world.getDynamicProperty("homeSystemSettings:homeSystemEnabled") ?? false); },
+            set homeSystemEnabled(enabled) { world.setDynamicProperty("homeSystemSettings:homeSystemEnabled", enabled ?? false); },
+            get maxHomesPerPlayer() { return world.getDynamicProperty("homeSystemSettings:maxHomesPerPlayer") == -1 ? Infinity : Number(world.getDynamicProperty("homeSystemSettings:maxHomesPerPlayer") ?? Infinity); },
+            set maxHomesPerPlayer(maxHomes) { world.setDynamicProperty("homeSystemSettings:maxHomesPerPlayer", (maxHomes ?? Infinity) == Infinity ? -1 : maxHomes); }
+        };
+    }
+    static get tpaSystem() {
+        return {
+            get tpaSystemEnabled() { return Boolean(world.getDynamicProperty("tpaSystemSettings:tpaSystemEnabled") ?? world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled") ?? false); },
+            set tpaSystemEnabled(enabled) { world.setDynamicProperty("tpaSystemSettings:tpaSystemEnabled", enabled ?? false); },
+            /**
+             * The number of seconds after a teleport request is sent before it will time out.
+             */
+            get timeoutDuration() { return isNaN(Number(world.getDynamicProperty("tpaSystemSettings:timeoutDuration"))) ? 60 : Number(world.getDynamicProperty("tpaSystemSettings:timeoutDuration") ?? 60); },
+            set timeoutDuration(timeoutDuration) { world.setDynamicProperty("tpaSystemSettings:timeoutDuration", timeoutDuration ?? 60); }
+        };
+    }
+    static get chatRanks() {
+        return {
+            get chatDisplayTimeStamp() { return Boolean(world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false); },
+            set chatDisplayTimeStamp(chatDisplayTimeStampEnabled) { world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled ?? false); },
+            get showRanksOnPlayerNameTags() { return Boolean(world.getDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags") ?? false); },
+            set showRanksOnPlayerNameTags(showRanksOnPlayerNameTags) { world.setDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags", showRanksOnPlayerNameTags ?? false); }
+        };
+    }
+    static get antiSpamSystem() {
+        return {
+            get antispamEnabled() { return Boolean(world.getDynamicProperty("antispamSettings:antispamEnabled") ?? false); },
+            set antispamEnabled(enabled) { world.setDynamicProperty("antispamSettings:antispamEnabled", enabled ?? false); },
+            get restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute() { return Boolean(world.getDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute") ?? false); },
+            set restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute(restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute) { world.setDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute", restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute ?? false); },
+            get waitTimeAfterAntispamActivation() { return isNaN(Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation"))) ? 60 : Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation") ?? 60); },
+            set waitTimeAfterAntispamActivation(waitTimeInSeconds) { world.setDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation", waitTimeInSeconds ?? 60); },
+            get maxTimeBewteenMessagesToTriggerAntiSpam() { return isNaN(Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam"))) ? 5 : Number(world.getDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam") ?? 5); },
+            set maxTimeBewteenMessagesToTriggerAntiSpam(maxTimeInSeconds) { world.setDynamicProperty("antispamSettings:maxTimeBewteenMessagesToTriggerAntiSpam", maxTimeInSeconds ?? 5); },
+            get antispamTriggerMessageCount() { return isNaN(Number(world.getDynamicProperty("antispamSettings:antispamTriggerMessageCount"))) ? 4 : Number(gwdp("antispamSettings:antispamTriggerMessageCount") ?? 4); },
+            set antispamTriggerMessageCount(messageCount) { world.setDynamicProperty("antispamSettings:antispamTriggerMessageCount", messageCount ?? 4); }
+        };
+    }
+    static get ui() {
+        return {
+            get main() {
+                return {};
+            },
+            get pages() {
+                return {
+                    /**
+                     * Moved from {@link config} to {@link config.ui.pages} in version 1.23.0-preview.20+BUILD.1 on 10/04/2024 at 3:10:37 PM PDT.
+                     */
+                    get maxPlayersPerManagePlayersPage() { return Number(world.getDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage") ?? 10); },
+                    set maxPlayersPerManagePlayersPage(maxPlayersPerManagePlayersPage) { world.setDynamicProperty("andexdbSettings:maxPlayersPerManagePlayersPage", Math.min(1000, Math.max(1, maxPlayersPerManagePlayersPage ?? 10))); },
+                    /**
+                     * Moved from {@link config} to {@link config.ui.pages} in version 1.23.0-preview.20+BUILD.1 on 10/04/2024 at 3:10:37 PM PDT.
+                     */
+                    get maxBansPerManageBansPage() { return Number(world.getDynamicProperty("andexdbSettings:maxBansPerManageBansPage") ?? 10); },
+                    set maxBansPerManageBansPage(maxBansPerManageBansPage) { world.setDynamicProperty("andexdbSettings:maxBansPerManageBansPage", maxBansPerManageBansPage ?? 10); },
+                    /**
+                     * Moved from {@link config} to {@link config.ui.pages} in version 1.23.0-preview.20+BUILD.1 on 10/04/2024 at 3:10:37 PM PDT.
+                     */
+                    get maxHomesPerManageHomesPage() { return Number(world.getDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage") ?? 10); },
+                    set maxHomesPerManageHomesPage(maxHomesPerManageHomesPage) { world.setDynamicProperty("andexdbSettings:maxHomesPerManageHomesPage", maxHomesPerManageHomesPage ?? 10); }
+                };
+            },
+            get other() {
+                return {
+                    get useStarWarsReference404Page() { return Boolean(world.getDynamicProperty("andexdbUISettings:other.useStarWarsReference404Page") ?? false); },
+                    set useStarWarsReference404Page(useStarWarsReference404Page) { world.setDynamicProperty("andexdbUISettings:other.useStarWarsReference404Page", useStarWarsReference404Page ?? false); }
+                };
+            }
+        };
+    }
+    static get system() {
+        return {
+            get artificialLagMS() { return Number(world.getDynamicProperty("andexdbSettings:artificialLagMS") ?? 0); },
+            set artificialLagMS(artificialLagMS) { world.setDynamicProperty("andexdbSettings:artificialLagMS", artificialLagMS ?? 0); },
+            get timeZone() { return isNaN(Number(world.getDynamicProperty("andexdbSettings:timeZone"))) ? 0 : Number(world.getDynamicProperty("andexdbSettings:timeZone") ?? 0); },
+            set timeZone(timeZone) { world.setDynamicProperty("andexdbSettings:timeZone", timeZone ?? 0); },
+            get playerDataRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 5); },
+            set playerDataRefreshRate(playerDataRefreshRate) { world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate)) ? 5 : Math.min(1000, Math.max(1, Number(playerDataRefreshRate ?? 5)))); },
+            get protectedAreasRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 20); },
+            set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 20 : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 20)))); },
+            get debugMode() { return Boolean(world.getDynamicProperty("andexdbSettings:debugMode") ?? false); },
+            set debugMode(debugMode) { world.setDynamicProperty("andexdbSettings:debugMode", debugMode ?? false); },
+            /**
+             * It is reccommended to leave this set to false.
+             */
+            get allowWatchdogTerminationCrash() { return Boolean(world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") ?? false); },
+            set allowWatchdogTerminationCrash(allowWatchdogTerminationCrash) { world.setDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash", allowWatchdogTerminationCrash ?? false); }
+        };
+    }
+    static reset() {
+        // Object.entries(Object.getOwnPropertyDescriptors(this)).filter(v=>v[1].hasOwnProperty("get")).flatMap(v=>v[1].hasOwnProperty("set")?v[1]:v[1]["get"]())
+    }
 }
+globalThis.config = config;
 export class worldPlayers {
     static get savedPlayers() {
         return savedPlayer.getSavedPlayers();
@@ -547,8 +724,36 @@ if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>
 if(d.x==0&&d.y==0&&d.z==0){}else{if(Math.abs(d.x)>=Math.abs(d.y)&&Math.abs(d.x)>=Math.abs(d.z)){sourceEntity.getComponent("projectile").shoot({x: Number(d.x>=0)*Math.abs(1/d.x), y: Number(d.y>=0)*Math.abs(1/d.x), z: Number(d.z>=0)*Math.abs(1/d.x)})}else{if(Math.abs(d.y)>=Math.abs(d.x)&&Math.abs(d.y)>=Math.abs(d.z)){sourceEntity.getComponent("projectile").shoot({x: Number(d.x>=0)*Math.abs(1/d.x), y: Number(d.y>=0)*Math.abs(1/d.x), z: Number(d.z>=0)*Math.abs(1/d.x)})}else{sourceEntity.getComponent("projectile").shoot({x: Number(d.x>=0)*Math.abs(1/d.x), y: Number(d.y>=0)*Math.abs(1/d.x), z: Number(d.z>=0)*Math.abs(1/d.x)})}}}
 sourceEntity.dimension.getEntities({location: sourceEntity.location, closest: 2, excludeTypes: ["minecraft:arrow", "andexsa:custom_arrow", "andexsa:custom_arrow_2"], excludeTags: ["hidden_from_homing_arrows", "is_currently_in_vanish"]}).find((e)=>(sourceEntity.getComponent('projectile').owner != e)).location*/
 export function flatPath(directoryObject, startingPath = ["input"]) {
-    function flatPathArray(a, currentPath = ["input"]) { return [{ path: currentPath, name: currentPath[currentPath.length - 1] }, a.flatMap((v, i) => v instanceof Array ? flatPathArray(v, [...currentPath, String(i)]) : typeof v == "object" ? v?.notPathable == true ? { path: [...currentPath, String(i)], name: v?.name ?? String(i), index: i, arrayindex: i, notPathable: true } : flatPathObject(v[1], [...currentPath, v[0]]) : { path: [...currentPath, String(v ?? i)], name: String(v ?? i), index: i, arrayindex: i })]; }
-    function flatPathObject(o, currentPath = ["input"]) { return [{ path: currentPath, name: currentPath[currentPath.length - 1] }, Object.entries(o).flatMap((v, i) => v[1] instanceof Array ? flatPathArray(v[1], [...currentPath, v[0]])[0] : typeof v[1] == "object" ? v[1]?.notPathable == true ? { path: [...currentPath, v[0]], name: v[0], index: i, objectindex: i, notPathable: true } : flatPathObject(v[1], [...currentPath, v[0]]) : { path: [...currentPath, v[0]], name: v[0], index: i, objectindex: i })]; }
+    function flatPathArray(a, currentPath = ["input"]) {
+        return [
+            { path: currentPath, name: currentPath[currentPath.length - 1] },
+            a.flatMap((v, i) => v instanceof Array
+                ? flatPathArray(v, [...currentPath, String(i)])
+                : typeof v == "object"
+                    ? v?.notPathable == true
+                        ? {
+                            path: [...currentPath, String(i)],
+                            name: v?.name ?? String(i),
+                            index: i,
+                            arrayindex: i,
+                            notPathable: true,
+                        }
+                        : flatPathObject(v, [...currentPath, String(i)])
+                    : { path: [...currentPath, String(i)], name: String(i), index: i, arrayindex: i }),
+        ];
+    }
+    function flatPathObject(o, currentPath = ["input"]) {
+        return [
+            { path: currentPath, name: currentPath[currentPath.length - 1] },
+            Object.entries(o).flatMap((v, i) => v[1] instanceof Array
+                ? flatPathArray(v[1], [...currentPath, v[0]])[0]
+                : typeof v[1] == "object"
+                    ? v[1]?.notPathable == true
+                        ? { path: [...currentPath, v[0]], name: v[0], index: i, objectindex: i, notPathable: true }
+                        : flatPathObject(v[1], [...currentPath, v[0]])
+                    : { path: [...currentPath, v[0]], name: v[0], index: i, objectindex: i }),
+        ];
+    }
     return flatPathObject(directoryObject, startingPath);
 }
 export function getPathInObject(directoryObject, path = ["input"]) { let a; a = directoryObject; path.slice(1).forEach(v => a = a[v]); return a; } /*
@@ -588,7 +793,7 @@ export function fillBlocksB(from, to, dimension, block, options) { let mainArray
 /**
  * @deprecated
  */
-export function fillBlocksF(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block instanceof BlockPermutation ? block.type.id : block instanceof BlockType ? block.id : block} ${block instanceof BlockPermutation ? "[" + Object.entries(block.getAllStates()).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""} ${!!options?.matchingBlock ? options?.matchingBlock instanceof BlockPermutation ? "replace " + options?.matchingBlock?.type?.id ?? "" : "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlock ? options?.matchingBlock instanceof BlockPermutation ? "[" + Object.entries(options?.matchingBlock.getAllStates()).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : "" : ""}`).successCount); return counter; }
+export function fillBlocksF(from, to, dimension, block, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block instanceof BlockPermutation ? block.type.id : block instanceof BlockType ? block.id : block} ${block instanceof BlockPermutation ? "[" + Object.entries(block.getAllStates()).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""} ${!!options?.matchingBlock ? options?.matchingBlock instanceof BlockPermutation ? "replace " + (options?.matchingBlock?.type?.id ?? "") : "replace " + (options?.matchingBlock ?? "") : ""} ${!!options?.matchingBlock ? options?.matchingBlock instanceof BlockPermutation ? "[" + Object.entries(options?.matchingBlock.getAllStates()).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : "" : ""}`).successCount); return counter; }
 ;
 /**
  * @deprecated
@@ -614,7 +819,7 @@ export function fillBlocksH(from, to, dimension, block, blockStates, options, pl
         let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
         mainArray.forEach(v => {
             try {
-                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
+                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + (options?.matchingBlock ?? "") : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
             }
             catch {
                 counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { blockFilter: { includePermutations: [matchingblockb] } });
@@ -629,7 +834,7 @@ export function fillBlocksH(from, to, dimension, block, blockStates, options, pl
 /**
  * @deprecated
  */
-export function fillBlocksHB(from, to, dimension, block, blockStates, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => { counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block} ${!!blockStates ? "[" + Object.entries(blockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}  ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount; }); return counter; }
+export function fillBlocksHB(from, to, dimension, block, blockStates, options) { let mainArray = []; let subArray = []; Array.from(new BlockVolume(from, { x: from.x, y: from.y, z: to.z }).getBlockLocationIterator()).forEach(v => { subArray.push(new BlockVolume(v, { x: to.x, y: v.y, z: v.z })); }); subArray.forEach(v => { Array.from(v.getBlockLocationIterator()).forEach(va => mainArray.push(new BlockVolume(va, { x: va.x, y: to.y, z: va.z }))); }); let counter = 0; mainArray.forEach(v => { counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${block} ${!!blockStates ? "[" + Object.entries(blockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}  ${!!options?.matchingBlock ? "replace " + (options?.matchingBlock ?? "") : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount; }); return counter; }
 ;
 /**
  * @deprecated
@@ -665,7 +870,7 @@ export function fillBlocksHW(from, to, dimension, block, blockStates, options, p
         let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
         mainArray.forEach(v => {
             try {
-                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
+                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + (options?.matchingBlock ?? "") : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
             }
             catch {
                 counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { blockFilter: { includePermutations: [matchingblockb] } });
@@ -1213,7 +1418,7 @@ export function fillBlocksHH(from, to, dimension, block, blockStates, options, p
         let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
         mainArray.forEach(v => {
             try {
-                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
+                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + (options?.matchingBlock ?? "") : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
             }
             catch {
                 counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { blockFilter: { includePermutations: [matchingblockb] } });
@@ -1264,7 +1469,7 @@ export function fillBlocksHO(from, to, dimension, block, blockStates, options, p
         let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
         mainArray.forEach(v => {
             try {
-                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
+                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + (options?.matchingBlock ?? "") : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
             }
             catch {
                 counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { blockFilter: { includePermutations: [matchingblockb] } });
@@ -1305,7 +1510,7 @@ export function fillBlocksHP(from, to, dimension, block, blockStates, options, p
         let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
         mainArray.forEach(v => {
             try {
-                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + options?.matchingBlock ?? "" : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
+                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + (options?.matchingBlock ?? "") : ""} ${!!options?.matchingBlockStates ? "[" + Object.entries(options?.matchingBlockStates).map(v => "\"" + v[0] + "\"" + "=" + (typeof v[1] == "string" ? "\"" + v[1] + "\"" : typeof v[1] == "number" ? String(v[1]) : String(v[1]))).join(",") + "]" : ""}`).successCount;
             }
             catch {
                 counter += fillBlocksB(v.from, v.to, dimension, placeholderblockb, { blockFilter: { includePermutations: [matchingblockb] } });
@@ -4618,208 +4823,6 @@ export function getTopSolidBlock(location, dimension, onlySolid = false) { let b
         return block;
     }
 } ; return undefined; }
-;
-Object.defineProperty(String.prototype, 'escapeCharacters', { value: function (js, unicode, nullchar, uri, quotes, general, colon, x, s) {
-        //:Get primitive copy of string:
-        var str = this.valueOf(); /*
-        console.warn(unescape(str))*/
-        //:Append Characters To End:
-        if (js == true) {
-            try {
-                str = eval("`" + str.replaceAll("`", "\\`") + "`");
-            }
-            catch (e) {
-                console.error(e, e.stack);
-            }
-        }
-        if (general == true) {
-            str = str.replaceAll("\\n", "\n");
-            str = str.replaceAll("\\f", "\f");
-            str = str.replaceAll("\\r", "\r");
-            str = str.replaceAll("\\t", "\t");
-            str = str.replaceAll("\\v", "\v");
-            str = str.replaceAll("\\b", "\b");
-            str = str.replaceAll("\\l", "\u2028");
-            str = str.replaceAll("\\p", "\u2029");
-        }
-        if (quotes == true) {
-            str = str.replaceAll("\\qd", "\"");
-            str = str.replaceAll("\\qs", "\'");
-        }
-        if (colon == true) {
-            str = str.replaceAll("\\cs", "\;");
-            str = str.replaceAll("\\cf", "\:");
-        }
-        if (x == true) {
-            str = str.replaceAll("\\x", "");
-        }
-        if (s == true) {
-            str = str.replaceAll("\\s", "");
-        }
-        if (nullchar == 1) {
-            str = str.replaceAll("\\0", "\0");
-        }
-        if (nullchar == 2) {
-            str = str.replaceAll("\\0", "");
-        }
-        if (unicode == true) {
-            let strarray = ("t" + str).split("\\u");
-            strarray.forEach((values, index) => {
-                if ((/[01][0-9x][0-9A-F]{4}/i.test(values.slice(0, 6))) && (index !== 0)) { /*
-                    console.warn((values.slice(0, 6))); */
-                    strarray[index] = String.fromCodePoint(Number(values.slice(0, 6))) + values.slice(6);
-                }
-                else {
-                    if ((/[+][0-9]{7}/i.test(values.slice(0, 8))) && (index !== 0)) {
-                        strarray[index] = String.fromCodePoint(Number(values.slice(1, 8))) + values.slice(8);
-                    }
-                    else {
-                        if ((/[+][0-9]{6}/i.test(values.slice(0, 7))) && (index !== 0)) {
-                            strarray[index] = String.fromCodePoint(Number(values.slice(1, 7))) + values.slice(7);
-                        }
-                        else {
-                            if ((/[+][0-9]{5}/i.test(values.slice(0, 6))) && (index !== 0)) {
-                                strarray[index] = String.fromCodePoint(Number(values.slice(1, 6))) + values.slice(6);
-                            }
-                            else {
-                                if ((/[+][0-9]{4}/i.test(values.slice(0, 5))) && (index !== 0)) {
-                                    strarray[index] = String.fromCodePoint(Number(values.slice(1, 5))) + values.slice(5);
-                                }
-                                else {
-                                    if ((/[+][0-9]{3}/i.test(values.slice(0, 4))) && (index !== 0)) {
-                                        strarray[index] = String.fromCodePoint(Number(values.slice(1, 4))) + values.slice(4);
-                                    }
-                                    else {
-                                        if ((/[+][0-9]{2}/i.test(values.slice(0, 3))) && (index !== 0)) {
-                                            strarray[index] = String.fromCodePoint(Number(values.slice(1, 3))) + values.slice(3);
-                                        }
-                                        else {
-                                            if ((/[+][0-9]{1}/i.test(values.slice(0, 2))) && (index !== 0)) {
-                                                strarray[index] = String.fromCodePoint(Number(values.slice(1, 2))) + values.slice(2);
-                                            }
-                                            else {
-                                                if (index !== 0) {
-                                                    strarray[index] = "\\u" + values.slice(0);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            str = strarray.join("").slice(1);
-        }
-        if (uri == true) {
-            str = unescape(str);
-        }
-        //:Return modified copy:
-        return (str);
-    } });
-Object.defineProperty(String.prototype, 'escapeCharactersB', { value: function (js, unicode, nullchar, uri, quotes, general, colon, x, s) {
-        //:Get primitive copy of string:
-        var str = this.valueOf(); /*
-        console.warn(unescape(str))*/
-        var eb;
-        eb = undefined;
-        //:Append Characters To End:
-        if (js == true) {
-            try {
-                str = eval("`" + str.replaceAll("`", "\\`") + "`");
-            }
-            catch (e) {
-                eb.push(e);
-                console.error(e, e.stack);
-            }
-        }
-        if (general == true) {
-            str = str.replaceAll("\\n", "\n");
-            str = str.replaceAll("\\f", "\f");
-            str = str.replaceAll("\\r", "\r");
-            str = str.replaceAll("\\t", "\t");
-            str = str.replaceAll("\\v", "\v");
-            str = str.replaceAll("\\b", "\b");
-            str = str.replaceAll("\\l", "\u2028");
-            str = str.replaceAll("\\p", "\u2029");
-        }
-        if (quotes == true) {
-            str = str.replaceAll("\\qd", "\"");
-            str = str.replaceAll("\\qs", "\'");
-        }
-        if (colon == true) {
-            str = str.replaceAll("\\cs", "\;");
-            str = str.replaceAll("\\cf", "\:");
-        }
-        if (x == true) {
-            str = str.replaceAll("\\x", "");
-        }
-        if (s == true) {
-            str = str.replaceAll("\\s", "");
-        }
-        if (nullchar == 1) {
-            str = str.replaceAll("\\0", "\0");
-        }
-        if (nullchar == 2) {
-            str = str.replaceAll("\\0", "");
-        }
-        if (unicode == true) {
-            let strarray = ("t" + str).split("\\u");
-            strarray.forEach((values, index) => {
-                if ((/[01][0-9x][0-9A-F]{4}/i.test(values.slice(0, 6))) && (index !== 0)) { /*
-                    console.warn((values.slice(0, 6))); */
-                    strarray[index] = String.fromCodePoint(Number(values.slice(0, 6))) + values.slice(6);
-                }
-                else {
-                    if ((/[+][0-9]{7}/i.test(values.slice(0, 8))) && (index !== 0)) {
-                        strarray[index] = String.fromCodePoint(Number(values.slice(1, 8))) + values.slice(8);
-                    }
-                    else {
-                        if ((/[+][0-9]{6}/i.test(values.slice(0, 7))) && (index !== 0)) {
-                            strarray[index] = String.fromCodePoint(Number(values.slice(1, 7))) + values.slice(7);
-                        }
-                        else {
-                            if ((/[+][0-9]{5}/i.test(values.slice(0, 6))) && (index !== 0)) {
-                                strarray[index] = String.fromCodePoint(Number(values.slice(1, 6))) + values.slice(6);
-                            }
-                            else {
-                                if ((/[+][0-9]{4}/i.test(values.slice(0, 5))) && (index !== 0)) {
-                                    strarray[index] = String.fromCodePoint(Number(values.slice(1, 5))) + values.slice(5);
-                                }
-                                else {
-                                    if ((/[+][0-9]{3}/i.test(values.slice(0, 4))) && (index !== 0)) {
-                                        strarray[index] = String.fromCodePoint(Number(values.slice(1, 4))) + values.slice(4);
-                                    }
-                                    else {
-                                        if ((/[+][0-9]{2}/i.test(values.slice(0, 3))) && (index !== 0)) {
-                                            strarray[index] = String.fromCodePoint(Number(values.slice(1, 3))) + values.slice(3);
-                                        }
-                                        else {
-                                            if ((/[+][0-9]{1}/i.test(values.slice(0, 2))) && (index !== 0)) {
-                                                strarray[index] = String.fromCodePoint(Number(values.slice(1, 2))) + values.slice(2);
-                                            }
-                                            else {
-                                                if (index !== 0) {
-                                                    strarray[index] = "\\u" + values.slice(0);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            str = strarray.join("").slice(1);
-        }
-        if (uri == true) {
-            str = unescape(str);
-        }
-        //:Return modified copy:
-        return ({ v: str, e: eb });
-    } });
 subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subscribe((event) => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:worldInitialize")));
@@ -4845,6 +4848,12 @@ subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscr
     try {
         if (world.scoreboard.getObjective("andexdbDebug") == undefined) {
             world.scoreboard.addObjective("andexdbDebug", "andexdbScriptDebuggingService");
+        }
+    }
+    catch (e) { }
+    try {
+        if (world.scoreboard.getObjective("andexdb:money") == undefined) {
+            world.scoreboard.addObjective("andexdb:money", "Money");
         }
     }
     catch (e) { }
@@ -5055,6 +5064,26 @@ export const nether = world.getDimension("nether");
  * @remarks The end dimension object.
  */
 export const the_end = world.getDimension("the_end");
+Object.defineProperties(globalThis, {
+    overworld: {
+        value: overworld,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    nether: {
+        value: nether,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    the_end: {
+        value: the_end,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    }
+});
 subscribedEvents.beforeEffectAdd = world.beforeEvents.effectAdd.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:effectAdd")));
@@ -5282,7 +5311,7 @@ world.afterEvents.blockExplode.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getBlockExplodeNotifications", "getBlockExplodeNotificationsIn:" + event.dimension, "getBlockExplodeNotificationsForExplodedBlockType:" + event.explodedBlockPermutation.type.id]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eblockExplode§r] Block of type ${event.explodedBlockPermutation.type.id} in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was blown up${!!event.source ? ` by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBlockExplodeNotificationsNotificationSound.soundId, { pitch: pn.getBlockExplodeNotificationsNotificationSound.pitch, volume: pn.getBlockExplodeNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getBlockExplodeNotifications", "getBlockExplodeNotificationsIn:" + event.dimension, "getBlockExplodeNotificationsForExplodedBlockType:" + event.explodedBlockPermutation.type.id]).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eblockExplode§r] Block of type ${event.explodedBlockPermutation.type.id} in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was blown up${!!event.source ? ` by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBlockExplodeNotificationsNotificationSound.soundId, { pitch: pn.getBlockExplodeNotificationsNotificationSound.pitch, volume: pn.getBlockExplodeNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5299,7 +5328,7 @@ world.afterEvents.buttonPush.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getButtonPushNotifications", "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location) + " " + event.block.dimension, "getButtonPushNotificationsForBlockAt:" + event.block.dimension + " " + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(event.block.location)]).filter(p => !p.hasTag("excludeButtonPushNotificationsIn:" + event.dimension.id)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebuttonPush§r] Button in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was pressed by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getButtonPushNotificationsNotificationSound.soundId, { pitch: pn.getButtonPushNotificationsNotificationSound.pitch, volume: pn.getButtonPushNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getButtonPushNotifications", "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + vTStr(event.block.location) + " " + event.block.dimension, "getButtonPushNotificationsForBlockAt:" + event.block.dimension + " " + vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(event.block.location), "getButtonPushNotificationsForBlockAt:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(Object.assign(event.block.location, { dimension: event.block.dimension })), "getButtonPushNotificationsForBlock:" + JSONStringify(event.block.location)]).filter(p => !p.hasTag("excludeButtonPushNotificationsIn:" + event.dimension.id)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebuttonPush§r] Button in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was pressed by ${event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag + "<" + event.source.id + ">") ?? event.source?.typeId + "<" + event.source.id + ">"}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getButtonPushNotificationsNotificationSound.soundId, { pitch: pn.getButtonPushNotificationsNotificationSound.pitch, volume: pn.getButtonPushNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5810,7 +5839,7 @@ world.afterEvents.effectAdd.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEffectAddNotifications", "getEffectAddNotificationsForEntityType:" + event.entity.typeId, "getEntitySpawnNotificationsForEntityId:" + event.entity.id, "getEntitySpawnNotificationsWithEffectType:" + event.effect.typeId, "getEntitySpawnNotificationsWithEffectName:" + event.effect.displayName, "getEntitySpawnNotificationsWithAmplifier:" + event.effect.amplifier, "getEntitySpawnNotificationsWithEffectDuration:" + event.effect.duration]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eeffectAdd§r] The effect ${event.effect.displayName} with the amplifier ${event.effect.amplifier} and the duration ${event.effect.duration} was added to ${event.entity.typeId == "minecraft:player" ? event.entity?.name : `an entity of type ${event.entity.typeId} with the id ${event.entity.id} in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location}`}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEffectAddNotificationsNotificationSound.soundId, { pitch: pn.getEffectAddNotificationsNotificationSound.pitch, volume: pn.getEffectAddNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getEffectAddNotifications", "getEffectAddNotificationsForEntityType:" + event.entity.typeId, "getEntitySpawnNotificationsForEntityId:" + event.entity.id, "getEntitySpawnNotificationsWithEffectType:" + event.effect.typeId, "getEntitySpawnNotificationsWithEffectName:" + event.effect.displayName, "getEntitySpawnNotificationsWithAmplifier:" + event.effect.amplifier, "getEntitySpawnNotificationsWithEffectDuration:" + event.effect.duration]).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eeffectAdd§r] The effect ${event.effect.displayName} with the amplifier ${event.effect.amplifier} and the duration ${event.effect.duration} was added to ${event.entity.typeId == "minecraft:player" ? event.entity?.name : `an entity of type ${event.entity.typeId} with the id ${event.entity.id} in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location}`}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEffectAddNotificationsNotificationSound.soundId, { pitch: pn.getEffectAddNotificationsNotificationSound.pitch, volume: pn.getEffectAddNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5861,7 +5890,7 @@ world.afterEvents.entityHitEntity.subscribe(event => {
     }
     try {
         if (["minecraft:ender_crystal"].includes(event.hitEntity?.typeId)) {
-            getPlayersWithTags("getHitEntityTriggerExplosionNotifications").filter(p => !p.hasTag("excludeHitEntityTriggerExplosionNotificationsIn:" + (tryget(() => event.hitEntity?.dimension) ?? "unknown")) && ((!!event.damagingEntity && (event.damagingEntity?.isValid() ?? true)) ? !p.hasTag("excludeHitEntityTriggerExplosionNotificationsBy:" + event.damagingEntity?.name ?? event.damagingEntity?.nameTag) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsById:" + event.damagingEntity?.id) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsByType:" + event.damagingEntity?.typeId) : !p.hasTag("excludeHitEntityTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsCauseType:" + event.hitEntity?.typeId)).forEach(p => psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveEntityTriggeredByHit§r] ${!!event.damagingEntity ? `${event.damagingEntity?.name ?? event.damagingEntity?.nameTag ?? event.damagingEntity?.typeId} hit exploding entity of type "${event.hitEntity?.typeId}"` : `Exploding entity of type "${event.hitEntity?.typeId}" was hit`}${(!!tryget(() => event.hitEntity?.dimension) && (event.hitEntity?.isValid() ?? true)) ? ` in ${dimensionTypeDisplayFormatting[tryget(() => event.hitEntity?.dimension?.id)] ?? "an unknown dimension"} at ${(!!tryget(() => event.hitEntity?.location) && (event.hitEntity?.isValid() ?? true)) ? vTStr(event.hitEntity?.location) : "an unknwon location"}` : (!!event.damagingEntity.dimension && (event.damagingEntity?.isValid() ?? true)) ? `, the entity/player who hit the explosive entity is in ${dimensionTypeDisplayFormatting[tryget(() => event.damagingEntity?.dimension?.id)] ?? "an unknown dimension"} at ${(!!tryget(() => event.damagingEntity?.location) && (event.damagingEntity?.isValid() ?? true)) ? vTStr(mcMath.Vector3Utils.floor(event.damagingEntity?.location)) : "an unknwon location"}` : ""}. `));
+            getPlayersWithTags("getHitEntityTriggerExplosionNotifications").filter(p => !p.hasTag("excludeHitEntityTriggerExplosionNotificationsIn:" + (tryget(() => event.hitEntity?.dimension) ?? "unknown")) && ((!!event.damagingEntity && (event.damagingEntity?.isValid() ?? true)) ? !p.hasTag("excludeHitEntityTriggerExplosionNotificationsBy:" + (event.damagingEntity?.name ?? event.damagingEntity?.nameTag)) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsById:" + event.damagingEntity?.id) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsByType:" + event.damagingEntity?.typeId) : !p.hasTag("excludeHitEntityTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeHitEntityTriggerExplosionNotificationsCauseType:" + event.hitEntity?.typeId)).forEach(p => psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveEntityTriggeredByHit§r] ${!!event.damagingEntity ? `${event.damagingEntity?.name ?? event.damagingEntity?.nameTag ?? event.damagingEntity?.typeId} hit exploding entity of type "${event.hitEntity?.typeId}"` : `Exploding entity of type "${event.hitEntity?.typeId}" was hit`}${(!!tryget(() => event.hitEntity?.dimension) && (event.hitEntity?.isValid() ?? true)) ? ` in ${dimensionTypeDisplayFormatting[tryget(() => event.hitEntity?.dimension?.id)] ?? "an unknown dimension"} at ${(!!tryget(() => event.hitEntity?.location) && (event.hitEntity?.isValid() ?? true)) ? vTStr(event.hitEntity?.location) : "an unknwon location"}` : (!!event.damagingEntity.dimension && (event.damagingEntity?.isValid() ?? true)) ? `, the entity/player who hit the explosive entity is in ${dimensionTypeDisplayFormatting[tryget(() => event.damagingEntity?.dimension?.id)] ?? "an unknown dimension"} at ${(!!tryget(() => event.damagingEntity?.location) && (event.damagingEntity?.isValid() ?? true)) ? vTStr(mcMath.Vector3Utils.floor(event.damagingEntity?.location)) : "an unknwon location"}` : ""}. `));
         }
     }
     catch (e) {
@@ -5879,7 +5908,7 @@ world.afterEvents.entityHurt.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntityHurtNotifications", "getEntityHurtNotificationsForType:" + event.hurtEntity?.typeId, "getEntityHurtNotificationsForId:" + event.hurtEntity?.id, "getEntityHurtNotificationsWithCause:" + event.damageSource?.cause, "getEntityHurtNotificationsWithDamage:" + event.damage, "getEntityHurtNotificationsWithDamagingEntityOfType:" + event.damageSource?.damagingEntity?.typeId, "getEntityHurtNotificationsWithDamagingEntityWithId:" + event.damageSource?.damagingEntity?.id, "getEntityHurtNotificationsWithDamagingProjectileOfType:" + event.damageSource?.damagingProjectile?.typeId, "getEntityHurtNotificationsWithDamagingProjectileWithId:" + event.damageSource?.damagingProjectile?.id]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityHurt§r] Entity of type ${event.hurtEntity?.typeId} with the id ${event.hurtEntity?.id} took ${event.damage} damage of type "${event.damageSource?.cause}" in ${tryget(() => dimensionTypeDisplayFormatting[event.hurtEntity?.dimension?.id]) ?? "an unknown dimension"} at ${(event.hurtEntity?.isValid() ?? false) ? vTStr(event.hurtEntity?.location) : "an unknown location"}${!!event.damageSource?.damagingEntity ? `, the entity was damaged by ${event.damageSource?.damagingEntity?.typeId == "minecraft:player" ? event.damageSource?.damagingEntity?.name : `an entity of type ${event.damageSource?.damagingEntity?.typeId} with the ID ${event.damageSource?.damagingEntity?.id}${tryget(() => event.damageSource.damagingEntity.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingEntity.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingEntity.dimension.id] + " at " + vTStr(event.damageSource.damagingEntity.location))}` : ""}${!!event.damageSource?.damagingProjectile ? `, the projectile that damaged the entity was ${`a projectile of type ${event.damageSource?.damagingProjectile?.typeId} with the ID ${event.damageSource?.damagingProjectile?.id}${tryget(() => event.damageSource.damagingProjectile.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingProjectile.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingProjectile.dimension.id] + " at " + vTStr(event.damageSource.damagingProjectile.location))}` : ""}. The current velocity of the damaged entity is: ${tryget(() => JSON.stringify(event.hurtEntity.getVelocity())) ?? "§cError: Unable to get velocity.§r"}`); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityHurtNotificationsNotificationSound.soundId, { pitch: pn.getEntityHurtNotificationsNotificationSound.pitch, volume: pn.getEntityHurtNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getEntityHurtNotifications", "getEntityHurtNotificationsForType:" + event.hurtEntity?.typeId, "getEntityHurtNotificationsForId:" + event.hurtEntity?.id, "getEntityHurtNotificationsWithCause:" + event.damageSource?.cause, "getEntityHurtNotificationsWithDamage:" + event.damage, "getEntityHurtNotificationsWithDamagingEntityOfType:" + event.damageSource?.damagingEntity?.typeId, "getEntityHurtNotificationsWithDamagingEntityWithId:" + event.damageSource?.damagingEntity?.id, "getEntityHurtNotificationsWithDamagingProjectileOfType:" + event.damageSource?.damagingProjectile?.typeId, "getEntityHurtNotificationsWithDamagingProjectileWithId:" + event.damageSource?.damagingProjectile?.id]).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityHurt§r] Entity of type ${event.hurtEntity?.typeId} with the id ${event.hurtEntity?.id} took ${event.damage} damage of type "${event.damageSource?.cause}" in ${tryget(() => dimensionTypeDisplayFormatting[event.hurtEntity?.dimension?.id]) ?? "an unknown dimension"} at ${(event.hurtEntity?.isValid() ?? false) ? vTStr(event.hurtEntity?.location) : "an unknown location"}${!!event.damageSource?.damagingEntity ? `, the entity was damaged by ${event.damageSource?.damagingEntity?.typeId == "minecraft:player" ? event.damageSource?.damagingEntity?.name : `an entity of type ${event.damageSource?.damagingEntity?.typeId} with the ID ${event.damageSource?.damagingEntity?.id}${tryget(() => event.damageSource.damagingEntity.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingEntity.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingEntity.dimension.id] + " at " + vTStr(event.damageSource.damagingEntity.location))}` : ""}${!!event.damageSource?.damagingProjectile ? `, the projectile that damaged the entity was ${`a projectile of type ${event.damageSource?.damagingProjectile?.typeId} with the ID ${event.damageSource?.damagingProjectile?.id}${tryget(() => event.damageSource.damagingProjectile.nameTag != "" ? " and the name tag \"" + event.damageSource.damagingProjectile.nameTag + "\"" : "")}`}${tryget(() => " in " + dimensionTypeDisplayFormatting[event.damageSource.damagingProjectile.dimension.id] + " at " + vTStr(event.damageSource.damagingProjectile.location))}` : ""}. The current velocity of the damaged entity is: ${tryget(() => JSON.stringify(event.hurtEntity.getVelocity())) ?? "§cError: Unable to get velocity.§r"}`); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityHurtNotificationsNotificationSound.soundId, { pitch: pn.getEntityHurtNotificationsNotificationSound.pitch, volume: pn.getEntityHurtNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5896,7 +5925,7 @@ world.afterEvents.entityLoad.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntityLoadNotifications", "getEntityLoadNotificationsForType:" + event.entity.typeId, "getEntityLoadNotificationsForId:" + event.entity.id]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityLoad§r] Entity of type ${event.entity.typeId} with the ID ${event.entity.id}${event.entity.nameTag != "" ? " and the name \"" + event.entity.nameTag + "\"" : ""} was loaded in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${vTStr(event.entity.location)}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityLoadNotificationsNotificationSound.soundId, { pitch: pn.getEntityLoadNotificationsNotificationSound.pitch, volume: pn.getEntityLoadNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getEntityLoadNotifications", "getEntityLoadNotificationsForType:" + event.entity.typeId, "getEntityLoadNotificationsForId:" + event.entity.id]).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityLoad§r] Entity of type ${event.entity.typeId} with the ID ${event.entity.id}${event.entity.nameTag != "" ? " and the name \"" + event.entity.nameTag + "\"" : ""} was loaded in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${vTStr(event.entity.location)}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityLoadNotificationsNotificationSound.soundId, { pitch: pn.getEntityLoadNotificationsNotificationSound.pitch, volume: pn.getEntityLoadNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5913,7 +5942,7 @@ world.afterEvents.entityRemove.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntityRemoveNotifications", "getEntityRemoveNotificationsForType:" + event.typeId, "getEntityRemoveNotificationsForId:" + event.removedEntityId]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityRemove§r] Entity of type ${event.typeId} with the id ${event.removedEntityId} was removed. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityRemoveNotificationsNotificationSound.soundId, { pitch: pn.getEntityRemoveNotificationsNotificationSound.pitch, volume: pn.getEntityRemoveNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getEntityRemoveNotifications", "getEntityRemoveNotificationsForType:" + event.typeId, "getEntityRemoveNotificationsForId:" + event.removedEntityId]).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentityRemove§r] Entity of type ${event.typeId} with the id ${event.removedEntityId} was removed. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityRemoveNotificationsNotificationSound.soundId, { pitch: pn.getEntityRemoveNotificationsNotificationSound.pitch, volume: pn.getEntityRemoveNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5930,7 +5959,7 @@ world.afterEvents.entitySpawn.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.entity.typeId, "getEntitySpawnNotificationsForId:" + event.entity.id, "getEntitySpawnNotificationsWithCause:" + event.cause]).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location} with the cause "${event.cause}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntitySpawnNotificationsNotificationSound.soundId, { pitch: pn.getEntitySpawnNotificationsNotificationSound.pitch, volume: pn.getEntitySpawnNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.entity.typeId, "getEntitySpawnNotificationsForId:" + event.entity.id, "getEntitySpawnNotificationsWithCause:" + event.cause]).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location} with the cause "${event.cause}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntitySpawnNotificationsNotificationSound.soundId, { pitch: pn.getEntitySpawnNotificationsNotificationSound.pitch, volume: pn.getEntitySpawnNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5947,7 +5976,7 @@ world.afterEvents.explosion.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getExplosionNotifications", "getExplosionNotificationsForSourceType:" + event.source?.typeId ?? "none"]).filter(p => !p.hasTag("excludeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeExplosionNotificationsBy:" + event.source?.name ?? tryget(() => event.source?.nameTag) ?? "undefined") && !p.hasTag("excludeExplosionNotificationsById:" + event.source?.id) && !p.hasTag("excludeExplosionNotificationsType:" + event.source?.typeId) : !p.hasTag("excludeExplosionNotificationsWithNoSource"))).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length != 0 ? " around " : ""}${event.getImpactedBlocks().length == 0 ? "" : vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getExplosionNotificationsNotificationSound.soundId, { pitch: pn.getExplosionNotificationsNotificationSound.pitch, volume: pn.getExplosionNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getExplosionNotifications", "getExplosionNotificationsForSourceType:" + (event.source?.typeId ?? "none")]).filter(p => !p.hasTag("excludeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeExplosionNotificationsBy:" + (event.source?.name ?? tryget(() => event.source?.nameTag) ?? "undefined")) && !p.hasTag("excludeExplosionNotificationsById:" + event.source?.id) && !p.hasTag("excludeExplosionNotificationsType:" + event.source?.typeId) : !p.hasTag("excludeExplosionNotificationsWithNoSource"))).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length != 0 ? " around " : ""}${event.getImpactedBlocks().length == 0 ? "" : vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getExplosionNotificationsNotificationSound.soundId, { pitch: pn.getExplosionNotificationsNotificationSound.pitch, volume: pn.getExplosionNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -5987,7 +6016,7 @@ world.afterEvents.gameRuleChange.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getGameRuleChangeNotifications").filter(p => !p.hasTag("excludeGameRuleChangeNotificationsFor:" + event.rule)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§egameRuleChange§r] "${event.rule}" was changed to ${event.value}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getGameRuleChangeNotificationsNotificationSound.soundId, { pitch: pn.getGameRuleChangeNotificationsNotificationSound.pitch, volume: pn.getGameRuleChangeNotificationsNotificationSound.volume })); });
+        getPlayersWithTags("getGameRuleChangeNotifications").filter(p => !p.hasTag("excludeGameRuleChangeNotificationsFor:" + event.rule)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§egameRuleChange§r] "${event.rule}" was changed to ${event.value}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getGameRuleChangeNotificationsNotificationSound.soundId, { pitch: pn.getGameRuleChangeNotificationsNotificationSound.pitch, volume: pn.getGameRuleChangeNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -6004,7 +6033,7 @@ world.afterEvents.playerGameModeChange.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getGameModeChangeNotifications").filter(p => !p.hasTag("excludeGameModeChangeNotificationsFor:" + event.player.name) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.fromGameMode) && !p.hasTag("excludeGameModeChangeNotificationsTo:" + event.toGameMode)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eplayerGameModeChange§r][${event.player.name}] Changed from ${event.fromGameMode} to ${event.toGameMode}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getPlayerGameModeChangeNotificationsNotificationSound.soundId, { pitch: pn.getPlayerGameModeChangeNotificationsNotificationSound.pitch, volume: pn.getPlayerGameModeChangeNotificationsNotificationSound.volume })); });
+        getPlayersWithTags("getGameModeChangeNotifications").filter(p => !p.hasTag("excludeGameModeChangeNotificationsFor:" + event.player.name) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.fromGameMode) && !p.hasTag("excludeGameModeChangeNotificationsTo:" + event.toGameMode)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eplayerGameModeChange§r][${event.player.name}] Changed from ${event.fromGameMode} to ${event.toGameMode}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getPlayerGameModeChangeNotificationsNotificationSound.soundId, { pitch: pn.getPlayerGameModeChangeNotificationsNotificationSound.pitch, volume: pn.getPlayerGameModeChangeNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -6021,7 +6050,7 @@ world.afterEvents.weatherChange.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getWeatherChangeNotifications").filter(p => !p.hasTag("excludeWeatherChangeNotificationsTo:" + event.newWeather) && !p.hasTag("excludeGameModeChangeNotificationsIn:" + event.dimension) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.previousWeather)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eweatherChange§r] Weather in ${event.dimension} changed from ${event.previousWeather} to ${event.newWeather}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getWeatherChangeNotificationsNotificationSound.soundId, { pitch: pn.getWeatherChangeNotificationsNotificationSound.pitch, volume: pn.getWeatherChangeNotificationsNotificationSound.volume })); });
+        getPlayersWithTags("getWeatherChangeNotifications").filter(p => !p.hasTag("excludeWeatherChangeNotificationsTo:" + event.newWeather) && !p.hasTag("excludeGameModeChangeNotificationsIn:" + event.dimension) && !p.hasTag("excludeGameModeChangeNotificationsFrom:" + event.previousWeather)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eweatherChange§r] Weather in ${event.dimension} changed from ${event.previousWeather} to ${event.newWeather}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getWeatherChangeNotificationsNotificationSound.soundId, { pitch: pn.getWeatherChangeNotificationsNotificationSound.pitch, volume: pn.getWeatherChangeNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -6118,7 +6147,7 @@ world.afterEvents.leverAction.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getLeverActionNotifications").filter(p => !p.hasTag("excludeLeverActionNotificationsTo:" + event.isPowered) && !p.hasTag("excludeLeverActionNotificationsIn:" + event.dimension) && !p.hasTag("excludeLeverActionNotificationsBy:" + event.player.name) && !p.hasTag("excludeLeverActionNotificationsAt:" + Object.values(event.block.location).join(","))).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eleverAction§r][${event.player.name}] Lever in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} turned ${event.isPowered ? "ON" : "OFF"}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getLeverActionNotificationsNotificationSound.soundId, { pitch: pn.getLeverActionNotificationsNotificationSound.pitch, volume: pn.getLeverActionNotificationsNotificationSound.volume })); });
+        getPlayersWithTags("getLeverActionNotifications").filter(p => !p.hasTag("excludeLeverActionNotificationsTo:" + event.isPowered) && !p.hasTag("excludeLeverActionNotificationsIn:" + event.dimension) && !p.hasTag("excludeLeverActionNotificationsBy:" + event.player.name) && !p.hasTag("excludeLeverActionNotificationsAt:" + Object.values(event.block.location).join(","))).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eleverAction§r][${event.player.name}] Lever in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} turned ${event.isPowered ? "ON" : "OFF"}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getLeverActionNotificationsNotificationSound.soundId, { pitch: pn.getLeverActionNotificationsNotificationSound.pitch, volume: pn.getLeverActionNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -6136,7 +6165,7 @@ world.afterEvents.messageReceive.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getMessageReceiveNotifications").filter(p => !p.hasTag("excludeMessageReceiveNotificationsWithId:" + event.id) && !p.hasTag("excludeMessageReceiveNotificationsWithMessage:" + event.message) && !p.hasTag("excludeMessageReceiveNotificationsBy:" + event.player.name)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§emessageReceive§r][${event.player.name}] Message recieved with ID ${event.id} and value "${event.message}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getMessageRecieveNotificationsNotificationSound.soundId, { pitch: pn.getMessageRecieveNotificationsNotificationSound.pitch, volume: pn.getMessageRecieveNotificationsNotificationSound.volume })); });
+        getPlayersWithTags("getMessageReceiveNotifications").filter(p => !p.hasTag("excludeMessageReceiveNotificationsWithId:" + event.id) && !p.hasTag("excludeMessageReceiveNotificationsWithMessage:" + event.message) && !p.hasTag("excludeMessageReceiveNotificationsBy:" + event.player.name)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§emessageReceive§r][${event.player.name}] Message recieved with ID ${event.id} and value "${event.message}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getMessageRecieveNotificationsNotificationSound.soundId, { pitch: pn.getMessageRecieveNotificationsNotificationSound.pitch, volume: pn.getMessageRecieveNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -6186,7 +6215,7 @@ world.afterEvents.playerDimensionChange.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getPlayerDimensionChangeNotifications", "includePlayerDimensionChangeNotificationsBy:" + event.player.name, "includePlayerDimensionChangeNotificationsFromDimension:" + event.fromDimension, "includePlayerDimensionChangeNotificationsToDimension:" + event.toDimension, "includeBeforeChatSendNotificationsById:" + event.player.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + event.player.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + event.player.name)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eplayerDimensionChange§r][${event.player.name}] Entered ${dimensionTypeDisplayFormatting[event.fromDimension.id]} at ${vTStr(event.fromLocation)} from ${dimensionTypeDisplayFormatting[event.toDimension.id]} at ${vTStr(event.toLocation)}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getPlayerDimensionChangeNotificationsNotificationSound.soundId, { pitch: pn.getPlayerDimensionChangeNotificationsNotificationSound.pitch, volume: pn.getPlayerDimensionChangeNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getPlayerDimensionChangeNotifications", "includePlayerDimensionChangeNotificationsBy:" + event.player.name, "includePlayerDimensionChangeNotificationsFromDimension:" + event.fromDimension, "includePlayerDimensionChangeNotificationsToDimension:" + event.toDimension, "includeBeforeChatSendNotificationsById:" + event.player.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + event.player.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + event.player.name)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eplayerDimensionChange§r][${event.player.name}] Entered ${dimensionTypeDisplayFormatting[event.fromDimension.id]} at ${vTStr(event.fromLocation)} from ${dimensionTypeDisplayFormatting[event.toDimension.id]} at ${vTStr(event.toLocation)}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getPlayerDimensionChangeNotificationsNotificationSound.soundId, { pitch: pn.getPlayerDimensionChangeNotificationsNotificationSound.pitch, volume: pn.getPlayerDimensionChangeNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -6204,7 +6233,7 @@ world.afterEvents.playerInteractWithBlock.subscribe(event => {
     }
     try {
         if ((["minecraft:respawn_anchor", "minecraft:tnt"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:overworld") || (["minecraft:bed", "minecraft:tnt"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:nether") || (["minecraft:respawn_anchor", "minecraft:tnt", "minecraft:bed"].includes(event.block.typeId) && event.block.dimension.id == "minecraft:overworld")) {
-            getPlayersWithTags("getBlockInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsIn:" + event.block.dimension) && (!!event.player ? !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBlockType:" + event.block.typeId)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveBlockInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive block of type "${event.block.typeId}"` : `Explosive block of type "${event.block.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.block.dimension.id]} at ${vTStr(event.block.location)}${!!event.itemStack ? ` using ${event.itemStack?.typeId}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.soundId, { pitch: pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.volume })); });
+            getPlayersWithTags("getBlockInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsIn:" + event.block.dimension) && (!!event.player ? !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBlockType:" + event.block.typeId)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveBlockInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive block of type "${event.block.typeId}"` : `Explosive block of type "${event.block.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.block.dimension.id]} at ${vTStr(event.block.location)}${!!event.itemStack ? ` using ${event.itemStack?.typeId}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.soundId, { pitch: pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.volume })); });
         }
     }
     catch (e) {
@@ -6223,7 +6252,7 @@ world.afterEvents.playerInteractWithEntity.subscribe(event => {
     }
     try {
         if (["minecraft:creeper"].includes(event.target.typeId) && !!event.itemStack) {
-            getPlayersWithTags("getEntityInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsIn:" + event.target.dimension) && (!!event.player ? !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsEntityType:" + event.target.typeId)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveEntityInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive entity of type "${event.target.typeId}"` : `Explosive entity of type "${event.target.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.target.dimension.id]} at ${vTStr(event.target.location)}${!!event.itemStack ? ` using ${event.itemStack?.typeId}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.soundId, { pitch: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.volume })); });
+            getPlayersWithTags("getEntityInteractTriggerExplosionNotifications").filter(p => !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsIn:" + event.target.dimension) && (!!event.player ? !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsBy:" + event.player?.name) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsById:" + event.player.id) : !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsWithNoSource")) && !p.hasTag("excludeEntityInteractTriggerExplosionNotificationsEntityType:" + event.target.typeId)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eexplosiveEntityInteraction§r] ${!!event.player ? `${event.player.name ?? event.player.nameTag} interacted with explosive entity of type "${event.target.typeId}"` : `Explosive entity of type "${event.target.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.target.dimension.id]} at ${vTStr(event.target.location)}${!!event.itemStack ? ` using ${event.itemStack?.typeId}` : ""}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.soundId, { pitch: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.volume })); });
         }
     }
     catch (e) {
@@ -6231,6 +6260,15 @@ world.afterEvents.playerInteractWithEntity.subscribe(event => {
     }
 });
 world.afterEvents.playerJoin.subscribe(event => {
+    try {
+        console.warn(`Player ${JSON.stringify(event.playerName)}<${event.playerId}> joined the game.`);
+    }
+    catch {
+        try {
+            console.warn(`${event.playerName}<${event.playerId}> joined the game.`);
+        }
+        catch { }
+    }
     if (!!(ban?.getValidBans()?.idBans?.find(_ => _?.playerId == event?.playerId) ?? ban.getValidBans().nameBans.find(_ => _.playerName == event.playerName))) {
         try {
             let pName = event?.playerName;
@@ -6261,6 +6299,15 @@ world.afterEvents.playerJoin.subscribe(event => {
     }
 });
 world.afterEvents.playerLeave.subscribe(event => {
+    try {
+        console.warn(`Player ${JSON.stringify(event.playerName)}<${event.playerId}> left the game.`);
+    }
+    catch {
+        try {
+            console.warn(`${event.playerName}<${event.playerId}> left the game.`);
+        }
+        catch { }
+    }
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerLeave")));
     }
@@ -6386,7 +6433,7 @@ world.beforeEvents.explosion.subscribe(event => {
     } /*
     eval(String(world.getDynamicProperty("scriptEvalBeforeEventsExplosion")))*/
     try {
-        getPlayersWithAnyOfTags(["getBeforeExplosionNotifications", "getExplosionNotificationsForSourceType:" + event.source?.typeId ?? "none", "getExplosionNotificationsForSourceId:" + event.source?.id ?? "none"]).filter(p => !p.hasTag("excludeBeforeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeBeforeExplosionNotificationsType:" + event.source?.typeId) : true) && ((!!event.source && (event.source?.isValid() ?? true)) ? !p.hasTag("excludeBeforeExplosionNotificationsBy:" + event.source?.name ?? tryget(() => event.source?.nameTag)) && !p.hasTag("excludeBeforeExplosionNotificationsById:" + event.source?.id) : !p.hasTag("excludeBeforeExplosionNotificationsWithNoSource"))).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebeforeExplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length == 0 ? "" : " around " + vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBeforeExplosionNotificationsNotificationSound.soundId, { pitch: pn.getBeforeExplosionNotificationsNotificationSound.pitch, volume: pn.getBeforeExplosionNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getBeforeExplosionNotifications", "getExplosionNotificationsForSourceType:" + (event.source?.typeId ?? "none"), "getExplosionNotificationsForSourceId:" + (event.source?.id ?? "none")]).filter(p => !p.hasTag("excludeBeforeExplosionNotificationsIn:" + event.dimension) && (!!event.source ? !p.hasTag("excludeBeforeExplosionNotificationsType:" + event.source?.typeId) : true) && ((!!event.source && (event.source?.isValid() ?? true)) ? !p.hasTag("excludeBeforeExplosionNotificationsBy:" + (event.source?.name ?? tryget(() => event.source?.nameTag))) && !p.hasTag("excludeBeforeExplosionNotificationsById:" + event.source?.id) : !p.hasTag("excludeBeforeExplosionNotificationsWithNoSource"))).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebeforeExplosion§r]${!!event.source ? "[" + (event.source?.name ?? tryget(() => event.source?.nameTag == "" ? undefined : event.source?.nameTag) ?? (event.source?.typeId + "<" + event.source?.id + ">")) + "]" : ""} ${!!event.source ? "Triggered explosion" : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length == 0 ? "" : " around " + vTStr((() => { let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b => { value = mcMath.Vector3Utils.add(value, b.location); }); return mcMath.Vector3Utils.scale(value, 1 / event.getImpactedBlocks().length); })())}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBeforeExplosionNotificationsNotificationSound.soundId, { pitch: pn.getBeforeExplosionNotificationsNotificationSound.pitch, volume: pn.getBeforeExplosionNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -7579,7 +7626,7 @@ console.error(e, e.stack);
 });
 world.beforeEvents.chatSend.subscribe((eventData) => {
     try {
-        getPlayersWithAnyOfTags(["getBeforeChatSendNotifications", "includeBeforeChatSendNotificationsBy:" + eventData.sender.name, "includeBeforeChatSendNotificationsById:" + eventData.sender.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + eventData.sender.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + eventData.sender.name)).forEach(p => { psend(p, `[§l§dServer§r]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebeforeChatSend§r][${eventData.sender.name}] Chat message sent${!!eventData.targets ? " with targets " + eventData.targets.map(p => p.name).join() : ""} with the message ${JSONStringify(eventData.message)}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBeforeChatSendNotificationsNotificationSound.soundId, { pitch: pn.getBeforeChatSendNotificationsNotificationSound.pitch, volume: pn.getBeforeChatSendNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getBeforeChatSendNotifications", "includeBeforeChatSendNotificationsBy:" + eventData.sender.name, "includeBeforeChatSendNotificationsById:" + eventData.sender.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + eventData.sender.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + eventData.sender.name)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebeforeChatSend§r][${eventData.sender.name}] Chat message sent${!!eventData.targets ? " with targets " + eventData.targets.map(p => p.name).join() : ""} with the message ${JSONStringify(eventData.message)}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBeforeChatSendNotificationsNotificationSound.soundId, { pitch: pn.getBeforeChatSendNotificationsNotificationSound.pitch, volume: pn.getBeforeChatSendNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -7622,7 +7669,7 @@ try {
                         ;
                     }
                     catch (e) { }
-                    if (config.showRanksOnPlayerNameTags && !playerList2[index].hasTag("doNotSetNameTag")) {
+                    if (config.chatRanks.showRanksOnPlayerNameTags && !playerList2[index].hasTag("doNotSetNameTag")) {
                         let nameFormatting = "";
                         let nameGradientMode = undefined;
                         let showDimension = false;
@@ -7859,8 +7906,8 @@ try {
         catch (e) {
             console.error(e, e.stack);
         }
-        if (config.artificialLagMS != 0 && !isNaN(config.artificialLagMS)) {
-            const endTime = Date.now() + config.artificialLagMS;
+        if (config.system.artificialLagMS != 0 && !isNaN(config.system.artificialLagMS)) {
+            const endTime = Date.now() + config.system.artificialLagMS;
             while (Date.now() < endTime) { }
         }
     }, 2);

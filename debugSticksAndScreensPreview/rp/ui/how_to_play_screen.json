@@ -259,6 +259,12 @@
       { "andexdb_anti_spam_system_button@how_to_play.andexdb_anti_spam_system_button": { "$toggle_group_forced_index": 916 } },
       { "andexdb_home_system_button@how_to_play.andexdb_home_system_button": { "$toggle_group_forced_index": 909 } },
       { "andexdb_tpa_system_button@how_to_play.andexdb_tpa_system_button": { "$toggle_group_forced_index": 910 } },
+      { "andexdb_world_border_system_button@how_to_play.andexdb_world_border_system_button": { "$toggle_group_forced_index": 922 } },/*
+      { "andexdb_money_system_button@how_to_play.andexdb_money_system_button": { "$toggle_group_forced_index": 923 } },*/
+      { "andexdb_server_shop_system_button@how_to_play.andexdb_server_shop_system_button": { "$toggle_group_forced_index": 924 } },
+      { "andexdb_player_shop_system_button@how_to_play.andexdb_player_shop_system_button": { "$toggle_group_forced_index": 925 } },/*
+      { "andexdb_sign_shop_system_button@how_to_play.andexdb_sign_shop_system_button": { "$toggle_group_forced_index": 926 } },*//*
+      { "andexdb_trade_request_system_button@how_to_play.andexdb_trade_request_system_button": { "$toggle_group_forced_index": 927 } },*/
       
       { "andexdb_items_block_entities_category@how_to_play.andexdb_topic_category": { "$category": "Items/Blocks/Entities" } },
       { "andexdb_items_button@how_to_play.andexdb_items_button": { "$toggle_group_forced_index": 911 } },
@@ -266,11 +272,15 @@
       { "andexdb_entities_button@how_to_play.andexdb_entities_button": { "$toggle_group_forced_index": 913 } },
 
       { "andexdb_commands_category@how_to_play.andexdb_topic_category": { "$category": "Commands" } },
-      { "andexdb_commands_basics_button@how_to_play.andexdb_commands_basics_button": { "$toggle_group_forced_index": 915 } },
-      { "andexdb_commands_parameters_basics_button@how_to_play.andexdb_commands_parameters_basics_button": { "$toggle_group_forced_index": 916 } },
-      { "andexdb_commands_parameters_button@how_to_play.andexdb_commands_parameters_button": { "$toggle_group_forced_index": 917 } },
-      { "andexdb_commands_button@how_to_play.andexdb_commands_button": { "$toggle_group_forced_index": 914 } },
-      { "andexdb_custom_commands_button@how_to_play.andexdb_custom_commands_button": { "$toggle_group_forced_index": 918 } },
+      { "andexdb_commands_basics_button@how_to_play.andexdb_commands_basics_button": { "$toggle_group_forced_index": 917} },
+      { "andexdb_commands_parameters_basics_button@how_to_play.andexdb_commands_parameters_basics_button": { "$toggle_group_forced_index": 918 } },
+      { "andexdb_commands_parameters_button@how_to_play.andexdb_commands_parameters_button": { "$toggle_group_forced_index": 919 } },
+      { "andexdb_commands_button@how_to_play.andexdb_commands_button": { "$toggle_group_forced_index": 920 } },
+      { "andexdb_custom_commands_button@how_to_play.andexdb_custom_commands_button": { "$toggle_group_forced_index": 921 } },/*
+
+      { "andexdb_worldedit_category@how_to_play.andexdb_topic_category": { "$category": "WorldEdit" } },
+      { "andexdb_worldedit_basics_button@how_to_play.andexdb_worldedit_basics_button": { "$toggle_group_forced_index": 928 } },
+      { "andexdb_worldedit_commands_button@how_to_play.andexdb_worldedit_commands_button": { "$toggle_group_forced_index": 929 } },*/
 
       { "andexdb_settings_category@how_to_play.andexdb_topic_category": { "$category": "Settings" } },
       { "andexdb_settings_button@how_to_play.andexdb_settings_button": { "$toggle_group_forced_index": 901 } },
@@ -282,7 +292,7 @@
       { "andexdb_personal_settings_button@how_to_play.andexdb_personal_settings_button": { "$toggle_group_forced_index": 907 } },
       { "andexdb_notifications_settings_button@how_to_play.andexdb_notifications_settings_button": { "$toggle_group_forced_index": 908 } }
     ]
-  },
+  },/*
 
   "andexdb_section_content_panels": {
     "type": "stack_panel",
@@ -322,7 +332,7 @@
         }
       }
     ]
-  },
+  },*/
 
   "how_to_play_section_content_panels": {
     "type": "stack_panel",
@@ -433,6 +443,12 @@
       { "andexdb_anti_spam_system_section@how_to_play.andexdb_anti_spam_system_section": {} },
       { "andexdb_home_system_section@how_to_play.andexdb_home_system_section": {} },
       { "andexdb_tpa_system_section@how_to_play.andexdb_tpa_system_section": {} },
+      { "andexdb_world_border_system_section@how_to_play.andexdb_world_border_system_section": {} },/*
+      { "andexdb_money_system_section@how_to_play.andexdb_money_system_section": {} },*/
+      { "andexdb_server_shop_system_section@how_to_play.andexdb_server_shop_system_section": {} },
+      { "andexdb_player_shop_system_section@how_to_play.andexdb_player_shop_system_section": {} },/*
+      { "andexdb_sign_shop_system_section@how_to_play.andexdb_sign_shop_system_section": {} },*//*
+      { "andexdb_trade_request_system_section@how_to_play.andexdb_trade_request_system_section": {} },*/
             
       { "andexdb_settings_section@how_to_play.andexdb_settings_section": {} },
       { "andexdb_global_settings_section@how_to_play.andexdb_global_settings_section": {} },
@@ -539,7 +555,7 @@
   "andexdb_installation_button@how_to_play.andexdb_help_button": {
     "$section_topic": "andexdbInstallation",
     "$button_text": "Installation/Setup",
-    "$title_text": "Installation/Setup"
+    "$title_text": "andexdb.installationSlashSetup"
   },
 
   "andexdb_installation_section@how_to_play_common.main_sections": {
@@ -570,7 +586,7 @@
       },
       {
         "paragraph_2_all_required_experimental_toggles@how_to_play_common.paragraph": {
-          "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \nUpcoming Creator Features\nBeta APIs\nCreator Cameras: New Third Person Presets\nCreator Cameras: Focus Target Camera"
+          "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \n  ∙ Upcoming Creator Features\n  ∙ Beta APIs\n  ∙ Creator Cameras: New Third Person Presets\n  ∙ Creator Cameras: Focus Target Camera\n  ∙ Bundles"
         }
       },
       {
@@ -596,7 +612,7 @@
       },
       {
         "paragraph_3b@how_to_play_common.paragraph": {
-          "$text": "1. Get the .mcaddon file for the new version. \n2. Import it into minecraft. \n3. Go on the edit world screen for the world that you want to update the add-on on. \n4. Deactivate the old version of the add-on. \n5. Activate the new version of the add-on. (Make sure that you activate the behavior pack first or else it might glitch and show taht both the resource and behavior packs are on, when only the resource pack is on, which you will see if you go to the main menu and then back into the edit world screen again.)\n6. Go back to the main menu. \n7. Go into the edit world screen again and insure that both the resource and behavior packs are active. "
+          "$text": "1. Get the .mcaddon file for the new version. \n2. Import it into minecraft. \n3. Go on the edit world screen for the world that you want to update the add-on on. \n4. Deactivate the old version of the add-on. \n5. Activate the new version of the add-on. (Make sure that you activate the behavior pack first or else it might glitch and show that both the resource and behavior packs are on, when only the resource pack is on, which you will see if you go to the main menu and then back into the edit world screen again.)\n6. Go back to the main menu. \n7. Go into the edit world screen again and insure that both the resource and behavior packs are active. "
         }
       },
       {
@@ -655,9 +671,9 @@
     "$glyph_color_texture": "textures/ui/icon_recipe_item",
     "$section_topic": "andexdbItems",
     "$button_text": "Items",
-    "$title_text": "Items"
+    "$title_text": "andexdb.items"
   },
-
+// to-do
   "andexdb_items_section@how_to_play_common.main_sections": {
     "bindings": [
       {
@@ -670,7 +686,7 @@
     "controls": [
       { "padding_1@how_to_play_common.padding": {} },
       {
-          "first_setup_section_header@how_to_play_common.subsection_title": {
+          "debug_sticks_section_header@how_to_play_common.subsection_title": {
             "$text": "§dDebug Sticks§r"
           }
       },
@@ -833,6 +849,17 @@
           "paragraph_20@how_to_play_common.paragraph": {
               "$text": "Item Id: andexdb:entity_debug_stick"
           }
+      },
+      { "padding_2@how_to_play_common.padding": {} },
+      {
+          "other_items_section_header@how_to_play_common.subsection_title": {
+            "$text": "§bOther Items§r"
+          }
+      },
+      {
+        "paragraph_21@how_to_play_common.paragraph": {
+          "$text": "Note: This section is incomplete and will be finished in a future update."
+        }
       }
     ]
   },
@@ -842,7 +869,7 @@
     "$glyph_color_texture": "textures/blocks/grass_side_carried",
     "$section_topic": "andexdbBlocks",
     "$button_text": "Blocks",
-    "$title_text": "Blocks"
+    "$title_text": "andexdb.blocks"
   },
 // to-do
   "andexdb_blocks_section@how_to_play_common.main_sections": {
@@ -868,7 +895,7 @@
     "$glyph_color_texture": "textures/ui/icon_panda",
     "$section_topic": "andexdbEntities",
     "$button_text": "Entities",
-    "$title_text": "Entities"
+    "$title_text": "andexdb.entities"
   },
 // to-do
   "andexdb_entities_section@how_to_play_common.main_sections": {
@@ -934,7 +961,7 @@
       },
       {
           "paragraph_5@how_to_play_common.paragraph": {
-              "$text": "Some commands like home, help, and tpa default to not requiring any tags to use them, so anyone can use them. "
+              "$text": "Some commands like \\home, \\help, and \\tpa default to not requiring any tags to use them, so anyone can use them. "
           }
       },
       {
@@ -944,7 +971,7 @@
       },
       {
           "paragraph_7@how_to_play_common.paragraph": {
-              "$text": "For all built-in chat commands you can just type §b\\help cmd§r followed by the name of the command and it will display what the command does, the syntax of it, and what any flag parameters on the command do. For example if you wanted to see how to use the giveb command you would do §b\\help cmd giveb§r and for the replace command you would do §b\\help cmd replace§r. "
+              "$text": "For all built-in chat commands you can just type §b\\help cmd§r followed by the name of the command and it will display what the command does, the syntax of it, and what any flag parameters on the command do. For example if you wanted to see how to use the \\giveb command you would do §b\\help cmd giveb§r and for the \\\\replace command you would do §b\\help cmd \\\\replace§r. "
           }
       }
     ]
@@ -1075,7 +1102,7 @@
       },
       {
           "paragraph_17@how_to_play_common.paragraph": {
-              "$text": "Even if you choose not to include the name parameter, you can still include the escapeCodesEnabled parameter either."
+              "$text": "Even if you choose not to include the name parameter, you can still include the escapeCodesEnabled parameter."
           }
       },
       {
@@ -1110,12 +1137,12 @@
       },
       {
           "paragraph_23@how_to_play_common.paragraph": {
-              "$text": "Ignorable parameters are written as a dash followed by a string of characters enclosed in square brackets like this: [-tfsa]"
+              "$text": "Flags parameters are written as a dash followed by a string of characters enclosed in square brackets like this: [-tfsa]"
           }
       },
       {
           "paragraph_24@how_to_play_common.paragraph": {
-              "$text": "For an ignorable parameter, it has no specified parameter type. Instead, you just either put nothing and ignore the parameter, or you put a dash followed by the flags you want to enable, each flag is its own unique character, you can type these characters in any order, and you can include any combination of them that you like, however if you put a dash there then you must include at least one flag. "
+              "$text": "For a flags parameter, it has no specified parameter type. Instead, you just either put nothing and ignore the parameter, or you put a dash followed by the flags you want to enable, each flag is its own unique character, you can type these characters in any order, and you can include any combination of them that you like, however if you put a dash there then you must include at least one flag. "
           }
       },
       {
@@ -1140,12 +1167,12 @@
       },
       {
           "paragraph_28@how_to_play_common.paragraph": {
-              "$text": "parameterName: parameterType"
+              "$text": "  ∙ parameterName: parameterType"
           }
       },
       {
           "paragraph_29@how_to_play_common.paragraph": {
-              "$text": "parameterName: parameterType[parameterRestrictions]"
+              "$text": "  ∙ parameterName: parameterType[parameterRestrictions]"
           }
       },
       {
@@ -1444,6 +1471,16 @@
           "paragraph_83@how_to_play_common.paragraph": {
               "$text": "Whether or not this parameter is case-sensitive. "
           }
+      },
+      {
+          "paragraph_84@how_to_play_common.paragraph": {
+              "$text": "§lplayersOnly=boolean§r"
+          }
+      },
+      {
+          "paragraph_85@how_to_play_common.paragraph": {
+              "$text": "Whether or not this target parameter only allows targeting players. "
+          }
       }
     ]
   },
@@ -1452,7 +1489,7 @@
     "$glyph_texture": "textures/ui/8Crafter",
     "$glyph_color_texture": "textures/ui/ImpulseSquare",
     "$section_topic": "andexdbCommandsParameters",
-    "$button_text": "Commands Parameters",
+    "$button_text": "Parameter types",
     "$title_text": "andexdb.commandsParameters"
   },
 
@@ -1553,7 +1590,7 @@
       },
       {
           "paragraph_8@how_to_play_common.paragraph": {
-              "$text": "A string. Can be either a string of text with no spaces, or a JSON formatted string. (ex. \"some text\nanother line of text \\uE359 and the unicode character U+E359\" or myStringOfText_With-0-Spaces)"
+              "$text": "A string. Can be either a string of text with no spaces, or a JSON formatted string. (ex. \"some text\\nanother line of text \\uE359 and the unicode character U+E359\" or myStringOfText_With-0-Spaces)"
           }
       },
       {
@@ -1785,7 +1822,7 @@
       },
       {
           "paragraph_34@how_to_play_common.paragraph": {
-              "$text": "//to-do"
+              "$text": "// to-do"
           }
       },
       {
@@ -1799,13 +1836,28 @@
           }
       },
       {
+          "paragraph_34a@how_to_play_common.paragraph": {
+              "$text": "// to-do"
+          }
+      },
+      {
           "header_25@how_to_play_common.header": {
               "$text": "SingleBlockMask"
           }
       },
       {
+          "paragraph_34b@how_to_play_common.paragraph": {
+              "$text": "// to-do"
+          }
+      },
+      {
           "header_26@how_to_play_common.header": {
               "$text": "BlockType"
+          }
+      },
+      {
+          "paragraph_34c@how_to_play_common.paragraph": {
+              "$text": "// to-do"
           }
       },
       {
@@ -2247,6 +2299,110 @@
     ]
   },
 
+  "andexdb_world_border_system_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/xyz_axis",
+    "$section_topic": "andexdbWorldBorderSystem",
+    "$button_text": "World Border System",
+    "$title_text": "andexdb.worldBorderSystem"
+  },
+// to-do
+  "andexdb_world_border_system_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbWorldBorderSystem_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "To set up the world border system just go to §bMain Menu > Settings > Extra Features > World Border§r and then select the dimension you want to set the world border for, then choose all of the settings that you want."
+        }
+      }
+    ]
+  },
+
+  "andexdb_server_shop_system_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/servers"/*"textures/ui/store_home_icon"*/,
+    "$section_topic": "andexdbServerShopSystem",
+    "$button_text": "Server Shop System",
+    "$title_text": "andexdb.serverShopSystem"
+  },
+// to-do
+  "andexdb_server_shop_system_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbServerShopSystem_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "This section will be filled out in a future update. "
+        }
+      }
+    ]
+  },
+
+  "andexdb_player_shop_system_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/icon_multiplayer"/*"textures/ui/store_home_icon"*/,
+    "$section_topic": "andexdbPlayerShopSystem",
+    "$button_text": "Player Shop System",
+    "$title_text": "andexdb.playerShopSystem"
+  },
+// to-do
+  "andexdb_player_shop_system_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbPlayerShopSystem_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "This section will be filled out in a future update. "
+        }
+      }
+    ]
+  },
+
+  "andexdb_sign_shop_system_button@how_to_play.andexdb_help_button": {
+    "$glyph_texture": "textures/ui/8Crafter",
+    "$glyph_color_texture": "textures/ui/icon_sign"/*"textures/ui/store_home_icon"*/,
+    "$section_topic": "andexdbSignShopSystem",
+    "$button_text": "Sign Shop System",
+    "$title_text": "andexdb.signShopSystem"
+  },
+// to-do
+  "andexdb_sign_shop_system_section@how_to_play_common.main_sections": {
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_control_name": "andexdbSignShopSystem_button_toggle",
+        "source_property_name": "#toggle_state",
+        "target_property_name": "#visible"
+      }
+    ],
+    "controls": [
+      {
+        "paragraph_1@how_to_play_common.paragraph": {
+          "$text": "This section will be filled out in a future update. "
+        }
+      }
+    ]
+  },
+
   "andexdb_settings_button@how_to_play.andexdb_help_button": {
     "$glyph_texture": "textures/ui/8Crafter",
     "$glyph_color_texture": "textures/ui/settings_glyph_color_2x",
@@ -2335,7 +2491,7 @@
     "$glyph_color_texture": "textures/ui/debug_glyph_color",
     "$section_topic": "andexdbScriptSettings",
     "$button_text": "Script Settings",
-    "$title_text": "Script Settings"
+    "$title_text": "andexdb.scriptSettings"
   },
 // to-do
   "andexdb_script_settings_section@how_to_play_common.main_sections": {

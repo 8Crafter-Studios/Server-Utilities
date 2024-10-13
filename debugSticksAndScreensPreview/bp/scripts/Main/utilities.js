@@ -1,5 +1,5 @@
 import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType, EnchantmentTypes, StructureSaveMode, EntityTypes, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, EntityType, EntityProjectileComponent } from "@minecraft/server";
-import { getTopSolidBlock, arrayToElementList, debugAction, interactable_block, interactable_blockb, customFormUIElement, strToCustomFormUIElement /*,format_version*/, getUICustomForm, worldPlayers, timeZones, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, SemVerString, crashEnabled, SemVerMatcher, SemVerValidator, dimensions, dimensionsb, dimensionsc, dimensionsd, dimensionse, fillBlocksHHFGB, fillBlocksHISGGB, fillBlocksHOFGB, fillBlocksHSGGB, flatPath, getGroundSolidBlock, getNextTopSolidBlockAbovePosition, getNextTopSolidBlockBelowPosition, getPathInObject, nether, overworld, scanForBlockType, subscribedEvents, tempSavedVariables, the_end, v3Multiply, fillBlocksE, fillBlocksF } from "../Main";
+import { getTopSolidBlock, arrayToElementList, debugAction, interactable_block, interactable_blockb, customFormUIElement, strToCustomFormUIElement /*,format_version*/, getUICustomForm, worldPlayers, timeZones, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, SemVerString, SemVerMatcher, SemVerValidator, dimensions, dimensionsb, dimensionsc, dimensionsd, dimensionse, fillBlocksHHFGB, fillBlocksHISGGB, fillBlocksHOFGB, fillBlocksHSGGB, flatPath, getGroundSolidBlock, getNextTopSolidBlockAbovePosition, getNextTopSolidBlockBelowPosition, getPathInObject, nether, overworld, scanForBlockType, the_end, v3Multiply, fillBlocksE, fillBlocksF } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
@@ -28,7 +28,7 @@ import * as cmdutils from "./command_utilities";
 import * as utils from "./utilities";
 import * as errors from "./errors";
 import mcMath from "@minecraft/math.js";
-import { uiManager, UIManager } from "@minecraft/server-ui";
+import { ActionFormData, MessageFormData, uiManager, UIManager } from "@minecraft/server-ui";
 export const utilsmetaimport = import.meta;
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer;
@@ -166,204 +166,6 @@ export function formatTime(date, timeZoneOffset = 0) { const dateb = new Date(da
  * @version 1.0.1
  */
 export function formatDateTime(date, timeZoneOffset = 0) { const dateb = new Date(date.valueOf() + (timeZoneOffset * 3600000)); return `${dateb.getUTCMonth().toString().padStart(2, "0")}/${dateb.getUTCDay().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()} ${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")} ${dateb.getUTCHours() > 11 ? "P" : "A"}M`; }
-/**
- * Better Version of JSON.parse() that is able to read undefined, NaN, Infinity, and -Infinity values.
- * @param {string} text A valid JSON string (with undefined, NaN, Infinity, and -Infinity values allowed).
- * @param {boolean} keepUndefined Whether or not to include undefined variables when parsing, defaults to true.
- * @returns {any} The parsed JSON data.
- */
-export function JSONParseOld(text, keepUndefined = true) {
-    let g = [];
-    let h = [];
-    let a = JSON.parse(text.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"'), function (k, v) {
-        if (v === '{{Infinity}}')
-            return Infinity;
-        else if (v === '{{-Infinity}}')
-            return -Infinity;
-        else if (v === '{{NaN}}')
-            return NaN;
-        else if (v === '{{undefined}}') {
-            g.push(k);
-            if (keepUndefined) {
-                return v;
-            }
-            else {
-                undefined;
-            }
-        }
-        ;
-        h.push(k);
-        return v;
-    });
-    g.forEach((v, i) => { let b = Object.entries(a); b[b.findIndex(b => b[0] == v)] = [v, undefined]; a = Object.fromEntries(b); });
-    {
-        let b = Object.entries(a);
-        b.filter(b => !!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined)}}"}}$/)).forEach((v, i) => { console.log(v, i); b[b.findIndex(b => b[0] == v[0])] = [v[0], String(v[1]).replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined)(?:}}"}})$/g, '{{$1}}')]; a = Object.fromEntries(b); });
-    }
-    ;
-    return a;
-}
-/**
- * Better Version of JSON.stringify() that is able to save undefined, NaN, Infinity, and -Infinity values.
- * @param {any} value A JavaScript value, usually an object or array, to be converted (with undefined, NaN, Infinity, and -Infinity values allowed).
- * @param {boolean} keepUndefined Whether or not to include undefined variables when stringifying, defaults to false.
- * @param {string|number} space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
- * @returns {any} The JSON string.
- */
-export function JSONStringifyOld(value, keepUndefined = false, space) {
-    return JSON.stringify(value, function (k, v) {
-        if (v === Infinity)
-            return "{{Infinity}}";
-        else if (v === -Infinity)
-            return "{{-Infinity}}";
-        else if (Number.isNaN(v))
-            return "{{NaN}}";
-        else if (v === undefined && keepUndefined)
-            return "{{undefined}}";
-        if (String(v).match(/^{{(Infinity|NaN|-Infinity|undefined)}}$/)) {
-            v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined)}}$/g, '{{"{{$1}}"}}');
-        }
-        return v;
-    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
-}
-export function JSONParse(JSONString, keepUndefined = true) {
-    let g = [];
-    let h = [];
-    if (JSONString == undefined) {
-        let nothing;
-        return nothing;
-    }
-    if (JSONString == "undefined") {
-        return undefined;
-    }
-    if (JSONString == "Infinity") {
-        return Infinity;
-    }
-    if (JSONString == "-Infinity") {
-        return -Infinity;
-    }
-    if (JSONString == "NaN") {
-        return NaN;
-    }
-    if (JSONString == "null") {
-        return null;
-    }
-    if (JSONString.match(/^\-?\d+n$/g)) {
-        return BigInt(JSONString.slice(0, -1));
-    }
-    let a = JSON.parse(JSONString.replace(/(?<="(?:\s*):(?:\s*))"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"(?=(?:\s*)[,}](?:\s*))/g, '"{{\\"{{$1}}\\"}}"').replace(/(?<="(?:\s*):(?:\s*))(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?=(?:\s*)[,}](?:\s*))/g, '"{{$1}}"').replace(/(?<=(?:[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\[)[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*),(?:\s*)|[^"]*(?:(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*(?<!(?:(?:[^\\]\\)(?:\\\\)*))"[^"]*)*(?:\s*)\[(?:\s*)))(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?=(?:\s*)[,\]](?:\s*))/g, '"{{$1}}"').replace(/^(Infinity|NaN|-Infinity|undefined|\-?\d+n)$/g, '"{{$1}}"'), function (k, v) {
-        if (v === '{{Infinity}}')
-            return Infinity;
-        else if (v === '{{-Infinity}}')
-            return -Infinity;
-        else if (v === '{{NaN}}')
-            return NaN;
-        else if (v === '{{undefined}}') {
-            g.push(k);
-            if (keepUndefined) {
-                return v;
-            }
-            else {
-                undefined;
-            }
-        }
-        else if (tryget(() => v.match(/^{{\-?\d+n}}$/g)) ?? false)
-            return BigInt(v.slice(2, -3));
-        h.push(k);
-        return v;
-    });
-    function recursiveFind(a) {
-        if (a instanceof Array) {
-            let b = a;
-            b.forEach((v, i) => {
-                if (v instanceof Array || v instanceof Object) {
-                    b[i] = recursiveFind(v);
-                    return;
-                }
-                ;
-                if (String(v) == "{{undefined}}") {
-                    b[i] = undefined;
-                    return;
-                }
-                ;
-            });
-            a = b;
-            {
-                let b = a;
-                !!b.forEach((va, i) => {
-                    if (String(va).match(/^{{"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"}}$/)) {
-                        b[i] = va.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?:}}"}})$/g, '{{$1}}');
-                    }
-                    a = b;
-                });
-            }
-            ;
-        }
-        else if (a instanceof Object) {
-            let b = Object.entries(a);
-            b.forEach((v, i) => {
-                if (v[1] instanceof Object || v[1] instanceof Array) {
-                    b[i] = [v[0], recursiveFind(v[1])];
-                    return;
-                }
-                ;
-                if (String(v[1]) == "{{undefined}}") {
-                    b[i] = [v[0], undefined];
-                    return;
-                }
-                ;
-            });
-            a = Object.fromEntries(b);
-            {
-                let b = Object.entries(a);
-                b.filter(b => !!String(b[1]).match(/^{{"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"}}$/)).forEach((v, i) => {
-                    b[b.findIndex(b => b[0] == v[0])] = [v[0], v[1].replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?:}}"}})$/g, '{{$1}}')];
-                    a = Object.fromEntries(b);
-                });
-            }
-            ;
-        }
-        else if (typeof a === "string") {
-            if (a == "{{undefined}}") {
-                a = undefined;
-            }
-            else {
-                if (a.match(/^{{"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"}}$/)) {
-                    a = a.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?:}}"}})$/g, '{{$1}}');
-                }
-            }
-        }
-        ;
-        return a;
-    }
-    a = recursiveFind(a);
-    return a;
-}
-;
-export function JSONStringify(JSONObject, keepUndefined = false, space) {
-    if (JSONObject == undefined) {
-        return keepUndefined ? "undefined" : "";
-    }
-    return JSON.stringify(JSONObject, function (k, v) {
-        if (v === Infinity)
-            return "{{Infinity}}";
-        else if (v === -Infinity)
-            return "{{-Infinity}}";
-        else if (Number.isNaN(v))
-            return "{{NaN}}";
-        else if (v === undefined && keepUndefined)
-            return "{{undefined}}";
-        else if (typeof v === "function")
-            return { $function: v.toString() };
-        else if (typeof v === "bigint")
-            return "{{" + v.toString() + "n}}";
-        if (String(v).match(/^{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}$/)) {
-            v = v.replace(/^{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}$/g, '{{"{{$1}}"}}');
-        }
-        return v;
-    }, space).replace(/(?<!\\)"{{(Infinity|NaN|-Infinity|undefined)}}"/g, '$1').replace(/(?<!\\)"{{\\"{{(Infinity|NaN|-Infinity|undefined)}}\\"}}"/g, '"{{$1}}"');
-}
-;
 export function objectify(object) { let entries = Object.entries(object); entries.forEach((v, i) => { if (v[1] instanceof Array) {
     entries[i][1] = objectify(v[1]);
 }
@@ -403,9 +205,6 @@ else if (v[1] == null && Boolean(objectifynull)) {
     entries[i][1] = { escval: "null" };
 } }); return recursivemode ? ((Boolean(escapedarrayorobjecttag) && (((object instanceof Array) && !Boolean(entriesmode)) || ((object instanceof Object) && Boolean(entriesmode)))) ? (Boolean(entriesmode) ? { escobj: entries } : { escarray: Object.fromEntries(entries) }) : (Boolean(entriesmode) ? entries : Object.fromEntries(entries))) : JSONStringify(Boolean(entriesmode) ? entries : Object.fromEntries(entries), true); }
 ;
-export function cullNull(array) { return array.filter(v => v !== null); }
-export function cullUndefined(array) { return array.filter(v => v !== undefined); }
-export function cullEmpty(array) { return array.filter(v => !!v); }
 export function shuffle(array) {
     var m = array.length, t, i;
     while (m) {
@@ -416,50 +215,6 @@ export function shuffle(array) {
     }
     return array;
 }
-export function tryget(callbackfn) { try {
-    return callbackfn();
-}
-catch { } }
-export function tryrun(callbackfn) { try {
-    callbackfn();
-}
-catch { } }
-export function catchtry(trycallbackfn, catchcallbackfn = (e) => console.error(e, e.stack), finallycallbackfn = (v) => { return v; }) { let v; v = undefined; try {
-    v = trycallbackfn();
-}
-catch (e) {
-    v = catchcallbackfn(e) ?? v;
-}
-finally {
-    return finallycallbackfn(v) ?? v;
-} }
-;
-export function cinfo(...data) { console.info(data); }
-;
-export function clog(...data) { console.log(data); }
-;
-export function cwarn(...data) { console.warn(data); }
-;
-export function cerror(...data) { console.error(data); }
-;
-export function send(message) { world.sendMessage(message); }
-;
-export function asend(value) { world.sendMessage(String(value)); }
-;
-export function bsend(value) { world.sendMessage(JSONStringify(value, true)); }
-;
-export function csend(value) { world.sendMessage(JSON.stringify(value)); }
-;
-export function psend(player, value) { player.sendMessage(value); }
-;
-export function pasend(player, value) { player.sendMessage(String(value)); }
-;
-export function pbsend(player, value) { player.sendMessage(JSONStringify(value, true)); }
-;
-export function pcsend(player, value) { player.sendMessage(JSON.stringify(value)); }
-;
-export function perror(player, error, prefix = "§c") { player.sendMessage(prefix + error + " " + error.stack); }
-;
 export function splitTextByMaxProperyLength(string) { let length = string.length / 32767; let substringlist; substringlist = []; for (let i = 0; i < Math.ceil(length); i++) {
     substringlist.push(string.slice((i - 1) * 32767, i == Math.ceil(length) ? string.length : i * 32767));
 } ; return substringlist; }
@@ -734,4 +489,101 @@ catch (e) {
     console.error(e, e.stack);
 } ; entity.applyImpulse(caretNotationC(mcMath.VECTOR3_ZERO, v3Multiply(mcMath.VECTOR3_FORWARD, power), rotation)); }
 ;
+export function splitUpStringData(data, chunkSize = 32760) {
+    if (chunkSize == 0) {
+        throw (new RangeError(`chunkSize cannot be 0 (got ${chunkSize.toString()})`));
+    }
+    if (typeof data != "string") {
+        throw (new TypeError(`args[0]: Expected type of string but got type of ${typeof data} instead.`));
+    }
+    if (typeof chunkSize == "bigint") {
+        const chunkSizeB = Number(chunkSize);
+        let remainingData = data;
+        const splitData = [];
+        for (let i = 0n; remainingData.length != 0; i++) {
+            splitData.push(remainingData.slice(0, Math.min(remainingData.length, chunkSizeB)));
+            remainingData = remainingData.slice(Math.min(remainingData.length, chunkSizeB));
+        }
+        return splitData;
+    }
+    else if (typeof chunkSize != "number") {
+        throw (new TypeError(`args[1]: Expected type of number but got type of ${typeof chunkSize} instead.`));
+    }
+    else {
+        let remainingData = data;
+        let splitData = [];
+        for (let i = 0n; remainingData.length != 0; i++) {
+            splitData.push(remainingData.slice(0, Math.min(remainingData.length, chunkSize)));
+            remainingData = remainingData.slice(Math.min(remainingData.length, chunkSize));
+        }
+        return splitData;
+    }
+}
+export function saveStringToDynamicProperties(string, propertyName, clearOldProperties = true, chunkSize = 32760) {
+    if (typeof propertyName != "string") {
+        throw (new TypeError(`args[1]: Expected type of string but got type of ${typeof propertyName} instead.`));
+    }
+    if (typeof clearOldProperties != "boolean") {
+        throw (new TypeError(`args[2]: Expected type of boolean but got type of ${typeof clearOldProperties} instead.`));
+    }
+    if (clearOldProperties) {
+        const length = Number(world.getDynamicProperty(`${propertyName}.length`) ?? 0);
+        for (let i = 0n; i < length; i++) {
+            world.setDynamicProperty(`#splitString[${i}]:${propertyName}`);
+        }
+    }
+    const data = splitUpStringData(string, chunkSize);
+    data.forEach((s, i) => {
+        world.setDynamicProperty(`#splitString[${i}]:${propertyName}`, s);
+    });
+    world.setDynamicProperty(`${propertyName}.length`, data.length);
+}
+export function getStringFromDynamicProperties(propertyName) {
+    if (typeof propertyName != "string") {
+        throw (new TypeError(`args[0]: Expected type of string but got type of ${typeof propertyName} instead.`));
+    }
+    const length = Number(world.getDynamicProperty(`${propertyName}.length`) ?? 0);
+    const data = [];
+    for (let i = 0n; i < length; i++) {
+        data.push(world.getDynamicProperty(`#splitString[${i}]:${propertyName}`));
+    }
+    return data.join("");
+}
+export async function showMessage(player, title, body, button1, button2) {
+    const form = new MessageFormData;
+    if (!!title) {
+        form.title(title);
+    }
+    if (!!body) {
+        form.body(body);
+    }
+    if (!!button1) {
+        form.button1(button1);
+    }
+    if (!!button2) {
+        form.button2(button2);
+    }
+    return forceShow(form, player);
+}
+export async function showActions(player, title, body, ...buttons) {
+    const form = new ActionFormData;
+    if (!!title) {
+        form.title(title);
+    }
+    if (!!body) {
+        form.body(body);
+    }
+    buttons.forEach(b => { form.button(b[0], b[1]); });
+    return forceShow(form, player);
+}
+export function getSuperUniqueID() {
+    return `${Date.now()}_${Math.round(Math.random() * 100000)}_${Math.round(Math.random() * 100000)}`;
+}
+export function getSuperUniqueID2(depth = 2) {
+    let id = `${Date.now()}`;
+    for (let i = 0; i < depth; i++) {
+        id += `_${Math.round(Math.random() * 100000)}`;
+    }
+    return id;
+}
 //# sourceMappingURL=utilities.js.map

@@ -1,12 +1,12 @@
 import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType, EnchantmentTypes, StructureSaveMode, EntityTypes, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, } from "@minecraft/server";
-import { getTopSolidBlock, arrayToElementList, debugAction, interactable_block, interactable_blockb, customFormUIElement, strToCustomFormUIElement /*,format_version*/, getUICustomForm, worldPlayers, timeZones, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, SemVerString, crashEnabled, SemVerMatcher, SemVerValidator, dimensions, dimensionsb, dimensionsc, dimensionsd, dimensionse, fillBlocksHHFGB, fillBlocksHISGGB, fillBlocksHOFGB, fillBlocksHSGGB, flatPath, getGroundSolidBlock, getNextTopSolidBlockAbovePosition, getNextTopSolidBlockBelowPosition, getPathInObject, nether, overworld, scanForBlockType, subscribedEvents, tempSavedVariables, the_end, v3Multiply, fillBlocksE, fillBlocksF } from "../Main";
+import { getTopSolidBlock, arrayToElementList, debugAction, interactable_block, interactable_blockb, customFormUIElement, strToCustomFormUIElement /*,format_version*/, getUICustomForm, worldPlayers, timeZones, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, SemVerString, SemVerMatcher, SemVerValidator, dimensions, dimensionsb, dimensionsc, dimensionsd, dimensionse, fillBlocksHHFGB, fillBlocksHISGGB, fillBlocksHOFGB, fillBlocksHSGGB, flatPath, getGroundSolidBlock, getNextTopSolidBlockAbovePosition, getNextTopSolidBlockBelowPosition, getPathInObject, nether, overworld, scanForBlockType, the_end, v3Multiply, fillBlocksE, fillBlocksF } from "../Main";
 import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
-import { JSONParse, JSONParseOld, JSONStringify, JSONStringifyOld, arrayify, asend, bsend, catchtry, cerror, cinfo, clamp24HoursTo12Hours, clog, utilsmetaimport, combineObjects, csend, cullEmpty, cullNull, cullUndefined, customModulo, cwarn, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, pasend, pbsend, pcsend, perror, psend, roundPlaceNumberObject, send, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, tryget, tryrun, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
+import { arrayify, clamp24HoursTo12Hours, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
@@ -306,7 +306,7 @@ export function itemJSONPropertiesEval(itemJSON, StartingItem, player) {
     let ij = itemJSON;
     ij.force ??= false;
     let sp = player;
-    let item = (!!ij.new) ? (new ItemStack(ij.new[0], ij.new[1])) : (!!StartingItem ? (StartingItem instanceof ContainerSlot ? StartingItem.getItem() : StartingItem instanceof ItemStack ? StartingItem : undefined) : undefined) ?? (!!ij.source ? (ij.source.type == "slot" ? (!!ij.source.targetSelector ? (!!ij.source.targetSelectorExecutionLocation ? targetSelectorAllListD(ij.source.targetSelector, (ij.source.targetSelectorExecutionLocation.x + " " + ij.source.targetSelectorExecutionLocation.y + " " + ij.source.targetSelectorExecutionLocation.z), ij.source.targetSelectorExecutionLocation.dimension)[0] : targetSelectorAllListC(ij.source.targetSelector, "", (ij.source.targetSelectorSourceEntity.location.x + " " + ij.source.targetSelectorSourceEntity.location.y + " " + ij.source.targetSelectorSourceEntity.location.z), ij.source.targetSelectorSourceEntity)[0])?.getComponent?.("inventory") : !!ij.source.entityId ? getEntityById(ij.source.entityId)?.getComponent?.("inventory") : !!ij.source.player ? getPlayer(ij.source.player)?.getComponent?.("inventory") : !!ij.source.entityAtBlock ? ij.source.entityAtBlock.dimension.getEntitiesAtBlockLocation(ij.source.entityAtBlock).find(v => v.typeId == ij.source.entityTypeId ?? ij.source.entityType)?.getComponent?.("inventory") : !!ij.source.block ? ij.source.block.dimension.getBlock(ij.source.block)?.getComponent?.("inventory") : sp?.getComponent?.("inventory"))?.container?.getItem(ij.source.slot ?? 0) : new ItemStack(ij.source.id, ij.source.count ?? ij.source.amount)) : new ItemStack(ij?.id ?? ij?.type ?? ij?.itemId, ij?.count ?? ij?.amount)); /*
+    let item = (!!ij.new) ? (new ItemStack(ij.new[0], ij.new[1])) : (!!StartingItem ? (StartingItem instanceof ContainerSlot ? StartingItem.getItem() : StartingItem instanceof ItemStack ? StartingItem : undefined) : undefined) ?? (!!ij.source ? (ij.source.type == "slot" ? (!!ij.source.targetSelector ? (!!ij.source.targetSelectorExecutionLocation ? targetSelectorAllListD(ij.source.targetSelector, (ij.source.targetSelectorExecutionLocation.x + " " + ij.source.targetSelectorExecutionLocation.y + " " + ij.source.targetSelectorExecutionLocation.z), ij.source.targetSelectorExecutionLocation.dimension)[0] : targetSelectorAllListC(ij.source.targetSelector, "", (ij.source.targetSelectorSourceEntity.location.x + " " + ij.source.targetSelectorSourceEntity.location.y + " " + ij.source.targetSelectorSourceEntity.location.z), ij.source.targetSelectorSourceEntity)[0])?.getComponent?.("inventory") : !!ij.source.entityId ? getEntityById(ij.source.entityId)?.getComponent?.("inventory") : !!ij.source.player ? getPlayer(ij.source.player)?.getComponent?.("inventory") : !!ij.source.entityAtBlock ? ij.source.entityAtBlock.dimension.getEntitiesAtBlockLocation(ij.source.entityAtBlock).find(v => v.typeId == (ij.source.entityTypeId ?? ij.source.entityType))?.getComponent?.("inventory") : !!ij.source.block ? ij.source.block.dimension.getBlock(ij.source.block)?.getComponent?.("inventory") : sp?.getComponent?.("inventory"))?.container?.getItem(ij.source.slot ?? 0) : new ItemStack(ij.source.id, ij.source.count ?? ij.source.amount)) : new ItemStack(ij?.id ?? ij?.type ?? ij?.itemId, ij?.count ?? ij?.amount)); /*
     if(!!ij.new){item=new ItemStack(ij.new[0], ij.new[1])}*/
     const itemPropertyEnum = {
         "components": (property) => Object.entries(property[1]).forEach(vb => itemComponentEnum[componentTypeEnum[vb[0]]](vb)),
@@ -471,7 +471,7 @@ export function entityToItemStackArray(entity, getContainer = true, getEquipment
     let itemList = [];
     let container = entity.getComponent("inventory")?.container;
     let equipment = entity.getComponent("equippable");
-    for (let i = 0; i < container?.size ?? 0; i++) {
+    for (let i = 0; i < (container?.size ?? 0); i++) {
         itemList.push(container.getItem(i));
     }
     ;
@@ -494,7 +494,7 @@ export function entityToContainerSlotArray(entity, getContainer = true, getEquip
     let itemList = [];
     let container = entity.getComponent("inventory")?.container;
     let equipment = entity.getComponent("equippable");
-    for (let i = 0; (i < container?.size ?? 0) && getContainer; i++) {
+    for (let i = 0; (i < (container?.size ?? 0)) && getContainer; i++) {
         itemList.push(container.getSlot(i));
     }
     ;
@@ -507,7 +507,7 @@ export function entityToContainerSlotArray(entity, getContainer = true, getEquip
 export function blockToContainerSlotArray(block) {
     let itemList = [];
     let container = block.getComponent("inventory")?.container;
-    for (let i = 0; i < container?.size ?? 0; i++) {
+    for (let i = 0; i < (container?.size ?? 0); i++) {
         itemList.push(container.getSlot(i));
     }
     ;
@@ -517,7 +517,7 @@ export function entityToContainerSlotListObject(entity, getContainer = true, get
     let itemList = {};
     let container = entity.getComponent("inventory")?.container;
     let equipment = entity.getComponent("equippable");
-    for (let i = 0; (i < container?.size ?? 0) && getContainer; i++) {
+    for (let i = 0; (i < (container?.size ?? 0)) && getContainer; i++) {
         itemList[String(i)] = container.getSlot(i);
     }
     ;
@@ -530,7 +530,7 @@ export function entityToContainerSlotListObject(entity, getContainer = true, get
 export function blockToContainerSlotListObject(block) {
     let itemList = {};
     let container = block.getComponent("inventory")?.container;
-    for (let i = 0; i < container?.size ?? 0; i++) {
+    for (let i = 0; i < (container?.size ?? 0); i++) {
         itemList[String(i)] = container.getSlot(i);
     }
     ;
@@ -541,7 +541,7 @@ export function entityToContainerSlotArrayB(entity, getContainer = true, getEqui
     let itemListB = [];
     let container = entity.getComponent("inventory")?.container;
     let equipment = entity.getComponent("equippable");
-    for (let i = 0; (i < container?.size ?? 0) && getContainer; i++) {
+    for (let i = 0; (i < (container?.size ?? 0)) && getContainer; i++) {
         itemList.push(container.getSlot(i));
     }
     ;

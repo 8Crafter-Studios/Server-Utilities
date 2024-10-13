@@ -1,12 +1,12 @@
-import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType, EnchantmentTypes, StructureSaveMode, EntityTypes, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, EntityComponentTypes } from "@minecraft/server";
-import { getTopSolidBlock, arrayToElementList, debugAction, interactable_block, interactable_blockb, customFormUIElement, strToCustomFormUIElement /*,format_version*/, getUICustomForm, worldPlayers, timeZones, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, SemVerString, crashEnabled, SemVerMatcher, SemVerValidator, dimensions, dimensionsb, dimensionsc, dimensionsd, dimensionse, fillBlocksHHFGB, fillBlocksHISGGB, fillBlocksHOFGB, fillBlocksHSGGB, flatPath, getGroundSolidBlock, getNextTopSolidBlockAbovePosition, getNextTopSolidBlockBelowPosition, getPathInObject, nether, overworld, scanForBlockType, subscribedEvents, tempSavedVariables, the_end, v3Multiply, fillBlocksE, fillBlocksF, fillBlocksHDFGB, fillBlocksHFGBM, dimensionTypeDisplayFormattingF } from "../Main";
-import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, } from "./coordinates";
+import { Block, BlockInventoryComponent, BlockPermutation, ChatSendBeforeEvent, Container, Dimension, DimensionTypes, EntityInventoryComponent, ItemStack, Player, system, world, Entity, EquipmentSlot, ContainerSlot, EntityEquippableComponent, BlockType, BlockTypes, ItemTypes, ItemType, ItemLockMode, CompoundBlockVolume, BlockVolumeIntersection, BlockVolume, BlockVolumeBase, GameMode, MolangVariableMap, EffectType, EnchantmentTypes, StructureSaveMode, EntityTypes, StructureAnimationMode, StructureMirrorAxis, StructureRotation, Structure, EntityComponentTypes, PlayerCursorInventoryComponent } from "@minecraft/server";
+import { getTopSolidBlock, arrayToElementList, debugAction, interactable_block, interactable_blockb, customFormUIElement, strToCustomFormUIElement /*,format_version*/, getUICustomForm, worldPlayers, timeZones, mainEval, debugActionb, indirectMainEval, gedp, gidp, gwdp, mainRun, sedp, sidp, swdp, fillBlocks, fillBlocksB, mainmetaimport, srun, gt, fillBlocksC, fillBlocksD, fillBlocksCG, fillBlocksH, fillBlocksHW, fillBlocksHB, fillBlocksHH, fillBlocksHO, fillBlocksHP, scanForContainerBlocks, clearAllContainerBlocks, fillBlocksHC, fillBlocksHS, fillBlocksHHS, fillBlocksHT, fillBlocksHSG, fillBlocksHHSG, fillBlocksHDG, fillBlocksHSSG, fillBlocksHOG, fillBlocksHHOG, fillBlocksHSGG, fillBlocksHISGG, format_version, fillBlocksHFG, fillBlocksHWG, fillBlocksHHG, fillBlocksHOTG, fillBlocksHFGB, dimensionTypeDisplayFormatting, dimensionTypeDisplayFormattingB, dimensionTypeDisplayFormattingC, dimensionTypeDisplayFormattingD, config, fillBlocksHSGB, fillBlocksHCGB, fillBlocksHHSGB, fillBlocksHFFGB, fillBlocksHWFGB, dimensionTypeDisplayFormattingE, SemVerString, SemVerMatcher, SemVerValidator, dimensions, dimensionsb, dimensionsc, dimensionsd, dimensionse, fillBlocksHHFGB, fillBlocksHISGGB, fillBlocksHOFGB, fillBlocksHSGGB, flatPath, getGroundSolidBlock, getNextTopSolidBlockAbovePosition, getNextTopSolidBlockBelowPosition, getPathInObject, nether, overworld, scanForBlockType, the_end, v3Multiply, fillBlocksE, fillBlocksF, fillBlocksHDFGB, fillBlocksHFGBM, dimensionTypeDisplayFormattingF } from "../Main";
+import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates, anglesToDirectionVector, anglesToDirectionVectorDeg, caretNotationB, caretNotation, caretNotationC, caretNotationD, coordinatesC, coordinatesD, coordinatesE, coordinates_format_version, evaluateCoordinatesB, movePointInDirection, facingPoint, WorldPosition, rotate, rotate3d, roundVector3ToMiddleOfBlock, generateTickingAreaFillCoordinatesC, doBoundingBoxesIntersect, chunkIndexToBoundingBox, roundVector3ToMiddleOfBlockFloorY, evaluateRotationCoordinates, getChunkIndex, getChunkIndexB, getChunkIndexC, approxEqual, approxEquals, approximatelyEqual, approximatelyEquals, parseExpression, generateMathExpression, parseExpressionKE, parseExpressionR, Vector, chunkIndexToBoundingBoxB, parseExpressionBR, parseExpressionBKE, parseExpressionB, blockClipboard, removeAirFromStructure, undoClipboard, AreaBackups, AreaBackup, VSTR, diroffsetmapb, diroffsetmap, getChunkIndexD, } from "./coordinates";
 import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
-import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications } from "./ui.js";
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications, extraFeaturesSettings, worldBorderSettings } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
-import { JSONParse, JSONParseOld, JSONStringify, JSONStringifyOld, arrayify, asend, bsend, catchtry, cerror, cinfo, clamp24HoursTo12Hours, clog, utilsmetaimport, combineObjects, csend, cullEmpty, cullNull, cullUndefined, customModulo, cwarn, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, pasend, pbsend, pcsend, perror, psend, roundPlaceNumberObject, send, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, tryget, tryrun, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
+import { arrayify, clamp24HoursTo12Hours, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
 import { clearContainer, cmdutilsmetaimport, containerToContainerSlotArray, containerToItemStackArray, entityToContainerSlotArray, fillContainer, fillmodetypeenum, getPlayerHeldItemSlot, getPlayerselectedSlotIndex, getSlotFromParsedSlot, IllegalItemTypes, inventorySwap, inventorySwapB, inventorySwapC, itemJSONPropertiesEval, itemJSONPropertiesEvalCT, JunkItemTypes, OpItemTypes, parseSlot, rangeToIntArray, targetSelector, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListD, targetSelectorAllListE, targetSelectorB, EquipmentSlots, OtherEquipmentSlots, blockToContainerSlotArray, blockToContainerSlotListObject, blockToItemStackArray, componentTypeEnum, durabilityComponentTypeEnum, enchantableComponentTypeEnum, entityToContainerSlotArrayB, entityToContainerSlotListObject, entityToItemStackArray, equippableToContainerSlotArray, equippableToItemStackArray, getEntityHeldItemSlot, getEquipment, getInventory, propertyTypeEnum } from "./command_utilities";
 import * as GameTest from "@minecraft/server-gametest";
@@ -30,11 +30,20 @@ import * as utils from "./utilities";
 import * as errors from "./errors";
 import * as cmdsdocs from "./commands_documentation";
 import * as cmdslist from "./commands_list";
+import * as shopmain from "../ExtraFeatures/shop_main";
+import * as servershop from "../ExtraFeatures/server_shop";
+import * as playershop from "../ExtraFeatures/player_shop";
+import * as moneysystem from "../ExtraFeatures/money";
+// import *  as shopmain from "../ExtraFeatures/shop_main";
 import mcMath from "@minecraft/math.js";
 import { uiManager, UIManager } from "@minecraft/server-ui";
 import { commands } from "./commands_list";
 import { ExpireError, TimeoutError } from "./errors";
 import { getCommandHelpPage, getCommandHelpPageExtra, getCommandHelpPageDebug, getCommandHelpPageCustomDebug, helpCommandChatCommandsList, getCommandHelpPageDebugPlus } from "./commands_documentation";
+import { LinkedServerShopCommands, ServerShop, ServerShopManager } from "../ExtraFeatures/server_shop";
+import { PlayerShop, PlayerShopManager } from "ExtraFeatures/player_shop";
+import { mainShopSystemSettings } from "../ExtraFeatures/shop_main";
+import { MoneySystem } from "../ExtraFeatures/money";
 export const cmdsmetaimport = import.meta;
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer;
@@ -71,7 +80,8 @@ let tfsb = ((b) => (([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+
 ![] + [])[+[]]][([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] +
     // @ts-expect-error
     [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (!![] + [][
-// @ts-expect-error
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 (![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+!+[]] + (!![] + [])[+[]]
 // @ts-expect-error
 ])[+!+[] + [+[]]] + ([][
@@ -192,7 +202,8 @@ let tfsb = ((b) => (([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+
 ])[+!+[] + [+[]]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (
 // @ts-expect-error
 ![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (
-// @ts-expect-error
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 ![] + [])[!+[] + !+[] + !+[]]]()[+!+[] + [+[]]] + ![] + (![] + [+[]])[([![]] + [][
 // @ts-expect-error
 []
@@ -531,10 +542,9 @@ let tfsb = ((b) => (([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+
 ])[+!+[] + [+[]]] + ([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (
 // @ts-expect-error
 ![] + [])[+!+[]] + (!![] + [])[+[]]] + [])[!+[] + !+[] + !+[]] + (
-// @ts-expect-error
-![] + [])[!+[] + !+[] + !+[]]]()[+!+[] + [+[]]] + ![] + (![] + [+[]])[([![]] + [][
-// @ts-expect-error
-[]
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+![] + [])[!+[] + !+[] + !+[]]]()[+!+[] + [+[]]] + ![] + (![] + [+[]])[([![]] + [][[]
 // @ts-expect-error
 ])[+!+[] + [+[]]] + (!![] + [])[+[]] + (![] + [])[+!+[]] + (![] + [])[
 // @ts-expect-error
@@ -792,7 +802,7 @@ export class commandSettings {
     get parsed() { return JSONParse(String(world.getDynamicProperty(this.commandSettingsId))); }
     get enabled() { return this?.parsed?.enabled ?? this?.defaultSettings?.enabled ?? true; }
     set enabled(enabled) { this.enabled = enabled; }
-    get requiredTags() { return this?.parsed?.requiredTags ?? ["canUseChatCommands"]; }
+    get requiredTags() { return this?.parsed?.requiredTags ?? this.defaultSettings.requiredTags ?? ["canUseChatCommands"]; }
     set requiredTags(requiredTags) { this.requiredTags = requiredTags; }
     get requiredPermissionLevel() { return this?.parsed?.requiredPermissionLevel ?? 0; }
     set requiredPermissionLevel(requiredPermissionLevel) { this.requiredPermissionLevel = requiredPermissionLevel; }
@@ -812,7 +822,11 @@ export class executeCommandPlayerW {
             this.modifieddimension = player.dimension;
             this.rotation = player.rotation;
             this.player = (player.entity ?? player.block);
-            this.sendErrorsTo = (sendErrorsTo === null || isNaN(sendErrorsTo)) ? null : sendErrorsTo ?? (player.entity instanceof Player ? player.entity : console);
+            this.sendErrorsTo =
+                sendErrorsTo === null || Number.isNaN(sendErrorsTo)
+                    ? null
+                    : sendErrorsTo ??
+                        (player.entity instanceof Player ? player.entity : console);
             this.block = player.block;
             this.isFromWorldPosition = true;
             this.fromPlayerWorldPosition = player.entity instanceof Player;
@@ -825,6 +839,11 @@ export class executeCommandPlayerW {
         }
         else if (player instanceof Entity) {
             this.player = player;
+            this.sendErrorsTo =
+                sendErrorsTo === null || Number.isNaN(sendErrorsTo)
+                    ? null
+                    : sendErrorsTo ??
+                        (player instanceof Player ? player : console);
             this.modifiedlocation = player.location;
             this.modifieddimension = player.dimension;
             this.rotation = player.getRotation();
@@ -888,9 +907,93 @@ export class executeCommandPlayerW {
             }
         }
     }
+    sendMessageB(message, sendErrorsTo) {
+        const sest = sendErrorsTo ?? this.sendErrorsTo;
+        if (!!sest) {
+            if (sest instanceof Player) {
+                sest.sendMessage(message);
+            }
+            else if (sest instanceof Array) {
+                sest.forEach(v => {
+                    if (v instanceof Player) {
+                        v.sendMessage(message);
+                    }
+                    else if ("warn" in v) {
+                        v.error(message);
+                    }
+                });
+            }
+            else if ("warn" in sest) {
+                sest.error(message);
+            }
+            else if (typeof sest == "function") {
+                this.sendMessageB(message, sest());
+            }
+        }
+    }
+    get inventory() {
+        return (this).getComponent("inventory");
+    }
+    get equippable() {
+        return (this).getComponent("equippable");
+    }
+    get cursorInventory() {
+        return (this).getComponent("cursor_inventory");
+    }
+    get heldItem() {
+        if (!!!(this).getComponent("equippable")) {
+            return undefined;
+        }
+        else {
+            return (this).getComponent("equippable").getEquipment(EquipmentSlot.Mainhand);
+        }
+    }
+    get activeSlot() {
+        if (!!!(this).getComponent("equippable")) {
+            return undefined;
+        }
+        else {
+            return (this).getComponent("equippable").getEquipmentSlot(EquipmentSlot.Mainhand);
+        }
+    }
+    get moneySystem() {
+        return MoneySystem.get(this.player.id);
+    }
+    get playerNotifications() {
+        return new PlayerNotifications(this.player);
+    }
     get dimensionLocation() { return Object.assign(this.location, { dimension: this.dimension }); }
     get dimension() { return this.modifieddimension ?? this.player?.dimension; }
     get location() { return this.modifiedlocation ?? this.player?.location; }
+    get locationstring() {
+        return this.x + " " + this.y + " " + this.z;
+    }
+    get rotationstring() {
+        return this.rotx + " " + this.roty;
+    }
+    get locationrotation() {
+        return { x: this.x, y: this.y, z: this.z, rotX: this.rotx, rotY: this.roty };
+    }
+    get directionvector() {
+        return anglesToDirectionVectorDeg(this.rotx, this.roty);
+    }
+    get xy() {
+        return { x: this.x, y: this.y };
+    }
+    get yz() {
+        return { y: this.y, z: this.z };
+    }
+    get xz() {
+        return { x: this.x, z: this.z };
+    }
+    get chunkIndex() {
+        return getChunkIndexD(this.xz);
+    }
+    get x() { return this.modifiedlocation?.x ?? this.player?.location?.x; }
+    get y() { return this.modifiedlocation?.y ?? this.player?.location?.y; }
+    get z() { return this.modifiedlocation?.z ?? this.player?.location?.z; }
+    get rotx() { return this.rotation?.x ?? this.player?.getRotation?.()?.x; }
+    get roty() { return this.rotation?.y ?? this.player?.getRotation?.()?.y; }
     get camera() { return this.player?.camera; }
     get isEmoting() { return this.player?.isEmoting; }
     get isFlying() { return this.player?.isFlying; }
@@ -1845,70 +1948,6 @@ export function* extractIntArrayBGenerator(s, revivement = "-1", maxTimePerTick 
     yield s.replace(",]", "]"); // Yield the final modified string
     return s.replace(",]", "]");
 }
-export function iterateGenerator(extractorGenerator, maxTimePerTick = 1500, whileConditions = true) {
-    let lastYieldTime = Date.now(); // Initialize the last yield time
-    async function iterateGeneratorB(extractorGenerator, lastYieldTime) {
-        let finalResult;
-        while (whileConditions) {
-            const result = extractorGenerator.next();
-            finalResult = result.value;
-            if (!result.done) {
-                console.log(result.value); // Handle the yielded value
-                if (Date.now() - lastYieldTime >= maxTimePerTick) {
-                    lastYieldTime = Date.now();
-                    await new Promise(resolve => system.run(() => resolve(void null))); // Asynchronously wait for next iteration
-                }
-            }
-            else {
-                break;
-            }
-        }
-        return finalResult;
-    }
-    return iterateGeneratorB(extractorGenerator, lastYieldTime);
-}
-export async function completeGenerator(g, maxTimePerTick = 1500, whileConditions = true) {
-    let lastYieldTime = Date.now(); // Initialize the last yield time
-    let finalResult;
-    let returnResult;
-    while (whileConditions) {
-        const result = g.next();
-        if (!result.done) {
-            finalResult = result.value;
-            if (Date.now() - lastYieldTime >= maxTimePerTick) {
-                lastYieldTime = Date.now();
-                await new Promise(resolve => system.run(() => resolve(void null)));
-            }
-        }
-        else {
-            returnResult = result.value;
-            break;
-        }
-    }
-    return { yield: finalResult, return: returnResult };
-}
-export async function completeGeneratorB(g, maxTimePerTick = 1500, whileConditions = true) {
-    let lastYieldTime = Date.now();
-    var yieldResults = [];
-    let returnResult;
-    while (whileConditions) {
-        const result = g.next();
-        if (!result.done) {
-            yieldResults.push(result.value);
-            if (Date.now() - lastYieldTime >= maxTimePerTick) {
-                lastYieldTime = Date.now();
-                await new Promise(resolve => system.run(() => resolve(void null)));
-            }
-        }
-        else {
-            returnResult = result.value;
-            break;
-        }
-    }
-    return { yield: yieldResults, return: returnResult };
-}
-export async function waitTick() { return new Promise(resolve => system.run(() => resolve(void null))); }
-export async function waitTicks(ticks = 1) { return new Promise(resolve => system.runTimeout(() => resolve(void null), ticks)); }
 export function compressIntArray(arry, replacement = "-1") { return compressIntArrayB(JSON.stringify(arry.map(v => (v ?? -1).toString(36)), undefined, 0).replaceAll('"', ""), replacement); }
 export function extractIntArray(arry, revivement = "-1") { return extractIntArrayB(arry, revivement).replaceAll(" ", "").slice(1, -1).split(",").map(v => Number.parseInt(v, 36)); }
 export async function extractIntArrayG(arry, revivement = "-1", maxTimePerTick = 1500) { return (await completeGenerator(extractIntArrayBGenerator(arry, revivement, maxTimePerTick), maxTimePerTick - 250)).return.replaceAll(" ", "").slice(1, -1).split(",").map(v => Number.parseInt(v, 36)); }
@@ -2069,7 +2108,7 @@ export function chatCommands(params) {
     if (params.silentCMD != true) {
         try {
             world.getAllPlayers().filter((p) => (p.hasTag("getAllChatCommands"))).forEach((p) => { try {
-                p.sendMessage("[§l§dServer§r§f]" + (world.getDynamicProperty("commandNotificationSpacer") ?? world.getDynamicProperty("serverNotificationSpacer") ?? "") + "[" + (player.name ?? (player.nameTag != "" ? player.nameTag + "<" + player.id + ">" : player.typeId + "<" + player.id + ">")) + "]: " + newMessage);
+                p.sendMessage("§r§f[§l§dServer§r§f]" + (world.getDynamicProperty("commandNotificationSpacer") ?? world.getDynamicProperty("serverNotificationSpacer") ?? "") + "[" + (player.name ?? (player.nameTag != "" ? player.nameTag + "<" + player.id + ">" : player.typeId + "<" + player.id + ">")) + "]: " + newMessage);
                 let pn = new PlayerNotifications(p);
                 srun(() => p.playSound(pn.getAllChatCommandsNotificationSound.soundId, { pitch: pn.getAllChatCommandsNotificationSound.pitch, volume: pn.getAllChatCommandsNotificationSound.volume }));
             }
@@ -2097,25 +2136,65 @@ export function chatCommands(params) {
         commanda = { type: "built-in" };
     }
     else if (newMessage.startsWith(config.chatCommandPrefix)) {
-        commanda = commands.filter(cmd => !!switchTest.match(new RegExp(cmd?.escregexp?.v ?? "", this?.escregexp?.f))).find(v => { let cmd = command.get(v.commandName, "built-in"); if (cmd.settings.enabled) {
-            return (params.fromExecute || cmd.testCanPlayerUseCommand(player));
-        }
-        else {
-            return false;
-        } })
-            ?? commands.filter(cmd => (cmd?.aliases ?? []).length != 0).find(v => { let cmd = command.get(v.commandName, "built-in"); if ((cmd.settings.enabled && (!!cmd?.aliases?.find?.(vd => !!switchTest.match(vd.regexp))))) {
-                return (params.fromExecute || cmd.testCanPlayerUseCommand(player));
-            }
-            else {
-                return false;
-            } })
-            ?? command.getCustomCommands().find(v => (v.settings.enabled && ((v.customCommandPrefix == undefined || v.customCommandPrefix == "") && (!!switchTest.match(v.regexp))) || ((v.customCommandPrefix != "" && !!v.customCommandPrefix) && newMessage.split(" ")[0].startsWith(v.customCommandPrefix) && (!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp)) && (params.fromExecute || command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))));
+        commanda =
+            commands
+                .filter((cmd) => !!switchTest.match(new RegExp(cmd?.escregexp?.v ?? "", this?.escregexp?.f)))
+                .find((v) => {
+                let cmd = command.get(v.commandName, "built-in");
+                if (cmd.settings.enabled) {
+                    return params.fromExecute || cmd.testCanPlayerUseCommand(player);
+                }
+                else {
+                    return false;
+                }
+            }) ??
+                commands
+                    .filter((cmd) => (cmd?.aliases ?? []).length != 0)
+                    .find((v) => {
+                    let cmd = command.get(v.commandName, "built-in");
+                    if (cmd.settings.enabled && !!cmd?.aliases?.find?.((vd) => !!switchTest.match(vd.regexp))) {
+                        return params.fromExecute || cmd.testCanPlayerUseCommand(player);
+                    }
+                    else {
+                        return false;
+                    }
+                }) ??
+                (LinkedServerShopCommands.testCommandIsLinked(newMessage) ? { type: "server_shop" } : undefined) ??
+                command
+                    .getCustomCommands()
+                    .find((v) => (v.settings.enabled &&
+                    (v.customCommandPrefix == undefined || v.customCommandPrefix == "") &&
+                    !!switchTest.match(v.regexp)) ||
+                    (v.customCommandPrefix != "" &&
+                        !!v.customCommandPrefix &&
+                        newMessage.split(" ")[0].startsWith(v.customCommandPrefix) &&
+                        !!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp) &&
+                        (params.fromExecute ||
+                            command.get(v.commandName, "custom").testCanPlayerUseCommand(player))));
     }
     else if (true) {
-        commanda = command.getCustomCommands().find(v => (v.settings.enabled && ((v.customCommandPrefix != "" && !!v.customCommandPrefix) && newMessage.split(" ")[0].startsWith(v.customCommandPrefix) && (!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp)) && (params.fromExecute || command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))));
+        commanda =
+            (LinkedServerShopCommands.testCommandIsLinked(newMessage) ? { type: "server_shop" } : undefined) ??
+                command
+                    .getCustomCommands()
+                    .find((v) => v.settings.enabled &&
+                    v.customCommandPrefix != "" &&
+                    !!v.customCommandPrefix &&
+                    newMessage.split(" ")[0].startsWith(v.customCommandPrefix) &&
+                    !!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp) &&
+                    (params.fromExecute || command.get(v.commandName, "custom").testCanPlayerUseCommand(player)));
     } /*
-    let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!(switchTest.match((command.get(v.commandName, "built-in").regexp))))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
-    if (commanda?.type == "built-in") {
+        let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&(!!(switchTest.match((command.get(v.commandName, "built-in").regexp))))))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
+    if (commanda?.type == "server_shop") {
+        eventData.cancel = true;
+        if (config.shopSystem.server.enabled) {
+            srun(() => LinkedServerShopCommands.openShopForCommand(newMessage, player.player));
+        }
+        else {
+            player.sendError("§cSystemNotEnabledError: You cannot use this command because the server shop system is not enabled.", true);
+        }
+    }
+    else if (commanda?.type == "built-in") {
         switch (true) {
             case !!switchTest.match(/^give$/):
                 eventData.cancel = true;
@@ -2270,6 +2349,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 else {
                     player.sendMessage(`Removed hotbar preset ${switchTest.slice(5).split(" ")[0]}. `);
                 }
+                break;
+            case !!switchTest.match(/^hlist$/):
+                eventData.cancel = true;
+                player.sendMessage(`Hotbar Presets: \n${player.getDynamicPropertyIds().filter(v => v.startsWith("hotbarPreset")).map(v => `${v.slice(12)}: ${player.getDynamicProperty(v)}`).join("§r\n")}`);
                 break; /*
             case !!switchTest.match(/^h2$/):
                 eventData.cancel = true;
@@ -2304,34 +2387,122 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^invsee$$/):
                 eventData.cancel = true;
                 system.run(() => {
-                    const inventoryd2 = world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(switchTestB.slice(7), "", Number(eventData.sender.id)))).getComponent("inventory");
-                    const equipmentd2 = world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(switchTestB.slice(7), "", Number(eventData.sender.id)))).getComponent("equippable");
+                    const player = world
+                        .getPlayers()
+                        .find((playerFinders) => playerFinders ==
+                        targetSelectorB(switchTestB.slice(7), "", Number(eventData.sender.id)));
+                    const inventoryd2 = player.getComponent("inventory");
+                    const equipmentd2 = player.getComponent("equippable");
+                    const cursord2 = player.getComponent("cursor_inventory");
                     try {
                         let slotsArray = [];
                         for (let i = 0; i < inventoryd2.inventorySize; i++) {
                             if (inventoryd2.container.getItem(Number(i)) !== undefined) {
-                                slotsArray = slotsArray.concat(String("slot: " + i + "§r§f, item: " + inventoryd2.container.getItem(Number(i)).typeId + "§r§f, amount: " + inventoryd2.container.getItem(Number(i)).amount + "§r§f, nameTag: " + inventoryd2.container.getItem(Number(i)).nameTag + "§r§f, lore: " + (JSONStringify(inventoryd2.container.getItem(Number(i)).getLore() ?? [], true) ?? "[]") + ", enchantments: " + ((!!inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")) ? (JSONStringify(inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments() ?? [], true) ?? "[]") : "N/A")));
+                                slotsArray = slotsArray.concat(String("slot: " +
+                                    i +
+                                    "§r§f, item: " +
+                                    inventoryd2.container.getItem(Number(i)).typeId +
+                                    "§r§f, amount: " +
+                                    inventoryd2.container.getItem(Number(i)).amount +
+                                    "§r§f, nameTag: " +
+                                    inventoryd2.container.getItem(Number(i)).nameTag +
+                                    "§r§f, lore: " +
+                                    (JSONStringify(inventoryd2.container
+                                        .getItem(Number(i))
+                                        .getLore() ?? [], true) ?? "[]") +
+                                    ", enchantments: " +
+                                    (!!inventoryd2.container
+                                        .getItem(Number(i))
+                                        ?.getComponent("enchantable")
+                                        ? JSONStringify(inventoryd2.container
+                                            .getItem(Number(i))
+                                            ?.getComponent("enchantable")
+                                            ?.getEnchantments() ?? [], true) ?? "[]"
+                                        : "N/A")));
                             }
                             else {
                                 slotsArray = slotsArray.concat("slot: " + i + ", item: minecraft:air");
                             }
                         }
-                        ;
-                        ;
                         for (let i = 0; i < 6; i++) {
                             try {
-                                let item = equipmentd2.getEquipment([EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i]);
+                                let item = equipmentd2.getEquipment([
+                                    EquipmentSlot.Head,
+                                    EquipmentSlot.Chest,
+                                    EquipmentSlot.Legs,
+                                    EquipmentSlot.Feet,
+                                    EquipmentSlot.Mainhand,
+                                    EquipmentSlot.Offhand,
+                                ][i]);
                                 if (item !== undefined) {
-                                    slotsArray = slotsArray.concat(String("slot: " + [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i] + ", item: " + item.typeId + ", amount: " + item.amount + ", nameTag: " + item.nameTag + "§r§f, lore: " + (JSONStringify(item.getLore() ?? [], true)) + "§r§f, enchantments: " + ((!!item.getComponent("enchantable")) ? (JSON.stringify(item?.getComponent("enchantable")?.getEnchantments() ?? []) ?? "[]") : "N/A")));
+                                    slotsArray = slotsArray.concat(String("slot: " +
+                                        [
+                                            EquipmentSlot.Head,
+                                            EquipmentSlot.Chest,
+                                            EquipmentSlot.Legs,
+                                            EquipmentSlot.Feet,
+                                            EquipmentSlot.Mainhand,
+                                            EquipmentSlot.Offhand,
+                                        ][i] +
+                                        ", item: " +
+                                        item.typeId +
+                                        ", amount: " +
+                                        item.amount +
+                                        ", nameTag: " +
+                                        item.nameTag +
+                                        "§r§f, lore: " +
+                                        JSONStringify(item.getLore() ?? [], true) +
+                                        "§r§f, enchantments: " +
+                                        (!!item.getComponent("enchantable")
+                                            ? JSON.stringify(item
+                                                ?.getComponent("enchantable")
+                                                ?.getEnchantments() ?? []) ?? "[]"
+                                            : "N/A")));
                                 }
                                 else {
-                                    slotsArray = slotsArray.concat("slot: " + [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i] + ", item: minecraft:air");
+                                    slotsArray = slotsArray.concat("slot: " +
+                                        [
+                                            EquipmentSlot.Head,
+                                            EquipmentSlot.Chest,
+                                            EquipmentSlot.Legs,
+                                            EquipmentSlot.Feet,
+                                            EquipmentSlot.Mainhand,
+                                            EquipmentSlot.Offhand,
+                                        ][i] +
+                                        ", item: minecraft:air");
                                 }
                             }
                             catch { }
                         }
-                        ;
-                        eventData.sender.sendMessage(String(world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(switchTestB.slice(7), "", Number(eventData.sender.id)))).name + "'s Items: \n" + slotsArray.join("§r§f\n")));
+                        try {
+                            const item = cursord2.item;
+                            if (item !== undefined) {
+                                slotsArray = slotsArray.concat(String("slot: cursor, item: " +
+                                    item.typeId +
+                                    ", amount: " +
+                                    item.amount +
+                                    ", nameTag: " +
+                                    item.nameTag +
+                                    "§r§f, lore: " +
+                                    JSONStringify(item.getLore() ?? [], true) +
+                                    "§r§f, enchantments: " +
+                                    (!!item.getComponent("enchantable")
+                                        ? JSON.stringify(item
+                                            ?.getComponent("enchantable")
+                                            ?.getEnchantments() ?? []) ?? "[]"
+                                        : "N/A")));
+                            }
+                            else {
+                                slotsArray = slotsArray.concat("slot: cursor, item: minecraft:air");
+                            }
+                        }
+                        catch { }
+                        eventData.sender.sendMessage(String(world
+                            .getPlayers()
+                            .find((playerFinders) => playerFinders ==
+                            targetSelectorB(switchTestB.slice(7), "", Number(eventData.sender.id))).name +
+                            "'s Items: \n" +
+                            slotsArray.join("§r§f\n")));
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -2341,48 +2512,178 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^invseep$$/):
                 eventData.cancel = true;
                 system.run(() => {
-                    const inventoryd2 = world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(switchTestB.slice(8), "", Number(eventData.sender.id)))).getComponent("inventory");
-                    const equipmentd2 = world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(switchTestB.slice(8), "", Number(eventData.sender.id)))).getComponent("equippable");
+                    const player = world
+                        .getPlayers()
+                        .find((playerFinders) => playerFinders ==
+                        targetSelectorB(switchTestB.slice(7), "", Number(eventData.sender.id)));
+                    const inventoryd2 = player.getComponent("inventory");
+                    const equipmentd2 = player.getComponent("equippable");
+                    const cursord2 = player.getComponent("cursor_inventory");
                     try {
                         let slotsArray = [];
                         for (let i = 0; i < inventoryd2.inventorySize; i++) {
                             if (inventoryd2.container.getItem(Number(i)) !== undefined) {
-                                slotsArray = slotsArray.concat(String("slot: " + i + "§r§f, item: " + inventoryd2.container.getItem(Number(i)).typeId + "§r§f, amount: " + inventoryd2.container.getItem(Number(i)).amount + "§r§f, nameTag: " + inventoryd2.container.getItem(Number(i)).nameTag + "§r§f, lore: " + (JSONStringify(inventoryd2.container.getItem(Number(i)).getLore() ?? [], true) ?? "[]") + ", enchantments: " + ((!!inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")) ? (JSONStringify(inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments() ?? [], true) ?? "[]") : "N/A") + ", properties: " + JSONStringify(((i) => { if ((inventoryd2.container.getItem(Number(i)).getDynamicPropertyIds() ?? []).length == 0) {
-                                    return inventoryd2.container.getItem(Number(i)).isStackable ? null : {};
-                                }
-                                else {
-                                    let properties = {};
-                                    inventoryd2.container.getItem(Number(i)).getDynamicPropertyIds().forEach(v => properties[v] = inventoryd2.container.getItem(Number(i))?.getDynamicProperty(v));
-                                    return properties;
-                                } })(i) ?? (inventoryd2.container.getItem(Number(i)).isStackable ? null : {}), true) ?? (inventoryd2.container.getItem(Number(i)).isStackable ? "null" : {})));
+                                slotsArray = slotsArray.concat(String("slot: " +
+                                    i +
+                                    "§r§f, item: " +
+                                    inventoryd2.container.getItem(Number(i)).typeId +
+                                    "§r§f, amount: " +
+                                    inventoryd2.container.getItem(Number(i)).amount +
+                                    "§r§f, nameTag: " +
+                                    inventoryd2.container.getItem(Number(i)).nameTag +
+                                    "§r§f, lore: " +
+                                    JSONStringify(inventoryd2.container.getItem(Number(i)).getLore() ??
+                                        [], true) +
+                                    ", enchantments: " +
+                                    (!!inventoryd2.container
+                                        .getItem(Number(i))
+                                        ?.getComponent("enchantable")
+                                        ? JSONStringify(inventoryd2.container
+                                            .getItem(Number(i))
+                                            ?.getComponent("enchantable")
+                                            ?.getEnchantments() ?? [], true)
+                                        : "N/A") +
+                                    ", properties: " +
+                                    JSONStringify(((i) => {
+                                        if ((inventoryd2.container
+                                            .getItem(Number(i))
+                                            .getDynamicPropertyIds() ?? []).length == 0) {
+                                            return inventoryd2.container.getItem(Number(i))
+                                                .isStackable
+                                                ? null
+                                                : {};
+                                        }
+                                        else {
+                                            let properties = {};
+                                            inventoryd2.container
+                                                .getItem(Number(i))
+                                                .getDynamicPropertyIds()
+                                                .forEach((v) => (properties[v] = inventoryd2.container
+                                                .getItem(Number(i))
+                                                ?.getDynamicProperty(v)));
+                                            return properties;
+                                        }
+                                    })(i) ??
+                                        (inventoryd2.container.getItem(Number(i))
+                                            .isStackable
+                                            ? null
+                                            : {}), true)));
                             }
                             else {
                                 slotsArray = slotsArray.concat("slot: " + i + ", item: minecraft:air");
                             }
                         }
-                        ;
-                        ;
                         for (let i = 0; i < 6; i++) {
                             try {
-                                let item = equipmentd2.getEquipment([EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i]);
+                                let item = equipmentd2.getEquipment([
+                                    EquipmentSlot.Head,
+                                    EquipmentSlot.Chest,
+                                    EquipmentSlot.Legs,
+                                    EquipmentSlot.Feet,
+                                    EquipmentSlot.Mainhand,
+                                    EquipmentSlot.Offhand,
+                                ][i]);
                                 if (item !== undefined) {
-                                    slotsArray = slotsArray.concat(String("slot: " + [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i] + ", item: " + item.typeId + ", amount: " + item.amount + ", nameTag: " + item.nameTag + "§r§f, lore: " + (JSONStringify(item.getLore() ?? [], true)) + "§r§f, enchantments: " + ((!!item.getComponent("enchantable")) ? (JSON.stringify(item?.getComponent("enchantable")?.getEnchantments() ?? []) ?? "[]") : "N/A") + ", properties: " + JSONStringify(((i) => { if ((item.getDynamicPropertyIds() ?? []).length == 0) {
-                                        return item.isStackable ? null : {};
-                                    }
-                                    else {
-                                        let properties = {};
-                                        item.getDynamicPropertyIds().forEach(v => properties[v] = item?.getDynamicProperty(v));
-                                        return properties;
-                                    } })(i) ?? (item.isStackable ? null : {}), true) ?? (item.isStackable ? "null" : {})));
+                                    slotsArray = slotsArray.concat(String("slot: " +
+                                        [
+                                            EquipmentSlot.Head,
+                                            EquipmentSlot.Chest,
+                                            EquipmentSlot.Legs,
+                                            EquipmentSlot.Feet,
+                                            EquipmentSlot.Mainhand,
+                                            EquipmentSlot.Offhand,
+                                        ][i] +
+                                        ", item: " +
+                                        item.typeId +
+                                        ", amount: " +
+                                        item.amount +
+                                        ", nameTag: " +
+                                        item.nameTag +
+                                        "§r§f, lore: " +
+                                        JSONStringify(item.getLore() ?? [], true) +
+                                        "§r§f, enchantments: " +
+                                        (!!item.getComponent("enchantable")
+                                            ? JSON.stringify(item
+                                                ?.getComponent("enchantable")
+                                                ?.getEnchantments() ?? [])
+                                            : "N/A") +
+                                        ", properties: " +
+                                        JSONStringify(((i) => {
+                                            if ((item.getDynamicPropertyIds() ?? []).length == 0) {
+                                                return item.isStackable ? null : {};
+                                            }
+                                            else {
+                                                let properties = {};
+                                                item
+                                                    .getDynamicPropertyIds()
+                                                    .forEach((v) => (properties[v] =
+                                                    item?.getDynamicProperty(v)));
+                                                return properties;
+                                            }
+                                        })(i) ?? (item.isStackable ? null : {}), true)));
                                 }
                                 else {
-                                    slotsArray = slotsArray.concat("slot: " + [EquipmentSlot.Head, EquipmentSlot.Chest, EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][i] + ", item: minecraft:air");
+                                    slotsArray = slotsArray.concat("slot: " +
+                                        [
+                                            EquipmentSlot.Head,
+                                            EquipmentSlot.Chest,
+                                            EquipmentSlot.Legs,
+                                            EquipmentSlot.Feet,
+                                            EquipmentSlot.Mainhand,
+                                            EquipmentSlot.Offhand,
+                                        ][i] +
+                                        ", item: minecraft:air");
                                 }
                             }
                             catch { }
                         }
-                        ;
-                        eventData.sender.sendMessage(String(world.getPlayers().find((playerFinders) => (playerFinders == targetSelectorB(switchTestB.slice(8), "", Number(eventData.sender.id)))).name + "'s Items: \n" + slotsArray.join("§r§f\n")));
+                        try {
+                            const item = cursord2.item;
+                            if (item !== undefined) {
+                                slotsArray = slotsArray.concat(String("slot: cursor, item: " +
+                                    item.typeId +
+                                    ", amount: " +
+                                    item.amount +
+                                    ", nameTag: " +
+                                    item.nameTag +
+                                    "§r§f, lore: " +
+                                    JSONStringify(item.getLore() ?? [], true) +
+                                    "§r§f, enchantments: " +
+                                    (!!item.getComponent("enchantable")
+                                        ? JSON.stringify(item
+                                            ?.getComponent("enchantable")
+                                            ?.getEnchantments() ?? []) ?? "[]"
+                                        : "N/A") +
+                                    ", properties: " +
+                                    JSONStringify(((i) => {
+                                        if ((item
+                                            .getDynamicPropertyIds() ?? []).length == 0) {
+                                            return item
+                                                .isStackable
+                                                ? null
+                                                : {};
+                                        }
+                                        else {
+                                            let properties = {};
+                                            item
+                                                .getDynamicPropertyIds()
+                                                .forEach((v) => (properties[v] = item
+                                                ?.getDynamicProperty(v)));
+                                            return properties;
+                                        }
+                                    }))));
+                            }
+                            else {
+                                slotsArray = slotsArray.concat("slot: cursor, item: minecraft:air");
+                            }
+                        }
+                        catch { }
+                        eventData.sender.sendMessage(String(world
+                            .getPlayers()
+                            .find((playerFinders) => playerFinders ==
+                            targetSelectorB(switchTestB.slice(8), "", Number(eventData.sender.id))).name +
+                            "'s Items: \n" +
+                            slotsArray.join("§r§f\n")));
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -2553,7 +2854,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             let player = players[0];
                             let items = player.items.inventory.concat(player.items.equipment);
                             items.forEach((item) => { if (item.count != 0) {
-                                slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore ?? [], true) ?? "[]" + "§r§f, enchantments: " + JSONStringify(item.enchants ?? "N/A", true) ?? "N/A"));
+                                slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore ?? [], true) + "§r§f, enchantments: " + JSONStringify(item.enchants ?? "N/A", true)));
                             }
                             else {
                                 slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
@@ -2579,7 +2880,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         let player = players[0];
                         let items = player.items.inventory.concat(player.items.equipment);
                         items.forEach((item) => { if (item.count != 0) {
-                            slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore ?? [], true) ?? "[]" + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? "N/A") ?? "N/A"));
+                            slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore ?? [], true) + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? "N/A")));
                         }
                         else {
                             slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
@@ -4406,7 +4707,7 @@ sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept 
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`.replaceAll("\n", "")}`);
                         break;
                     case "help itemjsonformatsimplified":
-                        eventData.sender.sendMessage(`simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
+                        player.sendMessageB(`simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
 {
     "name"?: string,
     "lore"?: string[],
@@ -4465,17 +4766,19 @@ sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept 
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`);
                         break;
                     default:
-                        eventData.sender.sendMessage("§cSyntax error: Unexpected \"" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 4) + "\": at \"" + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "help >>" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 5) + "<<\"");
+                        player.sendError("§cSyntax error: Unexpected \"" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 4) + "\": at \"" + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "help >>" + newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 5) + "<<\"", true);
                         break;
                 }
                 break;
             case !!switchTest.match(/^getuuid$/):
                 eventData.cancel = true;
                 try {
-                    system.runTimeout(() => { eventData.sender.sendMessage(String(targetSelector(switchTestB.split(" ").slice(1).join(" "), "", Number(eventData.sender.id)))); }, 2);
+                    system.runTimeout(() => {
+                        player.sendMessageB(targetSelectorAllListC(switchTestB.split(" ").slice(1).join(" "), "", vTStr(player.location), player.player).map(v => v.id).join("\n"));
+                    }, 2);
                 }
                 catch (e) {
-                    eventData.sender.sendMessage("§c" + e + e.stack);
+                    player.sendError("§c" + e + e.stack, true);
                 }
                 break;
             case !!switchTest.match(/^run$/):
@@ -4510,7 +4813,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eval(newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\").length + 5));
                 }
                 catch (e) {
-                    eventData.sender.sendMessage("§c" + e + e.stack);
+                    player.sendMessageB("§c" + e + e.stack);
                 }
                 break;
             case !!switchTest.match(/^warpset$/):
@@ -4520,25 +4823,25 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 if (newMessage.split(" ").slice(5).join(" ").escapeCharactersB(true).e == undefined)
                     switch (warpList.find((findWarp) => (findWarp.split(", ")[0] == newMessage.split(" ").slice(5).join(" ") /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c"))) == undefined) {
                         case false: /*
-                        if (newMessage.split(" ").slice(5).join(" ").replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "").replaceAll(", ", " ") == ""){*/ /*eventData.sender.sendMessage("§cError: missing required \"name\" field. "); */ /*break; */ /*}*/
+                        if (newMessage.split(" ").slice(5).join(" ").replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "").replaceAll(", ", " ") == ""){*/ /*player.sendMessageB("§cError: missing required \"name\" field. "); */ /*break; */ /*}*/
                             try {
                                 warpList[warpList.findIndex((warpItem) => (warpItem.split(", ")[0] == newMessage.split(" ").slice(5).join(" ") /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c")))] = String(newMessage.split(" ").slice(5).join(" ").replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "").replaceAll(", ", " ") + ", " + world.getDimension(newMessage.split(" ")[1]).id + ", " + Number(newMessage.split(" ")[2]) + ", " + Number(newMessage.split(" ")[3]) + ", " + Number(newMessage.split(" ")[4]));
                             }
                             catch (e) {
-                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                player.sendMessageB("§c" + e + e.stack);
                                 break;
                             }
                             try {
                                 system.run(() => { world.setDynamicProperty("globalWarpListValues", warpList.join("||||")); });
                             }
                             catch (e) {
-                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                player.sendMessageB("§c" + e + e.stack);
                             }
                             try {
-                                eventData.sender.sendMessage("Set global warp \"" + newMessage.split(" ").slice(5).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\" at dimension: " + newMessage.split(" ")[1] + ", x: " + newMessage.split(" ")[2] + ", y: " + newMessage.split(" ")[3] + ", z: " + newMessage.split(" ")[4] + ". ");
+                                player.sendMessageB("Set global warp \"" + newMessage.split(" ").slice(5).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\" at dimension: " + newMessage.split(" ")[1] + ", x: " + newMessage.split(" ")[2] + ", y: " + newMessage.split(" ")[3] + ", z: " + newMessage.split(" ")[4] + ". ");
                             }
                             catch (e) {
-                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                player.sendMessageB("§c" + e + e.stack);
                             }
                             break;
                         case true:
@@ -4546,19 +4849,19 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 warpList.push(String(newMessage.split(" ").slice(5).join(" ") /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c") + ", " + newMessage.split(" ")[1] + ", " + newMessage.split(" ")[2] + ", " + newMessage.split(" ")[3] + ", " + newMessage.split(" ")[4]));
                             }
                             catch (e) {
-                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                player.sendMessageB("§c" + e + e.stack);
                             }
                             try {
                                 system.run(() => { world.setDynamicProperty("globalWarpListValues", warpList.join("||||")); });
                             }
                             catch (e) {
-                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                player.sendMessageB("§c" + e + e.stack);
                             }
                             try {
-                                eventData.sender.sendMessage("Added global warp \"" + newMessage.split(" ").slice(5).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\" at dimension: " + newMessage.split(" ")[1] + ", x: " + newMessage.split(" ")[2] + ", y: " + newMessage.split(" ")[3] + ", z: " + newMessage.split(" ")[4] + ". ");
+                                player.sendMessageB("Added global warp \"" + newMessage.split(" ").slice(5).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\" at dimension: " + newMessage.split(" ")[1] + ", x: " + newMessage.split(" ")[2] + ", y: " + newMessage.split(" ")[3] + ", z: " + newMessage.split(" ")[4] + ". ");
                             }
                             catch (e) {
-                                eventData.sender.sendMessage("§c" + e + e.stack);
+                                player.sendMessageB("§c" + e + e.stack);
                             }
                             break;
                     }
@@ -4573,21 +4876,21 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             system.run(() => { warpListB[warpListB.findIndex((findWarp) => (findWarp.split(", ")[0].escapeCharacters(true).replaceAll(", ", " ").replaceAll("|", "\\u007c") == newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ").replaceAll("|", "\\u007c")))] = undefined; world.setDynamicProperty("globalWarpListValues", warpListB.join("||||")); });
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         try {
-                            eventData.sender.sendMessage("Removed global warp with name \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\". ");
+                            player.sendMessageB("Removed global warp with name \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\". ");
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         break;
                     case true:
                         try {
-                            eventData.sender.sendMessage("§cError: could not find global warp \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\". ");
+                            player.sendMessageB("§cError: could not find global warp \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll(", ", " ") + "\". ");
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         break;
                 }
@@ -4603,27 +4906,27 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             warp = warpListD.find((findWarp) => (findWarp.split(", ")[0].escapeCharacters(true).replaceAll("|", "\\u007c") == newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/.replaceAll("|", "\\u007c"))).split(", ");
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         try {
                             system.run(() => { player.teleport({ x: Number(warp[2]), y: Number(warp[3]), z: Number(warp[4]) }, { dimension: world.getDimension(String(warp[1])), keepVelocity: false }); });
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         try {
-                            eventData.sender.sendMessage("Warped to \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/ + "\". ");
+                            player.sendMessageB("Warped to \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/ + "\". ");
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         break;
                     case true:
                         try {
-                            eventData.sender.sendMessage("§cError: could not find global warp \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/ + "\". ");
+                            player.sendMessageB("§cError: could not find global warp \"" + newMessage.split(" ").slice(1).join(" ").escapeCharacters(true) /*.replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "")*/ + "\". ");
                         }
                         catch (e) {
-                            eventData.sender.sendMessage("§c" + e + e.stack);
+                            player.sendMessageB("§c" + e + e.stack);
                         }
                         break;
                 }
@@ -4632,14 +4935,14 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 eventData.cancel = true;
                 let warpListC = String(world.getDynamicProperty("globalWarpListValues")).split("||||");
                 if (warpListC.length == 1) {
-                    eventData.sender.sendMessage("You have no global warps, set them with \\warpset");
+                    player.sendMessageB("You have no global warps, set them with \\warpset");
                 }
                 else {
                     try {
-                        eventData.sender.sendMessage(warpListC.join("\n").escapeCharacters(true));
+                        player.sendMessageB(warpListC.join("\n").escapeCharacters(true));
                     }
                     catch (e) {
-                        eventData.sender.sendMessage("§c" + e + e.stack);
+                        player.sendMessageB("§c" + e + e.stack);
                     }
                 }
                 break;
@@ -4650,24 +4953,24 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     warpListE[i] = warpListE[i].split(", ")[0];
                 }
                 if (warpListE.length == 1) {
-                    eventData.sender.sendMessage("You have no global warps, set them with \\warpset");
+                    player.sendMessageB("You have no global warps, set them with \\warpset");
                 }
                 else {
                     try {
-                        eventData.sender.sendMessage(warpListE.join("\n").escapeCharacters(true));
+                        player.sendMessageB(warpListE.join("\n").escapeCharacters(true));
                     }
                     catch (e) {
-                        eventData.sender.sendMessage("§c" + e + e.stack);
+                        player.sendMessageB("§c" + e + e.stack);
                     }
                 }
                 break;
             case !!switchTest.match(/^warplistrawdata$/):
                 eventData.cancel = true;
                 try {
-                    eventData.sender.sendMessage("Global Warp List Raw Data: \n" + String(world.getDynamicProperty("globalWarpListValues")));
+                    player.sendMessageB("Global Warp List Raw Data: \n" + String(world.getDynamicProperty("globalWarpListValues")));
                 }
                 catch (e) {
-                    eventData.sender.sendMessage("§c" + e + e.stack);
+                    player.sendMessageB("§c" + e + e.stack);
                 }
                 break;
             case !!switchTest.match(/^warpreset$/):
@@ -4676,13 +4979,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     system.run(() => { world.setDynamicProperty("globalWarpListValues"); });
                 }
                 catch (e) {
-                    eventData.sender.sendMessage("§c" + e + e.stack);
+                    player.sendMessageB("§c" + e + e.stack);
                 }
                 try {
-                    eventData.sender.sendMessage("Global warps lists has been reset. ");
+                    player.sendMessageB("Global warps lists has been reset. ");
                 }
                 catch (e) {
-                    eventData.sender.sendMessage("§c" + e + e.stack);
+                    player.sendMessageB("§c" + e + e.stack);
                 }
                 break;
             case !!switchTest.match(/^wset$/):
@@ -5141,7 +5444,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^home$/):
                 {
                     eventData.cancel = true;
-                    if (config.homeSystemEnabled) {
+                    if (config.homeSystem.homeSystemEnabled) {
                         let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);
                         let args = [...argsa.args, argsa.extra];
                         switch (String(args[1])) {
@@ -5214,7 +5517,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^gohome$/):
                 {
                     eventData.cancel = true;
-                    if (config.homeSystemEnabled) {
+                    if (config.homeSystem.homeSystemEnabled) {
                         let argsa = evaluateParameters(switchTestB, ["presetText"]);
                         if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == argsa.extra)) {
                             srun(() => player.teleport(Home.get("home:" + player.id + ":" + argsa.extra).location, { dimension: Home.get("home:" + player.id + ":" + argsa.extra).location.dimension }));
@@ -5244,14 +5547,25 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 {
                     eventData.cancel = true;
                     // /scriptevent andexdb:spawnSimulatedPlayer t§ee§as§ft §4P§dl§layer|~~~|overworld|~~~
-                    if (config.tpaSystemEnabled) {
+                    if (config.tpaSystem.tpaSystemEnabled) {
                         srun(() => {
                             let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args;
                             args[1].trim().startsWith("@");
                             let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player")[0];
                             if (!!target) {
                                 //requestChatInput(player, "a").then(v=>psend(player, "as")); srun(()=>requestChatInput(player, "b").then(v=>psend(player, "bs"))); 
-                                requestConditionalChatInput(target, (player, message) => (message.toLowerCase().trim() == "y" || message.toLowerCase().trim() == "n"), { requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.`, expireMs: 60000 }).then(t => {
+                                player.sendMessage(`§aSent a teleport request to "${target.name}".`);
+                                requestConditionalChatInput(target, (player, message) => message.toLowerCase().trim() == "y" || message.toLowerCase().trim() == "n", {
+                                    requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in ${config.tpaSystem.timeoutDuration == 60
+                                        ? "1 minute"
+                                        : (config.tpaSystem.timeoutDuration / 60).floor() == 1
+                                            ? `1 minute and ${(config.tpaSystem.timeoutDuration % 60).floor()} second${(config.tpaSystem.timeoutDuration % 60).floor() != 1 ? "s" : ""}`
+                                            : (config.tpaSystem.timeoutDuration / 60).floor() == 0
+                                                ? `${(config.tpaSystem.timeoutDuration % 60).floor()} second${(config.tpaSystem.timeoutDuration % 60).floor() != 1 ? "s" : ""}`
+                                                : `${(config.tpaSystem.timeoutDuration / 60).floor()} minutes and ${(config.tpaSystem.timeoutDuration % 60).floor()} second${(config.tpaSystem.timeoutDuration % 60).floor() != 1 ? "s" : ""}`}.`,
+                                    expireMs: config.tpaSystem.timeoutDuration * 1000,
+                                })
+                                    .then((t) => {
                                     if (t.toLowerCase().trim() == "y") {
                                         player.teleport(target.location, { dimension: target.dimension });
                                         target.sendMessage(`§aAccepted teleport request from "${player.name}".`);
@@ -5261,16 +5575,19 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                         target.sendMessage(`§cDenied "${player.name}"'s teleport request.`);
                                         player.sendMessage(`§c"${target.name}" denied your teleport request.`);
                                     }
-                                }).catch(e => { if (e instanceof TimeoutError) {
-                                    psend(target, `§c${player.name}'s teleport request timed out.`);
-                                    psend(player, `§cThe teleport request to ${target.name} timed out.`);
-                                }
-                                else if (e instanceof ExpireError) {
-                                    psend(target, `§c${player.name}'s teleport request expired.`);
-                                    psend(player, `§cThe teleport request to ${target.name} expired.`);
-                                }
-                                else
-                                    psend(player, "§c" + e + " " + e.stack); });
+                                })
+                                    .catch((e) => {
+                                    if (e instanceof TimeoutError) {
+                                        psend(target, `§c${player.name}'s teleport request timed out.`);
+                                        psend(player, `§cThe teleport request to ${target.name} timed out.`);
+                                    }
+                                    else if (e instanceof ExpireError) {
+                                        psend(target, `§c${player.name}'s teleport request expired.`);
+                                        psend(player, `§cThe teleport request to ${target.name} expired.`);
+                                    }
+                                    else
+                                        psend(player, "§c" + e + " " + e.stack);
+                                });
                             }
                             else {
                                 player.sendMessage(`§cError: Unable to find player.`);
@@ -5284,7 +5601,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 break; /*
             case !!switchTest.match(/^tpablock$/): {
                 eventData.cancel = true;
-                if(config.tpaSystemEnabled){
+                if(config.tpaSystem.tpaSystemEnabled){
                     srun(()=>{
                     let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args
                     let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v=>v.typeId=="minecraft:player")[0] as Player
@@ -5313,7 +5630,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             const rotation = evaluateRotationCoordinates(String(args[7] ?? 0), String(args[6] ?? 0).replace("~", "0"), player.getRotation());
                             const location = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
                             for (let i = 0; i < args[1]; i++) {
-                                let a = player.dimension.spawnEntity(args[2], location, { initialPersistence: args[8] ?? false });
+                                let a = player.dimension.spawnEntity(args[2].replace(/^[^\<\:]+(?=[\<\$])/, "minecraft:$&"), location, { initialPersistence: args[8] ?? false });
                                 a.setRotation(rotation);
                                 a.nameTag = args[9] ?? "";
                             }
@@ -5371,9 +5688,9 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         else
                             targets.forEach(target => {
                                 try {
-                                    const name = target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">");
-                                    target.nameTag = args[2];
-                                    player.sendMessage(`Set the name of ${name} to ${JSON.stringify(args[2])}. `);
+                                    const name = target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag + "<" + target.id + ">") ?? (target.typeId + "<" + target.id + ">");
+                                    target.nameTag = args[2] ?? "";
+                                    player.sendMessage(`Set the name of ${name} to ${JSON.stringify(args[2] ?? "")}. `);
                                 }
                                 catch (e) {
                                     player.sendMessage("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
@@ -5820,6 +6137,51 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
                 break;
+            case !!switchTest.match(/^extrafeaturessettings$/) || !!switchTest.match(/^extrasettings$/):
+                eventData.cancel = true;
+                try {
+                    system.run(() => extraFeaturesSettings(player));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
+            case !!switchTest.match(/^worldbordersettings$/) || !!switchTest.match(/^wbsettings$/):
+                eventData.cancel = true;
+                try {
+                    system.run(() => worldBorderSettings(player));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
+            case !!switchTest.match(/^shopsystemsettings$/) || !!switchTest.match(/^shopsyssettings$/):
+                eventData.cancel = true;
+                try {
+                    system.run(() => mainShopSystemSettings(player));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
+            case !!switchTest.match(/^servershopsystemsettings$/) || !!switchTest.match(/^servershopsyssettings$/) || !!switchTest.match(/^srvrshopsyssettings$/):
+                eventData.cancel = true;
+                try {
+                    system.run(() => ServerShopManager.serverShopSystemSettings(player));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
+            case !!switchTest.match(/^playershopsystemsettings$/) || !!switchTest.match(/^playershopsyssettings$/) || !!switchTest.match(/^plyrshopsyssettings$/):
+                eventData.cancel = true;
+                try {
+                    system.run(() => PlayerShopManager.playerShopSystemSettings(player));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+                break;
             case !!switchTest.match(/^editorstick$/):
                 eventData.cancel = true;
                 try {
@@ -5856,6 +6218,42 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
                 break; // coming very soon now! 
+            /*case !!switchTest.match(/^closeuis$/):
+                 eventData.cancel = true;
+                 try{system.run(()=>world.getAllPlayers().forEach(p=>uiManager.closeAllForms(p))); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+             break; */
+            case !!switchTest.match(/^closeuis$/) || !!switchTest.match(/^closeui$/):
+                {
+                    eventData.cancel = true;
+                    srun(() => {
+                        try {
+                            const args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+                            const players = world.getAllPlayers();
+                            if ((args[1] ?? "").trim() == "") {
+                                try {
+                                    system.run(() => players.forEach(p => uiManager.closeAllForms(p)));
+                                }
+                                catch (e) {
+                                    eventData.sender.sendMessage("§c" + e + e.stack);
+                                }
+                            }
+                            else {
+                                const playerids = players.map(p => p.id);
+                                const targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(p => playerids.includes(p.id));
+                                try {
+                                    system.run(() => targets.forEach(p => uiManager.closeAllForms(p)));
+                                }
+                                catch (e) {
+                                    eventData.sender.sendMessage("§c" + e + e.stack);
+                                }
+                            }
+                        }
+                        catch (e) {
+                            player.sendError(e);
+                        }
+                    });
+                }
+                break;
             case !!switchTest.match(/^datapickblock$/) || !!switchTest.match(/^dpb$/):
                 eventData.cancel = true;
                 try {
@@ -13581,26 +13979,45 @@ ${command.dp}snapshot list`);
                 {
                     eventData.cancel = true;
                     srun(() => {
+                        const argsa = evaluateParameters(switchTestB, ["presetText", "f-fsqbc"]);
+                        const keepFeedback = argsa.args[1].f;
+                        const surpressFeedback = argsa.args[1].s;
+                        const silentCMD = argsa.args[1].q;
+                        const builtIn = argsa.args[1].b;
+                        const custom = argsa.args[1].c;
+                        let sendErrorsTo = undefined;
                         let wl = [new WorldPosition(tryget(() => player.modifiedlocation ?? player.location) ?? { x: 0, y: 0, z: 0 }, tryget(() => player.rotation ?? player.getRotation()) ?? { x: 0, y: 0 }, tryget(() => player.modifieddimension ?? player.dimension) ?? overworld, player.player, player.block)];
                         function evalExecuteCommand(rest) {
-                            const argsa = evaluateParameters(rest, ["presetText", "f-f"]);
+                            const argsa = evaluateParameters(rest, ["presetText"]);
                             const mode = argsa.args[0];
-                            const keepFeedback = argsa.args[1].f;
                             const resta = argsa.extra;
                             switch ((mode ?? "").toLowerCase()) {
                                 case "as":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.as(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.as(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
                                     break;
-                                case "at":
+                                case "at": {
+                                    const args = evaluateParameters(resta, ["targetSelector"]);
+                                    wl = wl.map((wl, i) => wl.at(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
+                                    evalExecuteCommand(args.extra);
+                                    return;
+                                }
+                                case "sendfeedbackto":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.at(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.setSendErrorsTo(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity)));
                                         evalExecuteCommand(args.extra);
+                                        return;
+                                    }
+                                    break;
+                                case "resetfeedbacktarget":
+                                    {
+                                        wl = wl.map((wl, i) => wl.clearSendErrorsTo());
+                                        evalExecuteCommand(resta);
                                         return;
                                     }
                                     break;
@@ -13631,7 +14048,7 @@ ${command.dp}snapshot list`);
                                 case "facing":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.facingEntity(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.facingEntity(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
@@ -13639,7 +14056,7 @@ ${command.dp}snapshot list`);
                                 case "facingentity":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.facingEntity(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.facingEntity(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
@@ -13678,7 +14095,7 @@ ${command.dp}snapshot list`);
                                 case "matchlocation":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.matchlocation(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.matchlocation(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
@@ -13686,7 +14103,7 @@ ${command.dp}snapshot list`);
                                 case "matchrotation":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.matchrotation(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.matchrotation(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
@@ -13694,7 +14111,7 @@ ${command.dp}snapshot list`);
                                 case "matchdimension":
                                     {
                                         const args = evaluateParameters(resta, ["targetSelector"]);
-                                        wl = wl.map((wl, i) => wl.matchdimension(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), player))).flat();
+                                        wl = wl.map((wl, i) => wl.matchdimension(targetSelectorAllListC(args.args[0], "", vTStr(wl.location), wl.entity))).flat();
                                         evalExecuteCommand(args.extra);
                                         return;
                                     }
@@ -13740,7 +14157,7 @@ ${command.dp}snapshot list`);
                                             case "entity":
                                                 {
                                                     const argsb = evaluateParameters(args.extra, ["targetSelector"]);
-                                                    wl = wl.filter(wl => !!targetSelectorAllListC(argsb.args[0], "", vTStr(wl.location), player));
+                                                    wl = wl.filter(wl => !!targetSelectorAllListC(argsb.args[0], "", vTStr(wl.location), wl.entity));
                                                     evalExecuteCommand(argsb.extra);
                                                     return;
                                                 }
@@ -13757,19 +14174,40 @@ ${command.dp}snapshot list`);
                                     break;
                                 case "run":
                                     {
-                                        wl.forEach(wl => chatCommands({ player: new executeCommandPlayerW(wl, keepFeedback ? player.player : undefined), newMessage: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), returnBeforeChatSend: false, event: { sender: wl.entity, message: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), cancel: false }, eventData: { sender: wl.entity, message: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), cancel: false }, fromExecute: true }));
+                                        wl.forEach(wl => chatCommands({ player: new executeCommandPlayerW(wl, surpressFeedback ? null : keepFeedback ? player.player : wl.sendErrorsTo), silentCMD: silentCMD, isBultIn: builtIn, isCustom: custom, newMessage: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), returnBeforeChatSend: false, event: { sender: wl.entity, message: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), cancel: false }, eventData: { sender: wl.entity, message: resta.trimStart().startsWith("\\") ? resta.trimStart() : "\\" + resta.trimStart(), cancel: false }, fromExecute: true }));
                                         return;
                                     }
                                     break;
                                 default:
-                                    player.sendMessage(`§cSyntax error: Unexpected "${mode}": at "${switchTestB.slice(-10 - rest.length, -rest.length)}>>${rest}<<"`);
+                                    player.sendMessageB(`§cSyntax error: Unexpected "${mode}": at "${switchTestB.slice(-10 - rest.length, -rest.length)}>>${rest}<<"`);
                                     return;
                                     break;
                             }
                         }
-                        const argsa = evaluateParameters(switchTestB, ["presetText"]);
                         evalExecuteCommand(argsa.extra);
                     });
+                }
+                break;
+            case !!switchTest.match(/^viewplayershops$/):
+                {
+                    eventData.cancel = true;
+                    if (config.shopSystem.player.enabled) {
+                        srun(() => PlayerShop.openPublicShopsSelector(player.player));
+                    }
+                    else {
+                        player.sendError("§cSystemNotEnabledError: You cannot use this command because the server shop system is not enabled.", true);
+                    }
+                }
+                break;
+            case !!switchTest.match(/^viewservershops$/):
+                {
+                    eventData.cancel = true;
+                    if (config.shopSystem.server.enabled) {
+                        srun(() => ServerShop.openPublicShopsSelector(player.player));
+                    }
+                    else {
+                        player.sendError("§cSystemNotEnabledError: You cannot use this command because the server shop system is not enabled.", true);
+                    }
                 }
                 break;
             default:
@@ -13791,7 +14229,7 @@ ${command.dp}snapshot list`);
 }
 export function evaluateSelectors(selector, options) {
     if (!!selector.trimStart().replaceAll("\\", "").match(/^(@[aeprs]\s*\[|@[aeprs]\s+)/)) {
-        return (!!options) ? !!options?.source ? !(options.source instanceof Block) ? targetSelectorAllListC(selector, "", (options.location ?? options.source.location).x + " " + (options.location ?? options.source.location).y + " " + (options.location ?? options.source.location).z, options.source) : targetSelectorAllListD(selector, (options.location ?? options.source.location).x + " " + (options.location ?? options.source.location).y + " " + (options.location ?? options.source.location).z, options.dimension ?? options.location?.dimension) : (!!options.dimension ?? options.location?.dimension) ? targetSelectorAllListE(selector, ((options.location ?? { x: 0, y: 0, z: 0 }).x + " " + (options.location ?? { x: 0, y: 0, z: 0 }).y + " " + (options.location ?? { x: 0, y: 0, z: 0 }).z)) : targetSelectorAllListD(selector, ((options.location ?? { x: 0, y: 0, z: 0 }).x + " " + (options.location ?? { x: 0, y: 0, z: 0 }).y + " " + (options.location ?? { x: 0, y: 0, z: 0 }).z), options.dimension ?? options.location?.dimension) : targetSelectorAllListE(selector, "0 0 0");
+        return (!!options) ? !!options?.source ? !(options.source instanceof Block) ? targetSelectorAllListC(selector, "", (options.location ?? options.source.location).x + " " + (options.location ?? options.source.location).y + " " + (options.location ?? options.source.location).z, options.source) : targetSelectorAllListD(selector, (options.location ?? options.source.location).x + " " + (options.location ?? options.source.location).y + " " + (options.location ?? options.source.location).z, options.dimension ?? options.location?.dimension) : (!!(options.dimension ?? options.location?.dimension)) ? targetSelectorAllListE(selector, ((options.location ?? { x: 0, y: 0, z: 0 }).x + " " + (options.location ?? { x: 0, y: 0, z: 0 }).y + " " + (options.location ?? { x: 0, y: 0, z: 0 }).z)) : targetSelectorAllListD(selector, ((options.location ?? { x: 0, y: 0, z: 0 }).x + " " + (options.location ?? { x: 0, y: 0, z: 0 }).y + " " + (options.location ?? { x: 0, y: 0, z: 0 }).z), options.dimension ?? options.location?.dimension) : targetSelectorAllListE(selector, "0 0 0");
     }
     else if ((options?.enableI ?? true) == true && !!selector.trimStart().replaceAll("\\", "").match(/^(@i\s*\[|@i\s+)/)) {
         return getEntityById(selector.trim().match(/^(?<=@i\s*\[((?:uu)?id=)?(?:")?)[\-\+]?\d(?=(?:")?\])/)[0]);
@@ -13813,10 +14251,10 @@ export function extractSelectors(str) {
             startIndex = i;
         }
         if (!insideQuotes) {
-            if (str[i] === '[') {
-                stack.push('[');
+            if (str[i] === "[") {
+                stack.push("[");
             }
-            else if (str[i] === ']') {
+            else if (str[i] === "]") {
                 if (stack.length > 0) {
                     stack.pop();
                     if (stack.length === 0 && startIndex !== -1) {
@@ -13829,8 +14267,11 @@ export function extractSelectors(str) {
                     startIndex = -1;
                 }
             }
-            else if (((str[i] !== ' ' && str[i] !== '' && str[i] !== undefined && (i - startIndex) >= 2) || (i == str.length - 1 && (i - startIndex) >= 1)) && startIndex !== -1 && stack.length === 0) {
-                selectors.push(str.substring(startIndex, i + (+(i == str.length - 1))).trim());
+            else if (((str[i] !== " " && str[i] !== "" && str[i] !== undefined && i - startIndex >= 2) ||
+                (i == str.length - 1 && i - startIndex >= 1)) &&
+                startIndex !== -1 &&
+                stack.length === 0) {
+                selectors.push(str.substring(startIndex, i + +(i == str.length - 1)).trim());
                 startIndex = -1;
             }
         }
@@ -13894,7 +14335,11 @@ export function evaluateParameters(commandstring, parameters) {
                 break;
             case p.type == "string":
                 {
-                    if (paramEval.trimStart().startsWith("\"")) {
+                    if (paramEval.trimStart().startsWith("\"\"")) {
+                        argumentsa.push("");
+                        paramEval = paramEval.trimStart().slice(2);
+                    }
+                    else if (paramEval.trimStart().startsWith("\"")) {
                         let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
                         paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
                         try {
@@ -14073,7 +14518,7 @@ export function evaluateParameters(commandstring, parameters) {
                         }
                     }
                     else {
-                        if (!!paramEval.trimStart().match(/^@[a-zA-Z]\s*[^\[]/)) {
+                        if (!!paramEval.trimStart().match(/^@[a-zA-Z]\s*(?![\s\[])/)) {
                             let value = paramEval.trimStart().match(/^@[seapvrc]/)[0];
                             paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                             try {
@@ -14468,7 +14913,7 @@ export function evaluateParametersOld(parameters, paramEvalA) {
                         }
                         ;
                         try {
-                            args.push(JSON.parse((paramEval.split(endCharacter + " ")[0] + endCharacter) ?? paramEval));
+                            args.push(JSON.parse(paramEval.split(endCharacter + " ")[0] + endCharacter));
                         }
                         catch (e) {
                             er.push([e, e.stack]);

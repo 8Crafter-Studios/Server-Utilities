@@ -550,7 +550,25 @@
          "path" : "dialogue/scene.json"
       },
       {
-         "path" : "entities/inventory.json"
+         "path" : "structures/SimulatedPlayerTests/navigate_to_location.mcstructure"
+      },
+      {
+         "path" : "node_modules/@minecraft/server-admin/index.d.ts"
+      },
+      {
+         "path" : "entities/player_shop_recieved_shop_items_storage.json"
+      },
+      {
+         "path" : "recipes/smithing_table/400minecraft;compound.json"
+      },
+      {
+         "path" : "src2/SimulatedPlayerTests.ts"
+      },
+      {
+         "path" : "recipes/smithing_table/1611minecraft;shears.json"
+      },
+      {
+         "path" : "entities/saved_shop_item.json"
       },
       {
          "path" : "recipes/smithing_table/1473minecraft;potion.27.json"
@@ -815,9 +833,6 @@
       },
       {
          "path" : "recipes/smithing_table/387minecraft;cocoa_beans.json"
-      },
-      {
-         "path" : "recipes/smithing_table/7minecraft;acacia_hanging_sign.json"
       },
       {
          "path" : "recipes/smithing_table/1218minecraft;mangrove_boat.json"
@@ -1286,12 +1301,6 @@
       },
       {
          "path" : "node_modules/@minecraft/server-admin/.eslintrc.json"
-      },
-      {
-         "path" : "structures/SimulatedPlayerTests/navigate_to_location.mcstructure"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-admin/index.d.ts"
       },
       {
          "path" : "recipes/smithing_table/933minecraft;hard_cyan_stained_glass.json"
@@ -1951,10 +1960,10 @@
          "path" : "node_modules/react-dom/cjs/react-dom-server-legacy.browser.production.min.js"
       },
       {
-         "path" : "node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js"
+         "path" : "recipes/smithing_table/1545minecraft;raw_iron.json"
       },
       {
-         "path" : "recipes/smithing_table/195minecraft;beetroot_seeds.json"
+         "path" : "recipes/smithing_table/1124minecraft;lightning_rod.json"
       },
       {
          "path" : "structures/VibrationTests/event_block_change.mcstructure"
@@ -1963,10 +1972,10 @@
          "path" : "recipes/smithing_table/1213minecraft;magenta_terracotta.json"
       },
       {
-         "path" : "recipes/smithing_table/1545minecraft;raw_iron.json"
+         "path" : "node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js"
       },
       {
-         "path" : "recipes/smithing_table/1124minecraft;lightning_rod.json"
+         "path" : "recipes/smithing_table/195minecraft;beetroot_seeds.json"
       },
       {
          "path" : "node_modules/react-dom/cjs/react-dom-server-legacy.node.production.min.js"
@@ -4678,12 +4687,6 @@
          "path" : "recipes/smithing_table/1604minecraft;sculk_vein.json"
       },
       {
-         "path" : "src2/SimulatedPlayerTests.ts"
-      },
-      {
-         "path" : "recipes/smithing_table/1611minecraft;shears.json"
-      },
-      {
          "path" : "recipes/smithing_table/1612minecraft;sheep_spawn_egg.json"
       },
       {
@@ -5713,6 +5716,9 @@
          "path" : "recipes/smithing_table/1972minecraft;wooden_shovel.json"
       },
       {
+         "path" : "scripts/ExtraFeatures/money.js"
+      },
+      {
          "path" : "recipes/smithing_table/1974minecraft;wooden_sword.json"
       },
       {
@@ -6173,9 +6179,6 @@
       },
       {
          "path" : "recipes/smithing_table/3minecraft;acacia_door.json"
-      },
-      {
-         "path" : "recipes/smithing_table/400minecraft;compound.json"
       },
       {
          "path" : "recipes/smithing_table/402minecraft;compound.2.json"
@@ -6712,6 +6715,9 @@
          "path" : "recipes/smithing_table/653minecraft;element_19.json"
       },
       {
+         "path" : "src/Global.ts"
+      },
+      {
          "path" : "recipes/smithing_table/654minecraft;element_2.json"
       },
       {
@@ -6938,6 +6944,9 @@
       },
       {
          "path" : "recipes/smithing_table/79minecraft;arrow.38.json"
+      },
+      {
+         "path" : "recipes/smithing_table/7minecraft;acacia_hanging_sign.json"
       },
       {
          "path" : "recipes/smithing_table/800minecraft;exposed_cut_copper_slab.json"
@@ -7363,6 +7372,9 @@
          "path" : "recipes/smithing_table/988minecraft;info_update2.json"
       },
       {
+         "path" : "scripts/Global.js.map"
+      },
+      {
          "path" : "recipes/smithing_table/990minecraft;invisible_bedrock.json"
       },
       {
@@ -7447,6 +7459,15 @@
          "path" : "scripts/ExtensionTests.js"
       },
       {
+         "path" : "scripts/ExtraFeatures/money.js.map"
+      },
+      {
+         "path" : "scripts/ExtraFeatures/player_shop.js"
+      },
+      {
+         "path" : "scripts/ExtraFeatures/player_shop.js.map"
+      },
+      {
          "path" : "structures/SmallMobTests/fence_side.mcstructure"
       },
       {
@@ -7460,6 +7481,9 @@
       },
       {
          "path" : "scripts/GameTestExtensions.js"
+      },
+      {
+         "path" : "scripts/Global.js"
       },
       {
          "path" : "structures/SculkTests/spread_to_moving_blocks.mcstructure"
@@ -7565,6 +7589,12 @@
       },
       {
          "path" : "scripts/WardenTests.js"
+      },
+      {
+         "path" : "src/ExtraFeatures/money.ts"
+      },
+      {
+         "path" : "src/ExtraFeatures/player_shop.ts"
       },
       {
          "path" : "src/Main/ban.ts"

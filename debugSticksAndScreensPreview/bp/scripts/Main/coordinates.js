@@ -23,7 +23,7 @@ import * as errors from "./errors";
 import mcMath from "@minecraft/math.js";
 import { vTStr } from "Main/commands";
 import { targetSelectorAllListC, targetSelectorAllListE } from "./command_utilities";
-import { shuffle, tryget } from "./utilities";
+import { shuffle } from "./utilities";
 import { NoSelectorMatchesError } from "./errors";
 mcServer;
 mcServerUi; /*
@@ -84,7 +84,7 @@ Vector.scale = mcMath.Vector3Utils.scale;
 Vector.slerp = mcMath.Vector3Utils.slerp;
 Vector.subtract = mcMath.Vector3Utils.subtract;
 export class WorldPosition {
-    constructor(location, rotation, dimension, entity, block) {
+    constructor(location, rotation, dimension, entity, block, sendErrorsTo) {
         this.location = location;
         this.rotation = rotation;
         if (dimension == undefined) { }
@@ -93,7 +93,8 @@ export class WorldPosition {
         }
         ;
         this.entity = entity;
-        this.block = block; /*
+        this.block = block;
+        this.sendErrorsTo = sendErrorsTo; /*
         if(dimension.constructor.name == DimensionType.constructor.name){this.dimension = world.getDimension((dimension as DimensionType)?.typeId)}else{this.dimension = world.getDimension((dimension as Dimension)?.id)}; */
     }
     get location() {
@@ -109,7 +110,7 @@ export class WorldPosition {
         return this.rotx + " " + this.roty;
     }
     get locationrotation() {
-        return { x: this.x, y: this.y, z: this.z, rotx: this.rotx, roty: this.roty };
+        return { x: this.x, y: this.y, z: this.z, rotX: this.rotx, rotY: this.roty };
     }
     get directionvector() {
         return anglesToDirectionVectorDeg(this.rotx, this.roty);
@@ -162,7 +163,7 @@ export class WorldPosition {
                 throw (new NoSelectorMatchesError("No targets matched selector"));
             }
             ;
-            worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, tryget(() => entity?.getRotation()) ?? this.rotation, entity.dimension ?? this.dimension, this.entity, this.block));
+            worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, tryget(() => entity?.getRotation()) ?? this.rotation, entity.dimension ?? this.dimension, this.entity, this.block, this.sendErrorsTo));
         }
         else {
             if (this.entity == undefined) {
@@ -171,7 +172,7 @@ export class WorldPosition {
                     throw (new NoSelectorMatchesError("No targets matched selector"));
                 }
                 ;
-                worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, tryget(() => entity?.getRotation()) ?? this.rotation, entity.dimension ?? this.dimension, this.entity, this.block));
+                worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, tryget(() => entity?.getRotation()) ?? this.rotation, entity.dimension ?? this.dimension, this.entity, this.block, this.sendErrorsTo));
             }
             else {
                 let entities = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
@@ -179,10 +180,47 @@ export class WorldPosition {
                     throw (new NoSelectorMatchesError("No targets matched selector"));
                 }
                 ;
-                worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, tryget(() => entity?.getRotation()) ?? this.rotation, entity.dimension ?? this.dimension, this.entity, this.block));
+                worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, tryget(() => entity?.getRotation()) ?? this.rotation, entity.dimension ?? this.dimension, this.entity, this.block, this.sendErrorsTo));
             }
         }
         return worldpositionlist;
+    }
+    setSendErrorsTo(target) {
+        if (target.constructor.name == "Array") {
+            let entities = target;
+            if (entities.length == 0) {
+                throw (new NoSelectorMatchesError("No targets matched selector"));
+            }
+            ;
+            this.sendErrorsTo = entities.length == 1 ? entities[0] : entities;
+        }
+        else {
+            if (this.entity == undefined) {
+                let entities = targetSelectorAllListE(target, this.x + " " + this.y + " " + this.z);
+                if (entities.length == 0) {
+                    throw (new NoSelectorMatchesError("No targets matched selector"));
+                }
+                ;
+                this.sendErrorsTo = entities.length == 1 ? entities[0] : entities;
+            }
+            else {
+                let entities = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
+                if (entities.length == 0) {
+                    throw (new NoSelectorMatchesError("No targets matched selector"));
+                }
+                ;
+                this.sendErrorsTo = entities.length == 1 ? entities[0] : entities;
+            }
+        }
+        return this;
+    }
+    clearSendErrorsTo() {
+        this.sendErrorsTo = null;
+        return this;
+    }
+    resetSendErrorsTo() {
+        this.sendErrorsTo = undefined;
+        return this;
     }
     as(target) {
         let entitylist = [];
@@ -197,7 +235,7 @@ export class WorldPosition {
                 entitylist = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
             }
         }
-        return entitylist.map(v => new WorldPosition(this.location, this.rotation, this.dimension, v, this.block));
+        return entitylist.map(v => new WorldPosition(this.location, this.rotation, this.dimension, v, this.block, this.sendErrorsTo));
     }
     asblock(block) {
         if (block.constructor.name == "Block") {
@@ -217,7 +255,7 @@ export class WorldPosition {
                 throw (new NoSelectorMatchesError("No targets matched selector"));
             }
             ;
-            worldpositionlist = entities.map(entity => new WorldPosition(this.location, tryget(() => entity?.getRotation()) ?? this.rotation, this.dimension, this.entity, this.block));
+            worldpositionlist = entities.map(entity => new WorldPosition(this.location, tryget(() => entity?.getRotation()) ?? this.rotation, this.dimension, this.entity, this.block, this.sendErrorsTo));
         }
         else {
             if (this.entity == undefined) {
@@ -226,7 +264,7 @@ export class WorldPosition {
                     throw (new NoSelectorMatchesError("No targets matched selector"));
                 }
                 ;
-                worldpositionlist = entities.map(entity => new WorldPosition(this.location, tryget(() => entity?.getRotation()) ?? this.rotation, this.dimension, this.entity, this.block));
+                worldpositionlist = entities.map(entity => new WorldPosition(this.location, tryget(() => entity?.getRotation()) ?? this.rotation, this.dimension, this.entity, this.block, this.sendErrorsTo));
             }
             else {
                 let entities = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
@@ -234,7 +272,7 @@ export class WorldPosition {
                     throw (new NoSelectorMatchesError("No targets matched selector"));
                 }
                 ;
-                worldpositionlist = entities.map(entity => new WorldPosition(this.location, tryget(() => entity?.getRotation()) ?? this.rotation, this.dimension, this.entity, this.block));
+                worldpositionlist = entities.map(entity => new WorldPosition(this.location, tryget(() => entity?.getRotation()) ?? this.rotation, this.dimension, this.entity, this.block, this.sendErrorsTo));
             }
         }
         return worldpositionlist;
@@ -247,7 +285,7 @@ export class WorldPosition {
                 throw (new NoSelectorMatchesError("No targets matched selector"));
             }
             ;
-            worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, this.rotation, this.dimension, this.entity, this.block));
+            worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, this.rotation, this.dimension, this.entity, this.block, this.sendErrorsTo));
         }
         else {
             if (this.entity == undefined) {
@@ -256,7 +294,7 @@ export class WorldPosition {
                     throw (new NoSelectorMatchesError("No targets matched selector"));
                 }
                 ;
-                worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, this.rotation, this.dimension, this.entity, this.block));
+                worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, this.rotation, this.dimension, this.entity, this.block, this.sendErrorsTo));
             }
             else {
                 let entities = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
@@ -264,7 +302,7 @@ export class WorldPosition {
                     throw (new NoSelectorMatchesError("No targets matched selector"));
                 }
                 ;
-                worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, this.rotation, this.dimension, this.entity, this.block));
+                worldpositionlist = entities.map(entity => new WorldPosition(entity?.location ?? this.location, this.rotation, this.dimension, this.entity, this.block, this.sendErrorsTo));
             }
         }
         return worldpositionlist;
@@ -277,7 +315,7 @@ export class WorldPosition {
                 throw (new NoSelectorMatchesError("No targets matched selector"));
             }
             ;
-            worldpositionlist = entities.map(entity => new WorldPosition(this.location, this.rotation, entity?.dimension ?? this.dimension, this.entity, this.block));
+            worldpositionlist = entities.map(entity => new WorldPosition(this.location, this.rotation, entity?.dimension ?? this.dimension, this.entity, this.block, this.sendErrorsTo));
         }
         else {
             if (this.entity == undefined) {
@@ -286,7 +324,7 @@ export class WorldPosition {
                     throw (new NoSelectorMatchesError("No targets matched selector"));
                 }
                 ;
-                worldpositionlist = entities.map(entity => new WorldPosition(this.location, this.rotation, entity?.dimension ?? this.dimension, this.entity, this.block));
+                worldpositionlist = entities.map(entity => new WorldPosition(this.location, this.rotation, entity?.dimension ?? this.dimension, this.entity, this.block, this.sendErrorsTo));
             }
             else {
                 let entities = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
@@ -294,7 +332,7 @@ export class WorldPosition {
                     throw (new NoSelectorMatchesError("No targets matched selector"));
                 }
                 ;
-                worldpositionlist = entities.map(entity => new WorldPosition(this.location, this.rotation, entity?.dimension ?? this.dimension, this.entity, this.block));
+                worldpositionlist = entities.map(entity => new WorldPosition(this.location, this.rotation, entity?.dimension ?? this.dimension, this.entity, this.block, this.sendErrorsTo));
             }
         }
         return worldpositionlist;
@@ -332,7 +370,7 @@ export class WorldPosition {
                 throw (new NoSelectorMatchesError("No targets matched selector"));
             }
             ;
-            worldpositionlist = entities.map(entity => new WorldPosition(this.location, facingPoint(this.location, entity.location).rot, this.dimension, this.entity, this.block));
+            worldpositionlist = entities.map(entity => new WorldPosition(this.location, facingPoint(this.location, entity.location).rot, this.dimension, this.entity, this.block, this.sendErrorsTo));
         }
         else {
             if (this.entity == undefined) {
@@ -341,7 +379,7 @@ export class WorldPosition {
                     throw (new NoSelectorMatchesError("No targets matched selector"));
                 }
                 ;
-                worldpositionlist = entities.map(entity => new WorldPosition(this.location, facingPoint(this.location, entity.location).rot, this.dimension, this.entity, this.block));
+                worldpositionlist = entities.map(entity => new WorldPosition(this.location, facingPoint(this.location, entity.location).rot, this.dimension, this.entity, this.block, this.sendErrorsTo));
             }
             else {
                 let entities = targetSelectorAllListC(target, "", this.x + " " + this.y + " " + this.z, this.entity);
@@ -349,7 +387,7 @@ export class WorldPosition {
                     throw (new NoSelectorMatchesError("No targets matched selector"));
                 }
                 ;
-                worldpositionlist = entities.map(entity => new WorldPosition(this.location, facingPoint(this.location, entity.location).rot, this.dimension, this.entity, this.block));
+                worldpositionlist = entities.map(entity => new WorldPosition(this.location, facingPoint(this.location, entity.location).rot, this.dimension, this.entity, this.block, this.sendErrorsTo));
             }
         }
         return worldpositionlist;
@@ -374,7 +412,7 @@ export class WorldPosition {
         return this;
     }
     static fromentity(entity) {
-        return new WorldPosition(entity?.location, entity?.getRotation(), entity?.dimension, entity);
+        return new WorldPosition(entity?.location, entity?.getRotation(), entity?.dimension, entity, undefined, entity);
     }
     static fromblock(block) {
         const fdcb = [{ x: 90, y: 0 }, { x: -90, y: 0 }, { x: 0, y: 180 }, { x: 0, y: 0 }, { x: 0, y: 90 }, { x: 0, y: -90 }];
@@ -433,11 +471,47 @@ export function getDistance(point1, point2) {
     const deltaZ = point2.z - point1.z;
     return Math.sqrt(deltaX ** 2 + deltaY ** 2 + deltaZ ** 2);
 }
+/**
+ * @deprecated Use {@link getChunkIndexC} instead.
+ * @param location
+ * @returns
+ */
 export function getChunkIndex(location) { return { x: Math.floor(location.x / 16), y: Math.floor(location.z / 16) }; }
+/**
+ * @deprecated Use {@link getChunkIndexC} instead.
+ * @param x
+ * @param z
+ * @returns
+ */
 export function getChunkIndexB(x, z) { return { x: Math.floor(x / 16), y: Math.floor(z / 16) }; }
+/**
+ * @deprecated
+ * @param location
+ * @returns
+ */
 export function getChunkIndexC(location) { return { x: Math.floor(location.x / 16), y: Math.floor(location.y / 16) }; }
+/**
+ * The newest and recommended version of this function to use.
+ * @param location
+ * @returns A VectorXZ object containg the chunk index.
+ */
+export function getChunkIndexD(location) { return { x: Math.floor(location.x / 16), z: Math.floor(location.z / 16) }; }
+/**
+ * @deprecated Use {@link chunkIndexToBoundingBoxXZ} instead.
+ * @param chunkIndex
+ * @param heightRange
+ * @returns
+ */
 export function chunkIndexToBoundingBox(chunkIndex, heightRange = [-64, 320]) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange[0], z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange[1], z: Math.round((chunkIndex.y * 16) + 15) } }; }
+/**
+ * @deprecated Use {@link chunkIndexToBoundingBoxXZB} instead.
+ * @param chunkIndex
+ * @param heightRange
+ * @returns
+ */
 export function chunkIndexToBoundingBoxB(chunkIndex, heightRange = { min: -64, max: 320 }) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange.min, z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange.max, z: Math.round((chunkIndex.y * 16) + 15) } }; }
+export function chunkIndexToBoundingBoxXZ(chunkIndex, heightRange = [-64, 320]) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange[0], z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange[1], z: Math.round((chunkIndex.y * 16) + 15) } }; }
+export function chunkIndexToBoundingBoxXZB(chunkIndex, heightRange = { min: -64, max: 320 }) { return { from: { x: Math.floor(chunkIndex.x * 16), y: heightRange.min, z: Math.floor(chunkIndex.y * 16) }, to: { x: Math.round((chunkIndex.x * 16) + 15), y: heightRange.max, z: Math.round((chunkIndex.y * 16) + 15) } }; }
 export function doBoundingBoxesIntersect(box1, box2) {
     // Check for intersection along each axis
     const intersectX = (box1.min.x <= box2.max.x && box1.max.x >= box2.min.x);
@@ -446,6 +520,22 @@ export function doBoundingBoxesIntersect(box1, box2) {
     // If all axes intersect, the bounding boxes intersect
     return intersectX && intersectY && intersectZ;
 }
+Object.defineProperties(Entity.prototype, {
+    directionvector: {
+        get: function directionvector() {
+            return anglesToDirectionVectorDeg(this.rotx, this.roty);
+        },
+        configurable: true,
+        enumerable: true
+    },
+    chunkIndex: {
+        get: function chunkIndex() {
+            return getChunkIndexD(this.xz);
+        },
+        configurable: true,
+        enumerable: true
+    }
+});
 export function VSTR(vector1, vector2) { return { from: { x: Math.min(vector1.x, vector2.x), y: Math.min(vector1.y, vector2.y), z: Math.min(vector1.z, vector2.z) }, to: { x: Math.max(vector1.x, vector2.x), y: Math.max(vector1.y, vector2.y), z: Math.max(vector1.z, vector2.z) } }; }
 export const approximatelyEqual = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
 export const approxEqual = (v1, v2, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon;
@@ -2599,6 +2689,9 @@ export function roundVector3ToMiddleOfBlock(vector) {
 }
 export function roundVector3ToMiddleOfBlockFloorY(vector) {
     return { x: Math.floor(vector.x) + 0.5, y: Math.floor(vector.y), z: Math.floor(vector.z) + 0.5 };
-}
-;
+} /*
+declare global {
+    class Entity {
+        localTeleport(localTeleport: ILocalTeleport): void;
+    }}; */
 //# sourceMappingURL=coordinates.js.map

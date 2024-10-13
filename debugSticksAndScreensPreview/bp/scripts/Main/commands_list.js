@@ -1697,6 +1697,40 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
+        formatting_code: "§r§e",
+        commandName: "closeuis",
+        escregexp: {
+            v: "^closeuis$"
+        },
+        aliases: [
+            {
+                commandName: "closeui",
+                escregexp: {
+                    v: "^closeui$"
+                }
+            }
+        ],
+        formats: [
+            {
+                format: "closeuis [targets: target[?=@a,allowMultiple=true,playersOnly=true]]"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "uis"
+        ],
+        commandSettingsId: "built-inCommandSettings:closeuis",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
         formatting_code: "§r§f",
         commandName: "compressitems",
         escregexp: {
@@ -2319,6 +2353,40 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "extrafeaturessettings",
+        escregexp: {
+            v: "^extrafeaturessettings$"
+        },
+        aliases: [
+            {
+                commandName: "extrasettings",
+                escregexp: {
+                    v: "^extrasettings$"
+                }
+            }
+        ],
+        formats: [
+            {
+                format: "extrafeaturessettings"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "uis"
+        ],
+        commandSettingsId: "built-inCommandSettings:extrafeaturessettings",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "fill",
         escregexp: {
             v: "^fill$"
@@ -2588,10 +2656,10 @@ export const commands = [
         },
         formats: [
             {
-                format: "getuuid <targetSelector: targetSelector>"
+                format: "getuuid <targets: target[allowMultiple=true]>"
             }
         ],
-        command_version: "1.0.2",
+        command_version: "2.0.0",
         description: "",
         category: [
             "entities"
@@ -3037,6 +3105,32 @@ export const commands = [
     },
     {
         type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
+        commandName: "hlist",
+        escregexp: {
+            v: "^hlist$"
+        },
+        formats: [
+            {
+                format: "hlist"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "Lists all of your currently saved hotbar presets.",
+        category: [
+            "containers/inventories"
+        ],
+        commandSettingsId: "built-inCommandSettings:hlist",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
         requiredTags: [],
         formatting_code: "§r§f",
         commandName: "home",
@@ -3072,7 +3166,7 @@ export const commands = [
         },
         formats: [
             {
-                format: "hset <presetId: float> [dimensionId: string] [x: float] [y: float] [z: float]"
+                format: "hset <presetId: float> [dimensionId: string] [location: x y z]"
             }
         ],
         command_version: "1.0.0",
@@ -4475,6 +4569,46 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "playershopsystemsettings",
+        escregexp: {
+            v: "^playershopsystemsettings$"
+        },
+        aliases: [
+            {
+                commandName: "playershopsyssettings",
+                escregexp: {
+                    v: "^playershopsyssettings$"
+                }
+            },
+            {
+                commandName: "plyrshopsyssettings",
+                escregexp: {
+                    v: "^plyrshopsyssettings$"
+                }
+            }
+        ],
+        formats: [
+            {
+                format: "playershopsystemsettings"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "uis"
+        ],
+        commandSettingsId: "built-inCommandSettings:playershopsystemsettings",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "printlayers",
         escregexp: {
             v: "^printlayers$"
@@ -4868,6 +5002,46 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "servershopsystemsettings",
+        escregexp: {
+            v: "^servershopsystemsettings$"
+        },
+        aliases: [
+            {
+                commandName: "servershopsyssettings",
+                escregexp: {
+                    v: "^servershopsyssettings$"
+                }
+            },
+            {
+                commandName: "srvrshopsyssettings",
+                escregexp: {
+                    v: "^srvrshopsyssettings$"
+                }
+            }
+        ],
+        formats: [
+            {
+                format: "servershopsystemsettings"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "uis"
+        ],
+        commandSettingsId: "built-inCommandSettings:servershopsystemsettings",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "setitem",
         escregexp: {
             v: "^setitem$"
@@ -4939,7 +5113,7 @@ export const commands = [
             }
         ],
         formats: [],
-        command_version: "1.0.2",
+        command_version: "1.1.0",
         description: "",
         category: [
             "misc"
@@ -4971,6 +5145,40 @@ export const commands = [
             "uis"
         ],
         commandSettingsId: "built-inCommandSettings:settings",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
+        commandName: "shopsystemsettings",
+        escregexp: {
+            v: "^shopsystemsettings$"
+        },
+        aliases: [
+            {
+                commandName: "shopsyssettings",
+                escregexp: {
+                    v: "^shopsyssettings$"
+                }
+            }
+        ],
+        formats: [
+            {
+                format: "shopsystemsettings"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "uis"
+        ],
+        commandSettingsId: "built-inCommandSettings:shopsystemsettings",
         deprecated: false,
         functional: true,
         hidden: false,
@@ -6103,6 +6311,54 @@ export const commands = [
             "warps"
         ],
         commandSettingsId: "built-inCommandSettings:wset",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [],
+        formatting_code: "§r§f",
+        commandName: "viewplayershops",
+        escregexp: {
+            v: "^viewplayershops$"
+        },
+        formats: [
+            {
+                format: "viewplayershops"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "shop_system"
+        ],
+        commandSettingsId: "built-inCommandSettings:viewplayershops",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [],
+        formatting_code: "§r§f",
+        commandName: "viewservershops",
+        escregexp: {
+            v: "^viewservershops$"
+        },
+        formats: [
+            {
+                format: "viewservershops"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "shop_system"
+        ],
+        commandSettingsId: "built-inCommandSettings:viewservershops",
         deprecated: false,
         functional: true,
         hidden: false,

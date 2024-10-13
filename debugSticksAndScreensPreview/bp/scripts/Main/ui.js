@@ -1,5 +1,5 @@
 import { Player, system, world, Entity, Block, BlockPermutation, BlockTypes, DyeColor, ItemStack, SignSide, Dimension, BlockInventoryComponent, EntityEquippableComponent, EntityInventoryComponent, EquipmentSlot, ItemDurabilityComponent, ItemEnchantableComponent, ItemLockMode, ContainerSlot, GameRules, GameRule, StructureSaveMode } from "@minecraft/server";
-import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason } from "@minecraft/server-ui";
+import { ModalFormData, ActionFormData, MessageFormData, ModalFormResponse, ActionFormResponse, MessageFormResponse, FormCancelationReason, uiManager } from "@minecraft/server-ui";
 import { getUICustomForm, format_version, srun, dimensionTypeDisplayFormatting, config, dimensionsd, dimensions, dimensionse, dimensionTypeDisplayFormattingB } from "Main";
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
@@ -28,8 +28,10 @@ import mcMath from "@minecraft/math.js";
 import { chatCommands, command, commandSettings, command_settings_format_version, commands_format_version, evaluateParameters, executeCommandPlayerW, generateNBTFile, generateNBTFileB, generateNBTFileD } from "Main/commands";
 import { chatMessage, chatSend } from "./chat";
 import { targetSelectorAllListC } from "./command_utilities";
-import { cullEmpty, JSONParse, JSONStringify, tryget, tryrun } from "./utilities";
 import { commands } from "./commands_list";
+import { mainShopSystemSettings } from "ExtraFeatures/shop_main";
+import { MoneySystem } from "ExtraFeatures/money";
+import { showMessage } from "./utilities";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -48,11 +50,12 @@ mcMath;
 export const ui_format_version = "1.17.0";
 //${se}console.warn(JSON.stringify(evaluateParameters(["presetText", "string", "json", "number", "boolean", "string", "presetText", "presetText"], "test test [{\"test\": \"test\"}, [\"test\", \"test\"] , \"test\", \"test\"] 1 true \"test \\\"test\" test test"))); 
 /**
- * Returns the sum of a and b
- * @param {ModalFormData|ActionFormData|MessageFormData} form
- * @param {Player} player
- * @param {number} timeout If set to true, the function will return an array
- * @returns {ModalFormResponse|ActionFormResponse|MessageFormResponse|undefined} Sum of a and b or an array that contains a, b and the sum of a and b.
+ * Forces a form to show even if the player has another form or menu open.
+ * If the player has another form or menu open then it will wait until they close it.
+ * @param {ModalFormData|ActionFormData|MessageFormData} form The form to show
+ * @param {Player} player The player to show the form to
+ * @param {number} timeout The number of ticks before the function will give up and throw an error, it defaults to 9999
+ * @returns {ModalFormResponse|ActionFormResponse|MessageFormResponse|undefined} The response of the form
  */
 export async function forceShow(form, player, timeout) {
     const timeoutTicks = system.currentTick + (timeout ?? 9999);
@@ -316,6 +319,68 @@ export function customFormListSelectionMenu(player) {
     });
 }
 ;
+export async function infiniteUI(player) {
+    return await new ActionFormData()
+        .title("Infinite Form")
+        .body("You are now trapped in an infinite form.")
+        .button("Okay")
+        .forceShow(player, Infinity)
+        .then(() => infiniteUI(player), e => (console.error(e, e?.stack), e));
+}
+export function infiniteUIv2(player) {
+    return system.runInterval(async () => {
+        uiManager.closeAllForms(player);
+        return await new ActionFormData()
+            .title("Infinite Form")
+            .body("You are now trapped in an infinite form.")
+            .button("Okay")
+            .forceShow(player, 5);
+    }, 5);
+}
+export function infiniteUIv3(player, interval = 1, title = "Infinite Form", body = "You are now trapped in an infinite form.", button = "Okay") {
+    return system.runInterval(async () => {
+        uiManager.closeAllForms(player);
+        return await new ActionFormData()
+            .title(title)
+            .body(body)
+            .button(button)
+            .forceShow(player, interval);
+    }, interval);
+}
+export function infiniteUIv4(player, interval = 1, title = "Infinite Form", body = "You are now trapped in an infinite form.", button = "Okay") {
+    return system.runInterval(async () => {
+        uiManager.closeAllForms(player);
+        await new ActionFormData()
+            .title(title)
+            .body(body)
+            .button(button)
+            .forceShow(player, interval);
+        uiManager.closeAllForms(player);
+        await new ActionFormData()
+            .title(title)
+            .body(body)
+            .button(button)
+            .forceShow(player, interval);
+        uiManager.closeAllForms(player);
+        await new ActionFormData()
+            .title(title)
+            .body(body)
+            .button(button)
+            .forceShow(player, interval);
+        uiManager.closeAllForms(player);
+        await new ActionFormData()
+            .title(title)
+            .body(body)
+            .button(button)
+            .forceShow(player, interval);
+        uiManager.closeAllForms(player);
+        return await new ActionFormData()
+            .title(title)
+            .body(body)
+            .button(button)
+            .forceShow(player, interval);
+    }, interval);
+}
 export function mainMenu(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData();
@@ -759,20 +824,20 @@ export function globalSettings(sourceEntitya) {
     form2.textField("§l§fchatRankPrefix§r§f\nPrefix for chat ranks, default is rank:", "string", String(world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:"));
     form2.textField("§l§fchatSudoPrefix§r§f\nPrefix for custom chat names, default is sudo:", "string", String(world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")); /*
     form2.textField("§l§frankDisplayPrefix§r§f\nPrefix that appears before chat ranks in chat messages, default is \"[\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "["));
-    form2.textField("§l§frankDisplaySuffix§r§f\nSuffix that appears after chat ranks in chat messages, default is \"\uF019r\uF019f]\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "§r§f]"));
+    form2.textField("§l§frankDisplaySuffix§r§f\nSuffix that appears after chat ranks in chat messages, default is \"\uF019r]\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "§r§f]"));
     form2.textField("§l§frankDisplaySeparator§r§f\nSeparator that appears between ranks, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "));
     form2.textField("§l§fnameDisplayPrefix§r§f\nPrefix that appears before player's names in chat messages, default is \"<\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<"));
-    form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after player's names in chat messages, default is \"\uF019r\uF019f>\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"));
+    form2.textField("§l§fnameDisplaySuffix§r§f\nSuffix that appears after player's names in chat messages, default is \"\uF019r>\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"));
     form2.textField("§l§fchatNameAndMessageSeparator§r§f\nSeparator that appears between player's names and player's chat messages, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));*/
     form2.textField("§l§fgametestStructureDefaultSpawnLocation§r§f\nThe default spawn location for the gametest structures, this is used when spawning in no ai entities or spawning in simulated players", "x y z", cullEmpty([(world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {})["x"], (world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {})["y"], (world.getDynamicProperty("andexdbSettings:gametestStructureDefaultSpawnLocation") ?? {})["z"]]).join(" "));
     form2.textField("§l§fspawnCommandLocation§r§f\nThe location to teleport players when they use the \\spawn command, it is a list of coordinates separated by spaces, leaving it blank will disable the spawn command", "x y z", cullEmpty([config.spawnCommandLocation.x, config.spawnCommandLocation.y, config.spawnCommandLocation.z]).join(" "));
     form2.dropdown("§l§fspawnCommandDimension§r§f\nThe dimension to teleport players when they use the \\spawn command, it is a list of coordinates separated by spaces, the default is overworld", ["§aOverworld", "§cNether", "§dThe End"], dimensionsd.indexOf(config.spawnCommandLocation.dimension.id));
-    form2.dropdown("§l§finvalidChatCommandAction§r§f\nWhat to do when a chat command is typed that does not exist, or that the player does not have permission to use. ", ["Do Nothing", "Send Message", "Cancel Message", "Warn Player"], Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 0));
+    form2.dropdown("§l§finvalidChatCommandAction§r§f\nWhat to do when a chat command is typed that does not exist, or that the player does not have permission to use. ", ["Do Nothing", "Send Message", "Cancel Message", "Warn Player"], Number(world.getDynamicProperty("andexdbSettings:invalidChatCommandAction") ?? 3));
     form2.toggle("§l§fchatCommandsEnbaled§r§f\nSets whether or not to enable the chat commands, default is true", Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") ?? true)); /*
     form2.toggle("§l§fautoEscapeChatMessages§r§f\nEvaluates escape codes in the chat automatically, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") ?? false));
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\nSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
-    form2.toggle("§l§fchatDisplayTimeStamp§r§f\nSets whether or not to put a timestamp before every chat message, default is false", config.chatDisplayTimeStamp);*/
+    form2.toggle("§l§fchatDisplayTimeStamp§r§f\nSets whether or not to put a timestamp before every chat message, default is false", config.chatRanks.chatDisplayTimeStamp);*/
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
@@ -823,14 +888,14 @@ export function chatRanksSettings(sourceEntitya) {
     //⌠⌡÷≈≡±≥≤»
     form2.dropdown("§l§fRank Style/Mode§r§f\nCustom(Simple): Allows for simple customizations to the rank and message formatting.\nCustom(Advanced): Allows for complete control over the rank and message formatting.\nStyle 1: \"§r§f[10:09:00 AM] [§bRank§f] [§cOther Rank§f] <Steve> Hi\nStyle 2: \"§r§8[§f10:09:00 AM§8] [§bRank§8] [§cOther Rank§8] §fSteve§8 » §fHi\nStyle 3: \"§r§8[§f10:09:00 AM§8] [§bRank§8] [§cOther Rank§8] §fSteve >> Hi\nStyle 4: \"§r§7[10:09:00 AM] [§bRank§7] [§cOther Rank§7] §7Steve§l > §r§fHi\"\nStyle 5: \"§r§f[10:09:00 AM] [§bRank§f,§cOther Rank§f] §7Steve: §fHi\"\nDefault is Custom(Simple).", rankModesArray, rankModesArray.indexOf(rankModes[String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple")]));
     form2.textField("§l§frankDisplayPrefix§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fPrefix that appears before chat ranks in chat messages, default is \"[\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "["));
-    form2.textField("§l§frankDisplaySuffix§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fSuffix that appears after chat ranks in chat messages, default is \"\uF019r\uF019f]\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "§r§f]"));
+    form2.textField("§l§frankDisplaySuffix§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fSuffix that appears after chat ranks in chat messages, default is \"\uF019r]\"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "§r§f]"));
     form2.textField("§l§fnameDisplayPrefix§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fPrefix that appears before player's names in chat messages, default is \"<\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "<"));
-    form2.textField("§l§fnameDisplaySuffix§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fSuffix that appears after player's names in chat messages, default is \"\uF019r\uF019f>\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"));
+    form2.textField("§l§fnameDisplaySuffix§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fSuffix that appears after player's names in chat messages, default is \"\uF019r>\"", "string", String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r§f>"));
     form2.textField("§l§fchatNameAndMessageSeparator§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fSeparator that appears between player's names and player's chat messages, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
     form2.textField("§l§frankDisplaySeparator§r§f\n§r§o§qOnly applies to Custom(Simple) and Custom(Advanced) mode.\n§r§fSeparator that appears between ranks, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "));
-    form2.textField("§l§fRank Template String§r§f\n§r§o§2Only applies to Custom(Advanced) mode.\n§r§fThe format for the chat ranks, it is a javascript template string, for example \"[${rank}\uF019r\uF019f]\", default is \"[${rank}\uF019r\uF019f]\"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]"));
-    form2.textField("§l§fMessage Template String§r§f\n§r§o§2Only applies to Custom(Advanced) mode.\n§r§fThe format for the chat message, it is a javascript template string, for example \"\uF019r\uF019f${timestampenabled?`[${timestamp}]`:\"\"}${ranks}\uF019r\uF019f${(ranks!=\"\")?\" \":\"\"}<${name}\uF019r\uF019f> \", default is \"\uF019r\uF019f${timestampenabled?`[${timestamp}]`:\"\"}${ranks}\uF019r\uF019f${(ranks!=\"\")?\" \":\"\"}<${name}\uF019r\uF019f> \"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ?? "§r§f${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r§f${(ranks!=\"\")?\" \":\"\"}<${name}§r§f> ${message}"));
-    form2.textField("§l§fDefault Rank Template String For Players With No Rank§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fThe default chat rank for players who do not have any chat ranks, it is a javascript template string, for example \"[\uF019bMember\uF019r\uF019f]\", default is \"\"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? ""));
+    form2.textField("§l§fRank Template String§r§f\n§r§o§2Only applies to Custom(Advanced) mode.\n§r§fThe format for the chat ranks, it is a javascript template string, for example \"[${rank}\uF019r]\", default is \"[${rank}\uF019r]\"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]"));
+    form2.textField("§l§fMessage Template String§r§f\n§r§o§2Only applies to Custom(Advanced) mode.\n§r§fThe format for the chat message, it is a javascript template string, for example \"\uF019r${timestampenabled?`[${timestamp}]`:\"\"}${ranks}\uF019r${(ranks!=\"\")?\" \":\"\"}<${name}\uF019r> \", default is \"\uF019r${timestampenabled?`[${timestamp}]`:\"\"}${ranks}\uF019r${(ranks!=\"\")?\" \":\"\"}<${name}\uF019r> \"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ?? "§r§f${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r§f${(ranks!=\"\")?\" \":\"\"}<${name}§r§f> ${message}"));
+    form2.textField("§l§fDefault Rank Template String For Players With No Rank§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fThe default chat rank for players who do not have any chat ranks, it is a javascript template string, for example \"[\uF019bMember\uF019r]\", default is \"\"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? ""));
     form2.textField("§l§fDefault Message Formatting§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fThe default format for the message portion of the chat message to use when the player does not have any messageFormatting: or messageColor: tags, it is just a string of format codes, such as \"\uF019r\uF019l\uF019b\", leaving this empty will make the message use the default message formatting of the selected rank style/mode, default is \"\"", "string", String(world.getDynamicProperty("andexdbSettings:defaultMessageFormatting") ?? ""));
     form2.textField("§l§fDefault Name Formatting§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fThe default format for the name of the player sending the chat message to use when the player does not have any nameFormatting: or nameColor: tags, it is just a string of format codes, such as \"\uF019r\uF019l\uF019b\", leaving this empty will make the message use the default name formatting of the selected rank style/mode, default is \"\"", "string", String(world.getDynamicProperty("andexdbSettings:defaultNameFormatting") ?? ""));
     form2.textField("§l§fDefault Separator Formatting§r§f\n§r§o§9Only applies to rank styles 2-4.\n§r§fThe default format for the separator between the name of the player and the message portion of the chat message to use when the player does not have any separatorFormatting: or separatorColor: tags, it is just a string of format codes, such as \"\uF019r\uF019l\uF019b\", leaving this empty will make the message use the default separator formatting of the selected rank style/mode, default is \"\"", "string", String(world.getDynamicProperty("andexdbSettings:defaultSeparatorFormatting") ?? ""));
@@ -839,8 +904,8 @@ export function chatRanksSettings(sourceEntitya) {
     form2.toggle("§l§fautoEscapeChatMessages§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fEvaluates escape codes in the chat automatically, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") ?? false));
     form2.toggle("§l§fautoURIEscapeChatMessages§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fSets whether or not to automatically escape URI % escape codes, default is false", Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false));
     form2.toggle("§l§fallowChatEscapeCodes§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
-    form2.toggle("§l§fchatDisplayTimeStamp§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fSets whether or not to put a timestamp before every chat message, default is false", config.chatDisplayTimeStamp);
-    form2.toggle("§l§fshowRanksOnPlayerNameTags§r§f\nSets whether or not to show player's ranks on their name tag, default is false", config.showRanksOnPlayerNameTags);
+    form2.toggle("§l§fchatDisplayTimeStamp§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fSets whether or not to put a timestamp before every chat message, default is false", config.chatRanks.chatDisplayTimeStamp);
+    form2.toggle("§l§fshowRanksOnPlayerNameTags§r§f\nSets whether or not to show player's ranks on their name tag, default is false", config.chatRanks.showRanksOnPlayerNameTags);
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -871,7 +936,7 @@ export function chatRanksSettings(sourceEntitya) {
         world.setDynamicProperty("andexdbSettings:autoURIEscapeChatMessages", autoURIEscapeChatMessages);
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes);
         world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStamp);
-        config.showRanksOnPlayerNameTags = showRanksOnPlayerNameTags;
+        config.chatRanks.showRanksOnPlayerNameTags = showRanksOnPlayerNameTags;
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -881,9 +946,13 @@ export function scriptSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     form2.title("Script Settings");
-    form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 5", "integer from 1-1000", String(config.playerDataRefreshRate));
-    form2.textField("§l§fprotectedAreasRefreshRate§r§f\nThe interval at which to update list the saved protected areas, decreasing this number may increase lag, the default is 20", "integer from 1-1000000", String(config.protectedAreasRefreshRate));
+    form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 5", "integer from 1-1000", String(config.system.playerDataRefreshRate));
+    form2.textField("§l§fprotectedAreasRefreshRate§r§f\nThe interval at which to update list the saved protected areas, decreasing this number may increase lag, the default is 20", "integer from 1-1000000", String(config.system.protectedAreasRefreshRate));
     form2.dropdown("§l§fundoClipboardMode§r§f\nWhether to save undo history in memory or to the world files, memory will cause undo history to be cleared upon restarting the world/realm/server, the default is Memory", ["Memory", "World"], ["Memory", "World"].indexOf(String(config.undoClipboardMode)));
+    form2.toggle("§l§fdebugMode§r§f\nWhether debug mode is enabled or not, the default is false", config.system.debugMode);
+    if (config.system.debugMode) {
+        form2.textField("§l§cartificialLagMS§r§c\nThe number of milliseconds of artificial lag to cause each tick. §eWARNING!: THIS IS VERY DANGEROUS AND COULD RESULT IN YOUR WORLD BEING SOFT-LOCKED IF SET TO AN EXTREMELY HIGH VALUE, BECAUSE OF THIS, THIS INPUT WILL ONLY ALLOW VALUES UP TO 10000 MILLISECONDS, TO SET IT HIGHER YOU MUST USE THE SCRIPT EVAL TO SET THE §bconfig.system.artificialLagMS§e PROPERTY TO THE DESIRED VALUE", "int", String(config.system.artificialLagMS));
+    }
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -894,10 +963,14 @@ export function scriptSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [playerDataRefreshRate, protectedAreasRefreshRate, undoClipboardMode] = t.formValues;
-        config.playerDataRefreshRate = Number(playerDataRefreshRate);
-        config.protectedAreasRefreshRate = Number(protectedAreasRefreshRate);
-        config.undoClipboardMode = (["Memory", "World"][Number(undoClipboardMode)] ?? "Memory");
+        let [playerDataRefreshRate, protectedAreasRefreshRate, undoClipboardMode, debugMode, artificialLagMS] = t.formValues;
+        config.system.playerDataRefreshRate = playerDataRefreshRate.toNumber();
+        config.system.protectedAreasRefreshRate = protectedAreasRefreshRate.toNumber();
+        config.undoClipboardMode = (["Memory", "World"][undoClipboardMode] ?? "Memory");
+        if (config.system.debugMode && !(config.system.artificialLagMS == artificialLagMS.toNumber())) {
+            config.system.artificialLagMS = Math.min(artificialLagMS.toNumber(), 10000);
+        }
+        config.system.debugMode = debugMode;
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -910,7 +983,8 @@ export function uiSettings(sourceEntitya) {
     "andexdbSettings:autoURIEscapeChatMessages";
     "andexdbSettings:allowChatEscapeCodes";
     form2.title("UI Settings");
-    form2.textField("§l§fmaxPlayersPerManagePlayersPage§r§f\nThe maximum number of players to display at once on the manage players menu, the default is 10", "integer from 1-1000", String(config.maxPlayersPerManagePlayersPage));
+    form2.textField("§l§fmaxPlayersPerManagePlayersPage§r§f\nThe maximum number of players to display at once on the manage players menu, the default is 10", "integer from 1-1000", String(config.ui.pages.maxPlayersPerManagePlayersPage));
+    form2.toggle("§l§fuseStarWarsReference404Page§r§f\nWhether or not to use the Star Wars reference version of the 404 page, the default is false", config.ui.other.useStarWarsReference404Page);
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -921,8 +995,9 @@ export function uiSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [maxPlayersPerManagePlayersPage] = t.formValues;
-        config.maxPlayersPerManagePlayersPage = Number(maxPlayersPerManagePlayersPage);
+        let [maxPlayersPerManagePlayersPage, useStarWarsReference404Page] = t.formValues;
+        config.ui.pages.maxPlayersPerManagePlayersPage = maxPlayersPerManagePlayersPage.toNumber();
+        config.ui.other.useStarWarsReference404Page = useStarWarsReference404Page;
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -932,8 +1007,8 @@ export function homeSystemSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     form2.title("Home System Settings [§cExperimental§r]");
-    form2.toggle("§l§fHome System Enabled§r§f", config.homeSystemEnabled);
-    form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.maxHomesPerPlayer));
+    form2.toggle("§l§fHome System Enabled§r§f", config.homeSystem.homeSystemEnabled);
+    form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.homeSystem.maxHomesPerPlayer));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -945,8 +1020,8 @@ export function homeSystemSettings(sourceEntitya) {
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [homeSystemEnabled, maxHomesPerPlayer] = t.formValues;
-        config.homeSystemEnabled = homeSystemEnabled;
-        config.maxHomesPerPlayer = String(maxHomesPerPlayer).toLowerCase() == "infinity" ? Infinity : Number(maxHomesPerPlayer);
+        config.homeSystem.homeSystemEnabled = homeSystemEnabled;
+        config.homeSystem.maxHomesPerPlayer = String(maxHomesPerPlayer).toLowerCase() == "infinity" ? Infinity : Number(maxHomesPerPlayer);
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -956,8 +1031,9 @@ export function tpaSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     form2.title("TPA System Settings [§cExperimental§r]");
-    form2.toggle("§l§fEnable TPA System", config.tpaSystemEnabled);
-    //form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.maxHomesPerPlayer));
+    form2.toggle("§l§fEnable TPA System", config.tpaSystem.tpaSystemEnabled);
+    form2.textField("§l§fSeconds Until Request Times Out§r§o\ndefault is 60", "int", config.tpaSystem.timeoutDuration.toString());
+    //form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.homeSystem.maxHomesPerPlayer));
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -968,9 +1044,10 @@ export function tpaSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [tpaSystemEnabled] = t.formValues;
-        config.tpaSystemEnabled = tpaSystemEnabled;
-        //config.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
+        let [tpaSystemEnabled, timeoutDuration] = t.formValues;
+        config.tpaSystem.tpaSystemEnabled = tpaSystemEnabled;
+        config.tpaSystem.timeoutDuration = timeoutDuration.toNumber();
+        //config.homeSystem.maxHomesPerPlayer=String(maxHomesPerPlayer).toLowerCase()=="infinity"?Infinity:Number(maxHomesPerPlayer)
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -1059,6 +1136,15 @@ export class PlayerNotifications {
     get getEntityInteractTriggerExplosionNotificationsNotificationSound() { return JSON.parse(String(this.player.getDynamicProperty("getEntityInteractTriggerExplosionNotificationsNotificationSound") ?? '{"soundId": "none"}')); }
     set getEntityInteractTriggerExplosionNotificationsNotificationSound(value) { this.player.setDynamicProperty("getEntityInteractTriggerExplosionNotificationsNotificationSound", JSON.stringify(value, undefined, 0)); }
 }
+Object.defineProperties(Entity.prototype, {
+    playerNotifications: {
+        get: function playerNotifications() {
+            return new PlayerNotifications(this);
+        },
+        configurable: true,
+        enumerable: true
+    }
+});
 export function notificationsSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
@@ -1274,11 +1360,11 @@ export function antispamSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     form2.title("Anti-Spam Settings [§cExperimental§r]");
-    form2.toggle("§l§fAnti-Spam Enabled§r§f", config.antispamEnabled);
-    form2.toggle("§l§fReset Anti-Spam Mute Timer Upon Attempted Message Send While Muted§r§f", config.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute);
-    form2.textField("§l§fWait time before player can send another chat message in seconds§r§f", "60", String(config.waitTimeAfterAntispamActivation));
-    form2.textField("§f(The anti-spam will only activate if the player sends a number of messages equal to (§bMessage count to trigger anti-spam§f) and those messages each had a delay of at most (§bMaximum time between messages§f) seconds between them)\n§lMaximum time between messages, §r§f", "5", String(config.maxTimeBewteenMessagesToTriggerAntiSpam));
-    form2.slider("§l§fMessage count to trigger anti-spam, defaults to 4§r§f", 1, 100, 1, config.antispamTriggerMessageCount);
+    form2.toggle("§l§fAnti-Spam Enabled§r§f", config.antiSpamSystem.antispamEnabled);
+    form2.toggle("§l§fReset Anti-Spam Mute Timer Upon Attempted Message Send While Muted§r§f", config.antiSpamSystem.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute);
+    form2.textField("§l§fWait time before player can send another chat message in seconds§r§f", "60", String(config.antiSpamSystem.waitTimeAfterAntispamActivation));
+    form2.textField("§f(The anti-spam will only activate if the player sends a number of messages equal to (§bMessage count to trigger anti-spam§f) and those messages each had a delay of at most (§bMaximum time between messages§f) seconds between them)\n§lMaximum time between messages, §r§f", "5", String(config.antiSpamSystem.maxTimeBewteenMessagesToTriggerAntiSpam));
+    form2.slider("§l§fMessage count to trigger anti-spam, defaults to 4§r§f", 1, 100, 1, config.antiSpamSystem.antispamTriggerMessageCount);
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -1290,11 +1376,11 @@ export function antispamSettings(sourceEntitya) {
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
         let [antispamEnabled, restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute, waitTimeAfterAntispamActivation, maxTimeBewteenMessagesToTriggerAntiSpam, antispamTriggerMessageCount] = t.formValues;
-        config.antispamEnabled = antispamEnabled;
-        config.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute = restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute;
-        config.waitTimeAfterAntispamActivation = isNaN(Number(waitTimeAfterAntispamActivation)) ? 60 : Number(waitTimeAfterAntispamActivation);
-        config.maxTimeBewteenMessagesToTriggerAntiSpam = isNaN(Number(maxTimeBewteenMessagesToTriggerAntiSpam)) ? 5 : Number(maxTimeBewteenMessagesToTriggerAntiSpam);
-        config.antispamTriggerMessageCount = Number(antispamTriggerMessageCount);
+        config.antiSpamSystem.antispamEnabled = antispamEnabled;
+        config.antiSpamSystem.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute = restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute;
+        config.antiSpamSystem.waitTimeAfterAntispamActivation = isNaN(Number(waitTimeAfterAntispamActivation)) ? 60 : Number(waitTimeAfterAntispamActivation);
+        config.antiSpamSystem.maxTimeBewteenMessagesToTriggerAntiSpam = isNaN(Number(maxTimeBewteenMessagesToTriggerAntiSpam)) ? 5 : Number(maxTimeBewteenMessagesToTriggerAntiSpam);
+        config.antiSpamSystem.antispamTriggerMessageCount = Number(antispamTriggerMessageCount);
         moderationSettings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -1374,10 +1460,10 @@ export function personalSettings(sourceEntitya) {
 export function extraFeaturesSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData();
-    let players = world.getPlayers();
     form.title("Extra Features Settings");
     form.body("Extra features are optional features that can be enabled but are disabled by default.");
     form.button("World Border System", "textures/ui/worldsIcon");
+    form.button("Shop System", "textures/ui/store_home_icon");
     form.button("Back", "textures/ui/arrow_left"); /*
     form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
     forceShow(form, sourceEntity).then(ra => {
@@ -1391,6 +1477,9 @@ export function extraFeaturesSettings(sourceEntitya) {
                 worldBorderSettingsDimensionSelector(sourceEntity);
                 break;
             case 1:
+                mainShopSystemSettings(sourceEntity);
+                break;
+            case 2:
                 settings(sourceEntity);
                 break;
             default:
@@ -3912,7 +4001,7 @@ export function editorStickC(sourceEntitya, includeLiquidBlocks = false, include
     });
 } /*
 export function evalAutoScriptSettings(sourceEntity: Entity|Player){}*/
-export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = config.maxPlayersPerManagePlayersPage ?? 10) {
+export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = config.ui.pages.maxPlayersPerManagePlayersPage ?? 10) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData;
     const page = Math.max(0, pagen);
@@ -4043,6 +4132,7 @@ export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = conf
                 form2.button("Show Data");
                 form2.button("Check Inventory");
                 form2.button("Manage Bans");
+                form2.button("Edit Money");
                 form2.button("§4Manage Permissions§f(§cCOMING SOON!§f)");
                 form2.button("§4Manage Hotbar Presets§f(§cCOMING SOON!§f)");
                 form2.button("§4Manage Private Warps§f(§cCOMING SOON!§f)");
@@ -4097,7 +4187,7 @@ export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = conf
                             let text = "";
                             let items = player.items.inventory.concat(player.items.equipment);
                             items.forEach((item) => { if (item.count != 0) {
-                                slotsArray = slotsArray.concat(String("slot: " + item.slot + ", item: " + item.id + "§r§f, amount: " + item.count + ", nameTag: " + item.name + "§r§f, lore: " + item.lore + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? []) ?? "[]"));
+                                slotsArray = slotsArray.concat(String("slot: " + item.slot + ", item: " + item.id + "§r§f, amount: " + item.count + ", nameTag: " + item.name + "§r§f, lore: " + item.lore + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? [])));
                             }
                             else {
                                 slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
@@ -4204,6 +4294,24 @@ export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = conf
                                 ;
                             }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                             break;
+                        case 4:
+                            {
+                                try {
+                                    new ModalFormData().textField("Money", "int", MoneySystem.get(player.id).money.toString()).forceShow(sourceEntity).then(async (r) => {
+                                        if (!!r.formValues[0].toBigInt()) {
+                                            MoneySystem.get(player.id).setMoney(r.formValues[0].toBigInt());
+                                        }
+                                        else {
+                                            await showMessage(sourceEntity, "Invalid Input", "The value you have inputted is not a valid amount of money.", "Okay", "Cancel");
+                                        }
+                                        managePlayers(sourceEntity, page);
+                                    });
+                                }
+                                catch (e) {
+                                    console.error(e, e?.stack);
+                                }
+                            }
+                            break;
                         case 8:
                             managePlayers(sourceEntity, page);
                             break;
@@ -4215,8 +4323,8 @@ export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = conf
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
 export function getAllBuiltInCommandsCategories() { let set = new Set(); commands.map(v => v.category).forEach(v => typeof v == "string" ? set.add(v) : v.forEach(v => set.add(v))); return [...set]; }
-export const commandCategories = ["items", "misc", "invsee", "players", "containers/inventories", "entities", "warps", "world", "uis", "dangerous", "Entity Scale Add-On", "built-in", "custom", "all"];
-export const commandCategoriesDisplay = [{ name: "Items", icon: "" }, { name: "Misc" }, { name: "Invsee" }, { name: "Players" }, { name: "Containers/Inventories" }, { name: "Entities" }, { name: "Warps" }, { name: "World" }, { name: "UIs" }, { name: "§4Dangerous" }, { name: "§6Entity Scale Add-On" }, { name: "All Built-In" }, { name: "Custom" }, { name: "All" }];
+export const commandCategories = ["items", "misc", "invsee", "players", "containers/inventories", "entities", "warps", "world", "uis", "shop_system", "dangerous", "Entity Scale Add-On", "built-in", "custom", "all"];
+export const commandCategoriesDisplay = [{ name: "Items", icon: "" }, { name: "Misc" }, { name: "Invsee" }, { name: "Players" }, { name: "Containers/Inventories" }, { name: "Entities" }, { name: "Warps" }, { name: "World" }, { name: "UIs" }, { name: "Shop System" }, { name: "§4Dangerous" }, { name: "§6Entity Scale Add-On" }, { name: "All Built-In" }, { name: "Custom" }, { name: "All" }];
 export function manageCommands(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData;
@@ -4507,7 +4615,7 @@ export async function onlinePlayerSelector(sourceEntitya, backFunction = mainMen
     let playerslist = world.getAllPlayers();
     playerslist.forEach((p) => { form.button(`${p.name}\n${p.id}` /*, "textures/ui/online"*/); });
     form.button("Back");
-    return forceShow(form, sourceEntity).then(ra => {
+    return await forceShow(form, sourceEntity).then(ra => {
         let r = ra;
         if (r.canceled) {
             return;
@@ -4515,14 +4623,14 @@ export async function onlinePlayerSelector(sourceEntitya, backFunction = mainMen
         ;
         switch (r.selection) {
             case playerslist.length:
-                return backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity])));
+                return tryget(() => backFunction(...(functionargs.length == 0 ? [sourceEntity] : (functionargs ?? [sourceEntity]))));
                 break;
             default:
                 return playerslist[r.selection];
         }
     }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
 }
-export async function itemSelector(sourceEntitya, targetPlayer, backFunction = mainMenu, ...functionargs) {
+export async function itemSelector(sourceEntitya, targetPlayer, backFunction, ...functionargs) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData;
     form.title("Select Item");
@@ -4544,10 +4652,10 @@ export async function itemSelector(sourceEntitya, targetPlayer, backFunction = m
         form.button(`${p?.slot}: empty\n0; ` /*, "textures/ui/online"*/);
     } });
     form.button("Back");
-    return forceShow(form, sourceEntity).then(ra => {
-        let r = ra;
+    let r = await forceShow(form, sourceEntity);
+    try {
         if (r.canceled) {
-            return;
+            return undefined;
         }
         ;
         switch (r.selection) {
@@ -4557,7 +4665,16 @@ export async function itemSelector(sourceEntitya, targetPlayer, backFunction = m
             default:
                 return slotsList[r.selection];
         }
-    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+    }
+    catch (e) {
+        let formError = new MessageFormData;
+        formError.body(e + e.stack);
+        formError.title("Error");
+        formError.button1("Done");
+        await forceShow(formError, sourceEntity);
+        return e;
+    }
+    ;
 }
 export async function itemEditorTypeSelection(sourceEntitya, targetPlayer, item, selectionItems, backFunction = mainMenu, ...functionargs) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
@@ -4624,10 +4741,10 @@ export async function itemEditor(sourceEntitya, targetPlayer, item) {
     form.title("Edit Item");
     form.textField("Item Name (escape characters such as \\n are allowed)", "string", !!!item.nameTag ? undefined : item.nameTag);
     form.textField("Item Lore (escape characters such as \\n are allowed)(set to [] to clear)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getLore()));
-    form.slider("Amount", 0, 127, 1, item.amount);
+    form.slider("Amount", 0, 255, 1, item.amount);
     form.textField("Can Destroy (escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getCanDestroy()));
     form.textField("Can Place On (escape characters such as \\n are allowed)", "[\"Line 1\", \"Line 2\"...]", JSONStringify(item.getCanPlaceOn()));
-    form.dropdown("Item Lock Mode", [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory], [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory][item.lockMode]);
+    form.dropdown("Item Lock Mode", [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory], [ItemLockMode.none, ItemLockMode.slot, ItemLockMode.inventory].indexOf(item.lockMode));
     form.toggle("Keep On Death", item.keepOnDeath);
     form.textField((!!!item.getItem().getComponent("cooldown") ? "§c(UNAVAILABLE)§f " : "") + "Set Cooldown (In Ticks)", "ticks");
     form.textField((!!!item.getItem().getComponent("durability") ? "§c(UNAVAILABLE)§f " : "") + "Set Damage", "int", String(item.getItem().getComponent("durability")?.damage));
