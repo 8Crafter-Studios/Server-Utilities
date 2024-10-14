@@ -4541,7 +4541,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^spawn$/): {
             eventData.cancel = true;
-            if(!!config.spawnCommandLocation.x){player.sendMessage("§cError: This command cannot be used becuase no spawn teleport location has been set. It can be enabled at \"Main Menu>Settings>Global Settings>spawnCommandLocation\"")}else{
+            if(!!!config.spawnCommandLocation.x){player.sendMessage("§cError: This command cannot be used becuase no spawn teleport location has been set. It can be enabled at \"Main Menu>Settings>Global Settings>spawnCommandLocation\"")}else{
                 srun(()=>player.teleport(config.spawnCommandLocation, {dimension: config.spawnCommandLocation.dimension}))
             }
         }
