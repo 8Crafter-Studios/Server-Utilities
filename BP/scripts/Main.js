@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import { system } from "@minecraft/server";
 globalThis.beforeScriptStartTick = system.currentTick;
-export const format_version = "1.23.0-preview.20+BULID.1";
+export const format_version = "1.23.1-preview.20+BULID.1";
+import "JSONB";
 import "Global";
 /*
 import "AllayTests.js";

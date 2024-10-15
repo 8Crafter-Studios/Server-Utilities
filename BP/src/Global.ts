@@ -292,12 +292,18 @@ declare global {
         function catchtry(trycallbackfn: () => any, catchcallbackfn?: (e: Error) => any, finallycallbackfn?: (v: any) => any): any
         function send(message: (RawMessage | string)[] | RawMessage | string): void
         function asend(value: any): void
-        function bsend(value: any): void
-        function csend(value: any): void
+        function bsend(value: any, space?: string | number): void
+        function csend(value: any, space?: string | number): void
+        function dsend(value: any, space?: string | number): void
+        function esend(value: any, space?: string | number): void
+        function fsend(value: any, space?: string | number): void
         function psend(player: Player | executeCommandPlayerW, value: string): void
         function pasend(player: Player | executeCommandPlayerW, value: any): void
-        function pbsend(player: Player | executeCommandPlayerW, value: any): void
-        function pcsend(player: Player | executeCommandPlayerW, value: any): void
+        function pbsend(player: Player | executeCommandPlayerW, value: any, space?: string | number): void
+        function pcsend(player: Player | executeCommandPlayerW, value: any, space?: string | number): void
+        function pdsend(player: Player | executeCommandPlayerW, value: any, space?: string | number): void
+        function pesend(player: Player | executeCommandPlayerW, value: any, space?: string | number): void
+        function pfsend(player: Player | executeCommandPlayerW, value: any, space?: string | number): void
         function perror(player: Player | executeCommandPlayerW, error: Error, prefix?: string): void
         /**
          * Better Version of JSON.parse() that is able to read undefined, NaN, Infinity, and -Infinity values. 
@@ -1399,11 +1405,20 @@ globalThis.send = function send(message: (RawMessage | string)[] | RawMessage | 
 globalThis.asend = function asend(value: any){
     world.sendMessage(String(value))
 }; 
-globalThis.bsend = function bsend(value: any){
-    world.sendMessage(JSONStringify(value, true))
+globalThis.bsend = function bsend(value: any, space?: string | number){
+    world.sendMessage(JSONStringify(value, true, space))
 }; 
-globalThis.csend = function csend(value: any){
-    world.sendMessage(JSON.stringify(value))
+globalThis.csend = function csend(value: any, space?: string | number){
+    world.sendMessage(JSON.stringify(value, undefined, space))
+}; 
+globalThis.dsend = function dsend(value: any, space?: string | number){
+    world.sendMessage(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true}))
+}; 
+globalThis.esend = function esend(value: any, space?: string | number){
+    world.sendMessage(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true}))
+}; 
+globalThis.fsend = function fsend(value: any, space?: string | number){
+    world.sendMessage(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false}))
 }; 
 globalThis.psend = function psend(player: Player|executeCommandPlayerW, value: string){
     player.sendMessage(value)
@@ -1411,11 +1426,20 @@ globalThis.psend = function psend(player: Player|executeCommandPlayerW, value: s
 globalThis.pasend = function pasend(player: Player|executeCommandPlayerW, value: any){
     player.sendMessage(String(value))
 }; 
-globalThis.pbsend = function pbsend(player: Player|executeCommandPlayerW, value: any){
-    player.sendMessage(JSONStringify(value, true))
+globalThis.pbsend = function pbsend(player: Player|executeCommandPlayerW, value: any, space?: string | number){
+    player.sendMessage(JSONStringify(value, true, space))
 }; 
-globalThis.pcsend = function pcsend(player: Player|executeCommandPlayerW, value: any){
-    player.sendMessage(JSON.stringify(value))
+globalThis.pcsend = function pcsend(player: Player|executeCommandPlayerW, value: any, space?: string | number){
+    player.sendMessage(JSON.stringify(value, undefined, space))
+}; 
+globalThis.pdsend = function pdsend(player: Player|executeCommandPlayerW, value: any, space?: string | number){
+    player.sendMessage(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true}))
+}; 
+globalThis.pesend = function pesend(player: Player|executeCommandPlayerW, value: any, space?: string | number){
+    player.sendMessage(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true}))
+}; 
+globalThis.pfsend = function pfsend(player: Player|executeCommandPlayerW, value: any, space?: string | number){
+    player.sendMessage(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false}))
 }; 
 globalThis.perror = function perror(player: Player|executeCommandPlayerW, error: Error, prefix: string = "§c"){
     player.sendMessage(prefix+(tryget(()=>error.stringify())??(error+" "+error.stack)))
