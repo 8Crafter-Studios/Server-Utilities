@@ -167,6 +167,14 @@ declare global {
         get __proto__(): BigInt
         set __proto__(prototype: Object|null)
     }
+    interface Array<T> {
+        /**
+         * Performs the specified action for each element in an array and will include the current index in any errors.
+         * @param callbackfn  A function that accepts up to three arguments. forEach calls the callbackfn function one time for each element in the array.
+         * @param thisArg  An object to which the this keyword can refer in the callbackfn function. If thisArg is omitted, undefined is used as the this value.
+         */
+        forEachB(callbackfn: (value: T, index: number, array: T[]) => void, thisArg?: any): void;
+    }
     interface Boolean {
         toFormattedString(): "§aTrue"|"§cFalse"
         toFormattedStringB(): "§2True"|"§4False"
@@ -339,6 +347,7 @@ declare global {
         static get nether(): Dimension&{typeId: "minecraft:nether"};
         static get the_end(): Dimension&{typeId: "minecraft:the_end"};
         static get players(): {[name: string]: Player}
+        static get stack(): Error["stack"]
     }
 };
 declare module '@minecraft/server' {
@@ -511,6 +520,14 @@ declare module '@minecraft/server-ui' {
         forceShow(player: Player, timeout?: number): Promise<ActionFormResponse>
     }
 }
+Object.defineProperty(globalThis, 'stack', {get: function stack(){return new Error().stack}});
+Object.defineProperty(Array.prototype, 'forEachB', {
+    value: function forEachB<T>(callbackfn: (value: T, index: number, array: T[]) => void, thisArg?: any){
+        this.forEach((v, i, a)=>{
+            Object.defineProperty(function b(){callbackfn(v, i, a)}, 'name', {value: `Array[${i}]`})()
+        }, thisArg)
+    }
+});
 Object.defineProperty(String.prototype, 'escapeCharacters', {
     value: function (js: boolean, unicode: boolean, nullchar: number, uri: boolean, quotes: boolean, general: boolean, colon: boolean, x: boolean, s: boolean){
 

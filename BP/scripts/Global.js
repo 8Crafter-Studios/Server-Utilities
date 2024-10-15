@@ -2,6 +2,14 @@ import { system, Entity, world, EntityInventoryComponent, EntityEquippableCompon
 import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { MoneySystem } from "ExtraFeatures/money";
 ;
+Object.defineProperty(globalThis, 'stack', { get: function stack() { return new Error().stack; } });
+Object.defineProperty(Array.prototype, 'forEachB', {
+    value: function forEachB(callbackfn, thisArg) {
+        this.forEach((v, i, a) => {
+            Object.defineProperty(function b() { callbackfn(v, i, a); }, 'name', { value: `Array[${i}]` })();
+        }, thisArg);
+    }
+});
 Object.defineProperty(String.prototype, 'escapeCharacters', {
     value: function (js, unicode, nullchar, uri, quotes, general, colon, x, s) {
         //:Get primitive copy of string:
