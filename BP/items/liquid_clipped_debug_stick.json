@@ -2,7 +2,8 @@
 	"format_version": "1.21.30",
 	"minecraft:item": {
 		"description": {
-			"identifier": "andexdb:liquid_clipped_debug_stick"
+			"identifier": "andexdb:liquid_clipped_debug_stick",
+			"menu_category": {"category": "items", "group": "itemGroup.name.debugSticks", "is_hidden_in_commands": false}
 		},
 		"components": {
 			"minecraft:hand_equipped": true,

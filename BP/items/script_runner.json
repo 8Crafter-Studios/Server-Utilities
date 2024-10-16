@@ -3,17 +3,20 @@
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:script_runner",
-			"category": "Commands"
+			"menu_category": {"category": "items", "group": "itemGroup.name.debugSticks", "is_hidden_in_commands": false}
 		},
 		"components": {
 			"minecraft:hand_equipped": true,
 			"minecraft:stacked_by_data": true,
 			"minecraft:max_stack_size": 64,
 			"minecraft:icon": {
-				"texture": "stick"
+				"textures": {
+					"default": "stick",
+					"dyed": "stick_dyed"
+				}
 			},
 			"minecraft:interact_button": "Open Console", 
-			"minecraft:hover_text_color": "light_purple", 
+			"minecraft:rarity": "epic", 
 			"minecraft:glint": true,/*
 			"minecraft:render_offsets": {
 				"main_hand": {
@@ -41,13 +44,12 @@
 			"minecraft:display_name": {
 				"value": "Script Runner"
 			},
-			"minecraft:weapon":{
-			},
-                    	"minecraft:allow_off_hand": true,
-                    	"minecraft:enchantable": {
-		                "slot": "all", // Can be any of the enchant slot listed below
-		                "value": 10
-	                }
+			"minecraft:dyeable": {},
+			"minecraft:allow_off_hand": true,
+			"minecraft:enchantable": {
+				"slot": "all", // Can be any of the enchant slot listed below
+				"value": 10
+			}
 		}
 	}
 }

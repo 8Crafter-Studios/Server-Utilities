@@ -3,7 +3,7 @@
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:brush_3",
-			"menu_category": {"category": "items"}
+			"menu_category": {"category": "items", "group": "itemGroup.name.andexdbBrushes", "is_hidden_in_commands": false}
 		},
 		"components": {
 			"minecraft:hand_equipped": true,
@@ -12,7 +12,7 @@
 			"minecraft:icon": {
 				"textures": {
 					"default": "wide_brush",
-					"dyed": "wide_brush"
+					"dyed": "wide_brush_dyed"
 				}
 			},
 			"minecraft:interact_button": true, /*
