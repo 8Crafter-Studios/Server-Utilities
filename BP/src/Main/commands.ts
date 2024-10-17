@@ -3237,15 +3237,101 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
             system.run(() => {
                 const argsa = evaluateParameters(switchTestB, ["presetText", "presetText"])
                 switch(argsa.args[1]){
+                    case "~":
+                    case "^":
                     case "facing": {
                         const block = player.getBlockFromViewDirection()
                         if(!!!block){
-                            player.sendError("")
+                            player.sendError("", true)
                         }
-                        const argsb = evaluateParameters(argsa.extra, ["presetText"])
+                        const argsb = evaluateParameters(argsa.extra, ["presetText", "presetText"])
+                        switch(argsb.args[0]){
+                            case "get":
+                                switch(argsb.args[1].toLowerCase()){
+                                    case "color": {
+                                        const argsc = evaluateParameters(argsb.extra, ["presetText", "presetText"])
+                                        switch(argsc.args[0].toLowerCase()){
+                                            case "rgba": {
+                                                switch(argsc.args[1].toLowerCase()){
+                                                    case "x":
+                                                    case "hex":
+                                                    case "hexadecimal": 
+                                                        const rgba = evaluateParameters(argsc.extra, ["presetText"]).args[0]
+                                                        if(!!!rgba){
+                                                            player.sendError(
+                                                                `§cSyntax error: Unexpected "": at "${
+                                                                    switchTestB.slice(-10)
+                                                                }>><<"`,
+                                                                true
+                                                            )
+                                                        }
+                                                        if(![4, 8].includes(rgba.length)){
+                                                            player.sendError(
+                                                                `§cSyntax error: ${rgba} is not a valid RGBA hex code. ${(rgba.length==3)||(rgba.length==6)?`If you do not want to specify the alpha channel use RGB mode instead, replace "${
+                                                                    switchTestB.slice(
+                                                                        switchTestB.toLowerCase().indexOf("rgba"),
+                                                                        switchTestB.toLowerCase().indexOf("rgba")+4
+                                                                    )
+                                                                }" at "${
+                                                                    switchTestB.slice(
+                                                                        switchTestB.toLowerCase().indexOf("rgba")-10,
+                                                                        switchTestB.toLowerCase().indexOf("rgba")
+                                                                    )
+                                                                }>>${
+                                                                    switchTestB.slice(
+                                                                        switchTestB.toLowerCase().indexOf("rgba"),
+                                                                        switchTestB.toLowerCase().indexOf("rgba")+4
+                                                                    )
+                                                                }<<${
+                                                                    switchTestB.slice(
+                                                                        switchTestB.toLowerCase().indexOf("rgba")+4,
+                                                                        switchTestB.toLowerCase().indexOf("rgba")+14
+                                                                    )
+                                                                }" with rgb. `:""}A valid RGBA hex code should be formatted either as "RGBA" or "RRGGBBAA". ex. 9AEF or 97A2EBFA.`,
+                                                                true
+                                                            )
+                                                        }
+                                                        const denominator = rgba.length==4?15:255
+                                                        const rangeScale = rgba.length==4?1:2
+                                                        const red = parseInt(rgba.slice(0*rangeScale, 1*rangeScale), 16)/denominator
+                                                        const green = parseInt(rgba.slice(1*rangeScale, 2*rangeScale), 16)/denominator
+                                                        const blue = parseInt(rgba.slice(2*rangeScale, 3*rangeScale), 16)/denominator
+                                                        const alpha = parseInt(rgba.slice(3*rangeScale, 4*rangeScale), 16)/denominator
+                                                        block?.block.getComponent("waterContainer").setCustomColor({red, green, blue, alpha})
+                                                    break;
+                                                    default:
+                                                        
+                                                }
+                                            }
+                                            break;
+                                            default:
+                                                
+                                        }
+                                    }
+                                    break;
+                                    case "filllevel":
+                                        
+                                    break;
+                                    case "liquidtype":
+                                        
+                                    break;
+                                    default:
+                                        
+                                }
+                            break;
+                            case "set":
+                                
+                            break;
+                            case "debug":
+                                
+                            break;
+                            default:
+                                
+                        }
                     }
                     break;
                     default:
+                        player.sendError("", true)
                 }
                 let block = world.getDimension(switchTestB.split(" ")[1].trim().replace("~", player.dimension.id+"\0")).getBlock(coordinatesB((switchTestB.split(" ")[1].trim().startsWith("~")&&switchTestB.split(" ")[1].trim().length!=1)?switchTestB.split(" ").slice(1).join(" ").trim().slice(1):switchTestB.split(" ").slice(2).join(" ").trim(), player.location, player.getViewDirection()))/*
                 console.warn(block)*/
