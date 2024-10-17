@@ -2368,7 +2368,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     if (!!!contents) {
                         return `Preset ${v.slice(12)}: Unloaded`;
                     }
-                    const indent = v.slice(12).length + 2;
+                    const indent = v.slice(12).length + 9;
                     let output = `Preset ${v.slice(12)}: `;
                     output += `Row 0: ${contents.slice(0, 9).filter(v => !!v).length}/${contents.slice(0, 9).length}`;
                     for (let i = 1; i < (contents.length / 9).floor(); i++) {
