@@ -1331,6 +1331,33 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "block",
+        escregexp: {
+            v: "^block$"
+        },
+        formats: [
+            {
+                format: "block ..."
+            }
+        ],
+        command_version: "4.1.0",
+        description: "Manages blocks.",
+        category: [
+            "world",
+            "blocks"
+        ],
+        commandSettingsId: "built-inCommandSettings:block",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "brush",
         escregexp: {
             v: "^brush$"

@@ -2652,7 +2652,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.sender.sendMessage("§c" + e + e.stack);
                 }
             });
-            break;
+        break;
         case !!switchTest.match(/^einvseeb$$/):
             eventData.cancel = true;
             system.run(() => {
@@ -3231,6 +3231,41 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                     break;
             }}catch(e){console.error(e, e.stack); player.sendMessageB(e + e.stack)}}
         }catch(e){perror(player, e)}}
+        break;
+        case !!switchTest.match(/^block$$/):
+            eventData.cancel = true;
+            system.run(() => {
+                const argsa = evaluateParameters(switchTestB, ["presetText", "presetText"])
+                switch(argsa.args[1]){
+                    case "facing": {
+                        const block = player.getBlockFromViewDirection()
+                        if(!!!block){
+                            player.sendError("")
+                        }
+                        const argsb = evaluateParameters(argsa.extra, ["presetText"])
+                    }
+                    break;
+                    default:
+                }
+                let block = world.getDimension(switchTestB.split(" ")[1].trim().replace("~", player.dimension.id+"\0")).getBlock(coordinatesB((switchTestB.split(" ")[1].trim().startsWith("~")&&switchTestB.split(" ")[1].trim().length!=1)?switchTestB.split(" ").slice(1).join(" ").trim().slice(1):switchTestB.split(" ").slice(2).join(" ").trim(), player.location, player.getViewDirection()))/*
+                console.warn(block)*/
+                const inventoryd2 = block.getComponent("inventory");
+                try {
+                    let slotsArray = [];
+                    for (let i = 0; i < inventoryd2.container.size; i++) {
+                        if (inventoryd2.container.getItem(Number(i)) !== undefined) {
+                            slotsArray = slotsArray.concat(String("slot: " + i + ", item: " + inventoryd2.container.getItem(Number(i)).typeId + ", amount: " + inventoryd2.container.getItem(Number(i)).amount + ", nameTag: " + inventoryd2.container.getItem(Number(i)).nameTag + "§r§f, lore: " + (JSONStringify(inventoryd2.container.getItem(Number(i)).getLore()??[], true)) + "§r§f, enchantments: " + ((!!inventoryd2.container.getItem(Number(i))?.getComponent("enchantable"))?(JSON.stringify(inventoryd2.container.getItem(Number(i))?.getComponent("enchantable")?.getEnchantments()??[])??"[]"):"N/A")));
+                        }
+                        else {
+                            slotsArray = slotsArray.concat("slot: " + i + ", item: minecraft:air");
+                        }
+                    };
+                    eventData.sender.sendMessage(String("Block At " + JSON.stringify({ dimension: block.dimension.id, x: block.x, y: block.y, z: block.z }) + " Items: \n" + slotsArray.join("§r§f\n")));
+                }
+                catch (e) {
+                    eventData.sender.sendMessage("§c" + e + e.stack);
+                }
+            });
         break;
         case !!switchTest.match(/^gmc$/): 
             eventData.cancel = true;
