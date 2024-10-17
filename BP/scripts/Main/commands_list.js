@@ -1843,22 +1843,50 @@ export const commands = [
         requiredTags: [
             "canUseChatCommands"
         ],
-        formatting_code: "§r§e",
+        formatting_code: "§r§f",
         commandName: "copyitem",
         escregexp: {
             v: "^copyitem$"
         },
         formats: [
             {
-                format: "copyitem <slot: int|\"head\"|\"chest\"|\"legs\"|\"feet\"|\"mainhand\"|\"offhand\"> <toPlayer: playerName>"
+                format: "copyitem <slot: int|\"head\"|\"chest\"|\"legs\"|\"feet\"|\"mainhand\"|\"offhand\"> <toPlayer: (playerName|~)[?=~]>"
             }
         ],
-        command_version: "0.1.4-beta.1",
+        command_version: "1.0.0",
         description: "",
         category: [
-            "items"
+            "items",
+            "containers/inventories"
         ],
         commandSettingsId: "built-inCommandSettings:copyitem",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
+        commandName: "copyitemfrom",
+        escregexp: {
+            v: "^copyitem$from"
+        },
+        formats: [
+            {
+                format: "copyitemfrom <fromSlot: int|{head}|{chest}|{legs}|{feet}|{mainhand}|{offhand}> [toSlot: (int|{head}|{chest}|{legs}|{feet}|{mainhand}|{offhand})[?=~]] [fromPlayer: (playerName|~)[?=~]] [toPlayer: (playerName|~)[?=~]]"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "items",
+            "containers/inventories"
+        ],
+        commandSettingsId: "built-inCommandSettings:copyitemfrom",
         deprecated: false,
         functional: true,
         hidden: false,
@@ -3124,6 +3152,32 @@ export const commands = [
             "containers/inventories"
         ],
         commandSettingsId: "built-inCommandSettings:hlist",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
+        commandName: "hcontents",
+        escregexp: {
+            v: "^hcontents$"
+        },
+        formats: [
+            {
+                format: "hcontents [presetId: int]"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "Lists the contents of all of your currently saved hotbar presets.",
+        category: [
+            "containers/inventories"
+        ],
+        commandSettingsId: "built-inCommandSettings:hcontents",
         deprecated: false,
         functional: true,
         hidden: false,
@@ -5410,7 +5464,8 @@ export const commands = [
         command_version: "0.2.1-beta.1",
         description: "Swaps the inventory, offhand, hotbar, and armor of two specified players. ",
         category: [
-            "players"
+            "players",
+            "containers/inventories"
         ],
         commandSettingsId: "built-inCommandSettings:swapinventories",
         deprecated: false,
@@ -5444,7 +5499,8 @@ export const commands = [
         command_version: "1.4.1",
         description: "Swaps the inventory and hotbar of two specified players. ",
         category: [
-            "players"
+            "players",
+            "containers/inventories"
         ],
         commandSettingsId: "built-inCommandSettings:swapinventoriesb",
         deprecated: true,
@@ -5470,9 +5526,51 @@ export const commands = [
         command_version: "0.1.1-beta.1",
         description: "",
         category: [
-            "items"
+            "items",
+            "containers/inventories"
         ],
         commandSettingsId: "built-inCommandSettings:swapitems",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
+        commandName: "swaprows",
+        escregexp: {
+            v: "^swaprows$"
+        },
+        aliases: [
+            {
+                commandName: "rowswap",
+                escregexp: {
+                    v: "^rowswap$"
+                }
+            },
+            {
+                commandName: "rs",
+                escregexp: {
+                    v: "^rs$"
+                }
+            }
+        ],
+        formats: [
+            {
+                format: "swaprows <row1: float|{equipment}> [row2: (float|{equipment})[?=0]] [player1: (string|~)[?=~]] [player2: (string|~)[?=~]]"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "Swaps two inventory rows, if the row number is not a whole number then it will offset the row selection by that much.",
+        category: [
+            "players",
+            "containers/inventories"
+        ],
+        commandSettingsId: "built-inCommandSettings:swaprows",
         deprecated: false,
         functional: true,
         hidden: false,

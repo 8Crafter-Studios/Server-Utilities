@@ -3052,8 +3052,8 @@ export function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|Player
     }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
 }
 export function getAllBuiltInCommandsCategories(){let set = new Set() as Set<string>; commands.map(v=>v.category).forEach(v=>typeof v == "string"?set.add(v):v.forEach(v=>set.add(v))); return [...set]}
-export const commandCategories = ["items","misc","invsee","players","containers/inventories","entities","warps","world","uis","shop_system","dangerous","Entity Scale Add-On","built-in","custom","all"]
-export const commandCategoriesDisplay = [{name: "Items", icon: ""},{name: "Misc"},{name: "Invsee"},{name: "Players"},{name: "Containers/Inventories"},{name: "Entities"},{name: "Warps"},{name: "World"},{name: "UIs"},{name: "Shop System"},{name: "§4Dangerous"},{name: "§6Entity Scale Add-On"},{name: "All Built-In"},{name: "Custom"},{name: "All"}]
+export const commandCategories = ["items","misc","invsee","players","containers/inventories","entities","warps","world","server","system","uis","shop_system","dangerous","Entity Scale Add-On","built-in","custom","all"]
+export const commandCategoriesDisplay = [{name: "Items", icon: ""},{name: "Misc"},{name: "Invsee"},{name: "Players"},{name: "Containers/Inventories"},{name: "Entities"},{name: "Warps"},{name: "World"},{name: "Server"},{name: "System"},{name: "UIs"},{name: "Shop System"},{name: "§4Dangerous"},{name: "§6Entity Scale Add-On"},{name: "All Built-In"},{name: "Custom"},{name: "All"}]
 export function manageCommands(sourceEntitya: Entity|executeCommandPlayerW|Player){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form = new ActionFormData; 

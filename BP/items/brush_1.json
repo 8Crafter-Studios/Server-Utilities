@@ -1,5 +1,5 @@
 {
-	"format_version": "1.20.50",
+	"format_version": "1.21.30",
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:brush_1",

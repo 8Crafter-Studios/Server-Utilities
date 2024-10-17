@@ -3,7 +3,7 @@
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:non_chargeable_item_1",
-			"menu_category": {"category": "items"}
+			"menu_category": {"category": "items", "group": "itemGroup.name.andexdbNonChargeableItem", "is_hidden_in_commands": false}
 		},
 		"components": {
 			"minecraft:hand_equipped": true,

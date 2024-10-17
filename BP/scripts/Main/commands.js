@@ -1771,7 +1771,7 @@ export async function generateNBTFileD(location, nbt, player) {
     }
     catch (e) {
         player.sendMessage("§c" + e + e.stack);
-    } /*finally{tac.forEach(tab=>tab?.remove())}}, (e)=>{player.sendMessage(e+" "+e.stack)}); */
+    } /*finally{tac.forEach(tab=>tab?.remove())}}, (e)=>{player.sendError(e+" "+e.stack, true)}); */
 }
 export function parseSNBT(snbt) {
     // Helper function to parse a value based on its suffix (if present)
@@ -2197,14 +2197,16 @@ export function chatCommands(params) {
     else if (commanda?.type == "built-in") {
         switch (true) {
             case !!switchTest.match(/^give$/):
-                eventData.cancel = true;
-                const inventory = player.getComponent("inventory");
-                system.run(() => { try {
-                    inventory.container.addItem(new ItemStack(newMessage.slice(6).split(" ")[0], Number(newMessage.slice(6).split(" ")[1] ?? "1")));
+                {
+                    eventData.cancel = true;
+                    const inventory = player.getComponent("inventory");
+                    system.run(() => { try {
+                        inventory.container.addItem(new ItemStack(newMessage.slice(6).split(" ")[0], Number(newMessage.slice(6).split(" ")[1] ?? "1")));
+                    }
+                    catch (e) {
+                        eventData.sender.sendMessage("§c" + e + " " + e.stack);
+                    } });
                 }
-                catch (e) {
-                    eventData.sender.sendMessage("§c" + e + " " + e.stack);
-                } });
                 break;
             case !!switchTest.match(/^giveb$/):
                 eventData.cancel = true;
@@ -2231,7 +2233,7 @@ export function chatCommands(params) {
                     eventData.cancel = true;
                     const inventoryb = player.getComponent("inventory");
                     if (switchTestB.trim().split(" ").length == 1) {
-                        player.sendMessage(`givec custom command format: \n${command.dp}givec <itemJSON: itemJSON>
+                        player.sendMessageB(`givec custom command format: \n${command.dp}givec <itemJSON: itemJSON>
 simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
 {
     "name"?: string,
@@ -2291,7 +2293,7 @@ sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept 
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`);
                     }
                     else if (!!!(JSONParse(switchTestB.split(" ").slice(1).join(" ")).type ?? JSONParse(switchTestB.split(" ").slice(1).join(" ")).typeId ?? JSONParse(switchTestB.split(" ").slice(1).join(" ")).id ?? JSONParse(switchTestB.split(" ").slice(1).join(" ")).itemType)) {
-                        player.sendMessage("§cError: Item type not specified in JSON. ");
+                        player.sendMessageB("§cError: Item type not specified in JSON. ");
                     }
                     else {
                         system.run(() => { try {
@@ -2321,11 +2323,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 break; */
             case !!switchTest.match(/^h\d*$/):
                 eventData.cancel = true;
-                try { /*player.sendMessage([String(Number(switchTestB.split(" ")[1] ?? 0)+1), String(switchTestB.split(" ")[0].slice(1))]); */
+                try { /*player.sendMessageB([String(Number(switchTestB.split(" ")[1] ?? 0)+1), String(switchTestB.split(" ")[0].slice(1))]); */
                     hotbarSwap(Number(switchTestB.split(" ")[1] ?? 0) + 1, Number(switchTestB.split(" ")[0].slice(1)));
                 }
                 catch (e) {
-                    player.sendMessage([e, e.stack]);
+                    player.sendMessageB([e, e.stack]);
                 }
                 break;
             case !!switchTest.match(/^hset$/):
@@ -2335,7 +2337,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     coordinates = evaluateCoordinates((switchTestB?.split(" ")?.slice(3)?.join(" ") ?? undefined).replaceAll(",", "").split("~").join(" ~").split("^").join(" ^").split("*").join(" *").replaceAll("  ", " ").trimStart().split(" ")[0].replaceAll(" ", ""), (switchTestB?.split(" ")?.slice(3)?.join(" ") ?? undefined).replaceAll(",", "").split("~").join(" ~").split("^").join(" ^").split("*").join(" *").replaceAll("  ", " ").trimStart().split(" ")[1].replaceAll(" ", ""), (switchTestB?.split(" ")?.slice(3)?.join(" ") ?? undefined).replaceAll(",", "").split("~").join(" ~").split("^").join(" ^").split("*").join(" *").replaceAll("  ", " ").trimStart().split(" ")[2].replaceAll(" ", ""), player?.location ?? { x: 0, y: 0, z: 0 }, player?.getRotation() ?? { x: 0, y: 0 });
                 }
                 catch { }
-                player.sendMessage(JSON.stringify(coordinates) + ", " + (switchTestB?.split(" ")?.slice(3)?.join(" ") ?? undefined).replaceAll(",", "").split("~").join(" ~").split("^").join(" ^").split("*").join(" *").replaceAll("  ", " ").trimStart().split(" ")[0].replaceAll(" ", ""));
+                player.sendMessageB(JSON.stringify(coordinates) + ", " + (switchTestB?.split(" ")?.slice(3)?.join(" ") ?? undefined).replaceAll(",", "").split("~").join(" ~").split("^").join(" ^").split("*").join(" *").replaceAll("  ", " ").trimStart().split(" ")[0].replaceAll(" ", ""));
                 if ((switchTestB?.split(" ")?.slice(2)?.join(" ") ?? undefined) != undefined) {
                     player.setDynamicProperty("hotbarPreset" + Number(switchTestB.slice(5).split(" ")[0]), (switchTestB?.split(" ")?.slice(2)[0] ?? undefined) + " " + coordinates.x + " " + coordinates.y + " " + coordinates.z);
                 }
@@ -2344,15 +2346,36 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 } /*
                 hotbarSwap(Number(newMessage.slice(2)) % 3, Math.ceil(Number(newMessage.slice(2))/3)); */
                 if ((switchTestB?.split(" ")?.slice(2)?.join(" ") ?? undefined) != undefined) {
-                    player.sendMessage(`Set hotbar preset ${switchTestB.slice(5).split(" ")[0]} to dimension: ${(switchTestB?.split(" ")?.slice(2)?.join(" ") ?? undefined).replaceAll(",", "").split(" ")[0]}, x: ${coordinates.x}, y: ${coordinates.y}, z: ${coordinates.z}. `);
+                    player.sendMessageB(`Set hotbar preset ${switchTestB.slice(5).split(" ")[0]} to dimension: ${(switchTestB?.split(" ")?.slice(2)?.join(" ") ?? undefined).replaceAll(",", "").split(" ")[0]}, x: ${coordinates.x}, y: ${coordinates.y}, z: ${coordinates.z}. `);
                 }
                 else {
-                    player.sendMessage(`Removed hotbar preset ${switchTest.slice(5).split(" ")[0]}. `);
+                    player.sendMessageB(`Removed hotbar preset ${switchTest.slice(5).split(" ")[0]}. `);
                 }
                 break;
             case !!switchTest.match(/^hlist$/):
                 eventData.cancel = true;
-                player.sendMessage(`Hotbar Presets: \n${player.getDynamicPropertyIds().filter(v => v.startsWith("hotbarPreset")).map(v => `${v.slice(12)}: ${player.getDynamicProperty(v)}`).join("§r\n")}`);
+                player.sendMessageB(`Hotbar Presets: \n${player.getDynamicPropertyIds().filter(v => v.startsWith("hotbarPreset")).map(v => `${v.slice(12)}: ${player.getDynamicProperty(v)}`).join("§r\n")}`);
+                break;
+            case !!switchTest.match(/^hcontents$/):
+                eventData.cancel = true;
+                evaluateParameters(switchTestB, ["presetText", "number"]);
+                player.sendMessageB(`Hotbar Presets Contents: \n${player.getDynamicPropertyIds().filter(v => v.startsWith("hotbarPreset")).map(v => {
+                    const contents = tryget(() => containerToItemStackArray(world.getDimension(String(player.getDynamicProperty(v)).split(" ")[0]).getBlock({
+                        x: String(player.getDynamicProperty(v)).split(" ")[1].toNumber(),
+                        y: String(player.getDynamicProperty(v)).split(" ")[2].toNumber(),
+                        z: String(player.getDynamicProperty(v)).split(" ")[3].toNumber()
+                    }).getComponent("inventory").container));
+                    if (!!!contents) {
+                        return `Preset ${v.slice(12)}: Unloaded`;
+                    }
+                    const indent = v.slice(12).length + 2;
+                    let output = `Preset ${v.slice(12)}: `;
+                    output += `Row 0: ${contents.slice(0, 9).filter(v => !!v).length}/${contents.slice(0, 9).length}`;
+                    for (let i = 1; i < contents.length; i++) {
+                        output += `${" ".repeat(Math.max(indent - (i / 9).floor(), 0))}Row ${i}: ${contents.slice(0, 9).filter(v => !!v).length}/${contents.slice(0, 9).length}`;
+                    }
+                    return output;
+                }).join("§r\n")}`);
                 break; /*
             case !!switchTest.match(/^h2$/):
                 eventData.cancel = true;
@@ -2695,11 +2718,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 try {
                     let players = savedPlayer.getSavedPlayers().filter((p) => (p.name == switchTestB.split(" ").slice(1).join(" ")));
                     if (players.length == 0) {
-                        player.sendMessage("§cError: no players with that name were found");
+                        player.sendMessageB("§cError: no players with that name were found");
                     }
                     else {
                         if (players.length > 1) {
-                            player.sendMessage("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
+                            player.sendMessageB("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
                         }
                         else {
                             let player = players[0];
@@ -2716,7 +2739,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 try {
                     let players = savedPlayer.getSavedPlayers().filter((p) => (p.id == switchTestB.split(" ").slice(1).join(" ")));
                     if (players.length == 0) {
-                        player.sendMessage("§cError: no players with that uuid were found");
+                        player.sendMessageB("§cError: no players with that uuid were found");
                     }
                     else {
                         let player = players[0];
@@ -2732,11 +2755,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 try {
                     let players = savedPlayer.getSavedPlayers().filter((p) => (p.name == switchTestB.split(" ").slice(1).join(" ")));
                     if (players.length == 0) {
-                        player.sendMessage("§cError: no players with that name were found");
+                        player.sendMessageB("§cError: no players with that name were found");
                     }
                     else {
                         if (players.length > 1) {
-                            player.sendMessage("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
+                            player.sendMessageB("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
                         }
                         else {
                             let player = players[0];
@@ -2753,7 +2776,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 try {
                     let players = savedPlayer.getSavedPlayers().filter((p) => (p.id == switchTestB.split(" ").slice(1).join(" ")));
                     if (players.length == 0) {
-                        player.sendMessage("§cError: no players with that uuid were found");
+                        player.sendMessageB("§cError: no players with that uuid were found");
                     }
                     else {
                         let player = players[0];
@@ -2769,11 +2792,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 try {
                     let players = savedPlayer.getSavedPlayers().filter((p) => (p.name == switchTestB.split(" ").slice(1).join(" ")));
                     if (players.length == 0) {
-                        player.sendMessage("§cError: no players with that name were found");
+                        player.sendMessageB("§cError: no players with that name were found");
                     }
                     else {
                         if (players.length > 1) {
-                            player.sendMessage("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
+                            player.sendMessageB("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
                         }
                         else {
                             let player = players[0];
@@ -2790,7 +2813,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 try {
                     let players = savedPlayer.getSavedPlayers().filter((p) => (p.id == switchTestB.split(" ").slice(1).join(" ")));
                     if (players.length == 0) {
-                        player.sendMessage("§cError: no players with that uuid were found");
+                        player.sendMessageB("§cError: no players with that uuid were found");
                     }
                     else {
                         let player = players[0];
@@ -2806,11 +2829,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 try {
                     let players = savedPlayer.getSavedPlayers().filter((p) => (p.name == switchTestB.split(" ").slice(1).join(" ")));
                     if (players.length == 0) {
-                        player.sendMessage("§cError: no players with that name were found");
+                        player.sendMessageB("§cError: no players with that name were found");
                     }
                     else {
                         if (players.length > 1) {
-                            player.sendMessage("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
+                            player.sendMessageB("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
                         }
                         else {
                             let player = players[0];
@@ -2827,7 +2850,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 try {
                     let players = savedPlayer.getSavedPlayers().filter((p) => (p.id == switchTestB.split(" ").slice(1).join(" ")));
                     if (players.length == 0) {
-                        player.sendMessage("§cError: no players with that uuid were found");
+                        player.sendMessageB("§cError: no players with that uuid were found");
                     }
                     else {
                         let player = players[0];
@@ -2844,11 +2867,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     let slotsArray = [];
                     let players = savedPlayer.getSavedPlayers().filter((p) => (p.name == switchTestB.split(" ").slice(1).join(" ")));
                     if (players.length == 0) {
-                        player.sendMessage("§cError: no players with that name were found");
+                        player.sendMessageB("§cError: no players with that name were found");
                     }
                     else {
                         if (players.length > 1) {
-                            player.sendMessage("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
+                            player.sendMessageB("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
                         }
                         else {
                             let player = players[0];
@@ -2874,7 +2897,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     let slotsArray = [];
                     let players = savedPlayer.getSavedPlayers().filter((p) => (p.id == switchTestB.split(" ").slice(1).join(" ")));
                     if (players.length == 0) {
-                        player.sendMessage("§cError: no players with that uuid were found");
+                        player.sendMessageB("§cError: no players with that uuid were found");
                     }
                     else {
                         let player = players[0];
@@ -3063,7 +3086,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^setitemb$/):
                 eventData.cancel = true;
                 if (switchTestB.trim().split(" ").length == 1) {
-                    player.sendMessage(`setitemb custom command format: ${command.dp}setitemb <itemJSON: itemJSON> <slot: int>
+                    player.sendMessageB(`setitemb custom command format: ${command.dp}setitemb <itemJSON: itemJSON> <slot: int>
 simplified itemJSON format (type "${String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")}help itemJSONFormat" to see full format options): 
 {
     "name"?: string,
@@ -3127,7 +3150,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     let args = argsa.args;
                     //if((args[3]??"").trim()=="~"){args[3] = player.name}
                     if (!!!(args[1].type ?? args[1].typeId ?? args[1].id ?? args[1].itemType)) {
-                        player.sendMessage("§cError: Item type not specified in JSON. ");
+                        player.sendMessageB("§cError: Item type not specified in JSON. ");
                     }
                     else {
                         try {
@@ -3176,7 +3199,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     try {
                         eventData.cancel = true;
                         if (switchTestB.trim().split(" ").length == 1) {
-                            player.sendMessage(`item command format: 
+                            player.sendMessageB(`item command format: 
 ${command.dp}item <mode: lore|lorene> <lore: JSON>
 ${command.dp}item <mode: canplaceon|candestroy> <blockTypes: string[]>
 ${command.dp}item name <name: text>
@@ -3225,7 +3248,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         errs = [];
                                         lore.forEach((l, i) => { let calc = l.escapeCharactersB(true); lore[i] = calc.v; errs.concat(calc.e); });
                                         if (errs != undefined) {
-                                            errs.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
+                                            errs.forEach((e) => { player.sendMessageB(String("§c" + e + e.stack)); });
                                         }
                                         ;
                                         system.run(() => { try {
@@ -3233,7 +3256,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item lorene":
@@ -3243,7 +3266,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item canpalceon":
@@ -3253,7 +3276,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item candestroy":
@@ -3263,7 +3286,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item keepondeath":
@@ -3273,7 +3296,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item lockmode":
@@ -3283,13 +3306,13 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item name":
                                         let name = argsa.extra.escapeCharactersB(true);
                                         if (name.e != undefined) {
-                                            name.e.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
+                                            name.e.forEach((e) => { player.sendMessageB(String("§c" + e + e.stack)); });
                                         }
                                         ;
                                         system.run(() => { try {
@@ -3297,7 +3320,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item remove":
@@ -3306,7 +3329,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item new":
@@ -3315,7 +3338,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item json":
@@ -3325,7 +3348,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item jsonb":
@@ -3335,14 +3358,14 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item listtags":
-                                        player.sendMessage('"' + player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getTags().join("§r,") + '"');
+                                        player.sendMessageB('"' + player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getTags().join("§r,") + '"');
                                         break;
                                     case "item gettags":
-                                        player.sendMessage('"' + player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getTags().join("§r,") + '"');
+                                        player.sendMessageB('"' + player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getTags().join("§r,") + '"');
                                         break;
                                     case "item property":
                                         switch (command.split(" ")[2]) {
@@ -3395,7 +3418,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                     }
                                                     catch (e) {
                                                         console.error(e, e.stack);
-                                                        player.sendMessage("§c" + e + e.stack);
+                                                        player.sendMessageB("§c" + e + e.stack);
                                                     }
                                                 });
                                                 break;
@@ -3409,7 +3432,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                     }
                                                     catch (e) {
                                                         console.error(e, e.stack);
-                                                        player.sendMessage("§c" + e + e.stack);
+                                                        player.sendMessageB("§c" + e + e.stack);
                                                     }
                                                 });
                                                 break;
@@ -3422,7 +3445,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                     }
                                                     catch (e) {
                                                         console.error(e, e.stack);
-                                                        player.sendMessage("§c" + e + e.stack);
+                                                        player.sendMessageB("§c" + e + e.stack);
                                                     }
                                                 });
                                                 break;
@@ -3444,7 +3467,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                     }
                                                     catch (e) {
                                                         console.error(e, e.stack);
-                                                        player.sendMessage("§c" + e + e.stack);
+                                                        player.sendMessageB("§c" + e + e.stack);
                                                     }
                                                 });
                                                 break;
@@ -3466,7 +3489,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 errs = [];
                                                 lore.forEach((l, i) => { let calc = l.escapeCharactersB(true); lore[i] = calc.v; errs.concat(calc.e); });
                                                 if (errs != undefined) {
-                                                    errs.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
+                                                    errs.forEach((e) => { player.sendMessageB(String("§c" + e + e.stack)); });
                                                 }
                                                 ;
                                                 srun(() => { try {
@@ -3474,9 +3497,9 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
-                                                    player.sendMessage("§c" + e + e.stack);
+                                                    player.sendMessageB("§c" + e + e.stack);
                                                 } });
-                                                //system.run(()=>{try{player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).setLore(lore)}catch(e){console.error(e, e.stack); player.sendMessage("§c" + e + e.stack)}})
+                                                //system.run(()=>{try{player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).setLore(lore)}catch(e){console.error(e, e.stack); player.sendMessageB("§c" + e + e.stack)}})
                                                 break;
                                             case "lorene":
                                                 let lorene = JSON.parse(command.split(" ").slice(4).join(" "));
@@ -3485,7 +3508,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
-                                                    player.sendMessage("§c" + e + e.stack);
+                                                    player.sendMessageB("§c" + e + e.stack);
                                                 } });
                                                 break;
                                             case "canpalceon":
@@ -3495,7 +3518,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
-                                                    player.sendMessage("§c" + e + e.stack);
+                                                    player.sendMessageB("§c" + e + e.stack);
                                                 } });
                                                 break;
                                             case "candestroy":
@@ -3505,7 +3528,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
-                                                    player.sendMessage("§c" + e + e.stack);
+                                                    player.sendMessageB("§c" + e + e.stack);
                                                 } });
                                                 break;
                                             case "keepondeath":
@@ -3531,7 +3554,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                             case "name":
                                                 let name = command.split(" ").slice(4).join(" ").escapeCharactersB(true);
                                                 if (name.e != undefined) {
-                                                    name.e.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
+                                                    name.e.forEach((e) => { player.sendMessageB(String("§c" + e + e.stack)); });
                                                 }
                                                 ;
                                                 system.run(() => { try {
@@ -3539,7 +3562,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
-                                                    player.sendMessage("§c" + e + e.stack);
+                                                    player.sendMessageB("§c" + e + e.stack);
                                                 } });
                                                 break;
                                             case "remove":
@@ -3548,7 +3571,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
-                                                    player.sendMessage("§c" + e + e.stack);
+                                                    player.sendMessageB("§c" + e + e.stack);
                                                 } });
                                                 break;
                                             case "new":
@@ -3557,7 +3580,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
-                                                    player.sendMessage("§c" + e + e.stack);
+                                                    player.sendMessageB("§c" + e + e.stack);
                                                 } });
                                                 break;
                                             case "components":
@@ -3569,7 +3592,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
-                                                    player.sendMessage("§c" + e + e.stack);
+                                                    player.sendMessageB("§c" + e + e.stack);
                                                 } });
                                                 break;
                                             case "count":
@@ -3578,13 +3601,13 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
-                                                    player.sendMessage("§c" + e + e.stack);
+                                                    player.sendMessageB("§c" + e + e.stack);
                                                 } });
                                                 break;
                                             case "nameTag":
                                                 let nameb = command.split(" ").slice(4).join(" ").escapeCharactersB(true);
                                                 if (nameb.e != undefined) {
-                                                    nameb.e.forEach((e) => { player.sendMessage(String("§c" + e + e.stack)); });
+                                                    nameb.e.forEach((e) => { player.sendMessageB(String("§c" + e + e.stack)); });
                                                 }
                                                 ;
                                                 system.run(() => { try {
@@ -3592,14 +3615,14 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
-                                                    player.sendMessage("§c" + e + e.stack);
+                                                    player.sendMessageB("§c" + e + e.stack);
                                                 } });
                                                 break;
                                             case "item listtags":
-                                                player.sendMessage('"' + slot.getTags().join("§r,") + '"');
+                                                player.sendMessageB('"' + slot.getTags().join("§r,") + '"');
                                                 break;
                                             case "item gettags":
-                                                player.sendMessage('"' + slot.getTags().join("§r,") + '"');
+                                                player.sendMessageB('"' + slot.getTags().join("§r,") + '"');
                                                 break;
                                             case "enchantment":
                                                 switch (command.split(" ")[4]) {
@@ -3613,7 +3636,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                             }
                                                             catch (e) {
                                                                 console.error(e, e.stack);
-                                                                player.sendMessage("§c" + e + e.stack);
+                                                                player.sendMessageB("§c" + e + e.stack);
                                                             }
                                                         });
                                                         break;
@@ -3627,7 +3650,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                             }
                                                             catch (e) {
                                                                 console.error(e, e.stack);
-                                                                player.sendMessage("§c" + e + e.stack);
+                                                                player.sendMessageB("§c" + e + e.stack);
                                                             }
                                                         });
                                                         break;
@@ -3640,7 +3663,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                             }
                                                             catch (e) {
                                                                 console.error(e, e.stack);
-                                                                player.sendMessage("§c" + e + e.stack);
+                                                                player.sendMessageB("§c" + e + e.stack);
                                                             }
                                                         });
                                                         break;
@@ -3662,7 +3685,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                             }
                                                             catch (e) {
                                                                 console.error(e, e.stack);
-                                                                player.sendMessage("§c" + e + e.stack);
+                                                                player.sendMessageB("§c" + e + e.stack);
                                                             }
                                                         });
                                                         break;
@@ -3681,7 +3704,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
-                                                    player.sendMessage("§c" + e + e.stack);
+                                                    player.sendMessageB("§c" + e + e.stack);
                                                 } });
                                                 break;
                                             case "jsonb":
@@ -3691,7 +3714,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
-                                                    player.sendMessage("§c" + e + e.stack);
+                                                    player.sendMessageB("§c" + e + e.stack);
                                                 } });
                                                 break;
                                             case "property":
@@ -3745,7 +3768,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item count":
@@ -3754,13 +3777,13 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     case "item nameTag":
                                         let nameb = command.split(" ").slice(2).join(" ").escapeCharactersB(true);
                                         if (nameb.e != undefined) {
-                                            nameb.e.forEach((e) => { player.sendMessage(String(e + e.stack)); });
+                                            nameb.e.forEach((e) => { player.sendMessageB(String(e + e.stack)); });
                                         }
                                         ;
                                         system.run(() => { try {
@@ -3768,7 +3791,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         } });
                                         break;
                                     default:
@@ -3778,7 +3801,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                             }
                             catch (e) {
                                 console.error(e, e.stack);
-                                player.sendMessage(e + e.stack);
+                                player.sendMessageB(e + e.stack);
                             }
                         }
                     }
@@ -5201,7 +5224,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         catch {
                             a = 1;
                         }
-                    } ; player.sendMessage(messageCustom); eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage("Printed blocks at: x: " + player.location.x + ", z: " + player.location.z); }); });
+                    } ; player.sendMessageB(messageCustom); eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage("Printed blocks at: x: " + player.location.x + ", z: " + player.location.z); }); });
                 }
                 catch (e) {
                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -5212,7 +5235,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.cancel = true;
                     let la = player.getBlockFromViewDirection();
                     if (!!!la) {
-                        player.sendMessage("§cError: No obstruction found to go through. ");
+                        player.sendMessageB("§cError: No obstruction found to go through. ");
                     }
                     else {
                         let l = mcMath.Vector3Utils.add(mcMath.Vector3Utils.add(la.block, mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 0.01)), mcMath.Vector3Utils.scale(la.faceLocation, 0.98));
@@ -5220,7 +5243,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         for (let i = 0; i < 100 && !(tryget(() => player.dimension.getBlock(l).isAir) && (tryget(() => player.dimension.getBlock(l).above().isAir) || tryget(() => player.dimension.getBlock(l).below().isAir))) && l.y >= (player.dimension.heightRange.min - 1); i++) {
                             l = caretNotationC(l, mcMath.VECTOR3_FORWARD, rot);
                         }
-                        l.y <= (player.dimension.heightRange.min + 2) ? player.sendMessage("§cError: The other side of this obstruction is void, if you want to be able to go to the other side even if it is in the void then just use \\vthru. ") : (player.dimension.getBlock(l).isAir && player.dimension.getBlock(l).below().isAir) ? tryrun(() => { try {
+                        l.y <= (player.dimension.heightRange.min + 2) ? player.sendMessageB("§cError: The other side of this obstruction is void, if you want to be able to go to the other side even if it is in the void then just use \\vthru. ") : (player.dimension.getBlock(l).isAir && player.dimension.getBlock(l).below().isAir) ? tryrun(() => { try {
                             srun(() => { player.teleport(roundVector3ToMiddleOfBlockFloorY(player.dimension.getBlock(l).below().location)); });
                         }
                         catch (e) {
@@ -5230,7 +5253,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         }
                         catch (e) {
                             eventData.sender.sendMessage("§c" + e + e.stack);
-                        } }) : player.sendMessage("§cError: Unable to find other side of obstruction. ");
+                        } }) : player.sendMessageB("§cError: Unable to find other side of obstruction. ");
                     }
                 }
                 break;
@@ -5239,7 +5262,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.cancel = true;
                     let la = player.getBlockFromViewDirection();
                     if (!!!la) {
-                        player.sendMessage("§cError: No obstruction found to go through. ");
+                        player.sendMessageB("§cError: No obstruction found to go through. ");
                     }
                     else {
                         let l = mcMath.Vector3Utils.add(mcMath.Vector3Utils.add(la.block, mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 0.01)), mcMath.Vector3Utils.scale(la.faceLocation, 0.98));
@@ -5257,7 +5280,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         }
                         catch (e) {
                             eventData.sender.sendMessage("§c" + e + e.stack);
-                        } }) : player.sendMessage("§cError: Unable to find other side of obstruction. ");
+                        } }) : player.sendMessageB("§cError: Unable to find other side of obstruction. ");
                     }
                 }
                 break;
@@ -5406,7 +5429,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                     break;
                                 case "list":
                                     {
-                                        player.sendMessage(world.structureManager.getWorldStructureIds().map(h => h.replaceAll("§", "\uF019")).join("§r§f\n"));
+                                        player.sendMessageB(world.structureManager.getWorldStructureIds().map(h => h.replaceAll("§", "\uF019")).join("§r§f\n"));
                                     }
                                     break;
                                 case "getinfo":
@@ -5450,67 +5473,67 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         switch (String(args[1])) {
                             case "set":
                                 if (HomeSystem.testIfPlayerAtMaxHomes(player)) {
-                                    player.sendMessage("§cError: Max homes reached. Please delete a home if you want to add a new one. ");
+                                    player.sendMessageB("§cError: Max homes reached. Please delete a home if you want to add a new one. ");
                                 }
                                 else if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
-                                    player.sendMessage("§cError: You already have a home with this name. Please delete the home and create it again if you want to change its location. ");
+                                    player.sendMessageB("§cError: You already have a home with this name. Please delete the home and create it again if you want to change its location. ");
                                 }
                                 else {
                                     new Home({ location: Object.assign(player.location, { dimension: player.dimension }), name: args[2], owner: player.player, saveId: "home:" + player.id + ":" + args[2] }).save();
-                                    player.sendMessage(`Successfully set the home "${args[2]}§r§f" to ${vTStr(player.location)} in ${main.dimensionTypeDisplayFormatting[player.dimension.id]}. `);
+                                    player.sendMessageB(`Successfully set the home "${args[2]}§r§f" to ${vTStr(player.location)} in ${main.dimensionTypeDisplayFormatting[player.dimension.id]}. `);
                                 }
                                 break;
                             case "remove":
                                 if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
                                     HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).remove();
-                                    player.sendMessage(`Successfully removed the home "${args[2]}§r§f". `);
+                                    player.sendMessageB(`Successfully removed the home "${args[2]}§r§f". `);
                                 }
                                 else {
-                                    player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `);
+                                    player.sendError(`§cError: Could not find a home with the name "${args[2]}§r§c". `, true);
                                 }
                                 break;
                             case "go":
                                 if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
                                     srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location, { dimension: HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location.dimension }));
-                                    player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `);
+                                    player.sendMessageB(`Successfully teleported to the home "${args[2]}§r§f". `);
                                 }
                                 else {
-                                    player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `);
+                                    player.sendError(`§cError: Could not find a home with the name "${args[2]}§r§c". `, true);
                                 }
                                 break;
                             case "warp":
                                 if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
                                     srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location, { dimension: HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location.dimension }));
-                                    player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `);
+                                    player.sendMessageB(`Successfully teleported to the home "${args[2]}§r§f". `);
                                 }
                                 else {
-                                    player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `);
+                                    player.sendError(`§cError: Could not find a home with the name "${args[2]}§r§c". `, true);
                                 }
                                 break;
                             case "teleport":
                                 if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2])) {
                                     srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location, { dimension: HomeSystem.getHomesForPlayer(player).find(h => h.name == args[2]).location.dimension }));
-                                    player.sendMessage(`Successfully teleported to the home "${args[2]}§r§f". `);
+                                    player.sendMessageB(`Successfully teleported to the home "${args[2]}§r§f". `);
                                 }
                                 else {
-                                    player.sendMessage(`§cError: Could not find a home with the name "${args[2]}§r§c". `);
+                                    player.sendError(`§cError: Could not find a home with the name "${args[2]}§r§c". `, true);
                                 }
                                 break;
                             case "clear":
                                 HomeSystem.getHomesForPlayer(player).forEach(h => h.remove());
-                                player.sendMessage(`Successfully cleared all of your homes. `);
+                                player.sendMessageB(`Successfully cleared all of your homes. `);
                                 break;
                             case "removeall":
                                 HomeSystem.getHomesForPlayer(player).forEach(h => h.remove());
-                                player.sendMessage(`Successfully removed all of your homes. `);
+                                player.sendMessageB(`Successfully removed all of your homes. `);
                                 break;
                             case "list":
-                                player.sendMessage(HomeSystem.getHomesForPlayer(player).map(h => h.name.replaceAll("§", "\uF019")).join("§r§f\n"));
+                                player.sendMessageB(HomeSystem.getHomesForPlayer(player).map(h => h.name.replaceAll("§", "\uF019")).join("§r§f\n"));
                                 break;
                         }
                     }
                     else {
-                        player.sendMessage("§cError: This command cannot be used becuase the experimental home system is not enabled. It can be enabled at \"Main Menu>Settings>Home System>Enable Home System\"");
+                        player.sendMessageB("§cError: This command cannot be used becuase the experimental home system is not enabled. It can be enabled at \"Main Menu>Settings>Home System>Enable Home System\"");
                     }
                 }
                 break;
@@ -5521,14 +5544,14 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         let argsa = evaluateParameters(switchTestB, ["presetText"]);
                         if (!!HomeSystem.getHomesForPlayer(player).find(h => h.name == argsa.extra)) {
                             srun(() => player.teleport(Home.get("home:" + player.id + ":" + argsa.extra).location, { dimension: Home.get("home:" + player.id + ":" + argsa.extra).location.dimension }));
-                            player.sendMessage(`Successfully teleported to the home "${argsa.extra}§r§f". `);
+                            player.sendMessageB(`Successfully teleported to the home "${argsa.extra}§r§f". `);
                         }
                         else {
-                            player.sendMessage(`§cError: Could not find a home with the name "${argsa.extra}§r§c". `);
+                            player.sendError(`§cError: Could not find a home with the name "${argsa.extra}§r§c". `, true);
                         }
                     }
                     else {
-                        player.sendMessage("§cError: This command cannot be used becuase the experimental home system is not enabled. It can be enabled at \"Main Menu>Settings>Home System>Enable Home System\"");
+                        player.sendMessageB("§cError: This command cannot be used becuase the experimental home system is not enabled. It can be enabled at \"Main Menu>Settings>Home System>Enable Home System\"");
                     }
                 }
                 break;
@@ -5536,7 +5559,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 {
                     eventData.cancel = true;
                     if (!!!config.spawnCommandLocation.x) {
-                        player.sendMessage("§cError: This command cannot be used becuase no spawn teleport location has been set. It can be enabled at \"Main Menu>Settings>Global Settings>spawnCommandLocation\"");
+                        player.sendMessageB("§cError: This command cannot be used becuase no spawn teleport location has been set. It can be enabled at \"Main Menu>Settings>Global Settings>spawnCommandLocation\"");
                     }
                     else {
                         srun(() => player.teleport(config.spawnCommandLocation, { dimension: config.spawnCommandLocation.dimension }));
@@ -5554,7 +5577,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player")[0];
                             if (!!target) {
                                 //requestChatInput(player, "a").then(v=>psend(player, "as")); srun(()=>requestChatInput(player, "b").then(v=>psend(player, "bs"))); 
-                                player.sendMessage(`§aSent a teleport request to "${target.name}".`);
+                                player.sendMessageB(`§aSent a teleport request to "${target.name}".`);
                                 requestConditionalChatInput(target, (player, message) => message.toLowerCase().trim() == "y" || message.toLowerCase().trim() == "n", {
                                     requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in ${config.tpaSystem.timeoutDuration == 60
                                         ? "1 minute"
@@ -5569,11 +5592,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                     if (t.toLowerCase().trim() == "y") {
                                         player.teleport(target.location, { dimension: target.dimension });
                                         target.sendMessage(`§aAccepted teleport request from "${player.name}".`);
-                                        player.sendMessage(`§aSuccessfully teleported to "${target.name}".`);
+                                        player.sendMessageB(`§aSuccessfully teleported to "${target.name}".`);
                                     }
                                     else {
                                         target.sendMessage(`§cDenied "${player.name}"'s teleport request.`);
-                                        player.sendMessage(`§c"${target.name}" denied your teleport request.`);
+                                        player.sendMessageB(`§c"${target.name}" denied your teleport request.`);
                                     }
                                 })
                                     .catch((e) => {
@@ -5590,12 +5613,12 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 });
                             }
                             else {
-                                player.sendMessage(`§cError: Unable to find player.`);
+                                player.sendError(`§cError: Unable to find player.`, true);
                             }
                         });
                     }
                     else {
-                        player.sendMessage("§cTPASystemDisabledError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>TPA System>Enable TPA System\"");
+                        player.sendMessageB("§cTPASystemDisabledError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>TPA System>Enable TPA System\"");
                     }
                 }
                 break; /*
@@ -5609,15 +5632,15 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         requestConditionalChatInput(target, (player, message)=>(message.trim()=="y"||message.trim()=="n"), {requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.`}).then(t=>{
                             if(t.trim()=="y"){
                                 player.teleport(target.location, {dimension: target.dimension})
-                                player.sendMessage(`Successfully teleported to "${target.name}".`)
+                                player.sendMessageB(`Successfully teleported to "${target.name}".`)
                             }else{
-                                player.sendMessage(`"${target.name}" denied your teleport request.`)
+                                player.sendMessageB(`"${target.name}" denied your teleport request.`)
                             }
                         }).catch(e=>{if(e instanceof TimeoutError){psend(target, `§c${player.name}'s teleport request expired.`); psend(player, "§cTeleport request timed out.")}else if(e instanceof ExpireError){psend(player, "§cTeleport request expired.")}else psend(player, "§c"+e+" "+e.stack)})
-                    }else{player.sendMessage(`§cError: Unable to find player.`)}
+                    }else{player.sendError(`§cError: Unable to find player.`, true)}
                     })
                 }else{
-                    player.sendMessage("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>TPA System>Enable Teleport Request System\"")
+                    player.sendMessageB("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>TPA System>Enable Teleport Request System\"")
                 }
             }
             break; */ // COMING SOON! 
@@ -5655,16 +5678,16 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         }
                         let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
                         if (targets.length == 0) {
-                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                            player.sendError(`§cError: No players matching the specified target selector were found. `, true);
                         }
                         else
                             targets.forEach(target => {
                                 try {
                                     target.getComponent("health").resetToMaxValue();
-                                    player.sendMessage(`Healed ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")}. Health is now ${target.getComponent("health").effectiveMax}. `);
+                                    player.sendMessageB(`Healed ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")}. Health is now ${target.getComponent("health").effectiveMax}. `);
                                 }
                                 catch (e) {
-                                    player.sendMessage("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
+                                    player.sendMessageB("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
                                 }
                             });
                     });
@@ -5683,17 +5706,17 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         }
                         let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
                         if (targets.length == 0) {
-                            player.sendMessage(`§cError: No entities matching the specified target selector were found. `);
+                            player.sendError(`§cError: No entities matching the specified target selector were found. `, true);
                         }
                         else
                             targets.forEach(target => {
                                 try {
                                     const name = target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag + "<" + target.id + ">") ?? (target.typeId + "<" + target.id + ">");
                                     target.nameTag = args[2] ?? "";
-                                    player.sendMessage(`Set the name of ${name} to ${JSON.stringify(args[2] ?? "")}. `);
+                                    player.sendMessageB(`Set the name of ${name} to ${JSON.stringify(args[2] ?? "")}. `);
                                 }
                                 catch (e) {
-                                    player.sendMessage("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
+                                    player.sendMessageB("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
                                 }
                             });
                     });
@@ -5712,16 +5735,16 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         }
                         let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
                         if (targets.length == 0) {
-                            player.sendMessage(`§cError: No entities matching the specified target selector were found. `);
+                            player.sendError(`§cError: No entities matching the specified target selector were found. `, true);
                         }
                         else
                             targets.forEach(target => {
                                 try {
                                     target.getComponent("health").resetToMaxValue();
-                                    player.sendMessage(`Set health of ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")} to maximum: ${target.getComponent("health").effectiveMax}. `);
+                                    player.sendMessageB(`Set health of ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")} to maximum: ${target.getComponent("health").effectiveMax}. `);
                                 }
                                 catch (e) {
-                                    player.sendMessage("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
+                                    player.sendMessageB("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
                                 }
                             });
                     });
@@ -5740,16 +5763,16 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         }
                         let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
                         if (targets.length == 0) {
-                            player.sendMessage(`§cError: No entities matching the specified target selector were found. `);
+                            player.sendError(`§cError: No entities matching the specified target selector were found. `, true);
                         }
                         else
                             targets.forEach(target => {
                                 try {
                                     target.getComponent("health").resetToMinValue();
-                                    player.sendMessage(`Set health of ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")} to minimum: ${target.getComponent("health").effectiveMin}. `);
+                                    player.sendMessageB(`Set health of ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")} to minimum: ${target.getComponent("health").effectiveMin}. `);
                                 }
                                 catch (e) {
-                                    player.sendMessage("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
+                                    player.sendMessageB("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
                                 }
                             });
                     });
@@ -5768,16 +5791,16 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         }
                         let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
                         if (targets.length == 0) {
-                            player.sendMessage(`§cError: No entities matching the specified target selector were found. `);
+                            player.sendError(`§cError: No entities matching the specified target selector were found. `, true);
                         }
                         else
                             targets.forEach(target => {
                                 try {
                                     target.getComponent("health").resetToDefaultValue();
-                                    player.sendMessage(`Set health of ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")} to default: ${target.getComponent("health").defaultValue}. `);
+                                    player.sendMessageB(`Set health of ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")} to default: ${target.getComponent("health").defaultValue}. `);
                                 }
                                 catch (e) {
-                                    player.sendMessage("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
+                                    player.sendMessageB("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
                                 }
                             });
                     });
@@ -5796,16 +5819,16 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         }
                         let targets = targetSelectorAllListC(args[2], "", vTStr(player.location), player);
                         if (targets.length == 0) {
-                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                            player.sendError(`§cError: No players matching the specified target selector were found. `, true);
                         }
                         else
                             targets.forEach(target => {
                                 try {
                                     target.getComponent("health").setCurrentValue(Number(args[1]));
-                                    player.sendMessage(`Set health of ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")} to ${Number(args[1])}. `);
+                                    player.sendMessageB(`Set health of ${target?.name ?? tryget(() => target.nameTag == "" ? undefined : target.nameTag) ?? (target.typeId + "<" + target.id + ">")} to ${Number(args[1])}. `);
                                 }
                                 catch (e) {
-                                    player.sendMessage("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
+                                    player.sendMessageB("§c" + e + " " + e.stack + "\nfor entity " + target.typeId + "<" + target.id + ">");
                                 }
                             });
                     });
@@ -5814,31 +5837,31 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^liststructures$/) || !!switchTest.match(/^getstructures$/):
                 {
                     eventData.cancel = true;
-                    srun(() => player.sendMessage(world.structureManager.getWorldStructureIds().sort().join("§r\n")));
+                    srun(() => player.sendMessageB(world.structureManager.getWorldStructureIds().sort().join("§r\n")));
                 }
                 break;
             case !!switchTest.match(/^listbans$/) || !!switchTest.match(/^getbans$/):
                 {
                     eventData.cancel = true;
-                    player.sendMessage(ban.getBans().allBans.map(b => `${b.type == "id" ? "ID Ban: " : "Name Ban: "}${b.type == "id" ? b.playerId : b.playerName}, ${new Date(Number(b.banDate) + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"));
+                    player.sendMessageB(ban.getBans().allBans.map(b => `${b.type == "id" ? "ID Ban: " : "Name Ban: "}${b.type == "id" ? b.playerId : b.playerName}, ${new Date(Number(b.banDate) + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"));
                 }
                 break;
             case !!switchTest.match(/^listidbans$/) || !!switchTest.match(/^getidbans$/):
                 {
                     eventData.cancel = true;
-                    player.sendMessage(ban.getBans().idBans.map(b => `${b.playerId}, Banned On: ${new Date(Number(b.banDate) + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"));
+                    player.sendMessageB(ban.getBans().idBans.map(b => `${b.playerId}, Banned On: ${new Date(Number(b.banDate) + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"));
                 }
                 break;
             case !!switchTest.match(/^listnamebans$/) || !!switchTest.match(/^getnamebans$/):
                 {
                     eventData.cancel = true;
-                    player.sendMessage(ban.getBans().nameBans.map(b => `${b.playerName}, Banned On: ${new Date(Number(b.banDate) + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"));
+                    player.sendMessageB(ban.getBans().nameBans.map(b => `${b.playerName}, Banned On: ${new Date(Number(b.banDate) + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"));
                 }
                 break;
             case !!switchTest.match(/^version$/) || !!switchTest.match(/^ver$/):
                 {
                     eventData.cancel = true;
-                    player.sendMessage(format_version);
+                    player.sendMessageB(format_version);
                 }
                 break;
             case !!switchTest.match(/^despawn$/):
@@ -5854,7 +5877,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         }
                         let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player);
                         if (targets.length == 0) {
-                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                            player.sendError(`§cError: No players matching the specified target selector were found. `, true);
                         }
                         else {
                             let despawnCount = 0;
@@ -5864,7 +5887,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                     despawnCount++;
                                 }
                                 catch (e) {
-                                    player.sendMessage("§c" + e + " " + e.stack);
+                                    player.sendMessageB("§c" + e + " " + e.stack);
                                 }
                             });
                             player?.sendMessage(`${despawnCount == 0 ? "§c" : ""}${despawnCount} entities were despawned. `);
@@ -5885,7 +5908,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         }
                         let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
                         if (targets.length == 0) {
-                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                            player.sendError(`§cError: No players matching the specified target selector were found. `, true);
                         }
                         else
                             targets.forEach(target => {
@@ -5894,7 +5917,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                     player?.sendMessage(`${target?.name ?? target?.id} was kicked from the game. `);
                                 }
                                 catch (e) {
-                                    player.sendMessage("§c" + e + " " + e.stack);
+                                    player.sendMessageB("§c" + e + " " + e.stack);
                                 }
                             });
                     });
@@ -5913,7 +5936,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         }
                         let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
                         if (targets.length == 0) {
-                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                            player.sendError(`§cError: No players matching the specified target selector were found. `, true);
                         }
                         else
                             targets.forEach(target => {
@@ -5927,11 +5950,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 }
                                 catch (e) {
                                     if (e.message == "The event andexsa:explode does not exist on minecraft:player") {
-                                        player.sendMessage("§cError: Either the add-on \"8Crafter's Entity Scale, NBT, and Behavior Modifier, Bossbar, and Morph Addon\" is not on this world/server/realm or another pack is overriding the player.json file in its behavior pack, the host/owner of this world/server/realm must fix this issue before you can use this command. \nIf you are the host/owner and you don't have the add-on then you can download it from the website: §bhttps://modbay.org/mods/1218-8crafters-entity-scale-and-morph-addon.html");
+                                        player.sendMessageB("§cError: Either the add-on \"8Crafter's Entity Scale, NBT, and Behavior Modifier, Bossbar, and Morph Addon\" is not on this world/server/realm or another pack is overriding the player.json file in its behavior pack, the host/owner of this world/server/realm must fix this issue before you can use this command. \nIf you are the host/owner and you don't have the add-on then you can download it from the website: §bhttps://modbay.org/mods/1218-8crafters-entity-scale-and-morph-addon.html");
                                         return;
                                     }
                                     else {
-                                        player.sendMessage("§c" + e + " " + e.stack);
+                                        player.sendMessageB("§c" + e + " " + e.stack);
                                     }
                                 }
                             });
@@ -6267,7 +6290,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^createexplosion$/):
                 eventData.cancel = true;
                 if (switchTestB.trim().split(" ").length == 1) {
-                    player.sendMessage(`createexplosion command format: \n${command.dp}createexplosion <location: x y z> [dimension: string] [radius: float] [allowUnderwater: bool] [breaksBlocks: bool] [causesFire: bool] [source: targetSelector]`);
+                    player.sendMessageB(`createexplosion command format: \n${command.dp}createexplosion <location: x y z> [dimension: string] [radius: float] [allowUnderwater: bool] [breaksBlocks: bool] [causesFire: bool] [source: targetSelector]`);
                 }
                 else {
                     srun(() => {
@@ -6277,7 +6300,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             const l = coordinatesB(args[1], player.location, player.getViewDirection());
                             const options = { allowUnderwater: args[4] ?? false, breaksBlocks: args[5] ?? true, causesFire: args[6] ?? false, source: (args[7] ?? "").trim() == "" ? undefined : targetSelectorAllListC(args[7], "", vTStr(player.location), player)[0] };
                             let s = d.createExplosion(l, args[3] ?? 1, options);
-                            s ? player.sendMessage(`Successfully created an explosion at ${vTStr(l)} with radius ${args[3]} with the options: ${JSONStringify(options, true)}. `) : player.sendMessage(`§cError: Failed to create an explosion at ${vTStr(l)} with radius ${args[3]} with the options: ${JSONStringify(options, true)}. `);
+                            s ? player.sendMessageB(`Successfully created an explosion at ${vTStr(l)} with radius ${args[3]} with the options: ${JSONStringify(options, true)}. `) : player.sendError(`§cError: Failed to create an explosion at ${vTStr(l)} with radius ${args[3]} with the options: ${JSONStringify(options, true)}. `, true);
                         }
                         catch (e) {
                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6291,7 +6314,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     //            (()=>{let p = new executeCommandPlayerW(player); p.modifiedlocation = {x: 0, y: 0, z: 0}; return p})()
                     eventData.cancel = true;
                     if (switchTestB.trim().split(" ").length == 1) {
-                        player.sendMessage(`fill command format: \n${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`);
+                        player.sendMessageB(`fill command format: \n${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> [blockStates: block states] [replaceTileName: Block] [replaceBlockStates: block states]\n${command.dp}fill <from: x y z> <to: x y z> <tileName: Block> <replaceTileName: Block> [replaceBlockStates: block states]`);
                     }
                     let coordinatesa = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[0][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[1][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[2][0], player.location, player.getRotation());
                     let coordinatesb = evaluateCoordinates(Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[3][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[4][0], Array.from(switchTestB.split(" ").slice(1).join(" ").matchAll(/\s*([\^\*\~\!][\-]?\d*|(?<![\^\*\~\!\d])[\-]?\d+)\s*/gis))[5][0], player.location, player.getRotation());
@@ -6305,7 +6328,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? BlockPermutation.resolve("air") : BlockPermutation.resolve(lastblockname, lastblockstates); /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     try {
-                        srun(() => { let a = player.dimension.fillBlocks(new BlockVolume(coordinatesa, coordinatesb), BlockPermutation.resolve(firstblockname, firstblockstates), { blockFilter: { includePermutations: [matchingblock] } }); player.sendMessage(`${a.getCapacity() == 0 ? "§c" : ""}${a} blocks filled`); });
+                        srun(() => { let a = player.dimension.fillBlocks(new BlockVolume(coordinatesa, coordinatesb), BlockPermutation.resolve(firstblockname, firstblockstates), { blockFilter: { includePermutations: [matchingblock] } }); player.sendMessageB(`${a.getCapacity() == 0 ? "§c" : ""}${a} blocks filled`); });
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6317,7 +6340,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 {
                     eventData.cancel = true;
                     if (switchTestB.trim().split(" ").length == 1) {
-                        player.sendMessage(`itfill command format: 
+                        player.sendMessageB(`itfill command format: 
 ${command.dp}ifill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}ifill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}ifill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
@@ -6528,7 +6551,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6557,7 +6580,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                                 ;
                                                 let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                                 let endTime = Date.now();
-                                                player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                                player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                             }
                                             catch (e) {
                                                 eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6581,7 +6604,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     ;
                                     let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air");
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6592,7 +6615,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air", undefined, { matchingBlock: "water" });
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6607,7 +6630,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     ;
                                     let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6618,7 +6641,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: "air" });
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6629,7 +6652,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6640,7 +6663,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6651,7 +6674,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6662,7 +6685,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6670,7 +6693,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                 break;
                             case "skygrid":
                                 system.run(() => { try {
-                                    fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                    fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6678,27 +6701,27 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                 break;
                             case "inverseskygrid":
                                 system.run(() => { try {
-                                    fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                    fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
                                 } });
                                 break;
                             case "tunnel":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "floor":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "ceilling":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "diamond":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "hollowovoid":
                                 system.run(() => { try {
-                                    fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                    fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6706,7 +6729,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                 break;
                             case "ovoid":
                                 system.run(() => { try {
-                                    fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                    fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6714,7 +6737,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                 break;
                             case "hollowsphere":
                                 system.run(() => { try {
-                                    fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                    fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6722,7 +6745,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                 break;
                             case "dome":
                                 system.run(() => { try {
-                                    fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                    fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6730,7 +6753,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                 break;
                             case "sphere":
                                 system.run(() => { try {
-                                    fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                    fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6738,7 +6761,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                 break;
                             case "semisphere":
                                 system.run(() => { try {
-                                    fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                    fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6749,7 +6772,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, { matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1] }, undefined, creplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6760,7 +6783,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6771,7 +6794,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6782,7 +6805,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6793,7 +6816,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6804,7 +6827,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6815,7 +6838,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6826,7 +6849,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6837,7 +6860,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, { matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1] }, undefined, treplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6848,7 +6871,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6859,7 +6882,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6870,7 +6893,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6881,7 +6904,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6892,7 +6915,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6903,7 +6926,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6914,14 +6937,14 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     let startTime = Date.now();
                                     let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
                                 } });
                                 break;
                             case "hourglass":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "cube":
                                 system.run(() => { try {
@@ -6932,7 +6955,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                     ;
                                     let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                     let endTime = Date.now();
-                                    player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                    player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -6949,7 +6972,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                     eventData.cancel = true;
                     eventData.cancel = true;
                     if (switchTestB.trim().split(" ").length == 1) {
-                        player.sendMessage(`itfill command format: 
+                        player.sendMessageB(`itfill command format: 
 ${command.dp}itfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}itfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}itfill <from: x y z> <to: x y z> <tileName: Block> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
@@ -7160,7 +7183,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7189,7 +7212,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                                 ;
                                                 let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                                 let endTime = Date.now();
-                                                player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                                player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                             }
                                             catch (e) {
                                                 eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7214,7 +7237,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air");
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7233,7 +7256,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air", undefined, { matchingBlock: "water" });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7256,7 +7279,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7275,7 +7298,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: "air" });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7294,7 +7317,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7313,7 +7336,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7332,7 +7355,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7351,7 +7374,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7367,7 +7390,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                             case "skygrid":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7383,7 +7406,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                             case "inverseskygrid":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7397,21 +7420,21 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 } });
                                 break;
                             case "tunnel":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "floor":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "ceilling":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "diamond":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "hollowovoid":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7427,7 +7450,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                             case "ovoid":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7443,7 +7466,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                             case "hollowsphere":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7459,7 +7482,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                             case "dome":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7475,7 +7498,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                             case "sphere":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7491,7 +7514,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                             case "semisphere":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7510,7 +7533,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, { matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1] }, undefined, creplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7529,7 +7552,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7548,7 +7571,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7567,7 +7590,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7586,7 +7609,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7605,7 +7628,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7624,7 +7647,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7643,7 +7666,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7662,7 +7685,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, { matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1] }, undefined, treplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7681,7 +7704,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7700,7 +7723,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7719,7 +7742,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7738,7 +7761,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7757,7 +7780,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7776,7 +7799,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7795,7 +7818,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7809,7 +7832,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 } });
                                 break;
                             case "hourglass":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "cube":
                                 system.run(() => { let ta; try {
@@ -7821,7 +7844,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -7845,7 +7868,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                     eventData.cancel = true;
                     eventData.cancel = true;
                     if (switchTestB.trim().split(" ").length == 1) {
-                        player.sendMessage(`idtfill command format: 
+                        player.sendMessageB(`idtfill command format: 
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
@@ -8052,7 +8075,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8068,7 +8091,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "replace":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[13] ?? true, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[13] ?? true, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8091,7 +8114,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air");
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8110,7 +8133,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air", undefined, { matchingBlock: "water" });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8126,7 +8149,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "fill":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8142,7 +8165,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "keep":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: "air", minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: "air", minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8158,7 +8181,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "walls":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8174,7 +8197,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "hollow":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8190,7 +8213,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "outline":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8209,7 +8232,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8225,7 +8248,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "skygrid":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8241,7 +8264,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             case "inverseskygrid":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8255,16 +8278,16 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 } });
                                 break;
                             case "tunnel":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "floor":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "ceilling":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "diamond":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "hollowovoid":
                                 system.run(() => { let ta; try {
@@ -8272,7 +8295,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
                                     ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
-                                        fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, hointegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, hointegrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8291,7 +8314,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
                                     ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
-                                        fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, ointegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, ointegrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8310,7 +8333,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
                                     ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
-                                        fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8329,7 +8352,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
                                     ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
-                                        fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8348,7 +8371,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
                                     ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
-                                        fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8367,7 +8390,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
                                     ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
-                                        fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8389,7 +8412,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, { matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1] }, undefined, creplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8411,7 +8434,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8433,7 +8456,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8455,7 +8478,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8477,7 +8500,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8499,7 +8522,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8521,7 +8544,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8543,7 +8566,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8565,7 +8588,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, { matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1] }, undefined, treplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8587,7 +8610,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8609,7 +8632,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8631,7 +8654,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8653,7 +8676,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8675,7 +8698,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8697,7 +8720,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8719,7 +8742,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8733,7 +8756,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 } });
                                 break;
                             case "hourglass":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "cube":
                                 system.run(() => { let ta; try {
@@ -8748,7 +8771,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8785,7 +8808,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         let startTime = Date.now();
                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
-                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8811,7 +8834,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         let startTime = Date.now();
                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
-                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8841,7 +8864,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             let startTime = Date.now();
                             let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
-                            player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                            player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
                         catch (e) {
                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8874,7 +8897,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         let startTime = Date.now();
                         let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
-                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8907,7 +8930,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             let startTime = Date.now();
                             let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
-                            player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                            player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
                         catch (e) {
                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8940,7 +8963,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         let startTime = Date.now();
                         let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
-                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -8973,7 +8996,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             let startTime = Date.now();
                             let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
-                            player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                            player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
                         catch (e) {
                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9006,7 +9029,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         let startTime = Date.now();
                         let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
-                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9039,7 +9062,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             let startTime = Date.now();
                             let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
-                            player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                            player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
                         catch (e) {
                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9072,7 +9095,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         let startTime = Date.now();
                         let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                         let endTime = Date.now();
-                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9105,7 +9128,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             let startTime = Date.now();
                             let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                             let endTime = Date.now();
-                            player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                            player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                         }
                         catch (e) {
                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9135,7 +9158,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     try {
-                        system.run(() => { player.sendMessage("IFill Command Started, to cancel type in " + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "stopgen " + system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], false, (a, timea, timeb, totalTime, player) => { player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${totalTime} ms`); }, player))); });
+                        system.run(() => { player.sendMessageB("IFill Command Started, to cancel type in " + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "stopgen " + system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], false, (a, timea, timeb, totalTime, player) => { player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${totalTime} ms`); }, player))); });
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9158,7 +9181,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     try {
-                        system.run(() => { player.sendMessage("IOFill Generator/Job Started, to cancel type in " + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "stopgen " + system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], false, (a, timea, timeb, totalTime, player) => { player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${totalTime} ms`); }, player))); });
+                        system.run(() => { player.sendMessageB("IOFill Generator/Job Started, to cancel type in " + String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\") + "stopgen " + system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], false, (a, timea, timeb, totalTime, player) => { player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${totalTime} ms`); }, player))); });
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9171,7 +9194,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     eventData.cancel = true;
                     try {
                         system.clearJob(Number(switchTestB.split(" ")[1]));
-                        player.sendMessage(`Successfully Clear Job/Generator With ID: ${switchTestB.split(" ")[1]}`);
+                        player.sendMessageB(`Successfully Clear Job/Generator With ID: ${switchTestB.split(" ")[1]}`);
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9194,7 +9217,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     try {
-                        system.run(() => { let a = system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], true, (a) => { player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled`); })); });
+                        system.run(() => { let a = system.runJob(fillBlocksCG(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], true, (a) => { player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled`); })); });
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9217,7 +9240,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? ["air"] : [BlockTypes.get(lastblockname).id, lastblockstates]; /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     try {
-                        system.run(() => { let a = fillBlocksC(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], true); player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled`); });
+                        system.run(() => { let a = fillBlocksC(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, matchingblock?.[0], matchingblock?.[1], true); player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled`); });
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9240,7 +9263,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let matchingblock = lastblockname == "" ? undefined : lastblockname == "keep" ? BlockPermutation.resolve("air") : BlockPermutation.resolve(lastblockname, lastblockstates); /*
                     console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
                     try {
-                        system.run(() => { let a = fillBlocksB(coordinatesa, coordinatesb, player.dimension, BlockPermutation.resolve(firstblockname, firstblockstates), { blockFilter: { includePermutations: [matchingblock] } }); player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled`); });
+                        system.run(() => { let a = fillBlocksB(coordinatesa, coordinatesb, player.dimension, BlockPermutation.resolve(firstblockname, firstblockstates), { blockFilter: { includePermutations: [matchingblock] } }); player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled`); });
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -9261,12 +9284,49 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         }
                         let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).find(v => v.typeId == "minecraft:player");
                         if (!!!target) {
-                            player.sendMessage(`§cError: No player matching the specified target selector was found. `);
+                            player.sendError(`§cError: No player matching the specified target selector was found. `, true);
                         }
                         else {
                             target.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlotIndex)?.clone());
                         }
                     });
+                }
+                break;
+            case !!switchTest.match(/^copyitemfrom$/):
+                {
+                    //world.scoreboard.getObjective("MinsDisplay").getParticipants().filter(p=>!!!tryget(()=>p.getEntity())).forEach(p=>world.scoreboard.getObjective("balance").removeParticipant(p))
+                    //if((world.scoreboard.getObjective("balance").getScore(player)??0)>JSON.parse(world.getDynamicProperty("shop:costs"))[r.selection]){world.scoreboard.getObjective("balance").addScore(player, -(JSON.parse(world.getDynamicProperty("shop:costs"))[r.selection])); player.getComponent("inventory").container.addItem(cmds.overworld.getBlock({x: 823, y: 84, z: 1037}).getComponent("inventory").container.getItem(r.selection))}
+                    //${se}swdp("shop:costs", "[20, 50, 70, 80]")
+                    eventData.cancel = true;
+                    let args = evaluateParameters(switchTestB, ["presetText", "presetText", "presetText", "string", "string"]).args;
+                    if (switchTestB.split(/\s+/g)[2].trim() == "~") {
+                        args[3] = player.name;
+                    }
+                    if ((switchTestB.split(/\s+/g)[2].trim() ?? "") == "") {
+                        args[3] = player.name;
+                    }
+                    let from = world.getAllPlayers().find(_ => _.name == args[3]);
+                    if (switchTestB.split(/\s+/g)[2].trim() == "~") {
+                        args[4] = player.name;
+                    }
+                    if ((switchTestB.split(/\s+/g)[2].trim() ?? "") == "") {
+                        args[4] = player.name;
+                    }
+                    let to = world.getAllPlayers().find(_ => _.name == args[4]);
+                    if (!!!from) {
+                        player.sendError(`§cError: Unable to find player with the name ${args[3]}. `, true);
+                    }
+                    else if (!!!to) {
+                        player.sendError(`§cError: Unable to find player with the name ${args[4]}. `, true);
+                    }
+                    else {
+                        const fromslot = getSlotFromParsedSlot(parseSlot(args[1] ?? "~"), { container: from?.inventory?.container, equipment: from?.equippable, selectedSlotIndex: from?.selectedSlotIndex });
+                        const toslot = getSlotFromParsedSlot(parseSlot(args[2] ?? "~"), { container: to?.inventory?.container, equipment: to?.equippable, selectedSlotIndex: to?.selectedSlotIndex });
+                        system.run(() => {
+                            toslot.setItem(fromslot.getItem());
+                            player.sendMessageB(`Successfully copied item from slot ${args[1]} of ${from.name}'s inventory to slot ${args[2]} of ${to.name}'s inventory. `);
+                        });
+                    }
                 }
                 break;
             case !!switchTest.match(/^copyitem$/):
@@ -9284,7 +9344,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[2]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[2]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[2]}. `, true);
                     }
                     else {
                         if (switchTestB.split(/\s+/g)[1].trim() == "~") {
@@ -9298,7 +9358,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             else {
                                 slot.setItem(player.getComponent("inventory").container.getItem(player.selectedSlotIndex));
                             }
-                            player.sendMessage(`Successfully copied item to slot ${args[1]} of ${target.name}'s inventory. `);
+                            player.sendMessageB(`Successfully copied item to slot ${args[1]} of ${target.name}'s inventory. `);
                         });
                     }
                 }
@@ -9319,7 +9379,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         else {
                             player.getComponent("inventory").container.addItem(slot.getItem());
                         }
-                        player.sendMessage(`Successfully duped item in slot ${String(args[1])}. `);
+                        player.sendMessageB(`Successfully duped item in slot ${String(args[1])}. `);
                     }); /*
                     system.run(()=>{let slot = [EquipmentSlot.Head, EquipmentSlot.Chest,  EquipmentSlot.Legs, EquipmentSlot.Feet, EquipmentSlot.Mainhand, EquipmentSlot.Offhand][["head", "chest", "legs", "feet", "mainhand", "offhand", "helmet", "chestplate", "leggings", "boots", "hand", "otherhand", "cap", "tunic", "pants", "shoes", "righthand", "lefthand"].findIndex(v=>v==switchTestB.split(" ")[1]?.trim()?.toLowerCase())%6]??Number((!!!switchTestB.split(" ")[1]?.trim()?"~":switchTestB.split(" ")[1].trim()).replaceAll("~", String(player.selectedSlotIndex))); let fromSlot = typeof slot == "string"?player.getComponent("equippable").getEquipmentSlot(slot):player.getComponent("inventory").container.getSlot(slot); player.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(event.sender.selectedSlotIndex).clone())})*/
                 }
@@ -9337,7 +9397,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         }
                         let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).find(v => v.typeId == "minecraft:player");
                         if (!!!target) {
-                            player.sendMessage(`§cError: No player matching the specified target selector was found. `);
+                            player.sendError(`§cError: No player matching the specified target selector was found. `, true);
                         }
                         else {
                             player.getComponent("inventory").container.transferItem(player.selectedSlotIndex, target.getComponent("inventory").container);
@@ -9355,7 +9415,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         }
                         let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
                         if (targets.length == 0) {
-                            player.sendMessage(`§cError: No player matching the specified target selector was found. `);
+                            player.sendError(`§cError: No player matching the specified target selector was found. `, true);
                         }
                         else {
                             let successes = [];
@@ -9366,14 +9426,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     successes.push(target);
                                 }
                                 catch (e) {
-                                    player.sendMessage(e + " " + e.stack);
+                                    player.sendError(e + " " + e.stack, true);
                                 }
                             });
                             if (successes.length == 0) {
-                                player.sendMessage(`§cError: Some other error occured and no inventories were successfully shuffled. `);
+                                player.sendError(`§cError: Some other error occured and no inventories were successfully shuffled. `, true);
                             }
                             else {
-                                player.sendMessage(`Successfully shuffled the ${successes.length == 1 ? "inventory" : "inventories"} of ${successes.map(v => v.name).join(", ")}. `);
+                                player.sendMessageB(`Successfully shuffled the ${successes.length == 1 ? "inventory" : "inventories"} of ${successes.map(v => v.name).join(", ")}. `);
                             }
                         }
                     });
@@ -9409,14 +9469,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             args[1] = String(target?.selectedSlotIndex);
                         }
                         if (!!!target) {
-                            player.sendMessage(`§cError: No player matching the first specified target selector was found. `);
+                            player.sendError(`§cError: No player matching the first specified target selector was found. `, true);
                         }
                         else if (!!!targetb) {
-                            player.sendMessage(`§cError: No player matching the second specified target selector was found. `);
+                            player.sendError(`§cError: No player matching the second specified target selector was found. `, true);
                         }
                         else {
                             system.run(() => { target.getComponent("inventory").container.swapItems(Number(args[1].replace(/^~$/, String(target.selectedSlotIndex))), Number(args[2].replace(/^~$/, String(targetb.selectedSlotIndex))), targetb.getComponent("inventory").container); });
-                            player.sendMessage(`Successfully swapped slot ${args[1]} of ${target.name}'s inventory with slot ${args[2]} of ${targetb.name}'s inventory. `);
+                            player.sendMessageB(`Successfully swapped slot ${args[1]} of ${target.name}'s inventory with slot ${args[2]} of ${targetb.name}'s inventory. `);
                         }
                     });
                 }
@@ -9427,7 +9487,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let args = evaluateParametersOld(["presetText", "string", "presetText", "number", "number"], switchTestB).args;
                     let target = world.getAllPlayers().find(_ => _.name == args[2]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[2]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[2]}. `, true);
                     }
                     else {
                         let itemType = new ItemStack(args[2].trim(), 1).typeId;
@@ -9449,7 +9509,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[2]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[2]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[2]}. `, true);
                     }
                     else {
                         if (switchTestB.split(/\s+/g)[1].trim() == "~") {
@@ -9464,7 +9524,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 player.getComponent("inventory").container.addItem(slot.getItem());
                                 slot.setItem();
                             }
-                            player.sendMessage(`Successfully took item from ${args[2]}'s inventory. `);
+                            player.sendMessageB(`Successfully took item from ${args[2]}'s inventory. `);
                         });
                     }
                 }
@@ -9488,15 +9548,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     let target = world.getAllPlayers().find(_ => _.name == args[1]);
                     let targetb = world.getAllPlayers().find(_ => _.name == args[2]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[1]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[1]}. `, true);
                     }
                     else if (!!!targetb) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[2]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[2]}. `, true);
                     }
                     else {
                         system.run(() => {
                             inventorySwap(target, targetb);
-                            player.sendMessage(`Successfully swapped ${args[1]}'s inventory with ${args[2]}'s inventory. `);
+                            player.sendMessageB(`Successfully swapped ${args[1]}'s inventory with ${args[2]}'s inventory. `);
                         });
                     }
                 }
@@ -9505,6 +9565,59 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                 {
                     eventData.cancel = true;
                     system.run(() => { inventorySwapB(world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[1]).getComponent("inventory").container, world.getAllPlayers().find(_ => _.name == switchTestB.split("\"")[3]).getComponent("inventory").container); });
+                }
+                break;
+            case !!switchTest.match(/^swaprows$/) || !!switchTest.match(/^rowswap$/) || !!switchTest.match(/^rs$/):
+                {
+                    eventData.cancel = true;
+                    let args = evaluateParameters(switchTestB, ["presetText", "presetText", "presetText", "string", "string"]).args;
+                    if (args[3] == "~") {
+                        args[3] = player.name;
+                    }
+                    if (!!!args[3]) {
+                        args[3] = player.name;
+                    }
+                    if (args[4] == "~") {
+                        args[4] = player.name;
+                    }
+                    if (!!!args[3]) {
+                        args[4] = player.name;
+                    }
+                    const target = world.getAllPlayers().find(_ => _.name == args[3]);
+                    const targetb = world.getAllPlayers().find(_ => _.name == args[4]);
+                    args[1] ??= "0";
+                    args[2] ??= "0";
+                    if (!!!target) {
+                        player.sendError(`§cError: Unable to find player with the name ${args[3]}. `, true);
+                    }
+                    else if (!!!targetb) {
+                        player.sendError(`§cError: Unable to find player with the name ${args[4]}. `, true);
+                    }
+                    else {
+                        system.run(() => {
+                            const targetInventory = target.inventory;
+                            const targetInventoryB = targetb.inventory;
+                            if (args[1].toLowerCase() == "equipment" || args[2].toLowerCase() == "equipment") {
+                                const items = args[1].toLowerCase() == "equipment" ? equippableToItemStackArray(target.equippable, true) : containerToItemStackArray(target.inventory.container).slice(Math.round(args[1].toNumber() * 9), Math.round(args[1].toNumber() * 9) + 6);
+                                const itemsb = args[2].toLowerCase() == "equipment" ? equippableToItemStackArray(targetb.equippable, true) : containerToItemStackArray(targetb.inventory.container).slice(Math.round(args[1].toNumber() * 9), Math.round(args[1].toNumber() * 9) + 6);
+                                const slotsb = (args[2].toLowerCase() == "equipment" ? equippableToContainerSlotArray(targetb.equippable, true) : containerToContainerSlotArray(targetb.inventory.container).slice(Math.round(args[2].toNumber() * 9), Math.round(args[2].toNumber() * 9) + 6));
+                                (args[1].toLowerCase() == "equipment" ? equippableToContainerSlotArray(target.equippable, true) : containerToContainerSlotArray(target.inventory.container).slice(Math.round(args[1].toNumber() * 9), Math.round(args[1].toNumber() * 9) + 6)).forEach((s, i) => {
+                                    slotsb[i].setItem(items[i]);
+                                    s.setItem(itemsb[i]);
+                                });
+                            }
+                            else {
+                                const index = Math.round(args[1].toNumber() * 9);
+                                const indexb = Math.round(args[2].toNumber() * 9);
+                                for (let i = 1; i < 9; i++) {
+                                    targetInventory.container.swapItems(i + index, i + indexb, targetInventoryB.container);
+                                }
+                                ;
+                                inventorySwap(target, targetb);
+                                player.sendMessageB(`Successfully swapped ${args[3]}'s inventory with ${args[4]}'s inventory. `);
+                            }
+                        });
+                    }
                 }
                 break;
             case !!switchTest.match(/^compressitems$/):
@@ -9519,7 +9632,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[2]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[2]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[2]}. `, true);
                     }
                     else {
                         if ((args[1] ?? "").trim() == "" || (args[1] ?? "").trim() == "all") {
@@ -9549,7 +9662,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[2]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[2]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[2]}. `, true);
                     }
                     else {
                         if ((args[1] ?? "").trim() == "" || (args[1] ?? "").trim() == "all") {
@@ -9579,15 +9692,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[3]);
                     if (!!!BlockTypes.get(args[1])) {
-                        player.sendMessage(`§cSyntax error: Unexpected "${args[1]}": at ${switchTestB.slice(0, switchTestB.indexOf(args[1]))}">>${args[1]}<<"`);
+                        player.sendMessageB(`§cSyntax error: Unexpected "${args[1]}": at ${switchTestB.slice(0, switchTestB.indexOf(args[1]))}">>${args[1]}<<"`);
                     }
                     else if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[3]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[3]}. `, true);
                     }
                     else
                         system.run(() => {
                             if (!!!(() => { let block = player.dimension.getBlock(player.location); block.setType(args[1]); let component = block.getComponent("inventory"); block.setType("air"); return component; })()) {
-                                player.sendMessage(`§cError: Block of type ${BlockTypes.get(args[1]).id} is not a container block. `);
+                                player.sendError(`§cError: Block of type ${BlockTypes.get(args[1]).id} is not a container block. `, true);
                             }
                             else {
                                 if ((args[2] ?? "").trim() == "" || (args[2] ?? "").trim() == "all") {
@@ -9680,15 +9793,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[1]);
                     if (!!!BlockTypes.get(JSONParse(switchTestB.split(" ")[1])?.id)) {
-                        player.sendMessage(`§cSyntax error: Unexpected "${args[1]}": at ${switchTestB.slice(0, switchTestB.indexOf(args[1]))}">>${args[1]}<<"`);
+                        player.sendMessageB(`§cSyntax error: Unexpected "${args[1]}": at ${switchTestB.slice(0, switchTestB.indexOf(args[1]))}">>${args[1]}<<"`);
                     }
                     else if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[1]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[1]}. `, true);
                     }
                     else
                         system.run(() => {
                             if (!!!(() => { let block = player.dimension.getBlock(player.location); block.setPermutation(BlockPermutation.resolve(JSONParse(switchTestB.split(" ")[1])?.id, JSONParse(switchTestB.split(" ")[1])?.states)); let component = block.getComponent("inventory"); block.setType("air"); return component; })()) {
-                                player.sendMessage(`§cError: Block of type ${BlockTypes.get(JSONParse(switchTestB.split(" ")[1])?.id).id} is not a container block. `);
+                                player.sendError(`§cError: Block of type ${BlockTypes.get(JSONParse(switchTestB.split(" ")[1])?.id).id} is not a container block. `, true);
                             }
                             else {
                                 if ((args[0] ?? "").trim() == "" || (args[0] ?? "").trim() == "all") {
@@ -9779,7 +9892,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         }
                         let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
                         if (targets.length == 0) {
-                            player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                            player.sendError(`§cError: No players matching the specified target selector were found. `, true);
                         }
                         else
                             targets.forEach(target => {
@@ -9788,7 +9901,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     slots.push(`slot: ${i}, item: ${ItemTypes.getAll().find(v => (tryget(() => target.runCommand(`testfor @s[hasitem={location=slot.enderchest,item=${v.id},slot=${i}}]`).successCount) ?? 0) != 0)?.id ?? "minecraft:air"}`);
                                 }
                                 ;
-                                player.sendMessage(`${target.name}'s Ender Chest Contents: \n${slots.join("§r§f\n")}`);
+                                player.sendMessageB(`${target.name}'s Ender Chest Contents: \n${slots.join("§r§f\n")}`);
                             });
                     });
                 }
@@ -9805,7 +9918,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[1]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[1]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[1]}. `, true);
                     }
                     else
                         system.run(() => {
@@ -9814,7 +9927,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 slots.push(`slot: ${i}, item: ${ItemTypes.getAll().find(v => (tryget(() => target.runCommand(`testfor @s[hasitem={location=slot.enderchest,item=${v.id},slot=${i}}]`).successCount) ?? 0) != 0)?.id ?? "minecraft:air"}, amount: ${rangeToIntArray([0, 255]).reverse().find(v => (tryget(() => target.runCommand(`testfor @s[hasitem={location=slot.enderchest,count=${v},slot=${i}}]`).successCount) ?? 0) != 0)}`);
                             }
                             ;
-                            player.sendMessage(`${target.name}'s Ender Chest Contents: \n${slots.join("§r§f\n")}`);
+                            player.sendMessageB(`${target.name}'s Ender Chest Contents: \n${slots.join("§r§f\n")}`);
                         });
                 }
                 break;
@@ -9830,16 +9943,16 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[2]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[2]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[2]}. `, true);
                     }
                     else
                         system.run(() => {
                             let success = target.runCommand(`replaceitem entity @s slot.enderchest ${args[1]} air`).successCount;
                             if (success != 0) {
-                                player.sendMessage(`Successfully cleared slot ${args[1]} of ${target.name}'s ender chest. `);
+                                player.sendMessageB(`Successfully cleared slot ${args[1]} of ${target.name}'s ender chest. `);
                             }
                             else {
-                                player.sendMessage(`§cError: Failed to clear slot ${args[1]} of ${target.name}'s ender chest. `);
+                                player.sendError(`§cError: Failed to clear slot ${args[1]} of ${target.name}'s ender chest. `, true);
                             }
                         });
                 }
@@ -9853,7 +9966,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[1]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[1]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[1]}. `, true);
                     }
                     else
                         system.run(() => {
@@ -9863,10 +9976,10 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             }
                             ;
                             if (success != 0) {
-                                player.sendMessage(`Successfully cleared ${success} slot(s) of ${target.name}'s ender chest. `);
+                                player.sendMessageB(`Successfully cleared ${success} slot(s) of ${target.name}'s ender chest. `);
                             }
                             else {
-                                player.sendMessage(`§cError: Failed to clear ${target.name}'s ender chest. `);
+                                player.sendError(`§cError: Failed to clear ${target.name}'s ender chest. `, true);
                             }
                         });
                 }
@@ -9883,7 +9996,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[3]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[3]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[3]}. `, true);
                     }
                     else
                         system.run(() => {
@@ -9923,7 +10036,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[3]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[3]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[3]}. `, true);
                     }
                     else
                         system.run(() => {
@@ -9963,7 +10076,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[3]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[3]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[3]}. `, true);
                     }
                     else
                         system.run(() => {
@@ -10003,7 +10116,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[3]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[3]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[3]}. `, true);
                     }
                     else
                         system.run(() => {
@@ -10036,7 +10149,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     eventData.cancel = true; /*
                     console.warn(switchTestB.split(" ")?.length)*/
                     if (switchTestB.split(" ")?.length == 1) {
-                        player.sendMessage(`${switchTest} command format: ${switchTest} <itemJSON: itemJSON> [mode: fill|replacefill|replaceall] [playerTarget: targetSelector]\nfor the format for the itemJSON just type in "\\help itemjsonformat". `);
+                        player.sendMessageB(`${switchTest} command format: ${switchTest} <itemJSON: itemJSON> [mode: fill|replacefill|replaceall] [playerTarget: targetSelector]\nfor the format for the itemJSON just type in "\\help itemjsonformat". `);
                     }
                     else {
                         system.run(() => {
@@ -10050,7 +10163,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             }
                             let targets = targetSelectorAllListC(args[3], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
                             if (targets.length == 0) {
-                                player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                                player.sendError(`§cError: No players matching the specified target selector were found. `, true);
                             }
                             else {
                                 let item = !!(args[1]?.count ?? args[1]?.amount) ? Object.assign(itemJSONPropertiesEval(args[1]), { count: 255 }) : itemJSONPropertiesEval(args[1]);
@@ -10071,7 +10184,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     }
                                 });
                                 if (successes.filter(v => v[1] != 0).length != 0) {
-                                    player.sendMessage(`Successfully filled the ${successes.filter(v => v[1] != 0).length == 1 ? "inventory" : "inventories"} of ${successes.filter(v => v[1] != 0).map(v => `${v[0]}{${v[1]} slots}`).join(", ")} with ${item.typeId} * ${item.amount}`);
+                                    player.sendMessageB(`Successfully filled the ${successes.filter(v => v[1] != 0).length == 1 ? "inventory" : "inventories"} of ${successes.filter(v => v[1] != 0).map(v => `${v[0]}{${v[1]} slots}`).join(", ")} with ${item.typeId} * ${item.amount}`);
                                 }
                                 ;
                             }
@@ -10088,7 +10201,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }
                     let target = world.getAllPlayers().find(_ => _.name == args[3]);
                     if (!!!target) {
-                        player.sendMessage(`§cError: Unable to find player with the name ${args[3]}. `);
+                        player.sendError(`§cError: Unable to find player with the name ${args[3]}. `, true);
                     }
                     else {
                         if (switchTestB.split(/\s+/g)[1]?.trim() == "~" || (switchTestB.split(/\s+/g)[1] ?? "").trim() == "") {
@@ -10114,7 +10227,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             }
                         }
                         catch (e) {
-                            player.sendMessage(e + " " + e.stack);
+                            player.sendError(e + " " + e.stack, true);
                         } });
                     }
                 }
@@ -10134,7 +10247,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         try {
                             let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
                             if (targets.length == 0) {
-                                player.sendMessage(`§cError: No players matching the specified target selector were found. `);
+                                player.sendError(`§cError: No players matching the specified target selector were found. `, true);
                             }
                             else {
                                 switch (args[2]) {
@@ -10151,12 +10264,12 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         psend(player, `Successfully cleared all ranks from ${targets.map(t => t.name).join()}. `);
                                         break;
                                     default:
-                                        player.sendMessage(`§cSyntax error: Unexpected "${args[2]}" at "${switchTest.slice(0, switchTest.indexOf(args[1]) + args[1].length + 1)}>>${args[2]}<<${args[3]}"`);
+                                        player.sendMessageB(`§cSyntax error: Unexpected "${args[2]}" at "${switchTest.slice(0, switchTest.indexOf(args[1]) + args[1].length + 1)}>>${args[2]}<<${args[3]}"`);
                                 }
                             }
                         }
                         catch (e) {
-                            player.sendMessage("§c" + e + " " + e.stack);
+                            player.sendMessageB("§c" + e + " " + e.stack);
                         }
                     });
                 }
@@ -10166,7 +10279,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, ["presetText", "number"]).args;
                     player.setDynamicProperty("andexdbPersonalSettings:timeZone", args[1]);
-                    player.sendMessage(`Successfully set your timezone to ${args[1]}.`);
+                    player.sendMessageB(`Successfully set your timezone to ${args[1]}.`);
                 }
                 break;
             case !!switchTest.match(/^\\pos1$/):
@@ -10176,7 +10289,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const pos1 = mcMath.Vector3Utils.floor((args[1] ?? "") == "" ? player.location : evaluateCoordinates(args[1], args[2], args[3], player.location, player.getRotation()));
                     player.setDynamicProperty("pos1", pos1);
                     player.setDynamicProperty("posD", player.dimension.id);
-                    player.sendMessage(`Successfully set pos1 to ${vTStr(pos1)}.`);
+                    player.sendMessageB(`Successfully set pos1 to ${vTStr(pos1)}.`);
                 }
                 break;
             case !!switchTest.match(/^\\pos2$/):
@@ -10186,7 +10299,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const pos2 = mcMath.Vector3Utils.floor((args[1] ?? "") == "" ? player.location : evaluateCoordinates(args[1], args[2], args[3], player.location, player.getRotation()));
                     player.setDynamicProperty("pos2", pos2);
                     player.setDynamicProperty("posD", player.dimension.id);
-                    player.sendMessage(`Successfully set pos2 to ${vTStr(pos2)}.`);
+                    player.sendMessageB(`Successfully set pos2 to ${vTStr(pos2)}.`);
                 }
                 break;
             case !!switchTest.match(/^\\hpos1$/):
@@ -10194,13 +10307,13 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     eventData.cancel = true;
                     const loc = player.getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true })?.block?.location;
                     if (!!!loc) {
-                        player.sendMessage("§cError: You must be facing a block to use this command.");
+                        player.sendMessageB("§cError: You must be facing a block to use this command.");
                     }
                     else {
                         const pos1 = mcMath.Vector3Utils.floor(loc);
                         player.setDynamicProperty("pos1", pos1);
                         player.setDynamicProperty("posD", player.dimension.id);
-                        player.sendMessage(`Successfully set pos1 to ${vTStr(pos1)}.`);
+                        player.sendMessageB(`Successfully set pos1 to ${vTStr(pos1)}.`);
                     }
                 }
                 break;
@@ -10209,13 +10322,13 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     eventData.cancel = true;
                     const loc = player.getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true })?.block?.location;
                     if (!!!loc) {
-                        player.sendMessage("§cError: You must be facing a block to use this command.");
+                        player.sendMessageB("§cError: You must be facing a block to use this command.");
                     }
                     else {
                         const pos2 = mcMath.Vector3Utils.floor(loc);
                         player.setDynamicProperty("pos2", pos2);
                         player.setDynamicProperty("posD", player.dimension.id);
-                        player.sendMessage(`Successfully set pos2 to ${vTStr(pos2)}.`);
+                        player.sendMessageB(`Successfully set pos2 to ${vTStr(pos2)}.`);
                     }
                 }
                 break;
@@ -10224,11 +10337,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, ["presetText", "string"]).args;
                     if (player.getComponent("inventory").container.getItem(player.selectedSlotIndex).isStackable) {
-                        player.sendMessage("§cError: The held item is a stackable item.");
+                        player.sendMessageB("§cError: The held item is a stackable item.");
                     }
                     else {
                         player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("selectmode", args[1]);
-                        player.sendMessage(`Successfully set selectmode of the held item to ${args[1]}.`);
+                        player.sendMessageB(`Successfully set selectmode of the held item to ${args[1]}.`);
                     }
                 }
                 break;
@@ -10239,7 +10352,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     player.setDynamicProperty("pos1", chunk.from);
                     player.setDynamicProperty("pos2", chunk.to);
                     player.setDynamicProperty("posD", player.dimension.id);
-                    player.sendMessage(`Successfully set selection to the current chunk (${vTStr(chunk.from)} to ${vTStr(chunk.to)}).`);
+                    player.sendMessageB(`Successfully set selection to the current chunk (${vTStr(chunk.from)} to ${vTStr(chunk.to)}).`);
                 }
                 break;
             case !!switchTest.match(/^\\shift$/):
@@ -10249,7 +10362,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const range = VSTR(player.getDynamicProperty("pos1"), player.getDynamicProperty("pos2"));
                     player.setDynamicProperty("pos1", Vector.add(range.from, Vector.scale(diroffsetmapb(args[1].toLowerCase()), Number(args[2]))));
                     player.setDynamicProperty("pos2", Vector.add(range.to, Vector.scale(diroffsetmapb(args[1].toLowerCase()), Number(args[2]))));
-                    player.sendMessage(`Successfully shifted the selection ${args[2]} blocks ${args[1]} (${vTStr(player.getDynamicProperty("pos1"))} to ${vTStr(player.getDynamicProperty("pos2"))}).`);
+                    player.sendMessageB(`Successfully shifted the selection ${args[2]} blocks ${args[1]} (${vTStr(player.getDynamicProperty("pos1"))} to ${vTStr(player.getDynamicProperty("pos2"))}).`);
                 }
                 break;
             case !!switchTest.match(/^\\offset$/):
@@ -10260,7 +10373,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const range = VSTR(player.getDynamicProperty("pos1"), player.getDynamicProperty("pos2"));
                     player.setDynamicProperty("pos1", Vector.add(range.from, offset));
                     player.setDynamicProperty("pos2", Vector.add(range.to, offset));
-                    player.sendMessage(`Successfully shifted the selection by ${vTStr(offset)} (${vTStr(player.getDynamicProperty("pos1"))} to ${vTStr(player.getDynamicProperty("pos2"))}).`);
+                    player.sendMessageB(`Successfully shifted the selection by ${vTStr(offset)} (${vTStr(player.getDynamicProperty("pos1"))} to ${vTStr(player.getDynamicProperty("pos2"))}).`);
                 }
                 break;
             case !!switchTest.match(/^\\replace$/):
@@ -10275,11 +10388,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             system.run(() => {
@@ -10291,11 +10404,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
-                                            player.sendMessage("§c" + e + " " + e.stack);
+                                            player.sendMessageB("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHFGBM(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { blockMask: mask, minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHFGBM(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { blockMask: mask, minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10324,11 +10437,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             system.run(() => {
@@ -10340,11 +10453,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
-                                            player.sendMessage("§c" + e + " " + e.stack);
+                                            player.sendMessageB("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10374,11 +10487,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             system.run(() => {
@@ -10390,11 +10503,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
-                                            player.sendMessage("§c" + e + " " + e.stack);
+                                            player.sendMessageB("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, args[1].c, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { minMSBetweenYields: 2500 }, args[1].c, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10421,11 +10534,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             system.run(() => {
@@ -10440,7 +10553,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             perror(player, e);
                                         }
                                         try {
-                                            fillBlocksHFFGB(ca, cb, dimensiona, { minMSBetweenYields: 2500 }, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHFFGB(ca, cb, dimensiona, { minMSBetweenYields: 2500 }, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10468,11 +10581,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     const airpermutation = BlockPermutation.resolve("air");
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             system.run(() => {
@@ -10487,7 +10600,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             perror(player, e);
                                         }
                                         try {
-                                            fillBlocksHDFGB(ca, cb, dimensiona, { minMSBetweenYields: 2500 }, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHDFGB(ca, cb, dimensiona, { minMSBetweenYields: 2500 }, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10505,7 +10618,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         fillBlocksHFGB(ca, cb, dimensiona, ()=>airpermutation, {matchingBlock: "minecraft:flowing_water", minMSBetweenYields: 2500}).then(b=>{
                                             fillBlocksHFGB(ca, cb, dimensiona, ()=>airpermutation, {matchingBlock: "minecraft:lava", minMSBetweenYields: 2500}).then(c=>{
                                                 fillBlocksHFGB(ca, cb, dimensiona, ()=>airpermutation, {matchingBlock: "minecraft:flowing_lava", minMSBetweenYields: 2500}).then(d=>{
-                                                    player.sendMessage(`${a.counter+b.counter+c.counter+d.counter==0?"§c":""}${a.counter} blocks replaced in ${(a.completionData.endTime-a.completionData.startTime)+(b.completionData.endTime-b.completionData.startTime)+(c.completionData.endTime-c.completionData.startTime)+(d.completionData.endTime-d.completionData.startTime)} ms over ${(a.completionData.endTick-a.completionData.startTick)+(b.completionData.endTick-b.completionData.startTick)+(c.completionData.endTick-c.completionData.startTick)+(d.completionData.endTick-d.completionData.startTick)} tick${((a.completionData.endTick-a.completionData.startTick)+(b.completionData.endTick-b.completionData.startTick)+(c.completionData.endTick-c.completionData.startTick)+(d.completionData.endTick-d.completionData.startTick))==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`);
+                                                    player.sendMessageB(`${a.counter+b.counter+c.counter+d.counter==0?"§c":""}${a.counter} blocks replaced in ${(a.completionData.endTime-a.completionData.startTime)+(b.completionData.endTime-b.completionData.startTime)+(c.completionData.endTime-c.completionData.startTime)+(d.completionData.endTime-d.completionData.startTime)} ms over ${(a.completionData.endTick-a.completionData.startTick)+(b.completionData.endTick-b.completionData.startTick)+(c.completionData.endTick-c.completionData.startTick)+(d.completionData.endTick-d.completionData.startTick)} tick${((a.completionData.endTick-a.completionData.startTick)+(b.completionData.endTick-b.completionData.startTick)+(c.completionData.endTick-c.completionData.startTick)+(d.completionData.endTick-d.completionData.startTick))==1?"":"s"}${a.completionData.containsUnloadedChunks?"; Some blocks were not generated because they were in unloaded chunks. ":""}`);
                                                 }, (e)=>{
                                                     eventData.sender.sendMessage("§c" + e + e.stack)
                                                 })
@@ -10538,11 +10651,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     const airpermutation = BlockPermutation.resolve("air");
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             system.run(() => {
@@ -10554,11 +10667,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
-                                            player.sendMessage("§c" + e + " " + e.stack);
+                                            player.sendMessageB("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHFGB(ca, cb, dimensiona, () => airpermutation, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHFGB(ca, cb, dimensiona, () => airpermutation, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10590,11 +10703,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             system.run(() => {
@@ -10606,11 +10719,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
-                                            player.sendMessage("§c" + e + " " + e.stack);
+                                            player.sendMessageB("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHWFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHWFGB(ca, cb, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10643,11 +10756,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             system.run(() => {
@@ -10659,11 +10772,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             undoClipboard.save(dimensiona, { from: Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), to: Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
-                                            player.sendMessage("§c" + e + " " + e.stack);
+                                            player.sendMessageB("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHSGB(coordinatesa, radius - 0.5, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHSGB(coordinatesa, radius - 0.5, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10697,11 +10810,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             system.run(() => {
@@ -10713,11 +10826,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             undoClipboard.save(dimensiona, { from: Vector.subtract(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))), to: Vector.add(coordinatesa, Vector.scale(Vector.one, Math.abs(radius))) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
-                                            player.sendMessage("§c" + e + " " + e.stack);
+                                            player.sendMessageB("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHHSGB(coordinatesa, radius - 0.5, thickness, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHHSGB(coordinatesa, radius - 0.5, thickness, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10751,11 +10864,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             system.run(() => {
@@ -10767,11 +10880,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             undoClipboard.save(dimensiona, { from: Vector.subtract(coordinatesa, { x: Math.abs(radius), y: 0, z: Math.abs(radius) }), to: Vector.add(coordinatesa, { x: Math.abs(radius), y: height, z: Math.abs(radius) }) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
-                                            player.sendMessage("§c" + e + " " + e.stack);
+                                            player.sendMessageB("§c" + e + " " + e.stack);
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHCGB(coordinatesa, radius, height, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHCGB(coordinatesa, radius, height, dimensiona, (l, i) => { const b = firstblockpattern.generateBlock(i); return b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); }, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 2500 }, args[1].c, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                         }
                                         catch (e) {
                                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10800,17 +10913,17 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const coordinatesb = player.getDynamicProperty("pos2");
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             const blocktypes = BlockTypes.getAll();
                             system.run(() => { let ta; try {
                                 generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                    completeGeneratorB(generateMathExpression(expression, (l) => { const b = firstblockpattern.generateBlock(l.count); const t = b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t); }, coordinatesa, coordinatesb, coordinatesa, coordinatesb), 2500).then(a => { player.sendMessage(`${a.return == 0n ? "§c" : ""}${a.return} blocks replaced`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                    completeGeneratorB(generateMathExpression(expression, (l) => { const b = firstblockpattern.generateBlock(l.count); const t = b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t); }, coordinatesa, coordinatesb, coordinatesa, coordinatesb), 2500).then(a => { player.sendMessageB(`${a.return == 0n ? "§c" : ""}${a.return} blocks replaced`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10837,17 +10950,17 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const coordinatesb = player.getDynamicProperty("pos2");
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             const blocktypes = BlockTypes.getAll();
                             system.run(() => { let ta; try {
                                 generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                    completeGeneratorB(generateMathExpression(expression, (l) => { const b = firstblockpattern.generateBlock(l.count); const t = b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t); }, coordinatesa, coordinatesb, coordinatesa, coordinatesb), 2500).then(a => { player.sendMessage(`${a.return == 0n ? "§c" : ""}${a.return} blocks replaced`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                    completeGeneratorB(generateMathExpression(expression, (l) => { const b = firstblockpattern.generateBlock(l.count); const t = b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t); }, coordinatesa, coordinatesb, coordinatesa, coordinatesb), 2500).then(a => { player.sendMessageB(`${a.return == 0n ? "§c" : ""}${a.return} blocks replaced`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10874,17 +10987,17 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     const coordinatesb = player.getDynamicProperty("pos2");
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessage("§cError: pos1 is not set.");
+                        player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessage("§cError: pos2 is not set.");
+                            player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
                             const blocktypes = BlockTypes.getAll();
                             system.run(() => { let ta; try {
                                 generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                    completeGeneratorB(generateMathExpression(expression, (l) => { const b = firstblockpattern.generateBlock(l.count); const t = b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t); }, coordinatesa, coordinatesb, coordinatesa, coordinatesb, args[1]), 2500).then(a => { player.sendMessage(`${a.return == 0n ? "§c" : ""}${a.return} blocks replaced`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                    completeGeneratorB(generateMathExpression(expression, (l) => { const b = firstblockpattern.generateBlock(l.count); const t = b.type == "random" ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id) : BlockPermutation.resolve(b.type, b.states); dimensiona.setBlockPermutation(l, t); }, coordinatesa, coordinatesb, coordinatesa, coordinatesb, args[1]), 2500).then(a => { player.sendMessageB(`${a.return == 0n ? "§c" : ""}${a.return} blocks replaced`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -10913,11 +11026,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         //console.warn(vTStr(ca), vTStr(cb))
                         const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                         if (!!!coordinatesa) {
-                            player.sendMessage("§cError: pos1 is not set.");
+                            player.sendMessageB("§cError: pos1 is not set.");
                         }
                         else {
                             if (!!!coordinatesb) {
-                                player.sendMessage("§cError: pos2 is not set.");
+                                player.sendMessageB("§cError: pos2 is not set.");
                             }
                             else {
                                 system.run(() => {
@@ -10930,7 +11043,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                     undoClipboard.save(dimensiona, { from: ca, to: Vector.add(cb, { x: 0, y: height * args[1], z: 0 }) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                                 }
                                                 catch (e) {
-                                                    player.sendMessage("§c" + e + " " + e.stack);
+                                                    player.sendMessageB("§c" + e + " " + e.stack);
                                                 }
                                                 for (let i = 0; i < args[1]; i++) {
                                                     //console.warn(`/clone ${vTStr(ca)} ${vTStr(cb)} ${vTStr({x: ca.x, y: ca.y+(height*(i+1)), z: ca.z})}`)
@@ -10969,11 +11082,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                         const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                         if (!!!coordinatesa) {
-                            player.sendMessage("§cError: pos1 is not set.");
+                            player.sendMessageB("§cError: pos1 is not set.");
                         }
                         else {
                             if (!!!coordinatesb) {
-                                player.sendMessage("§cError: pos2 is not set.");
+                                player.sendMessageB("§cError: pos2 is not set.");
                             }
                             else {
                                 system.run(() => {
@@ -10981,29 +11094,29 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                         undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                     }
                                     catch (e) {
-                                        player.sendMessage("§c" + e + " " + e.stack);
+                                        player.sendMessageB("§c" + e + " " + e.stack);
                                     }
                                     tryrun(() => blockClipboard.clear());
                                     try {
                                         blockClipboard.save(dimensiona, { from: ca, to: cb }, { includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), saveMode: args[1].includes("m") ? StructureSaveMode.Memory : StructureSaveMode.World });
-                                        player.sendMessage("The selected area has been cut to the clipboard.");
+                                        player.sendMessageB("The selected area has been cut to the clipboard.");
                                     }
                                     catch (e) {
-                                        player.sendMessage("§c" + e + " " + e.stack);
+                                        player.sendMessageB("§c" + e + " " + e.stack);
                                     }
                                     system.run(() => { let ta; try {
                                         generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                            fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, "air", undefined, { minMSBetweenYields: 5000 }, undefined, true, 100).then(() => undefined, (e) => { player.sendMessage("§c" + e + e.stack); });
+                                            fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, "air", undefined, { minMSBetweenYields: 5000 }, undefined, true, 100).then(() => undefined, (e) => { player.sendMessageB("§c" + e + e.stack); });
                                         }
                                         catch (e) {
-                                            player.sendMessage("§c" + e + e.stack);
+                                            player.sendMessageB("§c" + e + e.stack);
                                         }
                                         finally {
                                             tac.forEach(tab => tab?.remove());
                                         } });
                                     }
                                     catch (e) {
-                                        player.sendMessage("§c" + e + e.stack);
+                                        player.sendMessageB("§c" + e + e.stack);
                                     } });
                                 });
                             }
@@ -11026,21 +11139,21 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                         const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                         if (!!!coordinatesa) {
-                            player.sendMessage("§cError: pos1 is not set.");
+                            player.sendMessageB("§cError: pos1 is not set.");
                         }
                         else {
                             if (!!!coordinatesb) {
-                                player.sendMessage("§cError: pos2 is not set.");
+                                player.sendMessageB("§cError: pos2 is not set.");
                             }
                             else {
                                 system.run(() => {
                                     tryrun(() => blockClipboard.clear());
                                     try {
                                         blockClipboard.save(dimensiona, { from: ca, to: cb }, { includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), saveMode: args[1].includes("m") ? StructureSaveMode.Memory : StructureSaveMode.World });
-                                        player.sendMessage("The selected area has been copied to the clipboard.");
+                                        player.sendMessageB("The selected area has been copied to the clipboard.");
                                     }
                                     catch (e) {
-                                        player.sendMessage("§c" + e + " " + e.stack);
+                                        player.sendMessageB("§c" + e + " " + e.stack);
                                     }
                                 });
                             }
@@ -11072,13 +11185,13 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 //const cb = {x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z)}
                                 const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                                 if (!!!coordinatesa) {
-                                    player.sendMessage("§cError: pos1 is not set.");
+                                    player.sendMessageB("§cError: pos1 is not set.");
                                 }
                                 else if (!!!coordinatesb) {
-                                    player.sendMessage("§cError: pos2 is not set.");
+                                    player.sendMessageB("§cError: pos2 is not set.");
                                 }
                                 else if (blockClipboard.ids.length == 0) {
-                                    player.sendMessage("§cError: The clipboard is currently empty.");
+                                    player.sendMessageB("§cError: The clipboard is currently empty.");
                                 }
                                 else {
                                     try {
@@ -11086,13 +11199,13 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                             undoClipboard.save(dimensiona, { from: ca, to: Vector.add(ca, blockClipboard.saveSize) }, Date.now(), { includeBlocks: true, includeEntities: false, saveMode: config.undoClipboardMode });
                                         }
                                         catch (e) {
-                                            player.sendMessage("§c" + e + " " + e.stack);
+                                            player.sendMessageB("§c" + e + " " + e.stack);
                                         }
                                         blockClipboard.place(Object.assign({ dimension: dimensiona }, ca), { includeBlocks: !args[1].includes("b"), includeEntities: !args[1].includes("e"), waterlogged: args[1].includes("w"), animationMode: args[5] == "blocks" ? StructureAnimationMode.Blocks : args[5] == "none" ? StructureAnimationMode.None : args[5] == "layers" ? StructureAnimationMode.Layers : undefined, animationSeconds: args[6], mirror: args[1].includes("x") ? args[1].includes("z") ? StructureMirrorAxis.XZ : StructureMirrorAxis.X : args[1].includes("z") ? StructureMirrorAxis.Z : StructureMirrorAxis.None, rotation: Math.round(args[4] / 90) == 0 ? StructureRotation.None : Math.round(args[4] / 90) == 1 ? StructureRotation.Rotate90 : Math.round(args[4] / 90) == 2 ? StructureRotation.Rotate180 : Math.round(args[4] / 90) == 3 ? StructureRotation.Rotate270 : StructureRotation.None, integrity: args[2], integritySeed: args[3] });
-                                        player.sendMessage("The clipboard has been pasted to the selected area.");
+                                        player.sendMessageB("The clipboard has been pasted to the selected area.");
                                     }
                                     catch (e) {
-                                        player.sendMessage(e + " " + e.stack);
+                                        player.sendError(e + " " + e.stack, true);
                                     }
                                 }
                             }
@@ -11114,19 +11227,19 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         system.run(() => {
                             try {
                                 if (undoClipboard.ids.length == 0) {
-                                    player.sendMessage("§cNothing to undo. ");
+                                    player.sendMessageB("§cNothing to undo. ");
                                 }
                                 else if (!(args[1]?.t ?? false)) {
                                     try {
                                         if (undoClipboard.undo(undefined, undefined, !(args[1]?.k ?? false)) == 0) {
-                                            player.sendMessage("§cNothing to undo. ");
+                                            player.sendMessageB("§cNothing to undo. ");
                                         }
                                         else {
-                                            player.sendMessage("Successfully reverted the area. ");
+                                            player.sendMessageB("Successfully reverted the area. ");
                                         }
                                     }
                                     catch (e) {
-                                        player.sendMessage(e + " " + e.stack);
+                                        player.sendError(e + " " + e.stack, true);
                                     }
                                 }
                                 else {
@@ -11134,14 +11247,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                     try {
                                         generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(world.getDynamicProperty(`andexdb:undoclipboard;${undoClipboard.newestSaveTime}`), Vector.add(world.getDynamicProperty(`andexdb:undoclipboard;${undoClipboard.newestSaveTime}`), undoClipboard.saveSize(undoClipboard.newestSaveTime))) }); return a; })(), dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${undoClipboard.newestSaveTime}`))] ?? dimensionsb["minecraft:overworld"]).then(tac => { ta = tac; try {
                                             if (undoClipboard.undo(undefined, undefined, !(args[1]?.k ?? false)) == 0) {
-                                                player.sendMessage("§cNothing to undo. ");
+                                                player.sendMessageB("§cNothing to undo. ");
                                             }
                                             else {
-                                                player.sendMessage("Successfully reverted the area. ");
+                                                player.sendMessageB("Successfully reverted the area. ");
                                             }
                                         }
                                         catch (e) {
-                                            player.sendMessage(e + " " + e.stack);
+                                            player.sendError(e + " " + e.stack, true);
                                         }
                                         finally {
                                             tac.forEach(tab => tab?.remove());
@@ -11170,7 +11283,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             try {
                                 const args = evaluateParameters(switchTestB, ["presetText", "string", "string", "number", "string"]).args;
                                 if (!spawnProtectionTypeList.includes(args[1])) {
-                                    player.sendMessage(`§cError: "${args[1]}" is not a valid protected area type, please use one of the following protected area types: ${JSON.stringify(spawnProtectionTypeList)}.`);
+                                    player.sendError(`§cError: "${args[1]}" is not a valid protected area type, please use one of the following protected area types: ${JSON.stringify(spawnProtectionTypeList)}.`, true);
                                     return;
                                 }
                                 ;
@@ -11180,14 +11293,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                                 const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                                 if (!!!coordinatesa) {
-                                    player.sendMessage("§cError: pos1 is not set.");
+                                    player.sendMessageB("§cError: pos1 is not set.");
                                 }
                                 else if (!!!coordinatesb) {
-                                    player.sendMessage("§cError: pos2 is not set.");
+                                    player.sendMessageB("§cError: pos2 is not set.");
                                 }
                                 else {
                                     world.setDynamicProperty("v2:" + args[1] + args[2], JSON.stringify({ from: ca, to: cb, dimension: dimensions.indexOf(dimensiona), mode: args[3] ?? 0, icon_path: args[4] }));
-                                    player.sendMessage("The protected area has been saved.");
+                                    player.sendMessageB("The protected area has been saved.");
                                 }
                             }
                             catch (e) {
@@ -11213,14 +11326,14 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 const cb = { x: Math.max(coordinatesa.x, coordinatesb.x), y: Math.max(coordinatesa.y, coordinatesb.y), z: Math.max(coordinatesa.z, coordinatesb.z) };
                                 const dimensiona = world.getDimension((player.getDynamicProperty("posD") ?? player.dimension.id));
                                 if (!!!coordinatesa) {
-                                    player.sendMessage("§cError: pos1 is not set.");
+                                    player.sendMessageB("§cError: pos1 is not set.");
                                 }
                                 else if (!!!coordinatesb) {
-                                    player.sendMessage("§cError: pos2 is not set.");
+                                    player.sendMessageB("§cError: pos2 is not set.");
                                 }
                                 else {
                                     AreaBackups.createAreaBackup(args[1], dimensiona, { from: ca, to: cb });
-                                    player.sendMessage(`The backup area has been created with the id "${args[1]}".`);
+                                    player.sendMessageB(`The backup area has been created with the id "${args[1]}".`);
                                 }
                             }
                             catch (e) {
@@ -11238,7 +11351,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     eventData.cancel = true;
                     eventData.cancel = true;
                     if (switchTestB.trim().split(" ").length == 1) {
-                        player.sendMessage(`itfill command format: 
+                        player.sendMessageB(`itfill command format: 
 ${command.dp}\\itfill <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\itfill <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\itfill <tileName: Block> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
@@ -11451,7 +11564,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11480,7 +11593,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                                 ;
                                                 let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                                 let endTime = Date.now();
-                                                player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                                player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                             }
                                             catch (e) {
                                                 eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11505,7 +11618,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air");
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11524,7 +11637,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air", undefined, { matchingBlock: "water" });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11547,7 +11660,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11566,7 +11679,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: "air" });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11585,7 +11698,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHW(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11604,7 +11717,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11623,7 +11736,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHO(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11642,7 +11755,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11658,7 +11771,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                             case "skygrid":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11674,7 +11787,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                             case "inverseskygrid":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11688,21 +11801,21 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 } });
                                 break;
                             case "tunnel":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "floor":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "ceilling":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "diamond":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "hollowovoid":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11718,7 +11831,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                             case "ovoid":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11734,7 +11847,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                             case "hollowsphere":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11750,7 +11863,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                             case "dome":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11766,7 +11879,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                             case "sphere":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11782,7 +11895,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                             case "semisphere":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(mcMath.Vector3Utils.subtract(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 })), mcMath.Vector3Utils.add(center, Object.assign(mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 50), { y: 0 }))) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11801,7 +11914,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, { matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1] }, undefined, creplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11820,7 +11933,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11839,7 +11952,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11858,7 +11971,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11877,7 +11990,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11896,7 +12009,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11915,7 +12028,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11934,7 +12047,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11953,7 +12066,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, { matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1] }, undefined, treplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11972,7 +12085,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -11991,7 +12104,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12010,7 +12123,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12029,7 +12142,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12048,7 +12161,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12067,7 +12180,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12086,7 +12199,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12100,7 +12213,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 } });
                                 break;
                             case "hourglass":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "cube":
                                 system.run(() => { let ta; try {
@@ -12112,7 +12225,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12136,7 +12249,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                     eventData.cancel = true;
                     eventData.cancel = true;
                     if (switchTestB.trim().split(" ").length == 1) {
-                        player.sendMessage(`idtfill command format: 
+                        player.sendMessageB(`idtfill command format: 
 ${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
@@ -12345,7 +12458,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12361,7 +12474,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "replace":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[7] ?? true, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, args[7] ?? true, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12384,7 +12497,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air");
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12403,7 +12516,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, "air", undefined, { matchingBlock: "water" });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12419,7 +12532,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "fill":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12435,7 +12548,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "keep":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: "air", minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: "air", minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12451,7 +12564,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "walls":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHWG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12467,7 +12580,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "hollow":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12483,7 +12596,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "outline":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHOTG(coordinatesa, coordinatesb, player.dimension, firstblockname == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1], minMSBetweenYields: 5000 }, undefined, replacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12502,7 +12615,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHP(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] }, undefined, replacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12518,7 +12631,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "skygrid":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12534,7 +12647,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             case "inverseskygrid":
                                 system.run(() => { let ta; try {
                                     generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                                        fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, integrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, { matchingBlock: sgmatchingblock[0], matchingBlockStates: sgmatchingblock[1], minMSBetweenYields: 5000 }, undefined, sgreplacemode, integrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12548,16 +12661,16 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 } });
                                 break;
                             case "tunnel":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "floor":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "ceilling":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "diamond":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "hollowovoid":
                                 system.run(() => { let ta; try {
@@ -12565,7 +12678,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
                                     ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
-                                        fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, hointegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHOG(center, vTV3(mcMath.Vector3Utils.subtract(horadi, { x: -0.5, y: -0.5, z: -0.5 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, { matchingBlock: homatchingblock[0], matchingBlockStates: homatchingblock[1], minMSBetweenYields: 5000 }, undefined, horeplacemode, hointegrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12584,7 +12697,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
                                     ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
-                                        fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, ointegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHOG(center, vTV3(mcMath.Vector3Utils.subtract(oradi, { x: -0.5, y: -0.5, z: -0.5 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, { matchingBlock: omatchingblock[0], matchingBlockStates: omatchingblock[1], minMSBetweenYields: 5000 }, undefined, oreplacemode, ointegrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12603,7 +12716,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
                                     ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
-                                        fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12622,7 +12735,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
                                     ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
-                                        fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1], minMSBetweenYields: 5000 }, undefined, hsreplacemode, cintegrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12641,7 +12754,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
                                     ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
-                                        fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12660,7 +12773,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     player.dimension.runCommand("summon andexdb:tickingarea_6 itwalls " + vTStr(center));
                                     ta = player.dimension.getEntitiesAtBlockLocation(center).find(v => v.typeId == "andexdb:tickingarea_6"); /*console.warn(ta, location); */
                                     system.runTimeout(() => { try {
-                                        fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                        fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1], minMSBetweenYields: 5000 }, undefined, ccreplacemode, cintegrity).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks filled in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12682,7 +12795,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, axis, cfirstblockname, cfirstblockstates, { matchingBlock: cmatchingblock[0], matchingBlockStates: cmatchingblock[1] }, undefined, creplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12704,7 +12817,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "x", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12726,7 +12839,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "y", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12748,7 +12861,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "z", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12770,7 +12883,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xy", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12792,7 +12905,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "yz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12814,7 +12927,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12836,7 +12949,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHC(center, radius, player.dimension, "xyz", ccfirstblockname, ccfirstblockstates, { matchingBlock: ccmatchingblock[0], matchingBlockStates: ccmatchingblock[1] }, undefined, ccreplacemode);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12858,7 +12971,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, taxis, player.dimension, tfirstblockname, tfirstblockstates, { matchingBlock: tmatchingblock[0], matchingBlockStates: tmatchingblock[1] }, undefined, treplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12880,7 +12993,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12902,7 +13015,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12924,7 +13037,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12946,7 +13059,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "x", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12968,7 +13081,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "y", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -12990,7 +13103,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13012,7 +13125,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         let startTime = Date.now();
                                         let a = fillBlocksHT(center, radius, thickness, "z", player.dimension, hsfirstblockname, hsfirstblockstates, { matchingBlock: hsmatchingblock[0], matchingBlockStates: hsmatchingblock[1] }, undefined, hsreplacemode, tintegrity);
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13026,7 +13139,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 } });
                                 break;
                             case "hourglass":
-                                player.sendMessage("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon! ");
                                 break;
                             case "cube":
                                 system.run(() => { let ta; try {
@@ -13041,7 +13154,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                         ;
                                         let a = fillBlocksH(coordinatesa, coordinatesb, player.dimension, firstblockname, firstblockstates, { matchingBlock: matchingblock[0], matchingBlockStates: matchingblock[1] });
                                         let endTime = Date.now();
-                                        player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
+                                        player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks filled in ${endTime - startTime} ms`);
                                     }
                                     catch (e) {
                                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13065,7 +13178,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                     eventData.cancel = true;
                     let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string"]).args;
                     if (player.getComponent("inventory").container.getItem(player.selectedSlotIndex).isStackable) {
-                        player.sendMessage("§cError: The held item is a stackable item.");
+                        player.sendMessageB("§cError: The held item is a stackable item.");
                     }
                     else {
                         switch (args[2].toLowerCase()) {
@@ -13075,7 +13188,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore());
                                     }
-                                    player.sendMessage(`Successfully unbound the brush from the currently held item.`);
+                                    player.sendMessageB(`Successfully unbound the brush from the currently held item.`);
                                 }
                                 break;
                             case "extinguish":
@@ -13086,7 +13199,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bSelect Mode: ${player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getDynamicProperty("selectmode")}`, `§r§bBrush Type: §aExtinguish`, `§r§bBrush Radius: ${(isNaN(Number(args[3]))) ? 10 : args[3]}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3]))) ? 10 : args[3]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3]))) ? 10 : args[3]}.`);
                                 }
                                 break;
                             case "ex":
@@ -13097,7 +13210,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aExtinguish`, `§r§bBrush Radius: ${(isNaN(Number(args[3]))) ? 10 : args[3]}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3]))) ? 10 : args[3]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to extinguish with a radius of ${(isNaN(Number(args[3]))) ? 10 : args[3]}.`);
                                 }
                                 break;
                             case "remexp":
@@ -13108,7 +13221,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aRemExp`, `§r§bBrush Radius: ${(isNaN(Number(args[3]))) ? 10 : args[3]}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3]))) ? 10 : args[3]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3]))) ? 10 : args[3]}.`);
                                 }
                                 break;
                             case "remexpne":
@@ -13119,7 +13232,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aRemExpNE`, `§r§bBrush Radius: ${(isNaN(Number(args[3]))) ? 10 : args[3]}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3]))) ? 10 : args[3]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to remexp with a radius of ${(isNaN(Number(args[3]))) ? 10 : args[3]}.`);
                                 }
                                 break;
                             case "sphere":
@@ -13132,7 +13245,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSphere`, `§r§bBrush Radius: §c${(isNaN(Number(args[5]))) ? 3 : args[5]}`, ...[...args[4].blocks.map(v => v.rawns).slice(0, 15).map(v => `§r§d${v}`), "§r§d..."].slice(0, args[4].blocks.length > 15 ? -1 : undefined), `§r§bBrush Pattern Type: §a${args[4].type}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to sphere with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to sphere with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]}.`);
                                 }
                                 break;
                             case "cube":
@@ -13145,7 +13258,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aCube`, `§r§bBrush Radius: §c${(isNaN(Number(args[5]))) ? 3 : args[5]}`, ...[...args[4].blocks.map(v => v.rawns).slice(0, 15).map(v => `§r§d${v}`), "§r§d..."].slice(0, args[4].blocks.length > 15 ? -1 : undefined), `§r§bBrush Pattern Type: §a${args[4].type}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to cube with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to cube with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]}.`);
                                 }
                                 break;
                             case "square":
@@ -13158,7 +13271,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSquare`, `§r§bBrush Radius: §c${(isNaN(Number(args[5]))) ? 3 : args[5]}`, ...[...args[4].blocks.map(v => v.rawns).slice(0, 15).map(v => `§r§d${v}`), "§r§d..."].slice(0, args[4].blocks.length > 15 ? -1 : undefined), `§r§bBrush Pattern Type: §a${args[4].type}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to square with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to square with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]}.`);
                                 }
                                 break;
                             case "splatter":
@@ -13173,7 +13286,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatter`, `§r§bBrush Radius: §c${(isNaN(Number(args[5]))) ? 3 : args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6]))) ? 0 : args[6]}`, `§r§bBrush Pattern: `, ...[...args[4].blocks.map(v => v.rawns).slice(0, 15).map(v => `§r§d${v}`), "§r§d..."].slice(0, args[4].blocks.length > 15 ? -1 : undefined), `§r§bBrush Pattern Type: §a${args[4].type}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]} and a decay level of ${(isNaN(Number(args[6]))) ? 0 : args[6]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]} and a decay level of ${(isNaN(Number(args[6]))) ? 0 : args[6]}.`);
                                 }
                                 break;
                             case "splattercube":
@@ -13187,7 +13300,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterCube`, `§r§bBrush Radius: §c${(isNaN(Number(args[5]))) ? 3 : args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6]))) ? 0 : args[6]}`, ...[...args[4].blocks.map(v => v.rawns).slice(0, 15).map(v => `§r§d${v}`), "§r§d..."].slice(0, args[4].blocks.length > 15 ? -1 : undefined), `§r§bBrush Pattern Type: §a${args[4].type}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]} and a decay level of ${(isNaN(Number(args[6]))) ? 0 : args[6]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]} and a decay level of ${(isNaN(Number(args[6]))) ? 0 : args[6]}.`);
                                 }
                                 break;
                             case "splattersquare":
@@ -13201,7 +13314,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSquare`, `§r§bBrush Radius: §c${(isNaN(Number(args[5]))) ? 3 : args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6]))) ? 0 : args[6]}`, ...[...args[4].blocks.map(v => v.rawns).slice(0, 15).map(v => `§r§d${v}`), "§r§d..."].slice(0, args[4].blocks.length > 15 ? -1 : undefined), `§r§bBrush Pattern Type: §a${args[4].type}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]} and a decay level of ${(isNaN(Number(args[6]))) ? 0 : args[6]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to splatter with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]} and a decay level of ${(isNaN(Number(args[6]))) ? 0 : args[6]}.`);
                                 }
                                 break;
                             case "splattersurface":
@@ -13215,7 +13328,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5]))) ? 3 : args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6]))) ? 0 : args[6]}`, ...[...args[4].blocks.map(v => v.rawns).slice(0, 15).map(v => `§r§d${v}`), "§r§d..."].slice(0, args[4].blocks.length > 15 ? -1 : undefined), `§r§bBrush Pattern Type: §a${args[4].type}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to splatter surface with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]} and a decay level of ${(isNaN(Number(args[6]))) ? 0 : args[6]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to splatter surface with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]} and a decay level of ${(isNaN(Number(args[6]))) ? 0 : args[6]}.`);
                                 }
                                 break;
                             case "splattercubesurface":
@@ -13229,7 +13342,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterCubeSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5]))) ? 3 : args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6]))) ? 0 : args[6]}`, ...[...args[4].blocks.map(v => v.rawns).slice(0, 15).map(v => `§r§d${v}`), "§r§d..."].slice(0, args[4].blocks.length > 15 ? -1 : undefined), `§r§bBrush Pattern Type: §a${args[4].type}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to splatter cube surface with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]} and a decay level of ${(isNaN(Number(args[6]))) ? 0 : args[6]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to splatter cube surface with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]} and a decay level of ${(isNaN(Number(args[6]))) ? 0 : args[6]}.`);
                                 }
                                 break;
                             case "splattersquaresurface":
@@ -13243,12 +13356,12 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                     if (!args[1].l) {
                                         srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore([`§r§bBrush Type: §aSplatterSquareSurface`, `§r§bBrush Radius: §c${(isNaN(Number(args[5]))) ? 3 : args[5]}`, `§r§bBrush Decay: §c${(isNaN(Number(args[6]))) ? 0 : args[6]}`, ...[...args[4].blocks.map(v => v.rawns).slice(0, 15).map(v => `§r§d${v}`), "§r§d..."].slice(0, args[4].blocks.length > 15 ? -1 : undefined), `§r§bBrush Pattern Type: §a${args[4].type}`]));
                                     }
-                                    player.sendMessage(`Successfully set brush type of the held item to splatter square surface with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]} and a decay level of ${(isNaN(Number(args[6]))) ? 0 : args[6]}.`);
+                                    player.sendMessageB(`Successfully set brush type of the held item to splatter square surface with a radius of ${(isNaN(Number(args[5]))) ? 3 : args[5]} and a decay level of ${(isNaN(Number(args[6]))) ? 0 : args[6]}.`);
                                 }
                                 break;
                             default:
                                 {
-                                    player.sendMessage(`§cError: Unknown brush type "${args[2].toLowerCase()}".`);
+                                    player.sendError(`§cError: Unknown brush type "${args[2].toLowerCase()}".`, true);
                                 }
                                 break;
                         }
@@ -13262,7 +13375,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);
                         try {
                             if ((argsa.args[1] ?? "").trim() == "") {
-                                player.sendMessage(`${command.dp}snapshot backup <areaId: string>
+                                player.sendMessageB(`${command.dp}snapshot backup <areaId: string>
 ${command.dp}snapshot rollback <areaId: string> [backupIndex: number]
 ${command.dp}snapshot deletebackup <areaId: string> [backupIndex: number]
 ${command.dp}snapshot clearbackups <areaId: string>
@@ -13279,94 +13392,94 @@ ${command.dp}snapshot list`);
                                     {
                                         let args = evaluateParameters(switchTestB, [{ type: "presetText" }, { type: "presetText" }, { type: "string" }]).args;
                                         if (!!!tryget(() => AreaBackups.get("areabackup:" + args[2]).from)) {
-                                            player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`);
+                                            player.sendError(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`, true);
                                             return;
                                         }
                                         AreaBackups.get("areabackup:" + args[2]).backup(Date.now(), { includeBlocks: true, includeEntities: false, saveMode: StructureSaveMode.World });
-                                        player.sendMessage(`Created a backup of the area ${JSON.stringify(args[2])} at ${new Date(Date.now() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? "" : "+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) % 96)}.`);
+                                        player.sendMessageB(`Created a backup of the area ${JSON.stringify(args[2])} at ${new Date(Date.now() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? "" : "+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) % 96)}.`);
                                     }
                                     break;
                                 case "rollback":
                                     {
                                         let args = evaluateParameters(switchTestB, [{ type: "presetText" }, { type: "presetText" }, { type: "string" }, { type: "number" }]).args;
                                         if (!!!tryget(() => AreaBackups.get("areabackup:" + args[2]).from)) {
-                                            player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`);
+                                            player.sendError(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`, true);
                                             return;
                                         }
                                         AreaBackups.get("areabackup:" + args[2]).rollback(AreaBackups.get("areabackup:" + args[2]).backups[args[3] ?? 0]);
-                                        player.sendMessage(`Restored the area ${JSON.stringify(args[2])} from the backup at ${new Date(AreaBackups.get("areabackup:" + args[2]).backups[args[3] ?? 0] + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? "" : "+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) % 96)}.`);
+                                        player.sendMessageB(`Restored the area ${JSON.stringify(args[2])} from the backup at ${new Date(AreaBackups.get("areabackup:" + args[2]).backups[args[3] ?? 0] + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? "" : "+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) % 96)}.`);
                                     }
                                     break;
                                 case "deletebackup":
                                     {
                                         let args = evaluateParameters(switchTestB, [{ type: "presetText" }, { type: "presetText" }, { type: "string" }, { type: "number" }]).args;
                                         if (!!!tryget(() => AreaBackups.get("areabackup:" + args[2]).from)) {
-                                            player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`);
+                                            player.sendError(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`, true);
                                             return;
                                         }
                                         const backuptime = tryget(() => AreaBackups.get("areabackup:" + args[2]).backups[args[3] ?? 0]);
                                         if (!!!backuptime) {
-                                            player.sendMessage(`§cError: No backup found at index ${args[3]}.`);
+                                            player.sendError(`§cError: No backup found at index ${args[3]}.`, true);
                                             return;
                                         }
                                         AreaBackups.get("areabackup:" + args[2]).clearBackup(backuptime);
-                                        player.sendMessage(`Deleted the backup at ${new Date(backuptime + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? "" : "+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) % 96)} of area ${JSON.stringify(args[2])}.`);
+                                        player.sendMessageB(`Deleted the backup at ${new Date(backuptime + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? "" : "+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) % 96)} of area ${JSON.stringify(args[2])}.`);
                                     }
                                     break;
                                 case "clearbackups":
                                     {
                                         if (!player.hasTag("canClearAllBackupsOfArea")) {
-                                            player.sendMessage(`§cPermissionsError: You do not have permission to use this sub-command.`);
+                                            player.sendMessageB(`§cPermissionsError: You do not have permission to use this sub-command.`);
                                             return;
                                         }
                                         let args = evaluateParameters(switchTestB, [{ type: "presetText" }, { type: "presetText" }, { type: "string" }]).args;
                                         if (!!!tryget(() => AreaBackups.get("areabackup:" + args[2]).from)) {
-                                            player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`);
+                                            player.sendError(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`, true);
                                             return;
                                         }
                                         AreaBackups.get("areabackup:" + args[2]).clearBackups();
-                                        player.sendMessage(`Cleared all of the backups of area ${JSON.stringify(args[2])}.`);
+                                        player.sendMessageB(`Cleared all of the backups of area ${JSON.stringify(args[2])}.`);
                                     }
                                     break;
                                 case "deletearea":
                                     {
                                         let args = evaluateParameters(switchTestB, [{ type: "presetText" }, { type: "presetText" }, { type: "string" }]).args;
                                         if (!!!tryget(() => AreaBackups.get("areabackup:" + args[2]).from)) {
-                                            player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`);
+                                            player.sendError(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`, true);
                                             return;
                                         }
                                         AreaBackups.get("areabackup:" + args[2]).delete();
-                                        player.sendMessage(`Deleted the backup area ${JSON.stringify(args[2])}.`);
+                                        player.sendMessageB(`Deleted the backup area ${JSON.stringify(args[2])}.`);
                                     }
                                     break;
                                 case "clearareas":
                                     {
                                         if (!player.hasTag("canClearAllBackupAreas")) {
-                                            player.sendMessage(`§cPermissionsError: You do not have permission to use this sub-command.`);
+                                            player.sendMessageB(`§cPermissionsError: You do not have permission to use this sub-command.`);
                                             return;
                                         }
                                         AreaBackups.clear();
-                                        player.sendMessage(`Cleared all of the backup areas.`);
+                                        player.sendMessageB(`Cleared all of the backup areas.`);
                                     }
                                     break;
                                 case "listbackups":
                                     {
                                         let args = evaluateParameters(switchTestB, [{ type: "presetText" }, { type: "presetText" }, { type: "string" }]).args;
                                         if (!!!tryget(() => AreaBackups.get("areabackup:" + args[2]).from)) {
-                                            player.sendMessage(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`);
+                                            player.sendError(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`, true);
                                             return;
                                         }
-                                        player.sendMessage(AreaBackups.get("areabackup:" + args[2]).backups.length == 0 ? `§cError: No backups have been saved for this backup area. Please back it up using §e\\snapshot backup ${JSON.stringify(args[2])}` : AreaBackups.get("areabackup:" + args[2]).backups.map((v, i) => `${i}. ${new Date(v + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? "" : "+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) % 96)}`).join("\n"));
+                                        player.sendMessageB(AreaBackups.get("areabackup:" + args[2]).backups.length == 0 ? `§cError: No backups have been saved for this backup area. Please back it up using §e\\snapshot backup ${JSON.stringify(args[2])}` : AreaBackups.get("areabackup:" + args[2]).backups.map((v, i) => `${i}. ${new Date(v + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString().replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? "" : "+"}${(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) % 96)}`).join("\n"));
                                     }
                                     break;
                                 case "listareas":
                                     {
-                                        player.sendMessage(AreaBackups.ids.length == 0 ? `§cError: No backup areas have been created. Please create a backup area by first selecting the two corners of the area that you want to back up, and then type §e\\backuparea §cfollowed by the id you want to set for the backup area.` : AreaBackups.ids.map((v, i) => `${JSON.stringify(v.slice(11))}: ${JSON.stringify(AreaBackups.get(v).toJSONNoId())}`).join("\n"));
+                                        player.sendMessageB(AreaBackups.ids.length == 0 ? `§cError: No backup areas have been created. Please create a backup area by first selecting the two corners of the area that you want to back up, and then type §e\\backuparea §cfollowed by the id you want to set for the backup area.` : AreaBackups.ids.map((v, i) => `${JSON.stringify(v.slice(11))}: ${JSON.stringify(AreaBackups.get(v).toJSONNoId())}`).join("\n"));
                                     }
                                     break;
                                 case "list":
                                     {
-                                        player.sendMessage(AreaBackups.ids.map((v, i) => `${JSON.stringify(v.slice(11))}: ${JSON.stringify(AreaBackups.get(v).toJSONNoId())}`).join("\n"));
+                                        player.sendMessageB(AreaBackups.ids.map((v, i) => `${JSON.stringify(v.slice(11))}: ${JSON.stringify(AreaBackups.get(v).toJSONNoId())}`).join("\n"));
                                     }
                                     break;
                             }
@@ -13380,13 +13493,13 @@ ${command.dp}snapshot list`);
             case !!switchTest.match(/^selectioninfo$/) || !!switchTest.match(/^selinfo$/) || !!switchTest.match(/^seli$/):
                 {
                     eventData.cancel = true;
-                    player.sendMessage(`Currently Selected Area Info: \npos1 x: ${player.getDynamicProperty("pos1")["x"]}\npos1 y: ${player.getDynamicProperty("pos1")["y"]}\npos1 z: ${player.getDynamicProperty("pos1")["z"]}\npos2 x: ${player.getDynamicProperty("pos2")["x"]}\npos2 y: ${player.getDynamicProperty("pos2")["y"]}\npos2 z: ${player.getDynamicProperty("pos2")["z"]}\nNext Selection Mode: ${(player.getDynamicProperty("posM") ?? false) ? "pos2" : "pos1"}`);
+                    player.sendMessageB(`Currently Selected Area Info: \npos1 x: ${player.getDynamicProperty("pos1")["x"]}\npos1 y: ${player.getDynamicProperty("pos1")["y"]}\npos1 z: ${player.getDynamicProperty("pos1")["z"]}\npos2 x: ${player.getDynamicProperty("pos2")["x"]}\npos2 y: ${player.getDynamicProperty("pos2")["y"]}\npos2 z: ${player.getDynamicProperty("pos2")["z"]}\nNext Selection Mode: ${(player.getDynamicProperty("posM") ?? false) ? "pos2" : "pos1"}`);
                 }
                 break;
             case !!switchTest.match(/^chunkinfo$/):
                 {
                     eventData.cancel = true;
-                    player.sendMessage(`Chunk Info: \nDimension: ${dimensionTypeDisplayFormattingD[player.dimension.id]}\nChunk Index x: ${getChunkIndex(player.location).x}\nChunk Index y: ${getChunkIndex(player.location).y}\nChunk Range: ${JSON.stringify(chunkIndexToBoundingBoxB(getChunkIndex(player.location), player.dimension.heightRange))}`);
+                    player.sendMessageB(`Chunk Info: \nDimension: ${dimensionTypeDisplayFormattingD[player.dimension.id]}\nChunk Index x: ${getChunkIndex(player.location).x}\nChunk Index y: ${getChunkIndex(player.location).y}\nChunk Range: ${JSON.stringify(chunkIndexToBoundingBoxB(getChunkIndex(player.location), player.dimension.heightRange))}`);
                 }
                 break;
             case !!switchTest.match(/^butcher$/):
@@ -13443,7 +13556,7 @@ ${command.dp}snapshot list`);
                     srun(() => {
                         let sc = 0n;
                         player.dimension.getEntities({ maxDistance: args[2] ?? 10, location: player.location }).filter(v => (types.includes(v.typeId) && (v.nameTag == "" || args[1].includes("t"))) || args[1].includes("e")).forEach(v => { v.kill(); sc++; });
-                        player.sendMessage(`${sc == 0n ? "§c" : ""}Butchered ${sc} entit${sc == 1n ? "y" : "ies"}.`);
+                        player.sendMessageB(`${sc == 0n ? "§c" : ""}Butchered ${sc} entit${sc == 1n ? "y" : "ies"}.`);
                     });
                 }
                 break;
@@ -13501,7 +13614,7 @@ ${command.dp}snapshot list`);
                     srun(() => {
                         let sc = 0n;
                         player.dimension.getEntities({ maxDistance: args[2] ?? 10, location: player.location }).filter(v => (types.includes(v.typeId) && (v.nameTag == "" || args[1].includes("t"))) || args[1].includes("e")).forEach(v => { v.typeId == "minecraft:player" ? despawnEntities([v]) : v.remove(); sc++; });
-                        player.sendMessage(`${sc == 0n ? "§c" : ""}Butchered ${sc} entit${sc == 1n ? "y" : "ies"}.`);
+                        player.sendMessageB(`${sc == 0n ? "§c" : ""}Butchered ${sc} entit${sc == 1n ? "y" : "ies"}.`);
                     });
                 }
                 break;
@@ -13519,7 +13632,7 @@ ${command.dp}snapshot list`);
                     const blocktypes = BlockTypes.getAll();
                     system.run(() => { let ta; try {
                         generateTickingAreaFillCoordinatesC(player.location, (() => { let a = new CompoundBlockVolume(); a.pushVolume({ volume: new BlockVolume(coordinatesa, coordinatesb) }); return a; })(), player.dimension).then(tac => { ta = tac; try {
-                            fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, matchingblock[0] == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : matchingblock[0], matchingblock[1], { matchingBlock: firstblockname, matchingBlockStates: firstblockstates, minMSBetweenYields: 2500 }, undefined, args[1].c, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                            fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, matchingblock[0] == "random" ? () => blocktypes[Math.floor(blocktypes.length * Math.random())] : matchingblock[0], matchingblock[1], { matchingBlock: firstblockname, matchingBlockStates: firstblockstates, minMSBetweenYields: 2500 }, undefined, args[1].c, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not generated because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                         }
                         catch (e) {
                             eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13556,7 +13669,7 @@ ${command.dp}snapshot list`);
             case !!switchTest.match(/^getworldspawnpoint$/) || !!switchTest.match(/^getworldspawn$/) || !!switchTest.match(/^getwsp$/) || !!switchTest.match(/^getws$/) || !!switchTest.match(/^gwsp$/) || !!switchTest.match(/^gws$/):
                 {
                     eventData.cancel = true;
-                    player.sendMessage(`World Spawn: ${vTStr(world.getDefaultSpawnLocation())}`);
+                    player.sendMessageB(`World Spawn: ${vTStr(world.getDefaultSpawnLocation())}`);
                 }
                 break;
             case !!switchTest.match(/^findtransformdvindex$/):
@@ -13564,7 +13677,7 @@ ${command.dp}snapshot list`);
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args;
                     !args[1].includes(":") ? args[1] = "minecraft:" + args[1] : undefined;
-                    player.sendMessage(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `Data value for enchantment transfer smithing template is ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}.`);
+                    player.sendMessageB(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `Data value for enchantment transfer smithing template is ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}.`);
                 }
                 break;
             case !!switchTest.match(/^gettransformst$/):
@@ -13573,14 +13686,14 @@ ${command.dp}snapshot list`);
                     const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args;
                     !args[1].includes(":") ? args[1] = "minecraft:" + args[1] : undefined;
                     player.runCommandAsync(`/give @s andexdb:enchantment_transfer_smithing_template 1 ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}`);
-                    player.sendMessage(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `You have been given an enchantment transfer smithing template with the data value ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}.`);
+                    player.sendMessageB(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `You have been given an enchantment transfer smithing template with the data value ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}.`);
                 }
                 break;
             case !!switchTest.match(/^transformresultatdvindex$/):
                 {
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, ["presetText", "number"]).args;
-                    player.sendMessage(`Enchantment transfer smithing template result at data value ${args[1]} is ${JSON.stringify(listoftransformrecipes[args[1]])}.`);
+                    player.sendMessageB(`Enchantment transfer smithing template result at data value ${args[1]} is ${JSON.stringify(listoftransformrecipes[args[1]])}.`);
                 }
                 break;
             case !!switchTest.match(/^removeotheritemenchantments$/) || !!switchTest.match(/^remotheritemenchants$/) || !!switchTest.match(/^roie$/):
@@ -13592,10 +13705,10 @@ ${command.dp}snapshot list`);
                             const args = evaluateParameters(switchTestB, ["presetText", "json"]).args;
                             EnchantmentTypes.getAll().map(v => v.id).filter(v => !args[1].includes(v)).forEach(v => item.getComponent("enchantable").removeEnchantment(v));
                             getPlayerHeldItemSlot(player).setItem(item);
-                            player.sendMessage(`Successfully removed all other enchantment types from the item.`);
+                            player.sendMessageB(`Successfully removed all other enchantment types from the item.`);
                         }
                         catch (e) {
-                            player.sendMessage("§c" + e + " " + e.stack);
+                            player.sendMessageB("§c" + e + " " + e.stack);
                         }
                     });
                 }
@@ -13609,7 +13722,7 @@ ${command.dp}snapshot list`);
                     let toa = mcMath.Vector3Utils.add(player.location, { x: radius, y: radius, z: radius });
                     let to = { x: toa.x, y: toa.y, z: toa.z };
                     try {
-                        system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "fire", undefined, { matchingBlock: "air" }); player.sendMessage(`${a == 0 ? "§c" : ""}${a} blocks ignited in radius of ${radius}`); });
+                        system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "fire", undefined, { matchingBlock: "air" }); player.sendMessageB(`${a == 0 ? "§c" : ""}${a} blocks ignited in radius of ${radius}`); });
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13625,7 +13738,7 @@ ${command.dp}snapshot list`);
                     let toa = mcMath.Vector3Utils.add(player.location, { x: radius, y: radius, z: radius });
                     let to = { x: toa.x, y: toa.y, z: toa.z };
                     try {
-                        system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "fire" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "soul_fire" }); player.sendMessage(`${a + b == 0 ? "§c" : ""}${a + b} blocks extinguished in radius of ${radius}`); });
+                        system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "fire" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "soul_fire" }); player.sendMessageB(`${a + b == 0 ? "§c" : ""}${a + b} blocks extinguished in radius of ${radius}`); });
                     }
                     catch (e) {
                         eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13643,7 +13756,7 @@ ${command.dp}snapshot list`);
                     switch (player.dimension.id) {
                         case "minecraft:overworld":
                             try {
-                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "respawn_anchor" }); player.sendMessage(`${a + b == 0 ? "§c" : ""}${a + b} explosives removed in radius of ${radius}`); });
+                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "respawn_anchor" }); player.sendMessageB(`${a + b == 0 ? "§c" : ""}${a + b} explosives removed in radius of ${radius}`); });
                             }
                             catch (e) {
                                 eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13651,7 +13764,7 @@ ${command.dp}snapshot list`);
                             break;
                         case "minecraft:nether":
                             try {
-                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "bed" }); player.sendMessage(`${a + b == 0 ? "§c" : ""}${a + b} explosives removed in radius of ${radius}`); });
+                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "bed" }); player.sendMessageB(`${a + b == 0 ? "§c" : ""}${a + b} explosives removed in radius of ${radius}`); });
                             }
                             catch (e) {
                                 eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13659,7 +13772,7 @@ ${command.dp}snapshot list`);
                             break;
                         case "minecraft:the_end":
                             try {
-                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "respawn_anchor" }); let c = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "bed" }); player.sendMessage(`${a + b + c == 0 ? "§c" : ""}${a + b + c} explosives removed in radius of ${radius}`); });
+                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "respawn_anchor" }); let c = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "bed" }); player.sendMessageB(`${a + b + c == 0 ? "§c" : ""}${a + b + c} explosives removed in radius of ${radius}`); });
                             }
                             catch (e) {
                                 eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13667,7 +13780,7 @@ ${command.dp}snapshot list`);
                             break;
                         default:
                             try {
-                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); player.sendMessage(`${a == 0 ? "§c" : ""}${a} explosives removed in radius of ${radius}`); });
+                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); player.sendMessageB(`${a == 0 ? "§c" : ""}${a} explosives removed in radius of ${radius}`); });
                             }
                             catch (e) {
                                 eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13695,7 +13808,7 @@ ${command.dp}snapshot list`);
                     switch (player.dimension.id) {
                         case "minecraft:overworld":
                             try {
-                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "respawn_anchor" }); player.sendMessage(`${a + b == 0 ? "§c" : ""}${a + b} explosives removed in radius of ${radius}`); });
+                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "respawn_anchor" }); player.sendMessageB(`${a + b == 0 ? "§c" : ""}${a + b} explosives removed in radius of ${radius}`); });
                             }
                             catch (e) {
                                 eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13703,7 +13816,7 @@ ${command.dp}snapshot list`);
                             break;
                         case "minecraft:nether":
                             try {
-                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "bed" }); player.sendMessage(`${a + b == 0 ? "§c" : ""}${a + b} explosives removed in radius of ${radius}`); });
+                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "bed" }); player.sendMessageB(`${a + b == 0 ? "§c" : ""}${a + b} explosives removed in radius of ${radius}`); });
                             }
                             catch (e) {
                                 eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13711,7 +13824,7 @@ ${command.dp}snapshot list`);
                             break;
                         case "minecraft:the_end":
                             try {
-                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "respawn_anchor" }); let c = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "bed" }); player.sendMessage(`${a + b + c == 0 ? "§c" : ""}${a + b + c} explosives removed in radius of ${radius}`); });
+                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "respawn_anchor" }); let c = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "bed" }); player.sendMessageB(`${a + b + c == 0 ? "§c" : ""}${a + b + c} explosives removed in radius of ${radius}`); });
                             }
                             catch (e) {
                                 eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13719,7 +13832,7 @@ ${command.dp}snapshot list`);
                             break;
                         default:
                             try {
-                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); player.sendMessage(`${a == 0 ? "§c" : ""}${a} explosives removed in radius of ${radius}`); });
+                                system.run(() => { let a = fillBlocksHB(from, to, player.dimension, "air", undefined, { matchingBlock: "tnt" }); player.sendMessageB(`${a == 0 ? "§c" : ""}${a} explosives removed in radius of ${radius}`); });
                             }
                             catch (e) {
                                 eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13747,7 +13860,7 @@ ${command.dp}snapshot list`);
                                     perror(player, e);
                                 }
                                 try {
-                                    fillBlocksHDFGB(from, to, player.dimension, { minMSBetweenYields: 2500 }, 100).then(a => { player.sendMessage(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not drained because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
+                                    fillBlocksHDFGB(from, to, player.dimension, { minMSBetweenYields: 2500 }, 100).then(a => { player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime - a.completionData.startTime} ms over ${a.completionData.endTick - a.completionData.startTick} tick${(a.completionData.endTick - a.completionData.startTick) == 1 ? "" : "s"}${a.completionData.containsUnloadedChunks ? "; Some blocks were not drained because they were in unloaded chunks. " : ""}`); }, (e) => { eventData.sender.sendMessage("§c" + e + e.stack); });
                                 }
                                 catch (e) {
                                     eventData.sender.sendMessage("§c" + e + e.stack);
@@ -13761,7 +13874,7 @@ ${command.dp}snapshot list`);
                             eventData.sender.sendMessage("§c" + e + e.stack);
                         }
                     });
-                    //try{system.run(()=>{let a = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "water"}); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "lava"}); let c = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_water"}); let d = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_lava"}); player.sendMessage(`${a+b+c+d==0?"§c":""}${a+b+c+d} liquids removed in radius of ${radius}`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
+                    //try{system.run(()=>{let a = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "water"}); let b = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "lava"}); let c = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_water"}); let d = fillBlocksHB(from, to, player.dimension, "air", undefined, {matchingBlock: "flowing_lava"}); player.sendMessageB(`${a+b+c+d==0?"§c":""}${a+b+c+d} liquids removed in radius of ${radius}`); }); }catch(e){eventData.sender.sendMessage("§c" + e + e.stack)}
                 }
                 break;
             case !!switchTest.match(/^attribute$/):

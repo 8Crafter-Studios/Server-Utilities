@@ -739,10 +739,22 @@
          "path" : "items/main_menu.json"
       },
       {
-         "path" : "recipes/smithing_table/210minecraft;birch_pressure_plate.json"
+         "path" : "recipes/smithing_table/1400minecraft;piston_arm_collision.json"
       },
       {
-         "path" : "items/non_chargeable_item_3.json"
+         "path" : "recipes/smithing_table/336minecraft;cherry_button.json"
+      },
+      {
+         "path" : "recipes/smithing_table/285minecraft;brown_dye.json"
+      },
+      {
+         "path" : "node_modules/@minecraft/math/lib/index.js"
+      },
+      {
+         "path" : "recipes/smithing_table/197minecraft;bell.json"
+      },
+      {
+         "path" : "items/non_chargeable_item_1.json"
       },
       {
          "path" : "items/orange_brush_1.json"
@@ -1085,21 +1097,6 @@
       },
       {
          "path" : "node_modules/@minecraft/math/lib/general/index.js.map"
-      },
-      {
-         "path" : "recipes/smithing_table/1400minecraft;piston_arm_collision.json"
-      },
-      {
-         "path" : "recipes/smithing_table/336minecraft;cherry_button.json"
-      },
-      {
-         "path" : "recipes/smithing_table/285minecraft;brown_dye.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/math/lib/index.js"
-      },
-      {
-         "path" : "recipes/smithing_table/197minecraft;bell.json"
       },
       {
          "path" : "recipes/smithing_table/53minecraft;arrow.12.json"
@@ -5810,6 +5807,9 @@
       },
       {
          "path" : "recipes/smithing_table/209minecraft;birch_planks.json"
+      },
+      {
+         "path" : "recipes/smithing_table/210minecraft;birch_pressure_plate.json"
       },
       {
          "path" : "recipes/smithing_table/211minecraft;birch_sapling.json"
