@@ -2908,6 +2908,8 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             if(switchTestB.trim().split(" ").length==1){player.sendMessageB(`item command format: 
 ${command.dp}item <mode: lore|lorene> <lore: JSON>
 ${command.dp}item <mode: canplaceon|candestroy> <blockTypes: string[]>
+${command.dp}item keepondeath <keepOnDeath: bool>
+${command.dp}item lockmode <lockMode: {none}|{inventory}|{slot}>
 ${command.dp}item name <name: text>
 ${command.dp}item count <count: int(1-255)>
 ${command.dp}item remove
@@ -3001,6 +3003,22 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`)}else{
                 break;
                 case "item gettags":
                     player.sendMessageB('"'+player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).getTags().join("§r,")+'"')
+                break;
+                case "item debug": {
+                    const item = player.getComponent("inventory").container.getItem(player.selectedSlotIndex)
+                    player.sendMessageB(
+`typeId: ${item.typeId}
+amount: ${item.amount}
+isStackable: ${item.isStackable}
+maxAmount: ${item.maxAmount}
+tags: ${JSONB.stringify(item.getTags())}
+components: ${JSONB.stringify(item.getComponents().map(c=>c.typeId))}
+nameTag: ${item.nameTag}
+lore: ${JSONB.stringify(item.getLore())}
+canDestroy: ${JSONB.stringify(item.getCanDestroy())}
+canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`
+                    )
+                }
                 break;
                 case "item property":
                     switch (command.split(" ")[2]) {
