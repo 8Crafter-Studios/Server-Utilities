@@ -1,6 +1,9 @@
 Find/Replace to turn all player.sendMessage functions that send an error into player.sendError functions with sendAsIs set to true:
     Find(RegEx): player\.sendMessage\(`§cError:([^`]*)`\)
     Replace: player.sendError(`§cError:$1`, true)
+Find/Replace to turn all eventData.sender.sendMessage functions that send an error into player.sendError functions with sendAsIs set to true:
+    Find: eventData.sender.sendMessage("§c" + e + e.stack)
+    Replace: player.sendError("§c" + e + e.stack, true)
 Find/Replace to update minecraft:icon item components to the new 1.21.30 format version:
     Find(RegEx): "minecraft:icon":\s?\{([\s\n]*)"texture":\s?"([^"]*)"([\s\n]*)\}
     Replace: "minecraft:icon": {$1"textures": {$1    "default": "$2",$1    "dyed": "$2"$3    }$3}
