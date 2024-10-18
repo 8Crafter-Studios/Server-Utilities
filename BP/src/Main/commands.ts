@@ -6972,7 +6972,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
             if(args[3]=="~"){args[3] = player.name}
             if(!!!args[3]){args[3] = player.name}
             if(args[4]=="~"){args[4] = player.name}
-            if(!!!args[3]){args[4] = player.name}
+            if(!!!args[4]){args[4] = player.name}
             const target = world.getAllPlayers().find(_=>_.name==args[3])
             const targetb = world.getAllPlayers().find(_=>_.name==args[4])
             args[1]??="0"
@@ -6996,10 +6996,9 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                     }else{
                         const index = Math.round(args[1].toNumber() * 9)
                         const indexb = Math.round(args[2].toNumber() * 9)
-                        for (let i = 1; i < 9; i++) { targetInventory.container.swapItems(i + index, i + indexb, targetInventoryB.container) };
-                        inventorySwap(target, targetb)
-                        player.sendMessageB(`Successfully swapped ${args[3]}'s inventory with ${args[4]}'s inventory. `)
+                        for (let i = 0; i < 9; i++) { targetInventory.container.swapItems(i + index, i + indexb, targetInventoryB.container) };
                     }
+                    player.sendMessageB(`Successfully swapped row ${args[1]} of ${args[3]}'s inventory with row ${args[2]} of ${args[4]}'s inventory.`)
                 })
             }
         }

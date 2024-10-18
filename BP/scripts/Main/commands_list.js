@@ -1338,7 +1338,7 @@ export const commands = [
                 format: "block ..."
             }
         ],
-        command_version: "4.1.0",
+        command_version: "0.2.7-alpha.36",
         description: "Manages blocks.",
         category: [
             "world",
@@ -3199,7 +3199,7 @@ export const commands = [
                 format: "hcontents [presetId: int]"
             }
         ],
-        command_version: "1.0.0",
+        command_version: "0.7.9-beta.76",
         description: "Lists the contents of all of your currently saved hotbar presets.",
         category: [
             "containers/inventories"
