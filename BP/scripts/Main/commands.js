@@ -3232,44 +3232,51 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         eventData.cancel = true;
                         if (switchTestB.trim().split(" ").length == 1) {
                             player.sendMessageB(`item command format: 
-${command.dp}item <mode: lore|lorene> <lore: JSON>
-${command.dp}item <mode: canplaceon|candestroy> <blockTypes: string[]>
+${command.dp}item
+${command.dp}item <mode: {lore}|{lorene}> <lore: JSONArray>
+${command.dp}item <mode: {canplaceon}|{candestroy}> <blockTypes: JSONString[]>
 ${command.dp}item keepondeath <keepOnDeath: bool>
 ${command.dp}item lockmode <lockMode: {none}|{inventory}|{slot}>
 ${command.dp}item name <name: text>
 ${command.dp}item count <count: int(1-255)>
 ${command.dp}item remove
 ${command.dp}item gettags
-${command.dp}item <mode: json|jsonb> <itemJSON: ItemJSON>
+${command.dp}item debug
+${command.dp}item <mode: {json}|{jsonb}> <itemJSON: ItemJSON>
 ${command.dp}item property removelist <propertyIdList: string[]>
 ${command.dp}item property setlist <propertyList: JSON>
-${command.dp}item property <mode: remove|get> <propertyId: string>
+${command.dp}item property <mode: {remove}|{get}> <propertyId: string>
 ${command.dp}item property setnumber <propertyId: string> <propertyValue: number>
 ${command.dp}item property setstring <propertyId: string> <propertyValue: string>
 ${command.dp}item property setboolean <propertyId: string> <propertyValue: boolean>
 ${command.dp}item property setvector3 <propertyId: string> <propertyValue: Vector3>
-${command.dp}item property <mode: list|clear>
+${command.dp}item property <mode: {list}|{listdetails}|{clear}>
 ${command.dp}item enchantment add <enchantment: {"level": number, "type": string}>
 ${command.dp}item enchantment addlist <enchantment: {"level": number, "type": string}[]>
-${command.dp}item enchantment <mode: remove|get|testfor> <enchantmentId: string>
-${command.dp}item enchantment <mode: list|clear>
-${command.dp}item slot <slot: int> <mode: lore|lorene> <lore: JSON>
+${command.dp}item enchantment <mode: {remove}|{get}|{testfor}> <enchantmentId: string>
+${command.dp}item enchantment <mode: {list}|{clear}>
+${command.dp}item slot <slot: int> <mode: {lore}|{lorene}> <lore: JSONArray>
+${command.dp}item slot <slot: int> <mode: {canplaceon}|{candestroy}> <blockTypes: JSONString[]>
+${command.dp}item slot <slot: int> keepondeath <keepOnDeath: bool>
+${command.dp}item slot <slot: int> lockmode <lockMode: {none}|{inventory}|{slot}>
 ${command.dp}item slot <slot: int> name <name: text>
 ${command.dp}item slot <slot: int> count <count: int(1-255)>
 ${command.dp}item slot <slot: int> remove
-${command.dp}item slot <slot: int> <mode: json|jsonb> <itemJSON: ItemJSON>
-${command.dp}item slot <slot: int> property removelist <propertyIdList: string[]>
+${command.dp}item slot <slot: int> gettags
+${command.dp}item slot <slot: int> debug
+${command.dp}item slot <slot: int> <mode: {json}|{jsonb}> <itemJSON: ItemJSON>
+${command.dp}item slot <slot: int> property removelist <propertyIdList: JSONString[]>
 ${command.dp}item slot <slot: int> property setlist <propertyList: JSON>
-${command.dp}item slot <slot: int> property <mode: remove|get> <propertyId: string>
+${command.dp}item slot <slot: int> property <mode: {remove}|{get}> <propertyId: string>
 ${command.dp}item slot <slot: int> property setnumber <propertyId: string> <propertyValue: number>
 ${command.dp}item slot <slot: int> property setstring <propertyId: string> <propertyValue: string>
 ${command.dp}item slot <slot: int> property setboolean <propertyId: string> <propertyValue: boolean>
 ${command.dp}item slot <slot: int> property setvector3 <propertyId: string> <propertyValue: Vector3>
-${command.dp}item slot <slot: int> property <mode: list|listdetails|clear>
+${command.dp}item slot <slot: int> property <mode: {list}|{listdetails}|{clear}>
 ${command.dp}item slot <slot: int> enchantment add <enchantment: {"level": number, "type": string}>
 ${command.dp}item slot <slot: int> enchantment addlist <enchantment: {"level": number, "type": string}[]>
-${command.dp}item slot <slot: int> enchantment <mode: remove|get|testfor> <enchantmentId: string>
-${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
+${command.dp}item slot <slot: int> enchantment <mode: {remove}|{get}|{testfor}> <enchantmentId: string>
+${command.dp}item slot <slot: int> enchantment <mode: {list}|{clear}>`);
                         }
                         else {
                             let argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);
@@ -3970,6 +3977,33 @@ potionModifierType: ${d.potionModifierType}`)(item.getComponent("potion")) : ""}
                 break;
             case !!switchTest.match(/^block$$/):
                 eventData.cancel = true;
+                if (switchTestB.trim().split(" ").length == 1) {
+                    player.sendMessageB(`block command format: 
+${command.dp}block
+${command.dp}block facing get color ...
+    ... rgba hex
+    ... rgba frac
+    ... rgba dec
+    ... rgba decr
+    ... rgb hex
+    ... rgb frac
+    ... rgb dec
+    ... rgb decr
+    ... hsl
+§c    ... (hsv|hsb) (COMING SOON!)§r
+§c    ... bin (COMING SOON!)§r
+§c    ... percent (COMING SOON!)§r
+§c    ... cymk (COMING SOON!)§r
+${command.dp}block facing get filllevel
+§c${command.dp}block facing get liquidtype (COMING SOON!)§r
+§c${command.dp}block facing get waterlogged (COMING SOON!)§r
+§c${command.dp}block facing get state <stateId: string> (COMING SOON!)§r
+§c${command.dp}block facing get states (COMING SOON!)§r
+§c${command.dp}block facing get tags (COMING SOON!)§r
+§c${command.dp}block facing get component <componentId: {waterContainer}|{lavaContainer}|{snowContainer}|{potionContainer}> (COMING SOON!)§r
+${command.dp}block facing`);
+                    return;
+                }
                 system.run(() => {
                     const argsa = evaluateParameters(switchTestB, ["presetText", "presetText"]);
                     switch (argsa.args[1]) {
@@ -3979,7 +4013,7 @@ potionModifierType: ${d.potionModifierType}`)(item.getComponent("potion")) : ""}
                             {
                                 const block = player.getBlockFromViewDirection();
                                 if (!!!block) {
-                                    player.sendError("", true);
+                                    player.sendError("§cYou must be facing a block to use the \"facing\" sub-command.", true);
                                 }
                                 const argsb = evaluateParameters(argsa.extra, ["presetText", "presetText"]);
                                 switch (argsb.args[0]) {

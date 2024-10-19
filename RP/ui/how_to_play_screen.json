@@ -2001,21 +2001,41 @@
       },
       {
           "header_32@how_to_play_common.header": {
-              "$text": "{<string>}"
+              "$text": "RGBA"
           }
       },
       {
           "paragraph_43@how_to_play_common.paragraph": {
-              "$text": "This parameter type means that the value you type in for it is the exact text that is inside of the {}. For example if the parameter type is {testabcd} then for the parameter you would type in testabcd. "
+              "$text": "A 4 character RGBA hexadecimal color code. ex. F927"
           }
       },
       {
           "header_33@how_to_play_common.header": {
-              "$text": "§§(<parameterType>|<parameterType>)"
+              "$text": "RRGGBBAA"
           }
       },
       {
           "paragraph_44@how_to_play_common.paragraph": {
+              "$text": "An 8 character RGBA hexadecimal color code. ex. FE932B76"
+          }
+      },
+      {
+          "header_34@how_to_play_common.header": {
+              "$text": "{<string>}"
+          }
+      },
+      {
+          "paragraph_45@how_to_play_common.paragraph": {
+              "$text": "This parameter type means that the value you type in for it is the exact text that is inside of the {}. For example if the parameter type is {testabcd} then for the parameter you would type in testabcd. "
+          }
+      },
+      {
+          "header_35@how_to_play_common.header": {
+              "$text": "§§(<parameterType>|<parameterType>)"
+          }
+      },
+      {
+          "paragraph_46@how_to_play_common.paragraph": {
               "$text": "This parameter type means that it can actually be any of the parameter types separated by vertical lines | inside of the parentheses (). For example, if your parameter was [value: (number|(string|JSONArray)[maxLength=2])[?=5]] then for the parameter you could do a number, a string with a max length of 2, a JSONArray with a max length of 2, or nothing, and if you put nothing then it will just default to 5. "
           }
       }
