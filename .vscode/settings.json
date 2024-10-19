@@ -1,8 +1,8 @@
 {
     "problems.showCurrentInStatus": true,
     "editor.suggest.showStatusBar": true,
-    "typescript.tsserver.maxTsServerMemory": 40000,
+    "typescript.tsserver.maxTsServerMemory": 40000/*,
     "files.exclude": {
-      "**/node_modules": true
-    }
+      "**//*node_modules": true
+    }*/
 }

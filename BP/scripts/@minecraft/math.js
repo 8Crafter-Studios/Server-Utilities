@@ -458,7 +458,25 @@ const exports = (() => {
   return __toESM(require_lib());/*
   var test = mcMath.Vector3Utils.add({ x: 0, y: 0, z: 0 }, mcMath.VECTOR3_ONE);
   console.log(JSON.stringify(test));*/
-})();
+})();/*
 var test = exports.Vector3Utils.add({ x: 0, y: 0, z: 0 }, exports.VECTOR3_ONE);
-console.log(JSON.stringify(test));
+console.log(JSON.stringify(test));*/
 export default exports; 
+export const Vector3Utils = exports.Vector3Utils;
+export const Vector2Utils = exports.Vector2Utils;
+export const VECTOR3_UP = exports.VECTOR3_UP;
+export const VECTOR3_DOWN = exports.VECTOR3_DOWN;
+export const VECTOR3_LEFT = exports.VECTOR3_LEFT;
+export const VECTOR3_RIGHT = exports.VECTOR3_RIGHT;
+export const VECTOR3_FORWARD = exports.VECTOR3_FORWARD;
+export const VECTOR3_BACK = exports.VECTOR3_BACK;
+export const VECTOR3_ONE = exports.VECTOR3_ONE;
+export const VECTOR3_ZERO = exports.VECTOR3_ZERO;
+export const VECTOR3_WEST = exports.VECTOR3_WEST;
+export const VECTOR3_EAST = exports.VECTOR3_EAST;
+export const VECTOR3_NORTH = exports.VECTOR3_NORTH;
+export const VECTOR3_SOUTH = exports.VECTOR3_SOUTH;
+export const Vector3Builder = exports.Vector3Builder;
+export const Vector2Builder = exports.Vector2Builder;
+export const clampNumber = exports.clampNumber;
+// run in the debugger console (async()=>{const colorCore = await import("./@minecraft/math"); console.log(Object.keys(colorCore.default).map(v=>`export const ${v} = exports.${v};`).join("\n"))})()

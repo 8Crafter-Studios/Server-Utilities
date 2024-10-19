@@ -6,7 +6,7 @@ import { player_save_format_version, savedPlayer, type savedPlayerData, type sav
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications, extraFeaturesSettings, worldBorderSettings } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
-import { arrayify, clamp24HoursTo12Hours, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, twoWayModulo, arrayModifier, arrayModifierOld, RGBToHSL, HSLToRGB } from "./utilities";
+import { arrayify, clamp24HoursTo12Hours, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, twoWayModulo, arrayModifier, arrayModifierOld, RGBToHSL, HSLToRGB, mcRGBAToColorCoreRGB } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
 import { clearContainer, cmdutilsmetaimport,containerToContainerSlotArray,containerToItemStackArray,entityToContainerSlotArray,fillContainer,fillmodetypeenum,getPlayerHeldItemSlot,getPlayerselectedSlotIndex,getSlotFromParsedSlot,IllegalItemTypes,inventorySwap,inventorySwapB,inventorySwapC,itemJSONPropertiesEval,itemJSONPropertiesEvalCT,JunkItemTypes,OpItemTypes,parseSlot,rangeToIntArray,targetSelector,targetSelectorAllListB,targetSelectorAllListC,targetSelectorAllListD,targetSelectorAllListE,targetSelectorB,EquipmentSlots,OtherEquipmentSlots,blockToContainerSlotArray,blockToContainerSlotListObject,blockToItemStackArray,componentTypeEnum,durabilityComponentTypeEnum,enchantableComponentTypeEnum,entityToContainerSlotArrayB,entityToContainerSlotListObject,entityToItemStackArray,equippableToContainerSlotArray,equippableToItemStackArray,getEntityHeldItemSlot,getEquipment,getInventory,propertyTypeEnum } from "./command_utilities";
 import * as GameTest from "@minecraft/server-gametest";
@@ -36,6 +36,7 @@ import *  as playershop from "../ExtraFeatures/player_shop";
 import *  as moneysystem from "../ExtraFeatures/money";
 // import *  as shopmain from "../ExtraFeatures/shop_main";
 import mcMath from "@minecraft/math.js";
+import colorCore, { Color, rgbToHPLuv, rgbToHsi, rgbToHsl, rgbToHSLuv, rgbToHsv } from "color-core";
 import { uiManager, UIManager } from "@minecraft/server-ui";
 import { commands } from "./commands_list";
 import { ExpireError, TimeoutError } from "./errors";
@@ -44,6 +45,7 @@ import { LinkedServerShopCommands, ServerShop, ServerShopManager } from "../Extr
 import { PlayerShop, PlayerShopManager } from "ExtraFeatures/player_shop";
 import { mainShopSystemSettings } from "../ExtraFeatures/shop_main";
 import { MoneySystem } from "../ExtraFeatures/money";
+import Decimal from "decimal.js";
 export const cmdsmetaimport = import.meta
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
 mcServer
@@ -61,6 +63,8 @@ uis
 playersave
 spawnprot
 mcMath
+colorCore
+Decimal
 export function cmdsEval(x: string, eventData?, bypassChatInputRequests?, runreturn?, returnBeforeChatSend?, returnBeforeChatCommandsOrChatSend?, event?, player?, sendToPlayers?, newMessage?, switchTest?, switchTestB?, commanda?){return eval(x)}
 export function indirectCmdsEval(x: string){return eval?.(x)}
 export function cmdsRun(x: (...args)=>any, ...args){return x(...args)}
@@ -3419,7 +3423,13 @@ ${command.dp}block facing get color ...
     ... rgb dec
     ... rgb decr
     ... hsl
-§c    ... (hsv|hsb) (COMING SOON!)§r
+    ... hsluv
+    ... (hsv|hsb)
+    ... hsi
+    ... hpluv
+    ... AdobeRGB
+    ... CIELuv
+    ... CIExyY
 §c    ... bin (COMING SOON!)§r
 §c    ... percent (COMING SOON!)§r
 §c    ... cymk (COMING SOON!)§r
@@ -3440,6 +3450,11 @@ ${command.dp}block facing set color ...
     ... rgb dec <red: int[min=0,max=255]> <green: int[min=0,max=255]> <blue: int[min=0,max=255]>
     ... rgb decr <red: float[min=0.0,max=255.0]> <green: float[min=0.0,max=255.0]> <blue: float[min=0.0,max=255.0]>
     ... hsl <hue: float[min=0.0,max=360.0]> <saturation: float[min=0.0,max=100.0]> <lightness: float[min=0.0,max=100.0]>
+§c    ... hsv <hue: float[min=0.0,max=360.0]> <saturation: float[min=0.0,max=100.0]> <value: float[min=0.0,max=100.0]> (COMING SOON!)
+§c    ... hsb <hue: float[min=0.0,max=360.0]> <saturation: float[min=0.0,max=100.0]> <brightness: float[min=0.0,max=100.0]> (COMING SOON!)
+§c    ... bin <red: binary> <green: binary> <blue: binary> (COMING SOON!)
+§c    ... clear (COMING SOON!)
+${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
 §c${command.dp}block facing debug (COMING SOON!)§r`
     );
     return;
@@ -3512,7 +3527,7 @@ ${command.dp}block facing set color ...
                                                             )
                                                         }else{
                                                             player.sendError(
-                                                                `§cSyntax error: Unexpected ${argsa.args[1]}: at "${
+                                                                `§cSyntax error: Unexpected "${argsa.args[1]}": at "${
                                                                     switchTestB.slice(switchTestB.indexOf(argsb.args[1])-10, switchTestB.indexOf(argsb.args[1]))
                                                                 }>>${argsb.args[1]}<<${
                                                                     switchTestB.slice(switchTestB.indexOf(argsb.args[1])+argsb.args[1].length, switchTestB.indexOf(argsb.args[1])+argsb.args[1].length+10)
@@ -3572,7 +3587,7 @@ ${command.dp}block facing set color ...
                                                             )
                                                         }else{
                                                             player.sendError(
-                                                                `§cSyntax error: Unexpected ${argsc.args[1]}: at "${
+                                                                `§cSyntax error: Unexpected "${argsc.args[1]}": at "${
                                                                     switchTestB.slice(switchTestB.indexOf(argsc.args[1])-10, switchTestB.indexOf(argsc.args[1]))
                                                                 }>>${argsc.args[1]}<<${
                                                                     switchTestB.slice(switchTestB.indexOf(argsc.args[1])+argsc.args[1].length, switchTestB.indexOf(argsc.args[1])+argsc.args[1].length+10)
@@ -3585,8 +3600,53 @@ ${command.dp}block facing set color ...
                                             }
                                             break;
                                             case "hsl": {
-                                                const currentColor = RGBToHSL(...(c=>[(c.red*255).round(), (c.green*255).round(), (c.blue*255).round()] as const)(block?.block.getComponent("waterContainer").getCustomColor()))
-                                                player.sendMessageB(`Red: ${currentColor[0]}, Green: ${currentColor[1]}, Blue: ${currentColor[2]}`)
+                                                const currentColor = rgbToHsl(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor()))
+                                                player.sendMessageB(`Hue: ${currentColor.h.toPrecision(10).toNumber()}, Saturation: ${currentColor.s.toPrecision(10).toNumber()}, Lightness: ${currentColor.l.toPrecision(10).toNumber()}, Alpha: ${currentColor.a}`)
+                                            }
+                                            break;
+                                            case "hsluv": {
+                                                const currentColor = rgbToHSLuv(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor()))
+                                                player.sendMessageB(`Hue: ${currentColor.h.toPrecision(10).toNumber()}, Saturation: ${currentColor.s.toPrecision(10).toNumber()}, Lightness: ${currentColor.l.toPrecision(10).toNumber()}`)
+                                            }
+                                            break;
+                                            case "hsv": {
+                                                const currentColor = rgbToHsv(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor()))
+                                                player.sendMessageB(`Hue: ${currentColor.h.toPrecision(10).toNumber()}, Saturation: ${currentColor.s.toPrecision(10).toNumber()}, Value: ${currentColor.v.toPrecision(10).toNumber()}, Alpha: ${currentColor.a}`)
+                                            }
+                                            break;
+                                            case "hsb": {
+                                                const currentColor = rgbToHsv(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor()))
+                                                player.sendMessageB(`Hue: ${currentColor.h.toPrecision(10).toNumber()}, Saturation: ${currentColor.s.toPrecision(10).toNumber()}, Brightness: ${currentColor.v.toPrecision(10).toNumber()}, Alpha: ${currentColor.a}`)
+                                            }
+                                            break;
+                                            case "hsi": {
+                                                const currentColor = rgbToHsi(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor()))
+                                                player.sendMessageB(`Hue: ${currentColor.h.toPrecision(10).toNumber()}, Saturation: ${currentColor.s.toPrecision(10).toNumber()}, Intensity: ${currentColor.i.toPrecision(10).toNumber()}`)
+                                            }
+                                            break;
+                                            case "hpluv": {
+                                                const currentColor = rgbToHPLuv(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor()))
+                                                player.sendMessageB(`Hue: ${currentColor.h.toPrecision(10).toNumber()}, Perceived Saturation: ${currentColor.p.toPrecision(10).toNumber()}, Lightness: ${currentColor.l.toPrecision(10).toNumber()}`)
+                                            }
+                                            break;
+                                            case "adobergb": {
+                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor())).toAdobeRGB()
+                                                player.sendMessageB(`Red: ${currentColor.ar}, Green: ${currentColor.ag}, Blue: ${currentColor.ab}`)
+                                            }
+                                            break;
+                                            case "cieluv": {
+                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor())).toCIELuv()
+                                                player.sendMessageB(`Lightness: ${currentColor.L}, Chromaticity u: ${currentColor.u}, Chromaticity v: ${currentColor.v}`)
+                                            }
+                                            break;
+                                            case "ciexyy": {
+                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor())).toCIExyY()
+                                                player.sendMessageB(`Chromaticity x: ${currentColor.x}, Chromaticity y: ${currentColor.y}, Luminance: ${currentColor.Y}`)
+                                            }
+                                            break;
+                                            case "rawcolorcorergb": {
+                                                const currentColor = mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor())
+                                                player.sendMessageB(JSONB.stringify(currentColor))
                                             }
                                             break;
                                             default:
@@ -3599,7 +3659,7 @@ ${command.dp}block facing set color ...
                                                     )
                                                 }else{
                                                     player.sendError(
-                                                        `§cSyntax error: Unexpected ${argsc.args[0]}: at "${
+                                                        `§cSyntax error: Unexpected "${argsc.args[0]}": at "${
                                                             switchTestB.slice(switchTestB.indexOf(argsc.args[0])-10, switchTestB.indexOf(argsc.args[0]))
                                                         }>>${argsc.args[0]}<<${
                                                             switchTestB.slice(switchTestB.indexOf(argsc.args[0])+argsc.args[0].length, switchTestB.indexOf(argsc.args[0])+argsc.args[0].length+10)
@@ -3630,7 +3690,7 @@ ${command.dp}block facing set color ...
                                             )
                                         }else{
                                             player.sendError(
-                                                `§cSyntax error: Unexpected ${argsa.args[1]}: at "${
+                                                `§cSyntax error: Unexpected "${argsa.args[1]}": at "${
                                                     switchTestB.slice(switchTestB.indexOf(argsb.args[1])-10, switchTestB.indexOf(argsb.args[1]))
                                                 }>>${argsb.args[1]}<<${
                                                     switchTestB.slice(switchTestB.indexOf(argsb.args[1])+argsb.args[1].length, switchTestB.indexOf(argsb.args[1])+argsb.args[1].length+10)
@@ -3901,7 +3961,7 @@ ${command.dp}block facing set color ...
                                                         const red = rgb.slice(0*rangeScale, 1*rangeScale).includes("~")?currentColor.red:parseInt(rgb.slice(0*rangeScale, 1*rangeScale), 16)/denominator
                                                         const green = rgb.slice(1*rangeScale, 2*rangeScale).includes("~")?currentColor.green:parseInt(rgb.slice(1*rangeScale, 2*rangeScale), 16)/denominator
                                                         const blue = rgb.slice(2*rangeScale, 3*rangeScale).includes("~")?currentColor.blue:parseInt(rgb.slice(2*rangeScale, 3*rangeScale), 16)/denominator
-                                                        block?.block.getComponent("waterContainer").setCustomColor({red, green, blue, alpha: currentColor.alpha})
+                                                        block?.block.getComponent("waterContainer").setCustomColor({red, green, blue, alpha: 1})
                                                     }
                                                     break;
                                                     case "flt":
@@ -3948,7 +4008,7 @@ ${command.dp}block facing set color ...
                                                         const red = (rgba[0].trim()=="~"?currentColor.red:rgba[0]).toNumber()
                                                         const green = (rgba[1].trim()=="~"?currentColor.green:rgba[1]).toNumber()
                                                         const blue = (rgba[2].trim()=="~"?currentColor.blue:rgba[2]).toNumber()
-                                                        block?.block.getComponent("waterContainer").setCustomColor({red, green, blue, alpha: currentColor.alpha})
+                                                        block?.block.getComponent("waterContainer").setCustomColor({red, green, blue, alpha: 1})
                                                     }
                                                     break;
                                                     case "i":
@@ -3996,7 +4056,7 @@ ${command.dp}block facing set color ...
                                                         const red = rgba[0].trim()=="~"?currentColor.red:(rgba[0].toNumber().round()/255)
                                                         const green = rgba[1].trim()=="~"?currentColor.green:(rgba[1].toNumber().round()/255)
                                                         const blue = rgba[2].trim()=="~"?currentColor.blue:(rgba[2].toNumber().round()/255)
-                                                        block?.block.getComponent("waterContainer").setCustomColor({red, green, blue, alpha: currentColor.alpha})
+                                                        block?.block.getComponent("waterContainer").setCustomColor({red, green, blue, alpha: 1})
                                                     }
                                                     break;
                                                     default:
@@ -4009,7 +4069,7 @@ ${command.dp}block facing set color ...
                                                             )
                                                         }else{
                                                             player.sendError(
-                                                                `§cSyntax error: Unexpected ${argsc.args[1]}: at "${
+                                                                `§cSyntax error: Unexpected "${argsc.args[1]}": at "${
                                                                     switchTestB.slice(switchTestB.indexOf(argsc.args[1])-10, switchTestB.indexOf(argsc.args[1]))
                                                                 }>>${argsc.args[1]}<<${
                                                                     switchTestB.slice(switchTestB.indexOf(argsc.args[1])+argsc.args[1].length, switchTestB.indexOf(argsc.args[1])+argsc.args[1].length+10)
@@ -4051,7 +4111,7 @@ ${command.dp}block facing set color ...
                                                     )
                                                 }else{
                                                     player.sendError(
-                                                        `§cSyntax error: Unexpected ${argsc.args[0]}: at "${
+                                                        `§cSyntax error: Unexpected "${argsc.args[0]}": at "${
                                                             switchTestB.slice(switchTestB.indexOf(argsc.args[0])-10, switchTestB.indexOf(argsc.args[0]))
                                                         }>>${argsc.args[0]}<<${
                                                             switchTestB.slice(switchTestB.indexOf(argsc.args[0])+argsc.args[0].length, switchTestB.indexOf(argsc.args[0])+argsc.args[0].length+10)
@@ -4088,7 +4148,7 @@ ${command.dp}block facing set color ...
                                             )
                                         }else{
                                             player.sendError(
-                                                `§cSyntax error: Unexpected ${argsa.args[1]}: at "${
+                                                `§cSyntax error: Unexpected "${argsa.args[1]}": at "${
                                                     switchTestB.slice(switchTestB.indexOf(argsb.args[1])-10, switchTestB.indexOf(argsb.args[1]))
                                                 }>>${argsb.args[1]}<<${
                                                     switchTestB.slice(switchTestB.indexOf(argsb.args[1])+argsb.args[1].length, switchTestB.indexOf(argsb.args[1])+argsb.args[1].length+10)
@@ -4114,7 +4174,7 @@ ${command.dp}block facing set color ...
                                     )
                                 }else{
                                     player.sendError(
-                                        `§cSyntax error: Unexpected ${argsb.args[0]}: at "${
+                                        `§cSyntax error: Unexpected "${argsb.args[0]}": at "${
                                             switchTestB.slice(switchTestB.indexOf(argsb.args[0])-10, switchTestB.indexOf(argsb.args[0]))
                                         }>>${argsb.args[0]}<<${
                                             switchTestB.slice(switchTestB.indexOf(argsb.args[0])+argsb.args[0].length, switchTestB.indexOf(argsb.args[0])+argsb.args[0].length+10)
@@ -4135,7 +4195,7 @@ ${command.dp}block facing set color ...
                             )
                         }else{
                             player.sendError(
-                                `§cSyntax error: Unexpected ${argsa.args[1]}: at "${
+                                `§cSyntax error: Unexpected "${argsa.args[1]}": at "${
                                     switchTestB.slice(switchTestB.indexOf(argsa.args[1])-10, switchTestB.indexOf(argsa.args[1]))
                                 }>>${argsa.args[1]}<<${
                                     switchTestB.slice(switchTestB.indexOf(argsa.args[1])+argsa.args[1].length, switchTestB.indexOf(argsa.args[1])+argsa.args[1].length+10)

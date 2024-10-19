@@ -28,6 +28,7 @@ import * as cmdutils from "./command_utilities";
 import * as utils from "./utilities";
 import * as errors from "./errors";
 import mcMath from "@minecraft/math.js";
+import colorCore from "color-core";
 import { ActionFormData, MessageFormData, uiManager, UIManager } from "@minecraft/server-ui";
 export const utilsmetaimport = import.meta;
 //globalThis.modules={main, coords, cmds, bans, uis, playersave, spawnprot, mcMath}
@@ -651,5 +652,11 @@ export function HueToRGB(p, q, t) {
     if (t < 2 / 3)
         return p + (q - p) * (2 / 3 - t) * 6;
     return p;
+}
+export function mcRGBAToColorCoreRGB(rgba) {
+    return { r: rgba.red * 255, g: rgba.green * 255, b: rgba.blue * 255, a: rgba.alpha };
+}
+export function mcRGBToColorCoreRGB(rgba) {
+    return { r: rgba.red * 255, g: rgba.green * 255, b: rgba.blue * 255 };
 }
 //# sourceMappingURL=utilities.js.map

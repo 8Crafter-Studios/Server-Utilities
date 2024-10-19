@@ -7,3 +7,18 @@ Find/Replace to turn all eventData.sender.sendMessage functions that send an err
 Find/Replace to update minecraft:icon item components to the new 1.21.30 format version:
     Find(RegEx): "minecraft:icon":\s?\{([\s\n]*)"texture":\s?"([^"]*)"([\s\n]*)\}
     Replace: "minecraft:icon": {$1"textures": {$1    "default": "$2",$1    "dyed": "$2"$3    }$3}
+
+
+
+(async()=>{const colorCore = await import("color-core"); console.log(Object.keys(colorCore.default).map(v=>`exports.${v} as ${v}`).join(", "))})()
+
+
+
+to run in the debugger console:
+(async()=>{const colorCore = await import("color-core"); console.log(Object.keys(colorCore.default).map(v=>`export const ${v} = exports.${v};`).join("\n"))})()
+(async()=>{const colorCore = await import("./@minecraft/math"); console.log(Object.keys(colorCore.default).map(v=>`export const ${v} = exports.${v};`).join("\n"))})()
+
+
+
+y=x*(((600-(8*x))/9)**2)
+y=x*(((600-(8*x))/9)^2)
