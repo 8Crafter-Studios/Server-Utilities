@@ -6,7 +6,7 @@ import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications, extraFeaturesSettings, worldBorderSettings } from "./ui.js";
 import { listoftransformrecipes } from "transformrecipes";
-import { arrayify, clamp24HoursTo12Hours, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, twoWayModulo, arrayModifier, arrayModifierOld, RGBToHSL } from "./utilities";
+import { arrayify, clamp24HoursTo12Hours, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, twoWayModulo, arrayModifier, arrayModifierOld, RGBToHSL, HSLToRGB } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
 import { clearContainer, cmdutilsmetaimport, containerToContainerSlotArray, containerToItemStackArray, entityToContainerSlotArray, fillContainer, fillmodetypeenum, getPlayerHeldItemSlot, getPlayerselectedSlotIndex, getSlotFromParsedSlot, IllegalItemTypes, inventorySwap, inventorySwapB, inventorySwapC, itemJSONPropertiesEval, itemJSONPropertiesEvalCT, JunkItemTypes, OpItemTypes, parseSlot, rangeToIntArray, targetSelector, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListD, targetSelectorAllListE, targetSelectorB, EquipmentSlots, OtherEquipmentSlots, blockToContainerSlotArray, blockToContainerSlotListObject, blockToItemStackArray, componentTypeEnum, durabilityComponentTypeEnum, enchantableComponentTypeEnum, entityToContainerSlotArrayB, entityToContainerSlotListObject, entityToItemStackArray, equippableToContainerSlotArray, equippableToItemStackArray, getEntityHeldItemSlot, getEquipment, getInventory, propertyTypeEnum } from "./command_utilities";
 import * as GameTest from "@minecraft/server-gametest";
@@ -4001,7 +4001,17 @@ ${command.dp}block facing get filllevel
 §c${command.dp}block facing get states (COMING SOON!)§r
 §c${command.dp}block facing get tags (COMING SOON!)§r
 §c${command.dp}block facing get component <componentId: {waterContainer}|{lavaContainer}|{snowContainer}|{potionContainer}> (COMING SOON!)§r
-${command.dp}block facing`);
+${command.dp}block facing set color ...
+    ... rgba hex <hexRGBAColor: RRGGBBAA|RGBA>
+    ... rgba frac <red: float[min=0.0,max=1.0]> <green: float[min=0.0,max=1.0]> <blue: float[min=0.0,max=1.0]> <alpha: float[min=0.0,max=1.0]>
+    ... rgba dec <red: int[min=0,max=255]> <green: int[min=0,max=255]> <blue: int[min=0,max=255]> <alpha: int[min=0,max=255]>
+    ... rgba decr <red: float[min=0.0,max=255.0]> <green: float[min=0.0,max=255.0]> <blue: float[min=0.0,max=255.0]> <alpha: float[min=0.0,max=255.0]>
+    ... rgb hex <hexRGBAColor: RRGGBB|RGB>
+    ... rgb frac <red: float[min=0.0,max=1.0]> <green: float[min=0.0,max=1.0]> <blue: float[min=0.0,max=1.0]>
+    ... rgb dec <red: int[min=0,max=255]> <green: int[min=0,max=255]> <blue: int[min=0,max=255]>
+    ... rgb decr <red: float[min=0.0,max=255.0]> <green: float[min=0.0,max=255.0]> <blue: float[min=0.0,max=255.0]>
+    ... hsl <hue: float[min=0.0,max=360.0]> <saturation: float[min=0.0,max=100.0]> <lightness: float[min=0.0,max=100.0]>
+§c${command.dp}block facing debug (COMING SOON!)§r`);
                     return;
                 }
                 system.run(() => {
@@ -4185,9 +4195,11 @@ ${command.dp}block facing`);
                                                                             const rgba = evaluateParameters(argsc.extra, ["presetText"]).args[0];
                                                                             if (!!!rgba) {
                                                                                 player.sendError(`§cSyntax error: Unexpected "": at "${switchTestB.slice(-10)}>><<"`, true);
+                                                                                return;
                                                                             }
                                                                             if (![4, 8].includes(rgba.length)) {
                                                                                 player.sendError(`§cSyntax error: ${rgba} is not a valid RGBA hex code. ${(rgba.length == 3) || (rgba.length == 6) ? `If you do not want to specify the alpha channel use RGB mode instead, replace "${switchTestB.slice(switchTestB.toLowerCase().indexOf("rgba"), switchTestB.toLowerCase().indexOf("rgba") + 4)}" at "${switchTestB.slice(switchTestB.toLowerCase().indexOf("rgba") - 10, switchTestB.toLowerCase().indexOf("rgba"))}>>${switchTestB.slice(switchTestB.toLowerCase().indexOf("rgba"), switchTestB.toLowerCase().indexOf("rgba") + 4)}<<${switchTestB.slice(switchTestB.toLowerCase().indexOf("rgba") + 4, switchTestB.toLowerCase().indexOf("rgba") + 14)}" with rgb. ` : ""}A valid RGBA hex code should be formatted either as "RGBA" or "RRGGBBAA". ex. 9AEF or 97A2EBFA.`, true);
+                                                                                return;
                                                                             }
                                                                             const denominator = rgba.length == 4 ? 15 : 255;
                                                                             const rangeScale = rgba.length == 4 ? 1 : 2;
@@ -4208,6 +4220,7 @@ ${command.dp}block facing`);
                                                                             const rgba = evaluateParameters(argsc.extra, ["presetText", "presetText", "presetText", "presetText"]).args;
                                                                             if (rgba.length < 4) {
                                                                                 player.sendError(`§cSyntax error: Unexpected "": at "${switchTestB.slice(-10)}>><<"`, true);
+                                                                                return;
                                                                             } /*
                                                                             if(![4, 8].includes(rgba.length)){
                                                                                 player.sendError(
@@ -4253,6 +4266,7 @@ ${command.dp}block facing`);
                                                                             const rgba = evaluateParameters(argsc.extra, ["presetText", "presetText", "presetText", "presetText"]).args;
                                                                             if (rgba.length < 4) {
                                                                                 player.sendError(`§cSyntax error: Unexpected "": at "${switchTestB.slice(-10)}>><<"`, true);
+                                                                                return;
                                                                             } /*
                                                                             if(![4, 8].includes(rgba.length)){
                                                                                 player.sendError(
@@ -4285,6 +4299,52 @@ ${command.dp}block facing`);
                                                                             const green = rgba[1].trim() == "~" ? currentColor.green : (rgba[1].toNumber().round() / 255);
                                                                             const blue = rgba[2].trim() == "~" ? currentColor.blue : (rgba[2].toNumber().round() / 255);
                                                                             const alpha = rgba[3].trim() == "~" ? currentColor.alpha : (rgba[3].toNumber().round() / 255);
+                                                                            block?.block.getComponent("waterContainer").setCustomColor({ red, green, blue, alpha });
+                                                                        }
+                                                                        break;
+                                                                    case "ir":
+                                                                    case "intr":
+                                                                    case "integerr":
+                                                                    case "dr":
+                                                                    case "decr":
+                                                                    case "decimalr":
+                                                                        {
+                                                                            const rgba = evaluateParameters(argsc.extra, ["presetText", "presetText", "presetText", "presetText"]).args;
+                                                                            if (rgba.length < 4) {
+                                                                                player.sendError(`§cSyntax error: Unexpected "": at "${switchTestB.slice(-10)}>><<"`, true);
+                                                                                return;
+                                                                            } /*
+                                                                            if(![4, 8].includes(rgba.length)){
+                                                                                player.sendError(
+                                                                                    `§cSyntax error: ${rgba} is not a valid RGBA color code. ${(rgba.length==3)||(rgba.length==6)?`If you do not want to specify the alpha channel use RGB mode instead, replace "${
+                                                                                        switchTestB.slice(
+                                                                                            switchTestB.toLowerCase().indexOf("rgba"),
+                                                                                            switchTestB.toLowerCase().indexOf("rgba")+4
+                                                                                        )
+                                                                                    }" at "${
+                                                                                        switchTestB.slice(
+                                                                                            switchTestB.toLowerCase().indexOf("rgba")-10,
+                                                                                            switchTestB.toLowerCase().indexOf("rgba")
+                                                                                        )
+                                                                                    }>>${
+                                                                                        switchTestB.slice(
+                                                                                            switchTestB.toLowerCase().indexOf("rgba"),
+                                                                                            switchTestB.toLowerCase().indexOf("rgba")+4
+                                                                                        )
+                                                                                    }<<${
+                                                                                        switchTestB.slice(
+                                                                                            switchTestB.toLowerCase().indexOf("rgba")+4,
+                                                                                            switchTestB.toLowerCase().indexOf("rgba")+14
+                                                                                        )
+                                                                                    }" with rgb. `:""}A valid RGBA hex code should be formatted either as "RGBA" or "RRGGBBAA". ex. 9AEF or 97A2EBFA.`,
+                                                                                    true
+                                                                                )
+                                                                            }*/
+                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const red = rgba[0].trim() == "~" ? currentColor.red : (rgba[0].toNumber() / 255);
+                                                                            const green = rgba[1].trim() == "~" ? currentColor.green : (rgba[1].toNumber() / 255);
+                                                                            const blue = rgba[2].trim() == "~" ? currentColor.blue : (rgba[2].toNumber() / 255);
+                                                                            const alpha = rgba[3].trim() == "~" ? currentColor.alpha : (rgba[3].toNumber() / 255);
                                                                             block?.block.getComponent("waterContainer").setCustomColor({ red, green, blue, alpha });
                                                                         }
                                                                         break;
@@ -4410,6 +4470,19 @@ ${command.dp}block facing`);
                                                                             player.sendError(`§cSyntax error: Unexpected ${argsc.args[1]}: at "${switchTestB.slice(switchTestB.indexOf(argsc.args[1]) - 10, switchTestB.indexOf(argsc.args[1]))}>>${argsc.args[1]}<<${switchTestB.slice(switchTestB.indexOf(argsc.args[1]) + argsc.args[1].length, switchTestB.indexOf(argsc.args[1]) + argsc.args[1].length + 10)}"`, true);
                                                                         }
                                                                 }
+                                                            }
+                                                            break;
+                                                        case "hsl":
+                                                            {
+                                                                const hsl = evaluateParameters(argsc.extra, ["number", "number", "number"]).args;
+                                                                if (hsl.length < 3) {
+                                                                    player.sendError(`§cSyntax error: Unexpected "": at "${switchTestB.slice(-10)}>><<"`, true);
+                                                                    return;
+                                                                }
+                                                                const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                const hslB = HSLToRGB(...hsl);
+                                                                const [red, green, blue] = hslB;
+                                                                block?.block.getComponent("waterContainer").setCustomColor({ red: red / 255, green: green / 255, blue: blue / 255, alpha: currentColor.alpha });
                                                             }
                                                             break;
                                                         /**
