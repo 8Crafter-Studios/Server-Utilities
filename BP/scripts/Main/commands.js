@@ -3404,16 +3404,40 @@ ${command.dp}item slot <slot: int> enchantment <mode: list|clear>`);
                                     case "item debug":
                                         {
                                             const item = player.getComponent("inventory").container.getItem(player.selectedSlotIndex);
-                                            player.sendMessageB(`typeId: ${item.typeId}
-amount: ${item.amount}
-isStackable: ${item.isStackable}
-maxAmount: ${item.maxAmount}
-tags: ${JSONB.stringify(item.getTags())}
-components: ${JSONB.stringify(item.getComponents().map(c => c.typeId))}
-nameTag: ${item.nameTag}
-lore: ${JSONB.stringify(item.getLore())}
-canDestroy: ${JSONB.stringify(item.getCanDestroy())}
-canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
+                                            player.sendMessageB(`§rtypeId: ${item.typeId}
+§ramount: ${item.amount}
+§risStackable: ${item.isStackable.toFormattedString()}
+§rmaxAmount: ${item.maxAmount}
+§rtags: ${JSONB.stringify(item.getTags())}
+§rcomponents: ${JSONB.stringify(item.getComponents().map(c => c.typeId))}
+§rnameTag: ${item.nameTag}
+§rlore: ${JSONB.stringify(item.getLore())}
+§rkeepOnDeath: ${item.keepOnDeath.toFormattedString()}
+§rlockMode: ${item.lockMode}
+§rcanDestroy: ${JSONB.stringify(item.getCanDestroy())}
+§rcanPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}
+§rdynamicPropertyTotalByteCount: ${item.getDynamicPropertyTotalByteCount()}
+§rdynamicPropertyIds: ${JSONB.stringify(item.getDynamicPropertyIds())}${item.hasComponent("durability") ? (d => `
+§rdurability: ${d.maxDurability - d.damage}/${d.maxDurability}
+§rdamageChance: {
+§r    Unbreaking 0: ${d.getDamageChance(0)},
+§r    Unbreaking 1: ${d.getDamageChance(1)},
+§r    Unbreaking 2: ${d.getDamageChance(2)},
+§r    Unbreaking 3: ${d.getDamageChance(3)}
+§r}
+§rdamageChanceRange: ${JSONB.stringify(d.getDamageChanceRange())}`)(item.getComponent("durability")) : ""}${item.hasComponent("enchantable") ? (d => `
+§renchantmentSlots: ${JSONB.stringify(d.slots)}
+§renchantments: ${JSONB.stringify(d.getEnchantments())}`)(item.getComponent("enchantable")) : ""}${item.hasComponent("cooldown") ? (d => `
+§rcooldownCategory: ${d.cooldownCategory}
+§rcooldownTicks: ${d.cooldownTicks}
+§rcooldownTicksRemaining: ${d.getCooldownTicksRemaining(player)}`)(item.getComponent("cooldown")) : ""}${item.hasComponent("food") ? (d => `
+§rcanAlwaysEat: ${d.canAlwaysEat.toFormattedString()}
+§rnutrition: ${d.nutrition}
+§rsaturationModifier: ${d.saturationModifier}
+§rusingConvertsTo: ${d.usingConvertsTo}`)(item.getComponent("food")) : ""}${item.hasComponent("potion") ? (d => `
+potionEffectType: ${d.potionEffectType}
+potionLiquidType: ${d.potionLiquidType}
+potionModifierType: ${d.potionModifierType}`)(item.getComponent("potion")) : ""}`);
                                         }
                                         break;
                                     case "item property":
@@ -3530,9 +3554,13 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                         break;
                                     case "item slot":
                                         let argsb = evaluateParameters(argsa.extra.trim(), ["presetText", "presetText"]);
-                                        let slot = getSlotFromParsedSlot(parseSlot(String(((argsb.args[0] ?? "") == "" || (argsb.args[0] ?? "") == "~") ? String(player.selectedSlotIndex) : String(argsb.args[0] ?? "")), player.selectedSlotIndex), { container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlotIndex: player?.selectedSlotIndex });
+                                        let slota = getSlotFromParsedSlot(parseSlot(String(((argsb.args[0] ?? "") == "" || (argsb.args[0] ?? "") == "~") ? String(player.selectedSlotIndex) : String(argsb.args[0] ?? "")), player.selectedSlotIndex), { container: player?.getComponent("inventory")?.container, equipment: player?.getComponent("equippable"), selectedSlotIndex: player?.selectedSlotIndex });
+                                        let slot = slota instanceof PlayerCursorInventoryComponent ? slota.item : slota;
                                         switch (argsb.args[1] ?? "") {
                                             case "lore":
+                                                if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                    throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                }
                                                 let lore = JSON.parse(command.split(" ").slice(4).join(" "));
                                                 let errs;
                                                 errs = [];
@@ -3551,6 +3579,9 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                 //system.run(()=>{try{player.getComponent("inventory").container.getSlot(Number(command.split(" ")[2])).setLore(lore)}catch(e){console.error(e, e.stack); player.sendMessageB("§c" + e + e.stack)}})
                                                 break;
                                             case "lorene":
+                                                if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                    throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                }
                                                 let lorene = JSON.parse(command.split(" ").slice(4).join(" "));
                                                 system.run(() => { try {
                                                     slot.setLore(lorene);
@@ -3561,6 +3592,9 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                 } });
                                                 break;
                                             case "canpalceon":
+                                                if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                    throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                }
                                                 let canpalceon = JSONParse(command.split(" ").slice(4).join(" "));
                                                 system.run(() => { try {
                                                     slot.setCanPlaceOn(canpalceon);
@@ -3571,6 +3605,9 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                 } });
                                                 break;
                                             case "candestroy":
+                                                if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                    throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                }
                                                 let candestroy = JSONParse(command.split(" ").slice(4).join(" "));
                                                 system.run(() => { try {
                                                     slot.setCanDestroy(candestroy);
@@ -3581,6 +3618,9 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                 } });
                                                 break;
                                             case "keepondeath":
+                                                if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                    throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                }
                                                 let keepondeath = argsb.extra.trim().toLowerCase();
                                                 system.run(() => { try {
                                                     slot.keepOnDeath = Boolean(JSON.parse(keepondeath));
@@ -3591,6 +3631,9 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                 } });
                                                 break;
                                             case "lockmode":
+                                                if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                    throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                }
                                                 let lockmode = argsb.extra.trim().toLowerCase();
                                                 system.run(() => { try {
                                                     slot.lockMode = lockmode;
@@ -3601,6 +3644,9 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                 } });
                                                 break;
                                             case "name":
+                                                if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                    throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                }
                                                 let name = command.split(" ").slice(4).join(" ").escapeCharactersB(true);
                                                 if (name.e != undefined) {
                                                     name.e.forEach((e) => { player.sendMessageB(String("§c" + e + e.stack)); });
@@ -3616,7 +3662,7 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                 break;
                                             case "remove":
                                                 system.run(() => { try {
-                                                    slot.setItem();
+                                                    slota instanceof PlayerCursorInventoryComponent ? slota.clear() : slot.setItem();
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
@@ -3624,6 +3670,9 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                 } });
                                                 break;
                                             case "new":
+                                                if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                    throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                }
                                                 system.run(() => { let argsc = evaluateParameters(argsb.extra.trim(), ["string", "number"]).args; try {
                                                     slot.setItem(new ItemStack(String((argsc[0] ?? "") == "" ? "air" : argsc[0]), Number((argsc[1] ?? "") == "" ? 1 : argsc[1])));
                                                 }
@@ -3667,15 +3716,57 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                     player.sendMessageB("§c" + e + e.stack);
                                                 } });
                                                 break;
-                                            case "item listtags":
+                                            case "listtags":
                                                 player.sendMessageB('"' + slot.getTags().join("§r,") + '"');
                                                 break;
-                                            case "item gettags":
+                                            case "gettags":
                                                 player.sendMessageB('"' + slot.getTags().join("§r,") + '"');
+                                                break;
+                                            case "debug":
+                                                {
+                                                    const item = slot instanceof ItemStack ? slot : slot.getItem();
+                                                    player.sendMessageB(`§rtypeId: ${item.typeId}
+§ramount: ${item.amount}
+§risStackable: ${item.isStackable.toFormattedString()}
+§rmaxAmount: ${item.maxAmount}
+§rtags: ${JSONB.stringify(item.getTags())}
+§rcomponents: ${JSONB.stringify(item.getComponents().map(c => c.typeId))}
+§rnameTag: ${item.nameTag}
+§rlore: ${JSONB.stringify(item.getLore())}
+§rkeepOnDeath: ${item.keepOnDeath.toFormattedString()}
+§rlockMode: ${item.lockMode}
+§rcanDestroy: ${JSONB.stringify(item.getCanDestroy())}
+§rcanPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}
+§rdynamicPropertyTotalByteCount: ${item.getDynamicPropertyTotalByteCount()}
+§rdynamicPropertyIds: ${JSONB.stringify(item.getDynamicPropertyIds())}${item.hasComponent("durability") ? (d => `
+§rdurability: ${d.maxDurability - d.damage}/${d.maxDurability}
+§rdamageChance: {
+§r    Unbreaking 0: ${d.getDamageChance(0)},
+§r    Unbreaking 1: ${d.getDamageChance(1)},
+§r    Unbreaking 2: ${d.getDamageChance(2)},
+§r    Unbreaking 3: ${d.getDamageChance(3)}
+§r}
+§rdamageChanceRange: ${JSONB.stringify(d.getDamageChanceRange())}`)(item.getComponent("durability")) : ""}${item.hasComponent("enchantable") ? (d => `
+§renchantmentSlots: ${JSONB.stringify(d.slots)}
+§renchantments: ${JSONB.stringify(d.getEnchantments())}`)(item.getComponent("enchantable")) : ""}${item.hasComponent("cooldown") ? (d => `
+§rcooldownCategory: ${d.cooldownCategory}
+§rcooldownTicks: ${d.cooldownTicks}
+§rcooldownTicksRemaining: ${d.getCooldownTicksRemaining(player)}`)(item.getComponent("cooldown")) : ""}${item.hasComponent("food") ? (d => `
+§rcanAlwaysEat: ${d.canAlwaysEat.toFormattedString()}
+§rnutrition: ${d.nutrition}
+§rsaturationModifier: ${d.saturationModifier}
+§rusingConvertsTo: ${d.usingConvertsTo}`)(item.getComponent("food")) : ""}${item.hasComponent("potion") ? (d => `
+potionEffectType: ${d.potionEffectType}
+potionLiquidType: ${d.potionLiquidType}
+potionModifierType: ${d.potionModifierType}`)(item.getComponent("potion")) : ""}`);
+                                                }
                                                 break;
                                             case "enchantment":
                                                 switch (command.split(" ")[4]) {
                                                     case "add":
+                                                        if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                            throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                        }
                                                         let enchantment = JSON.parse(command.split(" ").slice(5).join(" "));
                                                         let itemd = slot.getItem().clone();
                                                         system.run(() => {
@@ -3690,6 +3781,9 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                         });
                                                         break;
                                                     case "addlist":
+                                                        if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                            throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                        }
                                                         let enchantmentlist = JSON.parse(command.split(" ").slice(5).join(" "));
                                                         let itema = slot.getItem().clone();
                                                         system.run(() => {
@@ -3704,6 +3798,9 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                         });
                                                         break;
                                                     case "remove":
+                                                        if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                            throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                        }
                                                         let itemb = slot.getItem().clone();
                                                         system.run(() => {
                                                             try {
@@ -3717,15 +3814,21 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                         });
                                                         break;
                                                     case "set":
+                                                        if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                            throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                        }
                                                         eventData.sender.sendMessage("§l§cComing Soon!§r§f");
                                                         break;
                                                     case "list":
-                                                        eventData.sender.sendMessage(JSON.stringify(slot.getItem().getComponent("enchantable").getEnchantments()));
+                                                        eventData.sender.sendMessage(JSON.stringify((slot instanceof ItemStack ? slot : slot.getItem()).getComponent("enchantable").getEnchantments()));
                                                         break;
                                                     case "get":
-                                                        eventData.sender.sendMessage(JSON.stringify(slot.getItem().getComponent("enchantable").getEnchantment(command.split(" ")[5])));
+                                                        eventData.sender.sendMessage(JSON.stringify((slot instanceof ItemStack ? slot : slot.getItem()).getComponent("enchantable").getEnchantment(command.split(" ")[5])));
                                                         break;
                                                     case "clear":
+                                                        if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                            throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                        }
                                                         const itemc = slot.getItem().clone();
                                                         system.run(() => {
                                                             try {
@@ -3747,6 +3850,9 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                 }
                                                 break;
                                             case "json":
+                                                if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                    throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                }
                                                 let json = evaluateParameters(argsb.extra.trim(), ["json"]).args[0];
                                                 system.run(() => { try {
                                                     slot.setItem(itemJSONPropertiesEval(json, slot, player));
@@ -3757,6 +3863,9 @@ canPlaceOn: ${JSONB.stringify(item.getCanPlaceOn())}`);
                                                 } });
                                                 break;
                                             case "jsonb":
+                                                if (slota instanceof PlayerCursorInventoryComponent || slot instanceof ItemStack) {
+                                                    throw new Error("You cannot modify the item inside of a player's cursor inventory slot.");
+                                                }
                                                 let jsonb = evaluateParameters(argsb.extra.trim(), ["json"]).args[0];
                                                 system.run(() => { try {
                                                     itemJSONPropertiesEvalCT(jsonb, slot, player);
@@ -9842,7 +9951,12 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         const fromslot = getSlotFromParsedSlot(parseSlot(args[1] ?? "~"), { container: from?.inventory?.container, equipment: from?.equippable, selectedSlotIndex: from?.selectedSlotIndex });
                         const toslot = getSlotFromParsedSlot(parseSlot(args[2] ?? "~"), { container: to?.inventory?.container, equipment: to?.equippable, selectedSlotIndex: to?.selectedSlotIndex });
                         system.run(() => {
-                            toslot.setItem(fromslot.getItem());
+                            if (toslot instanceof PlayerCursorInventoryComponent) {
+                                player.sendError("§cYou cannot modify the item inside of a player's cursor inventory slot.", true);
+                                return;
+                            }
+                            ;
+                            toslot.setItem(fromslot instanceof PlayerCursorInventoryComponent ? fromslot.item : fromslot.getItem());
                             player.sendMessageB(`Successfully copied item from slot ${args[1]} of ${from.name}'s inventory to slot ${args[2]} of ${to.name}'s inventory. `);
                         });
                     }
@@ -9871,6 +9985,11 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         }
                         let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), { container: target?.getComponent("inventory")?.container, equipment: target?.getComponent("equippable"), selectedSlotIndex: target?.selectedSlotIndex });
                         system.run(() => {
+                            if (slot instanceof PlayerCursorInventoryComponent) {
+                                player.sendError("§cYou cannot modify the item inside of a player's cursor inventory slot.", true);
+                                return;
+                            }
+                            ;
                             if (String(args[1]).match(/^\d+$/)) {
                                 target.getComponent("inventory").container.setItem(Number(args[1]), player.getComponent("inventory").container.getItem(player.selectedSlotIndex));
                             }
@@ -9896,7 +10015,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             player.getComponent("inventory").container.addItem(player.getComponent("inventory").container.getItem(Number(args[1])));
                         }
                         else {
-                            player.getComponent("inventory").container.addItem(slot.getItem());
+                            player.getComponent("inventory").container.addItem(slot instanceof PlayerCursorInventoryComponent ? slot.item : slot.getItem());
                         }
                         player.sendMessageB(`Successfully duped item in slot ${String(args[1])}. `);
                     }); /*
@@ -10040,9 +10159,10 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 target.getComponent("inventory").container.transferItem(Number(args[1]), player.getComponent("inventory").container);
                             }
                             else {
-                                player.getComponent("inventory").container.addItem(slot.getItem());
-                                slot.setItem();
+                                player.getComponent("inventory").container.addItem(slot instanceof PlayerCursorInventoryComponent ? slot.item : slot.getItem());
+                                (slot instanceof PlayerCursorInventoryComponent ? slot.clear : slot.setItem)();
                             }
+                            ;
                             player.sendMessageB(`Successfully took item from ${args[2]}'s inventory. `);
                         });
                     }
