@@ -63,7 +63,25 @@ export const Decimal = (() => {
     // Whether to use cryptographically-secure random number generation, if available.
     crypto: false
     // true/false
-  };
+  };	
+  /**
+  * Calculates the value of π with a given precision using the series: 𝜋 = 4 * (1 - 1/3 + 1/5 - 1/7 + 1/9 - ...).
+  *
+  * @param {number} precision - The number of terms to include in the series.
+  * @returns {number} The calculated value of π.
+  */
+  function calculatePi(precision) {
+    let pi = 0;
+    let sign = 1;
+  
+    for (let i = 0; i < precision; i++) {
+      let term = 1 / (2 * i + 1);
+      pi += sign * term;
+      sign *= -1;
+    }
+  
+    return 4 * pi;
+  }
   var inexact;
   var quadrant;
   var external = true;
