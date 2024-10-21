@@ -1,5 +1,6 @@
 import { system, Entity, type RawMessage, world, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, Player, type Vector3, type VectorXZ, type Vector2, type VectorYZ, Dimension } from "@minecraft/server";
 import { ActionFormData, MessageFormData, ModalFormData, type ActionFormResponse, type MessageFormResponse, type ModalFormResponse } from "@minecraft/server-ui";
+import Decimal from "decimal.js";
 import { MoneySystem } from "ExtraFeatures/money";
 import type { executeCommandPlayerW } from "Main/commands";
 import type { RotationLocation } from "Main/coordinates";
@@ -247,43 +248,6 @@ declare global {
         stringify(): string
     }
     namespace globalThis {
-        /**
-         * @remarks
-         * Runs a specified function at the next available future time.
-         * This is frequently used to implement delayed behaviors and
-         * game loops. When run within the context of an event handler,
-         * this will generally run the code at the end of the same tick
-         * where the event occurred. When run in other code (a
-         * system.run callout), this will run the function in the next
-         * tick. Note, however, that depending on load on the system,
-         * running in the same or next tick is not guaranteed.
-         *
-         * @param callback
-         * Function callback to run at the next game tick.
-         * @returns
-         * An opaque identifier that can be used with the `clearRun`
-         * function to cancel the execution of this run.
-         * @example trapTick.ts
-         * ```typescript
-         * import { system, world } from '@minecraft/server';
-         *
-         * function printEveryMinute() {
-         *     try {
-         *         // Minecraft runs at 20 ticks per second.
-         *         if (system.currentTick % 1200 === 0) {
-         *             world.sendMessage('Another minute passes...');
-         *         }
-         *     } catch (e) {
-         *         console.warn('Error: ' + e);
-         *     }
-         *
-         *     system.run(printEveryMinute);
-         * }
-         *
-         * printEveryMinute();
-         * ```
-         */
-        function srun(callback: () => void): number
         var beforeInitializeTick: number;
         var initializeTick: number;
         var beforeScriptStartTick: number;
@@ -291,7 +255,6 @@ declare global {
         class InternalError extends Error{}
         function tfsa(sdsa284f83kd_38pqnv_38_f_0_vmewd_19mvndifekod_f8ufv4m3ddm1c0nvh289cmfue8hd9mjf3: unknown): unknown
         var tempVariables: {[key: PropertyKey]: any}
-        var gt: typeof globalThis
         function cullNull<T extends any[]>(array: T): any[]
         function cullUndefined<T extends any[]>(array: T): any[]
         function cullEmpty<T extends any[]>(array: T): any[]
@@ -348,6 +311,63 @@ declare global {
         static get the_end(): Dimension&{typeId: "minecraft:the_end"};
         static get players(): {[name: string]: Player}
         static get stack(): Error["stack"]
+        static get Decimal(): Decimal
+        /**
+         * @see {@link modules.colorCore.Color}
+         */
+        static get Color(): typeof globalThis.modules.colorCore.Color
+        /**
+         * @see {@link modules.colorCore}
+         */
+        static get colorCore(): typeof globalThis.modules.colorCore
+        /**
+         * @see {@link globalThis}
+         */
+        static get gt(): typeof globalThis
+        /**
+         * This is an alias of {@link system.run}.
+         * @see {@link modules.main.srun}
+         * @remarks
+         * Runs a specified function at the next available future time.
+         * This is frequently used to implement delayed behaviors and
+         * game loops. When run within the context of an event handler,
+         * this will generally run the code at the end of the same tick
+         * where the event occurred. When run in other code (a
+         * system.run callout), this will run the function in the next
+         * tick. Note, however, that depending on load on the system,
+         * running in the same or next tick is not guaranteed.
+         *
+         * @param callback
+         * Function callback to run at the next game tick.
+         * @returns
+         * An opaque identifier that can be used with the `clearRun`
+         * function to cancel the execution of this run.
+         * @example trapTick.ts
+         * ```typescript
+         * import { system, world } from '@minecraft/server';
+         *
+         * function printEveryMinute() {
+         *     try {
+         *         // Minecraft runs at 20 ticks per second.
+         *         if (system.currentTick % 1200 === 0) {
+         *             world.sendMessage('Another minute passes...');
+         *         }
+         *     } catch (e) {
+         *         console.warn('Error: ' + e);
+         *     }
+         *
+         *     system.run(printEveryMinute);
+         * }
+         *
+         * printEveryMinute();
+         * ```
+         */
+        static get srun(): typeof modules.main.srun
+        /**
+         * A class containing the configuration information for the add-on. 
+         * @see {@link modules.main.config}
+         */
+        static get config(): typeof modules.main.config
     }
 };
 declare module '@minecraft/server' {

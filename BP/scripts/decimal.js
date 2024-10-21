@@ -82,6 +82,24 @@ export const Decimal = (() => {
   
     return 4 * pi;
   }
+  /**
+  * Calculates the value of π with a given precision using the series: 𝜋 = 4 * (1 - 1/3 + 1/5 - 1/7 + 1/9 - ...).
+  *
+  * @param {number} precision - The number of terms to include in the series.
+  * @returns {number} The calculated value of π.
+  */
+  function calculatePiB(precision) {
+    let pi = Decimal.clone({precision})(0);
+    let sign = Decimal.clone({precision})(1);
+  
+    for (let i = 0n; i < precision; i++) {
+      let term = Decimal.clone({precision})(1).div(Decimal.clone({precision})(2).times(String(i)).add(1));
+      pi=pi.add(sign.times(term));
+      sign=sign.times(-1);
+    }
+  
+    return pi.times(4);
+  }
   var inexact;
   var quadrant;
   var external = true;
@@ -2195,6 +2213,26 @@ export const Decimal = (() => {
     Decimal2.tan = tan;
     Decimal2.tanh = tanh;
     Decimal2.trunc = trunc;
+    Object.defineProperties(Decimal2, {
+      PI: {
+        value: PI,
+        writable: false,
+        enumerable: true,
+        configurable: false
+      },
+      PI_PRECISION: {
+        value: PI_PRECISION,
+        writable: false,
+        enumerable: true,
+        configurable: false
+      },
+      LN10: {
+        value: LN10,
+        writable: false,
+        enumerable: true,
+        configurable: false
+      }
+    });
     if (obj === void 0)
       obj = {};
     if (obj) {

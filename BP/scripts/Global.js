@@ -1,5 +1,6 @@
 import { system, Entity, world, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, Player, Dimension } from "@minecraft/server";
 import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
+import Decimal from "decimal.js";
 import { MoneySystem } from "ExtraFeatures/money";
 ;
 Object.defineProperty(globalThis, 'stack', { get: function stack() { return new Error().stack; } });
