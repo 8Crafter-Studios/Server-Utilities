@@ -2,14 +2,26 @@
 	"resource_pack_name": "andexdb",
 	"texture_name": "atlas.items",
 	"texture_data": {
-		"giant_stick": {
-			"textures": [ "textures/items/giant_stick.png" ]
-		},
 		"blue_brush": {
 			"textures": [ "textures/items/blue_brush.png" ]
 		},
+		"blue_brush_dyed": {
+			"textures": [ "textures/items/blue_brush_dyed.tga" ]
+		},
+		"orange_brush": {
+			"textures": [ "textures/items/orange_brush.png" ]
+		},
+		"orange_brush_dyed": {
+			"textures": [ "textures/items/orange_brush_dyed.tga" ]
+		},
 		"wide_brush": {
 			"textures": [ "textures/items/wide_brush.png" ]
+		},
+		"wide_brush_dyed": {
+			"textures": [ "textures/items/wide_brush_dyed.tga" ]
+		},
+		"stick_dyed": {
+			"textures": [ "textures/items/stick_dyed.tga" ]
 		},
 		"invisible": {
 			"textures": [ "textures/blocks/friction_block.png" ]

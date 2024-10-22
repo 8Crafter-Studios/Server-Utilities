@@ -46,7 +46,7 @@
 				"movement_modifier": 0,
 				"use_duration": 9999
 			}, 
-			"minecraft:damage": -1, 
+			"minecraft:damage": 0, 
 			"minecraft:allow_off_hand": true,
 			"minecraft:enchantable": {
 				"slot": "all", // Can be any of the enchant slot listed below

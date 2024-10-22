@@ -570,7 +570,7 @@
     "controls": [
       {
         "paragraph_1@how_to_play_common.paragraph": {
-          "$text": "§cTHIS VERSION OF THIS ADD-ON WILL ONLY WORK FOR MINECRAFT §a1.21.3x §c(ex. §a1.21.30§c or §a1.21.31§c). \nIf you are on a different version of minecraft, please update this pack to the correct version for the version of Minecraft that you are playing on. \n§eThis add-on breaks every medium-sized update (ex. 1.21.0, 1.21.20, 1.21.30, or 1.21.40) and must be updated whenever that happens. \n§bYour data will be preserved when updating the pack to a newer version. "
+          "$text": "§cTHIS VERSION OF THIS ADD-ON WILL ONLY WORK FOR MINECRAFT §a1.21.4x §c(ex. §a1.21.40§c or §a1.21.41§c). \nIf you are on a different version of minecraft, please update this pack to the correct version for the version of Minecraft that you are playing on. \n§eThis add-on breaks every medium-sized update (ex. 1.21.0, 1.21.20, 1.21.30, or 1.21.40) and must be updated whenever that happens. \n§bYour data will be preserved when updating the pack to a newer version. "
         }
       },
       { "padding_1@how_to_play_common.padding": {} },
@@ -2001,21 +2001,61 @@
       },
       {
           "header_32@how_to_play_common.header": {
-              "$text": "{<string>}"
+              "$text": "RGBA"
           }
       },
       {
           "paragraph_43@how_to_play_common.paragraph": {
-              "$text": "This parameter type means that the value you type in for it is the exact text that is inside of the {}. For example if the parameter type is {testabcd} then for the parameter you would type in testabcd. "
+              "$text": "A 4-character RGBA hexadecimal color code. ex. F927"
           }
       },
       {
           "header_33@how_to_play_common.header": {
-              "$text": "§§(<parameterType>|<parameterType>)"
+              "$text": "RRGGBBAA"
           }
       },
       {
           "paragraph_44@how_to_play_common.paragraph": {
+              "$text": "An 8-character RGBA hexadecimal color code. ex. FE932B76"
+          }
+      },
+      {
+          "header_34@how_to_play_common.header": {
+              "$text": "RGB"
+          }
+      },
+      {
+          "paragraph_45@how_to_play_common.paragraph": {
+              "$text": "A 3-character RGB hexadecimal color code. ex. F92"
+          }
+      },
+      {
+          "header_35@how_to_play_common.header": {
+              "$text": "RRGGBB"
+          }
+      },
+      {
+          "paragraph_46@how_to_play_common.paragraph": {
+              "$text": "A 6-character RGB hexadecimal color code. ex. FE932B"
+          }
+      },
+      {
+          "header_36@how_to_play_common.header": {
+              "$text": "{<string>}"
+          }
+      },
+      {
+          "paragraph_47@how_to_play_common.paragraph": {
+              "$text": "This parameter type means that the value you type in for it is the exact text that is inside of the {}. For example if the parameter type is {testabcd} then for the parameter you would type in testabcd. "
+          }
+      },
+      {
+          "header_37@how_to_play_common.header": {
+              "$text": "§§(<parameterType>|<parameterType>)"
+          }
+      },
+      {
+          "paragraph_48@how_to_play_common.paragraph": {
               "$text": "This parameter type means that it can actually be any of the parameter types separated by vertical lines | inside of the parentheses (). For example, if your parameter was [value: (number|(string|JSONArray)[maxLength=2])[?=5]] then for the parameter you could do a number, a string with a max length of 2, a JSONArray with a max length of 2, or nothing, and if you put nothing then it will just default to 5. "
           }
       }

@@ -3017,7 +3017,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: {list}|{clear}>`)}else{
                 break;
                 case "item debug": {
                     const item = player.getComponent("inventory").container.getItem(player.selectedSlotIndex)
-                    player.sendMessageB(
+                    srun(()=>player.sendMessageB(
 `§rtypeId: ${item.typeId}
 §ramount: ${item.amount}
 §risStackable: ${item.isStackable.toFormattedString()}
@@ -3049,10 +3049,10 @@ ${command.dp}item slot <slot: int> enchantment <mode: {list}|{clear}>`)}else{
 §rnutrition: ${d.nutrition}
 §rsaturationModifier: ${d.saturationModifier}
 §rusingConvertsTo: ${d.usingConvertsTo}`)(item.getComponent("food")):""}${item.hasComponent("potion")?(d=>`
-potionEffectType: ${d.potionEffectType}
-potionLiquidType: ${d.potionLiquidType}
-potionModifierType: ${d.potionModifierType}`)(item.getComponent("potion")):""}`
-                    )
+potionEffectType: ${d.potionEffectType.id}
+potionLiquidType: ${d.potionLiquidType.id}
+potionModifierType: ${d.potionModifierType.id}`)(item.getComponent("potion")):""}`
+                    ))
                 }
                 break;
                 case "item property":
@@ -3234,7 +3234,7 @@ potionModifierType: ${d.potionModifierType}`)(item.getComponent("potion")):""}`
                         break;
                         case "debug": {
                             const item = slot instanceof ItemStack ? slot : slot.getItem()
-                            player.sendMessageB(
+                            srun(()=>player.sendMessageB(
 `§rtypeId: ${item.typeId}
 §ramount: ${item.amount}
 §risStackable: ${item.isStackable.toFormattedString()}
@@ -3266,10 +3266,10 @@ potionModifierType: ${d.potionModifierType}`)(item.getComponent("potion")):""}`
 §rnutrition: ${d.nutrition}
 §rsaturationModifier: ${d.saturationModifier}
 §rusingConvertsTo: ${d.usingConvertsTo}`)(item.getComponent("food")):""}${item.hasComponent("potion")?(d=>`
-potionEffectType: ${d.potionEffectType}
-potionLiquidType: ${d.potionLiquidType}
-potionModifierType: ${d.potionModifierType}`)(item.getComponent("potion")):""}`
-                            )
+potionEffectType: ${d.potionEffectType.id}
+potionLiquidType: ${d.potionLiquidType.id}
+potionModifierType: ${d.potionModifierType.id}`)(item.getComponent("potion")):""}`
+                            ))
                         }
                         break;
                         case "enchantment":
@@ -4126,11 +4126,14 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                     /**
                                      * @todo
                                      */
-                                    case "filllevel":
+                                    case "filllevel": {
                                         if(!!!block.block.getComponent("waterContainer")&&!!!block.block.getComponent("lavaContainer")&&!!!block.block.getComponent("snowContainer")&&!!!block.block.getComponent("potionContainer")){
                                             throw new Error(`This block does not have any liquid container components.`)
                                         }
+                                        const argsc = evaluateParameters(argsb.extra, ["presetText"]);
+                                        (block.block.getComponent("waterContainer")??block.block.getComponent("lavaContainer")??block.block.getComponent("snowContainer")??block.block.getComponent("potionContainer")).fillLevel=argsc.args[0].toNumber()
                                         
+                                    }
                                     break;
                                     /**
                                      * @todo

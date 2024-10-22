@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import { system } from "@minecraft/server";
 globalThis.beforeScriptStartTick = system.currentTick;
-export const format_version = "1.23.101";
+export const format_version = "1.25.0";
+import "JSONB";
 import "Global";
 /*
 import "AllayTests.js";
@@ -94,7 +95,9 @@ import * as shopmain from "ExtraFeatures/shop_main";
 import * as servershop from "ExtraFeatures/server_shop";
 import * as playershop from "ExtraFeatures/player_shop";
 import * as moneysystem from "ExtraFeatures/money";
-import mcMath from "@minecraft/math.js"; /*
+import mcMath from "@minecraft/math.js";
+import colorCore, { Color } from "color-core";
+import Decimal from "decimal.js"; /*
 import { disableWatchdog } from "@minecraft/debug-utilities";*/
 import { listoftransformrecipes } from "transformrecipes";
 import { chatMessage, patternColors, patternColorsMap, patternFunctionList, evaluateChatColorType, chatSend } from "Main/chat";
@@ -132,6 +135,12 @@ export const modules = {
     playersave,
     spawnprot,
     mcMath,
+    colorCore,
+    Decimal,
+    ["@minecraft/server"]: mcServer,
+    ["@minecraft/server-ui"]: mcServerUi,
+    ["@minecraft/server-gametest"]: GameTest,
+    ["@minecraft/math"]: mcMath,
     chat,
     cmdutils,
     cmdslist,
@@ -206,6 +215,7 @@ catch (e) {
 }
 const srununbound = system.run;
 /**
+ * This is an alias of {@link system.run}.
  * @remarks
  * Runs a specified function at the next available future time.
  * This is frequently used to implement delayed behaviors and
@@ -242,9 +252,7 @@ const srununbound = system.run;
  * ```
  */
 export const srun = srununbound.bind(system);
-globalThis.srun = srun;
 export const gt = globalThis;
-globalThis.gt = globalThis;
 /**
  * A class containing the configuration information for the add-on.
  */
@@ -551,7 +559,6 @@ export class config {
         // Object.entries(Object.getOwnPropertyDescriptors(this)).filter(v=>v[1].hasOwnProperty("get")).flatMap(v=>v[1].hasOwnProperty("set")?v[1]:v[1]["get"]())
     }
 }
-globalThis.config = config;
 export class worldPlayers {
     static get savedPlayers() {
         return savedPlayer.getSavedPlayers();
@@ -5079,6 +5086,42 @@ Object.defineProperties(globalThis, {
     },
     the_end: {
         value: the_end,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    Color: {
+        value: Color,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    colorCore: {
+        value: colorCore,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    Decimal: {
+        value: Decimal,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    config: {
+        value: config,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    srun: {
+        value: srun,
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    gt: {
+        value: gt,
         configurable: true,
         enumerable: true,
         writable: false

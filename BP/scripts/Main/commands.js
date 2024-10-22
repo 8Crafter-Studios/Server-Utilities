@@ -3415,7 +3415,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: {list}|{clear}>`);
                                     case "item debug":
                                         {
                                             const item = player.getComponent("inventory").container.getItem(player.selectedSlotIndex);
-                                            player.sendMessageB(`§rtypeId: ${item.typeId}
+                                            srun(() => player.sendMessageB(`§rtypeId: ${item.typeId}
 §ramount: ${item.amount}
 §risStackable: ${item.isStackable.toFormattedString()}
 §rmaxAmount: ${item.maxAmount}
@@ -3446,9 +3446,9 @@ ${command.dp}item slot <slot: int> enchantment <mode: {list}|{clear}>`);
 §rnutrition: ${d.nutrition}
 §rsaturationModifier: ${d.saturationModifier}
 §rusingConvertsTo: ${d.usingConvertsTo}`)(item.getComponent("food")) : ""}${item.hasComponent("potion") ? (d => `
-potionEffectType: ${d.potionEffectType}
-potionLiquidType: ${d.potionLiquidType}
-potionModifierType: ${d.potionModifierType}`)(item.getComponent("potion")) : ""}`);
+potionEffectType: ${d.potionEffectType.id}
+potionLiquidType: ${d.potionLiquidType.id}
+potionModifierType: ${d.potionModifierType.id}`)(item.getComponent("potion")) : ""}`));
                                         }
                                         break;
                                     case "item property":
@@ -3736,7 +3736,7 @@ potionModifierType: ${d.potionModifierType}`)(item.getComponent("potion")) : ""}
                                             case "debug":
                                                 {
                                                     const item = slot instanceof ItemStack ? slot : slot.getItem();
-                                                    player.sendMessageB(`§rtypeId: ${item.typeId}
+                                                    srun(() => player.sendMessageB(`§rtypeId: ${item.typeId}
 §ramount: ${item.amount}
 §risStackable: ${item.isStackable.toFormattedString()}
 §rmaxAmount: ${item.maxAmount}
@@ -3767,9 +3767,9 @@ potionModifierType: ${d.potionModifierType}`)(item.getComponent("potion")) : ""}
 §rnutrition: ${d.nutrition}
 §rsaturationModifier: ${d.saturationModifier}
 §rusingConvertsTo: ${d.usingConvertsTo}`)(item.getComponent("food")) : ""}${item.hasComponent("potion") ? (d => `
-potionEffectType: ${d.potionEffectType}
-potionLiquidType: ${d.potionLiquidType}
-potionModifierType: ${d.potionModifierType}`)(item.getComponent("potion")) : ""}`);
+potionEffectType: ${d.potionEffectType.id}
+potionLiquidType: ${d.potionLiquidType.id}
+potionModifierType: ${d.potionModifierType.id}`)(item.getComponent("potion")) : ""}`));
                                                 }
                                                 break;
                                             case "enchantment":
@@ -4571,8 +4571,12 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                              * @todo
                                              */
                                             case "filllevel":
-                                                if (!!!block.block.getComponent("waterContainer") && !!!block.block.getComponent("lavaContainer") && !!!block.block.getComponent("snowContainer") && !!!block.block.getComponent("potionContainer")) {
-                                                    throw new Error(`This block does not have any liquid container components.`);
+                                                {
+                                                    if (!!!block.block.getComponent("waterContainer") && !!!block.block.getComponent("lavaContainer") && !!!block.block.getComponent("snowContainer") && !!!block.block.getComponent("potionContainer")) {
+                                                        throw new Error(`This block does not have any liquid container components.`);
+                                                    }
+                                                    const argsc = evaluateParameters(argsb.extra, ["presetText"]);
+                                                    (block.block.getComponent("waterContainer") ?? block.block.getComponent("lavaContainer") ?? block.block.getComponent("snowContainer") ?? block.block.getComponent("potionContainer")).fillLevel = argsc.args[0].toNumber();
                                                 }
                                                 break;
                                             /**

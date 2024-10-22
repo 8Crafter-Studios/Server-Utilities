@@ -1,7 +1,16 @@
 import { system, Entity, world, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, Player, Dimension } from "@minecraft/server";
 import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
+import Decimal from "decimal.js";
 import { MoneySystem } from "ExtraFeatures/money";
 ;
+Object.defineProperty(globalThis, 'stack', { get: function stack() { return new Error().stack; } });
+Object.defineProperty(Array.prototype, 'forEachB', {
+    value: function forEachB(callbackfn, thisArg) {
+        this.forEach((v, i, a) => {
+            Object.defineProperty(function b() { callbackfn(v, i, a); }, 'name', { value: `Array[${i}]` })();
+        }, thisArg);
+    }
+});
 Object.defineProperty(String.prototype, 'escapeCharacters', {
     value: function (js, unicode, nullchar, uri, quotes, general, colon, x, s) {
         //:Get primitive copy of string:
@@ -1011,11 +1020,20 @@ globalThis.send = function send(message) {
 globalThis.asend = function asend(value) {
     world.sendMessage(String(value));
 };
-globalThis.bsend = function bsend(value) {
-    world.sendMessage(JSONStringify(value, true));
+globalThis.bsend = function bsend(value, space) {
+    world.sendMessage(JSONStringify(value, true, space));
 };
-globalThis.csend = function csend(value) {
-    world.sendMessage(JSON.stringify(value));
+globalThis.csend = function csend(value, space) {
+    world.sendMessage(JSON.stringify(value, undefined, space));
+};
+globalThis.dsend = function dsend(value, space) {
+    world.sendMessage(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true }));
+};
+globalThis.esend = function esend(value, space) {
+    world.sendMessage(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true }));
+};
+globalThis.fsend = function fsend(value, space) {
+    world.sendMessage(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false }));
 };
 globalThis.psend = function psend(player, value) {
     player.sendMessage(value);
@@ -1023,11 +1041,20 @@ globalThis.psend = function psend(player, value) {
 globalThis.pasend = function pasend(player, value) {
     player.sendMessage(String(value));
 };
-globalThis.pbsend = function pbsend(player, value) {
-    player.sendMessage(JSONStringify(value, true));
+globalThis.pbsend = function pbsend(player, value, space) {
+    player.sendMessage(JSONStringify(value, true, space));
 };
-globalThis.pcsend = function pcsend(player, value) {
-    player.sendMessage(JSON.stringify(value));
+globalThis.pcsend = function pcsend(player, value, space) {
+    player.sendMessage(JSON.stringify(value, undefined, space));
+};
+globalThis.pdsend = function pdsend(player, value, space) {
+    player.sendMessage(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true }));
+};
+globalThis.pesend = function pesend(player, value, space) {
+    player.sendMessage(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true }));
+};
+globalThis.pfsend = function pfsend(player, value, space) {
+    player.sendMessage(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false }));
 };
 globalThis.perror = function perror(player, error, prefix = "§c") {
     player.sendMessage(prefix + (tryget(() => error.stringify()) ?? (error + " " + error.stack)));
