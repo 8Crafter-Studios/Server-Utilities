@@ -3043,38 +3043,22 @@ export function editorStick(sourceEntitya, message = "") {
         rawtextf = evalRawText(rawtextf, rt);
     });
     rawtextf = rawtextf + "]"*/
-    form.toggle("setWaterContainerProperties Enabled", false);
     try {
-        if (block2.getComponent("waterContainer") != undefined) {
-            form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("waterContainer").getCustomColor().red}\n§aGreen: §g${block2.getComponent("waterContainer").getCustomColor().green}\n§bBlue: §g${block2.getComponent("waterContainer").getCustomColor().blue}\n§dAlpha: §g${block2.getComponent("waterContainer").getCustomColor().alpha}\nFill Level: §g${block2.getComponent("waterContainer").fillLevel}`, `red, green, blue, alpha, fill level`, `${block2.getComponent("waterContainer").getCustomColor().red}, ${block2.getComponent("waterContainer").getCustomColor().green}, ${block2.getComponent("waterContainer").getCustomColor().blue}, ${block2.getComponent("waterContainer").getCustomColor().alpha}, ${block2.getComponent("waterContainer").fillLevel}`);
+        if (block2.getComponent("fluidContainer") != undefined) {
+            form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("fluidContainer").fluidColor.red}\n§aGreen: §g${block2.getComponent("fluidContainer").fluidColor.green}\n§bBlue: §g${block2.getComponent("fluidContainer").fluidColor.blue}\n§dAlpha: §g${block2.getComponent("fluidContainer").fluidColor.alpha}`, `red: 0-1, green: 0-1, blue: 0-1, alpha: 0-1`, `${block2.getComponent("fluidContainer").fluidColor.red}, ${block2.getComponent("fluidContainer").fluidColor.green}, ${block2.getComponent("fluidContainer").fluidColor.blue}, ${block2.getComponent("fluidContainer").fluidColor.alpha}`);
+            form.slider(`Cauldron Fill Level\nFill Level: §g${block2.getComponent("fluidContainer").fillLevel}`, 0, 6, 1, block2.getComponent("fluidContainer").fillLevel);
+            form.textField(`Cauldron Potion Type Contents\nHas Potion: §g${block2.getComponent("fluidContainer").getFluidType() == "Potion"}`, `item type`);
         }
         else {
-            form.textField(`§4Cauldron Water RGBA Color`, `§4Unavailable`);
+            form.textField(`§4Cauldron RGBA Color`, `§4Unavailable`);
+            form.slider(`§4Cauldron Fill Level (Unavailable)`, 0, 0, 0, 0);
+            form.textField(`§4Cauldron Potion Type Contents`, `§r§4Unavailable`);
         }
     }
     catch {
-        form.textField(`§4Cauldron Water RGBA Color/Fill Level`, `§4Unavailable`);
-    }
-    form.toggle("setSnowContainerProperties Enabled", false);
-    if (block2.getComponent("snowContainer") != undefined) {
-        form.textField(`Cauldron Snow Fill Level\nFill Level: §g${block2.getComponent("snowContainer").fillLevel}`, `${block2.getComponent("snowContainer").fillLevel}`, `${block2.getComponent("snowContainer").fillLevel}`);
-    }
-    else {
-        form.textField(`§4Cauldron Snow Fill Level`, `§r§4Unavailable`);
-    }
-    form.toggle("setLavaContainerProperties Enabled", false);
-    if (block2.getComponent("lavaContainer") != undefined) {
-        form.textField(`Cauldron Lava Fill Level\nFill Level: §g${block2.getComponent("lavaContainer").fillLevel}`, `${block2.getComponent("lavaContainer").fillLevel}`, `${block2.getComponent("lavaContainer").fillLevel}`);
-    }
-    else {
-        form.textField(`§4Cauldron Lava Fill Level`, `§r§4Unavailable`);
-    }
-    form.toggle("setPotionContainerProperties Enabled", false);
-    if (block2.getComponent("potionContainer") != undefined) {
-        form.textField(`Cauldron Potion Type Contents/Fill Level\nFill Level: §g${block2.getComponent("potionContainer").fillLevel}`, `item type, fill level`, `item type, ${block2.getComponent("potionContainer").fillLevel}`);
-    }
-    else {
-        form.textField(`§4Cauldron Potion Type Contents/Fill Level`, `§r§4Unavailable`);
+        form.textField(`§4Cauldron RGBA Color`, `§4Unavailable`);
+        form.slider(`§4Cauldron Fill Level (Unavailable)`, 0, 0, 0, 0);
+        form.textField(`§4Cauldron Potion Type Contents`, `§r§4Unavailable`);
     }
     form.toggle("setSignFrontRawText Enabled", false);
     if (block2.getComponent("sign") != undefined) {
@@ -3123,26 +3107,29 @@ export function editorStick(sourceEntitya, message = "") {
         let r = ro;
         if (r.canceled)
             return;
-        let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*, selectedSlotIndex*/, isWaterlogged /*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
+        let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*,
+        selectedSlotIndex*/, isWaterlogged /*,
+        clearVelocity*/, debug, fluidContainerColor, fluidContainerFillLevel, potionType, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
         let blockPropertyValue2;
         blockPropertyValue2 = "";
         let blockPropertyValueArray;
         blockPropertyValueArray = String(blockPropertyValue).split(", ");
         let blockPropertyValueLength = String(blockPropertyIdentifier).split(", ").length;
-        if (waterContainerEnabled && block2.getComponent("waterContainer") != undefined) {
-            block2.getComponent("waterContainer").setCustomColor({ red: Number(String(waterContainer).split(", ")[0]), green: Number(String(waterContainer).split(", ")[1]), blue: Number(String(waterContainer).split(", ")[2]), alpha: Number(String(waterContainer).split(", ")[3]) });
-            block2.getComponent("waterContainer").fillLevel = Number(String(waterContainer).split(", ")[4]);
+        if (block2.getComponent("fluidContainer") != undefined) {
+            if ((c => `${c.red},${c.green},${c.blue},${c.alpha}`)(block2.getComponent("fluidContainer").fluidColor) != fluidContainerColor.split(",").map(v => v.trim()).join()) {
+                block2.getComponent("fluidContainer").fluidColor = { red: fluidContainerColor.split(",")[0].toNumber(), green: fluidContainerColor.split(",")[1].toNumber(), blue: fluidContainerColor.split(",")[2].toNumber(), alpha: fluidContainerColor.split(",")[3].toNumber() };
+            }
+            ;
+            if (fluidContainerFillLevel != block2.getComponent("fluidContainer").fillLevel) {
+                block2.getComponent("fluidContainer").fillLevel = fluidContainerFillLevel;
+            }
+            ;
+            if (potionType != "") {
+                block2.getComponent("fluidContainer").setPotion(new ItemStack(potionType, 255));
+            }
+            ;
         }
-        if (snowContainerEnabled && block2.getComponent("snowContainer") != undefined) {
-            block2.getComponent("snowContainer").fillLevel = Number(String(snowContainer).split(", ")[0]);
-        }
-        if (lavaContainerEnabled && block2.getComponent("lavaContainer") != undefined) {
-            block2.getComponent("lavaContainer").fillLevel = Number(String(lavaContainer).split(", ")[0]);
-        }
-        if (potionContainerEnabled && block2.getComponent("potionContainer") != undefined) {
-            block2.getComponent("potionContainer").fillLevel = Number(String(potionContainer).split(", ")[1]);
-            block2.getComponent("potionContainer").setPotionType(new ItemStack(String(String(potionContainer).split(", ")[0]), 255));
-        }
+        ;
         if (signFrontRawTextEnabled && block2.getComponent("sign") != undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) { /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/
             block2.getComponent("sign").setText(JSON.parse(String(signFrontRawText)), SignSide.Front);
         }
@@ -3409,38 +3396,22 @@ export function editorStickB(sourceEntitya, dimensionLocation = { x: sourceEntit
     form.toggle("isWaterlogged", block2.isWaterlogged); /*
     form.toggle("Clear Velocity", false)*/
     form.toggle("Debug", false);
-    form.toggle("setWaterContainerProperties Enabled", false);
     try {
-        if (block2.getComponent("waterContainer") != undefined) {
-            form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("waterContainer").getCustomColor().red}\n§aGreen: §g${block2.getComponent("waterContainer").getCustomColor().green}\n§bBlue: §g${block2.getComponent("waterContainer").getCustomColor().blue}\n§dAlpha: §g${block2.getComponent("waterContainer").getCustomColor().alpha}\nFill Level: §g${block2.getComponent("waterContainer").fillLevel}`, `red, green, blue, alpha, fill level`, `${block2.getComponent("waterContainer").getCustomColor().red}, ${block2.getComponent("waterContainer").getCustomColor().green}, ${block2.getComponent("waterContainer").getCustomColor().blue}, ${block2.getComponent("waterContainer").getCustomColor().alpha}, ${block2.getComponent("waterContainer").fillLevel}`);
+        if (block2.getComponent("fluidContainer") != undefined) {
+            form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("fluidContainer").fluidColor.red}\n§aGreen: §g${block2.getComponent("fluidContainer").fluidColor.green}\n§bBlue: §g${block2.getComponent("fluidContainer").fluidColor.blue}\n§dAlpha: §g${block2.getComponent("fluidContainer").fluidColor.alpha}`, `red: 0-1, green: 0-1, blue: 0-1, alpha: 0-1`, `${block2.getComponent("fluidContainer").fluidColor.red}, ${block2.getComponent("fluidContainer").fluidColor.green}, ${block2.getComponent("fluidContainer").fluidColor.blue}, ${block2.getComponent("fluidContainer").fluidColor.alpha}`);
+            form.slider(`Cauldron Fill Level\nFill Level: §g${block2.getComponent("fluidContainer").fillLevel}`, 0, 6, 1, block2.getComponent("fluidContainer").fillLevel);
+            form.textField(`Cauldron Potion Type Contents\nHas Potion: §g${block2.getComponent("fluidContainer").getFluidType() == "Potion"}`, `item type`);
         }
         else {
-            form.textField(`§4Cauldron Water RGBA Color`, `§4Unavailable`);
+            form.textField(`§4Cauldron RGBA Color`, `§4Unavailable`);
+            form.slider(`§4Cauldron Fill Level (Unavailable)`, 0, 0, 0, 0);
+            form.textField(`§4Cauldron Potion Type Contents`, `§r§4Unavailable`);
         }
     }
     catch {
-        form.textField(`§4Cauldron Water RGBA Color/Fill Level`, `§4Unavailable`);
-    }
-    form.toggle("setSnowContainerProperties Enabled", false);
-    if (block2.getComponent("snowContainer") != undefined) {
-        form.textField(`Cauldron Snow Fill Level\nFill Level: §g${block2.getComponent("snowContainer").fillLevel}`, `${block2.getComponent("snowContainer").fillLevel}`, `${block2.getComponent("snowContainer").fillLevel}`);
-    }
-    else {
-        form.textField(`§4Cauldron Snow Fill Level`, `§r§4Unavailable`);
-    }
-    form.toggle("setLavaContainerProperties Enabled", false);
-    if (block2.getComponent("lavaContainer") != undefined) {
-        form.textField(`Cauldron Lava Fill Level\nFill Level: §g${block2.getComponent("lavaContainer").fillLevel}`, `${block2.getComponent("lavaContainer").fillLevel}`, `${block2.getComponent("lavaContainer").fillLevel}`);
-    }
-    else {
-        form.textField(`§4Cauldron Lava Fill Level`, `§r§4Unavailable`);
-    }
-    form.toggle("setPotionContainerProperties Enabled", false);
-    if (block2.getComponent("potionContainer") != undefined) {
-        form.textField(`Cauldron Potion Type Contents/Fill Level\nFill Level: §g${block2.getComponent("potionContainer").fillLevel}`, `item type, fill level`, `item type, ${block2.getComponent("potionContainer").fillLevel}`);
-    }
-    else {
-        form.textField(`§4Cauldron Potion Type Contents/Fill Level`, `§r§4Unavailable`);
+        form.textField(`§4Cauldron RGBA Color`, `§4Unavailable`);
+        form.slider(`§4Cauldron Fill Level (Unavailable)`, 0, 0, 0, 0);
+        form.textField(`§4Cauldron Potion Type Contents`, `§r§4Unavailable`);
     }
     form.toggle("setSignFrontRawText Enabled", false);
     if (block2.getComponent("sign") != undefined) {
@@ -3488,26 +3459,29 @@ export function editorStickB(sourceEntitya, dimensionLocation = { x: sourceEntit
     forceShow(form, sourceEntity).then(r => {
         if (r.canceled)
             return;
-        let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*, selectedSlotIndex*/, isWaterlogged /*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
+        let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*,
+        selectedSlotIndex*/, isWaterlogged /*,
+        clearVelocity*/, debug, fluidContainerColor, fluidContainerFillLevel, potionType, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
         let blockPropertyValue2;
         blockPropertyValue2 = "";
         let blockPropertyValueArray;
         blockPropertyValueArray = String(blockPropertyValue).split(", ");
         let blockPropertyValueLength = String(blockPropertyIdentifier).split(", ").length;
-        if (waterContainerEnabled && block2.getComponent("waterContainer") != undefined) {
-            block2.getComponent("waterContainer").setCustomColor({ red: Number(String(waterContainer).split(", ")[0]), green: Number(String(waterContainer).split(", ")[1]), blue: Number(String(waterContainer).split(", ")[2]), alpha: Number(String(waterContainer).split(", ")[3]) });
-            block2.getComponent("waterContainer").fillLevel = Number(String(waterContainer).split(", ")[4]);
+        if (block2.getComponent("fluidContainer") != undefined) {
+            if ((c => `${c.red},${c.green},${c.blue},${c.alpha}`)(block2.getComponent("fluidContainer").fluidColor) != fluidContainerColor.split(",").map(v => v.trim()).join()) {
+                block2.getComponent("fluidContainer").fluidColor = { red: fluidContainerColor.split(",")[0].toNumber(), green: fluidContainerColor.split(",")[1].toNumber(), blue: fluidContainerColor.split(",")[2].toNumber(), alpha: fluidContainerColor.split(",")[3].toNumber() };
+            }
+            ;
+            if (fluidContainerFillLevel != block2.getComponent("fluidContainer").fillLevel) {
+                block2.getComponent("fluidContainer").fillLevel = fluidContainerFillLevel;
+            }
+            ;
+            if (potionType != "") {
+                block2.getComponent("fluidContainer").setPotion(new ItemStack(potionType, 255));
+            }
+            ;
         }
-        if (snowContainerEnabled && block2.getComponent("snowContainer") != undefined) {
-            block2.getComponent("snowContainer").fillLevel = Number(String(snowContainer).split(", ")[0]);
-        }
-        if (lavaContainerEnabled && block2.getComponent("lavaContainer") != undefined) {
-            block2.getComponent("lavaContainer").fillLevel = Number(String(lavaContainer).split(", ")[0]);
-        }
-        if (potionContainerEnabled && block2.getComponent("potionContainer") != undefined) {
-            block2.getComponent("potionContainer").fillLevel = Number(String(potionContainer).split(", ")[1]);
-            block2.getComponent("potionContainer").setPotionType(new ItemStack(String(String(potionContainer).split(", ")[0]), 255));
-        }
+        ;
         if (signFrontRawTextEnabled && block2.getComponent("sign") != undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) { /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/
             block2.getComponent("sign").setText(JSON.parse(String(signFrontRawText)), SignSide.Front);
         }
@@ -3725,36 +3699,21 @@ export function editorStickC(sourceEntitya, includeLiquidBlocks = false, include
     form.toggle("Debug", false);
     form.toggle("setWaterContainerProperties Enabled", false);
     try {
-        if (block2.getComponent("waterContainer") != undefined) {
-            form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("waterContainer").getCustomColor().red}\n§aGreen: §g${block2.getComponent("waterContainer").getCustomColor().green}\n§bBlue: §g${block2.getComponent("waterContainer").getCustomColor().blue}\n§dAlpha: §g${block2.getComponent("waterContainer").getCustomColor().alpha}\nFill Level: §g${block2.getComponent("waterContainer").fillLevel}`, `red, green, blue, alpha, fill level`, `${block2.getComponent("waterContainer").getCustomColor().red}, ${block2.getComponent("waterContainer").getCustomColor().green}, ${block2.getComponent("waterContainer").getCustomColor().blue}, ${block2.getComponent("waterContainer").getCustomColor().alpha}, ${block2.getComponent("waterContainer").fillLevel}`);
+        if (block2.getComponent("fluidContainer") != undefined) {
+            form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("fluidContainer").fluidColor.red}\n§aGreen: §g${block2.getComponent("fluidContainer").fluidColor.green}\n§bBlue: §g${block2.getComponent("fluidContainer").fluidColor.blue}\n§dAlpha: §g${block2.getComponent("fluidContainer").fluidColor.alpha}`, `red: 0-1, green: 0-1, blue: 0-1, alpha: 0-1`, `${block2.getComponent("fluidContainer").fluidColor.red}, ${block2.getComponent("fluidContainer").fluidColor.green}, ${block2.getComponent("fluidContainer").fluidColor.blue}, ${block2.getComponent("fluidContainer").fluidColor.alpha}`);
+            form.slider(`Cauldron Fill Level\nFill Level: §g${block2.getComponent("fluidContainer").fillLevel}`, 0, 6, 1, block2.getComponent("fluidContainer").fillLevel);
+            form.textField(`Cauldron Potion Type Contents\nHas Potion: §g${block2.getComponent("fluidContainer").getFluidType() == "Potion"}`, `item type`);
         }
         else {
-            form.textField(`§4Cauldron Water RGBA Color`, `§4Unavailable`);
+            form.textField(`§4Cauldron RGBA Color`, `§4Unavailable`);
+            form.slider(`§4Cauldron Fill Level (Unavailable)`, 0, 0, 0, 0);
+            form.textField(`§4Cauldron Potion Type Contents`, `§r§4Unavailable`);
         }
     }
     catch {
-        form.textField(`§4Cauldron Water RGBA Color/Fill Level`, `§4Unavailable`);
-    }
-    form.toggle("setSnowContainerProperties Enabled", false);
-    if (block2.getComponent("snowContainer") != undefined) {
-        form.textField(`Cauldron Snow Fill Level\nFill Level: §g${block2.getComponent("snowContainer").fillLevel}`, `${block2.getComponent("snowContainer").fillLevel}`, `${block2.getComponent("snowContainer").fillLevel}`);
-    }
-    else {
-        form.textField(`§4Cauldron Snow Fill Level`, `§r§4Unavailable`);
-    }
-    form.toggle("setLavaContainerProperties Enabled", false);
-    if (block2.getComponent("lavaContainer") != undefined) {
-        form.textField(`Cauldron Lava Fill Level\nFill Level: §g${block2.getComponent("lavaContainer").fillLevel}`, `${block2.getComponent("lavaContainer").fillLevel}`, `${block2.getComponent("lavaContainer").fillLevel}`);
-    }
-    else {
-        form.textField(`§4Cauldron Lava Fill Level`, `§r§4Unavailable`);
-    }
-    form.toggle("setPotionContainerProperties Enabled", false);
-    if (block2.getComponent("potionContainer") != undefined) {
-        form.textField(`Cauldron Potion Type Contents/Fill Level\nFill Level: §g${block2.getComponent("potionContainer").fillLevel}`, `item type, fill level`, `item type, ${block2.getComponent("potionContainer").fillLevel}`);
-    }
-    else {
-        form.textField(`§4Cauldron Potion Type Contents/Fill Level`, `§r§4Unavailable`);
+        form.textField(`§4Cauldron RGBA Color`, `§4Unavailable`);
+        form.slider(`§4Cauldron Fill Level (Unavailable)`, 0, 0, 0, 0);
+        form.textField(`§4Cauldron Potion Type Contents`, `§r§4Unavailable`);
     }
     form.toggle("setSignFrontRawText Enabled", false);
     if (block2.getComponent("sign") != undefined) {
@@ -3802,26 +3761,29 @@ export function editorStickC(sourceEntitya, includeLiquidBlocks = false, include
     forceShow(form, sourceEntity).then(r => {
         if (r.canceled)
             return;
-        let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*, selectedSlotIndex*/, isWaterlogged /*, clearVelocity*/, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
+        let [setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled /*,
+        selectedSlotIndex*/, isWaterlogged /*,
+        clearVelocity*/, debug, fluidContainerColor, fluidContainerFillLevel, potionType, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed] = r.formValues;
         let blockPropertyValue2;
         blockPropertyValue2 = "";
         let blockPropertyValueArray;
         blockPropertyValueArray = String(blockPropertyValue).split(", ");
         let blockPropertyValueLength = String(blockPropertyIdentifier).split(", ").length;
-        if (waterContainerEnabled && block2.getComponent("waterContainer") != undefined) {
-            block2.getComponent("waterContainer").setCustomColor({ red: Number(String(waterContainer).split(", ")[0]), green: Number(String(waterContainer).split(", ")[1]), blue: Number(String(waterContainer).split(", ")[2]), alpha: Number(String(waterContainer).split(", ")[3]) });
-            block2.getComponent("waterContainer").fillLevel = Number(String(waterContainer).split(", ")[4]);
+        if (block2.getComponent("fluidContainer") != undefined) {
+            if ((c => `${c.red},${c.green},${c.blue},${c.alpha}`)(block2.getComponent("fluidContainer").fluidColor) != fluidContainerColor.split(",").map(v => v.trim()).join()) {
+                block2.getComponent("fluidContainer").fluidColor = { red: fluidContainerColor.split(",")[0].toNumber(), green: fluidContainerColor.split(",")[1].toNumber(), blue: fluidContainerColor.split(",")[2].toNumber(), alpha: fluidContainerColor.split(",")[3].toNumber() };
+            }
+            ;
+            if (fluidContainerFillLevel != block2.getComponent("fluidContainer").fillLevel) {
+                block2.getComponent("fluidContainer").fillLevel = fluidContainerFillLevel;
+            }
+            ;
+            if (potionType != "") {
+                block2.getComponent("fluidContainer").setPotion(new ItemStack(potionType, 255));
+            }
+            ;
         }
-        if (snowContainerEnabled && block2.getComponent("snowContainer") != undefined) {
-            block2.getComponent("snowContainer").fillLevel = Number(String(snowContainer).split(", ")[0]);
-        }
-        if (lavaContainerEnabled && block2.getComponent("lavaContainer") != undefined) {
-            block2.getComponent("lavaContainer").fillLevel = Number(String(lavaContainer).split(", ")[0]);
-        }
-        if (potionContainerEnabled && block2.getComponent("potionContainer") != undefined) {
-            block2.getComponent("potionContainer").fillLevel = Number(String(potionContainer).split(", ")[1]);
-            block2.getComponent("potionContainer").setPotionType(new ItemStack(String(String(potionContainer).split(", ")[0]), 255));
-        }
+        ;
         if (signFrontRawTextEnabled && block2.getComponent("sign") != undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) { /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/
             block2.getComponent("sign").setText(JSON.parse(String(signFrontRawText)), SignSide.Front);
         }
