@@ -1025,6 +1025,7 @@ export class executeCommandPlayerW {
     get nameTag() { return this.player?.nameTag; }
     set nameTag(nameTag) { this.player.nameTag = nameTag; }
     get inputPermissions() { return this.player?.inputPermissions; }
+    get clientSystemInfo() { return this.player?.clientSystemInfo; }
     addEffect(effectType, duration, options) { return this.player?.addEffect(effectType, duration, options); }
     addExperience(amount) { return this.player?.addExperience(amount); }
     getRotation() { return this.rotation ?? this.player?.getRotation(); }
@@ -4046,7 +4047,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                         switch (argsb.args[1].toLowerCase()) {
                                             case "color":
                                                 {
-                                                    if (!!!block.block.getComponent("waterContainer")) {
+                                                    if (!!!block.block.getComponent("fluidContainer")) {
                                                         throw new Error(`This block does not have a waterContainer component.`);
                                                     }
                                                     const argsc = evaluateParameters(argsb.extra, ["presetText", "presetText"]);
@@ -4058,7 +4059,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "hex":
                                                                     case "hexadecimal":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             player.sendMessageB(`#${(currentColor.red * 255).toString(16).split(".")[0]}${(currentColor.green * 255).toString(16).split(".")[0]}${(currentColor.blue * 255).toString(16).split(".")[0]}${(currentColor.alpha * 255).toString(16).split(".")[0]}`.toUpperCase());
                                                                         }
                                                                         break;
@@ -4068,7 +4069,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "frac":
                                                                     case "fractional":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             player.sendMessageB(`Red: ${(currentColor.red)}, Green: ${(currentColor.green)}, Blue: ${(currentColor.blue)}, Alpha: ${(currentColor.alpha)}`);
                                                                         }
                                                                         break;
@@ -4079,7 +4080,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "dec":
                                                                     case "decimal":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             player.sendMessageB(`Red: ${(currentColor.red * 255).round()}, Green: ${(currentColor.green * 255).round()}, Blue: ${(currentColor.blue * 255).round()}, Alpha: ${(currentColor.alpha * 255).round()}`);
                                                                         }
                                                                         break;
@@ -4090,7 +4091,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "decr":
                                                                     case "decimalr":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             player.sendMessageB(`Red: ${(currentColor.red * 255)}, Green: ${(currentColor.green * 255)}, Blue: ${(currentColor.blue * 255)}, Alpha: ${(currentColor.alpha * 255)}`);
                                                                         }
                                                                         break;
@@ -4111,7 +4112,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "hex":
                                                                     case "hexadecimal":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             player.sendMessageB(`#${(currentColor.red * 255).toString(16).split(".")[0]}${(currentColor.green * 255).toString(16).split(".")[0]}${(currentColor.blue * 255).toString(16).split(".")[0]}`.toUpperCase());
                                                                         }
                                                                         break;
@@ -4121,7 +4122,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "frac":
                                                                     case "fractional":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             player.sendMessageB(`Red: ${(currentColor.red)}, Green: ${(currentColor.green)}, Blue: ${(currentColor.blue)}`);
                                                                         }
                                                                         break;
@@ -4132,7 +4133,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "dec":
                                                                     case "decimal":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             player.sendMessageB(`Red: ${(currentColor.red * 255).round()}, Green: ${(currentColor.green * 255).round()}, Blue: ${(currentColor.blue * 255).round()}`);
                                                                         }
                                                                         break;
@@ -4143,7 +4144,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "decr":
                                                                     case "decimalr":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             player.sendMessageB(`Red: ${(currentColor.red * 255)}, Green: ${(currentColor.green * 255)}, Blue: ${(currentColor.blue * 255)}`);
                                                                         }
                                                                         break;
@@ -4159,61 +4160,61 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                             break;
                                                         case "hsl":
                                                             {
-                                                                const currentColor = rgbToHsl(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor()));
+                                                                const currentColor = rgbToHsl(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer").fluidColor));
                                                                 player.sendMessageB(`Hue: ${currentColor.h.toPrecision(10).toNumber()}, Saturation: ${currentColor.s.toPrecision(10).toNumber()}, Lightness: ${currentColor.l.toPrecision(10).toNumber()}, Alpha: ${currentColor.a}`);
                                                             }
                                                             break;
                                                         case "hsluv":
                                                             {
-                                                                const currentColor = rgbToHSLuv(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor()));
+                                                                const currentColor = rgbToHSLuv(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer").fluidColor));
                                                                 player.sendMessageB(`Hue: ${currentColor.h.toPrecision(10).toNumber()}, Saturation: ${currentColor.s.toPrecision(10).toNumber()}, Lightness: ${currentColor.l.toPrecision(10).toNumber()}`);
                                                             }
                                                             break;
                                                         case "hsv":
                                                             {
-                                                                const currentColor = rgbToHsv(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor()));
+                                                                const currentColor = rgbToHsv(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer").fluidColor));
                                                                 player.sendMessageB(`Hue: ${currentColor.h.toPrecision(10).toNumber()}, Saturation: ${currentColor.s.toPrecision(10).toNumber()}, Value: ${currentColor.v.toPrecision(10).toNumber()}, Alpha: ${currentColor.a}`);
                                                             }
                                                             break;
                                                         case "hsb":
                                                             {
-                                                                const currentColor = rgbToHsv(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor()));
+                                                                const currentColor = rgbToHsv(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer").fluidColor));
                                                                 player.sendMessageB(`Hue: ${currentColor.h.toPrecision(10).toNumber()}, Saturation: ${currentColor.s.toPrecision(10).toNumber()}, Brightness: ${currentColor.v.toPrecision(10).toNumber()}, Alpha: ${currentColor.a}`);
                                                             }
                                                             break;
                                                         case "hsi":
                                                             {
-                                                                const currentColor = rgbToHsi(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor()));
+                                                                const currentColor = rgbToHsi(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer").fluidColor));
                                                                 player.sendMessageB(`Hue: ${currentColor.h.toPrecision(10).toNumber()}, Saturation: ${currentColor.s.toPrecision(10).toNumber()}, Intensity: ${currentColor.i.toPrecision(10).toNumber()}`);
                                                             }
                                                             break;
                                                         case "hpluv":
                                                             {
-                                                                const currentColor = rgbToHPLuv(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor()));
+                                                                const currentColor = rgbToHPLuv(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer").fluidColor));
                                                                 player.sendMessageB(`Hue: ${currentColor.h.toPrecision(10).toNumber()}, Perceived Saturation: ${currentColor.p.toPrecision(10).toNumber()}, Lightness: ${currentColor.l.toPrecision(10).toNumber()}`);
                                                             }
                                                             break;
                                                         case "adobergb":
                                                             {
-                                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor())).toAdobeRGB();
+                                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer").fluidColor)).toAdobeRGB();
                                                                 player.sendMessageB(`Red: ${currentColor.ar}, Green: ${currentColor.ag}, Blue: ${currentColor.ab}`);
                                                             }
                                                             break;
                                                         case "cieluv":
                                                             {
-                                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor())).toCIELuv();
+                                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer").fluidColor)).toCIELuv();
                                                                 player.sendMessageB(`Lightness: ${currentColor.L}, Chromaticity u: ${currentColor.u}, Chromaticity v: ${currentColor.v}`);
                                                             }
                                                             break;
                                                         case "ciexyy":
                                                             {
-                                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor())).toCIExyY();
+                                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer").fluidColor)).toCIExyY();
                                                                 player.sendMessageB(`Chromaticity x: ${currentColor.x}, Chromaticity y: ${currentColor.y}, Luminance: ${currentColor.Y}`);
                                                             }
                                                             break;
                                                         case "rawcolorcorergb":
                                                             {
-                                                                const currentColor = mcRGBAToColorCoreRGB(block?.block.getComponent("waterContainer").getCustomColor());
+                                                                const currentColor = mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer").fluidColor);
                                                                 player.sendMessageB(JSONB.stringify(currentColor));
                                                             }
                                                             break;
@@ -4228,7 +4229,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                 }
                                                 break;
                                             case "filllevel":
-                                                player.sendMessageB(`Fill Level: ${block?.block.getComponent("waterContainer").fillLevel}`);
+                                                player.sendMessageB(`Fill Level: ${block?.block.getComponent("fluidContainer").fillLevel}`);
                                                 break;
                                             case "liquidtype":
                                                 /**
@@ -4249,7 +4250,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                         switch (argsb.args[1].toLowerCase()) {
                                             case "color":
                                                 {
-                                                    if (!!!block.block.getComponent("waterContainer")) {
+                                                    if (!!!block.block.getComponent("fluidContainer")) {
                                                         throw new Error(`This block does not have a waterContainer component.`);
                                                     }
                                                     const argsc = evaluateParameters(argsb.extra, ["presetText", "presetText"]);
@@ -4272,12 +4273,12 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                             }
                                                                             const denominator = rgba.length == 4 ? 15 : 255;
                                                                             const rangeScale = rgba.length == 4 ? 1 : 2;
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             const red = rgba.slice(0 * rangeScale, 1 * rangeScale).includes("~") ? currentColor.red : parseInt(rgba.slice(0 * rangeScale, 1 * rangeScale), 16) / denominator;
                                                                             const green = rgba.slice(1 * rangeScale, 2 * rangeScale).includes("~") ? currentColor.green : parseInt(rgba.slice(1 * rangeScale, 2 * rangeScale), 16) / denominator;
                                                                             const blue = rgba.slice(2 * rangeScale, 3 * rangeScale).includes("~") ? currentColor.blue : parseInt(rgba.slice(2 * rangeScale, 3 * rangeScale), 16) / denominator;
                                                                             const alpha = rgba.slice(3 * rangeScale, 4 * rangeScale).includes("~") ? currentColor.alpha : parseInt(rgba.slice(3 * rangeScale, 4 * rangeScale), 16) / denominator;
-                                                                            block?.block.getComponent("waterContainer").setCustomColor({ red, green, blue, alpha });
+                                                                            block.block.getComponent("fluidContainer").fluidColor = ({ red, green, blue, alpha });
                                                                         }
                                                                         break;
                                                                     case "flt":
@@ -4317,12 +4318,12 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                     true
                                                                                 )
                                                                             }*/
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             const red = (rgba[0].trim() == "~" ? currentColor.red : rgba[0]).toNumber();
                                                                             const green = (rgba[1].trim() == "~" ? currentColor.green : rgba[1]).toNumber();
                                                                             const blue = (rgba[2].trim() == "~" ? currentColor.blue : rgba[2]).toNumber();
                                                                             const alpha = (rgba[3].trim() == "~" ? currentColor.alpha : rgba[3]).toNumber();
-                                                                            block?.block.getComponent("waterContainer").setCustomColor({ red, green, blue, alpha });
+                                                                            block.block.getComponent("fluidContainer").fluidColor = ({ red, green, blue, alpha });
                                                                         }
                                                                         break;
                                                                     case "i":
@@ -4363,12 +4364,12 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                     true
                                                                                 )
                                                                             }*/
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             const red = rgba[0].trim() == "~" ? currentColor.red : (rgba[0].toNumber().round() / 255);
                                                                             const green = rgba[1].trim() == "~" ? currentColor.green : (rgba[1].toNumber().round() / 255);
                                                                             const blue = rgba[2].trim() == "~" ? currentColor.blue : (rgba[2].toNumber().round() / 255);
                                                                             const alpha = rgba[3].trim() == "~" ? currentColor.alpha : (rgba[3].toNumber().round() / 255);
-                                                                            block?.block.getComponent("waterContainer").setCustomColor({ red, green, blue, alpha });
+                                                                            block.block.getComponent("fluidContainer").fluidColor = ({ red, green, blue, alpha });
                                                                         }
                                                                         break;
                                                                     case "ir":
@@ -4409,12 +4410,12 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                     true
                                                                                 )
                                                                             }*/
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             const red = rgba[0].trim() == "~" ? currentColor.red : (rgba[0].toNumber() / 255);
                                                                             const green = rgba[1].trim() == "~" ? currentColor.green : (rgba[1].toNumber() / 255);
                                                                             const blue = rgba[2].trim() == "~" ? currentColor.blue : (rgba[2].toNumber() / 255);
                                                                             const alpha = rgba[3].trim() == "~" ? currentColor.alpha : (rgba[3].toNumber() / 255);
-                                                                            block?.block.getComponent("waterContainer").setCustomColor({ red, green, blue, alpha });
+                                                                            block.block.getComponent("fluidContainer").fluidColor = ({ red, green, blue, alpha });
                                                                         }
                                                                         break;
                                                                     default:
@@ -4437,11 +4438,11 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                             }
                                                                             const denominator = rgb.length == 3 ? 15 : 255;
                                                                             const rangeScale = rgb.length == 3 ? 1 : 2;
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             const red = rgb.slice(0 * rangeScale, 1 * rangeScale).includes("~") ? currentColor.red : parseInt(rgb.slice(0 * rangeScale, 1 * rangeScale), 16) / denominator;
                                                                             const green = rgb.slice(1 * rangeScale, 2 * rangeScale).includes("~") ? currentColor.green : parseInt(rgb.slice(1 * rangeScale, 2 * rangeScale), 16) / denominator;
                                                                             const blue = rgb.slice(2 * rangeScale, 3 * rangeScale).includes("~") ? currentColor.blue : parseInt(rgb.slice(2 * rangeScale, 3 * rangeScale), 16) / denominator;
-                                                                            block?.block.getComponent("waterContainer").setCustomColor({ red, green, blue, alpha: 1 });
+                                                                            block.block.getComponent("fluidContainer").fluidColor = ({ red, green, blue, alpha: 1 });
                                                                         }
                                                                         break;
                                                                     case "flt":
@@ -4480,11 +4481,11 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                     true
                                                                                 )
                                                                             }*/
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             const red = (rgba[0].trim() == "~" ? currentColor.red : rgba[0]).toNumber();
                                                                             const green = (rgba[1].trim() == "~" ? currentColor.green : rgba[1]).toNumber();
                                                                             const blue = (rgba[2].trim() == "~" ? currentColor.blue : rgba[2]).toNumber();
-                                                                            block?.block.getComponent("waterContainer").setCustomColor({ red, green, blue, alpha: 1 });
+                                                                            block.block.getComponent("fluidContainer").fluidColor = ({ red, green, blue, alpha: 1 });
                                                                         }
                                                                         break;
                                                                     case "i":
@@ -4524,11 +4525,11 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                     true
                                                                                 )
                                                                             }*/
-                                                                            const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                             const red = rgba[0].trim() == "~" ? currentColor.red : (rgba[0].toNumber().round() / 255);
                                                                             const green = rgba[1].trim() == "~" ? currentColor.green : (rgba[1].toNumber().round() / 255);
                                                                             const blue = rgba[2].trim() == "~" ? currentColor.blue : (rgba[2].toNumber().round() / 255);
-                                                                            block?.block.getComponent("waterContainer").setCustomColor({ red, green, blue, alpha: 1 });
+                                                                            block.block.getComponent("fluidContainer").fluidColor = ({ red, green, blue, alpha: 1 });
                                                                         }
                                                                         break;
                                                                     default:
@@ -4548,10 +4549,10 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     player.sendError(`§cSyntax error: Unexpected "": at "${switchTestB.slice(-10)}>><<"`, true);
                                                                     return;
                                                                 }
-                                                                const currentColor = block?.block.getComponent("waterContainer").getCustomColor();
+                                                                const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
                                                                 const hslB = HSLToRGB(...hsl);
                                                                 const [red, green, blue] = hslB;
-                                                                block?.block.getComponent("waterContainer").setCustomColor({ red: red / 255, green: green / 255, blue: blue / 255, alpha: currentColor.alpha });
+                                                                block.block.getComponent("fluidContainer").fluidColor = { red: red / 255, green: green / 255, blue: blue / 255, alpha: currentColor.alpha };
                                                             }
                                                             break;
                                                         /**
@@ -4572,11 +4573,11 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                              */
                                             case "filllevel":
                                                 {
-                                                    if (!!!block.block.getComponent("waterContainer") && !!!block.block.getComponent("lavaContainer") && !!!block.block.getComponent("snowContainer") && !!!block.block.getComponent("potionContainer")) {
-                                                        throw new Error(`This block does not have any liquid container components.`);
+                                                    if (!!!block.block.getComponent("fluidContainer")) {
+                                                        throw new Error(`This block does not have any fluid container components.`);
                                                     }
                                                     const argsc = evaluateParameters(argsb.extra, ["presetText"]);
-                                                    (block.block.getComponent("waterContainer") ?? block.block.getComponent("lavaContainer") ?? block.block.getComponent("snowContainer") ?? block.block.getComponent("potionContainer")).fillLevel = argsc.args[0].toNumber();
+                                                    block.block.getComponent("fluidContainer").fillLevel = argsc.args[0].toNumber();
                                                 }
                                                 break;
                                             /**
