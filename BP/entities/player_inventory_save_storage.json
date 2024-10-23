@@ -1,0 +1,64 @@
+{
+  "format_version": "1.21.40",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "andexdb:player_inventory_save_storage",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+    "components": {
+      "minecraft:collision_box": {
+        "height": 1,
+        "width": 1
+      },
+      "minecraft:health": {
+        "value": 1000,
+        "max": 1000
+      },
+      "minecraft:inventory": {
+        "container_type": "inventory",
+        "can_be_siphoned_from": true,
+        "inventory_size": 45
+      },
+			"minecraft:physics": {
+				"has_collision": false,
+				"has_gravity": false
+			},
+      "minecraft:knockback_resistance": {
+        "value": 1000,
+        "max": 1000
+      },
+      "minecraft:body_rotation_blocked": {},
+			"minecraft:fire_immune": {},
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "all",
+            "deals_damage": false
+          }
+        ]
+      },
+      "minecraft:tick_world":{
+        "distance_to_players": 128,
+        "never_despawn": true,
+        "radius": 2
+      },
+      "minecraft:type_family": {
+        "family": [ "player_inventory_save_storage" ]
+      },
+      "minecraft:pushable":{
+          "is_pushable": false,
+          "is_pushable_by_piston": false
+      },
+      "minecraft:persistent":{
+      },
+      "minecraft:is_hidden_when_invisible": {
+      },
+      "minecraft:nameable": {
+        "allow_name_tag_renaming": false,
+        "always_show": false
+      }
+    }
+  }
+}

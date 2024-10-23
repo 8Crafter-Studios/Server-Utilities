@@ -1822,14 +1822,14 @@ export const EquipmentSlots = [
   EquipmentSlot.Feet,
   EquipmentSlot.Mainhand,
   EquipmentSlot.Offhand,
-];
+] as const;
 export const OtherEquipmentSlots = [
   EquipmentSlot.Head,
   EquipmentSlot.Chest,
   EquipmentSlot.Legs,
   EquipmentSlot.Feet,
   EquipmentSlot.Offhand,
-];
+] as const;
 export const JunkItemTypes = [
   "dirt",
   "stick",

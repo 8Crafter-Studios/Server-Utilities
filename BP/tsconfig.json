@@ -8,7 +8,8 @@
       "rootDir": "./src",
       "outDir": "./scripts",
       "paths": {
-        "@minecraft/math.js": ["../node_modules/@minecraft/math"]
+        "@minecraft/math.js": ["../node_modules/@minecraft/math"]/*,
+        "semver": ["C:/Users/ander/github/Debug Sticks/BP/node_modules/semver/index.d.ts"]*/
       },
       "allowJs": true,/*
       "declaration": true,

@@ -247,6 +247,28 @@ declare global {
     interface Error {
         stringify(): string
     }
+    class TimeoutError extends Error {}
+    class ExpireError extends Error {}
+    class NoSelectorMatchesError extends Error {}
+    /**
+     * An error for when the storage of something is full.
+     * An example use case for this is for the a player
+     * is selling an item at another player's player shop,
+     * but the owner of the shop is out of storage inside of their
+     * recieved player shop items storage entity's inventory. 
+     * @since 1.23.0-preview.20+BUILD.1 
+     * @since 10/03/2024 1:48 PM
+     */
+    class StorageFullError extends Error {}
+    /**
+     * An error for when something could not be parsed.
+     * An example use case for this is when the thing
+     * being parsed has a higher format version than
+     * the current format version.
+     * @since 1.26.0-preview.20+BUILD.1 
+     * @since 10/22/2024 5:48:28 PM
+     */
+    class ParseError extends Error {}
     namespace globalThis {
         var beforeInitializeTick: number;
         var initializeTick: number;
@@ -320,6 +342,14 @@ declare global {
          * @see {@link modules.colorCore}
          */
         static get colorCore(): typeof globalThis.modules.colorCore
+        /**
+         * @see {@link modules.semver.SemVer}
+         */
+        static get SemVer(): typeof globalThis.modules.semver.SemVer
+        /**
+         * @see {@link modules.semver}
+         */
+        static get semver(): typeof globalThis.modules.semver
         /**
          * @see {@link globalThis}
          */
