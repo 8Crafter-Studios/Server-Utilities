@@ -326,6 +326,8 @@ declare global {
         }>
         function waitTick(): Promise<void>
         function waitTicks(ticks?: number): Promise<void>
+        function testForObjectExtension(objectToTest: object, base: object): boolean
+        function testForObjectTypeExtension(objectToTest: object, base: object): boolean
     }
     class globalThis {
         static get overworld(): Dimension&{typeId: "minecraft:overworld"};
@@ -1574,3 +1576,14 @@ globalThis.completeGeneratorB = async function completeGeneratorB<T, TReturn, TN
 }
 globalThis.waitTick = async function waitTick(): Promise<void>{return new Promise(resolve => system.run(()=>resolve(void null)))}
 globalThis.waitTicks = async function waitTicks(ticks: number=1): Promise<void>{return new Promise(resolve => system.runTimeout(()=>resolve(void null), ticks))}
+globalThis.testForObjectExtension = function testForObjectExtension(objectToTest: object, base: object){return Object.entries(base).every(v=>Object.keys(objectToTest).includes(v[0])?Object.entries(objectToTest).find(c=>c[0]==v[0])[1]==v[1]:false)}
+globalThis.testForObjectTypeExtension = function testForObjectTypeExtension(
+    objectToTest: object,
+    base: object
+) {
+    return Object.entries(base).every((v) =>
+        Object.keys(objectToTest).includes(v[0])
+            ? v[1].startsWith("[object ") ? Object.entries(objectToTest).find((c) => c[0] == v[0])[1]?.constructor?.name == v[1].slice(8, -1) : typeof Object.entries(objectToTest).find((c) => c[0] == v[0])[1] == v[1]
+            : false
+    );
+};

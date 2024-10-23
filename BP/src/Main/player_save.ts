@@ -1,4 +1,4 @@
-import { EquipmentSlot, type Enchantment, type Vector3, Dimension, type Vector2, type DimensionLocation, GameMode, world, Player, system, MemoryTier, PlatformType, StructureSaveMode } from "@minecraft/server";
+import { EquipmentSlot, type Enchantment, type Vector3, Dimension, type Vector2, type DimensionLocation, GameMode, world, Player, system, MemoryTier, PlatformType, StructureSaveMode, ItemStack } from "@minecraft/server";
 import { format_version, config } from "Main";
 import { ban } from "./ban";
 import { listoftransformrecipes } from "transformrecipes";
@@ -218,7 +218,18 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         );
         return savedPlayerData.saveId ?? `player:${savedPlayerData.id}`;
     }
-    static saveInventory(player: Player) {
+    static saveInventory(player: Player, options: {rethrowErrorInFinally?: boolean, bypassParameterTypeChecks?: boolean} = {rethrowErrorInFinally: true, bypassParameterTypeChecks: false}) {
+        if(!(options.bypassParameterTypeChecks??false)){
+            if(typeof options != "object"){
+                throw new SyntaxError(`Invalid value passed to the options parameter (args[1]), expected type of "object" but got type of ${JSON.stringify(typeof options)} instead.`)
+            }
+            if(options===null){
+                throw new SyntaxError(`Invalid value passed to the options parameter (args[1]), value cannot be null.`)
+            }
+            if(player?.constructor?.name!="Player"){
+                throw new SyntaxError(`Invalid value passed to the player parameter (args[0]), expected Player but got ${typeof player == "object" ? player?.constructor?.name??tryget(()=>JSON.stringify(player))??"?" : typeof player}} instead.`)
+            }
+        }
         const entity = player.dimension.spawnEntity(
             "andexdb:player_inventory_save_storage",
             Vector.add(Vector.floor(player.location), {
@@ -290,11 +301,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
                 }
             );
         } catch (e) {
-            try {
-                player.sendMessage(e + " " + e?.stack);
-            } catch {
-                console.error(e, e?.stack);
-            }
+            var error = e;
         } finally {
             try {
                 otherEntities.forEach((v, i) =>
@@ -304,7 +311,122 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             try {
                 entity.remove();
             } catch {}
+            if((options.rethrowErrorInFinally??true)&&!!error){
+                throw error;
+            }
         }
+    }
+    static getSavedInventory(playerId: string, sourceLoc: DimensionLocation, options: {rethrowErrorInFinally?: boolean, bypassParameterTypeChecks?: boolean} = {rethrowErrorInFinally: true, bypassParameterTypeChecks: false}) {
+        if(!(options.bypassParameterTypeChecks??false)){
+            if(typeof playerId != "string"){
+                throw new SyntaxError(`Invalid value passed to the playerId parameter (args[0]), expected type of "string" but got type of ${JSON.stringify(typeof options)} instead.`)
+            }
+            if(playerId===null){
+                throw new SyntaxError(`Invalid value passed to the playerId parameter (args[0]), value cannot be null.`)
+            }
+            if(typeof options != "object"){
+                throw new SyntaxError(`Invalid value passed to the options parameter (args[2]), expected type of "object" but got type of ${JSON.stringify(typeof options)} instead.`)
+            }
+            if(options===null){
+                throw new SyntaxError(`Invalid value passed to the options parameter (args[2]), value cannot be null.`)
+            }
+            if(typeof sourceLoc != "object"){
+                throw new SyntaxError(`Invalid value passed to the sourceLoc parameter (args[1]), expected type of "object" but got type of ${JSON.stringify(typeof sourceLoc)} instead.`)
+            }
+            if(sourceLoc===null){
+                throw new SyntaxError(`Invalid value passed to the sourceLoc parameter (args[1]), value cannot be null.`)
+            }
+            if(!testForObjectTypeExtension(sourceLoc, {x: "number", y: "number", z: "number", dimension: "[object Dimension]"})){
+                throw new SyntaxError(`Invalid value passed to the sourceLoc parameter (args[1]), expected DimensionLocation ({x: number, y: number, z: number, dimension: Dimension}) but got {${JSON.stringify(Object.entries(sourceLoc).map(v=>`${v[0]}: ${typeof v[1] == "object" ? v[1]?.constructor?.name??tryget(()=>JSON.stringify(v[1]))??"?" : typeof v[1]}`).join(", "))}} instead.`)
+            }
+        }
+        const items: {
+            Head?: ItemStack|undefined;
+            Chest?: ItemStack|undefined;
+            Legs?: ItemStack|undefined;
+            Feet?: ItemStack|undefined;
+            Mainhand?: ItemStack|undefined;
+            Offhand?: ItemStack|undefined;
+            Cursor?: ItemStack|undefined;
+            0?: ItemStack|undefined;
+            1?: ItemStack|undefined;
+            2?: ItemStack|undefined;
+            3?: ItemStack|undefined;
+            4?: ItemStack|undefined;
+            5?: ItemStack|undefined;
+            6?: ItemStack|undefined;
+            7?: ItemStack|undefined;
+            8?: ItemStack|undefined;
+            9?: ItemStack|undefined;
+            10?: ItemStack|undefined;
+            11?: ItemStack|undefined;
+            12?: ItemStack|undefined;
+            13?: ItemStack|undefined;
+            14?: ItemStack|undefined;
+            15?: ItemStack|undefined;
+            16?: ItemStack|undefined;
+            17?: ItemStack|undefined;
+            18?: ItemStack|undefined;
+            19?: ItemStack|undefined;
+            20?: ItemStack|undefined;
+            21?: ItemStack|undefined;
+            22?: ItemStack|undefined;
+            23?: ItemStack|undefined;
+            24?: ItemStack|undefined;
+            25?: ItemStack|undefined;
+            26?: ItemStack|undefined;
+            27?: ItemStack|undefined;
+            28?: ItemStack|undefined;
+            29?: ItemStack|undefined;
+            30?: ItemStack|undefined;
+            31?: ItemStack|undefined;
+            32?: ItemStack|undefined;
+            33?: ItemStack|undefined;
+            34?: ItemStack|undefined;
+            35?: ItemStack|undefined;
+        } = {};
+        world.structureManager.place(
+            "player_inventory_save_storage:" + playerId,
+            sourceLoc.dimension,
+            {
+                x: sourceLoc.x.floor(),
+                y: sourceLoc.dimension.heightRange.max - 2,
+                z: sourceLoc.z.floor(),
+            },
+            {
+                includeBlocks: false,
+                includeEntities: true,
+            }
+        );
+        const entity = sourceLoc.dimension.getEntitiesAtBlockLocation(Vector.add(sourceLoc, {x: 0, y: 10, z: 0})).find(v=>tryget(()=>String(v.getDynamicProperty("andexdb:playerInventorySaveStoragePlayerID")))==playerId)
+        try {
+            const ei = entity.inventory.container
+            for(let i = 0; i<36; i++){
+                try{
+                    items[i]=ei.getItem(i)
+                }catch(e){}
+            }
+            for(let i = 0; i<6; i++){
+                try{
+                    items[[EquipmentSlots][String(i)]]=ei.getItem(36+i)
+                }catch(e){}
+            }
+            try{
+                items.Cursor=ei.getItem(42)
+            }catch(e){}
+        } catch (e) {}
+        try {
+        } catch (e) {
+            var error = e;
+        } finally {
+            try {
+                entity.remove();
+            } catch {}
+            if((options.rethrowErrorInFinally??true)&&!!error){
+                throw error;
+            }
+        }
+        return items
     }
     static savePlayer(player: Player) {
         let savedPlayerData: savedPlayerData;

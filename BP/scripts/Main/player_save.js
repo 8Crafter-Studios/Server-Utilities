@@ -1,4 +1,4 @@
-import { EquipmentSlot, Dimension, GameMode, world, Player, system, MemoryTier, PlatformType, StructureSaveMode } from "@minecraft/server";
+import { EquipmentSlot, Dimension, GameMode, world, Player, system, MemoryTier, PlatformType, StructureSaveMode, ItemStack } from "@minecraft/server";
 import { format_version, config } from "Main";
 import { ban } from "./ban";
 import { listoftransformrecipes } from "transformrecipes";
@@ -135,7 +135,18 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         world.setDynamicProperty(savedPlayerData.saveId ?? `player:${savedPlayerData.id}`, JSON.stringify(savedPlayerData));
         return savedPlayerData.saveId ?? `player:${savedPlayerData.id}`;
     }
-    static saveInventory(player) {
+    static saveInventory(player, options = { rethrowErrorInFinally: true, bypassParameterTypeChecks: false }) {
+        if (!(options.bypassParameterTypeChecks ?? false)) {
+            if (typeof options != "object") {
+                throw new SyntaxError(`Invalid value passed to the options parameter (args[1]), expected type of "object" but got type of ${JSON.stringify(typeof options)} instead.`);
+            }
+            if (options === null) {
+                throw new SyntaxError(`Invalid value passed to the options parameter (args[1]), value cannot be null.`);
+            }
+            if (player?.constructor?.name != "Player") {
+                throw new SyntaxError(`Invalid value passed to the player parameter (args[0]), expected Player but got ${typeof player == "object" ? player?.constructor?.name ?? tryget(() => JSON.stringify(player)) ?? "?" : typeof player}} instead.`);
+            }
+        }
         const entity = player.dimension.spawnEntity("andexdb:player_inventory_save_storage", Vector.add(Vector.floor(player.location), {
             x: 0.5,
             y: 10.5,
@@ -196,12 +207,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             });
         }
         catch (e) {
-            try {
-                player.sendMessage(e + " " + e?.stack);
-            }
-            catch {
-                console.error(e, e?.stack);
-            }
+            var error = e;
         }
         finally {
             try {
@@ -212,7 +218,80 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
                 entity.remove();
             }
             catch { }
+            if ((options.rethrowErrorInFinally ?? true) && !!error) {
+                throw error;
+            }
         }
+    }
+    static getSavedInventory(playerId, sourceLoc, options = { rethrowErrorInFinally: true, bypassParameterTypeChecks: false }) {
+        if (!(options.bypassParameterTypeChecks ?? false)) {
+            if (typeof playerId != "string") {
+                throw new SyntaxError(`Invalid value passed to the playerId parameter (args[0]), expected type of "string" but got type of ${JSON.stringify(typeof options)} instead.`);
+            }
+            if (playerId === null) {
+                throw new SyntaxError(`Invalid value passed to the playerId parameter (args[0]), value cannot be null.`);
+            }
+            if (typeof options != "object") {
+                throw new SyntaxError(`Invalid value passed to the options parameter (args[2]), expected type of "object" but got type of ${JSON.stringify(typeof options)} instead.`);
+            }
+            if (options === null) {
+                throw new SyntaxError(`Invalid value passed to the options parameter (args[2]), value cannot be null.`);
+            }
+            if (typeof sourceLoc != "object") {
+                throw new SyntaxError(`Invalid value passed to the sourceLoc parameter (args[1]), expected type of "object" but got type of ${JSON.stringify(typeof sourceLoc)} instead.`);
+            }
+            if (sourceLoc === null) {
+                throw new SyntaxError(`Invalid value passed to the sourceLoc parameter (args[1]), value cannot be null.`);
+            }
+            if (!testForObjectTypeExtension(sourceLoc, { x: "number", y: "number", z: "number", dimension: "[object Dimension]" })) {
+                throw new SyntaxError(`Invalid value passed to the sourceLoc parameter (args[1]), expected DimensionLocation ({x: number, y: number, z: number, dimension: Dimension}) but got {${JSON.stringify(Object.entries(sourceLoc).map(v => `${v[0]}: ${typeof v[1] == "object" ? v[1]?.constructor?.name ?? tryget(() => JSON.stringify(v[1])) ?? "?" : typeof v[1]}`).join(", "))}} instead.`);
+            }
+        }
+        const items = {};
+        world.structureManager.place("player_inventory_save_storage:" + playerId, sourceLoc.dimension, {
+            x: sourceLoc.x.floor(),
+            y: sourceLoc.dimension.heightRange.max - 2,
+            z: sourceLoc.z.floor(),
+        }, {
+            includeBlocks: false,
+            includeEntities: true,
+        });
+        const entity = sourceLoc.dimension.getEntitiesAtBlockLocation(Vector.add(sourceLoc, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:playerInventorySaveStoragePlayerID"))) == playerId);
+        try {
+            const ei = entity.inventory.container;
+            for (let i = 0; i < 36; i++) {
+                try {
+                    items[i] = ei.getItem(i);
+                }
+                catch (e) { }
+            }
+            for (let i = 0; i < 6; i++) {
+                try {
+                    items[[EquipmentSlots][String(i)]] = ei.getItem(36 + i);
+                }
+                catch (e) { }
+            }
+            try {
+                items.Cursor = ei.getItem(42);
+            }
+            catch (e) { }
+        }
+        catch (e) { }
+        try {
+        }
+        catch (e) {
+            var error = e;
+        }
+        finally {
+            try {
+                entity.remove();
+            }
+            catch { }
+            if ((options.rethrowErrorInFinally ?? true) && !!error) {
+                throw error;
+            }
+        }
+        return items;
     }
     static savePlayer(player) {
         let savedPlayerData;

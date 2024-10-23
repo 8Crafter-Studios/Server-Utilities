@@ -7,16 +7,22 @@
       "is_summonable": true,
       "is_experimental": false
     },
+    "component_groups": {
+      "tamed": {
+        "minecraft:is_tamed": {}
+      }
+    },
     "components": {
       "minecraft:collision_box": {
         "height": 0,
         "width": 0
       },
       "minecraft:inventory": {
-        "container_type": "inventory",
-        "can_be_siphoned_from": true,
+        "container_type": "horse",
+        "can_be_siphoned_from": false,
         "inventory_size": 1
       },
+      "minecraft:is_chested": {},
 			"minecraft:physics": {
 				"has_collision": false,
 				"has_gravity": false
@@ -53,6 +59,22 @@
       "minecraft:nameable": {
         "allow_name_tag_renaming": false,
         "always_show": false
+      }
+    },
+    "events": {
+      "andexdb:tame_storage_entity": {
+        "add": {
+          "component_groups": [
+            "tamed"
+          ]
+        }
+      },
+      "andexdb:untame_storage_entity": {
+        "remove": {
+          "component_groups": [
+            "tamed"
+          ]
+        }
       }
     }
   }

@@ -1631,7 +1631,6 @@ export function selectWeightedElement(items, weightProp = "weight") {
         }
     }
 }
-export function testForObjectExtension(a, b) { return Object.entries(b).every(v => Object.keys(a).includes(v[0]) ? Object.entries(a).find(c => c[0] == v[0])[1] == v[1] : false); }
 export function arryTV3(v3Array) { return { x: v3Array[0], y: v3Array[1], z: v3Array[2] }; }
 export function parseNBTFile(nbt) {
     let outputObject = [];

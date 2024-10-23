@@ -1524,7 +1524,6 @@ export function selectWeightedElement(items: {[k: string]: any}[], weightProp: s
         }
     }
 }
-export function testForObjectExtension(a: object, b: object){return Object.entries(b).every(v=>Object.keys(a).includes(v[0])?Object.entries(a).find(c=>c[0]==v[0])[1]==v[1]:false)}
 //((a: Player)=>{})(new executeCommandPlayer(getPlayer("Andexter8")))
 //world.scoreboard.getObjective("mobdamage").addScore(Player.prototype.scoreboardIdentity, 1)
 //world.afterEvents.entityDie.subscribe(event=>{if(event.damageSource?.damagingEntity?.typeId=="minecraft:player"&&((tryget(()=>{let entity = overworld.spawnEntity(event.deadEntity?.typeId, world.getDefaultSpawnLocation()); let r = tryget(()=>entity.runCommand("/execute if entity @s[family=monster] run /scriptevent andexdb:none").successCount); entity.remove(); return r})??0)!=0)){world.scoreboard.getObjective("mobdamage").addScore(event.damageSource.damagingEntity, 1)}else if(event.deadEntity?.typeId=="minecraft:player"){world.scoreboard.getObjective("mobdamage").setScore(event.deadEntity, 0)}})
