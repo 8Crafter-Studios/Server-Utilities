@@ -147,11 +147,11 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
                 throw new SyntaxError(`Invalid value passed to the player parameter (args[0]), expected Player but got ${typeof player == "object" ? player?.constructor?.name ?? tryget(() => JSON.stringify(player)) ?? "?" : typeof player}} instead.`);
             }
         }
-        const entity = player.dimension.spawnEntity("andexdb:player_inventory_save_storage", Vector.add(Vector.floor(player.location), {
-            x: 0.5,
-            y: 10.5,
-            z: 0.5,
-        }));
+        const entity = player.dimension.spawnEntity("andexdb:player_inventory_save_storage", {
+            x: player.x.floor() + 0.5,
+            y: player.dimension.heightRange.max - 1.5,
+            z: player.z.floor() + 0.5,
+        });
         entity.setDynamicProperty("andexdb:playerInventorySaveStoragePlayerID", player.id);
         try {
             const ei = entity.inventory.container;

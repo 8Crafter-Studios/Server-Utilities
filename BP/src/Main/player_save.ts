@@ -232,11 +232,11 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         }
         const entity = player.dimension.spawnEntity(
             "andexdb:player_inventory_save_storage",
-            Vector.add(Vector.floor(player.location), {
-                x: 0.5,
-                y: 10.5,
-                z: 0.5,
-            })
+            {
+                x: player.x.floor()+0.5,
+                y: player.dimension.heightRange.max - 1.5,
+                z: player.z.floor()+0.5,
+            }
         );
         entity.setDynamicProperty(
             "andexdb:playerInventorySaveStoragePlayerID",

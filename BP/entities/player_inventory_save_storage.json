@@ -10,12 +10,24 @@
     "component_groups": {
       "tamed": {
         "minecraft:is_tamed": {}
+      },
+      "hitbox": {
+        "minecraft:collision_box": {
+          "height": 1,
+          "width": 1
+        }
+      },
+      "no_hitbox": {
+        "minecraft:collision_box": {
+          "height": 1,
+          "width": 1
+        }
       }
     },
     "components": {
       "minecraft:collision_box": {
-        "height": 1,
-        "width": 1
+        "height": 0,
+        "width": 0
       },
       "minecraft:health": {
         "value": 1000,
@@ -139,6 +151,30 @@
         "remove": {
           "component_groups": [
             "tamed"
+          ]
+        }
+      },
+      "andexdb:add_hitbox": {
+        "add": {
+          "component_groups": [
+            "hitbox"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "no_hitbox"
+          ]
+        }
+      },
+      "andexdb:remove_hitbox": {
+        "remove": {
+          "component_groups": [
+            "hitbox"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "no_hitbox"
           ]
         }
       }
