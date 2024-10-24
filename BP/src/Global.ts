@@ -329,7 +329,7 @@ declare global {
         function testForObjectExtension(objectToTest: object, base: object): boolean
         function testForObjectTypeExtension(objectToTest: object, base: object): boolean
         var subscribedEvents: {[eventName: string]: Function}
-        var repeatingIntervals: {[intervalName: string]: number}
+        var repeatingIntervals: {worldBorderSystem?: number, protectedAreasRefresher?: number, bannedPlayersChecker?: number, playerDataAutoSave?: number, [intervalName: string]: number}
     }
     class globalThis {
         static get overworld(): Dimension&{typeId: "minecraft:overworld"};
