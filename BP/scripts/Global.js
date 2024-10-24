@@ -3,6 +3,9 @@ import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/serve
 import Decimal from "decimal.js";
 import { MoneySystem } from "ExtraFeatures/money";
 ;
+globalThis.subscribedEvents = {};
+globalThis.repeatingIntervals = {};
+globalThis.tempVariables = {};
 Object.defineProperty(globalThis, 'stack', { get: function stack() { return new Error().stack; } });
 Object.defineProperty(Array.prototype, 'forEachB', {
     value: function forEachB(callbackfn, thisArg) {

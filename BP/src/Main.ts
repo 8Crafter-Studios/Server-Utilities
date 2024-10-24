@@ -58,8 +58,6 @@ import "Main/errors.js";
 import "Main/utilities.js";
 import "@minecraft/math.js";
 export const mainmetaimport = import.meta
-export const subscribedEvents = {} as {[eventName: string]: Function}
-globalThis.tempVariables={}
 export const editorStickMenuOpeningAsyncCancelActionNumbers = {} as {[id: string]: number}
 
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode, LocationOutOfWorldBoundariesError } from "@minecraft/server";
@@ -574,6 +572,8 @@ export class config{
             set playerDataRefreshRate(playerDataRefreshRate: number|undefined){world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate))?5:Math.min(1000, Math.max(1, Number(playerDataRefreshRate??5))))},
             get protectedAreasRefreshRate(){return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 20)},
             set protectedAreasRefreshRate(protectedAreasRefreshRate: number|undefined){world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate))?20:Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate??20))))},
+            get bannedPlayersRefreshRate(){return Number(world.getDynamicProperty("andexdbSettings:bannedPlayersRefreshRate") ?? 20)},
+            set bannedPlayersRefreshRate(bannedPlayersRefreshRate: number|undefined){world.setDynamicProperty("andexdbSettings:bannedPlayersRefreshRate", Number.isNaN(Number(bannedPlayersRefreshRate))?20:Math.min(1000, Math.max(1, Number(bannedPlayersRefreshRate??20))))},
             get debugMode(){return Boolean(world.getDynamicProperty("andexdbSettings:debugMode") ?? false)},
             set debugMode(debugMode: boolean|undefined){world.setDynamicProperty("andexdbSettings:debugMode", debugMode??false)},
             /**

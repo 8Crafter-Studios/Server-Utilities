@@ -55,7 +55,7 @@ export var noBlockBreakAreas: {positive: {dimension: number, from: Vector3, to: 
 noBlockBreakAreas = {positive: [], negative: []}
 export var noBlockPlaceAreas: {positive: {dimension: number, from: Vector3, to: Vector3, mode: 0|1, icon_path?: string}[], negative: {dimension: number, from: Vector3, to: Vector3, mode: 0|1, icon_path?: string}[]}
 noBlockPlaceAreas = {positive: [], negative: []}
-
+/*
 import("Main").then(v=>{try{system.runInterval( () => {
     try{noPistonExtensionAreas = getAreas("noPistonExtensionArea:")} catch(e){console.error(e, e.stack);}; 
     try{noExplosionAreas = getAreas("noExplosionArea:")} catch(e){console.error(e, e.stack);}
@@ -64,7 +64,29 @@ import("Main").then(v=>{try{system.runInterval( () => {
     try{noBlockBreakAreas = getAreas("noBlockBreakArea:")} catch(e){console.error(e, e.stack);}
     try{protectedAreas = getAreas("protectedArea:")} catch(e){console.error(e, e.stack);}
     try{noBlockPlaceAreas = getAreas("noBlockPlaceArea:")} catch(e){console.error(e, e.stack);}
-}, v.config.system.protectedAreasRefreshRate??20)} catch(e){console.error(e, e.stack);}})
+}, v.config.system.protectedAreasRefreshRate??20)} catch(e){console.error(e, e.stack);}})*/
+export async function startProtectedAreasRefresher(){
+    (await import("Main")).config;
+    repeatingIntervals.protectedAreasRefresher=system.runInterval( () => {
+        try{noPistonExtensionAreas = getAreas("noPistonExtensionArea:")} catch(e){console.error(e, e.stack);}; 
+        try{noExplosionAreas = getAreas("noExplosionArea:")} catch(e){console.error(e, e.stack);}
+        try{noInteractAreas = getAreas("noInteractArea:")} catch(e){console.error(e, e.stack);}
+        try{noBlockInteractAreas = getAreas("noBlockInteractArea:")} catch(e){console.error(e, e.stack);}
+        try{noBlockBreakAreas = getAreas("noBlockBreakArea:")} catch(e){console.error(e, e.stack);}
+        try{protectedAreas = getAreas("protectedArea:")} catch(e){console.error(e, e.stack);}
+        try{noBlockPlaceAreas = getAreas("noBlockPlaceArea:")} catch(e){console.error(e, e.stack);}
+    }, config.system.protectedAreasRefreshRate??20)
+};
+export async function stopProtectedAreasRefresher(){
+    try{
+        system.clearRun(repeatingIntervals.protectedAreasRefresher);
+        repeatingIntervals.protectedAreasRefresher=null;
+        return 1;
+    }catch{
+        return 0;
+    }
+};
+startProtectedAreasRefresher();
 export function getType(areaGroup: string, type: number){return areaGroup.split("|").filter((q)=>(q.split(", ")[6] == String(type))).join("|"); }; 
 export function getAreas(prefix: string){
     let a = world.getDynamicPropertyIds().filter((dpi)=>(dpi.startsWith(prefix)))

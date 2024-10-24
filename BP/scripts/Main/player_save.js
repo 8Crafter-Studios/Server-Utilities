@@ -135,7 +135,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         world.setDynamicProperty(savedPlayerData.saveId ?? `player:${savedPlayerData.id}`, JSON.stringify(savedPlayerData));
         return savedPlayerData.saveId ?? `player:${savedPlayerData.id}`;
     }
-    static saveInventory(player, options = { rethrowErrorInFinally: true, bypassParameterTypeChecks: false }) {
+    static async saveInventoryAsync(player, options = { rethrowErrorInFinally: true, bypassParameterTypeChecks: false }) {
         if (!(options.bypassParameterTypeChecks ?? false)) {
             if (typeof options != "object") {
                 throw new SyntaxError(`Invalid value passed to the options parameter (args[1]), expected type of "object" but got type of ${JSON.stringify(typeof options)} instead.`);
@@ -154,18 +154,27 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         });
         entity.setDynamicProperty("andexdb:playerInventorySaveStoragePlayerID", player.id);
         try {
+            var t = Date.now();
             const ei = entity.inventory.container;
             const pi = player.inventory.container;
             const pe = player.equippable;
             for (let i = 0; i < player.inventory.inventorySize; i++) {
+                if (Date.now() - t > 0) {
+                    await waitTick();
+                    t = Date.now();
+                }
                 try {
                     ei.setItem(i, pi.getItem(i));
                 }
                 catch (e) { }
             }
             for (let i = 0; i < 6; i++) {
+                if (Date.now() - t > 0) {
+                    await waitTick();
+                    t = Date.now();
+                }
                 try {
-                    ei.setItem(36 + i, pe.getEquipment([EquipmentSlots][String(i)]));
+                    ei.setItem(36 + i, pe.getEquipment(EquipmentSlots[i]));
                 }
                 catch (e) { }
             }
@@ -223,6 +232,96 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             }
         }
     }
+    static saveInventory(player, options = { rethrowErrorInFinally: true, bypassParameterTypeChecks: false }) {
+        if (!(options.bypassParameterTypeChecks ?? false)) {
+            if (typeof options != "object") {
+                throw new SyntaxError(`Invalid value passed to the options parameter (args[1]), expected type of "object" but got type of ${JSON.stringify(typeof options)} instead.`);
+            }
+            if (options === null) {
+                throw new SyntaxError(`Invalid value passed to the options parameter (args[1]), value cannot be null.`);
+            }
+            if (player?.constructor?.name != "Player") {
+                throw new SyntaxError(`Invalid value passed to the player parameter (args[0]), expected Player but got ${typeof player == "object" ? player?.constructor?.name ?? tryget(() => JSON.stringify(player)) ?? "?" : typeof player}} instead.`);
+            }
+        }
+        const entity = player.dimension.spawnEntity("andexdb:player_inventory_save_storage", {
+            x: player.x.floor() + 0.5,
+            y: player.dimension.heightRange.max - 1.5,
+            z: player.z.floor() + 0.5,
+        });
+        entity.setDynamicProperty("andexdb:playerInventorySaveStoragePlayerID", player.id);
+        try {
+            const ei = entity.inventory.container;
+            const pi = player.inventory.container;
+            const pe = player.equippable;
+            const inventorySize = player.inventory.inventorySize;
+            for (let i = 0; i < inventorySize; i++) {
+                try {
+                    ei.setItem(i, pi.getItem(i));
+                }
+                catch (e) { }
+            }
+            for (let i = 0; i < 6; i++) {
+                try {
+                    ei.setItem(36 + i, pe.getEquipment(EquipmentSlots[i]));
+                }
+                catch (e) { }
+            }
+            try {
+                ei.setItem(42, player.cursorInventory.item);
+            }
+            catch (e) { }
+        }
+        catch (e) { }
+        try {
+            const maxHeight = player.dimension.heightRange.max;
+            /**
+             * This makes the script temporarily teleport the other entities away so that when it saves the storage entity, it can't save and possibly duplicate other entities.
+             */
+            var otherEntities = tryget(() => player.dimension
+                .getEntitiesAtBlockLocation({
+                x: player.x.floor() + 0.5,
+                y: maxHeight - 1.5,
+                z: player.z.floor() + 0.5,
+            })
+                .filter((v) => v.id != entity.id && !(v instanceof Player))) ?? [];
+            var locs = otherEntities.map((v) => v.location);
+            otherEntities.forEach((v) => tryrun(() => v.teleport(Vector.add(v.location, { x: 0, y: 50, z: 0 }))));
+            try {
+                world.structureManager.delete("player_inventory_save_storage:" + player.id);
+            }
+            catch { }
+            world.structureManager.createFromWorld("player_inventory_save_storage:" + player.id, player.dimension, {
+                x: player.x.floor(),
+                y: maxHeight - 2,
+                z: player.z.floor(),
+            }, {
+                x: player.x.floor(),
+                y: maxHeight - 2,
+                z: player.z.floor(),
+            }, {
+                includeBlocks: false,
+                includeEntities: true,
+                saveMode: StructureSaveMode.World,
+            });
+        }
+        catch (e) {
+            var error = e;
+        }
+        finally {
+            try {
+                otherEntities.forEach((v, i) => tryrun(() => v.teleport(locs[i], { keepVelocity: false })));
+            }
+            catch { }
+            try {
+                entity.remove();
+            }
+            catch { }
+            if ((options.rethrowErrorInFinally ?? true) && !!error) {
+                throw error;
+            }
+        }
+    }
     static getSavedInventory(playerId, sourceLoc, options = { rethrowErrorInFinally: true, bypassParameterTypeChecks: false }) {
         if (!(options.bypassParameterTypeChecks ?? false)) {
             if (typeof playerId != "string") {
@@ -248,15 +347,20 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             }
         }
         const items = {};
+        const maxHeight = sourceLoc.dimension.heightRange.max;
         world.structureManager.place("player_inventory_save_storage:" + playerId, sourceLoc.dimension, {
             x: sourceLoc.x.floor(),
-            y: sourceLoc.dimension.heightRange.max - 2,
+            y: maxHeight - 2,
             z: sourceLoc.z.floor(),
         }, {
             includeBlocks: false,
             includeEntities: true,
         });
-        const entity = sourceLoc.dimension.getEntitiesAtBlockLocation(Vector.add(sourceLoc, { x: 0, y: 10, z: 0 })).find(v => tryget(() => String(v.getDynamicProperty("andexdb:playerInventorySaveStoragePlayerID"))) == playerId);
+        const entity = sourceLoc.dimension.getEntitiesAtBlockLocation({
+            x: sourceLoc.x.floor(),
+            y: maxHeight - 2,
+            z: sourceLoc.z.floor(),
+        }).find(v => tryget(() => String(v.getDynamicProperty("andexdb:playerInventorySaveStoragePlayerID"))) == playerId);
         try {
             const ei = entity.inventory.container;
             for (let i = 0; i < 36; i++) {
@@ -267,7 +371,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             }
             for (let i = 0; i < 6; i++) {
                 try {
-                    items[[EquipmentSlots][String(i)]] = ei.getItem(36 + i);
+                    items[EquipmentSlots[i]] = ei.getItem(36 + i);
                 }
                 catch (e) { }
             }
@@ -501,7 +605,23 @@ getBan(banId: string){let banString = String(world.getDynamicProperty(banId)).sp
                 ].sort()[0] == String(a.name.toLowerCase())));
     }
 }
-import("Main").then(v => system.runInterval(() => { if (world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true) {
-    world.getAllPlayers().forEach((p) => { savedPlayer.savePlayer(p); });
-} }, v.config.system.playerDataRefreshRate ?? 5));
+export async function startPlayerDataAutoSave() {
+    (await import("Main")).config;
+    repeatingIntervals.playerDataAutoSave = system.runInterval(() => { if (world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true) {
+        world.getAllPlayers().forEach((p) => { savedPlayer.savePlayer(p); });
+    } }, config.system.playerDataRefreshRate ?? 5);
+}
+;
+export async function stopPlayerDataAutoSave() {
+    try {
+        system.clearRun(repeatingIntervals.playerDataAutoSave);
+        repeatingIntervals.playerDataAutoSave = null;
+        return 1;
+    }
+    catch {
+        return 0;
+    }
+}
+;
+startPlayerDataAutoSave();
 //# sourceMappingURL=player_save.js.map

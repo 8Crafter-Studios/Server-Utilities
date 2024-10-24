@@ -328,6 +328,8 @@ declare global {
         function waitTicks(ticks?: number): Promise<void>
         function testForObjectExtension(objectToTest: object, base: object): boolean
         function testForObjectTypeExtension(objectToTest: object, base: object): boolean
+        var subscribedEvents: {[eventName: string]: Function}
+        var repeatingIntervals: {[intervalName: string]: number}
     }
     class globalThis {
         static get overworld(): Dimension&{typeId: "minecraft:overworld"};
@@ -572,6 +574,9 @@ declare module '@minecraft/server-ui' {
         forceShow(player: Player, timeout?: number): Promise<ActionFormResponse>
     }
 }
+globalThis.subscribedEvents = {} as {[eventName: string]: Function}
+globalThis.repeatingIntervals = {} as {[intervalName: string]: number}
+globalThis.tempVariables={}
 Object.defineProperty(globalThis, 'stack', {get: function stack(){return new Error().stack}});
 Object.defineProperty(Array.prototype, 'forEachB', {
     value: function forEachB<T>(callbackfn: (value: T, index: number, array: T[]) => void, thisArg?: any){
