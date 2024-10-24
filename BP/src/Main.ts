@@ -602,6 +602,8 @@ export class config{/*
              */
             get useLegacyPlayerInventoryDataSaveSystem(){return Boolean(world.getDynamicProperty("andexdbSettings:useLegacyPlayerInventoryDataSaveSystem") ?? false)},
             set useLegacyPlayerInventoryDataSaveSystem(useLegacyPlayerInventoryDataSaveSystem: boolean|undefined){world.setDynamicProperty("andexdbSettings:useLegacyPlayerInventoryDataSaveSystem", useLegacyPlayerInventoryDataSaveSystem??false)},
+            get playerInventoryDataSaveSystemEnabled(){return Boolean(world.getDynamicProperty("andexdbSettings:playerInventoryDataSaveSystemEnabled") ?? true)},
+            set playerInventoryDataSaveSystemEnabled(playerInventoryDataSaveSystemEnabled: boolean|undefined){world.setDynamicProperty("andexdbSettings:playerInventoryDataSaveSystemEnabled", playerInventoryDataSaveSystemEnabled??true)},
         }
     }
     static reset(){

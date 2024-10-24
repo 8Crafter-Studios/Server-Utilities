@@ -407,7 +407,6 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             id: player.id,
             isOp: player.isOp(),
             tags: player.getTags(),
-            items: { inventory: [], equipment: [], ender_chest: [] },
             selectedSlotIndex: player.selectedSlotIndex,
             format_version: format_version,
             player_save_format_version: player_save_format_version,
@@ -427,7 +426,8 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             savedPlayerData.saveId ?? "player:" + savedPlayerData.id;
         savedPlayerData.format_version =
             savedPlayerData.format_version ?? format_version;
-        if (config.system.useLegacyPlayerInventoryDataSaveSystem || semver.satisfies(savedPlayerData.player_save_format_version, "<1.5.0", { includePrerelease: true })) {
+        if ((config.system.useLegacyPlayerInventoryDataSaveSystem || semver.satisfies(savedPlayerData.player_save_format_version, "<1.5.0", { includePrerelease: true })) && config.system.playerInventoryDataSaveSystemEnabled) {
+            savedPlayerData.items = { inventory: [], equipment: [], ender_chest: [] };
             for (let i = 0; i < player.getComponent("inventory").inventorySize; i++) {
                 if (player
                     .getComponent("inventory")
