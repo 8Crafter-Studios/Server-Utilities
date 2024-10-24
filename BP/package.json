@@ -6,6 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "hintConfig": {
+    "hints": {
+        "1241": "off"
+    }
+  },
   "keywords": [],
   "author": "8Crafter",
   "license": "ISC",

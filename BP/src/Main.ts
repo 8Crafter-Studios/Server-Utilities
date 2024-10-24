@@ -4,6 +4,26 @@ globalThis.beforeScriptStartTick=system.currentTick
 export const format_version = "1.26.0-preview.20+BUILD.1";
 import "JSONB"
 import "Global"
+function first() {
+    console.log("first(): factory evaluated");
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+      console.log("first(): called");
+    };
+  }
+   
+  function second() {
+    console.log("second(): factory evaluated");
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+      console.log("second(): called");
+    };
+  }
+   
+  class ExampleClass {
+    @first()
+    @second()
+    method() {}
+  }
+  
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -580,7 +600,21 @@ export class config{
              * It is reccommended to leave this set to false.
              */
             get allowWatchdogTerminationCrash(){return Boolean(world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") ?? false)},
-            set allowWatchdogTerminationCrash(allowWatchdogTerminationCrash: boolean|undefined){world.setDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash", allowWatchdogTerminationCrash??false)}
+            set allowWatchdogTerminationCrash(allowWatchdogTerminationCrash: boolean|undefined){world.setDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash", allowWatchdogTerminationCrash??false)},
+            /**
+             * It is reccommended to leave this set to false.
+             */
+            get hideWatchdogTerminationCrashEnabledWarningsOnStartup(){return Boolean(world.getDynamicProperty("andexdbSettings:hideWatchdogTerminationCrashEnabledWarningsOnStartup") ?? false)},
+            set hideWatchdogTerminationCrashEnabledWarningsOnStartup(hideWatchdogTerminationCrashEnabledWarningsOnStartup: boolean|undefined){world.setDynamicProperty("andexdbSettings:hideWatchdogTerminationCrashEnabledWarningsOnStartup", hideWatchdogTerminationCrashEnabledWarningsOnStartup??false)},
+            /**
+             * It is reccommended to leave this set to false.
+             * @default false
+             * @decorator
+             * also
+             * false
+             */
+            get useLegacyPlayerInventoryDataSaveSystem(){return Boolean(world.getDynamicProperty("andexdbSettings:useLegacyPlayerInventoryDataSaveSystem") ?? false)},
+            set useLegacyPlayerInventoryDataSaveSystem(useLegacyPlayerInventoryDataSaveSystem: boolean|undefined){world.setDynamicProperty("andexdbSettings:useLegacyPlayerInventoryDataSaveSystem", useLegacyPlayerInventoryDataSaveSystem??false)},
         }
     }
     static reset(){

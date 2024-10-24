@@ -1,9 +1,40 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import { system } from "@minecraft/server";
 globalThis.beforeScriptStartTick = system.currentTick;
 export const format_version = "1.26.0-preview.20+BUILD.1";
 import "JSONB";
 import "Global";
+function first() {
+    console.log("first(): factory evaluated");
+    return function (target, propertyKey, descriptor) {
+        console.log("first(): called");
+    };
+}
+function second() {
+    console.log("second(): factory evaluated");
+    return function (target, propertyKey, descriptor) {
+        console.log("second(): called");
+    };
+}
+class ExampleClass {
+    method() { }
+}
+__decorate([
+    first(),
+    second(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ExampleClass.prototype, "method", null);
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -554,7 +585,21 @@ export class config {
              * It is reccommended to leave this set to false.
              */
             get allowWatchdogTerminationCrash() { return Boolean(world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") ?? false); },
-            set allowWatchdogTerminationCrash(allowWatchdogTerminationCrash) { world.setDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash", allowWatchdogTerminationCrash ?? false); }
+            set allowWatchdogTerminationCrash(allowWatchdogTerminationCrash) { world.setDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash", allowWatchdogTerminationCrash ?? false); },
+            /**
+             * It is reccommended to leave this set to false.
+             */
+            get hideWatchdogTerminationCrashEnabledWarningsOnStartup() { return Boolean(world.getDynamicProperty("andexdbSettings:hideWatchdogTerminationCrashEnabledWarningsOnStartup") ?? false); },
+            set hideWatchdogTerminationCrashEnabledWarningsOnStartup(hideWatchdogTerminationCrashEnabledWarningsOnStartup) { world.setDynamicProperty("andexdbSettings:hideWatchdogTerminationCrashEnabledWarningsOnStartup", hideWatchdogTerminationCrashEnabledWarningsOnStartup ?? false); },
+            /**
+             * It is reccommended to leave this set to false.
+             * @default false
+             * @decorator
+             * also
+             * false
+             */
+            get useLegacyPlayerInventoryDataSaveSystem() { return Boolean(world.getDynamicProperty("andexdbSettings:useLegacyPlayerInventoryDataSaveSystem") ?? false); },
+            set useLegacyPlayerInventoryDataSaveSystem(useLegacyPlayerInventoryDataSaveSystem) { world.setDynamicProperty("andexdbSettings:useLegacyPlayerInventoryDataSaveSystem", useLegacyPlayerInventoryDataSaveSystem ?? false); },
         };
     }
     static reset() {

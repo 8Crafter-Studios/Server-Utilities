@@ -5297,7 +5297,52 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^top$/): 
             eventData.cancel = true;
-            try{system.run(()=>{let block = getTopSolidBlock(player.dimension.getBlock({x: player.location.x, y: Math.min(player.location.y, player.dimension.heightRange.max), z: player.location.z}), player.dimension); if(block != undefined){player.teleport({x: player.location.x, y: block.y+1, z: player.location.z}, {}); }else{eventData.sender.sendMessage("§4No block could be found. ")}; eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z)}); })}catch(e){player.sendError("§c" + e + e.stack, true)}
+            try {
+                system.run(() => {
+                    let block = player.dimension.getTopmostBlock(player);
+                    if (block != undefined) {
+                        player.teleport(
+                            {
+                                x: player.location.x,
+                                y: block.y + 1,
+                                z: player.location.z,
+                            },
+                            {}
+                        );
+                    } else {
+                        eventData.sender.sendMessage(
+                            "§4No block could be found. "
+                        );
+                    }
+                    eventData.sender.sendMessage(
+                        "Teleported to highest block at coordinates: " +
+                            player.location.x +
+                            ", " +
+                            player.location.y +
+                            ", " +
+                            player.location.z
+                    );
+                    targetSelectorAllListE(
+                        "@a [tag=canSeeCustomChatCommandFeedbackFromMods]",
+                        player.location.x +
+                            " " +
+                            player.location.y +
+                            " " +
+                            player.location.z
+                    ).forEach((entity) => {
+                        (entity as Player).sendMessage(
+                            "Teleported to highest block at coordinates: " +
+                                player.location.x +
+                                ", " +
+                                player.location.y +
+                                ", " +
+                                player.location.z
+                        );
+                    });
+                });
+            } catch (e) {
+                player.sendError("§c" + e + e.stack, true);
+            }
         break; 
         case !!switchTest.match(/^printlayers$/): 
             eventData.cancel = true;
@@ -5305,12 +5350,74 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^thru$/): {
             eventData.cancel = true;
+            player.dimension.getBlockAbove(player.location)
+            // player.dimension.getBlockFromRay(player.location, player.getViewDirection(), {includeTypes: ["minecraft:air", "air"]})
             let la = player.getBlockFromViewDirection()
             if(!!!la){player.sendMessageB("§cError: No obstruction found to go through. ")}else{
-            let l = mcMath.Vector3Utils.add(mcMath.Vector3Utils.add(la.block, mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 0.01)), mcMath.Vector3Utils.scale(la.faceLocation, 0.98))
-            let rot = player.getRotation()
-            for(let i = 0; i < 100 && !(tryget(()=>player.dimension.getBlock(l).isAir)&&(tryget(()=>player.dimension.getBlock(l).above().isAir)||tryget(()=>player.dimension.getBlock(l).below().isAir))) && l.y>=(player.dimension.heightRange.min-1); i++){l = caretNotationC(l, mcMath.VECTOR3_FORWARD, rot)}
-            l.y<=(player.dimension.heightRange.min+2)?player.sendMessageB("§cError: The other side of this obstruction is void, if you want to be able to go to the other side even if it is in the void then just use \\vthru. "):(player.dimension.getBlock(l).isAir&&player.dimension.getBlock(l).below().isAir)?tryrun(()=>{try{srun(()=>{player.teleport(roundVector3ToMiddleOfBlockFloorY(player.dimension.getBlock(l).below().location))})}catch(e){player.sendError("§c" + e + e.stack, true)}}):(player.dimension.getBlock(l).isAir&&player.dimension.getBlock(l).above().isAir)?tryrun(()=>{try{srun(()=>{player.teleport(roundVector3ToMiddleOfBlock(player.dimension.getBlock(l).location))})}catch(e){player.sendError("§c" + e + e.stack, true)}}):player.sendMessageB("§cError: Unable to find other side of obstruction. ")}
+                let l = mcMath.Vector3Utils.add(
+                    mcMath.Vector3Utils.add(
+                        la.block,
+                        mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 0.01)
+                    ),
+                    mcMath.Vector3Utils.scale(la.faceLocation, 0.98)
+                );
+                let rot = player.getRotation();
+                for (
+                    let i = 0;
+                    i < 100 &&
+                    !(
+                        tryget(() => player.dimension.getBlock(l).isAir) &&
+                        (tryget(
+                            () => player.dimension.getBlock(l).above().isAir
+                        ) ||
+                            tryget(
+                                () => player.dimension.getBlock(l).below().isAir
+                            ))
+                    ) &&
+                    l.y >= player.dimension.heightRange.min - 1;
+                    i++
+                ) {
+                    l = caretNotationC(l, mcMath.VECTOR3_FORWARD, rot);
+                }
+                l.y <= player.dimension.heightRange.min + 2
+                    ? player.sendMessageB(
+                          "§cError: The other side of this obstruction is void, if you want to be able to go to the other side even if it is in the void then just use \\vthru. "
+                      )
+                    : player.dimension.getBlock(l).isAir &&
+                      player.dimension.getBlock(l).below().isAir
+                    ? tryrun(() => {
+                          try {
+                              srun(() => {
+                                  player.teleport(
+                                      roundVector3ToMiddleOfBlockFloorY(
+                                          player.dimension.getBlock(l).below()
+                                              .location
+                                      )
+                                  );
+                              });
+                          } catch (e) {
+                              player.sendError("§c" + e + e.stack, true);
+                          }
+                      })
+                    : player.dimension.getBlock(l).isAir &&
+                      player.dimension.getBlock(l).above().isAir
+                    ? tryrun(() => {
+                          try {
+                              srun(() => {
+                                  player.teleport(
+                                      roundVector3ToMiddleOfBlock(
+                                          player.dimension.getBlock(l).location
+                                      )
+                                  );
+                              });
+                          } catch (e) {
+                              player.sendError("§c" + e + e.stack, true);
+                          }
+                      })
+                    : player.sendMessageB(
+                          "§cError: Unable to find other side of obstruction. "
+                      );
+            }
             
         }
         break; 
@@ -5994,6 +6101,14 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 }
             })
         }
+        break; 
+        case !!switchTest.match(/^stopalldbintervals$/): 
+            eventData.cancel = true;
+            try{Object.values(repeatingIntervals).forEach(v=>system.clearRun(v)); }catch(e){player.sendError("§c" + e + e.stack, true)}
+        break; 
+        case !!switchTest.match(/^stopallsaintervals$/): 
+            eventData.cancel = true;
+            try{player.runCommandAsync("/scriptevent andexsa:clearRepeatingIntervals"); }catch(e){player.sendError("§c" + e + e.stack, true)}
         break; 
         case !!switchTest.match(/^datapickblock$/)||!!switchTest.match(/^dpb$/): 
             eventData.cancel = true;

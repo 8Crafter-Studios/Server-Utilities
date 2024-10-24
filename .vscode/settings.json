@@ -4,6 +4,9 @@
     "typescript.tsserver.maxTsServerMemory": 40000,
     "editor.largeFileOptimizations": false/*,
     "files.exclude": {
-      "**//*node_modules": true
-    }*/
+      ".git/objects": true
+    }*/,
+    "files.exclude": {
+     "**/.git": false
+    }
 }

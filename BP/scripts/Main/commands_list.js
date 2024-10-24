@@ -5390,6 +5390,59 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "stopalldbintervals",
+        escregexp: {
+            v: "^stopalldbintervals$"
+        },
+        formats: [
+            {
+                format: "stopalldbintervals"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "Stops all known intervals from system.runInterval() for this add-on.",
+        category: [
+            "system"
+        ],
+        commandSettingsId: "built-inCommandSettings:stopalldbintervals",
+        deprecated: true,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
+        commandName: "stopallsaintervals",
+        escregexp: {
+            v: "^stopallsaintervals$"
+        },
+        formats: [
+            {
+                format: "stopallsaintervals"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "Stops all known intervals from system.runInterval() for the entity scale add-on if it is active and is on version 1.14.0 or newer.",
+        category: [
+            "system",
+            "Entity Scale Add-On"
+        ],
+        commandSettingsId: "built-inCommandSettings:stopallsaintervals",
+        deprecated: true,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "stopgen",
         escregexp: {
             v: "^stopgen$"
