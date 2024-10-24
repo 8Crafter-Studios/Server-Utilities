@@ -1,31 +1,64 @@
-function loggedMethod<This, Args extends any[], Return>(
-    target: (this: This, ...args: Args) => Return,
-    context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
-) {
-    const methodName = String(context.name);
+function loggedMethod(originalMethod: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    const methodName = originalMethod?.name;
 
-    function replacementMethod(this: This, ...args: Args): Return {
-        console.log(`LOG: Entering method '${methodName}'.`)
-        const result = target.call(this, ...args);
-        console.log(`LOG: Exiting method '${methodName}'.`)
-        return result;
-    }
-
-    return replacementMethod;
-}
-globalThis.loggedMethod=loggedMethod
-function logs(headMessage = "LOG:") {
-    return function actualDecorator(originalMethod: any, context: ClassMethodDecoratorContext) {
-        const methodName = String(context.name);
-
-        function replacementMethod(this: any, ...args: any[]) {
-            console.log(`${headMessage} Entering method '${methodName}'.`)
-            const result = originalMethod.call(this, ...args);
-            console.log(`${headMessage} Exiting method '${methodName}'.`)
+    if(!!descriptor.value){
+        console.log(1)
+        const originalValue = descriptor.value
+        descriptor.value=function replacementMethod(this: any, ...args: any[]) {
+            console.log(`LOG: Entering method ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}.`)
+            const result = originalValue.call(this, ...args);
+            console.log(`LOG: Exiting method ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}.`)
             return result;
         }
-
-        return replacementMethod;
     }
+    if(!!descriptor.get){
+        console.log(2)
+        const originalGet = descriptor.get
+        descriptor.get=function replacementMethod(this: any, ...args: any[]) {
+            console.log(`LOG: Entering getter ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}.`)
+            const result = originalGet.call(this, ...args);
+            console.log(`LOG: Exiting getter ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}.`)
+            return result;
+        }
+    }
+    if(!!descriptor.set){
+        console.log(3)
+        const originalSet = descriptor.set
+        descriptor.set=function replacementMethod(this: any, ...args: any[]) {
+            console.log(`LOG: Entering setter ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}.`)
+            const result = originalSet.call(this, ...args);
+            console.log(`LOG: Exiting setter ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}.`)
+            return result;
+        }
+    }/*
+    function replacementMethod(this: any, ...args: any[]) {
+        console.log(`LOG${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}: Entering method '${methodName}'.`)
+        const result = originalMethod.call(this, ...args);
+        console.log(`LOG${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}: Exiting method '${methodName}'.`)
+        return result;
+    }
+    return replacementMethod as typeof originalMethod;*/
 }
 globalThis.loggedMethod=loggedMethod
+function log(value: any, propertyKey?: string){
+    console.log(`LOG ${!!propertyKey?`<${propertyKey}>`:""}: ${JSONB.stringify(value, undefined, 0, {bigint: true, function: true, get: true, set: true, Infinity: true, NaN: true, NegativeInfinity: true, undefined: true})}`)
+}
+globalThis.log=log
+function configurable(value: boolean) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        descriptor.configurable = value;
+    };
+}
+globalThis.configurable=configurable
+function enumerable(value: boolean) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        descriptor.enumerable = value;
+    };
+}
+globalThis.enumerable=enumerable
+function writable(value: boolean) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        descriptor.writable = value;
+    };
+}
+globalThis.writable=writable

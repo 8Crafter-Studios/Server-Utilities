@@ -13,28 +13,6 @@ globalThis.beforeScriptStartTick = system.currentTick;
 export const format_version = "1.26.0-preview.20+BUILD.1";
 import "JSONB";
 import "Global";
-function first() {
-    console.log("first(): factory evaluated");
-    return function (target, propertyKey, descriptor) {
-        console.log("first(): called");
-    };
-}
-function second() {
-    console.log("second(): factory evaluated");
-    return function (target, propertyKey, descriptor) {
-        console.log("second(): called");
-    };
-}
-class ExampleClass {
-    method() { }
-}
-__decorate([
-    first(),
-    second(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], ExampleClass.prototype, "method", null);
 /*
 import "AllayTests.js";
 import "APITests.js";*/
@@ -88,6 +66,7 @@ import "Main/commands_list.js";
 import "Main/errors.js";
 import "Main/utilities.js";
 import "@minecraft/math.js";
+import "GlobalDecorators";
 export const mainmetaimport = import.meta;
 export const editorStickMenuOpeningAsyncCancelActionNumbers = {};
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode, LocationOutOfWorldBoundariesError } from "@minecraft/server";
@@ -288,6 +267,9 @@ export const gt = globalThis;
  * A class containing the configuration information for the add-on.
  */
 export class config {
+    greet() {
+        console.log(`Hello, my name is 1.`);
+    }
     static get chatCommandsEnabled() { return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled") ?? true); }
     static set chatCommandsEnabled(enabled) { world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled ?? true); }
     static get chatCommandPrefix() { return String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"); }
@@ -606,6 +588,12 @@ export class config {
         // Object.entries(Object.getOwnPropertyDescriptors(this)).filter(v=>v[1].hasOwnProperty("get")).flatMap(v=>v[1].hasOwnProperty("set")?v[1]:v[1]["get"]())
     }
 }
+__decorate([
+    loggedMethod,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], config.prototype, "greet", null);
 export class worldPlayers {
     static get savedPlayers() {
         return savedPlayer.getSavedPlayers();

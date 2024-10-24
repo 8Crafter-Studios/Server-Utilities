@@ -4,25 +4,6 @@ globalThis.beforeScriptStartTick=system.currentTick
 export const format_version = "1.26.0-preview.20+BUILD.1";
 import "JSONB"
 import "Global"
-function first() {
-    console.log("first(): factory evaluated");
-    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-      console.log("first(): called");
-    };
-  }
-   
-  function second() {
-    console.log("second(): factory evaluated");
-    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-      console.log("second(): called");
-    };
-  }
-   
-  class ExampleClass {
-    @first()
-    @second()
-    method() {}
-  }
   
 /*
 import "AllayTests.js";
@@ -77,6 +58,7 @@ import "Main/commands_list.js";
 import "Main/errors.js";
 import "Main/utilities.js";
 import "@minecraft/math.js";
+import "GlobalDecorators";
 export const mainmetaimport = import.meta
 export const editorStickMenuOpeningAsyncCancelActionNumbers = {} as {[id: string]: number}
 
@@ -302,6 +284,10 @@ export const gt = globalThis
  * A class containing the configuration information for the add-on. 
  */
 export class config{
+    @loggedMethod
+    greet() {
+        console.log(`Hello, my name is 1.`);
+    }
     static get chatCommandsEnabled(){return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled")??true)}
     static set chatCommandsEnabled(enabled: boolean|undefined){world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled??true)}
     static get chatCommandPrefix(){return String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix")??"\\")}
