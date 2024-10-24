@@ -283,11 +283,12 @@ export const gt = globalThis
 /**
  * A class containing the configuration information for the add-on. 
  */
-export class config{
+export class config{/*
+    @log
     @loggedMethod
     greet() {
         console.log(`Hello, my name is 1.`);
-    }
+    }*/
     static get chatCommandsEnabled(){return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled")??true)}
     static set chatCommandsEnabled(enabled: boolean|undefined){world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled??true)}
     static get chatCommandPrefix(){return String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix")??"\\")}

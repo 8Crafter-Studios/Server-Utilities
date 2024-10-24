@@ -2,27 +2,24 @@ function loggedMethod(originalMethod: any, propertyKey: string, descriptor: Prop
     const methodName = originalMethod?.name;
 
     if(!!descriptor.value){
-        console.log(1)
         const originalValue = descriptor.value
         descriptor.value=function replacementMethod(this: any, ...args: any[]) {
             console.log(`LOG: Entering method ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}.`)
             const result = originalValue.call(this, ...args);
-            console.log(`LOG: Exiting method ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}.`)
+            console.log(`LOG: Exiting method ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}. Value type is ${typeof result == "object" ? result?.constructor?.name??"null" : typeof result}. ${tryget(()=>"Value is "+JSONB.stringify(result, undefined, 0, {bigint: true, function: true, get: true, set: true, Infinity: true, NaN: true, NegativeInfinity: true, undefined: true}))??"Unable to get the returned value"}.`)
             return result;
         }
     }
     if(!!descriptor.get){
-        console.log(2)
         const originalGet = descriptor.get
         descriptor.get=function replacementMethod(this: any, ...args: any[]) {
             console.log(`LOG: Entering getter ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}.`)
             const result = originalGet.call(this, ...args);
-            console.log(`LOG: Exiting getter ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}.`)
+            console.log(`LOG: Exiting getter ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}. Value type is ${typeof result == "object" ? result?.constructor?.name??"null" : typeof result}. ${tryget(()=>"Value is "+JSONB.stringify(result, undefined, 0, {bigint: true, function: true, get: true, set: true, Infinity: true, NaN: true, NegativeInfinity: true, undefined: true}))??"Unable to get the returned value"}.`)
             return result;
         }
     }
     if(!!descriptor.set){
-        console.log(3)
         const originalSet = descriptor.set
         descriptor.set=function replacementMethod(this: any, ...args: any[]) {
             console.log(`LOG: Entering setter ${!!methodName?` <(${methodName})${!!propertyKey?` ${propertyKey}`:""}>`:!!propertyKey?` <${propertyKey}>`:""}.`)

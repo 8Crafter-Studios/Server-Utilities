@@ -1,4 +1,4 @@
-import { EquipmentSlot, Dimension, GameMode, world, Player, system, MemoryTier, PlatformType, StructureSaveMode, ItemStack } from "@minecraft/server";
+import { EquipmentSlot, Dimension, GameMode, world, Player, system, MemoryTier, PlatformType, StructureSaveMode, ItemStack, PlayerInputPermissions } from "@minecraft/server";
 import { format_version, config } from "Main";
 import { ban } from "./ban";
 import { listoftransformrecipes } from "transformrecipes";
@@ -39,7 +39,7 @@ uis;
 playersave;
 spawnprot;
 mcMath;
-export const player_save_format_version = "1.4.0";
+export const player_save_format_version = "1.5.0-beta.7";
 export class savedPlayer {
     constructor(data) {
         this.format_version = format_version;
@@ -55,7 +55,6 @@ export class savedPlayer {
         this.id = data.id;
         this.nameTag = data.nameTag;
         this.tags = data.tags;
-        this.items = data.items;
         this.isOp = data.isOp;
         this.spawnPoint = data.spawnPoint;
         this.gameMode = data.gameMode;
@@ -67,10 +66,13 @@ export class savedPlayer {
         this.rotation = data.rotation;
         this.selectedSlotIndex = data.selectedSlotIndex;
         this.saveId = data.saveId ?? "player:" + this.id;
-        if (semver.satisfies(data.player_save_format_version, ">=1.4.0 <1.5.0", { includePrerelease: true })) {
+        if (semver.satisfies(data.player_save_format_version, ">=1.4.0 <2.0.0", { includePrerelease: true })) {
             this.memoryTier = data.memoryTier;
             this.maxRenderDistance = data.maxRenderDistance;
             this.platformType = data.platformType;
+        }
+        if (semver.satisfies(data.player_save_format_version, "<1.5.0", { includePrerelease: true })) {
+            this.items = data.items;
         }
     }
     save() {
@@ -419,162 +421,165 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             memoryTier: player.clientSystemInfo.memoryTier,
             maxRenderDistance: player.clientSystemInfo.maxRenderDistance,
             platformType: player.clientSystemInfo.platformType,
+            inputPermissions: { cameraEnabled: player.inputPermissions.cameraEnabled, movementEnabled: player.inputPermissions.movementEnabled },
         };
         savedPlayerData.saveId =
             savedPlayerData.saveId ?? "player:" + savedPlayerData.id;
         savedPlayerData.format_version =
             savedPlayerData.format_version ?? format_version;
-        for (let i = 0; i < player.getComponent("inventory").inventorySize; i++) {
-            if (player
-                .getComponent("inventory")
-                .container.getItem(Number(i)) !== undefined) {
-                savedPlayerData.items.inventory.push({
-                    id: player
-                        .getComponent("inventory")
-                        .container.getItem(Number(i)).typeId,
-                    slot: i,
-                    enchants: player
-                        .getComponent("inventory")
-                        .container.getItem(Number(i))
-                        ?.getComponent("enchantable")
-                        ?.getEnchantments().length != 0
-                        ? player
+        if (config.system.useLegacyPlayerInventoryDataSaveSystem || semver.satisfies(savedPlayerData.player_save_format_version, "<1.5.0", { includePrerelease: true })) {
+            for (let i = 0; i < player.getComponent("inventory").inventorySize; i++) {
+                if (player
+                    .getComponent("inventory")
+                    .container.getItem(Number(i)) !== undefined) {
+                    savedPlayerData.items.inventory.push({
+                        id: player
+                            .getComponent("inventory")
+                            .container.getItem(Number(i)).typeId,
+                        slot: i,
+                        enchants: player
                             .getComponent("inventory")
                             .container.getItem(Number(i))
                             ?.getComponent("enchantable")
-                            ?.getEnchantments()
-                        : undefined,
-                    name: player
-                        .getComponent("inventory")
-                        .container.getItem(Number(i))?.nameTag,
-                    count: player
-                        .getComponent("inventory")
-                        .container.getItem(Number(i)).amount,
-                });
+                            ?.getEnchantments().length != 0
+                            ? player
+                                .getComponent("inventory")
+                                .container.getItem(Number(i))
+                                ?.getComponent("enchantable")
+                                ?.getEnchantments()
+                            : undefined,
+                        name: player
+                            .getComponent("inventory")
+                            .container.getItem(Number(i))?.nameTag,
+                        count: player
+                            .getComponent("inventory")
+                            .container.getItem(Number(i)).amount,
+                    });
+                }
+                else {
+                    savedPlayerData.items.inventory.push({
+                        id: "",
+                        slot: i,
+                        count: 0,
+                    });
+                }
             }
-            else {
-                savedPlayerData.items.inventory.push({
-                    id: "",
-                    slot: i,
-                    count: 0,
-                });
-            }
-        }
-        savedPlayerData.items.inventory.push({
-            id: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Head)?.typeId ?? "",
-            slot: "Head",
-            enchants: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Head)
-                ?.getComponent("enchantable")
-                ?.getEnchantments().length != 0
-                ? player
+            savedPlayerData.items.inventory.push({
+                id: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Head)?.typeId ?? "",
+                slot: "Head",
+                enchants: player
                     .getComponent("equippable")
                     .getEquipment(EquipmentSlot.Head)
                     ?.getComponent("enchantable")
-                    ?.getEnchantments()
-                : undefined,
-            name: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Head)?.nameTag,
-            count: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Head)?.amount ?? 0,
-        });
-        savedPlayerData.items.inventory.push({
-            id: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Chest)?.typeId ?? "",
-            slot: "Chest",
-            enchants: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Chest)
-                ?.getComponent("enchantable")
-                ?.getEnchantments().length != 0
-                ? player
+                    ?.getEnchantments().length != 0
+                    ? player
+                        .getComponent("equippable")
+                        .getEquipment(EquipmentSlot.Head)
+                        ?.getComponent("enchantable")
+                        ?.getEnchantments()
+                    : undefined,
+                name: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Head)?.nameTag,
+                count: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Head)?.amount ?? 0,
+            });
+            savedPlayerData.items.inventory.push({
+                id: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Chest)?.typeId ?? "",
+                slot: "Chest",
+                enchants: player
                     .getComponent("equippable")
                     .getEquipment(EquipmentSlot.Chest)
                     ?.getComponent("enchantable")
-                    ?.getEnchantments()
-                : undefined,
-            name: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Chest)?.nameTag,
-            count: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Chest)?.amount ?? 0,
-        });
-        savedPlayerData.items.inventory.push({
-            id: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Legs)?.typeId ?? "",
-            slot: "Legs",
-            enchants: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Legs)
-                ?.getComponent("enchantable")
-                ?.getEnchantments().length != 0
-                ? player
+                    ?.getEnchantments().length != 0
+                    ? player
+                        .getComponent("equippable")
+                        .getEquipment(EquipmentSlot.Chest)
+                        ?.getComponent("enchantable")
+                        ?.getEnchantments()
+                    : undefined,
+                name: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Chest)?.nameTag,
+                count: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Chest)?.amount ?? 0,
+            });
+            savedPlayerData.items.inventory.push({
+                id: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Legs)?.typeId ?? "",
+                slot: "Legs",
+                enchants: player
                     .getComponent("equippable")
                     .getEquipment(EquipmentSlot.Legs)
                     ?.getComponent("enchantable")
-                    ?.getEnchantments()
-                : undefined,
-            name: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Legs)?.nameTag,
-            count: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Legs)?.amount ?? 0,
-        });
-        savedPlayerData.items.inventory.push({
-            id: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Feet)?.typeId ?? "",
-            slot: "Feet",
-            enchants: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Feet)
-                ?.getComponent("enchantable")
-                ?.getEnchantments().length != 0
-                ? player
+                    ?.getEnchantments().length != 0
+                    ? player
+                        .getComponent("equippable")
+                        .getEquipment(EquipmentSlot.Legs)
+                        ?.getComponent("enchantable")
+                        ?.getEnchantments()
+                    : undefined,
+                name: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Legs)?.nameTag,
+                count: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Legs)?.amount ?? 0,
+            });
+            savedPlayerData.items.inventory.push({
+                id: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Feet)?.typeId ?? "",
+                slot: "Feet",
+                enchants: player
                     .getComponent("equippable")
                     .getEquipment(EquipmentSlot.Feet)
                     ?.getComponent("enchantable")
-                    ?.getEnchantments()
-                : undefined,
-            name: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Feet)?.nameTag,
-            count: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Feet)?.amount ?? 0,
-        });
-        savedPlayerData.items.inventory.push({
-            id: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Offhand)?.typeId ?? "",
-            slot: "Offhand",
-            enchants: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Offhand)
-                ?.getComponent("enchantable")
-                ?.getEnchantments().length != 0
-                ? player
+                    ?.getEnchantments().length != 0
+                    ? player
+                        .getComponent("equippable")
+                        .getEquipment(EquipmentSlot.Feet)
+                        ?.getComponent("enchantable")
+                        ?.getEnchantments()
+                    : undefined,
+                name: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Feet)?.nameTag,
+                count: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Feet)?.amount ?? 0,
+            });
+            savedPlayerData.items.inventory.push({
+                id: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Offhand)?.typeId ?? "",
+                slot: "Offhand",
+                enchants: player
                     .getComponent("equippable")
                     .getEquipment(EquipmentSlot.Offhand)
                     ?.getComponent("enchantable")
-                    ?.getEnchantments()
-                : undefined,
-            name: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Offhand)?.nameTag,
-            count: player
-                .getComponent("equippable")
-                .getEquipment(EquipmentSlot.Offhand)?.amount ?? 0,
-        });
+                    ?.getEnchantments().length != 0
+                    ? player
+                        .getComponent("equippable")
+                        .getEquipment(EquipmentSlot.Offhand)
+                        ?.getComponent("enchantable")
+                        ?.getEnchantments()
+                    : undefined,
+                name: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Offhand)?.nameTag,
+                count: player
+                    .getComponent("equippable")
+                    .getEquipment(EquipmentSlot.Offhand)?.amount ?? 0,
+            });
+        }
         world.setDynamicProperty(savedPlayerData.saveId ?? `player:${savedPlayerData.id}`, JSON.stringify(savedPlayerData));
         return savedPlayerData.saveId ?? `player:${savedPlayerData.id}`;
     } /*
