@@ -40,7 +40,7 @@ playersave
 spawnprot
 mcMath
 
-export const player_save_format_version = "1.5.0-beta.7";
+export const player_save_format_version = "1.5.0";
 export interface savedItem { 
     id?: string
     count: number
@@ -593,7 +593,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         if(config.system.playerInventoryDataSaveSystemEnabled){
             if(config.system.useLegacyPlayerInventoryDataSaveSystem||semver.satisfies(
                 savedPlayerData.player_save_format_version,
-                "<1.5.0",
+                "<1.5.0-0",
                 { includePrerelease: true }
             )){
                 savedPlayerData.items = { inventory: [], equipment: [], ender_chest: [] };
@@ -816,7 +816,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         if(config.system.playerInventoryDataSaveSystemEnabled){
             if(config.system.useLegacyPlayerInventoryDataSaveSystem||semver.satisfies(
                 savedPlayerData.player_save_format_version,
-                "<1.5.0",
+                "<1.5.0-0",
                 { includePrerelease: true }
             )){
                 savedPlayerData.items = { inventory: [], equipment: [], ender_chest: [] };
@@ -1048,9 +1048,10 @@ export async function startPlayerDataAutoSave(){
 };
 export async function playerDataAutoSaveAsync(){
     const players = world.getAllPlayers()
-    for(const p in players){
-        await savedPlayer.savePlayerAsync(players[p])
+    for await(const p of players){
+        await savedPlayer.savePlayerAsync(p)
     }
+    await system.waitTicks(config.system.playerDataRefreshRate??20)
     repeatingIntervals.playerDataAutoSave=system.runTimeout(()=>playerDataAutoSaveAsync())
 }
 export function stopPlayerDataAutoSave(){
