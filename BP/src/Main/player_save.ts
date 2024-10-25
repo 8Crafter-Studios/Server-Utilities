@@ -785,6 +785,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
     }
     static async savePlayerAsync(player: Player) {
         let savedPlayerData: savedPlayerData;
+        log(Date.now)
         savedPlayerData = {
             name: player.name,
             nameTag: player.nameTag,
@@ -1041,6 +1042,7 @@ getBan(banId: string){let banString = String(world.getDynamicProperty(banId)).sp
 export async function startPlayerDataAutoSave(){
     (await import("Main")).config;
     if(config.system.spreadPlayerInventoryDataSavesOverMultipleTicks){
+        globalThis.stopPlayerDataAutoSaveAsync=false;
         playerDataAutoSaveAsync()
     }else{
         repeatingIntervals.playerDataAutoSave=system.runInterval(()=>{if(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true == true){world.getAllPlayers().forEach((p)=>{savedPlayer.savePlayer(p)})}}, config.system.playerDataRefreshRate??5);
@@ -1049,15 +1051,24 @@ export async function startPlayerDataAutoSave(){
 export async function playerDataAutoSaveAsync(){
     const players = world.getAllPlayers()
     for await(const p of players){
+        if(globalThis.stopPlayerDataAutoSaveAsync){
+            globalThis.stopPlayerDataAutoSaveAsync=false;
+            return;
+        }
         await savedPlayer.savePlayerAsync(p)
     }
+    if(globalThis.stopPlayerDataAutoSaveAsync==true){
+        globalThis.stopPlayerDataAutoSaveAsync=false;
+        return;
+    }
     await system.waitTicks(config.system.playerDataRefreshRate??20)
-    repeatingIntervals.playerDataAutoSave=system.runTimeout(()=>playerDataAutoSaveAsync())
+    playerDataAutoSaveAsync()
 }
 export function stopPlayerDataAutoSave(){
     try{
         system.clearRun(repeatingIntervals.playerDataAutoSave);
         repeatingIntervals.playerDataAutoSave=null;
+        globalThis.stopPlayerDataAutoSaveAsync=true;
         return 1;
     }catch{
         return 0;

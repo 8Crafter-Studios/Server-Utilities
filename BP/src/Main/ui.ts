@@ -821,7 +821,7 @@ export function scriptSettings(sourceEntitya: Entity|executeCommandPlayerW|Playe
     let form2 = new ModalFormData();
     form2.title("Script Settings")
     form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 20", "integer from 1-1000", String(config.system.playerDataRefreshRate));
-    form2.textField("§l§fprotectedAreasRefreshRate§r§f\nThe interval at which to update list the saved protected areas, decreasing this number may increase lag, the default is 20", "integer from 1-1000000", String(config.system.protectedAreasRefreshRate));
+    form2.textField("§l§fprotectedAreasRefreshRate§r§f\nThe interval at which to update list the saved protected areas, decreasing this number may increase lag, the default is 200", "integer from 1-1000000", String(config.system.protectedAreasRefreshRate));
     form2.dropdown("§l§fundoClipboardMode§r§f\nWhether to save undo history in memory or to the world files, memory will cause undo history to be cleared upon restarting the world/realm/server, the default is Memory", ["Memory", "World"], ["Memory", "World"].indexOf(String(config.undoClipboardMode)));
     form2.toggle("§l§fdebugMode§r§f\nWhether debug mode is enabled or not, the default is false", config.system.debugMode);
     if(config.system.debugMode){
