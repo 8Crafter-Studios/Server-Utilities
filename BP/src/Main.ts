@@ -602,8 +602,10 @@ export class config{/*
              */
             get useLegacyPlayerInventoryDataSaveSystem(){return Boolean(world.getDynamicProperty("andexdbSettings:useLegacyPlayerInventoryDataSaveSystem") ?? false)},
             set useLegacyPlayerInventoryDataSaveSystem(useLegacyPlayerInventoryDataSaveSystem: boolean|undefined){world.setDynamicProperty("andexdbSettings:useLegacyPlayerInventoryDataSaveSystem", useLegacyPlayerInventoryDataSaveSystem??false)},
-            get playerInventoryDataSaveSystemEnabled(){return Boolean(world.getDynamicProperty("andexdbSettings:playerInventoryDataSaveSystemEnabled") ?? true)},
-            set playerInventoryDataSaveSystemEnabled(playerInventoryDataSaveSystemEnabled: boolean|undefined){world.setDynamicProperty("andexdbSettings:playerInventoryDataSaveSystemEnabled", playerInventoryDataSaveSystemEnabled??true)},
+            get playerInventoryDataSaveSystemEnabled(){return Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true)},
+            set playerInventoryDataSaveSystemEnabled(playerInventoryDataSaveSystemEnabled: boolean|undefined){world.setDynamicProperty("andexdbSettings:autoSavePlayerData", playerInventoryDataSaveSystemEnabled??true)},
+            get spreadPlayerInventoryDataSavesOverMultipleTicks(){return Boolean(world.getDynamicProperty("andexdbSettings:spreadPlayerInventoryDataSavesOverMultipleTicks") ?? true)},
+            set spreadPlayerInventoryDataSavesOverMultipleTicks(spreadPlayerInventoryDataSavesOverMultipleTicks: boolean|undefined){world.setDynamicProperty("andexdbSettings:spreadPlayerInventoryDataSavesOverMultipleTicks", spreadPlayerInventoryDataSavesOverMultipleTicks??true)},
         }
     }
     static reset(){
