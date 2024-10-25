@@ -59,6 +59,7 @@ Give all players health boost with the level equal to their XP level:
 "gmr" = "Sets your gamemode to a random gamemode. ",
 "gms" = "Sets your gamemode to survival. ",
 "gohome" = "Warps to a home. ",
+"ground" = "Teleports you down to the closest block below your feet.",
 "h" = "Swaps your hotbar with the specified hotbar preset, optionally specifying a row of the container block to swap your hotbar with. ",
 "h#" = "Swaps your hotbar with the specified hotbar preset, optionally specifying a row of the container block to swap your hotbar with. ",
 "heal" = "Heals entities. ",
@@ -394,6 +395,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
 "gmr": `${command.dp}gmr`,
 "gms": `${command.dp}gms`,
 "gohome": `${command.dp}gohome <homeName: text>`,
+"ground": `${command.dp}ground [-lp]`,
 "h": `${command.dp}h <presetId: float> [containerRow: float[?=0]]`,
 "h#": `${command.dp}h<presetId: float> [containerRow: float[?=0]]`,
 "heal": `${command.dp}heal [targets: target[allowMultiple=true]]`,
@@ -985,7 +987,11 @@ h: makes the copied structure be pasted at your current location instead of the 
 s: silences all command feedback
 q: runs the commands in silent mode so that each entity does not send a notification in the chat to players with the getAllChatCommands tag
 b: specifies that the command that will be run by the execute command is a built-in command, specifying this may reduce the lag caused by the command, if you are using this to run a built-in command in a repeating command block then this should be used
-c: specifies that the command that will be run by the execute command is a custom command, specifying this may reduce the lag caused by the command, if you are using this to run a custom command in a repeating command block then this should be used`
+c: specifies that the command that will be run by the execute command is a custom command, specifying this may reduce the lag caused by the command, if you are using this to run a custom command in a repeating command block then this should be used`,
+"ground": `l: include liquid blocks in the list of blocks that count as ground blocks
+p: include passable blocks in the list of blocks that count as ground blocks`,
+"top": `l: include liquid blocks in the list of blocks that count as ground blocks
+p: include passable blocks in the list of blocks that count as ground blocks`
 }
 export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .align - §oCenters you on the x and z axis on the block you are currently at. §r
@@ -1034,6 +1040,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .gmr - §oSets your gamemode to a random gamemode. §r
 .gms - §oSets your gamemode to survival. §r
 .gohome - §oWarps to a home.§r
+.ground - §oTeleports you down to the closest block below your feet.§r
 .h# - §oSwaps your hotbar with the specified hotbar preset.§r
 .heal - §oHeals entities.§r
 .health - §oModifies the health of entities.§r

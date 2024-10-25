@@ -3048,6 +3048,33 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "ground",
+        escregexp: {
+            v: "^ground$"
+        },
+        formats: [
+            {
+                format: "ground [-lp]"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "world",
+            "warps"
+        ],
+        commandSettingsId: "built-inCommandSettings:ground",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "h#",
         escregexp: {
             v: "^h(\\d*)$"
@@ -5814,13 +5841,15 @@ export const commands = [
         },
         formats: [
             {
-                format: "top"
+                format: "top [-lp]"
             }
         ],
-        command_version: "1.0.0",
+        command_version: "2.0.0",
         description: "",
         category: [
-            "world"
+            "world",
+            "players",
+            "warps"
         ],
         commandSettingsId: "built-inCommandSettings:top",
         deprecated: false,

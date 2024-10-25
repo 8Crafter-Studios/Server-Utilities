@@ -6006,8 +6006,49 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^top$/):
                 eventData.cancel = true;
                 try {
+                    const flags = evaluateParameters(switchTestB, ["presetText", "f-lp"]).args[1];
                     system.run(() => {
-                        let block = player.dimension.getTopmostBlock(player);
+                        let block = player.dimension.getBlockBelow({ x: player.x, y: player.dimension.heightRange.max, z: player.z }, { includeLiquidBlocks: flags.l, includePassableBlocks: flags.p });
+                        if (block != undefined) {
+                            player.teleport({
+                                x: player.location.x,
+                                y: block.y + 1,
+                                z: player.location.z,
+                            }, {});
+                        }
+                        else {
+                            eventData.sender.sendMessage("§4No block could be found. ");
+                        }
+                        eventData.sender.sendMessage("Teleported to highest block at coordinates: " +
+                            player.location.x +
+                            ", " +
+                            player.location.y +
+                            ", " +
+                            player.location.z);
+                        targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x +
+                            " " +
+                            player.location.y +
+                            " " +
+                            player.location.z).forEach((entity) => {
+                            entity.sendMessage("Teleported to highest block at coordinates: " +
+                                player.location.x +
+                                ", " +
+                                player.location.y +
+                                ", " +
+                                player.location.z);
+                        });
+                    });
+                }
+                catch (e) {
+                    player.sendError("§c" + e + e.stack, true);
+                }
+                break;
+            case !!switchTest.match(/^ground$/):
+                eventData.cancel = true;
+                try {
+                    const flags = evaluateParameters(switchTestB, ["presetText", "f-lp"]).args[1];
+                    system.run(() => {
+                        let block = player.dimension.getBlockBelow(player, { includeLiquidBlocks: flags.l, includePassableBlocks: flags.p });
                         if (block != undefined) {
                             player.teleport({
                                 x: player.location.x,
@@ -15298,6 +15339,16 @@ export function evaluateParameters(commandstring, parameters) {
         switch (true) {
             case paramEval.trim() == "":
                 {
+                    if (!!p.type.match(/^-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                        argumentsa.push("");
+                    }
+                    else if (!!p.type.match(/^f-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                        argumentsa.push(Object.fromEntries(p.type.slice(2).split("").map(v => [v, false])));
+                    }
+                    else {
+                        argumentsa.push(null);
+                    }
+                    ;
                     return;
                 }
                 break;
@@ -15344,6 +15395,7 @@ export function evaluateParameters(commandstring, parameters) {
                         }
                         catch (e) {
                             ea.push([e, e.stack]);
+                            argumentsa.push(null);
                         }
                         ;
                     }
@@ -15366,6 +15418,7 @@ export function evaluateParameters(commandstring, parameters) {
                         }
                         catch (e) {
                             ea.push([e, e.stack]);
+                            argumentsa.push(null);
                         }
                         ;
                     }
@@ -15422,6 +15475,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15439,6 +15493,7 @@ export function evaluateParameters(commandstring, parameters) {
                         }
                         catch (e) {
                             ea.push([e, e.stack]);
+                            argumentsa.push(null);
                         }
                         ;
                     }
@@ -15450,6 +15505,7 @@ export function evaluateParameters(commandstring, parameters) {
                         }
                         catch (e) {
                             ea.push([e, e.stack]);
+                            argumentsa.push(null);
                         }
                         ;
                     }
@@ -15464,6 +15520,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15477,6 +15534,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15490,6 +15548,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15506,6 +15565,7 @@ export function evaluateParameters(commandstring, parameters) {
                             }
                             catch (e) {
                                 ea.push([e, e.stack]);
+                                argumentsa.push(null);
                             }
                             ;
                         }
@@ -15523,6 +15583,7 @@ export function evaluateParameters(commandstring, parameters) {
                             }
                             catch (e) {
                                 ea.push([e, e.stack]);
+                                argumentsa.push(null);
                             }
                             ;
                         }
@@ -15534,6 +15595,7 @@ export function evaluateParameters(commandstring, parameters) {
                             }
                             catch (e) {
                                 ea.push([e, e.stack]);
+                                argumentsa.push(null);
                             }
                             ;
                         }
@@ -15552,6 +15614,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15568,6 +15631,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15584,6 +15648,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15608,7 +15673,17 @@ export function evaluateParametersOldB(commandstring, parameters) {
     if(typeof parameters[0] == "string"){parametersb = parameters.map(v=>({type: v}))}else{parametersb = parameters}*/
     parameters.map(v => (typeof v == "string" ? (v == "Vectors" ? { type: v, vectorCount: 3, maxLength: undefined } : { type: v, vectorCount: undefined, maxLength: undefined }) : v?.type == "Vectors" ? v : v)).forEach((p, i) => {
         if (paramEval.trim() == "") {
-            return;
+            if (!!p.type.match(/^-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                argumentsa.push("");
+            }
+            else if (!!p.type.match(/^f-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                argumentsa.push(Object.fromEntries(p.type.slice(2).split("").map(v => [v, false])));
+            }
+            else {
+                argumentsa.push(null);
+                return;
+            }
+            ;
         }
         else {
             if (p.type == "presetText") {
@@ -15645,6 +15720,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                     }
                                     catch (e) {
                                         ea.push([e, e.stack]);
+                                        argumentsa.push(null);
                                     }
                                     ;
                                 }
@@ -15666,6 +15742,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                         }
                                         catch (e) {
                                             ea.push([e, e.stack]);
+                                            argumentsa.push(null);
                                         }
                                         ;
                                     }
@@ -15719,6 +15796,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                 }
                                                 catch (e) {
                                                     ea.push([e, e.stack]);
+                                                    argumentsa.push(null);
                                                 }
                                                 ;
                                             }
@@ -15735,6 +15813,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                         }
                                                         catch (e) {
                                                             ea.push([e, e.stack]);
+                                                            argumentsa.push(null);
                                                         }
                                                         ;
                                                     }
@@ -15746,6 +15825,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                         }
                                                         catch (e) {
                                                             ea.push([e, e.stack]);
+                                                            argumentsa.push(null);
                                                         }
                                                         ;
                                                     }
@@ -15759,6 +15839,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                         }
                                                         catch (e) {
                                                             ea.push([e, e.stack]);
+                                                            argumentsa.push(null);
                                                         }
                                                         ;
                                                     }
@@ -15790,6 +15871,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                                 }
                                                                 catch (e) {
                                                                     ea.push([e, e.stack]);
+                                                                    argumentsa.push(null);
                                                                 }
                                                                 ;
                                                             }
@@ -15806,6 +15888,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                                 }
                                                                 catch (e) {
                                                                     ea.push([e, e.stack]);
+                                                                    argumentsa.push(null);
                                                                 }
                                                                 ;
                                                             }
@@ -15821,6 +15904,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                                     }
                                                                     catch (e) {
                                                                         ea.push([e, e.stack]);
+                                                                        argumentsa.push(null);
                                                                     }
                                                                     ;
                                                                 }
@@ -15836,6 +15920,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                                         }
                                                                         catch (e) {
                                                                             ea.push([e, e.stack]);
+                                                                            argumentsa.push(null);
                                                                         }
                                                                         ;
                                                                     }

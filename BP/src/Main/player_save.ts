@@ -785,7 +785,6 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
     }
     static async savePlayerAsync(player: Player) {
         let savedPlayerData: savedPlayerData;
-        log(Date.now)
         savedPlayerData = {
             name: player.name,
             nameTag: player.nameTag,
@@ -1056,6 +1055,7 @@ export async function playerDataAutoSaveAsync(){
             return;
         }
         await savedPlayer.savePlayerAsync(p)
+        await waitTick()
     }
     if(globalThis.stopPlayerDataAutoSaveAsync==true){
         globalThis.stopPlayerDataAutoSaveAsync=false;

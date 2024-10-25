@@ -5294,12 +5294,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         case !!switchTest.match(/^up$/): 
             eventData.cancel = true;
             try{system.run(()=>{try{if(player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])-1).typeId == "minecraft:air" && (((newMessage.split(" ")[2]?.toLowerCase() != "false")&&(newMessage.split(" ")[2] != "0"))||(newMessage.split(" ")[2] == undefined))){player.dimension.getBlock(player.location).above(Number(newMessage.split(" ")[1])-1).setType("minecraft:glass")}}catch{}; player.teleport(Vector.add(roundVector3ToMiddleOfBlockFloorY(player.location), {x: 0, y: Number(newMessage.split(" ")[1]), z: 0})); eventData.sender.sendMessage(String())}); }catch(e){player.sendError("§c" + e + e.stack, true)}
-        break; 
+        break;
         case !!switchTest.match(/^top$/): 
             eventData.cancel = true;
             try {
+                const flags = evaluateParameters(switchTestB, ["presetText", "f-lp"]).args[1] as {l: boolean, p: boolean}
                 system.run(() => {
-                    let block = player.dimension.getTopmostBlock(player);
+                    let block = player.dimension.getBlockBelow({x: player.x, y: player.dimension.heightRange.max, z: player.z}, {includeLiquidBlocks: flags.l, includePassableBlocks: flags.p});
                     if (block != undefined) {
                         player.teleport(
                             {
@@ -5343,7 +5344,57 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             } catch (e) {
                 player.sendError("§c" + e + e.stack, true);
             }
-        break; 
+        break;
+        case !!switchTest.match(/^ground$/): 
+            eventData.cancel = true;
+            try {
+                const flags = evaluateParameters(switchTestB, ["presetText", "f-lp"]).args[1] as {l: boolean, p: boolean}
+                system.run(() => {
+                    let block = player.dimension.getBlockBelow(player, {includeLiquidBlocks: flags.l, includePassableBlocks: flags.p});
+                    if (block != undefined) {
+                        player.teleport(
+                            {
+                                x: player.location.x,
+                                y: block.y + 1,
+                                z: player.location.z,
+                            },
+                            {}
+                        );
+                    } else {
+                        eventData.sender.sendMessage(
+                            "§4No block could be found. "
+                        );
+                    }
+                    eventData.sender.sendMessage(
+                        "Teleported to highest block at coordinates: " +
+                            player.location.x +
+                            ", " +
+                            player.location.y +
+                            ", " +
+                            player.location.z
+                    );
+                    targetSelectorAllListE(
+                        "@a [tag=canSeeCustomChatCommandFeedbackFromMods]",
+                        player.location.x +
+                            " " +
+                            player.location.y +
+                            " " +
+                            player.location.z
+                    ).forEach((entity) => {
+                        (entity as Player).sendMessage(
+                            "Teleported to highest block at coordinates: " +
+                                player.location.x +
+                                ", " +
+                                player.location.y +
+                                ", " +
+                                player.location.z
+                        );
+                    });
+                });
+            } catch (e) {
+                player.sendError("§c" + e + e.stack, true);
+            }
+        break;
         case !!switchTest.match(/^printlayers$/): 
             eventData.cancel = true;
             try{system.run(()=>{let block = getTopSolidBlock(player.dimension.getBlock(player.location), player.dimension); let messageCustom = ""; let a = 0; while(a != 1){if(messageCustom.endsWith(block.typeId + "; ")){}else{messageCustom = messageCustom + block.y + ". " + block.typeId + "; "}; try{block = block.below(1)}catch{a = 1}}; player.sendMessageB(messageCustom); eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity)=>{(entity as Player).sendMessage("Printed blocks at: x: " + player.location.x + ", z: " + player.location.z)}); })}catch(e){player.sendError("§c" + e + e.stack, true)}
@@ -10308,8 +10359,16 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
     let parametersb = []
     if(typeof parameters[0] == "string"){parametersb = parameters.map(v=>({type: v}))}else{parametersb = parameters}*/
     parameters.map(v=>(typeof v == "string"?(v as any=="Vectors"?{type: v, vectorCount: 3, maxLength: undefined} as unknown as {type: "Vectors", vectorCount?: number, maxLength?: number}:{type: v, vectorCount: undefined, maxLength: undefined}):v?.type=="Vectors"?v as {type: "Vectors", vectorCount?: number, maxLength?: number}:v as unknown as {type: typeof v, vectorCount?: number, maxLength?: number})).forEach((p, i) => {switch(true){
-        case paramEval.trim()=="": 
-        {return}
+        case paramEval.trim()=="": {
+            if (!!(p.type as string).match(/^-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                argumentsa.push("");
+            }else if(!!(p.type as string).match(/^f-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)){
+                argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, false])));
+            }else{
+                argumentsa.push(null);
+            };
+            return;
+        }
         break;
         case p.type == "presetText": {
             argumentsa.push(paramEval.trimStart().split(" ")[0]);
@@ -10341,7 +10400,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
                 try {
                     argumentsa.push(value?.v);
                 } catch (e) {
-                    ea.push([e, e.stack])
+                    ea.push([e, e.stack]);
+                    argumentsa.push(null);
                 };
             } else {
                 argumentsa.push(paramEval.trimStart().split(" ")[0]);
@@ -10358,7 +10418,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
                 try {
                     argumentsa.push(value?.v);
                 } catch (e) {
-                    ea.push([e, e.stack])
+                    ea.push([e, e.stack]);
+                    argumentsa.push(null);
                 };
             } else {
                 argumentsa.push(paramEval.trimStart().split(" ")[0]);
@@ -10408,7 +10469,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
             try {
                 argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
             } catch (e) {
-                ea.push([e, e.stack])
+                ea.push([e, e.stack]);
+                argumentsa.push(null);
             };
         }
         break;
@@ -10421,7 +10483,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
                 try {
                     argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
                 } catch (e) {
-                    ea.push([e, e.stack])
+                    ea.push([e, e.stack]);
+                    argumentsa.push(null);
                 };
             }else{
                 let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
@@ -10429,7 +10492,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
                 try {
                     argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
                 } catch (e) {
-                    ea.push([e, e.stack])
+                    ea.push([e, e.stack]);
+                    argumentsa.push(null);
                 };
             }
         }
@@ -10440,7 +10504,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
             try {
                 argumentsa.push(ep.parsed);
             } catch (e) {
-                ea.push([e, e.stack])
+                ea.push([e, e.stack]);
+                argumentsa.push(null);
             };
         }
         break;
@@ -10450,7 +10515,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
             try {
                 argumentsa.push(ep.block);
             } catch (e) {
-                ea.push([e, e.stack])
+                ea.push([e, e.stack]);
+                argumentsa.push(null);
             };
         }
         break;
@@ -10460,7 +10526,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
             try {
                 argumentsa.push(ep.parsed);
             } catch (e) {
-                ea.push([e, e.stack])
+                ea.push([e, e.stack]);
+                argumentsa.push(null);
             };
         }
         break;
@@ -10473,7 +10540,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
                     try {
                         argumentsa.push(!!!value?.v?undefined:('"'+value?.v+'"'));
                     } catch (e) {
-                        ea.push([e, e.stack])
+                        ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     };
                 } else {
                     argumentsa.push(paramEval.trimStart().split(" ")[0]);
@@ -10486,7 +10554,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
                     try {
                         argumentsa.push(value);
                     } catch (e) {
-                        ea.push([e, e.stack])
+                        ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     };
                 }else{
                     let value = extractSelectors(paramEval)[0];
@@ -10494,7 +10563,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
                     try {
                         argumentsa.push(value);
                     } catch (e) {
-                        ea.push([e, e.stack])
+                        ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     };
                 }
             }
@@ -10507,7 +10577,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
             try {
                 argumentsa.push(value);
             } catch (e) {
-                ea.push([e, e.stack])
+                ea.push([e, e.stack]);
+                argumentsa.push(null);
             };
         }
         break;
@@ -10518,7 +10589,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
             try {
                 argumentsa.push(value);
             } catch (e) {
-                ea.push([e, e.stack])
+                ea.push([e, e.stack]);
+                argumentsa.push(null);
             };
         }
         break;
@@ -10529,7 +10601,8 @@ export function evaluateParameters<T extends evaluateParametersParameter[]|[eval
             try {
                 argumentsa.push(value);
             } catch (e) {
-                ea.push([e, e.stack])
+                ea.push([e, e.stack]);
+                argumentsa.push(null);
             };
         }
         break;
@@ -10604,183 +10677,204 @@ export function evaluateParametersOldB<T extends evaluateParametersParameter[]|[
     let paramEval = commandstring as string/*
     let parametersb = []
     if(typeof parameters[0] == "string"){parametersb = parameters.map(v=>({type: v}))}else{parametersb = parameters}*/
-    parameters.map(v=>(typeof v == "string"?(v as any=="Vectors"?{type: v, vectorCount: 3, maxLength: undefined} as unknown as {type: "Vectors", vectorCount?: number, maxLength?: number}:{type: v, vectorCount: undefined, maxLength: undefined}):v?.type=="Vectors"?v as {type: "Vectors", vectorCount?: number, maxLength?: number}:v as unknown as {type: typeof v, vectorCount?: number, maxLength?: number})).forEach((p, i) => {if(paramEval.trim()==""){return}else{
-        if (p.type == "presetText") {
-            argumentsa.push(paramEval.trimStart().split(" ")[0]);
-            paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
+    parameters.map(v=>(typeof v == "string"?(v as any=="Vectors"?{type: v, vectorCount: 3, maxLength: undefined} as unknown as {type: "Vectors", vectorCount?: number, maxLength?: number}:{type: v, vectorCount: undefined, maxLength: undefined}):v?.type=="Vectors"?v as {type: "Vectors", vectorCount?: number, maxLength?: number}:v as unknown as {type: typeof v, vectorCount?: number, maxLength?: number})).forEach((p, i) => {
+        if (paramEval.trim() == "") {
+            if (!!(p.type as string).match(/^-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                argumentsa.push("");
+            }else if(!!(p.type as string).match(/^f-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)){
+                argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, false])));
+            }else{
+                argumentsa.push(null);
+                return;
+            };
         } else {
-            if (p.type == "number") {
-                argumentsa.push(Number(paramEval.trimStart().split(" ")[0]));
+            if (p.type == "presetText") {
+                argumentsa.push(paramEval.trimStart().split(" ")[0]);
                 paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
             } else {
-                if (p.type == "boolean") {
-                    argumentsa.push(paramEval.trimStart().split(" ")[0]?.trim?.()==""?undefined:Boolean(JSON.parse(paramEval.trimStart().split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
+                if (p.type == "number") {
+                    argumentsa.push(Number(paramEval.trimStart().split(" ")[0]));
                     paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                 } else {
-                    if (p.type == "neboolean") {
-                        try{argumentsa.push(paramEval.trimStart().split(" ")[0]?.trim?.()==""?undefined:Boolean(JSON.parse(paramEval.trimStart().split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
-                        paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");}catch{argumentsa.push(undefined)}
+                    if (p.type == "boolean") {
+                        argumentsa.push(paramEval.trimStart().split(" ")[0]?.trim?.()==""?undefined:Boolean(JSON.parse(paramEval.trimStart().split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
+                        paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
                     } else {
-                        if (p.type == "string") {
-                            if (paramEval.trimStart().startsWith("\"")) {
-                                let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
-                                paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
-                                try {
-                                    argumentsa.push(value?.v);
-                                } catch (e) {
-                                    ea.push([e, e.stack])
-                                };
-                            } else {
-                                argumentsa.push(paramEval.trimStart().split(" ")[0]);
-                                paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
-                            }
+                        if (p.type == "neboolean") {
+                            try{argumentsa.push(paramEval.trimStart().split(" ")[0]?.trim?.()==""?undefined:Boolean(JSON.parse(paramEval.trimStart().split(" ")[0].replace(/^t$/i, "true").replace(/^f$/i, "false").replace(/^true$/i, "true").replace(/^false$/i, "false"))));
+                            paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");}catch{argumentsa.push(undefined)}
                         } else {
-                            if (p.type == "non-booleanString") {
-                                if (["true", "false", "t", "f", "1", "0"].includes(paramEval.trimStart().split(" ")[0].toLowerCase())) {
-                                    argumentsa.push(undefined);
-                                }else if (paramEval.trimStart().startsWith("\"")) {
+                            if (p.type == "string") {
+                                if (paramEval.trimStart().startsWith("\"")) {
                                     let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
                                     paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
                                     try {
                                         argumentsa.push(value?.v);
                                     } catch (e) {
-                                        ea.push([e, e.stack])
+                                        ea.push([e, e.stack]);
+                                        argumentsa.push(null);
                                     };
                                 } else {
                                     argumentsa.push(paramEval.trimStart().split(" ")[0]);
                                     paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
-                                }//1870//7018
-                            } else {
-                                if (!!(p.type as string).match(/^-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
-                                    if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(1).split("").join("|")})+(?=$|\\s)`))) {
-                                        let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(1).split("").join("|")})+(?=$|\\s)`))[0]
-                                        paramEval = paramEval.trimStart().slice(paramEval.trimStart().indexOf(value)+value.length) ?? "";
-                                        try {
-                                            argumentsa.push(value);
-                                        }
-                                        catch (e) {
-                                            argumentsa.push("");
-                                            ea.push([e, e.stack]);
-                                        }
-                                        ;
-                                    }
-                                    else {
-                                        argumentsa.push("");
-                                    }
                                 }
-                                else {
-                                if (!!(p.type as string).match(/^f-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
-                                        if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(2).split("").join("|")})+(?=$|\\s)`))) {
-                                            let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(2).split("").join("|")})+(?=$|\\s)`))[0]
+                            } else {
+                                if (p.type == "non-booleanString") {
+                                    if (["true", "false", "t", "f", "1", "0"].includes(paramEval.trimStart().split(" ")[0].toLowerCase())) {
+                                        argumentsa.push(undefined);
+                                    }else if (paramEval.trimStart().startsWith("\"")) {
+                                        let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                        paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
+                                        try {
+                                            argumentsa.push(value?.v);
+                                        } catch (e) {
+                                            ea.push([e, e.stack]);
+                                            argumentsa.push(null);
+                                        };
+                                    } else {
+                                        argumentsa.push(paramEval.trimStart().split(" ")[0]);
+                                        paramEval = paramEval.trimStart().split(" ").slice(1).join(" ");
+                                    }//1870//7018
+                                } else {
+                                    if (!!(p.type as string).match(/^-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                                        if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(1).split("").join("|")})+(?=$|\\s)`))) {
+                                            let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(1).split("").join("|")})+(?=$|\\s)`))[0]
                                             paramEval = paramEval.trimStart().slice(paramEval.trimStart().indexOf(value)+value.length) ?? "";
                                             try {
-                                                argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, value.includes(v)])));
+                                                argumentsa.push(value);
                                             }
                                             catch (e) {
-                                                argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, false])));
+                                                argumentsa.push("");
                                                 ea.push([e, e.stack]);
                                             }
                                             ;
                                         }
                                         else {
-                                            argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, false])));
+                                            argumentsa.push("");
                                         }
                                     }
                                     else {
-                                        if (p.type == "json") {
-                                            let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
-                                            paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
-                                            try {
-                                                argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
-                                            } catch (e) {
-                                                ea.push([e, e.stack])
-                                            };
-                                        } else {
-                                            if (p.type == "blockStates") {
-                                                if(paramEval.indexOf("[")==-1&&paramEval.indexOf("{")==-1){
-                                                    argumentsa.push(undefined);
-                                                }else if((paramEval.indexOf("[")==-1?Infinity:paramEval.indexOf("["))<(paramEval.indexOf("{")==-1?Infinity:paramEval.indexOf("{"))){
-                                                    let value = getParametersFromString(paramEval.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}")).resultsincludingunmodified[0];
-                                                    paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
-                                                    try {
-                                                        argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
-                                                    } catch (e) {
-                                                        ea.push([e, e.stack])
-                                                    };
-                                                }else{
-                                                    let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
-                                                    paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
-                                                    try {
-                                                        argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
-                                                    } catch (e) {
-                                                        ea.push([e, e.stack])
-                                                    };
+                                    if (!!(p.type as string).match(/^f-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                                            if (!!paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(2).split("").join("|")})+(?=$|\\s)`))) {
+                                                let value = paramEval.trimStart().match(new RegExp(`(?<=^\\-)(${(p.type as string).slice(2).split("").join("|")})+(?=$|\\s)`))[0]
+                                                paramEval = paramEval.trimStart().slice(paramEval.trimStart().indexOf(value)+value.length) ?? "";
+                                                try {
+                                                    argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, value.includes(v)])));
                                                 }
+                                                catch (e) {
+                                                    argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, false])));
+                                                    ea.push([e, e.stack]);
+                                                }
+                                                ;
+                                            }
+                                            else {
+                                                argumentsa.push(Object.fromEntries((p.type as string).slice(2).split("").map(v=>[v, false])));
+                                            }
+                                        }
+                                        else {
+                                            if (p.type == "json") {
+                                                let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                                paramEval = paramEval.trimStart().slice(value?.s?.length + 1) ?? "";
+                                                try {
+                                                    argumentsa.push(value?.v ?? JSONParse(value?.s ?? paramEval, true));
+                                                } catch (e) {
+                                                    ea.push([e, e.stack]);
+                                                    argumentsa.push(null);
+                                                };
                                             } else {
-                                                if (p.type == "blockPattern") {
-                                                    const ep = BlockPattern.extractWRaw(paramEval.trimStart());
-                                                    paramEval = paramEval.slice(paramEval.indexOf(ep.raw)+ep.raw.length) ?? "";
-                                                    try {
-                                                        argumentsa.push(ep.parsed);
-                                                    } catch (e) {
-                                                        ea.push([e, e.stack])
-                                                    };
+                                                if (p.type == "blockStates") {
+                                                    if(paramEval.indexOf("[")==-1&&paramEval.indexOf("{")==-1){
+                                                        argumentsa.push(undefined);
+                                                    }else if((paramEval.indexOf("[")==-1?Infinity:paramEval.indexOf("["))<(paramEval.indexOf("{")==-1?Infinity:paramEval.indexOf("{"))){
+                                                        let value = getParametersFromString(paramEval.replaceAll("=", ":").replaceAll("[", "{").replaceAll("]", "}")).resultsincludingunmodified[0];
+                                                        paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
+                                                        try {
+                                                            argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
+                                                        } catch (e) {
+                                                            ea.push([e, e.stack]);
+                                                            argumentsa.push(null);
+                                                        };
+                                                    }else{
+                                                        let value = getParametersFromString(paramEval).resultsincludingunmodified[0];
+                                                        paramEval = paramEval.slice(value?.s?.length + 1) ?? "";
+                                                        try {
+                                                            argumentsa.push(value?.v ?? JSONParse(value?.s ?? "undefined", true));
+                                                        } catch (e) {
+                                                            ea.push([e, e.stack]);
+                                                            argumentsa.push(null);
+                                                        };
+                                                    }
                                                 } else {
-                                                    if (p.type == "targetSelector") {
-                                                        if(!paramEval.trimStart().startsWith("@")){
-                                                            if (paramEval.trimStart().startsWith("\"")) {
-                                                                let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
-                                                                paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
-                                                                paramEval = paramEval.slice(+(paramEval[0]==" ")) ?? "";
-                                                                try {
-                                                                    argumentsa.push(!!!value?.v?undefined:('"'+value?.v+'"'));
-                                                                } catch (e) {
-                                                                    ea.push([e, e.stack])
-                                                                };
-                                                            } else {
-                                                                argumentsa.push(paramEval.split(" ")[0]);
-                                                                return paramEval.split(" ").slice(1).join(" ");
-                                                            }
-                                                        }else{
-                                                            let value = extractSelectors(paramEval)[0];
-                                                            paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
-                                                            try {
-                                                                argumentsa.push(value);
-                                                            } catch (e) {
-                                                                ea.push([e, e.stack])
-                                                            };
-                                                        }
+                                                    if (p.type == "blockPattern") {
+                                                        const ep = BlockPattern.extractWRaw(paramEval.trimStart());
+                                                        paramEval = paramEval.slice(paramEval.indexOf(ep.raw)+ep.raw.length) ?? "";
+                                                        try {
+                                                            argumentsa.push(ep.parsed);
+                                                        } catch (e) {
+                                                            ea.push([e, e.stack]);
+                                                            argumentsa.push(null);
+                                                        };
                                                     } else {
-                                                        if (p.type == "Vector"||(p?.type ?? p) == "Vector1") {
-                                                            let value = paramEval.match(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*]([\-\+]?\d+(\.\d+)?)?|((?<=\s)|^)[\-\+]?\d+(\.\d+)?)(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g)?.[0];
-                                                            paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
-                                                            if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
-                                                            try {
-                                                                argumentsa.push(value);
-                                                            } catch (e) {
-                                                                ea.push([e, e.stack])
-                                                            };
+                                                        if (p.type == "targetSelector") {
+                                                            if(!paramEval.trimStart().startsWith("@")){
+                                                                if (paramEval.trimStart().startsWith("\"")) {
+                                                                    let value = getParametersFromString(paramEval.trimStart()).resultsincludingunmodified[0];
+                                                                    paramEval = paramEval.trimStart().slice(value?.s?.length) ?? "";
+                                                                    paramEval = paramEval.slice(+(paramEval[0]==" ")) ?? "";
+                                                                    try {
+                                                                        argumentsa.push(!!!value?.v?undefined:('"'+value?.v+'"'));
+                                                                    } catch (e) {
+                                                                        ea.push([e, e.stack]);
+                                                                    };
+                                                                } else {
+                                                                    argumentsa.push(paramEval.split(" ")[0]);
+                                                                    return paramEval.split(" ").slice(1).join(" ");
+                                                                }
+                                                            }else{
+                                                                let value = extractSelectors(paramEval)[0];
+                                                                paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
+                                                                try {
+                                                                    argumentsa.push(value);
+                                                                } catch (e) {
+                                                                    ea.push([e, e.stack]);
+                                                                    argumentsa.push(null);
+                                                                };
+                                                            }
                                                         } else {
-                                                            if (!!(p.type as string).match(/^Vector[2-8]$/)) {
-                                                                let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${(p.type as string).slice(6)}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                            if (p.type == "Vector"||(p?.type ?? p) == "Vector1") {
+                                                                let value = paramEval.match(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*]([\-\+]?\d+(\.\d+)?)?|((?<=\s)|^)[\-\+]?\d+(\.\d+)?)(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g)?.[0];
                                                                 paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                                 if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
                                                                 try {
                                                                     argumentsa.push(value);
                                                                 } catch (e) {
-                                                                    ea.push([e, e.stack])
+                                                                    ea.push([e, e.stack]);
+                                                                    argumentsa.push(null);
                                                                 };
                                                             } else {
-                                                                if (p.type == "Vectors") {
-                                                                    let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.vectorCount??3}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                                if (!!(p.type as string).match(/^Vector[2-8]$/)) {
+                                                                    let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${(p.type as string).slice(6)}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
                                                                     paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
                                                                     if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
                                                                     try {
                                                                         argumentsa.push(value);
                                                                     } catch (e) {
-                                                                        ea.push([e, e.stack])
+                                                                        ea.push([e, e.stack]);
+                                                                        argumentsa.push(null);
                                                                     };
-                                                                } else {}
+                                                                } else {
+                                                                    if (p.type == "Vectors") {
+                                                                        let value = paramEval.match(new RegExp(String.raw`(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(((((?<=[\s\~\!\^\%\&\*\d])|^)[\~\!\^\%\&\*](?:[\-\+]?\d+(\.\d+)?)?)|(((?<=\s)|^)[\-\+]?\d+(\.\d+)?))\s*?){${p.vectorCount??3}}(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))`))?.[0];
+                                                                        paramEval = paramEval.slice(paramEval.indexOf(value) + value?.length) ?? "";
+                                                                        if(paramEval.startsWith(" ")){paramEval = paramEval.slice(1) ?? "";}
+                                                                        try {
+                                                                            argumentsa.push(value);
+                                                                        } catch (e) {
+                                                                            ea.push([e, e.stack]);
+                                                                            argumentsa.push(null);
+                                                                        };
+                                                                    } else {}
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -10795,7 +10889,7 @@ export function evaluateParametersOldB<T extends evaluateParametersParameter[]|[
                 }
             }
         }
-    }});
+    });
     return {
         params: parameters,
         extra: paramEval,

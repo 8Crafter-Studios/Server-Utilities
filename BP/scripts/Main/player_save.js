@@ -826,6 +826,7 @@ export async function playerDataAutoSaveAsync() {
             return;
         }
         await savedPlayer.savePlayerAsync(p);
+        await waitTick();
     }
     if (globalThis.stopPlayerDataAutoSaveAsync == true) {
         globalThis.stopPlayerDataAutoSaveAsync = false;

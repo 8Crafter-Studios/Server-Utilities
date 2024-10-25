@@ -5706,7 +5706,6 @@ world.beforeEvents.itemUse.subscribe(event => {
                 event.source.setDynamicProperty(mode?"pos2":"pos1", posV)
                 event.source.setDynamicProperty("posD", event.source.dimension.id)
                 event.source.sendMessage(`Set ${mode?"pos2":"pos1"} to ${vTStr(posV)}.`)
-                event.source.setDynamicProperty("posM", !mode)
                 srun(()=>{
                     event.source.spawnParticle(mode?"andexdb:xz_axis_particle_pos1":"andexdb:xz_axis_particle_pos2", Vector.add(loc, {x: 0.5, y: 1.001, z: 0.5}))
                     event.source.spawnParticle(mode?"andexdb:xz_axis_particle_pos1_north":"andexdb:xz_axis_particle_pos2_north", Vector.add(loc, {x: 0.5, y: 0.5, z: 1.001}))
@@ -5715,6 +5714,7 @@ world.beforeEvents.itemUse.subscribe(event => {
                     event.source.spawnParticle(mode?"andexdb:xz_axis_particle_pos1_south":"andexdb:xz_axis_particle_pos2_south", Vector.add(loc, {x: 0.5, y: 0.5, z: -0.001}))
                     event.source.spawnParticle(mode?"andexdb:xz_axis_particle_pos1_west":"andexdb:xz_axis_particle_pos2_west", Vector.add(loc, {x: 1.001, y: 0.5, z: 0.5}))
                 })
+                event.source.setDynamicProperty("posM", !mode)
             }
         }catch(e){console.error(e, e.stack)}
     }
