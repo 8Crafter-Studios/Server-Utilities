@@ -45,7 +45,7 @@ export class savedPlayer {
         this.format_version = format_version;
         this.player_save_format_version = player_save_format_version;
         if (!!data.format_version &&
-            semver.gt(data.player_save_format_version, player_save_format_version)) {
+            semver.gt(data.player_save_format_version ?? "0.0.0", player_save_format_version)) {
             throw new ParseError(`The saved player data could not be parsed because it was last saved in a newer format version. Data format version: ${JSON.stringify(data.player_save_format_version)}. Current format version: ${JSON.stringify(player_save_format_version)}.`);
         }
         this.format_version = data.format_version ?? format_version;
@@ -66,12 +66,12 @@ export class savedPlayer {
         this.rotation = data.rotation;
         this.selectedSlotIndex = data.selectedSlotIndex;
         this.saveId = data.saveId ?? "player:" + this.id;
-        if (semver.satisfies(data.player_save_format_version, ">=1.4.0 <2.0.0", { includePrerelease: true })) {
+        if (semver.satisfies(data.player_save_format_version ?? "0.0.0", ">=1.4.0 <2.0.0", { includePrerelease: true })) {
             this.memoryTier = data.memoryTier;
             this.maxRenderDistance = data.maxRenderDistance;
             this.platformType = data.platformType;
         }
-        if (semver.satisfies(data.player_save_format_version, "<1.5.0", { includePrerelease: true })) {
+        if (semver.satisfies(data.player_save_format_version ?? "0.0.0", "<1.5.0", { includePrerelease: true })) {
             this.items = data.items;
         }
     }
@@ -80,6 +80,9 @@ export class savedPlayer {
     }
     remove() {
         world.setDynamicProperty(this.saveId);
+    }
+    getItems(sourceLoc) {
+        return savedPlayer.getSavedInventory(this.id, sourceLoc, { bypassParameterTypeChecks: true, rethrowErrorInFinally: false });
     }
     get isOnline() {
         return world.getAllPlayers().find((_) => _.id == this.id) != undefined;
@@ -133,7 +136,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         savedPlayerData.format_version =
             savedPlayerData.format_version ?? format_version;
         savedPlayerData.player_save_format_version =
-            savedPlayerData.player_save_format_version ?? format_version;
+            savedPlayerData.player_save_format_version ?? player_save_format_version;
         world.setDynamicProperty(savedPlayerData.saveId ?? `player:${savedPlayerData.id}`, JSON.stringify(savedPlayerData));
         return savedPlayerData.saveId ?? `player:${savedPlayerData.id}`;
     }
@@ -427,7 +430,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         savedPlayerData.format_version =
             savedPlayerData.format_version ?? format_version;
         if (config.system.playerInventoryDataSaveSystemEnabled) {
-            if (config.system.useLegacyPlayerInventoryDataSaveSystem || semver.satisfies(savedPlayerData.player_save_format_version, "<1.5.0-0", { includePrerelease: true })) {
+            if (config.system.useLegacyPlayerInventoryDataSaveSystem || semver.satisfies(savedPlayerData.player_save_format_version ?? "0.0.0", "<1.5.0-0", { includePrerelease: true })) {
                 savedPlayerData.items = { inventory: [], equipment: [], ender_chest: [] };
                 for (let i = 0; i < player.getComponent("inventory").inventorySize; i++) {
                     if (player
@@ -581,7 +584,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
                         .getEquipment(EquipmentSlot.Offhand)?.amount ?? 0,
                 });
             }
-            else if (!config.system.useLegacyPlayerInventoryDataSaveSystem && semver.satisfies(savedPlayerData.player_save_format_version, ">=1.5.0", { includePrerelease: true })) {
+            else if (!config.system.useLegacyPlayerInventoryDataSaveSystem && semver.satisfies(savedPlayerData.player_save_format_version ?? "0.0.0", ">=1.5.0", { includePrerelease: true })) {
                 this.saveInventory(player, { rethrowErrorInFinally: false, bypassParameterTypeChecks: true });
             }
         }
@@ -616,7 +619,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         savedPlayerData.format_version =
             savedPlayerData.format_version ?? format_version;
         if (config.system.playerInventoryDataSaveSystemEnabled) {
-            if (config.system.useLegacyPlayerInventoryDataSaveSystem || semver.satisfies(savedPlayerData.player_save_format_version, "<1.5.0-0", { includePrerelease: true })) {
+            if (config.system.useLegacyPlayerInventoryDataSaveSystem || semver.satisfies(savedPlayerData.player_save_format_version ?? "0.0.0", "<1.5.0-0", { includePrerelease: true })) {
                 savedPlayerData.items = { inventory: [], equipment: [], ender_chest: [] };
                 for (let i = 0; i < player.getComponent("inventory").inventorySize; i++) {
                     if (player
@@ -770,7 +773,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
                         .getEquipment(EquipmentSlot.Offhand)?.amount ?? 0,
                 });
             }
-            else if (!config.system.useLegacyPlayerInventoryDataSaveSystem && semver.satisfies(savedPlayerData.player_save_format_version, ">=1.5.0", { includePrerelease: true })) {
+            else if (!config.system.useLegacyPlayerInventoryDataSaveSystem && semver.satisfies(savedPlayerData.player_save_format_version ?? "0.0.0", ">=1.5.0", { includePrerelease: true })) {
                 await this.saveInventoryAsync(player, { rethrowErrorInFinally: false, bypassParameterTypeChecks: true });
             }
         }
@@ -785,7 +788,7 @@ getBan(banId: string){let banString = String(world.getDynamicProperty(banId)).sp
     static getSavedPlayers() {
         let players;
         players = [];
-        savedPlayer.getSavedPlayerIds().forEach((b) => {
+        savedPlayer.getSavedPlayerIds().forEachB((b) => {
             players.push(savedPlayer.getSavedPlayer(b));
         });
         return players;

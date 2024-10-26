@@ -52,7 +52,7 @@ export interface savedItem {
 }
 export interface savedPlayerData { 
     name: string
-    id: string|number
+    id: string
     nameTag?: string
     tags?: string[]
     items?: {inventory: savedItem[]|undefined, equipment: savedItem[]|undefined, ender_chest: savedItem[]|undefined}
@@ -77,7 +77,7 @@ export interface savedPlayerData {
 new savedPlayer({items: {inventory: [{enchants: null, count: 1}]}})*/
 export class savedPlayer {
     name: string;
-    id: string | number;
+    id: string;
     nameTag?: string;
     tags?: string[];
     items?: {
@@ -110,7 +110,7 @@ export class savedPlayer {
         if (
             !!data.format_version &&
             semver.gt(
-                data.player_save_format_version,
+                data.player_save_format_version??"0.0.0",
                 player_save_format_version
             )
         ) {
@@ -142,7 +142,7 @@ export class savedPlayer {
         this.saveId = data.saveId ?? "player:" + this.id;
         if (
             semver.satisfies(
-                data.player_save_format_version,
+                data.player_save_format_version??"0.0.0",
                 ">=1.4.0 <2.0.0",
                 { includePrerelease: true }
             )
@@ -153,7 +153,7 @@ export class savedPlayer {
         }
         if (
             semver.satisfies(
-                data.player_save_format_version,
+                data.player_save_format_version??"0.0.0",
                 "<1.5.0",
                 { includePrerelease: true }
             )
@@ -166,6 +166,9 @@ export class savedPlayer {
     }
     remove() {
         world.setDynamicProperty(this.saveId);
+    }
+    getItems(sourceLoc: DimensionLocation){
+        return savedPlayer.getSavedInventory(this.id, sourceLoc, {bypassParameterTypeChecks: true, rethrowErrorInFinally: false})
     }
     get isOnline() {
         return world.getAllPlayers().find((_) => _.id == this.id) != undefined;
@@ -221,7 +224,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         savedPlayerData.format_version =
             savedPlayerData.format_version ?? format_version;
         savedPlayerData.player_save_format_version =
-            savedPlayerData.player_save_format_version ?? format_version;
+            savedPlayerData.player_save_format_version ?? player_save_format_version;
         world.setDynamicProperty(
             savedPlayerData.saveId ?? `player:${savedPlayerData.id}`,
             JSON.stringify(savedPlayerData)
@@ -592,7 +595,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             savedPlayerData.format_version ?? format_version;
         if(config.system.playerInventoryDataSaveSystemEnabled){
             if(config.system.useLegacyPlayerInventoryDataSaveSystem||semver.satisfies(
-                savedPlayerData.player_save_format_version,
+                savedPlayerData.player_save_format_version??"0.0.0",
                 "<1.5.0-0",
                 { includePrerelease: true }
             )){
@@ -770,7 +773,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
                             .getEquipment(EquipmentSlot.Offhand)?.amount ?? 0,
                 });
             }else if(!config.system.useLegacyPlayerInventoryDataSaveSystem&&semver.satisfies(
-                savedPlayerData.player_save_format_version,
+                savedPlayerData.player_save_format_version??"0.0.0",
                 ">=1.5.0",
                 { includePrerelease: true }
             )){
@@ -815,7 +818,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             savedPlayerData.format_version ?? format_version;
         if(config.system.playerInventoryDataSaveSystemEnabled){
             if(config.system.useLegacyPlayerInventoryDataSaveSystem||semver.satisfies(
-                savedPlayerData.player_save_format_version,
+                savedPlayerData.player_save_format_version??"0.0.0",
                 "<1.5.0-0",
                 { includePrerelease: true }
             )){
@@ -993,7 +996,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
                             .getEquipment(EquipmentSlot.Offhand)?.amount ?? 0,
                 });
             }else if(!config.system.useLegacyPlayerInventoryDataSaveSystem&&semver.satisfies(
-                savedPlayerData.player_save_format_version,
+                savedPlayerData.player_save_format_version??"0.0.0",
                 ">=1.5.0",
                 { includePrerelease: true }
             )){
@@ -1014,7 +1017,7 @@ getBan(banId: string){let banString = String(world.getDynamicProperty(banId)).sp
     static getSavedPlayers() {
         let players: savedPlayer[];
         players = [];
-        savedPlayer.getSavedPlayerIds().forEach((b) => {
+        savedPlayer.getSavedPlayerIds().forEachB((b) => {
             players.push(savedPlayer.getSavedPlayer(b));
         });
         return players;
