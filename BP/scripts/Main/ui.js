@@ -4147,14 +4147,65 @@ export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = conf
                         case 2:
                             let slotsArray = [];
                             let text = "";
-                            let items = player.items.inventory.concat(player.items.equipment);
-                            items.forEach((item) => { if (item.count != 0) {
-                                slotsArray = slotsArray.concat(String("slot: " + item.slot + ", item: " + item.id + "§r§f, amount: " + item.count + ", nameTag: " + item.name + "§r§f, lore: " + item.lore + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? [])));
+                            if (semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0")) {
+                                const items = player.getItems(sourceEntity);
+                                Object.entries(items).forEachB((item) => {
+                                    if (!!item[1]) {
+                                        slotsArray = slotsArray.concat(String("slot: " +
+                                            item[0] +
+                                            "§r§f, item: " +
+                                            item[1].typeId +
+                                            "§r§f, amount: " +
+                                            item[1].amount +
+                                            "§r§f, nameTag: " +
+                                            item[1].nameTag +
+                                            "§r§f, lore: " +
+                                            JSONStringify(item[1].getLore() ?? [], true) +
+                                            "§r§f, enchantments: " +
+                                            JSONStringify(tryget(() => item[1].getComponent("enchantable").getEnchantments()) ?? "N/A", true)));
+                                    }
+                                    else {
+                                        slotsArray = slotsArray.concat("slot: " + item[0] + ", item: minecraft:air");
+                                    }
+                                });
                             }
                             else {
-                                slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
-                            } });
-                            text = String("(format_version: " + player.format_version + ") " + player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online)" : " (last seen: " + new Date(Number(player.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + ")") + " Items: \n" + slotsArray.join("§r§f\n"));
+                                let items = player.items.inventory.concat(player.items.equipment);
+                                items.forEach((item) => {
+                                    if (item.count != 0) {
+                                        slotsArray = slotsArray.concat(String("slot: " +
+                                            item.slot +
+                                            ", item: " +
+                                            item.id +
+                                            "§r§f, amount: " +
+                                            item.count +
+                                            ", nameTag: " +
+                                            item.name +
+                                            "§r§f, lore: " +
+                                            JSONStringify(item.lore ?? [], true) +
+                                            "§r§f, enchantments: " +
+                                            JSON.stringify(item.enchants ?? "N/A")));
+                                    }
+                                    else {
+                                        slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
+                                    }
+                                });
+                            }
+                            text = String("(format_version: " +
+                                player.format_version +
+                                ") " +
+                                player.name +
+                                (world
+                                    .getAllPlayers()
+                                    .find((p) => p.id == player.id) != undefined
+                                    ? " (Online)"
+                                    : " (last seen: " +
+                                        new Date(Number(player.lastOnline) +
+                                            Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) *
+                                                3600000).toLocaleString() +
+                                        ")") +
+                                " Items: \n" +
+                                slotsArray.join("§r§f\n"));
                             let form5 = new ActionFormData;
                             form5.title(`${player.name}'s Saved Inventory Data`);
                             form5.body(`${text}`);

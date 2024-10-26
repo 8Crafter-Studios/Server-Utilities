@@ -2661,7 +2661,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^offlineinvsee$$/): 
             eventData.cancel = true;
-    try {
+    try {(async()=>{
         let slotsArray = [];
         let players = savedPlayer
             .getSavedPlayers()
@@ -2683,10 +2683,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 );
             } else {
                 let playerb = players[0];
-                if(semver.compare(playerb.player_save_format_version??"0.0.0", ">=1.5.0")){
+                if(semver.satisfies(playerb.player_save_format_version??"0.0.0", ">=1.5.0")){
+                    await waitTick();
                     const items = playerb.getItems(player);
                     Object.entries(items).forEachB((item) => {
-                        if (item[1]?.amount != 0) {
+                        if (!!item[1]) {
                             slotsArray = slotsArray.concat(
                                 String(
                                     "slot: " +
@@ -2752,7 +2753,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 new Date(
                                     Number(playerb.lastOnline) +
                                         Number(
-                                            event.sender.getDynamicProperty(
+                                            (player.sendErrorsTo instanceof Player ? player.sendErrorsTo : player).getDynamicProperty(
                                                 "andexdbPersonalSettings:timeZone"
                                             ) ?? 0
                                         ) *
@@ -2765,13 +2766,110 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 );
             }
         }
-    } catch (e) {
+    })()} catch (e) {
         player.sendError("§c" + e + e.stack, true);
     }
         break; 
         case !!switchTest.match(/^offlineuuidinvsee$$/): 
             eventData.cancel = true;
-            try{let slotsArray = []; let players = savedPlayer.getSavedPlayers().filter((p)=>(p.id==switchTestB.split(" ").slice(1).join(" "))); if(players.length==0){player.sendMessageB("§cError: no players with that uuid were found")}else{let player = players[0]; let items = player.items.inventory.concat(player.items.equipment); items.forEach((item)=>{if (item.count != 0) {slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore??[], true) + "§r§f, enchantments: " + JSON.stringify(item.enchants??"N/A")))}else{slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air")}}); ; eventData.sender.sendMessage(String("(format_version: " + player.format_version + ") " + player.name + (world.getAllPlayers().find((p)=>(p.id==player.id))!=undefined?" (Online) ":" (last seen: "+new Date(Number(player.lastOnline)+(Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+")") + " Items: \n" + slotsArray.join("§r§f\n")))}}catch(e){player.sendError("§c" + e + e.stack, true)}
+            try {(async()=>{
+                let slotsArray = [];
+                let players = savedPlayer
+                    .getSavedPlayers()
+                    .filter(
+                        (p) => p.id == switchTestB.split(" ").slice(1).join(" ")
+                    );
+                if (players.length == 0) {
+                    player.sendMessageB(
+                        "§cError: no players with that uuid were found"
+                    );
+                } else {
+                    let playerb = players[0];
+                    if(semver.satisfies(playerb.player_save_format_version??"0.0.0", ">=1.5.0")){
+                        await waitTick();
+                        const items = playerb.getItems(player);
+                        Object.entries(items).forEachB((item) => {
+                            if (!!item[1]) {
+                                slotsArray = slotsArray.concat(
+                                    String(
+                                        "slot: " +
+                                            item[0] +
+                                            "§r§f, item: " +
+                                            item[1].typeId +
+                                            "§r§f, amount: " +
+                                            item[1].amount +
+                                            "§r§f, nameTag: " +
+                                            item[1].nameTag +
+                                            "§r§f, lore: " +
+                                            JSONStringify(item[1].getLore() ?? [], true) +
+                                            "§r§f, enchantments: " +
+                                            JSONStringify(tryget(()=>item[1].getComponent("enchantable").getEnchantments()) ?? "N/A", true)
+                                    )
+                                );
+                            } else {
+                                slotsArray = slotsArray.concat(
+                                    "slot: " + item[0] + ", item: minecraft:air"
+                                );
+                            }
+                        });
+                    }else{
+                        let items = playerb.items.inventory.concat(
+                            playerb.items.equipment
+                        );
+                        items.forEach((item) => {
+                            if (item.count != 0) {
+                                slotsArray = slotsArray.concat(
+                                    String(
+                                        "slot: " +
+                                            item.slot +
+                                            "§r§f, item: " +
+                                            item.id +
+                                            "§r§f, amount: " +
+                                            item.count +
+                                            "§r§f, nameTag: " +
+                                            item.name +
+                                            "§r§f, lore: " +
+                                            JSONStringify(item.lore ?? [], true) +
+                                            "§r§f, enchantments: " +
+                                            JSON.stringify(item.enchants ?? "N/A")
+                                    )
+                                );
+                            } else {
+                                slotsArray = slotsArray.concat(
+                                    "slot: " + item.slot + ", item: minecraft:air"
+                                );
+                            }
+                        });
+                    }
+                    eventData.sender.sendMessage(
+                        String(
+                            "(format_version: " +
+                                playerb.format_version +
+                                ") " +
+                                playerb.name +
+                                (world
+                                    .getAllPlayers()
+                                    .find((p) => p.id == playerb.id) != undefined
+                                    ? " (Online) "
+                                    : " (last seen: " +
+                                      new Date(
+                                          Number(playerb.lastOnline) +
+                                              Number(
+                                                  (player.sendErrorsTo instanceof Player ? player.sendErrorsTo : player).getDynamicProperty(
+                                                      "andexdbPersonalSettings:timeZone"
+                                                  ) ?? 0
+                                              ) *
+                                                  3600000
+                                      ).toLocaleString() +
+                                      ")") +
+                                " Items: \n" +
+                                slotsArray.join("§r§f\n")
+                        )
+                    );
+                }
+            })()} catch (e) {
+                player.sendError("§c" + e + e.stack, true);
+            }
         break; 
         case !!switchTest.match(/^binvsee$$/):
             eventData.cancel = true;
