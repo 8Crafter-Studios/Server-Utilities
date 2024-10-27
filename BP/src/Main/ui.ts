@@ -3052,7 +3052,7 @@ forceShow(form, sourceEntity).then(r => {
 });
 }/*
 export function evalAutoScriptSettings(sourceEntity: Entity|Player){}*/
-export function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|Player, pagen: number=0, maxplayersperpage: number = config.ui.pages.maxPlayersPerManagePlayersPage??10){
+export async function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|Player, pagen: number=0, maxplayersperpage: number = config.ui.pages.maxPlayersPerManagePlayersPage??10){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form = new ActionFormData; 
     const page = Math.max(0, pagen)
@@ -3061,6 +3061,7 @@ export function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|Player
     const numofflinesavedplayers = savedPlayer.getSavedPlayers().filter(_=>!_.isOnline).length
     form.title(`Manage Players ${Math.min(numsavedplayers, (page*maxplayersperpage)+1)}-${Math.min(numsavedplayers, (page+1)*maxplayersperpage)} of ${numsavedplayers}`); 
     const numpages = Math.ceil(numsavedplayers/maxplayersperpage)
+    form.button("Search", "textures/ui/spyglass"); 
     form.button(((page!=0)?"§0":"§8")+"Previous Page", "textures/ui/arrow_left"); 
     form.button(((page<(numpages-1))?"§0":"§8")+"Next Page", "textures/ui/arrow_right"); 
     let displayPlayers = [...savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_=>_.isOnline), ...savedPlayer.getSavedPlayers().filter(_=>(!_.isOnline)&&(_.isBanned)).sort((a: savedPlayer, b: savedPlayer)=>(b.lastOnline-a.lastOnline)), ...savedPlayer.getSavedPlayers().filter(_=>(!_.isOnline)&&(!_.isBanned)).sort((a: savedPlayer, b: savedPlayer)=>(b.lastOnline-a.lastOnline))].slice(page*maxplayersperpage, (page+1)*maxplayersperpage); 
@@ -3068,18 +3069,33 @@ export function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|Player
     const numplayersonpage = displayPlayers.length
     let players = displayPlayers; 
     form.button("Manage Bans"); 
-    form.button("Back"); 
-    forceShow(form, sourceEntity as Player).then(ra=>{
+    form.button("Back", "textures/ui/arrow_left"); 
+    form.button("Close", "textures/ui/crossout"); 
+    return await forceShow(form, sourceEntity as Player).then(async ra=>{
         let r = (ra as ActionFormResponse); 
-        if(r.canceled){return}; 
+        if(r.canceled){return 1}; 
         switch(r.selection){
-            case 0: 
-            managePlayers(sourceEntity, Math.max(0, page-1))
+            case 0: /*
+                if((await managePlayers_search(sourceEntity, 0))==1){
+                    return await managePlayers(sourceEntity, page, maxplayersperpage);
+                }else{
+                    return 0;
+                };*/
+                return await showMessage(sourceEntity as Player, undefined, "§cSorry, the search feature has not been implemented yet.", "Back", "Close").then(async r=>{
+                    if(r.selection==0){
+                        return await managePlayers(sourceEntity, page, maxplayersperpage);
+                    }else{
+                        return 0;
+                    }
+                })
             break; 
             case 1: 
-            managePlayers(sourceEntity, Math.min(numpages-1, page+1))
+                return await managePlayers(sourceEntity, Math.max(0, page-1))
             break; 
-            case numplayersonpage+2: 
+            case 2: 
+                return await managePlayers(sourceEntity, Math.min(numpages-1, page+1))
+            break; 
+            case numplayersonpage+3: 
                 let form6 = new ActionFormData; 
                 form6.title("Manage Bans"); 
                 ban.getValidBans().idBans.forEach((p)=>{form6.button(`${p.playerId}\nValid`, "textures/ui/online")}); 
@@ -3130,204 +3146,226 @@ export function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|Player
                     }; 
                 }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
             break; 
-            case numplayersonpage+3: 
-            mainMenu(sourceEntity)
+            case numplayersonpage+4: 
+            return 1;
+            break; 
+            case numplayersonpage+5: 
+            return 0;
             break; 
             default: 
-            let player = players[r.selection-2]; 
-            let form2 = new ActionFormData; 
-            form2.title(player.name); 
-            form2.body(`UUID: ${player.id}\n${player.isOnline?"Online":"Last Online: "+new Date(Number(player.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player)?"ID BANNED":ban.testForIdBannedPlayer(player)?"NAME BANNED":""}`)
-            form2.button("Clear Data"); 
-            form2.button("Show Data"); 
-            form2.button("Check Inventory"); 
-            form2.button("Manage Bans"); 
-            form2.button("Edit Money"); 
-            form2.button("§4Manage Permissions§f(§cCOMING SOON!§f)"); 
-            form2.button("§4Manage Hotbar Presets§f(§cCOMING SOON!§f)"); 
-            form2.button("§4Manage Private Warps§f(§cCOMING SOON!§f)"); 
-            form2.button("§4Manage Homes§f(§cCOMING SOON!§f)"); 
-            form2.button("Back"); 
-            forceShow(form2, sourceEntity as Player).then(ga=>{let g = (ga as ActionFormResponse); 
-                if(g.canceled){return}; 
-                switch(g.selection){
-                    case 0: 
-                    let form3 = new MessageFormData; form3.title("Confirm Player Data Clear"); form3.body(`Are you sure you want to clear all of ${player.name}'s saved player data?\nThis action cannot be undone.`); form3.button2("Clear All Data"); form3.button1("Cancel")
-                    forceShow(form3, sourceEntity as Player).then(ha=>{let h = (ha as MessageFormResponse); 
-                        if(h.canceled){return};
-                        if(h.selection==0){managePlayers(sourceEntity, page)};
-                        if(h.selection==1){player.remove(); managePlayers(sourceEntity, page)};
-                    }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
-                    break
-                    case 1: 
-                    let form4 = new ActionFormData; form4.title(`${player.name}'s Saved Player Data`); form4.body(`${/*arrayModifier(*/JSON.stringify(player).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")/*.split(""), (v, i)=>(Number(String((i/30).toFixed(4)))==Math.round(i/30)?"\n"+v:v))*/}`); form4.button("Done")
-                    forceShow(form4, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
-                        if(h.canceled){return};
-                        managePlayers(sourceEntity, page)
-                    }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
-                    break
-                    case 2: 
-                    let slotsArray = []; 
-                    let text = ""; 
-                    if(semver.satisfies(player.player_save_format_version??"0.0.0", ">=1.5.0")){
-                        const items = player.getItems(sourceEntity);
-                        Object.entries(items).forEachB((item) => {
-                            if (!!item[1]) {
-                                slotsArray = slotsArray.concat(
-                                    String(
-                                        "slot: " +
-                                            item[0] +
-                                            "§r§f, item: " +
-                                            item[1].typeId +
-                                            "§r§f, amount: " +
-                                            item[1].amount +
-                                            "§r§f, nameTag: " +
-                                            item[1].nameTag +
-                                            "§r§f, lore: " +
-                                            JSONStringify(item[1].getLore() ?? [], true) +
-                                            "§r§f, enchantments: " +
-                                            JSONStringify(tryget(()=>item[1].getComponent("enchantable").getEnchantments()) ?? "N/A", true)
-                                    )
-                                );
-                            } else {
-                                slotsArray = slotsArray.concat(
-                                    "slot: " + item[0] + ", item: minecraft:air"
-                                );
-                            }
-                        });
-                    }else{
-                        let items = player.items.inventory.concat(
-                            player.items.equipment
-                        );
-                        items.forEach((item) => {
-                            if (item.count != 0) {
-                                slotsArray = slotsArray.concat(
-                                    String(
-                                        "slot: " +
-                                            item.slot +
-                                            ", item: " +
-                                            item.id +
-                                            "§r§f, amount: " +
-                                            item.count +
-                                            ", nameTag: " +
-                                            item.name +
-                                            "§r§f, lore: " +
-                                            JSONStringify(item.lore ?? [], true) +
-                                            "§r§f, enchantments: " +
-                                            JSON.stringify(item.enchants ?? "N/A")
-                                    )
-                                );
-                            } else {
-                                slotsArray = slotsArray.concat(
-                                    "slot: " + item.slot + ", item: minecraft:air"
-                                );
-                            }
-                        });
-                    }
-                    text = String(
-                        "(format_version: " +
-                            player.format_version +
-                            ") " +
-                            player.name +
-                            (world
-                                .getAllPlayers()
-                                .find((p) => p.id == player.id) != undefined
-                                ? " (Online)"
-                                : " (last seen: " +
-                                  new Date(
-                                      Number(player.lastOnline) +
-                                          Number(
-                                              sourceEntity.getDynamicProperty(
-                                                  "andexdbPersonalSettings:timeZone"
-                                              ) ?? 0
-                                          ) *
-                                              3600000
-                                  ).toLocaleString() +
-                                  ")") +
-                            " Items: \n" +
-                            slotsArray.join("§r§f\n")
-                    );
-                    let form5 = new ActionFormData; form5.title(`${player.name}'s Saved Inventory Data`); form5.body(`${text}`); form5.button("Done")
-                    forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
-                        if(h.canceled){return};
-                        managePlayers(sourceEntity, page)
-                    }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
-                    break
-                    case 3: 
-                    let form6 = new ActionFormData; 
-                    form6.title(player.name); 
-                    player.idBans.valid.forEach((p)=>{form6.button(`${p.playerId}\nValid`, "textures/ui/online")}); 
-                    player.idBans.expired.forEach((p)=>{form6.button(`${p.playerId}\nExpired`, "textures/ui/Ping_Offline_Red")}); 
-                    player.nameBans.valid.forEach((p)=>{form6.button(`${p.playerName}\nValid`, "textures/ui/online")}); 
-                    player.nameBans.expired.forEach((p)=>{form6.button(`${p.playerName}\nExpired`, "textures/ui/Ping_Offline_Red")}); 
-                    let banList = player.idBans.valid.concat(player.idBans.expired).concat(player.nameBans.valid).concat(player.nameBans.expired)
-                    form6.body(`UUID: ${player.id}\n${player.isOnline?"Online":"Last Online: "+new Date(Number(player.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player)?"\n\nID BANNED":ban.testForIdBannedPlayer(player)?"\n\nNAME BANNED":""}`)
-                    form6.button("Add ID Ban"); 
-                    form6.button("Add Name Ban"); 
-                    form6.button("Back"); 
-                    forceShow(form6, sourceEntity as Player).then(ga=>{let g = (ga as ActionFormResponse); 
-                        if(g.canceled){return}; 
-                        switch(g.selection){
-                            case banList.length: 
-                            let form5 = new ModalFormData; form5.title(`Add ID Ban`); form5.textField("Ban Time (In Minutes)", "Decimal"); form5.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
-                            form5.submitButton("Ban")
-                            forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
-                                if(h.canceled){return};
-                                ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: player.id, originalPlayerName: player.name, type: "id", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "banId:"+Date.now()+":"+player.id, unbanDate: Number(h.formValues[0])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[1])})
-                                managePlayers(sourceEntity, page)
-                            }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
-                            break
-                            case banList.length+1: 
-                            let form6 = new ModalFormData; form6.title(`Add Name Ban`); form6.textField("Ban Time (In Minutes)", "Decimal"); form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
-                            form6.submitButton("Ban")
-                            forceShow(form6, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
-                                if(h.canceled){return};
-                                ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: player.id, playerName: player.name, type: "name", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "ban:"+Date.now()+":"+player.name, unbanDate: Number(h.formValues[0])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[1])})
-                                managePlayers(sourceEntity, page)
-                            }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
-                            break
-                            case banList.length+2: 
-                            managePlayers(sourceEntity)
-                            break/*
-                            case banList.length+3: 
-                            managePlayers(sourceEntity)
-                            break
-                            case banList.length+4: 
-                            managePlayers(sourceEntity)*/
-                            break
-                            default: 
-                            let form4 = new ActionFormData; form4.title(`Manage Bans`); let ba = banList[g.selection]; let timeRemaining = ba.timeRemaining; form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type=="id"?"playerId":"originalPlayerId"}: §6${ba.type=="id"?ba.playerId:ba.originalPlayerId}\n§r§b${ba.type=="id"?"originalPlayerName":"playerName"}: §6${ba.type=="id"?ba.originalPlayerName:ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${/*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`); form4.button("Unban"); form4.button("Back")
-                            forceShow(form4, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
-                                if(h.canceled){return};
-                                if(h.selection==0){banList[g.selection].remove(); managePlayers(sourceEntity, page)};
-                                if(h.selection==1){managePlayers(sourceEntity, page)};
-                            }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
-                        }; 
-                    }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
-                    break
-                    case 4: {
-                        try{
-                            new ModalFormData().textField("Money", "int", MoneySystem.get(player.id).money.toString()).forceShow(sourceEntity as Player).then(async r=>{
-                                if(!!r.formValues[0].toBigInt()){
-                                    MoneySystem.get(player.id).setMoney(r.formValues[0].toBigInt())
-                                }else{
-                                    await showMessage(sourceEntity as Player, "Invalid Input", "The value you have inputted is not a valid amount of money.", "Okay", "Cancel")
-                                }
-                                managePlayers(sourceEntity, page)
-                            })
-                        }catch(e){
-                            console.error(e, e?.stack)
-                        }
-                    }
-                    break
-                    case 8: 
-                    managePlayers(sourceEntity, page)
-                    break
-                    default: 
-                }; 
-            }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+            if((await managePlayers_managePlayer(sourceEntity, players[r.selection-2]))==1){
+                return await managePlayers(sourceEntity, page, maxplayersperpage);
+            }else{
+                return 0;
+            }
         }
     }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+}
+/**
+ * 
+ * @todo Split each of the cases in the switch function into separate functions.
+ * @param sourceEntity 
+ * @param player 
+ * @returns 
+ */
+export async function managePlayers_managePlayer(sourceEntity: Entity, player: savedPlayer){
+    let form2 = new ActionFormData;
+    form2.title(player.name);
+    form2.body(`UUID: ${player.id}\n${player.isOnline?"Online":"Last Online: "+new Date(Number(player.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player)?"ID BANNED":ban.testForIdBannedPlayer(player)?"NAME BANNED":""}`);
+    form2.button("Clear Data");
+    form2.button("Show Data");
+    form2.button("Check Inventory");
+    form2.button("Manage Bans");
+    form2.button("Edit Money");
+    form2.button("§4Manage Permissions§f(§cCOMING SOON!§f)");
+    form2.button("§4Manage Hotbar Presets§f(§cCOMING SOON!§f)");
+    form2.button("§4Manage Private Warps§f(§cCOMING SOON!§f)");
+    form2.button("§4Manage Homes§f(§cCOMING SOON!§f)");
+    form2.button("Back");
+    form2.button("Close");
+    return await forceShow(form2, sourceEntity as Player).then(async ga=>{let g = (ga as ActionFormResponse); 
+        if(g.canceled){return 1}; 
+        switch(g.selection){
+            case 0: 
+                let form3 = new MessageFormData; form3.title("Confirm Player Data Clear"); form3.body(`Are you sure you want to clear all of ${player.name}'s saved player data?\nThis action cannot be undone.`); form3.button2("Clear All Data"); form3.button1("Cancel")
+                return await forceShow(form3, sourceEntity as Player).then(ha=>{let h = (ha as MessageFormResponse); 
+                    if(h.canceled||h.selection==0){
+                        return 1;
+                    };
+                    if(h.selection==1){
+                        player.remove();
+                        return 1;
+                    };
+                }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); forceShow(formError, sourceEntity as Player).then(r=>{return +(r.selection==0)}); }); 
+            break
+            case 1: 
+                let form4 = new ActionFormData; form4.title(`${player.name}'s Saved Player Data`); form4.body(`${/*arrayModifier(*/JSON.stringify(player).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")/*.split(""), (v, i)=>(Number(String((i/30).toFixed(4)))==Math.round(i/30)?"\n"+v:v))*/}`); form4.button("Done")
+                return await forceShow(form4, sourceEntity as Player).then(()=>1).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); forceShow(formError, sourceEntity as Player).then(r=>{return +(r.selection==0)}); }); 
+            break
+            case 2: 
+            let slotsArray = []; 
+            let text = ""; 
+            if(semver.satisfies(player.player_save_format_version??"0.0.0", ">=1.5.0")){
+                const items = player.getItems(sourceEntity);
+                Object.entries(items).forEachB((item) => {
+                    if (!!item[1]) {
+                        slotsArray = slotsArray.concat(
+                            String(
+                                "slot: " +
+                                    item[0] +
+                                    "§r§f, item: " +
+                                    item[1].typeId +
+                                    "§r§f, amount: " +
+                                    item[1].amount +
+                                    "§r§f, nameTag: " +
+                                    item[1].nameTag +
+                                    "§r§f, lore: " +
+                                    JSONStringify(item[1].getLore() ?? [], true) +
+                                    "§r§f, enchantments: " +
+                                    JSONStringify(tryget(()=>item[1].getComponent("enchantable").getEnchantments()) ?? "N/A", true)
+                            )
+                        );
+                    } else {
+                        slotsArray = slotsArray.concat(
+                            "slot: " + item[0] + ", item: minecraft:air"
+                        );
+                    }
+                });
+            }else{
+                let items = player.items.inventory.concat(
+                    player.items.equipment
+                );
+                items.forEach((item) => {
+                    if (item.count != 0) {
+                        slotsArray = slotsArray.concat(
+                            String(
+                                "slot: " +
+                                    item.slot +
+                                    ", item: " +
+                                    item.id +
+                                    "§r§f, amount: " +
+                                    item.count +
+                                    ", nameTag: " +
+                                    item.name +
+                                    "§r§f, lore: " +
+                                    JSONStringify(item.lore ?? [], true) +
+                                    "§r§f, enchantments: " +
+                                    JSON.stringify(item.enchants ?? "N/A")
+                            )
+                        );
+                    } else {
+                        slotsArray = slotsArray.concat(
+                            "slot: " + item.slot + ", item: minecraft:air"
+                        );
+                    }
+                });
+            }
+            text = String(
+                "(format_version: " +
+                    player.format_version +
+                    ") " +
+                    player.name +
+                    (world
+                        .getAllPlayers()
+                        .find((p) => p.id == player.id) != undefined
+                        ? " (Online)"
+                        : " (last seen: " +
+                          new Date(
+                              Number(player.lastOnline) +
+                                  Number(
+                                      sourceEntity.getDynamicProperty(
+                                          "andexdbPersonalSettings:timeZone"
+                                      ) ?? 0
+                                  ) *
+                                      3600000
+                          ).toLocaleString() +
+                          ")") +
+                    " Items: \n" +
+                    slotsArray.join("§r§f\n")
+            );
+            let form5 = new ActionFormData; form5.title(`${player.name}'s Saved Inventory Data`); form5.body(`${text}`); form5.button("Done")
+            return await forceShow(form5, sourceEntity as Player).then(ha=>{
+                return 1;
+            }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+            break
+            case 3: 
+                return await managePlayers_managePlayer_manageBans(sourceEntity, player)
+            break
+            case 4: {
+                try{
+                    return await new ModalFormData().textField("Money", "int", MoneySystem.get(player.id).money.toString()).forceShow(sourceEntity as Player).then(async r=>{
+                        if(!!r.formValues[0].toBigInt()){
+                            MoneySystem.get(player.id).setMoney(r.formValues[0].toBigInt())
+                        }else{
+                            await showMessage(sourceEntity as Player, "Invalid Input", "The value you have inputted is not a valid amount of money.", "Okay", "Cancel")
+                        }
+                        return 1;
+                    })
+                }catch(e){
+                    console.error(e, e?.stack)
+                    return 1;
+                }
+            }
+            break
+            case 8: 
+            return 1;
+            break
+            default: 
+            return 1;
+        }; 
+    }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+}
+export async function managePlayers_managePlayer_manageBans(sourceEntity: Entity, player: savedPlayer){
+    let form6 = new ActionFormData; 
+    form6.title(player.name); 
+    player.idBans.valid.forEach((p)=>{form6.button(`${p.playerId}\nValid`, "textures/ui/online")}); 
+    player.idBans.expired.forEach((p)=>{form6.button(`${p.playerId}\nExpired`, "textures/ui/Ping_Offline_Red")}); 
+    player.nameBans.valid.forEach((p)=>{form6.button(`${p.playerName}\nValid`, "textures/ui/online")}); 
+    player.nameBans.expired.forEach((p)=>{form6.button(`${p.playerName}\nExpired`, "textures/ui/Ping_Offline_Red")}); 
+    let banList = player.idBans.valid.concat(player.idBans.expired).concat(player.nameBans.valid).concat(player.nameBans.expired)
+    form6.body(`UUID: ${player.id}\n${player.isOnline?"Online":"Last Online: "+new Date(Number(player.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player)?"\n\nID BANNED":ban.testForIdBannedPlayer(player)?"\n\nNAME BANNED":""}`)
+    form6.button("Add ID Ban"); 
+    form6.button("Add Name Ban"); 
+    form6.button("Back"); 
+    return await forceShow(form6, sourceEntity as Player).then(async ga=>{let g = (ga as ActionFormResponse); 
+        if(g.canceled){return 1;}; 
+        switch(g.selection){
+            case banList.length: 
+            let form5 = new ModalFormData; form5.title(`Add ID Ban`); form5.textField("Ban Time (In Minutes)", "Decimal"); form5.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
+            form5.submitButton("Ban")
+            return await forceShow(form5, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
+                if(h.canceled){return 1;};
+                ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: player.id, originalPlayerName: player.name, type: "id", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "banId:"+Date.now()+":"+player.id, unbanDate: Number(h.formValues[0])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[1])})
+                return 1;
+            }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
+            break
+            case banList.length+1: 
+            let form6 = new ModalFormData; form6.title(`Add Name Ban`); form6.textField("Ban Time (In Minutes)", "Decimal"); form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"")
+            form6.submitButton("Ban")
+            return await forceShow(form6, sourceEntity as Player).then(ha=>{let h = (ha as ModalFormResponse); 
+                if(h.canceled){return 1;};
+                ban.saveBan({removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: player.id, playerName: player.name, type: "name", bannedById: sourceEntity.id, bannedByName: (sourceEntity as Player)?.name??sourceEntity?.nameTag, banId: "ban:"+Date.now()+":"+player.name, unbanDate: Number(h.formValues[0])*60000+Date.now(), format_version: format_version, reason: String(h.formValues[1])})
+                return 1;
+            }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); forceShow(formError, sourceEntity as Player).then(r=>{return +(r.selection==0)}); }); 
+            break
+            case banList.length+2: 
+                return 1;
+            break/*
+            case banList.length+3: 
+            managePlayers(sourceEntity)
+            break
+            case banList.length+4: 
+            managePlayers(sourceEntity)*/
+            break
+            default: 
+            let form4 = new ActionFormData; form4.title(`Manage Bans`); let ba = banList[g.selection]; let timeRemaining = ba.timeRemaining; form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type=="id"?"playerId":"originalPlayerId"}: §6${ba.type=="id"?ba.playerId:ba.originalPlayerId}\n§r§b${ba.type=="id"?"originalPlayerName":"playerName"}: §6${ba.type=="id"?ba.originalPlayerName:ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${/*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`); form4.button("Unban"); form4.button("Back")
+            return await forceShow(form4, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
+                if(h.canceled){return 1;};
+                if(h.selection==0){banList[g.selection].remove(); return 1;};
+                if(h.selection==1){return 1;};
+            }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); forceShow(formError, sourceEntity as Player).then(r=>{return +(r.selection==0)}); }); 
+        }; 
+    }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); forceShow(formError, sourceEntity as Player).then(r=>{return +(r.selection==0)}); }); 
 }
 export function getAllBuiltInCommandsCategories(){let set = new Set() as Set<string>; commands.map(v=>v.category).forEach(v=>typeof v == "string"?set.add(v):v.forEach(v=>set.add(v))); return [...set]}
 export const commandCategories = ["items","misc","invsee","players","containers/inventories","entities","warps","world","server","system","uis","shop_system","dangerous","Entity Scale Add-On","built-in","custom","all"]
