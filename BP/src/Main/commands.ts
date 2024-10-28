@@ -5605,7 +5605,6 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^thru$/): {
             eventData.cancel = true;
-            player.dimension.getBlockAbove(player.location)
             // player.dimension.getBlockFromRay(player.location, player.getViewDirection(), {includeTypes: ["minecraft:air", "air"]})
             let la = player.getBlockFromViewDirection()
             if(!!!la){player.sendMessageB("§cError: No obstruction found to go through. ")}else{
@@ -5661,6 +5660,56 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                               srun(() => {
                                   player.teleport(
                                       roundVector3ToMiddleOfBlock(
+                                          player.dimension.getBlock(l).location
+                                      )
+                                  );
+                              });
+                          } catch (e) {
+                              player.sendError("§c" + e + e.stack, true);
+                          }
+                      })
+                    : player.sendMessageB(
+                          "§cError: Unable to find other side of obstruction. "
+                      );
+            }
+            
+        }
+        break; 
+        case !!switchTest.match(/^pthru$/): {
+            eventData.cancel = true;
+            const args: {l: boolean, s: boolean, p: boolean} = evaluateParameters(switchTestB, ["presetText", "f-lsp"]).args as any
+            // player.dimension.getBlockFromRay(player.location, player.getViewDirection(), {includeTypes: ["minecraft:air", "air"]})
+            let la = player.getBlockFromViewDirection()
+            if(!!!la){player.sendMessageB("§cError: No obstruction found to go through. ")}else{
+                let l = mcMath.Vector3Utils.add(
+                    mcMath.Vector3Utils.add(
+                        la.block,
+                        mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 0.01)
+                    ),
+                    mcMath.Vector3Utils.scale(la.faceLocation, 0.98)
+                );
+                let rot = player.getRotation();
+                for (
+                    let i = 0;
+                    i < 100 &&
+                    !(
+                        tryget(() => ((b)=>b.isAir||(b.isSolid&&args.s)||(!b.isSolid&&args.p&&!b.isAir)||(b.isLiquid&&args.l))(player.dimension.getBlock(l)))
+                    ) &&
+                    l.y >= player.dimension.heightRange.min - 1;
+                    i++
+                ) {
+                    l = caretNotationC(l, mcMath.VECTOR3_FORWARD, rot);
+                }
+                l.y <= player.dimension.heightRange.min + 2
+                    ? player.sendMessageB(
+                          "§cError: The other side of this obstruction is void, if you want to be able to go to the other side even if it is in the void then just use \\vthru. "
+                      )
+                    : ((b)=>b.isAir||(b.isSolid&&args.s)||(!b.isSolid&&args.p)||(b.isLiquid&&args.l))(player.dimension.getBlock(l))
+                    ? tryrun(() => {
+                          try {
+                              srun(() => {
+                                  player.teleport(
+                                      roundVector3ToMiddleOfBlockFloorY(
                                           player.dimension.getBlock(l).location
                                       )
                                   );

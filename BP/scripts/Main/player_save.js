@@ -774,6 +774,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
                 });
             }
             else if (!config.system.useLegacyPlayerInventoryDataSaveSystem && semver.satisfies(savedPlayerData.player_save_format_version ?? "0.0.0", ">=1.5.0", { includePrerelease: true })) {
+                await waitTick();
                 await this.saveInventoryAsync(player, { rethrowErrorInFinally: false, bypassParameterTypeChecks: true });
             }
         }
@@ -810,6 +811,8 @@ getBan(banId: string){let banString = String(world.getDynamicProperty(banId)).sp
 export async function startPlayerDataAutoSave() {
     (await import("Main")).config;
     if (config.system.spreadPlayerInventoryDataSavesOverMultipleTicks) {
+        stopPlayerDataAutoSave();
+        await waitTicks(20);
         globalThis.stopPlayerDataAutoSaveAsync = false;
         playerDataAutoSaveAsync();
     }
@@ -840,7 +843,11 @@ export async function playerDataAutoSaveAsync() {
 }
 export function stopPlayerDataAutoSave() {
     try {
-        system.clearRun(repeatingIntervals.playerDataAutoSave);
+        try {
+            system.clearRun(repeatingIntervals.playerDataAutoSave);
+        }
+        catch { }
+        ;
         repeatingIntervals.playerDataAutoSave = null;
         globalThis.stopPlayerDataAutoSaveAsync = true;
         return 1;

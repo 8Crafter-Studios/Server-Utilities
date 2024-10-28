@@ -177,7 +177,7 @@ export function spawnBlockSurroundingParticle(dimension, location, textures) {
 }
 export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]; /*
 disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
-system.beforeEvents.watchdogTerminate.subscribe(e => {
+subscribedEvents.beforeWatchdogTerminate = system.beforeEvents.watchdogTerminate.subscribe(e => {
     try {
         if (crashEnabled == true) {
             return;
@@ -5365,7 +5365,7 @@ subscribedEvents.beforePlayerInteractWithEntity = world.beforeEvents.playerInter
                 : ""));
     }
 });
-world.beforeEvents.playerLeave.subscribe(event => {
+subscribedEvents.beforePlayerLeave = world.beforeEvents.playerLeave.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerLeave")));
     }
@@ -5376,7 +5376,7 @@ world.beforeEvents.playerLeave.subscribe(event => {
         } });
     }
 });
-world.afterEvents.blockExplode.subscribe(event => {
+subscribedEvents.afterBlockExplode = world.afterEvents.blockExplode.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:blockExplode")));
     }
@@ -5393,7 +5393,7 @@ world.afterEvents.blockExplode.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.buttonPush.subscribe(event => {
+subscribedEvents.afterButtonPush = world.afterEvents.buttonPush.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:buttonPush")));
     }
@@ -5873,7 +5873,7 @@ repeatingIntervals.worldBorderSystem = system.runInterval(() => {
     }
 }, 1);
 // ${se}srun(()=>{let p = player; let values = facingPoint(p.location, {x: 240.50, y: 75.00, z: 1269.50}); let rot = values.rot; let difference = values.difference; let dv = anglesToDirectionVectorDeg(rot.x, rot.y); bsend([values, dv]); p.applyKnockback(dv.x, dv.z, (1-Math.abs(dv.y))*Vector.magnitude(difference), dv.y*Vector.magnitude(difference)); })
-world.afterEvents.chatSend.subscribe(event => {
+subscribedEvents.afterChatSend = world.afterEvents.chatSend.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:chatSend")));
     }
@@ -5884,7 +5884,7 @@ world.afterEvents.chatSend.subscribe(event => {
         } });
     }
 });
-world.afterEvents.dataDrivenEntityTrigger.subscribe(event => {
+subscribedEvents.afterDataDrivenEntityTrigger = world.afterEvents.dataDrivenEntityTrigger.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:dataDrivenEntityTrigger")));
     }
@@ -5904,7 +5904,7 @@ world.afterEvents.dataDrivenEntityTrigger.subscribe(event => {
         } });
     }
 });
-world.afterEvents.effectAdd.subscribe(event => {
+subscribedEvents.afterEffectAdd = world.afterEvents.effectAdd.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:effectAdd")));
     }
@@ -5921,7 +5921,7 @@ world.afterEvents.effectAdd.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.entityDie.subscribe(event => {
+subscribedEvents.afterEntityDie = world.afterEvents.entityDie.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityDie")));
     }
@@ -5932,7 +5932,7 @@ world.afterEvents.entityDie.subscribe(event => {
         } });
     }
 });
-world.afterEvents.entityHealthChanged.subscribe(event => {
+subscribedEvents.afterEntityHealthChanged = world.afterEvents.entityHealthChanged.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityHealthChanged")));
     }
@@ -5943,7 +5943,7 @@ world.afterEvents.entityHealthChanged.subscribe(event => {
         } });
     }
 });
-world.afterEvents.entityHitBlock.subscribe(event => {
+subscribedEvents.afterEntityHitBlock = world.afterEvents.entityHitBlock.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityHitBlock")));
     }
@@ -5954,7 +5954,7 @@ world.afterEvents.entityHitBlock.subscribe(event => {
         } });
     }
 });
-world.afterEvents.entityHitEntity.subscribe(event => {
+subscribedEvents.afterEntityHitEntity = world.afterEvents.entityHitEntity.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityHitEntity")));
     }
@@ -5973,7 +5973,7 @@ world.afterEvents.entityHitEntity.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.entityHurt.subscribe(event => {
+subscribedEvents.afterEntityHurt = world.afterEvents.entityHurt.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityHurt")));
     }
@@ -5990,7 +5990,7 @@ world.afterEvents.entityHurt.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.entityLoad.subscribe(event => {
+subscribedEvents.afterEntityLoad = world.afterEvents.entityLoad.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityLoad")));
     }
@@ -6007,7 +6007,7 @@ world.afterEvents.entityLoad.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.entityRemove.subscribe(event => {
+subscribedEvents.afterEntityRemove = world.afterEvents.entityRemove.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityRemove")));
     }
@@ -6024,7 +6024,7 @@ world.afterEvents.entityRemove.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.entitySpawn.subscribe(event => {
+subscribedEvents.afterEntitySpawn = world.afterEvents.entitySpawn.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entitySpawn")));
     }
@@ -6041,7 +6041,7 @@ world.afterEvents.entitySpawn.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.explosion.subscribe(event => {
+subscribedEvents.afterExplosion = world.afterEvents.explosion.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:explosion")));
     }
@@ -6059,7 +6059,7 @@ world.afterEvents.explosion.subscribe(event => {
     }
     //console.warn(JSONStringify(event.getImpactedBlocks(), true))
 });
-world.afterEvents.itemCompleteUse.subscribe(event => {
+subscribedEvents.afterItemCompleteUse = world.afterEvents.itemCompleteUse.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("itemCompleteUseCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("itemCompleteUseCode")));
@@ -6081,7 +6081,7 @@ world.afterEvents.itemCompleteUse.subscribe(event => {
         } });
     }
 });
-world.afterEvents.gameRuleChange.subscribe(event => {
+subscribedEvents.afterGameRuleChange = world.afterEvents.gameRuleChange.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:gameRuleChange")));
     }
@@ -6098,7 +6098,7 @@ world.afterEvents.gameRuleChange.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.playerGameModeChange.subscribe(event => {
+subscribedEvents.afterPlayerGameModeChange = world.afterEvents.playerGameModeChange.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerGameModeChange")));
     }
@@ -6115,7 +6115,7 @@ world.afterEvents.playerGameModeChange.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.weatherChange.subscribe(event => {
+subscribedEvents.afterWeatherChange = world.afterEvents.weatherChange.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:weatherChange")));
     }
@@ -6135,7 +6135,7 @@ world.afterEvents.weatherChange.subscribe(event => {
 world.afterEvents.itemDefinitionEvent.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });*/
-world.afterEvents.itemReleaseUse.subscribe(event => {
+subscribedEvents.afterItemReleaseUse = world.afterEvents.itemReleaseUse.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")));
     }
@@ -6146,7 +6146,7 @@ world.afterEvents.itemReleaseUse.subscribe(event => {
         } });
     }
 });
-world.afterEvents.itemStartUse.subscribe(event => {
+subscribedEvents.afterItemStartUse = world.afterEvents.itemStartUse.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemStartUse")));
     }
@@ -6157,7 +6157,7 @@ world.afterEvents.itemStartUse.subscribe(event => {
         } });
     }
 });
-world.afterEvents.itemStartUseOn.subscribe(event => {
+subscribedEvents.afterItemStartUseOn = world.afterEvents.itemStartUseOn.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemStartUseOn")));
     }
@@ -6168,7 +6168,7 @@ world.afterEvents.itemStartUseOn.subscribe(event => {
         } });
     }
 });
-world.afterEvents.itemStopUse.subscribe(event => {
+subscribedEvents.afterItemStopUse = world.afterEvents.itemStopUse.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemStopUse")));
     }
@@ -6179,7 +6179,7 @@ world.afterEvents.itemStopUse.subscribe(event => {
         } });
     }
 });
-world.afterEvents.itemStopUseOn.subscribe(event => {
+subscribedEvents.afterItemStopUseOn = world.afterEvents.itemStopUseOn.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemStopUseOn")));
     }
@@ -6190,7 +6190,7 @@ world.afterEvents.itemStopUseOn.subscribe(event => {
         } });
     }
 });
-world.afterEvents.itemUse.subscribe(event => {
+subscribedEvents.afterItemUse = world.afterEvents.itemUse.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemUse")));
     }
@@ -6201,7 +6201,7 @@ world.afterEvents.itemUse.subscribe(event => {
         } });
     }
 });
-world.afterEvents.itemUseOn.subscribe(event => {
+subscribedEvents.afterItemUseOn = world.afterEvents.itemUseOn.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemUseOn")));
     }
@@ -6212,7 +6212,7 @@ world.afterEvents.itemUseOn.subscribe(event => {
         } });
     }
 });
-world.afterEvents.leverAction.subscribe(event => {
+subscribedEvents.afterLeverAction = world.afterEvents.leverAction.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:leverAction")));
     }
@@ -6229,7 +6229,7 @@ world.afterEvents.leverAction.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.messageReceive.subscribe(event => {
+subscribedEvents.afterMessageReceive = world.afterEvents.messageReceive.subscribe(event => {
     //console.warn(event.id, event.message, event.player?.name, event.player?.id)
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:messageReceive")));
@@ -6247,7 +6247,7 @@ world.afterEvents.messageReceive.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.pistonActivate.subscribe(event => {
+subscribedEvents.afterPistonActivate = world.afterEvents.pistonActivate.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:pistonActivate")));
     }
@@ -6258,7 +6258,7 @@ world.afterEvents.pistonActivate.subscribe(event => {
         } });
     }
 });
-world.afterEvents.playerBreakBlock.subscribe(event => {
+subscribedEvents.afterPlayerBreakBlock = world.afterEvents.playerBreakBlock.subscribe(event => {
     if (!!event?.itemStackBeforeBreak?.getDynamicProperty("afterPlayerBreakBlockCode")) {
         try {
             eval(String(event?.itemStackBeforeBreak?.getDynamicProperty("afterPlayerBreakBlockCode")));
@@ -6280,7 +6280,7 @@ world.afterEvents.playerBreakBlock.subscribe(event => {
         } });
     }
 });
-world.afterEvents.playerDimensionChange.subscribe(event => {
+subscribedEvents.afterPlayerDimensionChange = world.afterEvents.playerDimensionChange.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerDimensionChange")));
     }
@@ -6297,7 +6297,7 @@ world.afterEvents.playerDimensionChange.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.playerInteractWithBlock.subscribe(event => {
+subscribedEvents.afterPlayerInteractWithBlock = world.afterEvents.playerInteractWithBlock.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerInteractWithBlock")));
     }
@@ -6316,7 +6316,7 @@ world.afterEvents.playerInteractWithBlock.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.playerInteractWithEntity.subscribe(event => {
+subscribedEvents.afterPlayerInteractWithEntity = world.afterEvents.playerInteractWithEntity.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerInteractWithEntity")));
     }
@@ -6335,7 +6335,7 @@ world.afterEvents.playerInteractWithEntity.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.playerJoin.subscribe(event => {
+subscribedEvents.afterPlayerJoin = world.afterEvents.playerJoin.subscribe(event => {
     try {
         console.warn(`Player ${JSON.stringify(event.playerName)}<${event.playerId}> joined the game.`);
     }
@@ -6374,7 +6374,7 @@ world.afterEvents.playerJoin.subscribe(event => {
         } });
     }
 });
-world.afterEvents.playerLeave.subscribe(event => {
+subscribedEvents.afterPlayerLeave = world.afterEvents.playerLeave.subscribe(event => {
     try {
         console.warn(`Player ${JSON.stringify(event.playerName)}<${event.playerId}> left the game.`);
     }
@@ -6394,7 +6394,7 @@ world.afterEvents.playerLeave.subscribe(event => {
         } });
     }
 });
-world.afterEvents.playerPlaceBlock.subscribe(event => {
+subscribedEvents.afterPlayerPlaceBlock = world.afterEvents.playerPlaceBlock.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerPlaceBlock")));
     }
@@ -6405,7 +6405,7 @@ world.afterEvents.playerPlaceBlock.subscribe(event => {
         } });
     }
 });
-world.afterEvents.playerSpawn.subscribe(event => {
+subscribedEvents.afterPlayerSpawn = world.afterEvents.playerSpawn.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerSpawn")));
     }
@@ -6416,7 +6416,7 @@ world.afterEvents.playerSpawn.subscribe(event => {
         } });
     }
 });
-world.afterEvents.pressurePlatePop.subscribe(event => {
+subscribedEvents.afterPressurePlatePop = world.afterEvents.pressurePlatePop.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:pressurePlatePop")));
     }
@@ -6427,7 +6427,7 @@ world.afterEvents.pressurePlatePop.subscribe(event => {
         } });
     }
 });
-world.afterEvents.pressurePlatePush.subscribe(event => {
+subscribedEvents.afterPressurePlatePush = world.afterEvents.pressurePlatePush.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:pressurePlatePush")));
     }
@@ -6438,7 +6438,7 @@ world.afterEvents.pressurePlatePush.subscribe(event => {
         } });
     }
 });
-world.afterEvents.projectileHitBlock.subscribe(event => {
+subscribedEvents.afterProjectileHitBlock = world.afterEvents.projectileHitBlock.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:projectileHitBlock")));
     }
@@ -6449,7 +6449,7 @@ world.afterEvents.projectileHitBlock.subscribe(event => {
         } });
     }
 });
-world.afterEvents.projectileHitEntity.subscribe(event => {
+subscribedEvents.afterProjectileHitEntity = world.afterEvents.projectileHitEntity.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:projectileHitEntity")));
     }
@@ -6460,7 +6460,7 @@ world.afterEvents.projectileHitEntity.subscribe(event => {
         } });
     }
 });
-world.afterEvents.targetBlockHit.subscribe(event => {
+subscribedEvents.afterTargetBlockHit = world.afterEvents.targetBlockHit.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:targetBlockHit")));
     }
@@ -6471,7 +6471,7 @@ world.afterEvents.targetBlockHit.subscribe(event => {
         } });
     }
 });
-world.afterEvents.tripWireTrip.subscribe(event => {
+subscribedEvents.afterTripWireTrip = world.afterEvents.tripWireTrip.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:tripWireTrip")));
     }
@@ -6482,7 +6482,7 @@ world.afterEvents.tripWireTrip.subscribe(event => {
         } });
     }
 });
-world.afterEvents.weatherChange.subscribe(event => {
+subscribedEvents.afterWeatherChange = world.afterEvents.weatherChange.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:weatherChange")));
     }
@@ -6493,7 +6493,7 @@ world.afterEvents.weatherChange.subscribe(event => {
         } });
     }
 });
-world.beforeEvents.explosion.subscribe(event => {
+subscribedEvents.beforeExplosion = world.beforeEvents.explosion.subscribe(event => {
     if (disconnectingPlayers.includes(event.source?.id)) {
         event.cancel = true;
         return;
@@ -6528,7 +6528,7 @@ world.beforeEvents.explosion.subscribe(event => {
     }
     //console.warn("after set: "+JSONStringify(event.getImpactedBlocks(), true))
 });
-world.afterEvents.itemReleaseUse.subscribe(event => {
+subscribedEvents.afterItemReleaseUse = world.afterEvents.itemReleaseUse.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("itemReleaseUseCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("itemReleaseUseCode")));
@@ -6554,7 +6554,7 @@ world.afterEvents.itemReleaseUse.subscribe(event => {
     }
     ;
 });
-world.beforeEvents.playerInteractWithBlock.subscribe(event => {
+subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")));
@@ -6657,7 +6657,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
         ;
     }
 });
-world.beforeEvents.itemUseOn.subscribe(event => {
+subscribedEvents.beforeItemUseOn = world.beforeEvents.itemUseOn.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("itemUseOnCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("itemUseOnCode")));
@@ -6712,7 +6712,7 @@ world.beforeEvents.itemUseOn.subscribe(event => {
         }
     }
 });
-world.beforeEvents.playerBreakBlock.subscribe(event => {
+subscribedEvents.beforePlayerBreakBlock = world.beforeEvents.playerBreakBlock.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("playerBreakBlockCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("playerBreakBlockCode")));
@@ -6750,7 +6750,7 @@ world.beforeEvents.playerBreakBlock.subscribe(event => {
         }
     }
 });
-world.beforeEvents.playerPlaceBlock.subscribe(event => {
+subscribedEvents.beforePlayerPlaceBlock = world.beforeEvents.playerPlaceBlock.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerPlaceBlock")));
     }
@@ -6778,7 +6778,7 @@ world.beforeEvents.playerPlaceBlock.subscribe(event => {
 });
 /*${scripteval}world.getAllPlayers().filter((p)=>(p.getDynamicProperty("canBypassProtectedAreas") == undefined)).forEach((p)=>{p.setDynamicProperty("canBypassProtectedAreas", false)})*/
 /*${scripteval}world.getAllPlayers().find((p)=>(p.name == "Andexter8")).setDynamicProperty("canBypassProtectedAreas", true)*/
-world.afterEvents.entityHitBlock.subscribe(event => {
+subscribedEvents.afterEntityHitBlock = world.afterEvents.entityHitBlock.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityHitBlock")));
     }
@@ -6815,7 +6815,7 @@ repeatingIntervals.everyTickAutoEval = system.runInterval(() => { try {
     eval(String(world.getDynamicProperty("autoEval:everyTick")));
 }
 catch { } ; }, 1); //fixed and this one is also nows new
-world.beforeEvents.itemUse.subscribe(event => {
+subscribedEvents.beforeItemUse = world.beforeEvents.itemUse.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("code")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("code")));
@@ -7700,7 +7700,7 @@ console.error(e, e.stack);
     }
     ;
 });
-world.beforeEvents.chatSend.subscribe((eventData) => {
+subscribedEvents.beforeChatSend = world.beforeEvents.chatSend.subscribe((eventData) => {
     try {
         getPlayersWithAnyOfTags(["getBeforeChatSendNotifications", "includeBeforeChatSendNotificationsBy:" + eventData.sender.name, "includeBeforeChatSendNotificationsById:" + eventData.sender.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + eventData.sender.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + eventData.sender.name)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebeforeChatSend§r][${eventData.sender.name}] Chat message sent${!!eventData.targets ? " with targets " + eventData.targets.map(p => p.name).join() : ""} with the message ${JSONStringify(eventData.message)}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBeforeChatSendNotificationsNotificationSound.soundId, { pitch: pn.getBeforeChatSendNotificationsNotificationSound.pitch, volume: pn.getBeforeChatSendNotificationsNotificationSound.volume })); });
     }
@@ -8000,7 +8000,7 @@ try{noBlockBreakAreas = convertToCompoundBlockVolume(String(world.getDynamicProp
 try{protectedAreas = convertToCompoundBlockVolume(String(world.getDynamicProperty("protectedAreas") ?? "0, 0, 0, 0, 0, 0"))} catch(e){console.error(e, e.stack);}
 try{noBlockPlaceAreas = convertToCompoundBlockVolume(String(world.getDynamicProperty("noBlockPlaceAreas") ?? "0, 0, 0, 0, 0, 0"))} catch(e){console.error(e, e.stack);}
 }, 1)} catch(e){console.error(e, e.stack);}*/
-system.afterEvents.scriptEventReceive.subscribe((event) => {
+subscribedEvents.afterScriptEventReceive = system.afterEvents.scriptEventReceive.subscribe((event) => {
     const { id, // returns string (wiki:test)
     initiator, // returns Entity
     message, // returns string (Hello World)
@@ -8016,6 +8016,9 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
         world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("scriptEventRecieveAfterEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
+    }
+    if (id.startsWith("andexdb:")) {
+        return;
     }
     if (id == "andexdb:scriptevent") {
         const diamondAwesomeSword = new ItemStack("minecraft:diamond_sword", 1);

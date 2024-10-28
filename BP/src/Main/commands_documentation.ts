@@ -154,8 +154,9 @@ Give all players health boost with the level equal to their XP level:
 //"tempban" = "Temporarily bans a player. ",
 "terminal" = "Opens up the command runner/terminal menu. ",
 "timezone" = "Sets your timezone to the specific UTC offset in hours. ",
-"thru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at. ",
-"vthru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at, even if it would put you into the void. ",
+"thru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at.",
+"pthru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at. Even if it is only a one block tall gap at the other end.",
+"vthru" = "Teleports to the other side of the wall/floor/ceilling that you are looking at, even if it would put you into the void.",
 "top" = "Teleports on top of the highest solid block at your x and z coordinates. ",
 "tpa" = "Requests to teleport to the specified player. ",
 "tpaccept" = "Accepts a player's teleport request. ",
@@ -734,6 +735,8 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
 "terminal": `${command.dp}terminal`,
 "transferitem": `${command.dp}transferitem <transferItemToPlayer: target>`,
 "thru": `${command.dp}thru`,
+"pthru": `${command.dp}pthru`,
+"vthru": `${command.dp}vthru`,
 "timezone": `${command.dp}timezone [UTCOffsetInHours: float]`,
 "top": `${command.dp}top`,
 "tpa": `${command.dp}tpa <player: target|playerName|string>`,
@@ -1085,6 +1088,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .offlineuuidinvsee - §oDisplays the saved contents of the inventory of the player with the specified UUID. §r
 .playershopsystemsettings - §oOpens up the player shop system settings menu. §r
 .printlayers - §oDisplays a list of all the blocks at your specified x and z coordinates. §r
+.pthru - §rTeleports to the other side of the wall/floor/ceilling that you are looking at. Even if it is only a one block tall gap at the other end.§r
 .rank - §oManages ranks stored in players. §r
 .remexp - §oRemoves explosive blocks in the specified radius. §r
 .remotheritemenchants - §oRemoves all enchantment types from an item except for the item types specified. §r

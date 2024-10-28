@@ -1,0 +1,4 @@
+§d 2D Functions (formatted as JavaScript):
+5==-4*m**5*n**3-8*m*n**3-n**4-10*m**2*n
+0==-4*m**5*n**3-8*m*n**3-n**4-10*m**2*n
+§d 3D Functions (formatted as JavaScript):

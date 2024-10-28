@@ -4745,6 +4745,32 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "pthru",
+        escregexp: {
+            v: "^pthru$"
+        },
+        formats: [
+            {
+                format: "pthru"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "world"
+        ],
+        commandSettingsId: "built-inCommandSettings:pthru",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "rank",
         escregexp: {
             v: "^rank$"

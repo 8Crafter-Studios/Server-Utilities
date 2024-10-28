@@ -204,7 +204,7 @@ let test1c = [1, "ID:1", "text"] as Mutable<typeof test1a>*/
 
 export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]/*
 disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
-system.beforeEvents.watchdogTerminate.subscribe(e => {try{
+subscribedEvents.beforeWatchdogTerminate = system.beforeEvents.watchdogTerminate.subscribe(e => {try{
     if(crashEnabled == true){
         return;
     }else{
@@ -4201,7 +4201,7 @@ if(event.itemStack?.typeId=="andexdb:entity_debug_stick"){
                 )
 }
 });
-world.beforeEvents.playerLeave.subscribe(event => {/*
+subscribedEvents.beforePlayerLeave = world.beforeEvents.playerLeave.subscribe(event => {/*
 try{
     console.warn(`Player ${JSON.stringify(event.player.name)}<${event.player.id}> left the game.`)
 }catch{
@@ -4211,11 +4211,11 @@ try{
 }*/
 try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerLeave")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerLeaveBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.blockExplode.subscribe(event => {
+subscribedEvents.afterBlockExplode = world.afterEvents.blockExplode.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:blockExplode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("blockExplodeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithAnyOfTags(["getBlockExplodeNotifications", "getBlockExplodeNotificationsIn:"+event.dimension, "getBlockExplodeNotificationsForExplodedBlockType:"+event.explodedBlockPermutation.type.id]).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eblockExplode§r] Block of type ${event.explodedBlockPermutation.type.id} in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was blown up${!!event.source?` by ${(event.source as Player)?.name??tryget(()=>event.source?.nameTag==""?undefined:event.source?.nameTag+"<"+event.source.id+">")??event.source?.typeId+"<"+event.source.id+">"}`:""}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getBlockExplodeNotificationsNotificationSound.soundId, {pitch: pn.getBlockExplodeNotificationsNotificationSound.pitch, volume: pn.getBlockExplodeNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.buttonPush.subscribe(event => {
+subscribedEvents.afterButtonPush = world.afterEvents.buttonPush.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:buttonPush")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("buttonPushAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithAnyOfTags(["getButtonPushNotifications", "getButtonPushNotificationsForBlockAt:"+vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:"+vTStr(event.block.location)+" "+event.block.dimension, "getButtonPushNotificationsForBlockAt:"+event.block.dimension+" "+vTStr(event.block.location), "getButtonPushNotificationsForBlockAt:"+JSONStringify(event.block.location), "getButtonPushNotificationsForBlockAt:"+JSONStringify(Object.assign(event.block.location, {dimension: event.block.dimension})), "getButtonPushNotificationsForBlock:"+JSONStringify(Object.assign(event.block.location, {dimension: event.block.dimension})), "getButtonPushNotificationsForBlock:"+JSONStringify(event.block.location)]).filter(p=>!p.hasTag("excludeButtonPushNotificationsIn:"+event.dimension.id)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§ebuttonPush§r] Button in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} was pressed by ${(event.source as Player)?.name??tryget(()=>event.source?.nameTag==""?undefined:event.source?.nameTag+"<"+event.source.id+">")??event.source?.typeId+"<"+event.source.id+">"}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getButtonPushNotificationsNotificationSound.soundId, {pitch: pn.getButtonPushNotificationsNotificationSound.pitch, volume: pn.getButtonPushNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
@@ -4684,120 +4684,120 @@ repeatingIntervals.worldBorderSystem=system.runInterval(()=>{
     }
 }, 1)
 // ${se}srun(()=>{let p = player; let values = facingPoint(p.location, {x: 240.50, y: 75.00, z: 1269.50}); let rot = values.rot; let difference = values.difference; let dv = anglesToDirectionVectorDeg(rot.x, rot.y); bsend([values, dv]); p.applyKnockback(dv.x, dv.z, (1-Math.abs(dv.y))*Vector.magnitude(difference), dv.y*Vector.magnitude(difference)); })
-world.afterEvents.chatSend.subscribe(event => {
+subscribedEvents.afterChatSend = world.afterEvents.chatSend.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:chatSend")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("chatSendAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.dataDrivenEntityTrigger.subscribe(event => {
+subscribedEvents.afterDataDrivenEntityTrigger = world.afterEvents.dataDrivenEntityTrigger.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:dataDrivenEntityTrigger")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("dataDrivenEntityTriggerAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{eval(String(world.getDynamicProperty("evalAfterEvents:dataDrivenEntityTriggerEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("dataDrivenEntityTriggerEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.effectAdd.subscribe(event => {
+subscribedEvents.afterEffectAdd = world.afterEvents.effectAdd.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:effectAdd")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("effectAddAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithAnyOfTags(["getEffectAddNotifications", "getEffectAddNotificationsForEntityType:"+event.entity.typeId, "getEntitySpawnNotificationsForEntityId:"+event.entity.id, "getEntitySpawnNotificationsWithEffectType:"+event.effect.typeId, "getEntitySpawnNotificationsWithEffectName:"+event.effect.displayName, "getEntitySpawnNotificationsWithAmplifier:"+event.effect.amplifier, "getEntitySpawnNotificationsWithEffectDuration:"+event.effect.duration]).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eeffectAdd§r] The effect ${event.effect.displayName} with the amplifier ${event.effect.amplifier} and the duration ${event.effect.duration} was added to ${event.entity.typeId=="minecraft:player"?(event.entity as Player)?.name:`an entity of type ${event.entity.typeId} with the id ${event.entity.id} in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location}`}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getEffectAddNotificationsNotificationSound.soundId, {pitch: pn.getEffectAddNotificationsNotificationSound.pitch, volume: pn.getEffectAddNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.entityDie.subscribe(event => {
+subscribedEvents.afterEntityDie = world.afterEvents.entityDie.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:entityDie")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityDieAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.entityHealthChanged.subscribe(event => {
+subscribedEvents.afterEntityHealthChanged = world.afterEvents.entityHealthChanged.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHealthChanged")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHealthChangedAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.entityHitBlock.subscribe(event => {
+subscribedEvents.afterEntityHitBlock = world.afterEvents.entityHitBlock.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHitBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHitBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.entityHitEntity.subscribe(event => {//if(event.damagingEntity.typeId=="minecraft:player"){if(event.damagingEntity.getComponent("inventory").container.getItem(event.damagingEntity.selectedSlotIndex).getLore().join(",").includes("Sweeping Edge")){event.damagingEntity.dimension.getEntities({location: event.damagingEntity.location, maxDistance: 2}).filter(v=>v.id!=event.damagingEntity.id).forEach(v=>v.applyDamage(3, {cause: EntityDamageCause.entityAttack, damagingEntity: event.damagingEntity}))}}
+subscribedEvents.afterEntityHitEntity = world.afterEvents.entityHitEntity.subscribe(event => {//if(event.damagingEntity.typeId=="minecraft:player"){if(event.damagingEntity.getComponent("inventory").container.getItem(event.damagingEntity.selectedSlotIndex).getLore().join(",").includes("Sweeping Edge")){event.damagingEntity.dimension.getEntities({location: event.damagingEntity.location, maxDistance: 2}).filter(v=>v.id!=event.damagingEntity.id).forEach(v=>v.applyDamage(3, {cause: EntityDamageCause.entityAttack, damagingEntity: event.damagingEntity}))}}
 try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHitEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHitEntityAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{if(["minecraft:ender_crystal"].includes(event.hitEntity?.typeId)){getPlayersWithTags("getHitEntityTriggerExplosionNotifications").filter(p=>!p.hasTag("excludeHitEntityTriggerExplosionNotificationsIn:"+(tryget(()=>event.hitEntity?.dimension)??"unknown"))&&((!!event.damagingEntity&&(event.damagingEntity?.isValid()??true))?!p.hasTag("excludeHitEntityTriggerExplosionNotificationsBy:"+((event.damagingEntity as Player)?.name??event.damagingEntity?.nameTag))&&!p.hasTag("excludeHitEntityTriggerExplosionNotificationsById:"+event.damagingEntity?.id)&&!p.hasTag("excludeHitEntityTriggerExplosionNotificationsByType:"+event.damagingEntity?.typeId):!p.hasTag("excludeHitEntityTriggerExplosionNotificationsWithNoSource"))&&!p.hasTag("excludeHitEntityTriggerExplosionNotificationsCauseType:"+event.hitEntity?.typeId)).forEach(p=>psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eexplosiveEntityTriggeredByHit§r] ${!!event.damagingEntity?`${(event.damagingEntity as Player)?.name??event.damagingEntity?.nameTag??event.damagingEntity?.typeId} hit exploding entity of type "${event.hitEntity?.typeId}"`:`Exploding entity of type "${event.hitEntity?.typeId}" was hit`}${(!!tryget(()=>event.hitEntity?.dimension)&&(event.hitEntity?.isValid()??true))?` in ${dimensionTypeDisplayFormatting[tryget(()=>event.hitEntity?.dimension?.id)]??"an unknown dimension"} at ${(!!tryget(()=>event.hitEntity?.location)&&(event.hitEntity?.isValid()??true))?vTStr(event.hitEntity?.location):"an unknwon location"}`:(!!event.damagingEntity.dimension&&(event.damagingEntity?.isValid()??true))?`, the entity/player who hit the explosive entity is in ${dimensionTypeDisplayFormatting[tryget(()=>event.damagingEntity?.dimension?.id)]??"an unknown dimension"} at ${(!!tryget(()=>event.damagingEntity?.location)&&(event.damagingEntity?.isValid()??true))?vTStr(mcMath.Vector3Utils.floor(event.damagingEntity?.location)):"an unknwon location"}`:""}. `))}}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.entityHurt.subscribe(event => {
+subscribedEvents.afterEntityHurt = world.afterEvents.entityHurt.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHurt")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHurtAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithAnyOfTags(["getEntityHurtNotifications", "getEntityHurtNotificationsForType:"+event.hurtEntity?.typeId, "getEntityHurtNotificationsForId:"+event.hurtEntity?.id, "getEntityHurtNotificationsWithCause:"+event.damageSource?.cause, "getEntityHurtNotificationsWithDamage:"+event.damage, "getEntityHurtNotificationsWithDamagingEntityOfType:"+event.damageSource?.damagingEntity?.typeId, "getEntityHurtNotificationsWithDamagingEntityWithId:"+event.damageSource?.damagingEntity?.id, "getEntityHurtNotificationsWithDamagingProjectileOfType:"+event.damageSource?.damagingProjectile?.typeId, "getEntityHurtNotificationsWithDamagingProjectileWithId:"+event.damageSource?.damagingProjectile?.id]).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eentityHurt§r] Entity of type ${event.hurtEntity?.typeId} with the id ${event.hurtEntity?.id} took ${event.damage} damage of type "${event.damageSource?.cause}" in ${tryget(()=>dimensionTypeDisplayFormatting[event.hurtEntity?.dimension?.id])??"an unknown dimension"} at ${(event.hurtEntity?.isValid()??false)?vTStr(event.hurtEntity?.location):"an unknown location"}${!!event.damageSource?.damagingEntity?`, the entity was damaged by ${event.damageSource?.damagingEntity?.typeId=="minecraft:player"?(event.damageSource?.damagingEntity as Player)?.name:`an entity of type ${event.damageSource?.damagingEntity?.typeId} with the ID ${event.damageSource?.damagingEntity?.id}${tryget(()=>event.damageSource.damagingEntity.nameTag!=""?" and the name tag \""+event.damageSource.damagingEntity.nameTag+"\"":"")}`}${tryget(()=>" in "+dimensionTypeDisplayFormatting[event.damageSource.damagingEntity.dimension.id]+" at "+vTStr(event.damageSource.damagingEntity.location))}`:""}${!!event.damageSource?.damagingProjectile?`, the projectile that damaged the entity was ${`a projectile of type ${event.damageSource?.damagingProjectile?.typeId} with the ID ${event.damageSource?.damagingProjectile?.id}${tryget(()=>event.damageSource.damagingProjectile.nameTag!=""?" and the name tag \""+event.damageSource.damagingProjectile.nameTag+"\"":"")}`}${tryget(()=>" in "+dimensionTypeDisplayFormatting[event.damageSource.damagingProjectile.dimension.id]+" at "+vTStr(event.damageSource.damagingProjectile.location))}`:""}. The current velocity of the damaged entity is: ${tryget(()=>JSON.stringify(event.hurtEntity.getVelocity()))??"§cError: Unable to get velocity.§r"}`); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getEntityHurtNotificationsNotificationSound.soundId, {pitch: pn.getEntityHurtNotificationsNotificationSound.pitch, volume: pn.getEntityHurtNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.entityLoad.subscribe(event => {
+subscribedEvents.afterEntityLoad = world.afterEvents.entityLoad.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:entityLoad")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityLoadAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithAnyOfTags(["getEntityLoadNotifications", "getEntityLoadNotificationsForType:"+event.entity.typeId, "getEntityLoadNotificationsForId:"+event.entity.id]).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eentityLoad§r] Entity of type ${event.entity.typeId} with the ID ${event.entity.id}${event.entity.nameTag!=""?" and the name \""+event.entity.nameTag+"\"":""} was loaded in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${vTStr(event.entity.location)}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getEntityLoadNotificationsNotificationSound.soundId, {pitch: pn.getEntityLoadNotificationsNotificationSound.pitch, volume: pn.getEntityLoadNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.entityRemove.subscribe(event => {
+subscribedEvents.afterEntityRemove = world.afterEvents.entityRemove.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:entityRemove")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityRemoveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithAnyOfTags(["getEntityRemoveNotifications", "getEntityRemoveNotificationsForType:"+event.typeId, "getEntityRemoveNotificationsForId:"+event.removedEntityId]).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eentityRemove§r] Entity of type ${event.typeId} with the id ${event.removedEntityId} was removed. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getEntityRemoveNotificationsNotificationSound.soundId, {pitch: pn.getEntityRemoveNotificationsNotificationSound.pitch, volume: pn.getEntityRemoveNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.entitySpawn.subscribe(event => {
+subscribedEvents.afterEntitySpawn = world.afterEvents.entitySpawn.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:entitySpawn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entitySpawnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:"+event.entity.typeId, "getEntitySpawnNotificationsForId:"+event.entity.id, "getEntitySpawnNotificationsWithCause:"+event.cause]).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location} with the cause "${event.cause}". `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getEntitySpawnNotificationsNotificationSound.soundId, {pitch: pn.getEntitySpawnNotificationsNotificationSound.pitch, volume: pn.getEntitySpawnNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.explosion.subscribe(event => {
+subscribedEvents.afterExplosion = world.afterEvents.explosion.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:explosion")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("explosionAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithAnyOfTags(["getExplosionNotifications", "getExplosionNotificationsForSourceType:"+(event.source?.typeId??"none")]).filter(p=>!p.hasTag("excludeExplosionNotificationsIn:"+event.dimension)&&(!!event.source?!p.hasTag("excludeExplosionNotificationsBy:"+((event.source as Player)?.name??tryget(()=>event.source?.nameTag)??"undefined"))&&!p.hasTag("excludeExplosionNotificationsById:"+event.source?.id)&&!p.hasTag("excludeExplosionNotificationsType:"+event.source?.typeId):!p.hasTag("excludeExplosionNotificationsWithNoSource"))).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eexplosion§r]${!!event.source?"["+((event.source as Player)?.name??tryget(()=>event.source?.nameTag)??(event.source?.typeId+"<"+event.source?.id+">"))+"]":""} ${!!event.source?"Triggered explosion":"Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length!=0?" around ":""}${event.getImpactedBlocks().length==0?"":vTStr((()=>{let value = mcMath.VECTOR3_ZERO; event.getImpactedBlocks().forEach(b=>{value=mcMath.Vector3Utils.add(value, b.location)}); return mcMath.Vector3Utils.scale(value, 1/event.getImpactedBlocks().length)})())}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getExplosionNotificationsNotificationSound.soundId, {pitch: pn.getExplosionNotificationsNotificationSound.pitch, volume: pn.getExplosionNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 //console.warn(JSONStringify(event.getImpactedBlocks(), true))
 });
-world.afterEvents.itemCompleteUse.subscribe(event => {
+subscribedEvents.afterItemCompleteUse = world.afterEvents.itemCompleteUse.subscribe(event => {
     if(!!event?.itemStack?.getDynamicProperty("itemCompleteUseCode")){try{eval(String(event?.itemStack?.getDynamicProperty("itemCompleteUseCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemCompleteUseCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
 try{eval(String(world.getDynamicProperty("evalAfterEvents:itemCompleteUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemCompleteUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.gameRuleChange.subscribe(event => {
+subscribedEvents.afterGameRuleChange = world.afterEvents.gameRuleChange.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:gameRuleChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("gameRuleChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithTags("getGameRuleChangeNotifications").filter(p=>!p.hasTag("excludeGameRuleChangeNotificationsFor:"+event.rule)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§egameRuleChange§r] "${event.rule}" was changed to ${event.value}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getGameRuleChangeNotificationsNotificationSound.soundId, {pitch: pn.getGameRuleChangeNotificationsNotificationSound.pitch, volume: pn.getGameRuleChangeNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.playerGameModeChange.subscribe(event => {
+subscribedEvents.afterPlayerGameModeChange = world.afterEvents.playerGameModeChange.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:playerGameModeChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerGameModeChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithTags("getGameModeChangeNotifications").filter(p=>!p.hasTag("excludeGameModeChangeNotificationsFor:"+event.player.name)&&!p.hasTag("excludeGameModeChangeNotificationsFrom:"+event.fromGameMode)&&!p.hasTag("excludeGameModeChangeNotificationsTo:"+event.toGameMode)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eplayerGameModeChange§r][${event.player.name}] Changed from ${event.fromGameMode} to ${event.toGameMode}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getPlayerGameModeChangeNotificationsNotificationSound.soundId, {pitch: pn.getPlayerGameModeChangeNotificationsNotificationSound.pitch, volume: pn.getPlayerGameModeChangeNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.weatherChange.subscribe(event => {
+subscribedEvents.afterWeatherChange = world.afterEvents.weatherChange.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:weatherChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("weatherChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithTags("getWeatherChangeNotifications").filter(p=>!p.hasTag("excludeWeatherChangeNotificationsTo:"+event.newWeather)&&!p.hasTag("excludeGameModeChangeNotificationsIn:"+event.dimension)&&!p.hasTag("excludeGameModeChangeNotificationsFrom:"+event.previousWeather)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eweatherChange§r] Weather in ${event.dimension} changed from ${event.previousWeather} to ${event.newWeather}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getWeatherChangeNotificationsNotificationSound.soundId, {pitch: pn.getWeatherChangeNotificationsNotificationSound.pitch, volume: pn.getWeatherChangeNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });/*
 world.afterEvents.itemDefinitionEvent.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });*/
-world.afterEvents.itemReleaseUse.subscribe(event => {
+subscribedEvents.afterItemReleaseUse = world.afterEvents.itemReleaseUse.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemReleaseUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.itemStartUse.subscribe(event => {
+subscribedEvents.afterItemStartUse = world.afterEvents.itemStartUse.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:itemStartUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemStartUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.itemStartUseOn.subscribe(event => {
+subscribedEvents.afterItemStartUseOn = world.afterEvents.itemStartUseOn.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:itemStartUseOn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemStartUseOnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.itemStopUse.subscribe(event => {
+subscribedEvents.afterItemStopUse = world.afterEvents.itemStopUse.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:itemStopUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemStopUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.itemStopUseOn.subscribe(event => {
+subscribedEvents.afterItemStopUseOn = world.afterEvents.itemStopUseOn.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:itemStopUseOn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemStopUseOnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.itemUse.subscribe(event => {
+subscribedEvents.afterItemUse = world.afterEvents.itemUse.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:itemUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.itemUseOn.subscribe(event => {
+subscribedEvents.afterItemUseOn = world.afterEvents.itemUseOn.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:itemUseOn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseOnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.leverAction.subscribe(event => {
+subscribedEvents.afterLeverAction = world.afterEvents.leverAction.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:leverAction")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("leverActionAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithTags("getLeverActionNotifications").filter(p=>!p.hasTag("excludeLeverActionNotificationsTo:"+event.isPowered)&&!p.hasTag("excludeLeverActionNotificationsIn:"+event.dimension)&&!p.hasTag("excludeLeverActionNotificationsBy:"+event.player.name)&&!p.hasTag("excludeLeverActionNotificationsAt:"+Object.values(event.block.location).join(","))).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eleverAction§r][${event.player.name}] Lever in ${dimensionTypeDisplayFormatting[event.dimension.id]} at ${vTStr(event.block.location)} turned ${event.isPowered?"ON":"OFF"}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getLeverActionNotificationsNotificationSound.soundId, {pitch: pn.getLeverActionNotificationsNotificationSound.pitch, volume: pn.getLeverActionNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.messageReceive.subscribe(event => {
+subscribedEvents.afterMessageReceive = world.afterEvents.messageReceive.subscribe(event => {
 //console.warn(event.id, event.message, event.player?.name, event.player?.id)
 try{eval(String(world.getDynamicProperty("evalAfterEvents:messageReceive")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("messageReceiveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithTags("getMessageReceiveNotifications").filter(p=>!p.hasTag("excludeMessageReceiveNotificationsWithId:"+event.id)&&!p.hasTag("excludeMessageReceiveNotificationsWithMessage:"+event.message)&&!p.hasTag("excludeMessageReceiveNotificationsBy:"+event.player.name)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§emessageReceive§r][${event.player.name}] Message recieved with ID ${event.id} and value "${event.message}". `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getMessageRecieveNotificationsNotificationSound.soundId, {pitch: pn.getMessageRecieveNotificationsNotificationSound.pitch, volume: pn.getMessageRecieveNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.pistonActivate.subscribe(event => {
+subscribedEvents.afterPistonActivate = world.afterEvents.pistonActivate.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:pistonActivate")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pistonActivateAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.playerBreakBlock.subscribe(event => {
+subscribedEvents.afterPlayerBreakBlock = world.afterEvents.playerBreakBlock.subscribe(event => {
     if(!!event?.itemStackBeforeBreak?.getDynamicProperty("afterPlayerBreakBlockCode")){try{eval(String(event?.itemStackBeforeBreak?.getDynamicProperty("afterPlayerBreakBlockCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemAfterPlayerBreakBlockCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
 try{eval(String(world.getDynamicProperty("evalAfterEvents:playerBreakBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerBreakBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.playerDimensionChange.subscribe(event => {
+subscribedEvents.afterPlayerDimensionChange = world.afterEvents.playerDimensionChange.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:playerDimensionChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerDimensionChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{getPlayersWithAnyOfTags(["getPlayerDimensionChangeNotifications", "includePlayerDimensionChangeNotificationsBy:"+event.player.name, "includePlayerDimensionChangeNotificationsFromDimension:"+event.fromDimension, "includePlayerDimensionChangeNotificationsToDimension:"+event.toDimension, "includeBeforeChatSendNotificationsById:"+event.player.name]).filter(p=>!p.hasTag("excludeBeforeChatSendNotificationsById:"+event.player.id)&&!p.hasTag("excludeBeforeChatSendNotificationsBy:"+event.player.name)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eplayerDimensionChange§r][${event.player.name}] Entered ${dimensionTypeDisplayFormatting[event.fromDimension.id]} at ${vTStr(event.fromLocation)} from ${dimensionTypeDisplayFormatting[event.toDimension.id]} at ${vTStr(event.toLocation)}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getPlayerDimensionChangeNotificationsNotificationSound.soundId, {pitch: pn.getPlayerDimensionChangeNotificationsNotificationSound.pitch, volume: pn.getPlayerDimensionChangeNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.playerInteractWithBlock.subscribe(event => {
+subscribedEvents.afterPlayerInteractWithBlock = world.afterEvents.playerInteractWithBlock.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:playerInteractWithBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{if((["minecraft:respawn_anchor", "minecraft:tnt"].includes(event.block.typeId)&&event.block.dimension.id=="minecraft:overworld")||(["minecraft:bed", "minecraft:tnt"].includes(event.block.typeId)&&event.block.dimension.id=="minecraft:nether")||(["minecraft:respawn_anchor", "minecraft:tnt", "minecraft:bed"].includes(event.block.typeId)&&event.block.dimension.id=="minecraft:overworld")){getPlayersWithTags("getBlockInteractTriggerExplosionNotifications").filter(p=>!p.hasTag("excludeBlockInteractTriggerExplosionNotificationsIn:"+event.block.dimension)&&(!!event.player?!p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBy:"+event.player?.name)&&!p.hasTag("excludeBlockInteractTriggerExplosionNotificationsById:"+event.player.id):!p.hasTag("excludeBlockInteractTriggerExplosionNotificationsWithNoSource"))&&!p.hasTag("excludeBlockInteractTriggerExplosionNotificationsBlockType:"+event.block.typeId)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eexplosiveBlockInteraction§r] ${!!event.player?`${event.player.name??event.player.nameTag} interacted with explosive block of type "${event.block.typeId}"`:`Explosive block of type "${event.block.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.block.dimension.id]} at ${vTStr(event.block.location)}${!!event.itemStack?` using ${event.itemStack?.typeId}`:""}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.soundId, {pitch: pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getBlockInteractTriggerExplosionNotificationsNotificationSound.volume}))})}}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.playerInteractWithEntity.subscribe(event => {
+subscribedEvents.afterPlayerInteractWithEntity = world.afterEvents.playerInteractWithEntity.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:playerInteractWithEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithEntityAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 try{if(["minecraft:creeper"].includes(event.target.typeId)&&!!event.itemStack){getPlayersWithTags("getEntityInteractTriggerExplosionNotifications").filter(p=>!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsIn:"+event.target.dimension)&&(!!event.player?!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsBy:"+event.player?.name)&&!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsById:"+event.player.id):!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsWithNoSource"))&&!p.hasTag("excludeEntityInteractTriggerExplosionNotificationsEntityType:"+event.target.typeId)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eexplosiveEntityInteraction§r] ${!!event.player?`${event.player.name??event.player.nameTag} interacted with explosive entity of type "${event.target.typeId}"`:`Explosive entity of type "${event.target.typeId}" was interacted with`} in ${dimensionTypeDisplayFormatting[event.target.dimension.id]} at ${vTStr(event.target.location)}${!!event.itemStack?` using ${event.itemStack?.typeId}`:""}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.soundId, {pitch: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.pitch, volume: pn.getEntityInteractTriggerExplosionNotificationsNotificationSound.volume}))})}}catch(e){console.error(e, e.stack)}
 });
-world.afterEvents.playerJoin.subscribe(event => {
+subscribedEvents.afterPlayerJoin = world.afterEvents.playerJoin.subscribe(event => {
 try{
     console.warn(`Player ${JSON.stringify(event.playerName)}<${event.playerId}> joined the game.`)
 }catch{
@@ -4808,7 +4808,7 @@ try{
 if(!!(ban?.getValidBans()?.idBans?.find(_=>_?.playerId==event?.playerId)??ban.getValidBans().nameBans.find(_=>_.playerName==event.playerName))){try{let pName = event?.playerName; let pId = event?.playerId; let b = (ban?.getValidBans()?.idBans?.sort((a: ban, b: ban)=>1-(2*Number(a?.banDate>b?.banDate)))?.find(_=>_?.playerId==event?.playerId)??ban.getValidBans().nameBans?.sort((a: ban, b: ban)=>1-(2*Number(a?.banDate>b?.banDate))).find(_=>_.playerName==event.playerName)); let reason = b?.reason; try{reason = String(eval(b?.reason)?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))?.replaceAll("{timeRemainingMinutes}", String(b?.timeRemaining.minutes))?.replaceAll("{timeRemainingSeconds}", String(b?.timeRemaining.seconds))?.replaceAll("{timeRemainingMilliseconds}", String(b?.timeRemaining.milliseconds))?.replaceAll("{bannedBy}", String(b?.bannedByName))?.replaceAll("{bannedByName}", String(b?.bannedByName))?.replaceAll("{bannedById}", String(b?.bannedById))?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toUTCString()+" GMT"))?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toUTCString()+" GMT"))?.replaceAll("{type}", String(b?.type))?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))??b?.reason)??b?.reason; }catch(e){reason = b?.reason?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))?.replaceAll("{timeRemainingMinutes}", String(b?.timeRemaining.minutes))?.replaceAll("{timeRemainingSeconds}", String(b?.timeRemaining.seconds))?.replaceAll("{timeRemainingMilliseconds}", String(b?.timeRemaining.milliseconds))?.replaceAll("{bannedBy}", String(b?.bannedByName))?.replaceAll("{bannedById}", String(b?.bannedById))?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toUTCString()+" GMT"))?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toUTCString()+" GMT"))?.replaceAll("{type}", String(b?.type))?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))?.escapeCharactersB(true)?.v??b?.reason; }; world.getDimension("overworld").runCommand(`/kick ${JSON.stringify(pName)} ${reason}`); }catch(e){console.error(e, e.stack)}}
 try{eval(String(world.getDynamicProperty("evalAfterEvents:playerJoin")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerJoinAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.playerLeave.subscribe(event => {
+subscribedEvents.afterPlayerLeave = world.afterEvents.playerLeave.subscribe(event => {
 try{
     console.warn(`Player ${JSON.stringify(event.playerName)}<${event.playerId}> left the game.`)
 }catch{
@@ -4818,34 +4818,34 @@ try{
 }
 try{eval(String(world.getDynamicProperty("evalAfterEvents:playerLeave")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerLeaveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.playerPlaceBlock.subscribe(event => {
+subscribedEvents.afterPlayerPlaceBlock = world.afterEvents.playerPlaceBlock.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:playerPlaceBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerPlaceBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.playerSpawn.subscribe(event => {
+subscribedEvents.afterPlayerSpawn = world.afterEvents.playerSpawn.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:playerSpawn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerSpawnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.pressurePlatePop.subscribe(event => {
+subscribedEvents.afterPressurePlatePop = world.afterEvents.pressurePlatePop.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:pressurePlatePop")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pressurePlatePopAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.pressurePlatePush.subscribe(event => {
+subscribedEvents.afterPressurePlatePush = world.afterEvents.pressurePlatePush.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:pressurePlatePush")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pressurePlatePushAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.projectileHitBlock.subscribe(event => {
+subscribedEvents.afterProjectileHitBlock = world.afterEvents.projectileHitBlock.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:projectileHitBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("projectileHitBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.projectileHitEntity.subscribe(event => {
+subscribedEvents.afterProjectileHitEntity = world.afterEvents.projectileHitEntity.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:projectileHitEntity")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("projectileHitEntityAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.targetBlockHit.subscribe(event => {
+subscribedEvents.afterTargetBlockHit = world.afterEvents.targetBlockHit.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:targetBlockHit")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("targetBlockHitAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.tripWireTrip.subscribe(event => {
+subscribedEvents.afterTripWireTrip = world.afterEvents.tripWireTrip.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:tripWireTrip")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("tripWireTripAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.afterEvents.weatherChange.subscribe(event => {
+subscribedEvents.afterWeatherChange = world.afterEvents.weatherChange.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:weatherChange")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("weatherChangeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
 });
-world.beforeEvents.explosion.subscribe(event => {
+subscribedEvents.beforeExplosion = world.beforeEvents.explosion.subscribe(event => {
     if(disconnectingPlayers.includes(event.source?.id)){event.cancel=true; return}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:explosion")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("explosionBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}/*
     eval(String(world.getDynamicProperty("scriptEvalBeforeEventsExplosion")))*/
@@ -4863,7 +4863,7 @@ world.beforeEvents.explosion.subscribe(event => {
     //console.warn("after set: "+JSONStringify(event.getImpactedBlocks(), true))
 });
 
-world.afterEvents.itemReleaseUse.subscribe(event => {
+subscribedEvents.afterItemReleaseUse = world.afterEvents.itemReleaseUse.subscribe(event => {
     if(!!event?.itemStack?.getDynamicProperty("itemReleaseUseCode")){try{eval(String(event?.itemStack?.getDynamicProperty("itemReleaseUseCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemReleaseUseCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemReleaseUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
@@ -4871,7 +4871,7 @@ world.afterEvents.itemReleaseUse.subscribe(event => {
     }; 
 }); 
 
-world.beforeEvents.playerInteractWithBlock.subscribe(event => {
+subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     if(!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerInteractWithBlockCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithBlockBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
@@ -4939,7 +4939,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     }
 }); 
 
-world.beforeEvents.itemUseOn.subscribe(event => {
+subscribedEvents.beforeItemUseOn = world.beforeEvents.itemUseOn.subscribe(event => {
     if(!!event?.itemStack?.getDynamicProperty("itemUseOnCode")){try{eval(String(event?.itemStack?.getDynamicProperty("itemUseOnCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseOnCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemUseOn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseOnBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
@@ -4976,7 +4976,7 @@ world.beforeEvents.itemUseOn.subscribe(event => {
 }); 
 
 
-world.beforeEvents.playerBreakBlock.subscribe(event => {
+subscribedEvents.beforePlayerBreakBlock = world.beforeEvents.playerBreakBlock.subscribe(event => {
     if(!!event?.itemStack?.getDynamicProperty("playerBreakBlockCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerBreakBlockCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerBreakBlockCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerBreakBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerBreakBlockBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
@@ -4995,7 +4995,7 @@ world.beforeEvents.playerBreakBlock.subscribe(event => {
     }
 }); 
 
-world.beforeEvents.playerPlaceBlock.subscribe(event => {
+subscribedEvents.beforePlayerPlaceBlock = world.beforeEvents.playerPlaceBlock.subscribe(event => {
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerPlaceBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerPlaceBlockBeforeEventDebugErrors")){currentplayer.sendMessage(e + " " + e.stack)}})}/*
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
     event.cancel = true
@@ -5015,7 +5015,7 @@ world.beforeEvents.playerPlaceBlock.subscribe(event => {
 /*${scripteval}world.getAllPlayers().filter((p)=>(p.getDynamicProperty("canBypassProtectedAreas") == undefined)).forEach((p)=>{p.setDynamicProperty("canBypassProtectedAreas", false)})*/
 /*${scripteval}world.getAllPlayers().find((p)=>(p.name == "Andexter8")).setDynamicProperty("canBypassProtectedAreas", true)*/
 
-world.afterEvents.entityHitBlock.subscribe(event => {
+subscribedEvents.afterEntityHitBlock = world.afterEvents.entityHitBlock.subscribe(event => {
     try{eval(String(world.getDynamicProperty("evalAfterEvents:entityHitBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entityHitBlockAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     if ((event.damagingEntity.getComponent("minecraft:inventory") as EntityInventoryComponent).container.getItem((event.damagingEntity as Player).selectedSlotIndex)?.typeId === "andexdb:debug_stick"){
     debugAction(event.hitBlock, (event.damagingEntity as Player), 1, Number(event.damagingEntity.isSneaking))
@@ -5029,7 +5029,7 @@ repeatingIntervals.debugSticksCooldownCounter=system.runInterval(()=>{world.getA
     player.onScreenDisplay.setActionBar(`§l§eTags: §r§a${player.getBlockFromViewDirection().block.getTags().join(", ")}\n§l§eBlock States: §r§a${Object.entries(player.getBlockFromViewDirection().block.permutation.getAllStates()).join("\n")}`)}; */})}, 1)
 
 repeatingIntervals.everyTickAutoEval=system.runInterval(() => {try{eval(String(world.getDynamicProperty("autoEval:everyTick")))}catch{}; }, 1);//fixed and this one is also nows new
-world.beforeEvents.itemUse.subscribe(event => {
+subscribedEvents.beforeItemUse = world.beforeEvents.itemUse.subscribe(event => {
     if(!!event?.itemStack?.getDynamicProperty("code")){try{eval(String(event?.itemStack?.getDynamicProperty("code")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     world.getAllPlayers().filter((player) => ( player.hasTag("getPlayerItemUseEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.itemUse]Location: [ " + event.source.location.x+", "+event.source.location.y+", "+event.source.location.z + " ], Dimension: " + event.source.dimension.id + ", Item Type: " + (event.itemStack?.typeId ?? "")+ ", Player: " + event.source.name) });/*
@@ -5720,7 +5720,7 @@ world.beforeEvents.itemUse.subscribe(event => {
     }
     ;
 });
-world.beforeEvents.chatSend.subscribe((eventData) => {
+subscribedEvents.beforeChatSend = world.beforeEvents.chatSend.subscribe((eventData) => {
     try{getPlayersWithAnyOfTags(["getBeforeChatSendNotifications", "includeBeforeChatSendNotificationsBy:"+eventData.sender.name, "includeBeforeChatSendNotificationsById:"+eventData.sender.name]).filter(p=>!p.hasTag("excludeBeforeChatSendNotificationsById:"+eventData.sender.id)&&!p.hasTag("excludeBeforeChatSendNotificationsBy:"+eventData.sender.name)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§ebeforeChatSend§r][${eventData.sender.name}] Chat message sent${!!eventData.targets?" with targets "+eventData.targets.map(p=>p.name).join():""} with the message ${JSONStringify(eventData.message)}. `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getBeforeChatSendNotificationsNotificationSound.soundId, {pitch: pn.getBeforeChatSendNotificationsNotificationSound.pitch, volume: pn.getBeforeChatSendNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
     chatMessage(eventData)
 });
@@ -5847,7 +5847,7 @@ try{system.runInterval( () => {
     try{noBlockPlaceAreas = convertToCompoundBlockVolume(String(world.getDynamicProperty("noBlockPlaceAreas") ?? "0, 0, 0, 0, 0, 0"))} catch(e){console.error(e, e.stack);}
     }, 1)} catch(e){console.error(e, e.stack);}*/
 
-system.afterEvents.scriptEventReceive.subscribe((event) => {
+subscribedEvents.afterScriptEventReceive = system.afterEvents.scriptEventReceive.subscribe((event) => {
     const {
         id,           // returns string (wiki:test)
         initiator,    // returns Entity
@@ -5857,6 +5857,9 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
       sourceType,   // returns MessageSourceType
     } = event;
     try{eval(String(world.getDynamicProperty("evalAfterEvents:scriptEventRecieve")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("scriptEventRecieveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+    if(id.startsWith("andexdb:")){
+       return
+    }
     if (id == "andexdb:scriptevent") {
         const diamondAwesomeSword = new ItemStack("minecraft:diamond_sword", 1);
         let players = world.getAllPlayers();

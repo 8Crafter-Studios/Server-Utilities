@@ -22,3 +22,20 @@ to run in the debugger console:
 
 y=x*(((600-(8*x))/9)**2)
 y=x*(((600-(8*x))/9)^2)
+
+
+
+${se}world.setDynamicProperty("evalAfterEvents:entitySpawn", `if(Math.random()<0.1&&["Born", "Event", "Spawned"].includes(event.cause)&&event.entity.typeId!="minecraft:player"){try{event.entity.runCommand(\`/replaceitem entity @s slot.armor.head 0 \${Math.random()<0.1?"lit_pumpkin":"carved_pumpkin"}\`)}catch{}}`)
+${se}world.setDynamicProperty("evalAfterEvents:entitySpawn", `if(Math.random()<0.1&&["Born", "Event", "Spawned"].includes(event.cause)&&event.entity.typeId!="minecraft:player"){try{event.entity.runCommand("/replaceitem entity @s slot.armor.head 0 carved_pumpkin")}catch{}}`)
+
+(?<!\s=\s)world.beforeEvents.([a-zA-Z0-9]+).
+subscribedEvents.before$1 = world.beforeEvents.$1.
+
+(?<!\s=\s)world.afterEvents.([a-zA-Z0-9]+).
+subscribedEvents.after$1 = world.afterEvents.$1.
+
+\nworld.beforeEvents.([a-zA-Z0-9]+).
+\nsubscribedEvents.before$1 = world.beforeEvents.$1.
+
+\nworld.afterEvents.([a-zA-Z0-9]+).
+\nsubscribedEvents.after$1 = world.afterEvents.$1.

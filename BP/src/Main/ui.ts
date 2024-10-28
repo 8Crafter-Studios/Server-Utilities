@@ -312,7 +312,7 @@ export function infiniteUIv4(player: Player, interval: number = 1, title: string
         interval
     )
 }
-export function mainMenu(sourceEntitya: Entity|executeCommandPlayerW|Player){
+export async function mainMenu(sourceEntitya: Entity|executeCommandPlayerW|Player): Promise<0|1>{
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form = new ActionFormData();
     let players = world.getPlayers();
@@ -346,70 +346,64 @@ form.button("§eManage Commands §f[§6Beta§f]", "textures/ui/chat_keyboard_hov
 form.button("§eItem Editor §f[§cAlpha§f]", "textures/ui/icon_recipe_item");
 form.button("§eMap Art Generator §f[§cAlpha§f]", "textures/items/map_locked");
 form.button("§eJava NBT Structure Loader §f[§cAlpha§f]", "textures/ui/xyz_axis");
-forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {let r = (ra as ActionFormResponse); 
+return await forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(async ra => {let r = (ra as ActionFormResponse); 
     // This will stop the code when the player closes the form
-    if (r.canceled) return;
+    if (r.canceled) return 1;
 
     let response = r.selection;
     switch (response) {
         case 0:
             editorStick(sourceEntity)
-            break;
-
+            return 0;
+        break;
         case 1:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:debugStickMenuB saqw")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;
-
+            try {
+                (sourceEntity).runCommand(String("/scriptevent andexdb:debugStickMenuB saqw"));
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+            return 0;
+        break;
         case 2:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:debugStickMenuC saqw")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;
-
+            try {
+                (sourceEntity).runCommand(String("/scriptevent andexdb:debugStickMenuC saqw"));
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+            return 0;
+        break;
         case 3:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:debugScreen saqw")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;
-
+            try {
+                (sourceEntity).runCommand(String("/scriptevent andexdb:debugScreen saqw"));
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+            return 0;
+        break;
         case 4:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:itemLoreInventoryModifier hisw")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;
-
+            try {
+                (sourceEntity).runCommand(String("/scriptevent andexdb:itemLoreInventoryModifier hisw"));
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+            return 0;
+        break;
         case 5:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:playerDebug saqw")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;
-
+            try {
+                (sourceEntity).runCommand(String("/scriptevent andexdb:playerDebug saqw"));
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+            return 0;
+        break;
         case 6:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:entityDebug saqw")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;/*
-
+            try {
+                (sourceEntity).runCommand(String("/scriptevent andexdb:entityDebug saqw"));
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+            return 0;
+        break;/*
         case 4:
             try { (sourceEntity).runCommand(String("/scriptevent andexdb:entityDebuger saqw")); }
             // Do something
@@ -420,112 +414,167 @@ forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra =>
             break;*/
 
         case 7:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:playerController saqw")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;
-
+            try {
+                (sourceEntity).runCommand(String("/scriptevent andexdb:playerController saqw"));
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+            return 0;
+        break;
         case 8:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:entityController saqw")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;
-
+            try {
+                (sourceEntity).runCommand(String("/scriptevent andexdb:entityController saqw"));
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+            return 0;
+        break;
         case 9:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:worldOptions saqw")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;
-
+            try {
+                (sourceEntity).runCommand(String("/scriptevent andexdb:worldOptions saqw"));
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+            return 0;
+        break;
         case 10:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:dimensionOptions saqw")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;
-
+            try {
+                (sourceEntity).runCommand(String("/scriptevent andexdb:dimensionOptions saqw"));
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+            return 0;
+        break;
         case 11:
             createExplosion(sourceEntity)
-            break;
-
+            return 0;
+        break;
         case 12:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:fillBlocks saqw")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;
-
+            try {
+                (sourceEntity).runCommand(String("/scriptevent andexdb:fillBlocks saqw"));
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+            return 0;
+        break;
         case 15:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:inventoryTransfer saih")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;
-
+            try {
+                (sourceEntity).runCommand(String("/scriptevent andexdb:inventoryTransfer saih"));
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+            return 0;
+        break;
         case 16:
             terminal(sourceEntity)
-            break;
-
+            return 0;
+        break;
         case 17:
             scriptEvalRunWindow(sourceEntity)
-            break;
-
+            return 0;
+        break;
         case 18:
             editAreasMainMenu(sourceEntity)
-            break;
-
+            return 0;
+        break;
         case 19:
             customFormListSelectionMenu(sourceEntity as Player); 
-            break;
-
+            return 0;
+        break;
         case 20:
             moderationSettings(sourceEntity)
-            break;
-
+            return 0;
+        break;
         case 21:
-            settings(sourceEntity)
-            break;
-
+            if((await settings(sourceEntity))==1){
+                return await mainMenu(sourceEntity);
+            }else{
+                return 0;
+            }
+        break;
         case 22:
             managePlayers(sourceEntity)
-            break;
-
+            return 0;
+        break;
         case 23:
             manageCommands(sourceEntity)
-            break;
-
+            return 0;
+        break;
         case 24:
             try{itemSelector(sourceEntity as Player, sourceEntity as Player).then(a=>{if(!!a){uis.itemEditorTypeSelection(sourceEntity as Player, sourceEntity as Player, a)}})}catch{}
-            break;
-
+        break;
         case 25:
             mapArtGenerator(sourceEntity)
-            break;
-
+            return 0;
+        break;
         case 26:
             nbtStructureLoader(sourceEntity)
-            break;
+            return 0;
+        break;
         default:
+            return 1;
     }
 }).catch(e => {
     console.error(e, e.stack);
+    return 0;
 });}
-export function settings(sourceEntitya: Entity|executeCommandPlayerW|Player){
+export async function addonDebugUI(sourceEntitya: Entity|executeCommandPlayerW|Player): Promise<0|1>{
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
+    let form = new ActionFormData();
+    let players = world.getPlayers();
+form.title("Debug");
+form.button("Start Plyer Data Auto Save", "textures/ui/green_check");
+form.button("Stop Plyer Data Auto Save", "textures/ui/crossout");
+form.button("Start Checking For Banned Players", "textures/ui/green_check");
+form.button("Stop Checking For Banned Players", "textures/ui/crossout");
+form.button("Start Protected Areas Refresher", "textures/ui/green_check");
+form.button("Stop Protected Areas Refresher", "textures/ui/crossout");
+form.button("Back", "textures/ui/arrow_left"); 
+form.button("Close", "textures/ui/crossout"); 
+return await forceShow(form, sourceEntity as Player).then(async ra => {let r = (ra as ActionFormResponse); 
+    // This will stop the code when the player closes the form
+    if (r.canceled) return 1;
+
+    let response = r.selection;
+    switch (response) {
+        case 0:
+            playersave.startPlayerDataAutoSave();
+            return await addonDebugUI(sourceEntity);
+        break;
+        case 1:
+            playersave.stopPlayerDataAutoSave();
+            return await addonDebugUI(sourceEntity);
+        break;
+        case 2:
+            bans.startCheckingForBannedPlayers();
+            return await addonDebugUI(sourceEntity);
+        break;
+        case 3:
+            bans.stopCheckingForBannedPlayers();
+            return await addonDebugUI(sourceEntity);
+        break;
+        case 4:
+            spawnprot.startProtectedAreasRefresher();
+            return await addonDebugUI(sourceEntity);
+        break;
+        case 5:
+            spawnprot.stopProtectedAreasRefresher();
+            return await addonDebugUI(sourceEntity);
+        break;
+        case 6:
+            return 1;
+        break;
+        case 7:
+            return 0;
+        break;
+        default:
+            return 1;
+    }
+}).catch(e => {
+    console.error(e, e.stack);
+    return 0;
+});}
+export async function settings(sourceEntitya: Entity|executeCommandPlayerW|Player): Promise<0|1>{
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form = new ActionFormData();
     let players = world.getPlayers();
@@ -542,66 +591,121 @@ form.button("Home System Settings [§cExperimental§r]", "textures/ui/store_home
 form.button("TPA System Settings [§cExperimental§r]", "textures/items/ender_pearl");
 form.button("Manage Game Rules", "textures/ui/controller_glyph_color");
 form.button("Extra Features", "textures/ui/color_plus");
-form.button("Back", "textures/ui/arrow_left");/*
+form.button("Advanced", "textures/ui/command_block_impulse");
+form.button("Back", "textures/ui/arrow_left");
+form.button("Close", "textures/ui/crossout");/*
 form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
-forceShow(form, (sourceEntity as Player)).then(ra => {let r = (ra as ActionFormResponse); 
+return await forceShow(form, (sourceEntity as Player)).then(async ra => {let r = (ra as ActionFormResponse); 
     // This will stop the code when the player closes the form
     if (r.canceled) return;
 
     let response = r.selection;
     switch (response) {
         case 0:
-        globalSettings(sourceEntity)
+            globalSettings(sourceEntity)
+            return 0;
             break;
 
         case 1:
             chatRanksSettings(sourceEntity)
+            return 0;
             break;
 
         case 2:
             scriptSettings(sourceEntity)
+            return 0;
             break;
 
         case 3:
             uiSettings(sourceEntity)
+            return 0;
             break;
 
         case 4:
             evalAutoScriptSettings(sourceEntity)
+            return 0;
             break;
 
         case 5:
             personalSettings(sourceEntity)
+            return 0;
             break;
 
         case 6:
             notificationsSettings(sourceEntity)
+            return 0;
             break;
 
         case 7:
             homeSystemSettings(sourceEntity)
+            return 0;
             break;
 
         case 8:
             tpaSettings(sourceEntity)
+            return 0;
             break;
 
         case 9:
             manageGameRulesUI(sourceEntity)
+            return 0;
             break;
 
         case 10:
             extraFeaturesSettings(sourceEntity)
-            break;
-
+            return 0;
+        break;
         case 11:
-            mainMenu(sourceEntity)
-            break;
+            if((await advancedSettings(sourceEntity))==1){
+                return await settings(sourceEntity);
+            }else{
+                return 0;
+            };
+        break;
+        case 12:
+            return 1;
+        case 13:
+            return 1;
         default:
+            return 1;
     }
 }).catch(e => {
     console.error(e, e.stack);
+    return 0;
 });}
+export async function advancedSettings(sourceEntitya: Entity|executeCommandPlayerW|Player): Promise<0|1>{
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
+    let form = new ActionFormData();
+    form.title("Advanced Settings");
+    form.button("Debug", "textures/ui/icon_setting");
+    form.button("Back", "textures/ui/arrow_left"); 
+    form.button("Close", "textures/ui/crossout"); /*
+    form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
+    return await forceShow(form, (sourceEntity as Player)).then(async ra => {let r = (ra as ActionFormResponse); 
+        // This will stop the code when the player closes the form
+        if (r.canceled) return 1;
+
+        let response = r.selection;
+        switch (response) {
+            case 0:
+                if((await addonDebugUI(sourceEntity))==1){
+                    return await advancedSettings(sourceEntity);
+                }else{
+                    return 0;
+                };
+            break;
+            case 1:
+                return 1;
+            case 2:
+                return 0;
+            default:
+                return 1;
+        }
+    }).catch(e => {
+        console.error(e, e.stack);
+        return 0;
+    });
+}
 export function moderationSettings(sourceEntitya: Entity|executeCommandPlayerW|Player){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form = new ActionFormData();
