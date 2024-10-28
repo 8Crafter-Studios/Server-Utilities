@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import { system } from "@minecraft/server";
-globalThis.beforeScriptStartTick=system.currentTick
+globalThis.beforeScriptStartTick=system.currentTick;
 export const format_version = "1.26.0-preview.20+BUILD.2";
+globalThis.entity_scale_format_version=null;
 import "JSONB"
 import "Global"
   
@@ -105,6 +106,7 @@ import { listoftransformrecipes } from "transformrecipes";
 import { chatMessage, patternColors, patternColorsMap, patternFunctionList, evaluateChatColorType, chatSend } from "Main/chat";
 import { targetSelectorAllListE, targetSelectorB, targetSelectorAllListC, clearContainer } from "Main/command_utilities";
 import { customModulo } from "Main/utilities";
+import { TimeoutError } from "Main/errors.js";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -174,6 +176,20 @@ declare global {
 }
 globalThis.crashEnabled = false
 globalThis.tempSavedVariables = []
+export async function checkIfCompatibleEntityScaleIsActive(init: boolean = false, maxWaitTicks: number = 20){
+    const promise1Result = await new Promise((resolve, reject)=>{
+        overworld.runCommand(`/scriptevent andexsa:debugSticks${init?"Init":"Test"}Signal ${format_version}`);
+        const rId1 = system.afterEvents.scriptEventReceive.subscribe(event=>{
+            if(event.id==`andexdb:debugSticks${init?"Init":"Test"}SignalReceivedByEntityScale`){
+                system.afterEvents.scriptEventReceive.unsubscribe(rId1);
+                resolve(event.message);
+            };
+        });
+        if(maxWaitTicks!=Infinity){system.waitTicks(maxWaitTicks).then(v=>reject(new TimeoutError(`The request to see if a compatible version of entity scale is active timed out. It took longer than ${maxWaitTicks} ticks.`)))}
+    }).then(v=>v, v=>{return false;});
+    return promise1Result as `${bigint}.${bigint}.${bigint}${`-${string}`|""}${`+${string}`|""}`|false;
+};
+// const a = ((a: `${bigint}.${bigint}.${bigint}${`-${string}`|""}${`+${string}`|""}`)=>{})("1.1.1-preview.20+BUILD.1");
 export function mainEval(x: string){return eval(x)}
 export function indirectMainEval(x: string){return eval?.(x)}
 export function mainRun(x: (...args: any[])=>any, ...args: any[]){return x(...args)}
@@ -606,6 +622,14 @@ export class config{/*
             set playerInventoryDataSaveSystemEnabled(playerInventoryDataSaveSystemEnabled: boolean|undefined){world.setDynamicProperty("andexdbSettings:playerInventoryDataSaveSystemEnabled", playerInventoryDataSaveSystemEnabled??true)},
             get spreadPlayerInventoryDataSavesOverMultipleTicks(){return Boolean(world.getDynamicProperty("andexdbSettings:spreadPlayerInventoryDataSavesOverMultipleTicks") ?? true)},
             set spreadPlayerInventoryDataSavesOverMultipleTicks(spreadPlayerInventoryDataSavesOverMultipleTicks: boolean|undefined){world.setDynamicProperty("andexdbSettings:spreadPlayerInventoryDataSavesOverMultipleTicks", spreadPlayerInventoryDataSavesOverMultipleTicks??true)},
+            get showEntityScaleNotFoundConsoleLog(){return Boolean(world.getDynamicProperty("andexdbSettings:showEntityScaleNotFoundConsoleLog") ?? true)},
+            set showEntityScaleNotFoundConsoleLog(showEntityScaleNotFoundConsoleLog: boolean|undefined){world.setDynamicProperty("andexdbSettings:showEntityScaleNotFoundConsoleLog", showEntityScaleNotFoundConsoleLog??true)},
+            get showEntityScaleFoundConsoleLog(){return Boolean(world.getDynamicProperty("andexdbSettings:showEntityScaleFoundConsoleLog") ?? true)},
+            set showEntityScaleFoundConsoleLog(showEntityScaleFoundConsoleLog: boolean|undefined){world.setDynamicProperty("andexdbSettings:showEntityScaleFoundConsoleLog", showEntityScaleFoundConsoleLog??true)},
+            get showEntityScaleNotFoundChatLog(){return Boolean(world.getDynamicProperty("andexdbSettings:showEntityScaleNotFoundChatLog") ?? false)},
+            set showEntityScaleNotFoundChatLog(showEntityScaleNotFoundChatLog: boolean|undefined){world.setDynamicProperty("andexdbSettings:showEntityScaleNotFoundChatLog", showEntityScaleNotFoundChatLog??false)},
+            get showEntityScaleFoundChatLog(){return Boolean(world.getDynamicProperty("andexdbSettings:showEntityScaleFoundChatLog") ?? false)},
+            set showEntityScaleFoundChatLog(showEntityScaleFoundChatLog: boolean|undefined){world.setDynamicProperty("andexdbSettings:showEntityScaleFoundChatLog", showEntityScaleFoundChatLog??false)},
         }
     }
     static reset(){
@@ -3808,9 +3832,24 @@ export function getNextTopSolidBlockBelowPosition(location: Vector3, dimension: 
 export function getGroundSolidBlock(location: Vector3, dimension: Dimension, onlySolid: boolean = false){let block = dimension.getBlock({x: location.x, y: Math.max(Math.min(location.y, dimension.heightRange.max), dimension.heightRange.min), z: location.z}); while(block.y >= dimension.heightRange.min){if(onlySolid?!block.isSolid:block.isAir){block = block.below(1)}else{return block}}; return undefined}
 export function getTopSolidBlock(location: Vector3, dimension: Dimension, onlySolid: boolean = false){let block = dimension.getBlock({x: location.x, y: dimension.heightRange.max, z: location.z}); while(block.y >= dimension.heightRange.min){if(onlySolid?!block.isSolid:block.isAir){block = block.below(1)}else{return block}}; return undefined}
 
-subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subscribe((event) => {
+subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subscribe(async (event) => {
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:worldInitialize")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("worldInitializeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-    globalThis.beforeInitiallizeTick=system.currentTick
+    globalThis.beforeInitiallizeTick=system.currentTick;
+    try{
+        const r = await checkIfCompatibleEntityScaleIsActive(true, 5);
+        if(r==false&&config.system.showEntityScaleNotFoundConsoleLog){
+            system.waitTicks(100).then(()=>{if(entity_scale_format_version==null) console.log(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of entity scale was detected, some features may not be available.`);});
+        }else if(r!=false&&config.system.showEntityScaleFoundConsoleLog){
+            entity_scale_format_version=r;
+            console.log(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of entity scale was detected: ${entity_scale_format_version}.`);
+        };
+        if(r==false&&config.system.showEntityScaleNotFoundChatLog){
+            system.waitTicks(100).then(()=>{if(entity_scale_format_version==null) world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of entity scale was detected, some features may not be available.`);});
+        }else if(r!=false&&config.system.showEntityScaleFoundChatLog){
+            entity_scale_format_version=r;
+            world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of entity scale was detected: ${entity_scale_format_version}.`);
+        };
+    }catch(e){console.error(e, e.stack)};
 });
 
 subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe((event) => {
