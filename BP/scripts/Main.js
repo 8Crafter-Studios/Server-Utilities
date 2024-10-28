@@ -2,6 +2,8 @@
 import { system } from "@minecraft/server";
 globalThis.beforeScriptStartTick = system.currentTick;
 export const format_version = "1.26.0-preview.20+BUILD.2";
+globalThis.entity_scale_format_version = null;
+globalThis.multipleEntityScaleVersionsDetected = false;
 import "JSONB";
 import "Global";
 /*
@@ -103,6 +105,7 @@ import { listoftransformrecipes } from "transformrecipes";
 import { chatMessage, patternColors, patternColorsMap, patternFunctionList, evaluateChatColorType, chatSend } from "Main/chat";
 import { targetSelectorAllListE, targetSelectorB, targetSelectorAllListC, clearContainer } from "Main/command_utilities";
 import { customModulo } from "Main/utilities";
+import { TimeoutError } from "Main/errors.js";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -156,6 +159,24 @@ export const modules = {
 globalThis.modules = modules;
 globalThis.crashEnabled = false;
 globalThis.tempSavedVariables = [];
+export async function checkIfCompatibleEntityScaleIsActive(init = false, maxWaitTicks = 20) {
+    const promise1Result = await new Promise((resolve, reject) => {
+        overworld.runCommand(`/scriptevent andexsa:debugSticks${init ? "Init" : "Test"}Signal ${format_version}`);
+        const rId1 = system.afterEvents.scriptEventReceive.subscribe(event => {
+            if (event.id == `andexdb:debugSticks${init ? "Init" : "Test"}SignalReceivedByEntityScale`) {
+                system.afterEvents.scriptEventReceive.unsubscribe(rId1);
+                resolve(event.message);
+            }
+            ;
+        });
+        if (maxWaitTicks != Infinity) {
+            system.waitTicks(maxWaitTicks).then(v => reject(new TimeoutError(`The request to see if a compatible version of entity scale is active timed out. It took longer than ${maxWaitTicks} ticks.`)));
+        }
+    }).then(v => v, v => { return false; });
+    return promise1Result;
+}
+;
+// const a = ((a: `${bigint}.${bigint}.${bigint}${`-${string}`|""}${`+${string}`|""}`)=>{})("1.1.1-preview.20+BUILD.1");
 export function mainEval(x) { return eval(x); }
 export function indirectMainEval(x) { return eval?.(x); }
 export function mainRun(x, ...args) { return x(...args); }
@@ -574,6 +595,14 @@ export class config {
             set playerInventoryDataSaveSystemEnabled(playerInventoryDataSaveSystemEnabled) { world.setDynamicProperty("andexdbSettings:playerInventoryDataSaveSystemEnabled", playerInventoryDataSaveSystemEnabled ?? true); },
             get spreadPlayerInventoryDataSavesOverMultipleTicks() { return Boolean(world.getDynamicProperty("andexdbSettings:spreadPlayerInventoryDataSavesOverMultipleTicks") ?? true); },
             set spreadPlayerInventoryDataSavesOverMultipleTicks(spreadPlayerInventoryDataSavesOverMultipleTicks) { world.setDynamicProperty("andexdbSettings:spreadPlayerInventoryDataSavesOverMultipleTicks", spreadPlayerInventoryDataSavesOverMultipleTicks ?? true); },
+            get showEntityScaleNotFoundConsoleLog() { return Boolean(world.getDynamicProperty("andexdbSettings:showEntityScaleNotFoundConsoleLog") ?? true); },
+            set showEntityScaleNotFoundConsoleLog(showEntityScaleNotFoundConsoleLog) { world.setDynamicProperty("andexdbSettings:showEntityScaleNotFoundConsoleLog", showEntityScaleNotFoundConsoleLog ?? true); },
+            get showEntityScaleFoundConsoleLog() { return Boolean(world.getDynamicProperty("andexdbSettings:showEntityScaleFoundConsoleLog") ?? true); },
+            set showEntityScaleFoundConsoleLog(showEntityScaleFoundConsoleLog) { world.setDynamicProperty("andexdbSettings:showEntityScaleFoundConsoleLog", showEntityScaleFoundConsoleLog ?? true); },
+            get showEntityScaleNotFoundChatLog() { return Boolean(world.getDynamicProperty("andexdbSettings:showEntityScaleNotFoundChatLog") ?? false); },
+            set showEntityScaleNotFoundChatLog(showEntityScaleNotFoundChatLog) { world.setDynamicProperty("andexdbSettings:showEntityScaleNotFoundChatLog", showEntityScaleNotFoundChatLog ?? false); },
+            get showEntityScaleFoundChatLog() { return Boolean(world.getDynamicProperty("andexdbSettings:showEntityScaleFoundChatLog") ?? false); },
+            set showEntityScaleFoundChatLog(showEntityScaleFoundChatLog) { world.setDynamicProperty("andexdbSettings:showEntityScaleFoundChatLog", showEntityScaleFoundChatLog ?? false); },
         };
     }
     static reset() {
@@ -4863,7 +4892,7 @@ subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subs
     }
     globalThis.beforeInitiallizeTick = system.currentTick;
 });
-subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe((event) => {
+subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe(async (event) => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:worldInitialize")));
     }
@@ -4885,7 +4914,37 @@ subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscr
         }
     }
     catch (e) { }
-    globalThis.initiallizeTick = system.currentTick; /*
+    globalThis.initiallizeTick = system.currentTick;
+    try {
+        const r = await checkIfCompatibleEntityScaleIsActive(true, 5);
+        console.log("a1" + r);
+        if (r != false) {
+            if (entity_scale_format_version != null && r.trim() != entity_scale_format_version) {
+                globalThis.multipleEntityScaleVersionsDetected = true;
+            }
+            entity_scale_format_version = r.trim();
+        }
+        if (r == false && config.system.showEntityScaleNotFoundConsoleLog) {
+            system.waitTicks(100).then(() => { if (entity_scale_format_version == null)
+                console.log(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of entity scale was detected, some features may not be available.`); });
+        }
+        else if (r != false && config.system.showEntityScaleFoundConsoleLog) {
+            console.log(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of entity scale was detected: ${entity_scale_format_version}.`);
+        }
+        ;
+        if (r == false && config.system.showEntityScaleNotFoundChatLog) {
+            system.waitTicks(100).then(() => { if (entity_scale_format_version == null)
+                world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of entity scale was detected, some features may not be available.`); });
+        }
+        else if (r != false && config.system.showEntityScaleFoundChatLog) {
+            world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of entity scale was detected: ${entity_scale_format_version}.`);
+        }
+        ;
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
+    ; /*
     try{DimensionTypes.getAll().forEach((dimensionType)=>{if (world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", exclude: true, minScore: -99999999, maxScore: 99999999}]}) !== undefined){world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", exclude: true, minScore: -99999999, maxScore: 99999999}]}).forEach((scoreboardEntity)=>{scoreboardEntity.runCommand("/scoreboard players @s set andexdbDebug 0")})}})}catch(e){}
     try{DimensionTypes.getAll().forEach((dimensionType)=>{world.getDimension(dimensionType.typeId).getEntities().forEach((scoreboardEntity)=>{if(world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", minScore: -99999999, maxScore: 99999999}]}).find((testEntity)=>(scoreboardEntity == testEntity)) == undefined){console.warn(scoreboardEntity.id)}})})}catch(e){}*/ /*
     const propertiesDefinition = new DynamicPropertiesDefinition();
@@ -8017,7 +8076,25 @@ subscribedEvents.afterScriptEventReceive = system.afterEvents.scriptEventReceive
             currentplayer.sendMessage(e + e.stack);
         } });
     }
-    if (id.startsWith("andexdb:")) {
+    if (id.startsWith("andexsa:")) {
+        return;
+    }
+    if (id == "andexdb:entityScaleInitSignal") {
+        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleInitSignalRecievedByDebugSticks ${format_version}`);
+        if (entity_scale_format_version != null && message.trim() != entity_scale_format_version) {
+            globalThis.multipleEntityScaleVersionsDetected = true;
+        }
+        entity_scale_format_version = message.trim();
+        console.log("b2" + message);
+        return;
+    }
+    else if (id == "andexdb:entityScaleTestSignal") {
+        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleTestSignalRecievedByDebugSticks ${format_version}`);
+        if (entity_scale_format_version != null && message.trim() != entity_scale_format_version) {
+            globalThis.multipleEntityScaleVersionsDetected = true;
+        }
+        entity_scale_format_version = message.trim();
+        console.log("c3" + message);
         return;
     }
     if (id == "andexdb:scriptevent") {

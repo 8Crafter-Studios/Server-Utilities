@@ -3,6 +3,7 @@ import { system } from "@minecraft/server";
 globalThis.beforeScriptStartTick=system.currentTick;
 export const format_version = "1.26.0-preview.20+BUILD.2";
 globalThis.entity_scale_format_version=null;
+globalThis.multipleEntityScaleVersionsDetected=false;
 import "JSONB"
 import "Global"
   
@@ -186,7 +187,7 @@ export async function checkIfCompatibleEntityScaleIsActive(init: boolean = false
             };
         });
         if(maxWaitTicks!=Infinity){system.waitTicks(maxWaitTicks).then(v=>reject(new TimeoutError(`The request to see if a compatible version of entity scale is active timed out. It took longer than ${maxWaitTicks} ticks.`)))}
-    }).then(v=>v, v=>{return false;});
+    }).then(v=>v, v=>{console.error(v); return false;});
     return promise1Result as `${bigint}.${bigint}.${bigint}${`-${string}`|""}${`+${string}`|""}`|false;
 };
 // const a = ((a: `${bigint}.${bigint}.${bigint}${`-${string}`|""}${`+${string}`|""}`)=>{})("1.1.1-preview.20+BUILD.1");
@@ -3832,31 +3833,35 @@ export function getNextTopSolidBlockBelowPosition(location: Vector3, dimension: 
 export function getGroundSolidBlock(location: Vector3, dimension: Dimension, onlySolid: boolean = false){let block = dimension.getBlock({x: location.x, y: Math.max(Math.min(location.y, dimension.heightRange.max), dimension.heightRange.min), z: location.z}); while(block.y >= dimension.heightRange.min){if(onlySolid?!block.isSolid:block.isAir){block = block.below(1)}else{return block}}; return undefined}
 export function getTopSolidBlock(location: Vector3, dimension: Dimension, onlySolid: boolean = false){let block = dimension.getBlock({x: location.x, y: dimension.heightRange.max, z: location.z}); while(block.y >= dimension.heightRange.min){if(onlySolid?!block.isSolid:block.isAir){block = block.below(1)}else{return block}}; return undefined}
 
-subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subscribe(async (event) => {
+subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subscribe((event) => {
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:worldInitialize")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("worldInitializeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     globalThis.beforeInitiallizeTick=system.currentTick;
+});
+
+subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe(async (event) => {
+    try{eval(String(world.getDynamicProperty("evalAfterEvents:worldInitialize")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("worldInitializeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+    try{if (world.scoreboard.getObjective("andexdbDebug") == undefined){world.scoreboard.addObjective("andexdbDebug", "andexdbScriptDebuggingService")}}catch(e){}
+    try{if (world.scoreboard.getObjective("andexdb:money") == undefined){world.scoreboard.addObjective("andexdb:money", "Money")}}catch(e){}
+    globalThis.initiallizeTick=system.currentTick
     try{
         const r = await checkIfCompatibleEntityScaleIsActive(true, 5);
+        if(r!=false){
+            if(entity_scale_format_version!=null&&r.trim()!=entity_scale_format_version){
+                globalThis.multipleEntityScaleVersionsDetected=true
+            }
+            entity_scale_format_version=r.trim()
+        }
         if(r==false&&config.system.showEntityScaleNotFoundConsoleLog){
             system.waitTicks(100).then(()=>{if(entity_scale_format_version==null) console.log(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of entity scale was detected, some features may not be available.`);});
         }else if(r!=false&&config.system.showEntityScaleFoundConsoleLog){
-            entity_scale_format_version=r;
             console.log(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of entity scale was detected: ${entity_scale_format_version}.`);
         };
         if(r==false&&config.system.showEntityScaleNotFoundChatLog){
             system.waitTicks(100).then(()=>{if(entity_scale_format_version==null) world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of entity scale was detected, some features may not be available.`);});
         }else if(r!=false&&config.system.showEntityScaleFoundChatLog){
-            entity_scale_format_version=r;
             world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of entity scale was detected: ${entity_scale_format_version}.`);
         };
-    }catch(e){console.error(e, e.stack)};
-});
-
-subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe((event) => {
-    try{eval(String(world.getDynamicProperty("evalAfterEvents:worldInitialize")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("worldInitializeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-    try{if (world.scoreboard.getObjective("andexdbDebug") == undefined){world.scoreboard.addObjective("andexdbDebug", "andexdbScriptDebuggingService")}}catch(e){}
-    try{if (world.scoreboard.getObjective("andexdb:money") == undefined){world.scoreboard.addObjective("andexdb:money", "Money")}}catch(e){}
-    globalThis.initiallizeTick=system.currentTick/*
+    }catch(e){console.error(e, e.stack)};/*
     try{DimensionTypes.getAll().forEach((dimensionType)=>{if (world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", exclude: true, minScore: -99999999, maxScore: 99999999}]}) !== undefined){world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", exclude: true, minScore: -99999999, maxScore: 99999999}]}).forEach((scoreboardEntity)=>{scoreboardEntity.runCommand("/scoreboard players @s set andexdbDebug 0")})}})}catch(e){}
     try{DimensionTypes.getAll().forEach((dimensionType)=>{world.getDimension(dimensionType.typeId).getEntities().forEach((scoreboardEntity)=>{if(world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", minScore: -99999999, maxScore: 99999999}]}).find((testEntity)=>(scoreboardEntity == testEntity)) == undefined){console.warn(scoreboardEntity.id)}})})}catch(e){}*//*
     const propertiesDefinition = new DynamicPropertiesDefinition();
@@ -5896,8 +5901,23 @@ subscribedEvents.afterScriptEventReceive = system.afterEvents.scriptEventReceive
       sourceType,   // returns MessageSourceType
     } = event;
     try{eval(String(world.getDynamicProperty("evalAfterEvents:scriptEventRecieve")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("scriptEventRecieveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-    if(id.startsWith("andexdb:")){
+    if(id.startsWith("andexsa:")){
        return
+    }
+    if(id=="andexdb:entityScaleInitSignal"){
+        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleInitSignalRecievedByDebugSticks ${format_version}`);
+        if(entity_scale_format_version!=null&&message.trim()!=entity_scale_format_version){
+            globalThis.multipleEntityScaleVersionsDetected=true
+        }
+        entity_scale_format_version=message.trim();
+        return;
+    }else if(id=="andexdb:entityScaleTestSignal"){
+        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleTestSignalRecievedByDebugSticks ${format_version}`);
+        if(entity_scale_format_version!=null&&message.trim()!=entity_scale_format_version){
+            globalThis.multipleEntityScaleVersionsDetected=true
+        }
+        entity_scale_format_version=message.trim();
+        return;
     }
     if (id == "andexdb:scriptevent") {
         const diamondAwesomeSword = new ItemStack("minecraft:diamond_sword", 1);

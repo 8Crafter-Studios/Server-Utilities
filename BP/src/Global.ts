@@ -331,6 +331,7 @@ declare global {
         var subscribedEvents: {[eventName: string]: Function}
         var repeatingIntervals: {worldBorderSystem?: number, protectedAreasRefresher?: number, bannedPlayersChecker?: number, playerDataAutoSave?: number, [intervalName: string]: number}
         var entity_scale_format_version: string|null
+        var multipleEntityScaleVersionsDetected: boolean
     }
     class globalThis {
         static get overworld(): Dimension&{typeId: "minecraft:overworld"};
