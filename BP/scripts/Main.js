@@ -172,7 +172,7 @@ export async function checkIfCompatibleEntityScaleIsActive(init = false, maxWait
         if (maxWaitTicks != Infinity) {
             system.waitTicks(maxWaitTicks).then(v => reject(new TimeoutError(`The request to see if a compatible version of entity scale is active timed out. It took longer than ${maxWaitTicks} ticks.`)));
         }
-    }).then(v => v, v => { return false; });
+    }).then(v => v, v => { console.error(v); return false; });
     return promise1Result;
 }
 ;
@@ -4917,7 +4917,6 @@ subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscr
     globalThis.initiallizeTick = system.currentTick;
     try {
         const r = await checkIfCompatibleEntityScaleIsActive(true, 5);
-        console.log("a1" + r);
         if (r != false) {
             if (entity_scale_format_version != null && r.trim() != entity_scale_format_version) {
                 globalThis.multipleEntityScaleVersionsDetected = true;
@@ -6300,7 +6299,7 @@ subscribedEvents.afterMessageReceive = world.afterEvents.messageReceive.subscrib
         } });
     }
     try {
-        getPlayersWithTags("getMessageReceiveNotifications").filter(p => !p.hasTag("excludeMessageReceiveNotificationsWithId:" + event.id) && !p.hasTag("excludeMessageReceiveNotificationsWithMessage:" + event.message) && !p.hasTag("excludeMessageReceiveNotificationsBy:" + event.player.name)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§emessageReceive§r][${event.player.name}] Message recieved with ID ${event.id} and value "${event.message}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getMessageRecieveNotificationsNotificationSound.soundId, { pitch: pn.getMessageRecieveNotificationsNotificationSound.pitch, volume: pn.getMessageRecieveNotificationsNotificationSound.volume })); });
+        getPlayersWithTags("getMessageReceiveNotifications").filter(p => !p.hasTag("excludeMessageReceiveNotificationsWithId:" + event.id) && !p.hasTag("excludeMessageReceiveNotificationsWithMessage:" + event.message) && !p.hasTag("excludeMessageReceiveNotificationsBy:" + event.player.name)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§emessageReceive§r][${event.player.name}] Message received with ID ${event.id} and value "${event.message}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getMessageRecieveNotificationsNotificationSound.soundId, { pitch: pn.getMessageRecieveNotificationsNotificationSound.pitch, volume: pn.getMessageRecieveNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -8080,21 +8079,19 @@ subscribedEvents.afterScriptEventReceive = system.afterEvents.scriptEventReceive
         return;
     }
     if (id == "andexdb:entityScaleInitSignal") {
-        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleInitSignalRecievedByDebugSticks ${format_version}`);
+        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleInitSignalReceivedByDebugSticks ${format_version}`);
         if (entity_scale_format_version != null && message.trim() != entity_scale_format_version) {
             globalThis.multipleEntityScaleVersionsDetected = true;
         }
         entity_scale_format_version = message.trim();
-        console.log("b2" + message);
         return;
     }
     else if (id == "andexdb:entityScaleTestSignal") {
-        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleTestSignalRecievedByDebugSticks ${format_version}`);
+        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleTestSignalReceivedByDebugSticks ${format_version}`);
         if (entity_scale_format_version != null && message.trim() != entity_scale_format_version) {
             globalThis.multipleEntityScaleVersionsDetected = true;
         }
         entity_scale_format_version = message.trim();
-        console.log("c3" + message);
         return;
     }
     if (id == "andexdb:scriptevent") {

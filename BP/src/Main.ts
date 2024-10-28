@@ -187,7 +187,7 @@ export async function checkIfCompatibleEntityScaleIsActive(init: boolean = false
             };
         });
         if(maxWaitTicks!=Infinity){system.waitTicks(maxWaitTicks).then(v=>reject(new TimeoutError(`The request to see if a compatible version of entity scale is active timed out. It took longer than ${maxWaitTicks} ticks.`)))}
-    }).then(v=>v, v=>{console.error(v); return false;});
+    }).then(v=>v, v=>{return false;});
     return promise1Result as `${bigint}.${bigint}.${bigint}${`-${string}`|""}${`+${string}`|""}`|false;
 };
 // const a = ((a: `${bigint}.${bigint}.${bigint}${`-${string}`|""}${`+${string}`|""}`)=>{})("1.1.1-preview.20+BUILD.1");
@@ -4820,7 +4820,7 @@ try{getPlayersWithTags("getLeverActionNotifications").filter(p=>!p.hasTag("exclu
 subscribedEvents.afterMessageReceive = world.afterEvents.messageReceive.subscribe(event => {
 //console.warn(event.id, event.message, event.player?.name, event.player?.id)
 try{eval(String(world.getDynamicProperty("evalAfterEvents:messageReceive")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("messageReceiveAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-try{getPlayersWithTags("getMessageReceiveNotifications").filter(p=>!p.hasTag("excludeMessageReceiveNotificationsWithId:"+event.id)&&!p.hasTag("excludeMessageReceiveNotificationsWithMessage:"+event.message)&&!p.hasTag("excludeMessageReceiveNotificationsBy:"+event.player.name)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§emessageReceive§r][${event.player.name}] Message recieved with ID ${event.id} and value "${event.message}". `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getMessageRecieveNotificationsNotificationSound.soundId, {pitch: pn.getMessageRecieveNotificationsNotificationSound.pitch, volume: pn.getMessageRecieveNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
+try{getPlayersWithTags("getMessageReceiveNotifications").filter(p=>!p.hasTag("excludeMessageReceiveNotificationsWithId:"+event.id)&&!p.hasTag("excludeMessageReceiveNotificationsWithMessage:"+event.message)&&!p.hasTag("excludeMessageReceiveNotificationsBy:"+event.player.name)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§emessageReceive§r][${event.player.name}] Message received with ID ${event.id} and value "${event.message}". `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getMessageRecieveNotificationsNotificationSound.soundId, {pitch: pn.getMessageRecieveNotificationsNotificationSound.pitch, volume: pn.getMessageRecieveNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
 subscribedEvents.afterPistonActivate = world.afterEvents.pistonActivate.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:pistonActivate")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pistonActivateAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
@@ -5905,14 +5905,14 @@ subscribedEvents.afterScriptEventReceive = system.afterEvents.scriptEventReceive
        return
     }
     if(id=="andexdb:entityScaleInitSignal"){
-        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleInitSignalRecievedByDebugSticks ${format_version}`);
+        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleInitSignalReceivedByDebugSticks ${format_version}`);
         if(entity_scale_format_version!=null&&message.trim()!=entity_scale_format_version){
             globalThis.multipleEntityScaleVersionsDetected=true
         }
         entity_scale_format_version=message.trim();
         return;
     }else if(id=="andexdb:entityScaleTestSignal"){
-        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleTestSignalRecievedByDebugSticks ${format_version}`);
+        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleTestSignalReceivedByDebugSticks ${format_version}`);
         if(entity_scale_format_version!=null&&message.trim()!=entity_scale_format_version){
             globalThis.multipleEntityScaleVersionsDetected=true
         }
