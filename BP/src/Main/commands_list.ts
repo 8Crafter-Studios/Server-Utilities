@@ -2290,6 +2290,14 @@ export const commands = [
         escregexp: {
             v: "^enderchest$"
         },
+        aliases: [
+            {
+                commandName: "ec",
+                escregexp: {
+                    v: "^ec$"
+                }
+            }
+        ],
         formats: [
             {
                 format: "enderchest"
@@ -2301,6 +2309,48 @@ export const commands = [
             "misc"
         ],
         commandSettingsId: "built-inCommandSettings:enderchest",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
+        commandName: "entityscaleversion",
+        escregexp: {
+            v: "^entityscaleversion$"
+        },
+        aliases: [
+            {
+                commandName: "esver",
+                escregexp: {
+                    v: "^esver$"
+                }
+            },
+            {
+                commandName: "saver",
+                escregexp: {
+                    v: "^saver$"
+                }
+            }
+        ],
+        formats: [
+            {
+                format: "entityscaleversion"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "system",
+            "world",
+            "server"
+        ],
+        commandSettingsId: "built-inCommandSettings:entityscaleversion",
         deprecated: false,
         functional: true,
         hidden: false,

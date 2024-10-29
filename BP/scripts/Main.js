@@ -172,7 +172,7 @@ export async function checkIfCompatibleEntityScaleIsActive(init = false, maxWait
         if (maxWaitTicks != Infinity) {
             system.waitTicks(maxWaitTicks).then(v => reject(new TimeoutError(`The request to see if a compatible version of entity scale is active timed out. It took longer than ${maxWaitTicks} ticks.`)));
         }
-    }).then(v => v, v => { console.error(v); return false; });
+    }).then(v => v, v => { return false; });
     return promise1Result;
 }
 ;

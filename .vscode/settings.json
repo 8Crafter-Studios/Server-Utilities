@@ -2,7 +2,7 @@
     "problems.showCurrentInStatus": true,
     "editor.suggest.showStatusBar": true,
     "typescript.tsserver.maxTsServerMemory": 40000,
-    "editor.largeFileOptimizations": false/*,
+    "editor.largeFileOptimizations": true/*,
     "files.exclude": {
       ".git/objects": true
     }*/,

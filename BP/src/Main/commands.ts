@@ -6196,6 +6196,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             player.sendMessageB(format_version)
         }
         break; 
+        case !!switchTest.match(/^entityscaleversion$/)||!!switchTest.match(/^esver$/)||!!switchTest.match(/^saver$/): {
+            eventData.cancel = true;
+            player.sendMessageB((entity_scale_format_version!=null?entity_scale_format_version:!!tryget(()=>new ItemStack("andexsa:furnace_minecart"))?"Unknown Version":"Entity Scale Not Detected")+(multipleEntityScaleVersionsDetected?"<MULTIPLE VERSIONS WERE DETECTED!>":""))
+        }
+        break; 
         case !!switchTest.match(/^despawn$/): {
             eventData.cancel = true;
             system.run(()=>{
@@ -6408,7 +6413,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         break; 
         case !!switchTest.match(/^stopalldbintervals$/): 
             eventData.cancel = true;
-            try{Object.values(repeatingIntervals).forEach(v=>system.clearRun(v)); }catch(e){player.sendError("§c" + e + e.stack, true)}
+            try{Object.values(repeatingIntervals).forEach(v=>tryrun(()=>system.clearRun(v))); }catch(e){player.sendError("§c" + e + e.stack, true)}
         break; 
         case !!switchTest.match(/^stopallsaintervals$/): 
             eventData.cancel = true;
