@@ -39,3 +39,59 @@ subscribedEvents.after$1 = world.afterEvents.$1.
 
 \nworld.afterEvents.([a-zA-Z0-9]+).
 \nsubscribedEvents.after$1 = world.afterEvents.$1.
+
+
+
+function prettyJ(json) {
+  if (typeof json !== 'string') {
+    json = JSON.stringify(json, undefined, 2);
+  }
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, 
+    function (match) {
+      let cls = "\x1b[36m";
+      if (/^"/.test(match)) {
+        if (/:$/.test(match)) {
+          cls = "\x1b[34m";
+        } else {
+          cls = "\x1b[32m";
+        }
+      } else if (/true|false/.test(match)) {
+        cls = "\x1b[35m"; 
+      } else if (/null/.test(match)) {
+        cls = "\x1b[31m";
+      }
+      return cls + match + "\x1b[0m";
+    }
+  );
+}
+let json = JSON.stringify({a: 1, b: true, c: false, f: "h", g: null, d: {e: [1, 5]}})
+console.log(prettyJ(json))
+
+
+
+function prettyJ(json, options) {
+  if (typeof json !== 'string') {
+    json = JSON.stringify(json, undefined, 2);
+  }
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+n|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, 
+    function (match) {
+      let cls = options?.number??"§6";
+      if (/^"/.test(match)) {
+        if (/:$/.test(match)) {
+          cls = options?.key??"§e";
+        } else {
+          cls = options?.string??"§q";
+        }
+      } else if (/true/.test(match)) {
+        cls = options?.true??"§a"; 
+      } else if (/false/.test(match)) {
+        cls = options?.false??"§c"; 
+      } else if (/null/.test(match)) {
+        cls = options?.null??"§d";
+      } else if (/-?\d+n/.test(match)) {
+        cls = options?.bigint??"§g";
+      }
+      return cls + match;
+    }
+  );
+}

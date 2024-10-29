@@ -332,6 +332,62 @@ declare global {
         var repeatingIntervals: {worldBorderSystem?: number, protectedAreasRefresher?: number, bannedPlayersChecker?: number, playerDataAutoSave?: number, [intervalName: string]: number}
         var entity_scale_format_version: string|null
         var multipleEntityScaleVersionsDetected: boolean
+        function twoWayModulo(number: number, modulo: number): number
+        function clamp24HoursTo12Hours(hours: number): number
+        /**
+         * Formats a date object to a time string formatted as 12:37:01 PM, or if includeMs is set to true, 12:37:01.572 PM.
+         * @since 1.18.2-development.3
+         * @version 1.1.1
+         */
+        function formatTime<includeMs extends boolean>(date: Date, timeZoneOffset?: number, includeMs?: includeMs): includeMs extends unknown ? `${bigint}:${bigint}:${bigint} ${"A"|"P"}M` : includeMs extends false ? `${bigint}:${bigint}:${bigint} ${"A"|"P"}M` : `${bigint}:${bigint}:${bigint}.${bigint} ${"A"|"P"}M`
+        /**
+         * Formats a date object to a date time string formatted as 07/21/2024, 12:37:01 PM, or if includeMs is set to true, 07/21/2024, 12:37:01.572 PM.
+         * @since 1.18.2-development.10
+         * @version 1.1.1
+         */
+        function formatDateTime<includeMs extends boolean>(date: Date, timeZoneOffset?: number, includeMs?: includeMs): includeMs extends unknown ? `${bigint}/${bigint}/${bigint}, ${bigint}:${bigint}:${bigint} ${"A"|"P"}M` : includeMs extends false ? `${bigint}/${bigint}/${bigint}, ${bigint}:${bigint}:${bigint} ${"A"|"P"}M` : `${bigint}/${bigint}/${bigint}, ${bigint}:${bigint}:${bigint}.${bigint} ${"A"|"P"}M`
+        /**
+         * Formats a date object to a date string formatted as 07/21/2024.
+         * @since 1.26.0-preview.20+BUILD.2
+         * @version 1.0.0
+         */
+        function formatDate(date: Date, timeZoneOffset?: number): string
+        /**
+         * 
+         * @param json 
+         * @param options 
+         * @default
+         * enum options = {
+         *     number = "§6",
+         *     key = "§e",
+         *     string = "§q",
+         *     true = "§a",
+         *     false = "§c",
+         *     null = "§d",
+         *     undefined = "§d"
+         *     bigint = "§g",
+         *     leftCurlyBracket = "§9",
+         *     rightCurlyBracket = "§9",
+         *     leftSquareBracket = "§5",
+         *     rightSquareBracket = "§5",
+         *     comma = "§f",
+         * }
+         */
+        function colorizeJSONString(json: string | object, options?: {
+            number?: string;
+            key?: string;
+            string?: string;
+            true?: string;
+            false?: string;
+            null?: string;
+            bigint?: string;
+            leftCurlyBracket?: string;
+            rightCurlyBracket?: string;
+            leftSquareBracket?: string;
+            rightSquareBracket?: string;
+            comma?: string;
+            undefined?: string;
+        }): string
     }
     class globalThis {
         static get overworld(): Dimension&{typeId: "minecraft:overworld"};
@@ -339,7 +395,7 @@ declare global {
         static get the_end(): Dimension&{typeId: "minecraft:the_end"};
         static get players(): {[name: string]: Player}
         static get stack(): Error["stack"]
-        static get Decimal(): Decimal
+        static get Decimal(): typeof Decimal
         /**
          * @see {@link modules.colorCore.Color}
          */
@@ -404,6 +460,70 @@ declare global {
          * @see {@link modules.main.config}
          */
         static get config(): typeof modules.main.config
+    }
+    interface Date {
+        /**
+         * The timezone, specified as the hours offset from UTC.
+         * @since 1.26.0-preview.20+BUILD.2
+         * @version 1.0.0
+         */
+        timezone: number
+        /**
+         * Sets the timezone property of this Date object.
+         * @since 1.26.0-preview.20+BUILD.2
+         * @version 1.0.0
+         */
+        toTimezone(timezone?: number|string|boolean|null|undefined): this
+        /**
+         * Formats a date object to a time string formatted as 12:37:01 PM, or if includeMs is set to true, 12:37:01.572 PM.
+         * If includeTimeZoneOffset is set to true, then it will add the UTC hour offset to the end of the string, it is formatted like UTC+8 or UTC-7.
+         * @since 1.26.0-preview.20+BUILD.2
+         * @version 1.1.0
+         */
+        toTimezoneTime(timezone?: number|string|boolean|null|undefined, includeMs?: boolean, includeTimeZoneOffset?: boolean): string
+        /**
+         * Formats a date object to a date time string formatted as 07/21/2024, 12:37:01 PM, or if includeMs is set to true, 07/21/2024, 12:37:01.572 PM.
+         * If includeTimeZoneOffset is set to true, then it will add the UTC hour offset to the end of the string, it is formatted like UTC+8 or UTC-7.
+         * @since 1.26.0-preview.20+BUILD.2
+         * @version 1.1.0
+         */
+        toTimezoneDateTime(timezone?: number|string|boolean|null|undefined, includeMs?: boolean, includeTimeZoneOffset?: boolean): string
+        /**
+         * Formats a date object to a date string formatted as 07/21/2024. 
+         * If includeTimeZoneOffset is set to true, then it will add the UTC hour offset to the end of the string, it is formatted like UTC+8 or UTC-7.
+         * @since 1.26.0-preview.20+BUILD.2
+         * @version 1.1.0
+         */
+        toTimezoneDate(timezone?: number|string|boolean|null|undefined, includeTimeZoneOffset?: boolean): string
+        /**
+         * Formats a date object to a time string formatted as 12:37:01 PM, or if includeMs is set to true, 12:37:01.572 PM.
+         * If includeTimeZoneOffset is set to true, then it will add the UTC hour offset to the end of the string, it is formatted like UTC+8 or UTC-7.
+         * @since 1.26.0-preview.20+BUILD.2
+         * @version 1.2.1
+         */
+        formatTime(timeZoneOffset?: number, includeMs?: boolean, includeTimeZoneOffset?: boolean): string
+        /**
+         * Formats a date object to a date time string formatted as 07/21/2024, 12:37:01 PM, or if includeMs is set to true, 07/21/2024, 12:37:01.572 PM.
+         * If includeTimeZoneOffset is set to true, then it will add the UTC hour offset to the end of the string, it is formatted like UTC+8 or UTC-7.
+         * @since 1.26.0-preview.20+BUILD.2
+         * @version 1.2.1
+         */
+        formatDateTime(timeZoneOffset?: number, includeMs?: boolean, includeTimeZoneOffset?: boolean): string
+        /**
+         * Formats a date object to a date string formatted as 07/21/2024. 
+         * If includeTimeZoneOffset is set to true, then it will add the UTC hour offset to the end of the string, it is formatted like UTC+8 or UTC-7.
+         * @since 1.26.0-preview.20+BUILD.2
+         * @version 1.1.0
+         */
+        formatDate(timeZoneOffset?: number, includeTimeZoneOffset?: boolean): string
+    }
+    interface Function {
+        readonly lineNumber: number
+        readonly fileName: string
+    }
+    interface Class {
+        readonly lineNumber: number
+        readonly fileName: string
     }
 };
 declare module '@minecraft/server' {
@@ -479,6 +599,8 @@ declare module '@minecraft/server' {
         get z(): number
         get rotx(): number
         get roty(): number
+        get timeZone(): number
+        set timeZone(timezone: number|string|boolean|null|undefined)
     }
     interface Player {/*
         id: `${number}`*/
@@ -579,6 +701,45 @@ declare module '@minecraft/server-ui' {
 globalThis.subscribedEvents = {} as {[eventName: string]: Function}
 globalThis.repeatingIntervals = {} as {[intervalName: string]: number}
 globalThis.tempVariables={}
+globalThis.colorizeJSONString = function colorizeJSONString(json: string|object, options?: {number?: string, key?: string, string?: string, true?: string, false?: string, null?: string, undefined?: string, bigint?: string, leftCurlyBracket?: string, rightCurlyBracket?: string, leftSquareBracket?: string, rightSquareBracket?: string, comma?: string}) {
+    if (typeof json !== 'string') {
+        json = JSON.stringify(json, undefined, 2);
+    }
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|,|-?Infinity|NaN|undefined|\b(true|false|null)\b|\{|\}|\[|\]|-?\d+n|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, 
+        function (match) {
+            let cls = options?.number??"§6";
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = options?.key??"§e";
+                } else {
+                    cls = options?.string??"§q";
+                }
+            } else if (/true/.test(match)) {
+                cls = options?.true??"§a"; 
+            } else if (/false/.test(match)) {
+                cls = options?.false??"§c"; 
+            } else if (/null/.test(match)) {
+                cls = options?.null??"§d";
+            } else if (/-?\d+n/.test(match)) {
+                cls = options?.bigint??"§g";
+            } else if (/\{/.test(match)) {
+                cls = options?.leftCurlyBracket??"§9";
+            } else if (/\}/.test(match)) {
+                cls = options?.rightCurlyBracket??"§9";
+            } else if (/\[/.test(match)) {
+                cls = options?.leftSquareBracket??"§5";
+            } else if (/\]/.test(match)) {
+                cls = options?.rightSquareBracket??"§5";
+            } else if (/,/.test(match)) {
+                cls = options?.comma??"§f";
+            } else if (/undefined/.test(match)) {
+                cls = options?.undefined??"§d";
+            }
+            return cls + match;
+        }
+    );
+}
+// §ess§gss§6ss§pss§ass§qss§2ss§4ss§5ss§dss§1ss§3ss§7ss§8ss§9ss§0ss§mss§nss§bss§sss§rss§fss§tss§uss§iss§hss§jss
 Object.defineProperty(globalThis, 'stack', {get: function stack(){return new Error().stack}});
 Object.defineProperty(Array.prototype, 'forEachB', {
     value: function forEachB<T>(callbackfn: (value: T, index: number, array: T[]) => void, thisArg?: any){
@@ -1121,6 +1282,94 @@ Object.defineProperties(Boolean.prototype, {/*
         writable: true
     }
 });
+globalThis.twoWayModulo = function twoWayModulo(number: number, modulo: number){if(number<0){return modulo+(number%modulo)}else{return number%modulo}}
+globalThis.clamp24HoursTo12Hours = function clamp24HoursTo12Hours(hours: number){return twoWayModulo(hours-1, 12)+1}
+/**
+ * Formats a date object to a time string formatted as 12:37:01 PM. 
+ * @since 1.18.2-development.3
+ * @version 1.1.1
+ */
+globalThis.formatTime = function formatTime<includeMs extends boolean>(date: Date, timeZoneOffset: number = 0, includeMs: includeMs|boolean = false): includeMs extends unknown ? `${bigint}:${bigint}:${bigint} ${"A" | "P"}M` : includeMs extends false ? `${bigint}:${bigint}:${bigint} ${"A" | "P"}M` : `${bigint}:${bigint}:${bigint}.${bigint} ${"A" | "P"}M`{const dateb = new Date(date.valueOf()+(timeZoneOffset*3600000)); return `${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")}${includeMs?`.${dateb.getUTCMilliseconds().toString().padStart(3, "0")}`:""} ${dateb.getUTCHours()>11?"P":"A"}M` as any}
+/**
+ * Formats a date object to a date time string formatted as 07/21/2024, 12:37:01 PM. 
+ * @since 1.18.2-development.10
+ * @version 1.1.1
+ */
+globalThis.formatDateTime = function formatDateTime<includeMs extends boolean>(date: Date, timeZoneOffset: number = 0, includeMs: includeMs|boolean = false): includeMs extends unknown ? `${bigint}/${bigint}/${bigint}, ${bigint}:${bigint}:${bigint} ${"A" | "P"}M` : includeMs extends false ? `${bigint}/${bigint}/${bigint}, ${bigint}:${bigint}:${bigint} ${"A" | "P"}M` : `${bigint}/${bigint}/${bigint}, ${bigint}:${bigint}:${bigint}.${bigint} ${"A" | "P"}M`{const dateb = new Date(date.valueOf()+(timeZoneOffset*3600000)); return `${(dateb.getUTCMonth()+1).toString().padStart(2, "0")}/${dateb.getUTCDate().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()} ${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")}${includeMs?`.${dateb.getUTCMilliseconds().toString().padStart(3, "0")}`:""} ${dateb.getUTCHours()>11?"P":"A"}M` as any}
+/**
+ * Formats a date object to a date string formatted as 07/21/2024. 
+ * @since 1.26.0-preview.20+BUILD.2
+ * @version 1.0.0
+ */
+globalThis.formatDate = function formatDate(date: Date, timeZoneOffset: number = 0){const dateb = new Date(date.valueOf()+(timeZoneOffset*3600000)); return `${(dateb.getUTCMonth()+1).toString().padStart(2, "0")}/${dateb.getUTCDate().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()}`}
+Object.defineProperties(Date.prototype, {
+    timezone: {
+        value: typeof world.getDynamicProperty("andexdbSettings:timeZone") == "object" ? 0 : (world.getDynamicProperty("andexdbSettings:timeZone") as string|number|boolean ?? 0).toNumber()??0,
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toTimezone: {
+        value: function toTimezone(UTCHourOffset: string|number|boolean|null|undefined): Date{
+            this.timezone=!!UTCHourOffset?UTCHourOffset.toNumber():config.system.timeZone;
+            return this;
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    toTimezoneDate: {
+        value: function (UTCHourOffset?: string|number|boolean|null|undefined, includeTimeZoneOffset: boolean = false): string{
+            return this.formatDate(!!UTCHourOffset?UTCHourOffset.toNumber():this.timezone??config.system.timeZone, includeTimeZoneOffset);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    toTimezoneDateTime: {
+        value: function (UTCHourOffset?: string|number|boolean|null|undefined, includeMs: boolean = false, includeTimeZoneOffset: boolean = false): string{
+            return this.formatDateTime(!!UTCHourOffset?UTCHourOffset.toNumber():this.timezone??config.system.timeZone, includeMs, includeTimeZoneOffset);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    toTimezoneTime: {
+        value: function (UTCHourOffset?: string|number|boolean|null|undefined, includeMs: boolean = false, includeTimeZoneOffset: boolean = false): string{
+            return this.formatDateTime(!!UTCHourOffset?UTCHourOffset.toNumber():this.timezone??config.system.timeZone, includeMs, includeTimeZoneOffset);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    formatTime: {
+        value: function formatTime(timeZoneOffset: number = this.timezone??config.system.timeZone, includeMs: boolean = false, includeTimeZoneOffset: boolean = false){
+            const dateb = new Date(this.valueOf()+(timeZoneOffset*3600000));
+            return `${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")}${includeMs?`.${dateb.getUTCMilliseconds().toString().padStart(3, "0")}`:""} ${dateb.getUTCHours()>11?"P":"A"}M${includeTimeZoneOffset?` UTC${timeZoneOffset<0?"-":"+"}${Math.abs(timeZoneOffset)}`:""}`;
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    formatDateTime: {
+        value: function formatDateTime(timeZoneOffset: number = this.timezone??config.system.timeZone, includeMs: boolean = false, includeTimeZoneOffset: boolean = false){
+            const dateb = new Date(this.valueOf()+(timeZoneOffset*3600000));
+            return `${(dateb.getUTCMonth()+1).toString().padStart(2, "0")}/${dateb.getUTCDate().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()} ${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")}${includeMs?`.${dateb.getUTCMilliseconds().toString().padStart(3, "0")}`:""} ${dateb.getUTCHours()>11?"P":"A"}M${includeTimeZoneOffset?` UTC${timeZoneOffset<0?"-":"+"}${Math.abs(timeZoneOffset)}`:""}`;
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    formatDate: {
+        value: function formatDate(timeZoneOffset: number = this.timezone??config.system.timeZone, includeTimeZoneOffset: boolean = false){
+            const dateb = new Date(this.valueOf()+(timeZoneOffset*3600000));
+            return `${(dateb.getUTCMonth()+1).toString().padStart(2, "0")}/${dateb.getUTCDate().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()}${includeTimeZoneOffset?` UTC${timeZoneOffset<0?"-":"+"}${Math.abs(timeZoneOffset)}`:""}`;
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    }
+});
 Object.defineProperties(Entity.prototype, {
     inventory: {
         get: function inventory(): EntityInventoryComponent|undefined{
@@ -1241,6 +1490,12 @@ Object.defineProperties(Entity.prototype, {
     },
     roty: {
         get: function roty(){return this.getRotation().y},
+        configurable: true,
+        enumerable: true
+    },
+    timeZone: {
+        get: function timeZone(){return (this.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? config.system.timeZone).toString().toNumber()},
+        set: function timeZone(timezone: number|string|boolean|null|undefined){this.setDynamicProperty("andexdbPersonalSettings:timeZone", !!timezone?timezone.toString():undefined)},
         configurable: true,
         enumerable: true
     }

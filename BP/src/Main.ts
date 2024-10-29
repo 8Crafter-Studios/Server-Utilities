@@ -636,6 +636,9 @@ export class config{/*
     static reset(){
         // Object.entries(Object.getOwnPropertyDescriptors(this)).filter(v=>v[1].hasOwnProperty("get")).flatMap(v=>v[1].hasOwnProperty("set")?v[1]:v[1]["get"]())
     }
+    static toJSON(){
+        return Object.fromEntries(Object.getOwnPropertyNames(config).filter(n=>!["constructor", "toString", "toLocaleString", "valueOf", "hasOwnProperty", "name", "prototype", "reset", "length"].includes(n)).map(n=>[n, config[n]]))
+    }
 }
 export class worldPlayers {/*
     savedPlayers: savedPlayerData[]; 

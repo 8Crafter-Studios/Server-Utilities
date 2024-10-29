@@ -148,25 +148,6 @@ export function arrayModifier(sourcearray, callbackfn, overwrite = false) {
     }
 }
 ;
-export function twoWayModulo(number, modulo) { if (number < 0) {
-    return modulo + (number % modulo);
-}
-else {
-    return number % modulo;
-} }
-export function clamp24HoursTo12Hours(hours) { return twoWayModulo(hours - 1, 12) + 1; }
-/**
- * Formats a date object to a time string formatted as 12:37:01 PM.
- * @since 1.18.2-development.3
- * @version 1.0.1
- */
-export function formatTime(date, timeZoneOffset = 0) { const dateb = new Date(date.valueOf() + (timeZoneOffset * 3600000)); return `${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")} ${dateb.getUTCHours() > 11 ? "P" : "A"}M`; }
-/**
- * Formats a date object to a date time string formatted as 07/21/2024, 12:37:01 PM.
- * @since 1.18.2-development.10
- * @version 1.0.1
- */
-export function formatDateTime(date, timeZoneOffset = 0) { const dateb = new Date(date.valueOf() + (timeZoneOffset * 3600000)); return `${dateb.getUTCMonth().toString().padStart(2, "0")}/${dateb.getUTCDay().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()} ${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")} ${dateb.getUTCHours() > 11 ? "P" : "A"}M`; }
 export function objectify(object) { let entries = Object.entries(object); entries.forEach((v, i) => { if (v[1] instanceof Array) {
     entries[i][1] = objectify(v[1]);
 }

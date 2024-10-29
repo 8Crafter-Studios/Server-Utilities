@@ -31,7 +31,7 @@ import { targetSelectorAllListC } from "./command_utilities";
 import { commands } from "./commands_list";
 import { mainShopSystemSettings } from "ExtraFeatures/shop_main";
 import { MoneySystem } from "ExtraFeatures/money";
-import { showMessage } from "./utilities";
+import { showActions, showMessage } from "./utilities";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -346,6 +346,7 @@ form.button("§eManage Commands §f[§6Beta§f]", "textures/ui/chat_keyboard_hov
 form.button("§eItem Editor §f[§cAlpha§f]", "textures/ui/icon_recipe_item");
 form.button("§eMap Art Generator §f[§cAlpha§f]", "textures/items/map_locked");
 form.button("§eJava NBT Structure Loader §f[§cAlpha§f]", "textures/ui/xyz_axis");
+form.button("Close", "textures/ui/crossout"); 
 return await forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(async ra => {let r = (ra as ActionFormResponse); 
     // This will stop the code when the player closes the form
     if (r.canceled) return 1;
@@ -514,6 +515,8 @@ return await forceShow(form, players[players.findIndex((x) => x == sourceEntity)
             nbtStructureLoader(sourceEntity)
             return 0;
         break;
+        case 27:
+            return 0;
         default:
             return 1;
     }
@@ -526,6 +529,8 @@ export async function addonDebugUI(sourceEntitya: Entity|executeCommandPlayerW|P
     let form = new ActionFormData();
     let players = world.getPlayers();
 form.title("Debug");
+form.button("Debug Info", "textures/ui/ui_debug_glyph_color"); 
+form.button("Raw Config", "textures/ui/debug_glyph_color"); 
 form.button("Start Plyer Data Auto Save", "textures/ui/recap_glyph_color_2x");
 form.button("Stop Plyer Data Auto Save", "textures/ui/close_button_default_light");
 form.button("Start Checking For Banned Players", "textures/ui/recap_glyph_color_2x");
@@ -542,8 +547,8 @@ form.button("Start Protected Areas Refresher", "textures/ui/recap_glyph_color_2x
 form.button("Stop Protected Areas Refresher", "textures/ui/close_button_default_light");
 form.button("Stop All Built-In Intervals", "textures/ui/cancel");
 form.button(entity_scale_format_version!=null?"Stop All Entity Scale Built-In Intervals":"§cStop All Entity Scale Built-In Intervals\n§cNo compatible version of entity scale was detected.", "textures/ui/recap_glyph_desaturated");*/
-form.button("Back", "textures/ui/arrow_left"); 
-form.button("Close", "textures/ui/crossout"); 
+form.button("Back", "textures/ui/arrow_left");
+form.button("Close", "textures/ui/crossout");
 return await forceShow(form, sourceEntity as Player).then(async ra => {let r = (ra as ActionFormResponse); 
     // This will stop the code when the player closes the form
     if (r.canceled) return 1;
@@ -551,34 +556,84 @@ return await forceShow(form, sourceEntity as Player).then(async ra => {let r = (
     let response = r.selection;
     switch (response) {
         case 0:
-            playersave.startPlayerDataAutoSave();
+            const DPTBC = new (Decimal.clone({precision: 50}))(world.getDynamicPropertyTotalByteCount());
+            await showActions(sourceEntity as Player, "Debug Info", `Dynamic Property Total Byte Count: ${DPTBC} Bytes/${DPTBC.div(1000).toDecimalPlaces(2)} KB/${DPTBC.div(1024).toDecimalPlaces(2)} KiB/${DPTBC.div(1000000).toDecimalPlaces(2)} MB/${DPTBC.div(1048576).toDecimalPlaces(2)} MiB
+Dynamic Property ID Count: ${world.getDynamicPropertyIds().length}
+Structure ID Count: ${world.structureManager.getWorldStructureIds().length}
+Server Memory Tier: ${system.serverSystemInfo.memoryTier}
+Current Tick: ${system.currentTick}
+Absolute Time: ${world.getAbsoluteTime()}
+Time Of Day: ${world.getTimeOfDay()}
+Day: ${world.getDay()}
+Moon Phase: ${world.getMoonPhase()}
+Default Spawn Location: ${JSONB.stringify(world.getDefaultSpawnLocation())}`, ["Done"])
             return await addonDebugUI(sourceEntity);
         break;
         case 1:
-            playersave.stopPlayerDataAutoSave();
+            await showActions(
+                sourceEntity as Player,
+                "Raw Config",
+                colorizeJSONString(
+                    JSONB.stringify(
+                        Object.fromEntries
+                        (Object.getOwnPropertyNames(config)
+                            .filter(n=>
+                                !["constructor", "toString", "toLocaleString", "valueOf", "hasOwnProperty", "name", "prototype", "reset", "length"]
+                                    .includes(n)
+                            ).map(n=>[n, config[n]])
+                        )/*{
+                            antiSpamSystem: config.antiSpamSystem,
+                            chatCommandPrefix: config.chatCommandPrefix,
+                            chatCommandsEnabled: config.chatCommandsEnabled,
+                            chatRanks: config.chatRanks,
+                            homeSystem: config.homeSystem,
+                            invalidChatCommandAction: config.invalidChatCommandAction,
+                            shopSystem: config.shopSystem,
+                            spawnCommandLocation: config.spawnCommandLocation,
+                            system: config.system,
+                            tpaSystem: config.tpaSystem,
+                            ui: config.ui,
+                            undoClipboardMode: config.undoClipboardMode,
+                            validChatCommandPrefixes: config.validChatCommandPrefixes,
+                            worldBorder: config.worldBorder,
+                        } as typeof config*/,
+                        undefined,
+                        2
+                    )
+                ),
+                ["Done"]
+            )
             return await addonDebugUI(sourceEntity);
         break;
         case 2:
-            bans.startCheckingForBannedPlayers();
+            playersave.startPlayerDataAutoSave();
             return await addonDebugUI(sourceEntity);
         break;
         case 3:
-            bans.stopCheckingForBannedPlayers();
+            playersave.stopPlayerDataAutoSave();
             return await addonDebugUI(sourceEntity);
         break;
         case 4:
-            spawnprot.startProtectedAreasRefresher();
+            bans.startCheckingForBannedPlayers();
             return await addonDebugUI(sourceEntity);
         break;
         case 5:
-            spawnprot.stopProtectedAreasRefresher();
+            bans.stopCheckingForBannedPlayers();
             return await addonDebugUI(sourceEntity);
         break;
         case 6:
-            Object.values(repeatingIntervals).forEach(v=>tryrun(()=>system.clearRun(v))); 
+            spawnprot.startProtectedAreasRefresher();
             return await addonDebugUI(sourceEntity);
         break;
         case 7:
+            spawnprot.stopProtectedAreasRefresher();
+            return await addonDebugUI(sourceEntity);
+        break;
+        case 8:
+            Object.values(repeatingIntervals).forEach(v=>tryrun(()=>system.clearRun(v))); 
+            return await addonDebugUI(sourceEntity);
+        break;
+        case 9:
             if(entity_scale_format_version!=null){
                 overworld.runCommand("/scriptevent andexsa:clearRepeatingIntervals");
             }else{
@@ -588,10 +643,10 @@ return await forceShow(form, sourceEntity as Player).then(async ra => {let r = (
             };
             return await addonDebugUI(sourceEntity);
         break;
-        case 8:
+        case 10:
             return 1;
         break;
-        case 9:
+        case 11:
             return 0;
         break;
         default:
@@ -624,7 +679,7 @@ form.button("Close", "textures/ui/crossout");/*
 form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
 return await forceShow(form, (sourceEntity as Player)).then(async ra => {let r = (ra as ActionFormResponse); 
     // This will stop the code when the player closes the form
-    if (r.canceled) return;
+    if (r.canceled) return 1;
 
     let response = r.selection;
     switch (response) {
@@ -692,7 +747,7 @@ return await forceShow(form, (sourceEntity as Player)).then(async ra => {let r =
         case 12:
             return 1;
         case 13:
-            return 1;
+            return 0;
         default:
             return 1;
     }
@@ -818,7 +873,7 @@ export function manageBans(sourceEntitya: Entity|executeCommandPlayerW|Player, b
             backMenuFunction(sourceEntity)*/
             break
             default: 
-            let form4 = new ActionFormData; form4.title(`Manage Ban`); let ba = banList[g.selection]; let timeRemaining = ba.timeRemaining; form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type=="id"?"playerId":"originalPlayerId"}: §6${ba.type=="id"?ba.playerId:ba.originalPlayerId}\n§r§b${ba.type=="id"?"originalPlayerName":"playerName"}: §6${ba.type=="id"?ba.originalPlayerName:ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${/*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`); form4.button("Unban"); form4.button("Back")
+            let form4 = new ActionFormData; form4.title(`Manage Ban`); let ba = banList[g.selection]; let timeRemaining = ba.timeRemaining; form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}\n§r§b${ba.type=="id"?"playerId":"originalPlayerId"}: §6${ba.type=="id"?ba.playerId:ba.originalPlayerId}\n§r§b${ba.type=="id"?"originalPlayerName":"playerName"}: §6${ba.type=="id"?ba.originalPlayerName:ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${/*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`); form4.button("Unban"); form4.button("Back")
             forceShow(form4, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
                 if(h.canceled){return};
                 if(h.selection==0){banList[g.selection].remove(); backMenuFunction(sourceEntity)};
@@ -3201,146 +3256,33 @@ forceShow(form, sourceEntity).then(r => {
 });
 }/*
 export function evalAutoScriptSettings(sourceEntity: Entity|Player){}*/
-export async function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|Player, pagen: number=0, maxplayersperpage: number = config.ui.pages.maxPlayersPerManagePlayersPage??10, search?: {value: string, caseSensitive?: boolean}): Promise<0|1>{
+export async function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|Player, pagen: number=0, maxplayersperpage: number = config.ui.pages.maxPlayersPerManagePlayersPage??10, search?: {value: string, caseSensitive?: boolean, searchLastOnlineDates?: boolean, searchLastOnlineTimes?: boolean, searchNames?: boolean, searchIds?: boolean}): Promise<0|1>{
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form = new ActionFormData; 
     const page = Math.max(0, pagen)
-    const numsavedplayers = savedPlayer.getSavedPlayers().filter((p) =>
+    const savedPlayers = savedPlayer.getSavedPlayers().filter((p) =>
         !!search
             ? search.caseSensitive==true 
-                ? `${p.name}\n${
-                    ban.testForBannedPlayer(p)
-                        ? "Banned"
-                        : p.isOnline
-                        ? "Online"
-                        : "Online: " +
-                            new Date(
-                                Number(p.lastOnline) +
-                                    Number(
-                                        sourceEntity.getDynamicProperty(
-                                            "andexdbPersonalSettings:timeZone"
-                                        ) ??
-                                            world.getDynamicProperty(
-                                                "andexdbPersonalSettings:timeZone"
-                                            ) ??
-                                            0
-                                    ) *
-                                        3600000
-                            ).toLocaleString()
+                ? `${(search.searchNames??true)?p.name+"\n":""}${(search.searchIds??true)?p.id+"\n":""}${
+                        p.isOnline
+                            ? ""
+                            : ((search.searchLastOnlineDates??false)||(search.searchLastOnlineTimes??false))
+                            ? new Date(p.lastOnline).toTimezone(sourceEntity.timeZone)[search.searchLastOnlineDates&&search.searchLastOnlineTimes?"toTimezoneDateTime":search.searchLastOnlineDates?"toTimezoneDate":search.searchLastOnlineTimes?"toTimezoneTime":"toTimezoneDateTime"]()
+                            : ""
                 }`.includes(search.value)
-                : `${p.name}\n${
-                    ban.testForBannedPlayer(p)
-                        ? "Banned"
-                        : p.isOnline
-                        ? "Online"
-                        : "Online: " +
-                            new Date(
-                                Number(p.lastOnline) +
-                                    Number(
-                                        sourceEntity.getDynamicProperty(
-                                            "andexdbPersonalSettings:timeZone"
-                                        ) ??
-                                            world.getDynamicProperty(
-                                                "andexdbPersonalSettings:timeZone"
-                                            ) ??
-                                            0
-                                    ) *
-                                        3600000
-                            ).toLocaleString()
+                : `${(search.searchNames??true)?p.name+"\n":""}${(search.searchIds??true)?p.id+"\n":""}${
+                        p.isOnline
+                            ? ""
+                            : ((search.searchLastOnlineDates??false)||(search.searchLastOnlineTimes??false))
+                            ? new Date(p.lastOnline).toTimezone(sourceEntity.timeZone)[search.searchLastOnlineDates&&search.searchLastOnlineTimes?"toTimezoneDateTime":search.searchLastOnlineDates?"toTimezoneDate":search.searchLastOnlineTimes?"toTimezoneTime":"toTimezoneDateTime"]()
+                            : ""
                 }`.toLowerCase().includes(search.value.toLowerCase())
             : true
-    ).length
-    const numonlinesavedplayers = savedPlayer.getSavedPlayers().filter(_=>_.isOnline).filter((p) =>
-        !!search
-            ? search.caseSensitive==true 
-                ? `${p.name}\n${
-                    ban.testForBannedPlayer(p)
-                        ? "Banned"
-                        : p.isOnline
-                        ? "Online"
-                        : "Online: " +
-                            new Date(
-                                Number(p.lastOnline) +
-                                    Number(
-                                        sourceEntity.getDynamicProperty(
-                                            "andexdbPersonalSettings:timeZone"
-                                        ) ??
-                                            world.getDynamicProperty(
-                                                "andexdbPersonalSettings:timeZone"
-                                            ) ??
-                                            0
-                                    ) *
-                                        3600000
-                            ).toLocaleString()
-                }`.includes(search.value)
-                : `${p.name}\n${
-                    ban.testForBannedPlayer(p)
-                        ? "Banned"
-                        : p.isOnline
-                        ? "Online"
-                        : "Online: " +
-                            new Date(
-                                Number(p.lastOnline) +
-                                    Number(
-                                        sourceEntity.getDynamicProperty(
-                                            "andexdbPersonalSettings:timeZone"
-                                        ) ??
-                                            world.getDynamicProperty(
-                                                "andexdbPersonalSettings:timeZone"
-                                            ) ??
-                                            0
-                                    ) *
-                                        3600000
-                            ).toLocaleString()
-                }`.toLowerCase().includes(search.value.toLowerCase())
-            : true
-    ).length
-    const numofflinesavedplayers = savedPlayer.getSavedPlayers().filter(_=>!_.isOnline).filter((p) =>
-        !!search
-            ? search.caseSensitive==true 
-                ? `${p.name}\n${
-                    ban.testForBannedPlayer(p)
-                        ? "Banned"
-                        : p.isOnline
-                        ? "Online"
-                        : "Online: " +
-                            new Date(
-                                Number(p.lastOnline) +
-                                    Number(
-                                        sourceEntity.getDynamicProperty(
-                                            "andexdbPersonalSettings:timeZone"
-                                        ) ??
-                                            world.getDynamicProperty(
-                                                "andexdbPersonalSettings:timeZone"
-                                            ) ??
-                                            0
-                                    ) *
-                                        3600000
-                            ).toLocaleString()
-                }`.includes(search.value)
-                : `${p.name}\n${
-                    ban.testForBannedPlayer(p)
-                        ? "Banned"
-                        : p.isOnline
-                        ? "Online"
-                        : "Online: " +
-                            new Date(
-                                Number(p.lastOnline) +
-                                    Number(
-                                        sourceEntity.getDynamicProperty(
-                                            "andexdbPersonalSettings:timeZone"
-                                        ) ??
-                                            world.getDynamicProperty(
-                                                "andexdbPersonalSettings:timeZone"
-                                            ) ??
-                                            0
-                                    ) *
-                                        3600000
-                            ).toLocaleString()
-                }`.toLowerCase().includes(search.value.toLowerCase())
-            : true
-    ).length
-    form.title(`Manage Players ${Math.min(numsavedplayers, (page*maxplayersperpage)+1)}-${Math.min(numsavedplayers, (page+1)*maxplayersperpage)} of ${numsavedplayers}`); 
+    )
+    const numsavedplayers = savedPlayers.length
+    const numonlinesavedplayers = savedPlayers.filter(_=>_.isOnline).length
+    const numofflinesavedplayers = savedPlayers.filter(_=>!_.isOnline).length
+    form.title(`${!!search?"Search Results":"Manage Players"} ${Math.min(numsavedplayers, (page*maxplayersperpage)+1)}-${Math.min(numsavedplayers, (page+1)*maxplayersperpage)} of ${numsavedplayers}`); 
     const numpages = Math.ceil(numsavedplayers/maxplayersperpage)
     if(!!search){
         form.body(`Searching for: ${JSON.stringify(search.value)}\nCase Sensitive: ${JSON.stringify(search.caseSensitive??false)}`)
@@ -3368,50 +3310,24 @@ export async function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|
         .filter((p) =>
             !!search
                 ? search.caseSensitive==true 
-                    ? `${p.name}\n${
-                        ban.testForBannedPlayer(p)
-                            ? "Banned"
-                            : p.isOnline
-                            ? "Online"
-                            : "Online: " +
-                                new Date(
-                                    Number(p.lastOnline) +
-                                        Number(
-                                            sourceEntity.getDynamicProperty(
-                                                "andexdbPersonalSettings:timeZone"
-                                            ) ??
-                                                world.getDynamicProperty(
-                                                    "andexdbPersonalSettings:timeZone"
-                                                ) ??
-                                                0
-                                        ) *
-                                            3600000
-                                ).toLocaleString()
+                    ? `${(search.searchNames??true)?p.name+"\n":""}${(search.searchIds??true)?p.id+"\n":""}${
+                        p.isOnline
+                            ? ""
+                            : ((search.searchLastOnlineDates??false)||(search.searchLastOnlineTimes??false))
+                            ? new Date(p.lastOnline).toTimezone(sourceEntity.timeZone)[search.searchLastOnlineDates&&search.searchLastOnlineTimes?"toTimezoneDateTime":search.searchLastOnlineDates?"toTimezoneDate":search.searchLastOnlineTimes?"toTimezoneTime":"toTimezoneDateTime"]()
+                            : ""
                     }`.includes(search.value)
-                    : `${p.name}\n${
-                        ban.testForBannedPlayer(p)
-                            ? "Banned"
-                            : p.isOnline
-                            ? "Online"
-                            : "Online: " +
-                                new Date(
-                                    Number(p.lastOnline) +
-                                        Number(
-                                            sourceEntity.getDynamicProperty(
-                                                "andexdbPersonalSettings:timeZone"
-                                            ) ??
-                                                world.getDynamicProperty(
-                                                    "andexdbPersonalSettings:timeZone"
-                                                ) ??
-                                                0
-                                        ) *
-                                            3600000
-                                ).toLocaleString()
+                    : `${(search.searchNames??true)?p.name+"\n":""}${(search.searchIds??true)?p.id+"\n":""}${
+                        p.isOnline
+                            ? ""
+                            : ((search.searchLastOnlineDates??false)||(search.searchLastOnlineTimes??false))
+                            ? new Date(p.lastOnline).toTimezone(sourceEntity.timeZone)[search.searchLastOnlineDates&&search.searchLastOnlineTimes?"toTimezoneDateTime":search.searchLastOnlineDates?"toTimezoneDate":search.searchLastOnlineTimes?"toTimezoneTime":"toTimezoneDateTime"]()
+                            : ""
                     }`.toLowerCase().includes(search.value.toLowerCase())
                 : true
         )
         .slice(page * maxplayersperpage, (page + 1) * maxplayersperpage); 
-    displayPlayers.forEach((p)=>{form.button(`${p.name}\n${ban.testForBannedPlayer(p)?"Banned":p.isOnline?"Online":"Online: "+new Date(Number(p.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()}`, p.isOnline?"textures/ui/online":p.isBanned?"textures/ui/Ping_Offline_Red_Dark":"textures/ui/offline")}); 
+    displayPlayers.forEach((p)=>{form.button(`${p.name}\n${ban.testForBannedPlayer(p)?"Banned":p.isOnline?"Online":new Date(p.lastOnline).formatDateTime(sourceEntity.timeZone)}`, p.isOnline?"textures/ui/online":p.isBanned?"textures/ui/Ping_Offline_Red_Dark":"textures/ui/offline")}); 
     const numplayersonpage = displayPlayers.length
     let players = displayPlayers; 
     form.button("Manage Bans"); 
@@ -3421,12 +3337,12 @@ export async function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|
         let r = (ra as ActionFormResponse); 
         if(r.canceled){return 1}; 
         switch(r.selection){
-            case 0:
-                const rb = await tryget(async ()=>await new ModalFormData().textField(search?.value??"", "Search").toggle("Case Sensitive", search?.caseSensitive??false).forceShow(sourceEntity as Player))
+            case 0: {
+                const rb = await tryget(async ()=>await new ModalFormData().title("Search").textField("", "Search", search?.value??"").toggle("Case Sensitive", search?.caseSensitive??false).toggle("Search Player Names", search?.searchNames??true).toggle("Search Player IDs", search?.searchIds??true).toggle("Search Last Online Dates", search?.searchLastOnlineDates??false).toggle("Search Last Online Times", search?.searchLastOnlineTimes??false).submitButton("Search").forceShow(sourceEntity as Player))
                 if(!!!rb||rb?.canceled==true){
                     return await managePlayers(sourceEntity, page, maxplayersperpage, search);
                 };
-                return await managePlayers(sourceEntity, undefined, maxplayersperpage, {value: rb.formValues[0] as string, caseSensitive: rb.formValues[1] as boolean});/*
+                return await managePlayers(sourceEntity, undefined, maxplayersperpage, {value: rb.formValues[0] as string, caseSensitive: rb.formValues[1] as boolean, searchNames: rb.formValues[2] as boolean, searchIds: rb.formValues[3] as boolean, searchLastOnlineDates: rb.formValues[4] as boolean, searchLastOnlineTimes: rb.formValues[5] as boolean});/*
                 return await showMessage(sourceEntity as Player, undefined, "§cSorry, the search feature has not been implemented yet.", "Back", "Close").then(async r=>{
                     if(r.selection==0){
                         return await managePlayers(sourceEntity, page, maxplayersperpage, search);
@@ -3434,6 +3350,7 @@ export async function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|
                         return 0;
                     }
                 })*/
+            }
             break;
             case 1:
                 return await managePlayers(sourceEntity, Math.max(0, page-1))
@@ -3483,7 +3400,7 @@ export async function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|
                         managePlayers(sourceEntity, page, maxplayersperpage, search)*/
                         break
                         default: 
-                        let form4 = new ActionFormData; form4.title(`Manage Ban`); let ba = banList[g.selection]; let timeRemaining = ba.timeRemaining; form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type=="id"?"playerId":"originalPlayerId"}: §6${ba.type=="id"?ba.playerId:ba.originalPlayerId}\n§r§b${ba.type=="id"?"originalPlayerName":"playerName"}: §6${ba.type=="id"?ba.originalPlayerName:ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${/*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`); form4.button("Unban"); form4.button("Back")
+                        let form4 = new ActionFormData; form4.title(`Manage Ban`); let ba = banList[g.selection]; let timeRemaining = ba.timeRemaining; form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}\n§r§b${ba.type=="id"?"playerId":"originalPlayerId"}: §6${ba.type=="id"?ba.playerId:ba.originalPlayerId}\n§r§b${ba.type=="id"?"originalPlayerName":"playerName"}: §6${ba.type=="id"?ba.originalPlayerName:ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${/*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`); form4.button("Unban"); form4.button("Back")
                         return await forceShow(form4, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
                             if(h.canceled){return};
                             if(h.selection==0){banList[g.selection].remove(); managePlayers(sourceEntity, page, maxplayersperpage, search)};
@@ -3500,7 +3417,7 @@ export async function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|
             return 0;
             break; 
             default: 
-            if((await managePlayers_managePlayer(sourceEntity, players[r.selection-2]))==1){
+            if((await managePlayers_managePlayer(sourceEntity, players[r.selection-3]))==1){
                 return await managePlayers(sourceEntity, page, maxplayersperpage, search);
             }else{
                 return 0;
@@ -3518,7 +3435,7 @@ export async function managePlayers(sourceEntitya: Entity|executeCommandPlayerW|
 export async function managePlayers_managePlayer(sourceEntity: Entity, player: savedPlayer): Promise<0|1>{
     let form2 = new ActionFormData;
     form2.title(player.name);
-    form2.body(`UUID: ${player.id}\n${player.isOnline?"Online":"Last Online: "+new Date(Number(player.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player)?"ID BANNED":ban.testForIdBannedPlayer(player)?"NAME BANNED":""}`);
+    form2.body(`UUID: ${player.id}\n${player.isOnline?"Online":"Last Online: "+new Date(player.lastOnline).formatDateTime(sourceEntity.timeZone, false, true)}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player)?"ID BANNED":ban.testForIdBannedPlayer(player)?"NAME BANNED":""}`);
     form2.button("Clear Data");
     form2.button("Show Data");
     form2.button("Check Inventory");
@@ -3617,16 +3534,9 @@ export async function managePlayers_managePlayer(sourceEntity: Entity, player: s
                         .find((p) => p.id == player.id) != undefined
                         ? " (Online)"
                         : " (last seen: " +
-                          new Date(
-                              Number(player.lastOnline) +
-                                  Number(
-                                      sourceEntity.getDynamicProperty(
-                                          "andexdbPersonalSettings:timeZone"
-                                      ) ?? 0
-                                  ) *
-                                      3600000
-                          ).toLocaleString() +
-                          ")") +
+                            new Date(player.lastOnline).formatDateTime(sourceEntity.timeZone) +
+                            ")"
+                    ) +
                     " Items: \n" +
                     slotsArray.join("§r§f\n")
             );
@@ -3670,7 +3580,7 @@ export async function managePlayers_managePlayer_manageBans(sourceEntity: Entity
     player.nameBans.valid.forEach((p)=>{form6.button(`${p.playerName}\nValid`, "textures/ui/online")}); 
     player.nameBans.expired.forEach((p)=>{form6.button(`${p.playerName}\nExpired`, "textures/ui/Ping_Offline_Red")}); 
     let banList = player.idBans.valid.concat(player.idBans.expired).concat(player.nameBans.valid).concat(player.nameBans.expired)
-    form6.body(`UUID: ${player.id}\n${player.isOnline?"Online":"Last Online: "+new Date(Number(player.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player)?"\n\nID BANNED":ban.testForIdBannedPlayer(player)?"\n\nNAME BANNED":""}`)
+    form6.body(`UUID: ${player.id}\n${player.isOnline?"Online":"Last Online: "+new Date(Number(player.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player)?"\n\nID BANNED":ban.testForIdBannedPlayer(player)?"\n\nNAME BANNED":""}`)
     form6.button("Add ID Ban"); 
     form6.button("Add Name Ban"); 
     form6.button("Back"); 
@@ -3705,7 +3615,7 @@ export async function managePlayers_managePlayer_manageBans(sourceEntity: Entity
             managePlayers(sourceEntity)*/
             break
             default: 
-            let form4 = new ActionFormData; form4.title(`Manage Bans`); let ba = banList[g.selection]; let timeRemaining = ba.timeRemaining; form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)*3600000)).toLocaleString()+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)<0?" GMT":" GMT+")+Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type=="id"?"playerId":"originalPlayerId"}: §6${ba.type=="id"?ba.playerId:ba.originalPlayerId}\n§r§b${ba.type=="id"?"originalPlayerName":"playerName"}: §6${ba.type=="id"?ba.originalPlayerName:ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${/*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`); form4.button("Unban"); form4.button("Back")
+            let form4 = new ActionFormData; form4.title(`Manage Bans`); let ba = banList[g.selection]; let timeRemaining = ba.timeRemaining; form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(ba.banDate).formatDateTime(sourceEntity.timeZone)+(sourceEntity.timeZone<0?" GMT":" GMT+")+sourceEntity.timeZone}\n§r§bunbanDate: §q${new Date(ba.unbanDate).formatDateTime(sourceEntity.timeZone)+(sourceEntity.timeZone<0?" GMT":" GMT+")+sourceEntity.timeZone}\n§r§b${ba.type=="id"?"playerId":"originalPlayerId"}: §6${ba.type=="id"?ba.playerId:ba.originalPlayerId}\n§r§b${ba.type=="id"?"originalPlayerName":"playerName"}: §6${ba.type=="id"?ba.originalPlayerName:ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${/*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`); form4.button("Unban"); form4.button("Back")
             return await forceShow(form4, sourceEntity as Player).then(ha=>{let h = (ha as ActionFormResponse); 
                 if(h.canceled){return 1;};
                 if(h.selection==0){banList[g.selection].remove(); return 1;};

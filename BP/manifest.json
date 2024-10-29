@@ -24,7 +24,7 @@
           "entry": "scripts/Main.js"
         }
     ],
-"dependencies": [
+    "dependencies": [
         {
             "uuid": "5869846f-2019-4442-8e81-d3a75c5e003f",
             "version": "1.26.0-preview.20+BUILD.2"
@@ -104,9 +104,9 @@
             "memory_tier": 1
         }
     ],*/
-  "metadata": {
-    "authors": ["Andexter8", "Andersen Zahn", "8Crafter"],
-    "url": "https://sites.google.com/view/8craftermods/home",
-    "product_type": "addon"
-}
+    "metadata": {
+        "authors": ["Andexter8", "Andersen Zahn", "8Crafter"],
+        "url": "https://sites.google.com/view/8craftermods/home",
+        "product_type": "addon"
+    }
 }
