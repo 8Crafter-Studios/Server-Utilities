@@ -6688,7 +6688,12 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
             interactable_block.push({ id: event.player.id, delay: 0 });
         }
         ;
-        if ((interactable_block.find((playerId) => (playerId.id == event.player.id)).delay == 0) || (String(Object.values(event.player.getDynamicProperty("debugStickBlockLocation"))) != String(Object.values(event.block.location)))) {
+        if (event.isFirstEvent) {
+            interactable_block.find((playerId) => (playerId.id == event.player.id)).delay = 0;
+            interactable_block.find((playerId) => (playerId.id == event.player.id)).holdDuration = holdDuration;
+            debugAction(event.block, event.player, 0, Number(event.player.isSneaking));
+        }
+        else if ((interactable_block.find((playerId) => (playerId.id == event.player.id)).delay == 0) || (String(Object.values(event.player.getDynamicProperty("debugStickBlockLocation"))) != String(Object.values(event.block.location)))) {
             interactable_block.find((playerId) => (playerId.id == event.player.id)).delay = delay;
             interactable_block.find((playerId) => (playerId.id == event.player.id)).holdDuration = holdDuration;
             debugAction(event.block, event.player, 0, Number(event.player.isSneaking));
