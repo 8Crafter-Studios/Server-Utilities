@@ -32,6 +32,7 @@ import { commands } from "./commands_list";
 import { mainShopSystemSettings } from "ExtraFeatures/shop_main";
 import { MoneySystem } from "ExtraFeatures/money";
 import { showActions, showMessage } from "./utilities";
+import { Vector } from "Main/coordinates";
 mcServer
 mcServerUi/*
 mcServerAdmin*//*
@@ -599,7 +600,7 @@ Default Spawn Location: ${JSONB.stringify(world.getDefaultSpawnLocation())}`, ["
                         } as typeof config*/,
                         undefined,
                         2
-                    )
+                    ).replaceAll("§", "\uF019")
                 ),
                 ["Done"]
             )
@@ -3444,9 +3445,9 @@ export async function managePlayers_managePlayer(sourceEntity: Entity, player: s
     form2.button("§4Manage Permissions§f(§cCOMING SOON!§f)");
     form2.button("§4Manage Hotbar Presets§f(§cCOMING SOON!§f)");
     form2.button("§4Manage Private Warps§f(§cCOMING SOON!§f)");
-    form2.button("§4Manage Homes§f(§cCOMING SOON!§f)");
-    form2.button("Back");
-    form2.button("Close");
+    form2.button("Manage Homes");
+    form2.button("Back", "textures/ui/arrow_left"); 
+    form2.button("Close", "textures/ui/crossout"); 
     return await forceShow(form2, sourceEntity as Player).then(async ga=>{let g = (ga as ActionFormResponse); 
         if(g.canceled){return 1}; 
         switch(g.selection){
@@ -3546,7 +3547,11 @@ export async function managePlayers_managePlayer(sourceEntity: Entity, player: s
             }).catch((e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); forceShow(formError, sourceEntity as Player).then(()=>{return e}); }); 
             break
             case 3: 
-                return await managePlayers_managePlayer_manageBans(sourceEntity, player)
+                if((await managePlayers_managePlayer_manageBans(sourceEntity, player))==1){
+                    return await managePlayers_managePlayer(sourceEntity, player);
+                }else{
+                    return 0;
+                };
             break
             case 4: {
                 try{
@@ -3564,8 +3569,19 @@ export async function managePlayers_managePlayer(sourceEntity: Entity, player: s
                 }
             }
             break
-            case 8: 
+            case 8:
+                if((await managePlayers_managePlayer_manageHomes(sourceEntity, player))==1){
+                    return await managePlayers_managePlayer(sourceEntity, player);
+                }else{
+                    return 0;
+                };
             return 1;
+            break
+            case 9: 
+            return 1;
+            break
+            case 10: 
+            return 0;
             break
             default: 
             return 1;
@@ -3583,7 +3599,8 @@ export async function managePlayers_managePlayer_manageBans(sourceEntity: Entity
     form6.body(`UUID: ${player.id}\n${player.isOnline?"Online":"Last Online: "+new Date(Number(player.lastOnline)+(Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)*3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player)?"\n\nID BANNED":ban.testForIdBannedPlayer(player)?"\n\nNAME BANNED":""}`)
     form6.button("Add ID Ban"); 
     form6.button("Add Name Ban"); 
-    form6.button("Back"); 
+    form6.button("Back", "textures/ui/arrow_left"); 
+    form6.button("Close", "textures/ui/crossout"); 
     return await forceShow(form6, sourceEntity as Player).then(async ga=>{let g = (ga as ActionFormResponse); 
         if(g.canceled){return 1;}; 
         switch(g.selection){
@@ -3607,6 +3624,9 @@ export async function managePlayers_managePlayer_manageBans(sourceEntity: Entity
             break
             case banList.length+2: 
                 return 1;
+            break
+            case banList.length+3: 
+                return 0;
             break/*
             case banList.length+3: 
             managePlayers(sourceEntity)
@@ -3624,9 +3644,59 @@ export async function managePlayers_managePlayer_manageBans(sourceEntity: Entity
         }; 
     }).catch(async (e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity as Player).then(r=>{return +(r.selection==0)}); }) as 0|1; 
 }
+export async function managePlayers_managePlayer_manageHomes(sourceEntity: Entity, player: savedPlayer): Promise<0|1>{
+    let form6 = new ActionFormData; 
+    form6.title(player.name);
+    const homes = cmds.HomeSystem.getHomesForPlayer(player.id);
+    homes.forEach(h=>form6.button(`${h.name}\n${main.dimensionTypeDisplayFormattingE[dimensionse[dimensions.indexOf(h.location.dimension)]]}§r ${cmds.vTStr(Vector.floor(h.location))}`));
+    form6.button("Back", "textures/ui/arrow_left"); 
+    form6.button("Close", "textures/ui/crossout"); 
+    return await forceShow(form6, sourceEntity as Player).then(async ga=>{let g = (ga as ActionFormResponse); 
+        if(g.canceled){return 1;}; 
+        switch(g.selection){
+            case homes.length: 
+                return 1;
+            break
+            case homes.length+1: 
+                return 0;
+            break
+            default: 
+                return await new ActionFormData()
+                    .body(`Home Name: ${homes[g.selection].name}\nLocation: ${main.dimensionTypeDisplayFormattingE[dimensionse[dimensions.indexOf(homes[g.selection].location.dimension)]]}§r ${cmds.vTStr(homes[g.selection].location)}\nFormat Version: ${homes[g.selection].format_version}\nHome Format Version: ${homes[g.selection].home_format_version}`)
+                    .button("Teleport")
+                    .button("§cEdit")
+                    .button("Delete")
+                    .button("Back", "textures/ui/arrow_left")
+                    .button("Close", "textures/ui/crossout")
+                    .forceShow(sourceEntity as Player).then(async h=>{
+                        if(h.canceled){return 1;};
+                        if(h.selection==0){
+                            sourceEntity.teleport(homes[g.selection].location, {dimension: homes[g.selection].location.dimension})
+                            return 1;
+                        };
+                        if(h.selection==1){
+                            new ModalFormData().textField;
+                            return 1;
+                        };
+                        if(h.selection==2){
+                            if((await showMessage(sourceEntity as Player, "Are You Sure?", "Are you sure you want to delete this home!?\nThis action cannot be undone!", "Cancel", "Confirm")).selection==1){
+                                homes[g.selection].remove()
+                            }
+                            return 1;
+                        };
+                        if(h.selection==3){
+                            return 1;
+                        };
+                        if(h.selection==4){
+                            return 0;
+                        };
+                    }).catch(async (e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity as Player).then(r=>{return +(r.selection==0)}); }); 
+        }; 
+    }).catch(async (e)=>{let formError = new MessageFormData; formError.body(e+e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity as Player).then(r=>{return +(r.selection==0)}); }) as 0|1; 
+}
 export function getAllBuiltInCommandsCategories(){let set = new Set() as Set<string>; commands.map(v=>v.category).forEach(v=>typeof v == "string"?set.add(v):v.forEach(v=>set.add(v))); return [...set]}
-export const commandCategories = ["items","misc","invsee","players","containers/inventories","entities","warps","world","server","system","uis","shop_system","dangerous","Entity Scale Add-On","built-in","custom","all"]
-export const commandCategoriesDisplay = [{name: "Items", icon: ""},{name: "Misc"},{name: "Invsee"},{name: "Players"},{name: "Containers/Inventories"},{name: "Entities"},{name: "Warps"},{name: "World"},{name: "Server"},{name: "System"},{name: "UIs"},{name: "Shop System"},{name: "§4Dangerous"},{name: "§6Entity Scale Add-On"},{name: "All Built-In"},{name: "Custom"},{name: "All"}]
+export const commandCategories = ["items","misc","invsee","players","containers/inventories","entities","warps","world","server","system","uis","worldedit","shop_system","dangerous","Entity Scale Add-On","built-in","custom","all"]
+export const commandCategoriesDisplay = [{name: "Items", icon: ""},{name: "Misc"},{name: "Invsee"},{name: "Players"},{name: "Containers/Inventories"},{name: "Entities"},{name: "Warps"},{name: "World"},{name: "Server"},{name: "System"},{name: "UIs"},{name: "World Edit"},{name: "Shop System"},{name: "§4Dangerous"},{name: "§6Entity Scale Add-On"},{name: "All Built-In"},{name: "Custom"},{name: "All"}]
 export function manageCommands(sourceEntitya: Entity|executeCommandPlayerW|Player){
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
     let form = new ActionFormData; 

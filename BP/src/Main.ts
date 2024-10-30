@@ -4958,17 +4958,22 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
     if(!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerInteractWithBlockCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithBlockBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
-    event.cancel = true
-    let delay = 4
-    let holdDuration = 10
-    if (event.player.getDynamicProperty("debugStickUseCooldown") != undefined){delay = Number(event.player.getDynamicProperty("debugStickUseCooldown"))}; 
-    if (event.player.getDynamicProperty("debugStickHoldDuration") != undefined){holdDuration = Number(event.player.getDynamicProperty("debugStickHoldDuration"))}; 
-    if (interactable_block.find((playerId)=>(playerId.id == event.player.id)) == undefined){interactable_block.push({id: event.player.id, delay: 0})}; 
-    if ((interactable_block.find((playerId)=>(playerId.id == event.player.id)).delay == 0) || (String(Object.values(event.player.getDynamicProperty("debugStickBlockLocation"))) != String(Object.values(event.block.location)))){
-        interactable_block.find((playerId)=>(playerId.id == event.player.id)).delay = delay; 
-        interactable_block.find((playerId)=>(playerId.id == event.player.id)).holdDuration = holdDuration; 
-    debugAction(event.block, event.player, 0, Number(event.player.isSneaking))
-    }}; /*
+        event.cancel = true
+        let delay = 4
+        let holdDuration = 10
+        if (event.player.getDynamicProperty("debugStickUseCooldown") != undefined){delay = Number(event.player.getDynamicProperty("debugStickUseCooldown"))}; 
+        if (event.player.getDynamicProperty("debugStickHoldDuration") != undefined){holdDuration = Number(event.player.getDynamicProperty("debugStickHoldDuration"))}; 
+        if (interactable_block.find((playerId)=>(playerId.id == event.player.id)) == undefined){interactable_block.push({id: event.player.id, delay: 0})}; 
+        if (event.isFirstEvent){
+            interactable_block.find((playerId)=>(playerId.id == event.player.id)).delay = 0; 
+            interactable_block.find((playerId)=>(playerId.id == event.player.id)).holdDuration = holdDuration; 
+            debugAction(event.block, event.player, 0, Number(event.player.isSneaking))
+        } else if ((interactable_block.find((playerId)=>(playerId.id == event.player.id)).delay == 0) || (String(Object.values(event.player.getDynamicProperty("debugStickBlockLocation"))) != String(Object.values(event.block.location)))){
+            interactable_block.find((playerId)=>(playerId.id == event.player.id)).delay = delay; 
+            interactable_block.find((playerId)=>(playerId.id == event.player.id)).holdDuration = holdDuration; 
+            debugAction(event.block, event.player, 0, Number(event.player.isSneaking))
+        }
+    }; /*
     if (event.itemStack?.typeId === "andexdb:selection_tool") {
         event.cancel = true
         try { 
