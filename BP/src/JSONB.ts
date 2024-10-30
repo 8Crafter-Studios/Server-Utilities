@@ -166,15 +166,15 @@ declare global {
                 ? String(value)
                 : value==Infinity
                     ? options.Infinity??true
-                        ? String(value)
+                        ? "Infinity"
                         : "null"
                     : value==-Infinity
                         ? options.NegativeInfinity??true
-                            ? String(value)
+                            ? "-Infinity"
                             : "null"
                         : Number.isNaN(value)
                             ? options.NaN??true
-                                ? NaN
+                                ? "NaN"
                                 : "null"
                             : "null";
 
