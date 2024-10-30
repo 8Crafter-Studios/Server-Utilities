@@ -6674,8 +6674,13 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
     }
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick") {
         event.cancel = true;
+        let initialDelay = 4;
         let delay = 4;
         let holdDuration = 10;
+        if (event.player.getDynamicProperty("debugStickInitialUseCooldown") != undefined) {
+            initialDelay = Number(event.player.getDynamicProperty("debugStickInitialUseCooldown"));
+        }
+        ;
         if (event.player.getDynamicProperty("debugStickUseCooldown") != undefined) {
             delay = Number(event.player.getDynamicProperty("debugStickUseCooldown"));
         }
@@ -6689,7 +6694,7 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
         }
         ;
         if (event.isFirstEvent) {
-            interactable_block.find((playerId) => (playerId.id == event.player.id)).delay = 0;
+            interactable_block.find((playerId) => (playerId.id == event.player.id)).delay = initialDelay;
             interactable_block.find((playerId) => (playerId.id == event.player.id)).holdDuration = holdDuration;
             debugAction(event.block, event.player, 0, Number(event.player.isSneaking));
         }
