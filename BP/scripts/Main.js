@@ -7823,7 +7823,7 @@ try {
             try {
                 for (let index in playerList2) {
                     try {
-                        if ((playerList2[index].isSneaking && ((playerList2[index].getComponent("minecraft:inventory").container?.getItem(playerList2[index].selectedSlotIndex))?.typeId == "andexdb:editor_stick"))) {
+                        if ((playerList2[index].isSneaking && playerList2[index].heldItem?.typeId == "andexdb:editor_stick")) {
                             let block = playerList2[index].getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true }).block;
                             let blockStates = Object.entries(block.permutation.getAllStates());
                             let blockStatesB;
@@ -7832,7 +7832,7 @@ try {
                                 blockStatesB[i] = `${s[0]}: §c${s[1]}`;
                             }
                             catch { } });
-                            playerList2[index].onScreenDisplay.setActionBar(`§b${block.typeId}
+                            const newActionBarText = `§b${block.typeId}
 §l§eTags: §r§a${block.getTags().join(", ")}
 §l§eBlock States: §r§a${blockStatesB.join("\n§a")}
 §l§eIs Waterlogged: §r${((b) => (b ? "§2" : "§4") + String(b))(block.isWaterlogged)}
@@ -7844,7 +7844,8 @@ try {
 §l§eminecraft:piston: §r§9{§eIs Moving: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("piston").isMoving)}§a, §eState: §r§u${block.getComponent("piston").state}§a, §eAttatched Block Count: §r§c${block.getComponent("piston").getAttachedBlocks().length}§9}` : ""}${!!block.getComponent("record_player") ? `
 §l§eminecraft:recordPlayer: §r§9{§eIs Playing: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("record_player").isPlaying())}§9}` : ""}${!!block.getComponent("sign") ? `
 §l§eminecraft:sign: §r§9{§eIs Waxed: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("sign").isWaxed)}§a, §eF Dye: §r§u${block.getComponent("sign").getTextDyeColor(SignSide.Front) ?? "null"}§a, §eB Dye: §r§u${block.getComponent("sign").getTextDyeColor(SignSide.Back) ?? "null"}§a, §eF Text Length: §r§c${block.getComponent("sign").getText(SignSide.Front).length}§a, §eB Text Length: §r§c${block.getComponent("sign").getText(SignSide.Back).length}§a, §eF Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block.getComponent("sign").getRawText(SignSide.Front)))}§a, §eB Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block.getComponent("sign").getRawText(SignSide.Back)))}§9}` : ""}${!!block.getComponent("fluidContainer") ? `
-§l§eminecraft:fluidContainer: §r§9{§eFill Level: §r§c${block.getComponent("fluidContainer").fillLevel}§a, §eFluid Type: §r§c§a${block.getComponent("fluidContainer").getFluidType()}, §eCustom Color: §r§c${JSON.stringify(block.getComponent("fluidContainer").fluidColor)}§9}` : ""}`);
+§l§eminecraft:fluidContainer: §r§9{§eFill Level: §r§c${block.getComponent("fluidContainer").fillLevel}§a, §eFluid Type: §r§c§a${block.getComponent("fluidContainer").getFluidType()}, §eCustom Color: §r§c${JSON.stringify(block.getComponent("fluidContainer").fluidColor)}§9}` : ""}`;
+                            playerList2[index].onScreenDisplay.setActionBar(newActionBarText + "\n".repeat(Math.max(0, newActionBarText.split("\n").length - 12)));
                         }
                         ;
                     }

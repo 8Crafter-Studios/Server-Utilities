@@ -4388,6 +4388,9 @@ export async function managePlayers_managePlayer(sourceEntity, player) {
     form2.button("Clear Data");
     form2.button("Show Data");
     form2.button("Check Inventory");
+    if (semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0")) {
+        form2.button("Copy Inventory To Chest");
+    }
     form2.button("Manage Bans");
     form2.button("Edit Money");
     form2.button("§4Manage Permissions§f(§cCOMING SOON!§f)");
@@ -4497,7 +4500,38 @@ export async function managePlayers_managePlayer(sourceEntity, player) {
                     return 1;
                 }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); forceShow(formError, sourceEntity).then(() => { return e; }); });
                 break;
-            case 3:
+            case semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0") ? 3 : -3:
+                {
+                    const items = player.getItems(sourceEntity);
+                    const block2 = sourceEntity.dimension.getBlock(sourceEntity.location);
+                    const block = sourceEntity.dimension.getBlock(Vector.add(sourceEntity.location, Vector.up));
+                    if (!!!block.getComponent("inventory")) {
+                        block.setType("barrel");
+                    }
+                    ;
+                    if (!!!block2.getComponent("inventory")) {
+                        block2.setType("barrel");
+                    }
+                    ;
+                    const bc = block.getComponent("inventory").container;
+                    const bc2 = block2.getComponent("inventory").container;
+                    for (let i = 0; i < 27; i++) {
+                        bc.setItem(i, items[i]);
+                    }
+                    ;
+                    for (let i = 27; i < 36; i++) {
+                        bc2.setItem(i - 27, items[i]);
+                    }
+                    ;
+                    for (let i = 0; i < 6; i++) {
+                        bc2.setItem(i + 9, items[cmdutils.EquipmentSlots[i]]);
+                    }
+                    ;
+                    bc2.setItem(15, items.Cursor);
+                    return await managePlayers_managePlayer(sourceEntity, player);
+                }
+                break;
+            case +semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0") + 3:
                 if ((await managePlayers_managePlayer_manageBans(sourceEntity, player)) == 1) {
                     return await managePlayers_managePlayer(sourceEntity, player);
                 }
@@ -4506,7 +4540,7 @@ export async function managePlayers_managePlayer(sourceEntity, player) {
                 }
                 ;
                 break;
-            case 4:
+            case +semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0") + 4:
                 {
                     try {
                         return await new ModalFormData().textField("Money", "int", MoneySystem.get(player.id).money.toString()).forceShow(sourceEntity).then(async (r) => {
@@ -4525,7 +4559,7 @@ export async function managePlayers_managePlayer(sourceEntity, player) {
                     }
                 }
                 break;
-            case 8:
+            case +semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0") + 8:
                 if ((await managePlayers_managePlayer_manageHomes(sourceEntity, player)) == 1) {
                     return await managePlayers_managePlayer(sourceEntity, player);
                 }
@@ -4535,10 +4569,10 @@ export async function managePlayers_managePlayer(sourceEntity, player) {
                 ;
                 return 1;
                 break;
-            case 9:
+            case +semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0") + 9:
                 return 1;
                 break;
-            case 10:
+            case +semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0") + 11:
                 return 0;
                 break;
             default:

@@ -95,3 +95,12 @@ function prettyJ(json, options) {
     }
   );
 }
+
+
+
+
+
+Find(RegEx):
+"minecraft:light_emission": (\d\d?)(\n)
+Replace:
+"minecraft:light_emission": $1,$2          "minecraft:material_instances": {$2            "*": {$2              "texture": "redstone_lamp_$1",$2              "render_method": "blend",$2              "face_dimming": false,$2              "ambient_occlusion": false$2            }$2          }$2
