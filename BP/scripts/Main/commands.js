@@ -2445,6 +2445,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 let inventoryblockc6 = world.getDimension(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[0]).getBlock({x: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[1]), y: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[2]), z: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[3])}).getComponent("inventory") as BlockInventoryComponent
         system.run(()=>{try{for(let i = 0; i < 9; i++){inventoryg6.container.swapItems(i, i+18, inventoryblockc6.container)}; }catch(e){player.sendError("§c" + e + e.stack, true)}})
             break; */
+            case !!switchTest.match(/^debugstickdyingmode$/) || !!switchTest.match(/^debugsticksdyingmode$/) || !!switchTest.match(/^dsdm$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, ["presetText", "neboolean"]).args;
+                    srun(() => !!args[1] ? args[1] ? player.addTag("debugStickDyingMode") : player.removeTag("debugStickDyingMode") : player.hasTag("debugStickDyingMode") ? player.removeTag("debugStickDyingMode") : player.addTag("debugStickDyingMode"));
+                }
+                break;
             case !!switchTest.match(/^invsee$$/):
                 eventData.cancel = true;
                 system.run(() => {

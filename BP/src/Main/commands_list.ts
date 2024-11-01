@@ -2013,6 +2013,47 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "debugstickdyingmode",
+        escregexp: {
+            v: "^debugstickdyingmode$"
+        },
+        aliases: [
+            {
+                commandName: "debugsticksdyingmode",
+                escregexp: {
+                    v: "^debugsticksdyingmode$"
+                }
+            },
+            {
+                commandName: "dsdm",
+                escregexp: {
+                    v: "^dsdm$"
+                }
+            }
+        ],
+        formats: [
+            {
+                format: "debugstickdyingmode"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "players",
+            "items"
+        ],
+        commandSettingsId: "built-inCommandSettings:debugstickdyingmode",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "defaulthealth",
         escregexp: {
             v: "^defaulthealth$"

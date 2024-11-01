@@ -3875,6 +3875,12 @@ export function getTopSolidBlock(location: Vector3, dimension: Dimension, onlySo
 subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subscribe((event) => {
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:worldInitialize")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("worldInitializeAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     globalThis.beforeInitiallizeTick=system.currentTick;
+    event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:animate_use_on", {
+        onUseOn: event=>{}
+    })
+    event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:animate_use", {
+        onUse: event=>{}
+    })
 });
 
 subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe(async (event) => {
@@ -4955,6 +4961,20 @@ subscribedEvents.afterItemReleaseUse = world.afterEvents.itemReleaseUse.subscrib
 }); 
 
 subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerInteractWithBlock.subscribe(event => {
+    if(event.player.hasTag("debugStickDyingMode")&&event.block.typeId=="minecraft:cauldron"){
+        event.cancel=false;
+        srun(async()=>{
+            const arr = cmdutils.rangeToIntArray([0, 100]);
+            for await (let i of arr){
+                if(!event.player.hasTag("debugStickDyingMode")){
+                    return;
+                };
+                event.player.onScreenDisplay.setActionBar("§aYou currently have Debug Stick Dying Mode enabled,\nwhich disables the use of the debug sticks, editor sticks,\nand pick block sticks on cauldrons, to allow them to\nbe dyed by the cauldron. To switch out of this mode\njust remove the debugStickDyingMode tag from yourself.");
+                await waitTick();
+            };
+        });
+        return;
+    }
     if(!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerInteractWithBlockCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithBlockBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
@@ -4987,7 +5007,7 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
             event.player.setDynamicProperty("posM", !mode)
         }catch(e){console.error(e, e.stack)}
     };*/
-    world.getAllPlayers().filter((player) => ( player.hasTag("getPlayerBlockInteractionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.playerInteractWithBlock]Location: [ " + event.block.location.x+", "+event.block.location.y+", "+event.block.location.z + " ], Dimension: " + event.block.dimension.id + ", Block Type: " + (event.block?.typeId ?? "") + ", Item Type: " + (event.itemStack?.typeId ?? "")+ ", Player: " + event.player.name) });
+    world.getAllPlayers().filter((player) => ( player.hasTag("getPlayerBlockInteractionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.playerInteractWithBlock]Location: [ " + event.block.location.x+", "+event.block.location.y+", "+event.block.location.z + " ], Dimension: " + event.block.dimension.id + ", Block Type: " + (event.block?.typeId ?? "") + ", Item Type: " + (event.itemStack?.typeId ?? "") + ", Is First Event: " + event.isFirstEvent+ ", Player: " + event.player.name) });
     if ((event.player.getDynamicProperty("canBypassProtectedAreas") != true && event.player.hasTag("canBypassProtectedAreas") != true)&& ((((testIsWithinRanges(noBlockInteractAreas.positive.filter(v=>v.dimension==dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(noBlockInteractAreas.negative.filter(v=>v.dimension==dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == false))||(((testIsWithinRanges(noInteractAreas.positive.filter(v=>v.dimension==dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(noInteractAreas.negative.filter(v=>v.dimension==dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == false)))) {
       event.cancel = true
     }else{
@@ -5026,10 +5046,32 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
             };
         }
         ;
+        if (["andexdb:pick_block_stick", "andexdb:liquid_clipped_pick_block_stick"].includes(event.itemStack?.typeId)) {
+            event.cancel = true;
+            try {
+                srun(()=>event.player.inventory.container.addItem(event.block.getItemStack()??tryget(()=>new ItemStack(event.block.typeId))));
+                return;
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+        };
+        if (["andexdb:data_pick_block_stick", "andexdb:liquid_clipped_data_pick_block_stick"].includes(event.itemStack?.typeId)) {
+            event.cancel = true;
+            try {
+                srun(()=>event.player.inventory.container.addItem(event.block.getItemStack(undefined, true)??tryget(()=>new ItemStack(event.block.typeId))));
+                return;
+            } catch(e) {
+                console.error(e, e.stack);
+            };
+        };
     }
 }); 
 
 subscribedEvents.beforeItemUseOn = world.beforeEvents.itemUseOn.subscribe(event => {
+    if(event.source.hasTag("debugStickDyingMode")&&event.block.typeId=="minecraft:cauldron"){
+        event.cancel=false;
+        return;
+    }
     if(!!event?.itemStack?.getDynamicProperty("itemUseOnCode")){try{eval(String(event?.itemStack?.getDynamicProperty("itemUseOnCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseOnCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:itemUseOn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseOnBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
@@ -5049,20 +5091,20 @@ subscribedEvents.beforeItemUseOn = world.beforeEvents.itemUseOn.subscribe(event 
     };*/
     world.getAllPlayers().filter((player) => ( player.hasTag("getPlayerItemUseOnEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.itemUseOn]Location: [ " + event.block.location.x+", "+event.block.location.y+", "+event.block.location.z + " ], Dimension: " + event.block.dimension.id + ", Block Type: " + (event.block?.typeId ?? "") + ", Item Type: " + (event.itemStack?.typeId ?? "")+ ", Player: " + event.source.name) });
     if ((event.source.getDynamicProperty("canBypassProtectedAreas") != true && event.source.hasTag("canBypassProtectedAreas") != true)&& ((((testIsWithinRanges(noBlockInteractAreas.positive.filter(v=>v.dimension==dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(noBlockInteractAreas.negative.filter(v=>v.dimension==dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == false))||(((testIsWithinRanges(noInteractAreas.positive.filter(v=>v.dimension==dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(noInteractAreas.negative.filter(v=>v.dimension==dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == false)))) {
-      event.cancel = true
+      event.cancel = true;
     }else{
-        const borderSettings = Object.fromEntries(Object.entries(config.worldBorder[dimensionse[dimensionsd.indexOf(event.block.dimension.id as "minecraft:overworld" | "minecraft:nether" | "minecraft:the_end")]])) as typeof config.worldBorder.overworld
+        const borderSettings = Object.fromEntries(Object.entries(config.worldBorder[dimensionse[dimensionsd.indexOf(event.block.dimension.id as "minecraft:overworld" | "minecraft:nether" | "minecraft:the_end")]])) as typeof config.worldBorder.overworld;
         if(borderSettings.enabled&&borderSettings.preventWorldInteractionOutsideBorder){
             if((!event.source.hasTag("canBypassWorldBorderInteractionLimits"))&&(event.block.x>=borderSettings.to.x||event.block.z>=borderSettings.to.z||event.block.x<borderSettings.from.x||event.block.z<borderSettings.from.z)){
-                event.cancel = true
-            }
-        }
-    }
+                event.cancel = true;
+            };
+        };
+    };
     if(event.isFirstEvent){
-        if (["andexdb:editor_stick", "andexdb:editor_stick_b", "andexdb:editor_stick_c"].includes(event.itemStack?.typeId)) {
-            event.cancel = true
-        }
-    }
+        if (["andexdb:editor_stick", "andexdb:editor_stick_b", "andexdb:editor_stick_c", "andexdb:pick_block_stick", "andexdb:liquid_clipped_pick_block_stick", "andexdb:data_pick_block_stick", "andexdb:liquid_clipped_data_pick_block_stick"].includes(event.itemStack?.typeId)) {
+            event.cancel = true;
+        };
+    };
 }); 
 
 
@@ -5817,7 +5859,7 @@ subscribedEvents.beforeChatSend = world.beforeEvents.chatSend.subscribe((eventDa
 try{repeatingIntervals.rankNameTags_editorStickActionbar_artificialLagMS=system.runInterval( () => {try{
     let playerList2 = world.getPlayers();
     try{for (let index in playerList2) {
-        try{if ((playerList2[index].isSneaking && playerList2[index].heldItem?.typeId == "andexdb:editor_stick")){let block = playerList2[index].getBlockFromViewDirection({includeLiquidBlocks: true, includePassableBlocks: true}).block; let blockStates = Object.entries(block.permutation.getAllStates()); let blockStatesB: string[]; blockStatesB = [ "none" ]; blockStates.forEach((s, i)=>{try{blockStatesB[i] = `${s[0]}: §c${s[1]}`}catch{}}); 
+        try{if (playerList2[index].hasTag("showBlockActionBarDebugInfo")||(playerList2[index].isSneaking && playerList2[index].heldItem?.typeId == "andexdb:editor_stick")){let block = playerList2[index].getBlockFromViewDirection({includeLiquidBlocks: true, includePassableBlocks: true}).block; let blockStates = Object.entries(block.permutation.getAllStates()); let blockStatesB: string[]; blockStatesB = [ "none" ]; blockStates.forEach((s, i)=>{try{blockStatesB[i] = `${s[0]}: §c${s[1]}`}catch{}}); 
 
         const newActionBarText = `§b${block.typeId}
 §l§eTags: §r§a${block.getTags().join(", ")}
