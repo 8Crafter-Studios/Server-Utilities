@@ -1,5 +1,5 @@
 {
-	"format_version": "1.20.50",
+	"format_version": "1.21.40",
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:chargeable_item_3"
@@ -11,7 +11,7 @@
 			"minecraft:icon": {
 				"textures": {
 				    "default": "stick",
-				    "dyed": "stick"
+				    "dyed": "stick_dyed"
 			    }
 			},
 			"minecraft:dyeable": {},

@@ -6146,7 +6146,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
         case !!switchTest.match(/^defaulthealth$/)||!!switchTest.match(/^dfthlth$/)||!!switchTest.match(/^dflthlth$/)||!!switchTest.match(/^dfthealth$/)||!!switchTest.match(/^dflthealth$/): {
             eventData.cancel = true;
             system.run(()=>{
-                let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "number"]).args
+                let args = evaluateParameters(switchTestB, ["presetText", "targetSelector"/*, "number"*/]).args
                 if(switchTestB.split(/\s+/g)[1]?.trim()=="~"){args[1] = player.name}
                 if((switchTestB.split(/\s+/g)[1]??"").trim()==""){args[1] = player.name}
                 let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player)

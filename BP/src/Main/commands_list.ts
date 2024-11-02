@@ -2033,7 +2033,7 @@ export const commands = [
         ],
         formats: [
             {
-                format: "debugstickdyingmode"
+                format: "debugstickdyingmode [enabled: bool[?=toggle]]"
             }
         ],
         command_version: "1.0.0",
@@ -2086,7 +2086,7 @@ export const commands = [
         ],
         formats: [
             {
-                format: "defaulthealth"
+                format: "defaulthealth [target: target[?=@s,allowMultiple=true]]"
             }
         ],
         command_version: "1.0.0",
@@ -2121,7 +2121,7 @@ export const commands = [
         ],
         formats: [
             {
-                format: "disconnect <players: targetSelector>"
+                format: "disconnect [players: target[?=@s,allowMultiple=true,onlyPlayers=true]]"
             }
         ],
         command_version: "1.0.0",

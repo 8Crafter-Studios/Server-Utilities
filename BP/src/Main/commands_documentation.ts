@@ -22,6 +22,7 @@ export enum commanddescriptions {
 "copyitem" = "Copies the item in your hand to the specified slot of the specified player's inventory. ",
 "createexplosion" = "Creates an explosion. ",
 "datapickblock" = "Pick Blocks the block that your are looking at while copying the nbt data of the block as well, just like using the pick block button while holding CTRL on your keyboard. ",
+"debugstickdyingmode" = "Turns debug stick dying mode on or off, which allows you to dye debug sticks in a cauldron.",
 "defaulthealth" = "Sets the health of entities to their default health values. ",
 "drain" = "Drains liquids in the specified radius. ",
 "dupeitem" = "Duplicates teh item in your hand. ",
@@ -288,6 +289,13 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>`,
 "copyitemfrom": `${command.dp}copyitemfrom <fromSlot: int|{head}|{chest}|{legs}|{feet}|{mainhand}|{offhand}> [toSlot: (int|{head}|{chest}|{legs}|{feet}|{mainhand}|{offhand})[?=~]] [fromPlayer: (playerName|~)[?=~]] [toPlayer: (playerName|~)[?=~]]`,
 "createexplosion": `${command.dp}createexplosion <location: x y z> [dimension: string] [radius: float] [allowUnderwater: bool] [breaksBlocks: bool] [causesFire: bool] [source: target]`,
 "datapickblock": `${command.dp}datapickblock`,
+"debugstickdyingmode": `${command.dp}debugstickdyingmode [enabled: bool[?=toggle]]`,
+"debugsticksdyingmode": `${command.dp}debugsticksdyingmode [enabled: bool[?=toggle]]`,
+"dsdm": `${command.dp}dsdm [enabled: bool[?=toggle]]`,
+"defaulthealth": `${command.dp}defaulthealth [target: target[?=@s,allowMultiple=true]]`,
+"dfthlth": `${command.dp}dfthlth [target: target[?=@s,allowMultiple=true]]`,
+"dfthealth": `${command.dp}dfthealth [target: target[?=@s,allowMultiple=true]]`,
+"dflthealth": `${command.dp}dflthealth [target: target[?=@s,allowMultiple=true]]`,
 "drain": `${command.dp}drain [radius: number]`,
 "dupeitem": `${command.dp}dupeitem [slot: int|head|chest|legs|feet|mainhand|offhand|~]`,
 "einvsee": `${command.dp}einvsee <targetSelector: target>`,
@@ -1017,6 +1025,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .copyitem - §oCopies the item in your hand to the specified slot of the specified player's inventory. §r
 .createexplosion - §oCreates an explosion. §r
 .datapickblock - §oPick Blocks the block that your are looking at while copying the nbt data of the block as well, just like using the pick block button while holding CTRL on your keyboard. §r
+.debugstickdyingmode - §oTurns debug stick dying mode on or off, which allows you to dye debug sticks in a cauldron.§r
 .defaulthealth - §oSets the health of entities to their default health values. §r
 .drain - §oDrains liquids in the specified radius. §r
 .dupeitem - §oDuplicates teh item in your hand. §r
@@ -1249,7 +1258,7 @@ export function getCommandHelpPage(commandName: string, player?: Player | execut
     return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
         : `§e${cmd.commandName}${
-            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
+            (cmd.aliases?.length ?? 0) != 0 ? ` (also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
         }:\n${commanddescriptions[cmd.commandName]??cmd.description}§r\nUsage:\n- ${(
             commandsyntaxes[cmd.currentCommandName] ?? tryget(()=>cmd.formats?.["map"](v=>!!v?.format?v.format:v).join(" ")) ?? (typeof cmd.formats == "string" ? cmd.formats : undefined) ?? "missing"
         )
@@ -1288,7 +1297,7 @@ export function getCommandHelpPageExtra(commandName: string, player?: Player | e
     return (!!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version)||cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
         : `§e${cmd.commandName}${
-            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
+            (cmd.aliases?.length ?? 0) != 0 ? ` (also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
         }:\n${commanddescriptions[cmd.commandName]??cmd.settings.defaultSettings?.description??"Missing"}§r\nUsage:\n- ${(
             commandsyntaxes[cmd.currentCommandName] ?? tryget(()=>cmd.settings.defaultSettings.formats["map"](v=>!!v?.format?v.format:v).join(" ")) ?? (typeof cmd.settings.defaultSettings.formats == "string" ? cmd.settings.defaultSettings.formats : undefined) ?? "missing"
         )
@@ -1347,7 +1356,7 @@ export function getCommandHelpPageDebug(commandName: string, player?: Player | e
     return (!!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version)||cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
         : `§e${cmd.commandName}${
-            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
+            (cmd.aliases?.length ?? 0) != 0 ? ` (also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
         }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
             commandsyntaxes[cmd.currentCommandName] ?? "missing"
         )
@@ -1398,7 +1407,7 @@ export function getCommandHelpPageDebugPlus(commandName: string, player?: Player
     return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
         : `§e${cmd.commandName}${
-            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
+            (cmd.aliases?.length ?? 0) != 0 ? ` (also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
         }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
             commandsyntaxes[cmd.currentCommandName] ?? "missing"
         )
@@ -1449,7 +1458,7 @@ export function getCommandHelpPageCustomDebug(commandName: string, player?: Play
     return !cmd.settings.isSaved
         ? `§cError: Unknown custom command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it.`
         : `§e${cmd.commandName}${
-            (cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
+            (cmd.aliases?.length ?? 0) != 0 ? ` (also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""
         }:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(
             commandsyntaxes[cmd.currentCommandName] ?? "missing"
         )

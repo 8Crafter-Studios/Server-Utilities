@@ -691,6 +691,11 @@
           }
       },
       {
+          "paragraph_-1@how_to_play_common.paragraph": {
+              "$text": "All of the debug sticks can be dyed in a cauldron. However, for the debug stick, liquid clipped debug sticks, editor stick, editor stick b, editor stick c, pick block stick, liquid clipped pick block stick, data pick block stick, and liquid clipped data pick block stick you will need to first enable \"Debug Stick Dying Mode\", to do this you just need to either manually give yourself the \"debugStickDyingMode\" tag, or use the §b\\dsdm§r command, for the §b\\dsdm§r command if you just type the command with no parameters, it will toggle \"Debug Stick Dying Mode\", if you specify true or false as the first parameter, it will enable or disable \"Debug Stick Dying Mode\"."
+          }
+      },
+      {
           "header_0@how_to_play_common.header": {
               "$text": "§dDebug Stick§r"
           }
@@ -850,14 +855,264 @@
               "$text": "Item Id: andexdb:entity_debug_stick"
           }
       },
+      {
+          "header_21@how_to_play_common.header": {
+              "$text": "§dPick Block Stick§r"
+          }
+      },
+      {
+          "paragraph_21@how_to_play_common.paragraph": {
+              "$text": "When you use the pick block stick on a block, it adds one of that block to your inventory."
+          }
+      },
+      {
+          "paragraph_21.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:pick_block_stick"
+          }
+      },
+      {
+          "header_22@how_to_play_common.header": {
+              "$text": "§dLiquid Clipped Pick Block Stick§r"
+          }
+      },
+      {
+          "paragraph_22.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:liquid_clipped_pick_block_stick"
+          }
+      },
+      {
+          "paragraph_22@how_to_play_common.paragraph": {
+              "$text": "When you use the liquid clipped pick block stick on a block, it adds one of that block to your inventory. Unlike the regular pick block stick, this one can also target liquid blocks, allowing you to get lava, flowing lava, water, and flowing water into your inventory."
+          }
+      },
+      {
+          "header_23@how_to_play_common.header": {
+              "$text": "§dData Pick Block Stick§r"
+          }
+      },
+      {
+          "paragraph_23.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:data_pick_block_stick"
+          }
+      },
+      {
+          "paragraph_23@how_to_play_common.paragraph": {
+              "$text": "When you use the data pick block stick on a block, it adds one of that block to your inventory, if the targeted block has any block entity data, it copies that too, just like CTRL + Pick Block."
+          }
+      },
+      {
+          "header_24@how_to_play_common.header": {
+              "$text": "§dLiquid Clipped Data Pick Block Stick§r"
+          }
+      },
+      {
+          "paragraph_24.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:liquid_clipped_data_pick_block_stick"
+          }
+      },
+      {
+          "paragraph_24@how_to_play_common.paragraph": {
+              "$text": "When you use the liquid clipped pick block stick on a block, it adds one of that block to your inventory, if the targeted block has any block entity data, it copies that too, just like CTRL + Pick Block. Unlike the regular pick block stick, this one can also target liquid blocks, allowing you to get lava, flowing lava, water, and flowing water into your inventory."
+          }
+      },
       { "padding_2@how_to_play_common.padding": {} },
+      {
+          "other_items_section_header@how_to_play_common.subsection_title": {
+            "$text": "§aBrushes"
+          }
+      },
+      {
+          "paragraph_-2@how_to_play_common.paragraph": {
+              "$text": "The brush items are made to be used as worldedit brushes, to add functionality to them you have to use the §b\\brush§r command while holding the brush in your mainhand. There are 3 categories of brushes, the only differences between them are their textures, in each of those 3 categories there are 4 types, each with different repeat intervals."
+          }
+      },
+      {
+          "header_25@how_to_play_common.header": {
+              "$text": "§bBlue Brush Type 1§r"
+          }
+      },
+      {
+          "paragraph_25@how_to_play_common.paragraph": {
+              "$text": "Repeat Interval: 0.1s"
+          }
+      },
+      {
+          "paragraph_25.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:blue_brush_1"
+          }
+      },
+      {
+          "header_26@how_to_play_common.header": {
+              "$text": "§bBlue Brush Type 2§r"
+          }
+      },
+      {
+          "paragraph_26@how_to_play_common.paragraph": {
+              "$text": "This brush type is not chargeable, so it gets activated just once per button press and does not have any use animations.\nRepeat Interval: N/A"
+          }
+      },
+      {
+          "paragraph_26.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:blue_brush_2"
+          }
+      },
+      {
+          "header_27@how_to_play_common.header": {
+              "$text": "§bBlue Brush Type 3§r"
+          }
+      },
+      {
+          "paragraph_27@how_to_play_common.paragraph": {
+              "$text": "Repeat Interval: 0.05s"
+          }
+      },
+      {
+          "paragraph_27.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:blue_brush_3"
+          }
+      },
+      {
+          "header_28@how_to_play_common.header": {
+              "$text": "§bBlue Brush Type 4§r"
+          }
+      },
+      {
+          "paragraph_28@how_to_play_common.paragraph": {
+              "$text": "This brush type is infinitely chargeable, so it does not repeat.\nRepeat Interval: Infinity"
+          }
+      },
+      {
+          "paragraph_28.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:blue_brush_4"
+          }
+      },
+      {
+          "header_25@how_to_play_common.header": {
+              "$text": "§6Orange Brush Type 1§r"
+          }
+      },
+      {
+          "paragraph_25@how_to_play_common.paragraph": {
+              "$text": "Repeat Interval: 0.1s"
+          }
+      },
+      {
+          "paragraph_25.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:orange_brush_1"
+          }
+      },
+      {
+          "header_26@how_to_play_common.header": {
+              "$text": "§6Orange Brush Type 2§r"
+          }
+      },
+      {
+          "paragraph_26@how_to_play_common.paragraph": {
+              "$text": "This brush type is not chargeable, so it gets activated just once per button press and does not have any use animations.\nRepeat Interval: N/A"
+          }
+      },
+      {
+          "paragraph_26.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:orange_brush_2"
+          }
+      },
+      {
+          "header_27@how_to_play_common.header": {
+              "$text": "§6Orange Brush Type 3§r"
+          }
+      },
+      {
+          "paragraph_27@how_to_play_common.paragraph": {
+              "$text": "Repeat Interval: 0.05s"
+          }
+      },
+      {
+          "paragraph_27.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:orange_brush_3"
+          }
+      },
+      {
+          "header_28@how_to_play_common.header": {
+              "$text": "§6Orange Brush Type 4§r"
+          }
+      },
+      {
+          "paragraph_28@how_to_play_common.paragraph": {
+              "$text": "This brush type is infinitely chargeable, so it does not repeat.\nRepeat Interval: Infinity"
+          }
+      },
+      {
+          "paragraph_28.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:orange_brush_4"
+          }
+      },
+      {
+          "header_25@how_to_play_common.header": {
+              "$text": "§eBrush Type 1§r"
+          }
+      },
+      {
+          "paragraph_25@how_to_play_common.paragraph": {
+              "$text": "Repeat Interval: 0.1s"
+          }
+      },
+      {
+          "paragraph_25.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:brush_1"
+          }
+      },
+      {
+          "header_26@how_to_play_common.header": {
+              "$text": "§eBrush Type 2§r"
+          }
+      },
+      {
+          "paragraph_26@how_to_play_common.paragraph": {
+              "$text": "This brush type is not chargeable, so it gets activated just once per button press and does not have any use animations.\nRepeat Interval: N/A"
+          }
+      },
+      {
+          "paragraph_26.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:brush_2"
+          }
+      },
+      {
+          "header_27@how_to_play_common.header": {
+              "$text": "§eBrush Type 3§r"
+          }
+      },
+      {
+          "paragraph_27@how_to_play_common.paragraph": {
+              "$text": "Repeat Interval: 0.05s"
+          }
+      },
+      {
+          "paragraph_27.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:brush_3"
+          }
+      },
+      {
+          "header_28@how_to_play_common.header": {
+              "$text": "§eBrush Type 4§r"
+          }
+      },
+      {
+          "paragraph_28@how_to_play_common.paragraph": {
+              "$text": "This brush type is infinitely chargeable, so it does not repeat.\nRepeat Interval: Infinity"
+          }
+      },
+      {
+          "paragraph_28.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:brush_4"
+          }
+      },
       {
           "other_items_section_header@how_to_play_common.subsection_title": {
             "$text": "§bOther Items§r"
           }
       },
       {
-        "paragraph_21@how_to_play_common.paragraph": {
+        "paragraph_-3@how_to_play_common.paragraph": {
           "$text": "Note: This section is incomplete and will be finished in a future update."
         }
       }

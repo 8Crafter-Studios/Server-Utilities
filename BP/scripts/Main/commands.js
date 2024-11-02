@@ -6837,7 +6837,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 {
                     eventData.cancel = true;
                     system.run(() => {
-                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "number"]).args;
+                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector" /*, "number"*/]).args;
                         if (switchTestB.split(/\s+/g)[1]?.trim() == "~") {
                             args[1] = player.name;
                         }
