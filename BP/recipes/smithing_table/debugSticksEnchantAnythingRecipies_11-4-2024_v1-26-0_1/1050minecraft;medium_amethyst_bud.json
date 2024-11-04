@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 1050},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:medium_amethyst_bud"
+        "result": {"item": "minecraft:medium_amethyst_bud"}
     }
 }

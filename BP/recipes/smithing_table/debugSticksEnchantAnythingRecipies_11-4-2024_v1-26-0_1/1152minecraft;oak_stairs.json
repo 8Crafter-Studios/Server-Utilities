@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 1152},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:oak_stairs"
+        "result": {"item": "minecraft:oak_stairs"}
     }
 }

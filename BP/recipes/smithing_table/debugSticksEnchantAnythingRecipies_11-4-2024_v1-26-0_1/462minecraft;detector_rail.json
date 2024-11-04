@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 462},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:detector_rail"
+        "result": {"item": "minecraft:detector_rail"}
     }
 }

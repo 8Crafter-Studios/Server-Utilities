@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 416},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:daylight_detector_inverted"
+        "result": {"item": "minecraft:daylight_detector_inverted"}
     }
 }

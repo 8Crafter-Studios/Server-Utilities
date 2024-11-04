@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 751},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:gray_glazed_terracotta"
+        "result": {"item": "minecraft:gray_glazed_terracotta"}
     }
 }

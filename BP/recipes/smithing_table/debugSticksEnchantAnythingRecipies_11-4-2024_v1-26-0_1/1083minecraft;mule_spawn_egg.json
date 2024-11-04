@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 1083},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:mule_spawn_egg"
+        "result": {"item": "minecraft:mule_spawn_egg"}
     }
 }

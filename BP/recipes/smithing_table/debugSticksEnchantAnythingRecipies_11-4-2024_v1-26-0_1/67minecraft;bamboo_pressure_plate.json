@@ -8,6 +8,6 @@
     "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 67},
     "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": "minecraft:bamboo_pressure_plate"
+        "result": {"item": "minecraft:bamboo_pressure_plate"}
     }
 }
