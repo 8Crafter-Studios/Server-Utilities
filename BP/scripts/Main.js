@@ -6138,7 +6138,7 @@ subscribedEvents.afterEntitySpawn = world.afterEvents.entitySpawn.subscribe(even
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.entity.typeId, "getEntitySpawnNotificationsForId:" + event.entity.id, "getEntitySpawnNotificationsWithCause:" + event.cause]).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location} with the cause "${event.cause}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntitySpawnNotificationsNotificationSound.soundId, { pitch: pn.getEntitySpawnNotificationsNotificationSound.pitch, volume: pn.getEntitySpawnNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.entity.typeId, "getEntitySpawnNotificationsForId:" + event.entity.id, "getEntitySpawnNotificationsWithCause:" + event.cause]).filter(v => (event.entity.typeId == "andexdb:player_inventory_save_storage" ? v.hasTag("getNotifiedOfPlayerInventorySaveStorageEntitySpawns") : true)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity?.dimension?.id]} at ${JSON.stringify(event.entity?.location)} with the cause "${event.cause}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntitySpawnNotificationsNotificationSound.soundId, { pitch: pn.getEntitySpawnNotificationsNotificationSound.pitch, volume: pn.getEntitySpawnNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
@@ -6656,6 +6656,16 @@ subscribedEvents.afterItemReleaseUse = world.afterEvents.itemReleaseUse.subscrib
         event.source.setDynamicProperty("interactable_block", 0);
     }
     ;
+});
+world.afterEvents.entitySpawn.subscribe(event => {
+    if (event.entity.typeId !== "minecraft:fishing_hook") {
+        return;
+    }
+    ;
+    const sourceEntity = event.entity.dimension.getEntities({ families: ["family_of_the_custom_mob_that_uses_the_fishing_rod_to_attack_the_player"], closest: 1, maxDistance: 5 })[0];
+    if (!!!sourceEntity) {
+        event.entity.setDynamicProperty;
+    }
 });
 subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     if (event.player.hasTag("debugStickDyingMode") && event.block.typeId == "minecraft:cauldron") {

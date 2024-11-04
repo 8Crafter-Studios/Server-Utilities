@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import { system } from "@minecraft/server";
 globalThis.beforeScriptStartTick=system.currentTick;
-export const format_version = "1.26.0-preview.20+BUILD.2";
+export const format_version = "1.26.0-preview.20+BUILD.3";
 globalThis.entity_scale_format_version=null;
 globalThis.multipleEntityScaleVersionsDetected=false;
 import "JSONB"
@@ -4811,7 +4811,7 @@ try{getPlayersWithAnyOfTags(["getEntityRemoveNotifications", "getEntityRemoveNot
 });
 subscribedEvents.afterEntitySpawn = world.afterEvents.entitySpawn.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:entitySpawn")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("entitySpawnAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-try{getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:"+event.entity.typeId, "getEntitySpawnNotificationsForId:"+event.entity.id, "getEntitySpawnNotificationsWithCause:"+event.cause]).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location} with the cause "${event.cause}". `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getEntitySpawnNotificationsNotificationSound.soundId, {pitch: pn.getEntitySpawnNotificationsNotificationSound.pitch, volume: pn.getEntitySpawnNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
+try{getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:"+event.entity.typeId, "getEntitySpawnNotificationsForId:"+event.entity.id, "getEntitySpawnNotificationsWithCause:"+event.cause]).filter(v=>(event.entity.typeId=="andexdb:player_inventory_save_storage"?v.hasTag("getNotifiedOfPlayerInventorySaveStorageEntitySpawns"):true)).forEach(p=>{psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer")??"")}[§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity?.dimension?.id]} at ${JSON.stringify(event.entity?.location)} with the cause "${event.cause}". `); let pn = new PlayerNotifications(p); srun(()=>p.playSound(pn.getEntitySpawnNotificationsNotificationSound.soundId, {pitch: pn.getEntitySpawnNotificationsNotificationSound.pitch, volume: pn.getEntitySpawnNotificationsNotificationSound.volume}))})}catch(e){console.error(e, e.stack)}
 });
 subscribedEvents.afterExplosion = world.afterEvents.explosion.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:explosion")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("explosionAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
@@ -4958,8 +4958,19 @@ subscribedEvents.afterItemReleaseUse = world.afterEvents.itemReleaseUse.subscrib
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
         event.source.setDynamicProperty("interactable_block", 0)
     }; 
-}); 
-
+}); /*
+world.afterEvents.entitySpawn.subscribe(event=>{
+    if(event.entity.typeId!=="minecraft:fishing_hook"){
+        return;
+    };
+    const sourceEntity = event.entity.dimension.getEntities({families: ["family_of_the_custom_mob_that_uses_the_fishing_rod_to_attack_the_player"], closest: 1, maxDistance: 5})[0];
+    if(!!!sourceEntity){
+        event.entity.setDynamicProperty("hasIdentifiedSourceCustomMob", false);
+        return;
+    };
+    event.entity.setDynamicProperty("hasIdentifiedSourceCustomMob", true);
+    event.entity.setDynamicProperty("uuidOfCustomMob", sourceEntity.id);
+});*/
 subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     if(event.player.hasTag("debugStickDyingMode")&&event.block.typeId=="minecraft:cauldron"){
         event.cancel=false;

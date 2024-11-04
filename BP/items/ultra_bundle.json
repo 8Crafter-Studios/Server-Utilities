@@ -3,7 +3,7 @@
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:ultra_bundle",
-			"menu_category": {"category": "equipment"}
+			"menu_category": {"category": "equipment", "group": "itemGroup.name.bundle"}
 		},
 		"components": {
 			"minecraft:hand_equipped": false,
