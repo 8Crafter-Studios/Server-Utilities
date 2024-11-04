@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import { system } from "@minecraft/server";
 globalThis.beforeScriptStartTick = system.currentTick;
-export const format_version = "1.26.0-preview.20+BUILD.2";
+export const format_version = "1.26.0-preview.20+BUILD.3";
 globalThis.entity_scale_format_version = null;
 globalThis.multipleEntityScaleVersionsDetected = false;
 import "JSONB";
@@ -6656,17 +6656,19 @@ subscribedEvents.afterItemReleaseUse = world.afterEvents.itemReleaseUse.subscrib
         event.source.setDynamicProperty("interactable_block", 0);
     }
     ;
-});
-world.afterEvents.entitySpawn.subscribe(event => {
-    if (event.entity.typeId !== "minecraft:fishing_hook") {
+}); /*
+world.afterEvents.entitySpawn.subscribe(event=>{
+    if(event.entity.typeId!=="minecraft:fishing_hook"){
         return;
-    }
-    ;
-    const sourceEntity = event.entity.dimension.getEntities({ families: ["family_of_the_custom_mob_that_uses_the_fishing_rod_to_attack_the_player"], closest: 1, maxDistance: 5 })[0];
-    if (!!!sourceEntity) {
-        event.entity.setDynamicProperty;
-    }
-});
+    };
+    const sourceEntity = event.entity.dimension.getEntities({families: ["family_of_the_custom_mob_that_uses_the_fishing_rod_to_attack_the_player"], closest: 1, maxDistance: 5})[0];
+    if(!!!sourceEntity){
+        event.entity.setDynamicProperty("hasIdentifiedSourceCustomMob", false);
+        return;
+    };
+    event.entity.setDynamicProperty("hasIdentifiedSourceCustomMob", true);
+    event.entity.setDynamicProperty("uuidOfCustomMob", sourceEntity.id);
+});*/
 subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     if (event.player.hasTag("debugStickDyingMode") && event.block.typeId == "minecraft:cauldron") {
         event.cancel = false;
