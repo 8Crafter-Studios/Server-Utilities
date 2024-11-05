@@ -12339,15 +12339,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         system.run(() => {
                             try {
                                 if (undoClipboard.ids.length == 0) {
-                                    player.sendMessageB("§cNothing to undo. ");
+                                    player.sendMessageB("§cNothing to undo.");
                                 }
                                 else if (!(args[1]?.t ?? false)) {
                                     try {
                                         if (undoClipboard.undo(undefined, undefined, !(args[1]?.k ?? false)) == 0) {
-                                            player.sendMessageB("§cNothing to undo. ");
+                                            player.sendMessageB("§cNothing to undo.");
                                         }
                                         else {
-                                            player.sendMessageB("Successfully reverted the area. ");
+                                            player.sendMessageB("Successfully reverted the area.");
                                         }
                                     }
                                     catch (e) {
@@ -12913,16 +12913,16 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 } });
                                 break;
                             case "tunnel":
-                                player.sendMessageB("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon!");
                                 break;
                             case "floor":
-                                player.sendMessageB("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon!");
                                 break;
                             case "ceilling":
-                                player.sendMessageB("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon!");
                                 break;
                             case "diamond":
-                                player.sendMessageB("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon!");
                                 break;
                             case "hollowovoid":
                                 system.run(() => { let ta; try {
@@ -13325,7 +13325,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 } });
                                 break;
                             case "hourglass":
-                                player.sendMessageB("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon!");
                                 break;
                             case "cube":
                                 system.run(() => { let ta; try {

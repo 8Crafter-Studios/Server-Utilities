@@ -609,7 +609,10 @@ export class undoClipboard {
 	}
 	static undo(saveTime=this.newestSaveTime, options?: StructurePlaceOptions, clearSave: boolean=true, sizes: Vector3 = { x: 64, y: 128, z: 64 }){
         if(this.ids.length==0){return 0;}; 
-		this.saveIds(saveTime).map(v=>({id: v, x: Number(v.split(",")[1]??0)*sizes.x, y: Number(v.split(",")[2]??0)*sizes.y, z: Number(v.split(",")[3]??0)*sizes.z})).forEach(v=>world.structureManager.place(v.id, dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${saveTime}`))]??dimensionsb["minecraft:overworld"], Vector.add(v, world.getDynamicProperty(`andexdb:undoclipboard;${saveTime}`) as Vector3), options))
+		this.saveIds(saveTime).map(v=>({id: v, x: Number(v.split(",")[1]??0)*sizes.x, y: Number(v.split(",")[2]??0)*sizes.y, z: Number(v.split(",")[3]??0)*sizes.z})).forEach(v=>{/*
+            main.clearAllContainerBlocks(main.scanForContainerBlocks(v, Vector.add(v, sizes), dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${saveTime}`))]??overworld, "Block") as Block[])*/
+            world.structureManager.place(v.id, dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${saveTime}`))]??dimensionsb["minecraft:overworld"], Vector.add(v, world.getDynamicProperty(`andexdb:undoclipboard;${saveTime}`) as Vector3), options)
+        })
         if(clearSave){
             this.saveIds(saveTime).forEach(v=>{this.clearTime(saveTime)})
         }

@@ -702,7 +702,9 @@ export class undoClipboard {
             return 0;
         }
         ;
-        this.saveIds(saveTime).map(v => ({ id: v, x: Number(v.split(",")[1] ?? 0) * sizes.x, y: Number(v.split(",")[2] ?? 0) * sizes.y, z: Number(v.split(",")[3] ?? 0) * sizes.z })).forEach(v => world.structureManager.place(v.id, dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${saveTime}`))] ?? dimensionsb["minecraft:overworld"], Vector.add(v, world.getDynamicProperty(`andexdb:undoclipboard;${saveTime}`)), options));
+        this.saveIds(saveTime).map(v => ({ id: v, x: Number(v.split(",")[1] ?? 0) * sizes.x, y: Number(v.split(",")[2] ?? 0) * sizes.y, z: Number(v.split(",")[3] ?? 0) * sizes.z })).forEach(v => {
+            world.structureManager.place(v.id, dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${saveTime}`))] ?? dimensionsb["minecraft:overworld"], Vector.add(v, world.getDynamicProperty(`andexdb:undoclipboard;${saveTime}`)), options);
+        });
         if (clearSave) {
             this.saveIds(saveTime).forEach(v => { this.clearTime(saveTime); });
         }
