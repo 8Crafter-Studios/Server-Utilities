@@ -4938,6 +4938,10 @@ subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subs
     event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:animate_use", {
         onUse: event => { }
     });
+    event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:selection_tool", {
+        onUseOn: event => { console.log(3); },
+        onUse: event => { console.log(4); }
+    });
 });
 subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe(async (event) => {
     try {
@@ -6688,6 +6692,11 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
         });
         return;
     }
+    if (event.itemStack?.typeId === "andexdb:selection_tool") {
+        event.cancel = false;
+        console.log(1);
+        return;
+    }
     if (!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")));
@@ -6827,6 +6836,11 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
 subscribedEvents.beforeItemUseOn = world.beforeEvents.itemUseOn.subscribe(event => {
     if (event.source.hasTag("debugStickDyingMode") && event.block.typeId == "minecraft:cauldron") {
         event.cancel = false;
+        return;
+    }
+    if (event.itemStack?.typeId === "andexdb:selection_tool") {
+        event.cancel = false;
+        console.log(2);
         return;
     }
     if (!!event?.itemStack?.getDynamicProperty("itemUseOnCode")) {
@@ -7847,7 +7861,7 @@ console.error(e, e.stack);
         }
     }
     else if (event.itemStack?.typeId === "andexdb:selection_tool") {
-        event.cancel = true;
+        event.cancel = false;
         try {
             const mode = Boolean(event.source.getDynamicProperty("posM") ?? false);
             const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;

@@ -3883,6 +3883,10 @@ subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subs
     event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:animate_use", {
         onUse: event=>{}
     })
+    event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:selection_tool", {
+        onUseOn: event=>{console.log(3)},
+        onUse: event=>{console.log(4)}
+    })
 });
 
 subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe(async (event) => {
@@ -4988,6 +4992,11 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
         });
         return;
     }
+    if (event.itemStack?.typeId === "andexdb:selection_tool") {
+        event.cancel = true;
+        console.log(1);
+        return;
+    }
     if(!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")){try{eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemPlayerInteractWithBlockCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithBlock")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("playerInteractWithBlockBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick"){
@@ -5083,6 +5092,11 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
 subscribedEvents.beforeItemUseOn = world.beforeEvents.itemUseOn.subscribe(event => {
     if(event.source.hasTag("debugStickDyingMode")&&event.block.typeId=="minecraft:cauldron"){
         event.cancel=false;
+        return;
+    }
+    if (event.itemStack?.typeId === "andexdb:selection_tool") {
+        event.cancel = true;
+        console.log(2);
         return;
     }
     if(!!event?.itemStack?.getDynamicProperty("itemUseOnCode")){try{eval(String(event?.itemStack?.getDynamicProperty("itemUseOnCode")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemUseOnCodeDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}}

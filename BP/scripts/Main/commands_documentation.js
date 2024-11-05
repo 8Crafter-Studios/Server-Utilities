@@ -800,7 +800,7 @@ ${command.dp}snapshot listareas
 ${command.dp}snapshot list`,
     "\\\\cut": `${command.dp}\\cut [-meb]`,
     "\\\\copy": `${command.dp}\\copy [-meb]`,
-    "\\\\paste": `${command.dp}\\paste [-webxz] [integrity: float] [integritySeed: string] [rotation: 0|90|180|270] [animationMode: none|blocks|layers] [animationSeconds: float]`,
+    "\\\\paste": `${command.dp}\\paste [-webxzh] [integrity: float] [integritySeed: string] [rotation: 0|90|180|270] [animationMode: none|blocks|layers] [animationSeconds: float]`,
     "\\\\undo": `${command.dp}\\undo [-kt]`,
     "\\\\protectarea": `${command.dp}\\protectarea <areaType: string> <name: string> [mode: 0|1(default=0)] [icon_path: string]`,
     "\\\\backuparea": `${command.dp}\\backuparea <id: string>`,
@@ -985,10 +985,10 @@ b: don't include blocks`,
 e: don't include entities
 b: don't include blocks
 x: mirror structure x axis
-z: mirror structure z axis`,
-    "\\\\undo": `k: don't remove the undo save point after finishing the undo
-t: spawn in a ticking area before running the undo command
+z: mirror structure z axis
 h: makes the copied structure be pasted at your current location instead of the selected location`,
+    "\\\\undo": `k: don't remove the undo save point after finishing the undo
+t: spawn in a ticking area before running the undo command`,
     "execute": `f: sends the feedback of the commands to the source of the execute command instead of the targeted entity
 s: silences all command feedback
 q: runs the commands in silent mode so that each entity does not send a notification in the chat to players with the getAllChatCommands tag

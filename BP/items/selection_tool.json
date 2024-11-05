@@ -45,9 +45,12 @@
 			"minecraft:weapon":{
 			},*/
 			"minecraft:use_modifiers": {
-				"movement_modifier": 1/*,
-				"use_duration": 0.1*/
+				"movement_modifier": 1,
+				"use_duration": 0.1
 			}, 
+			"minecraft:custom_components": [
+				"andexdbcomponents:selection_tool"
+			],
 			"minecraft:use_animation": "none", 
 			"minecraft:allow_off_hand": true,
 			"minecraft:enchantable": {
