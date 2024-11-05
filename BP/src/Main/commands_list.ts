@@ -2327,6 +2327,42 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "enchantmentbarrels",
+        escregexp: {
+            v: "^enchantmentbarrels$"
+        },
+        aliases: [
+            {
+                commandName: "eb",
+                escregexp: {
+                    v: "^eb$"
+                }
+            }
+        ],
+        formats: [
+            {
+                format: "enchantmentbarrels [level: number[?=0]]"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "items",
+            "blocks",
+            "world"
+        ],
+        commandSettingsId: "built-inCommandSettings:enchantmentbarrels",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "enderchest",
         escregexp: {
             v: "^enderchest$"
@@ -2370,12 +2406,6 @@ export const commands = [
                 commandName: "esver",
                 escregexp: {
                     v: "^esver$"
-                }
-            },
-            {
-                commandName: "saver",
-                escregexp: {
-                    v: "^saver$"
                 }
             }
         ],

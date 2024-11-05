@@ -98,6 +98,7 @@ import *  as shopmain from "ExtraFeatures/shop_main";
 import *  as servershop from "ExtraFeatures/server_shop";
 import *  as playershop from "ExtraFeatures/player_shop";
 import *  as moneysystem from "ExtraFeatures/money";
+import *  as structuremappings from "structure_mappings";
 import mcMath from "@minecraft/math.js";
 import colorCore, { Color } from "color-core";
 import Decimal from "decimal.js";
@@ -165,7 +166,8 @@ export const modules = {
     shopmain,
     servershop,
     playershop,
-    moneysystem
+    moneysystem,
+    structuremappings
 }
 globalThis.modules=modules
 declare global {
