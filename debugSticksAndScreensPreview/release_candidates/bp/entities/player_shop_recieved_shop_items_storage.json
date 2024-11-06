@@ -1,0 +1,77 @@
+{
+  "format_version": "1.21.10",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "andexdb:player_shop_recieved_shop_items_storage",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+    "component_groups": {
+      "tamed": {
+        "minecraft:is_tamed": {}
+      }
+    },
+    "components": {
+      "minecraft:inventory": {
+        "container_type": "horse",
+        "can_be_siphoned_from": false,
+        "inventory_size": 108
+      },
+      "minecraft:is_chested": {},
+			"minecraft:physics": {
+				"has_collision": false,
+				"has_gravity": false
+			},
+      "minecraft:knockback_resistance": {
+        "value": 1000,
+        "max": 1000
+      },
+			"minecraft:fire_immune": {},
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "all",
+            "deals_damage": false
+          }
+        ]
+      },
+      "minecraft:tick_world":{
+        "distance_to_players": 128,
+        "never_despawn": true,
+        "radius": 2
+      },
+      "minecraft:type_family": {
+        "family": [ "player_shop_recieved_shop_items_storage" ]
+      },
+      "minecraft:pushable":{
+          "is_pushable": false,
+          "is_pushable_by_piston": false
+      },
+      "minecraft:persistent":{
+      },
+      "minecraft:is_hidden_when_invisible": {
+      },
+      "minecraft:nameable": {
+        "allow_name_tag_renaming": false,
+        "always_show": false
+      }
+    },
+    "events": {
+      "andexdb:tame_storage_entity": {
+        "add": {
+          "component_groups": [
+            "tamed"
+          ]
+        }
+      },
+      "andexdb:untame_storage_entity": {
+        "remove": {
+          "component_groups": [
+            "tamed"
+          ]
+        }
+      }
+    }
+  }
+}

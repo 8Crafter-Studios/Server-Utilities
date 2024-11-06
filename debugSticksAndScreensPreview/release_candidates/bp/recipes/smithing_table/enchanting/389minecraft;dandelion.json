@@ -1,0 +1,13 @@
+{
+"format_version": "1.17",
+"minecraft:recipe_smithing_transform": {
+    "description": {
+        "identifier": "andexdb:389minecraft:dandelion"
+    },
+    "tags": ["smithing_table"],
+    "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 389},
+    "base": "andexdb:smithing_table_enchanted_book",
+        "addition": "minecraft:netherite_ingot",
+        "result": {"item": "minecraft:dandelion"}
+    }
+}

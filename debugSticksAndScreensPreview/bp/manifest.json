@@ -62,9 +62,9 @@
             "version": "0.1.0-beta"
         }*/
     ],
-  "metadata": {
-    "authors": ["Andexter8", "Andersen Zahn", "8Crafter"],
-    "url": "https://sites.google.com/view/8craftermods/home",
-    "product_type": "addon"
-}
+    "metadata": {
+        "authors": ["Andexter8", "Andersen Zahn", "8Crafter"],
+        "url": "https://sites.google.com/view/8craftermods/home",
+        "product_type": "addon"
+    }
 }

@@ -1,0 +1,42 @@
+{
+	"format_version": "1.21.40",
+	"minecraft:item": {
+		"description": {
+			"identifier": "andexdb:ultra_bundle",
+			"menu_category": {"category": "equipment", "group": "itemGroup.name.bundles"}
+		},
+		"components": {
+			"minecraft:hand_equipped": false,
+			"minecraft:stacked_by_data": true,
+			"minecraft:max_stack_size": 1,
+			"minecraft:icon": {
+				"textures": {
+					"default": "bundle",
+					"dyed": "bundle_white"
+				}
+			},
+			//"minecraft:interact_button": true, 
+			"minecraft:rarity": "epic", 
+			"minecraft:glint": true,
+			"minecraft:display_name": {
+				"value": "Ultra Bundle"
+			},
+			"minecraft:allow_off_hand": true,
+			"minecraft:enchantable": {
+				"slot": "all", // Can be any of the enchant slot listed below
+				"value": 10
+			},
+			"minecraft:dyeable": {},
+			"minecraft:storage_item": {
+				"allow_nested_storage_items": true, // Can be any of the enchant slot listed below
+				"value": 10,
+				"weight_in_storage_item": 1,
+				"max_weight_limit": 64,
+				"max_slots": 64
+			},
+			"minecraft:bundle_interaction": {
+				"num_viewable_slots": 64
+			}
+		}
+	}
+}

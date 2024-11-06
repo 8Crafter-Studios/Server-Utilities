@@ -1,0 +1,13 @@
+{
+"format_version": "1.17",
+"minecraft:recipe_smithing_transform": {
+    "description": {
+        "identifier": "andexdb:1490minecraft:stained_hardened_clay"
+    },
+    "tags": ["smithing_table"],
+    "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 1490},
+    "base": "andexdb:smithing_table_enchanted_book",
+        "addition": "minecraft:netherite_ingot",
+        "result": {"item": "minecraft:stained_hardened_clay"}
+    }
+}

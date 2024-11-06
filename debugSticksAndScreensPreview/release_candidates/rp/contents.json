@@ -1,0 +1,305 @@
+{
+   "content" : [
+      {
+         "path" : "textures/items/diamond_red_up_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos1.png"
+      },
+      {
+         "path" : ".mcattributes"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos2.json"
+      },
+      {
+         "path" : "animations/animation.none.none.none.animation.json"
+      },
+      {
+         "path" : "particles/custom_item_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "blocks.json"
+      },
+      {
+         "path" : "font/glyph_F0.png"
+      },
+      {
+         "path" : "textures/ui/8Crafter.png"
+      },
+      {
+         "path" : "models/blocks/no_bones.geo.json"
+      },
+      {
+         "path" : "particles/custom_glowing_light.particle.json"
+      },
+      {
+         "path" : "contents.json"
+      },
+      {
+         "path" : "LICENSE.txt"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos1_east.json"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_default.png"
+      },
+      {
+         "path" : "manifest.json"
+      },
+      {
+         "path" : "textures/items/netherite_downgrade_smithing_template.png"
+      },
+      {
+         "path" : "particles/custom_text_glyph_E1_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "particles/custom_block_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "pack_icon.png"
+      },
+      {
+         "path" : "particles/block_destruct_2.json"
+      },
+      {
+         "path" : "particles/custom_block_texture_billboard.particle.json"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos1_north.json"
+      },
+      {
+         "path" : "particles/custom_item_texture_billboard.particle.json"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_hover.png"
+      },
+      {
+         "path" : "textures/particle/slight_red_screen_border.png"
+      },
+      {
+         "path" : "particles/custom_text_ascii_sga_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "textures/items/diamond_green_down_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/particles/particles_plain_no_pbr.png"
+      },
+      {
+         "path" : "particles/custom_text_glyph_E0_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "particles/custom_text_glyph_E3_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "particles/custom_text_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : "textures/items/diamond_green_left_arrow_transform_template.png"
+      },
+      {
+         "path" : "particles/falling_border_dust.particle.json"
+      },
+      {
+         "path" : "textures/blocks/friction_block.png"
+      },
+      {
+         "path" : "particles/green_cube.json"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos1_down.json"
+      },
+      {
+         "path" : "particles/rising_border_dust.particle.json"
+      },
+      {
+         "path" : "particles/vanilla/falling_border_dust.particle.json"
+      },
+      {
+         "path" : "textures/items/orange_brush.png"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_default.json"
+      },
+      {
+         "path" : "particles/vanilla/rising_border_dust.particle.json"
+      },
+      {
+         "path" : "particles/world_border_red_screen_tint.particle.json"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos1.json"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos1_south.json"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos1_west.json"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos2_down.json"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos2.png"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos2_east.json"
+      },
+      {
+         "path" : "textures/items/diamond_blue_up_arrow_transform_template.png"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos2_north.json"
+      },
+      {
+         "path" : "textures/items/blue_brush.png"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos2_south.json"
+      },
+      {
+         "path" : "textures/item_texture.json"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos2_west.json"
+      },
+      {
+         "path" : "texts/en_US.lang"
+      },
+      {
+         "path" : "textures/blocks/friction_block_2.png"
+      },
+      {
+         "path" : "textures/blocks/gray_outline_block_texture.png"
+      },
+      {
+         "path" : "textures/particle/particles.png"
+      },
+      {
+         "path" : "ui/how_to_play_common.json"
+      },
+      {
+         "path" : "textures/items/blue_brush_dyed.tga"
+      },
+      {
+         "path" : "textures/items/diamond_downgrade_transform_template.png"
+      },
+      {
+         "path" : "textures/particle/custom_glowing_light_faint.png"
+      },
+      {
+         "path" : "textures/items/diamond_green_right_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/items/wide_brush_dyed.tga"
+      },
+      {
+         "path" : "textures/items/diamond_red_left_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/items/diamond_red_right_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/items/orange_brush_dyed.tga"
+      },
+      {
+         "path" : "textures/particle/slight_red_tint.png"
+      },
+      {
+         "path" : "ui/settings_screen.json"
+      },
+      {
+         "path" : "textures/items/stick_dyed.tga"
+      },
+      {
+         "path" : "textures/items/wide_brush.png"
+      },
+      {
+         "path" : "textures/particles/particles_plain_no_pbr.texture_set.json"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos1_down.png"
+      },
+      {
+         "path" : "textures/ui/help/installation/edit_realm_button_arrow.png"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos1_east.png"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos1_north.png"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos1_south.png"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos1_west.png"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos2_down.png"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos2_east.png"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos2_north.png"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos2_south.png"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos2_west.png"
+      },
+      {
+         "path" : "textures/terrain_texture.json"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_hover.json"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_hover_pressed.json"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_hover_pressed.png"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_pressed.json"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_pressed.png"
+      },
+      {
+         "path" : "textures/ui/debug_sticks_pack_icon.png"
+      },
+      {
+         "path" : "textures/ui/help/installation/education_edition_toggle.png"
+      },
+      {
+         "path" : "textures/ui/help/installation/realm_game_settings_replace_world_button_arrow.png"
+      },
+      {
+         "path" : "textures/ui/help/installation/required_experimental_toggles.png"
+      },
+      {
+         "path" : "textures/ui/help/installation/select_realm_active_world_edit_world_button_arrow.png"
+      },
+      {
+         "path" : "ui/how_to_play_screen.json"
+      },
+      {
+         "path" : "ui/server_form.json"
+      },
+      {
+         "path" : "ui/settings_sections/settings_common.json"
+      },
+      {
+         "path" : "ui/ui_common.json"
+      },
+      {
+         "path" : "ui/ui_template_buttons.json"
+      }
+   ],
+   "version" : 1
+}
