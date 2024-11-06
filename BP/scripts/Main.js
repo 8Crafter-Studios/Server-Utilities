@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import { system } from "@minecraft/server";
 globalThis.beforeScriptStartTick = system.currentTick;
-export const format_version = "1.26.0-preview.20+BUILD.3";
+export const format_version = "1.26.0-rc.1+BUILD.1";
 globalThis.entity_scale_format_version = null;
 globalThis.multipleEntityScaleVersionsDetected = false;
 import "JSONB";
@@ -183,20 +183,20 @@ export function mainEval(x) { return eval(x); }
 export function indirectMainEval(x) { return eval?.(x); }
 export function mainRun(x, ...args) { return x(...args); }
 export function spawnBlockSurroundingParticleForPlayer(player, location, textures) {
-    player.spawnParticle(textures.up ?? textures.default, Vector.add(location, { x: 0.5, y: 1.001, z: 0.5 }));
-    player.spawnParticle(textures.north ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: -0.001 }));
-    player.spawnParticle(textures.east ?? textures.default, Vector.add(location, { x: -0.001, y: 0.5, z: 0.5 }));
-    player.spawnParticle(textures.down ?? textures.default, Vector.add(location, { x: 0.5, y: -0.001, z: 0.5 }));
-    player.spawnParticle(textures.south ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: 1.001 }));
-    player.spawnParticle(textures.west ?? textures.default, Vector.add(location, { x: 1.001, y: 0.5, z: 0.5 }));
+    player.spawnParticle(textures.up ?? textures.default, Vector.add(location, { x: 0.5, y: 1.005, z: 0.5 }));
+    player.spawnParticle(textures.north ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: -0.005 }));
+    player.spawnParticle(textures.east ?? textures.default, Vector.add(location, { x: -0.005, y: 0.5, z: 0.5 }));
+    player.spawnParticle(textures.down ?? textures.default, Vector.add(location, { x: 0.5, y: -0.005, z: 0.5 }));
+    player.spawnParticle(textures.south ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: 1.005 }));
+    player.spawnParticle(textures.west ?? textures.default, Vector.add(location, { x: 1.005, y: 0.5, z: 0.5 }));
 }
 export function spawnBlockSurroundingParticle(dimension, location, textures) {
-    dimension.spawnParticle(textures.up ?? textures.default, Vector.add(location, { x: 0.5, y: 1.001, z: 0.5 }));
-    dimension.spawnParticle(textures.north ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: -0.001 }));
-    dimension.spawnParticle(textures.east ?? textures.default, Vector.add(location, { x: -0.001, y: 0.5, z: 0.5 }));
-    dimension.spawnParticle(textures.down ?? textures.default, Vector.add(location, { x: 0.5, y: -0.001, z: 0.5 }));
-    dimension.spawnParticle(textures.south ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: 1.001 }));
-    dimension.spawnParticle(textures.west ?? textures.default, Vector.add(location, { x: 1.001, y: 0.5, z: 0.5 }));
+    dimension.spawnParticle(textures.up ?? textures.default, Vector.add(location, { x: 0.5, y: 1.005, z: 0.5 }));
+    dimension.spawnParticle(textures.north ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: -0.005 }));
+    dimension.spawnParticle(textures.east ?? textures.default, Vector.add(location, { x: -0.005, y: 0.5, z: 0.5 }));
+    dimension.spawnParticle(textures.down ?? textures.default, Vector.add(location, { x: 0.5, y: -0.005, z: 0.5 }));
+    dimension.spawnParticle(textures.south ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: 1.005 }));
+    dimension.spawnParticle(textures.west ?? textures.default, Vector.add(location, { x: 1.005, y: 0.5, z: 0.5 }));
 }
 export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]; /*
 disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
@@ -6243,18 +6243,11 @@ subscribedEvents.afterWeatherChange = world.afterEvents.weatherChange.subscribe(
 }); /*
 world.afterEvents.itemDefinitionEvent.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-});*/
+});*/ /*
 subscribedEvents.afterItemReleaseUse = world.afterEvents.itemReleaseUse.subscribe(event => {
-    try {
-        eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")));
-    }
-    catch (e) {
-        console.error(e, e.stack);
-        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemReleaseUseAfterEventDebugErrors")) {
-            currentplayer.sendMessage(e + e.stack);
-        } });
-    }
-});
+try{eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemReleaseUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+// world.sendMessage("itemReleaseUse: "+JSON.stringify({ItemStack: event.itemStack.typeId, source: event.source.name, useDuration: event.useDuration}))
+});*/
 subscribedEvents.afterItemStartUse = world.afterEvents.itemStartUse.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemStartUse")));
@@ -6265,6 +6258,34 @@ subscribedEvents.afterItemStartUse = world.afterEvents.itemStartUse.subscribe(ev
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    if (event.itemStack?.typeId === "andexdb:selection_tool") {
+        try {
+            const mode = Boolean(event.source.getDynamicProperty("posM") ?? false);
+            const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
+            if (!!!loc) {
+                event.source.sendMessage("§cError: You must be facing a block.");
+            }
+            else {
+                const posV = mcMath.Vector3Utils.floor(loc);
+                event.source.setDynamicProperty(mode ? "pos2" : "pos1", posV);
+                event.source.setDynamicProperty("posD", event.source.dimension.id);
+                event.source.sendMessage(`Set ${mode ? "pos2" : "pos1"} to ${vTStr(posV)}.`);
+                event.source.setDynamicProperty("posM", !mode);
+                srun(() => {
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2" : "andexdb:xz_axis_particle_pos1", Vector.add(loc, { x: 0.5, y: 1.005, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_north" : "andexdb:xz_axis_particle_pos1_north", Vector.add(loc, { x: 0.5, y: 0.5, z: 1.005 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_east" : "andexdb:xz_axis_particle_pos1_east", Vector.add(loc, { x: -0.005, y: 0.5, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_down" : "andexdb:xz_axis_particle_pos1_down", Vector.add(loc, { x: 0.5, y: -0.005, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_south" : "andexdb:xz_axis_particle_pos1_south", Vector.add(loc, { x: 0.5, y: 0.5, z: -0.005 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_west" : "andexdb:xz_axis_particle_pos1_west", Vector.add(loc, { x: 1.005, y: 0.5, z: 0.5 }));
+                });
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    // world.sendMessage("itemStartUse: "+JSON.stringify({ItemStack: event.itemStack.typeId, source: event.source.name, useDuration: event.useDuration}))
 });
 subscribedEvents.afterItemStartUseOn = world.afterEvents.itemStartUseOn.subscribe(event => {
     try {
@@ -6276,6 +6297,34 @@ subscribedEvents.afterItemStartUseOn = world.afterEvents.itemStartUseOn.subscrib
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    if (event.itemStack?.typeId === "andexdb:selection_tool") {
+        try {
+            const mode = Boolean(event.source.getDynamicProperty("posM") ?? false);
+            const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
+            if (!!!loc) {
+                event.source.sendMessage("§cError: You must be facing a block.");
+            }
+            else {
+                const posV = mcMath.Vector3Utils.floor(loc);
+                event.source.setDynamicProperty(mode ? "pos2" : "pos1", posV);
+                event.source.setDynamicProperty("posD", event.source.dimension.id);
+                event.source.sendMessage(`Set ${mode ? "pos2" : "pos1"} to ${vTStr(posV)}.`);
+                event.source.setDynamicProperty("posM", !mode);
+                srun(() => {
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2" : "andexdb:xz_axis_particle_pos1", Vector.add(loc, { x: 0.5, y: 1.005, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_north" : "andexdb:xz_axis_particle_pos1_north", Vector.add(loc, { x: 0.5, y: 0.5, z: 1.005 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_east" : "andexdb:xz_axis_particle_pos1_east", Vector.add(loc, { x: -0.005, y: 0.5, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_down" : "andexdb:xz_axis_particle_pos1_down", Vector.add(loc, { x: 0.5, y: -0.005, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_south" : "andexdb:xz_axis_particle_pos1_south", Vector.add(loc, { x: 0.5, y: 0.5, z: -0.005 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_west" : "andexdb:xz_axis_particle_pos1_west", Vector.add(loc, { x: 1.005, y: 0.5, z: 0.5 }));
+                });
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    // world.sendMessage("itemStartUseOn: "+JSON.stringify({ItemStack: event.itemStack.typeId, source: event.source.name, block: event.block, blockFace: event.blockFace}))
 });
 subscribedEvents.afterItemStopUse = world.afterEvents.itemStopUse.subscribe(event => {
     try {
@@ -6287,6 +6336,7 @@ subscribedEvents.afterItemStopUse = world.afterEvents.itemStopUse.subscribe(even
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    // world.sendMessage("itemStopUse: "+JSON.stringify({ItemStack: event.itemStack.typeId, source: event.source.name, useDuration: event.useDuration}))
 });
 subscribedEvents.afterItemStopUseOn = world.afterEvents.itemStopUseOn.subscribe(event => {
     try {
@@ -6298,6 +6348,7 @@ subscribedEvents.afterItemStopUseOn = world.afterEvents.itemStopUseOn.subscribe(
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    // world.sendMessage("itemStopUseOn: "+JSON.stringify({ItemStack: event.itemStack.typeId, source: event.source.name, block: event.block}))
 });
 subscribedEvents.afterItemUse = world.afterEvents.itemUse.subscribe(event => {
     try {
@@ -6637,7 +6688,7 @@ subscribedEvents.beforeExplosion = world.beforeEvents.explosion.subscribe(event 
     }
     //console.warn("after set: "+JSONStringify(event.getImpactedBlocks(), true))
 });
-subscribedEvents.afterItemReleaseUse = world.afterEvents.itemReleaseUse.subscribe(event => {
+subscribedEvents.afterItemReleaseUseB = world.afterEvents.itemReleaseUse.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("itemReleaseUseCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("itemReleaseUseCode")));
@@ -6693,8 +6744,8 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
         return;
     }
     if (event.itemStack?.typeId === "andexdb:selection_tool") {
-        event.cancel = false;
-        console.log(1);
+        event.cancel = true;
+        // console.log(1);
         return;
     }
     if (!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")) {
@@ -6839,8 +6890,8 @@ subscribedEvents.beforeItemUseOn = world.beforeEvents.itemUseOn.subscribe(event 
         return;
     }
     if (event.itemStack?.typeId === "andexdb:selection_tool") {
-        event.cancel = false;
-        console.log(2);
+        event.cancel = true;
+        // console.log(2);
         return;
     }
     if (!!event?.itemStack?.getDynamicProperty("itemUseOnCode")) {
@@ -7861,7 +7912,7 @@ console.error(e, e.stack);
         }
     }
     else if (event.itemStack?.typeId === "andexdb:selection_tool") {
-        event.cancel = false;
+        event.cancel = true;
         try {
             const mode = Boolean(event.source.getDynamicProperty("posM") ?? false);
             const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
@@ -7875,12 +7926,12 @@ console.error(e, e.stack);
                 event.source.sendMessage(`Set ${mode ? "pos2" : "pos1"} to ${vTStr(posV)}.`);
                 event.source.setDynamicProperty("posM", !mode);
                 srun(() => {
-                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2" : "andexdb:xz_axis_particle_pos1", Vector.add(loc, { x: 0.5, y: 1.001, z: 0.5 }));
-                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_north" : "andexdb:xz_axis_particle_pos1_north", Vector.add(loc, { x: 0.5, y: 0.5, z: 1.001 }));
-                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_east" : "andexdb:xz_axis_particle_pos1_east", Vector.add(loc, { x: -0.001, y: 0.5, z: 0.5 }));
-                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_down" : "andexdb:xz_axis_particle_pos1_down", Vector.add(loc, { x: 0.5, y: -0.001, z: 0.5 }));
-                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_south" : "andexdb:xz_axis_particle_pos1_south", Vector.add(loc, { x: 0.5, y: 0.5, z: -0.001 }));
-                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_west" : "andexdb:xz_axis_particle_pos1_west", Vector.add(loc, { x: 1.001, y: 0.5, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2" : "andexdb:xz_axis_particle_pos1", Vector.add(loc, { x: 0.5, y: 1.005, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_north" : "andexdb:xz_axis_particle_pos1_north", Vector.add(loc, { x: 0.5, y: 0.5, z: 1.005 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_east" : "andexdb:xz_axis_particle_pos1_east", Vector.add(loc, { x: -0.005, y: 0.5, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_down" : "andexdb:xz_axis_particle_pos1_down", Vector.add(loc, { x: 0.5, y: -0.005, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_south" : "andexdb:xz_axis_particle_pos1_south", Vector.add(loc, { x: 0.5, y: 0.5, z: -0.005 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_west" : "andexdb:xz_axis_particle_pos1_west", Vector.add(loc, { x: 1.005, y: 0.5, z: 0.5 }));
                 });
             }
         }

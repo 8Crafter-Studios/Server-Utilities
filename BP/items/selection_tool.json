@@ -46,7 +46,7 @@
 			},*/
 			"minecraft:use_modifiers": {
 				"movement_modifier": 1,
-				"use_duration": 0.1
+				"use_duration": 0
 			}, 
 			"minecraft:custom_components": [
 				"andexdbcomponents:selection_tool"
