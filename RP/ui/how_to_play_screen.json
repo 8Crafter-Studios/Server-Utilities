@@ -418,6 +418,11 @@
                 }
             },
             {
+                "andexdb_enchant_anything_with_anything_button@how_to_play.andexdb_enchant_anything_with_anything_button": {
+                    "$toggle_group_forced_index": 926
+                }
+            },
+            {
                 "andexdb_ban_system_button@how_to_play.andexdb_ban_system_button": {
                     "$toggle_group_forced_index": 915
                 }
@@ -782,6 +787,9 @@
                 "andexdb_installation_section@how_to_play.andexdb_installation_section": {}
             },
             {
+                "andexdb_enchant_anything_with_anything_section@how_to_play.andexdb_enchant_anything_with_anything_section": {}
+            },
+            {
                 "andexdb_ban_system_sectionn@how_to_play.andexdb_ban_system_section": {}
             },
             {
@@ -977,12 +985,12 @@
             },
             {
                 "paragraph_2_all_required_experimental_toggles@how_to_play_common.paragraph": {
-                    "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \n  ∙ Upcoming Creator Features\n  ∙ Beta APIs\n  ∙ Creator Cameras: New Third Person Presets\n  ∙ Creator Cameras: Focus Target Camera\n  ∙ Bundles"
+                    "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \n  ∙ Upcoming Creator Features\n  ∙ Beta APIs\n  ∙ Creator Cameras: New Third Person Presets\n  ∙ Creator Cameras: Focus Target Camera"
                 }
             },
             {
                 "paragraph_2_other_recommended_settings@how_to_play_common.paragraph": {
-                    "$text": "It is also recommended to enable the \"Education Edition\" toggle. "
+                    "$text": "It is also recommended to enable the \"Education Edition\" toggle."
                 }
             },
             {
@@ -1000,12 +1008,12 @@
             },
             {
                 "paragraph_3a@how_to_play_common.paragraph": {
-                    "$text": "To update the add-on on a world all you have to do is: "
+                    "$text": "To update the add-on on a world all you have to do is:"
                 }
             },
             {
                 "paragraph_3b@how_to_play_common.paragraph": {
-                    "$text": "1. Get the .mcaddon file for the new version. \n2. Import it into minecraft. \n3. Go on the edit world screen for the world that you want to update the add-on on. \n4. Deactivate the old version of the add-on. \n5. Activate the new version of the add-on. (Make sure that you activate the behavior pack first or else it might glitch and show that both the resource and behavior packs are on, when only the resource pack is on, which you will see if you go to the main menu and then back into the edit world screen again.)\n6. Go back to the main menu. \n7. Go into the edit world screen again and insure that both the resource and behavior packs are active. "
+                    "$text": "1. Get the .mcaddon file for the new version.\n2. Import it into minecraft.\n3. Go on the edit world screen for the world that you want to update the add-on on.\n4. Deactivate the old version of the add-on.\n5. Activate the new version of the add-on. (Make sure that you activate the behavior pack first or else it might glitch and show that both the resource and behavior packs are on, when only the resource pack is on, which you will see if you go to the main menu and then back into the edit world screen again.)\n6. Go back to the main menu.\n7. Go into the edit world screen again and insure that both the resource and behavior packs are active."
                 }
             },
             {
@@ -1015,12 +1023,12 @@
             },
             {
                 "paragraph_3c@how_to_play_common.paragraph": {
-                    "$text": "To update the add-on on a realm all you have to do is: "
+                    "$text": "To update the add-on on a realm all you have to do is:"
                 }
             },
             {
                 "paragraph_3d@how_to_play_common.paragraph": {
-                    "$text": "1. Get the .mcaddon file for the new version. \n2. Import it into minecraft. \n3. Download the world from the realm. \n4. Go on the edit world screen for the world that you just downloaded. \n5. Deactivate the old version of the add-on. \n6. Activate the new version of the add-on. \n7. Go back to the main menu. \n8. Go into the edit world screen again and insure that both the resource and behavior packs are active. \n9. Load up the world. (This is very important, if you don't do this then the packs won't actually add when you put the world back on to the realm.)\n10. Save & Quit the world. \n11. Go to the realms settings screen. "
+                    "$text": "1. Get the .mcaddon file for the new version.\n2. Import it into minecraft.\n3. Download the world from the realm.\n4. Go on the edit world screen for the world that you just downloaded.\n5. Deactivate the old version of the add-on.\n6. Activate the new version of the add-on.\n7. Go back to the main menu.\n8. Go into the edit world screen again and insure that both the resource and behavior packs are active.\n9. Load up the world. (This is very important, if you don't do this then the packs won't actually add when you put the world back on to the realm.)\n10. Save & Quit the world.\n11. Go to the realms settings screen."
                 }
             },
             {
@@ -1062,7 +1070,7 @@
             },
             {
                 "paragraph_3g@how_to_play_common.paragraph": {
-                    "$text": "\n14. Select the world that you just added the packs to. "
+                    "$text": "\n14. Select the world that you just added the packs to."
                 }
             }
         ]
@@ -1329,6 +1337,41 @@
             {
                 "paragraph_-2@how_to_play_common.paragraph": {
                     "$text": "The brush items are made to be used as worldedit brushes, to add functionality to them you have to use the §b\\brush§r command while holding the brush in your mainhand. There are 3 categories of brushes, the only differences between them are their textures, in each of those 3 categories there are 4 types, each with different repeat intervals."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.1@how_to_play_common.paragraph": {
+                    "$text": "  ∙ Brushes allow you to fill an area with a custom pattern just by looking at it. The brush will place from the first solid block in the direction that you are looking. Note that modifications done with the brush CANNOT be undone using §b\\undo§r."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.2@how_to_play_common.paragraph": {
+                    "$text": "  ∙ Brushes can be found in the items tab of the creative inventory. The different brush types are the number of uses per second they support. Brush 2 (no animation) and 4 (with animation) activate once per click, while Brush 1 uses the item 10 times per second when the use button is held, and Brush 3 will use the item every tick while the use button is held (recommended)."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.3@how_to_play_common.paragraph": {
+                    "$text": "  ∙ You can use the brush command (§b\\br§r, §b\\brush§r, §b\\\\br§r, or §b\\\\brush§r) while holding a brush to set its settings. Note that the brush command works on all non-stackable items, which will act like Brush 2."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.4@how_to_play_common.paragraph": {
+                    "$text": "  ∙ Ex: §b\\brush sphere stone,ice,diamond_block%%4 4§r. The full syntax can be found by running §b\\help cmd brush§r."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.5@how_to_play_common.paragraph": {
+                    "$text": "  ∙ Using the §b-l§r flag will make it so the item lore on the brush doesn't show up."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.6@how_to_play_common.paragraph": {
+                    "$text": "  ∙ The §b-h§r flag after the shape parameter makes the shape hollow (only works on certain shapes, see the help documentation)."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.7@how_to_play_common.paragraph": {
+                    "$text": "  ∙ §bsplatter§r will not affect air blocks, but fills in a circle area. §bsplattersurface§r does the same thing, but only affects the top layer of blocks. Ex: §b\\brush splattersurface s:stone,iron_block,diamond_block%%4 5 10§r. Decay values can be between 0 and 50."
                 }
             },
             {
@@ -3069,6 +3112,89 @@
             {
                 "paragraph_1@how_to_play_common.paragraph": {
                     "$text": "This section will be filled out in a future update. "
+                }
+            }
+        ]
+    },
+    "andexdb_enchant_anything_with_anything_button@how_to_play.andexdb_help_button": {
+        "$glyph_texture": "textures/ui/8Crafter",
+        "$glyph_color_texture": "textures/items/book_enchanted",
+        "$section_topic": "andexdbEnchantAnythingWithAnything",
+        "$button_text": "Enchant Anything With Anything",
+        "$title_text": "andexdb.enchantAnythingWithAnything"
+    },
+    // to-do
+    "andexdb_enchant_anything_with_anything_section@how_to_play_common.main_sections": {
+        "bindings": [
+            {
+                "binding_type": "view",
+                "source_control_name": "andexdbEnchantAnythingWithAnything_button_toggle",
+                "source_property_name": "#toggle_state",
+                "target_property_name": "#visible"
+            }
+        ],
+        "controls": [
+            {
+                "padding_1@how_to_play_common.padding": {}
+            },
+            {
+                "get_higher_enchantment_levels_section_header@how_to_play_common.subsection_title": {
+                    "$text": "§aHow to get enchantments with higher levels than are normally possible§r"
+                }
+            },
+            {
+                "paragraph_0@how_to_play_common.paragraph": {
+                    "$text": "§l1. §rRun the command §b/structure load andexdb:-2-294_steb§r §b\\eb 0§r for enchantment levels -2 through 294. Run the command §b/structure load andexdb:-32k_steb§r or §b\\eb -32768§r for enchantment levels -32768 and 32767."
+                }
+            },
+            {
+                "paragraph_1@how_to_play_common.paragraph": {
+                    "$text": "§l2. Look through the barrels to find the levels of enchantments you want."
+                }
+            },
+            {
+                "paragraph_2@how_to_play_common.paragraph": {
+                    "$text": "§l3. Run the command §b\\roie§r followed by a list of the enchantments that you want to keep that are currently on the book that you are holding. For example: §b\\roie [\"sharpness\", \"fire_aspect\"]§r."
+                }
+            },
+            {
+                "paragraph_3@how_to_play_common.paragraph": {
+                    "$text": "§l4. Repeat steps 2-3 for each of the different levels of enchantments that you want."
+                }
+            },
+            {
+                "paragraph_4@how_to_play_common.paragraph": {
+                    "$text": "§l5. Merge the books together in an anvil."
+                }
+            },
+            {
+                "enchant_any_item_with_any_enchantment_section_header@how_to_play_common.subsection_title": {
+                    "$text": "§aHow do I enchant any item with any enchantment?§r"
+                }
+            },
+            {
+                "paragraph_5@how_to_play_common.paragraph": {
+                    "$text": "§l1. Pick the item you want."
+                }
+            },
+            {
+                "paragraph_6@how_to_play_common.paragraph": {
+                    "$text": "§l2. Run the command §b\\gettransformst <item>§r (Replace <item> with the namespaced id of the item you want to put the enchantments on. For example: §b\\gettransformst netherreactor§r). You will get an enchantment transfer smithing template."
+                }
+            },
+            {
+                "paragraph_7@how_to_play_common.paragraph": {
+                    "$text": "§l3. Get a \"Smithing Table Enchanted Book\" and add the enchantments you want on it, to see how to get higher levels of enchantments than normally possible, go the \"How to get enchantments with higher levels than are normally possible\" section."
+                }
+            },
+            {
+                "paragraph_8@how_to_play_common.paragraph": {
+                    "$text": "§l4. Place a smithing table."
+                }
+            },
+            {
+                "paragraph_9@how_to_play_common.paragraph": {
+                    "$text": "§l5. Put a netherite ingot, the smithing table enchanted book, and the enchantment transfer smithing template into the smithing table. The result is your enchanted item."
                 }
             }
         ]

@@ -1,6 +1,15 @@
 {
    "content" : [
       {
+         "path" : "textures/items/wide_brush_dyed.tga"
+      },
+      {
+         "path" : "textures/items/diamond_red_left_arrow_transform_template.png"
+      },
+      {
+         "path" : "bug_pack_icon.png"
+      },
+      {
          "path" : "textures/items/diamond_red_up_arrow_transform_template.png"
       },
       {
@@ -19,16 +28,16 @@
          "path" : "particles/custom_item_texture_billboard_2.particle.json"
       },
       {
-         "path" : "blocks.json"
-      },
-      {
-         "path" : "font/glyph_F0.png"
-      },
-      {
          "path" : "textures/ui/8Crafter.png"
       },
       {
          "path" : "models/blocks/no_bones.geo.json"
+      },
+      {
+         "path" : "blocks.json"
+      },
+      {
+         "path" : "font/glyph_F0.png"
       },
       {
          "path" : "particles/custom_glowing_light.particle.json"
@@ -83,9 +92,6 @@
       },
       {
          "path" : "textures/items/diamond_green_down_arrow_transform_template.png"
-      },
-      {
-         "path" : "textures/particles/particles_plain_no_pbr.png"
       },
       {
          "path" : "particles/custom_text_glyph_E0_texture_billboard_2.particle.json"
@@ -193,12 +199,6 @@
          "path" : "textures/items/diamond_green_right_arrow_transform_template.png"
       },
       {
-         "path" : "textures/items/wide_brush_dyed.tga"
-      },
-      {
-         "path" : "textures/items/diamond_red_left_arrow_transform_template.png"
-      },
-      {
          "path" : "textures/items/diamond_red_right_arrow_transform_template.png"
       },
       {
@@ -215,6 +215,9 @@
       },
       {
          "path" : "textures/items/wide_brush.png"
+      },
+      {
+         "path" : "textures/particles/particles_plain_no_pbr.png"
       },
       {
          "path" : "textures/particles/particles_plain_no_pbr.texture_set.json"
