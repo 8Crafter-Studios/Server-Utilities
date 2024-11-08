@@ -1,24 +1,24 @@
 {
   "format_version": 2,
   "header": {
-    "description": "v.1.26.0-preview.20+BUILD.3 8Crafter's Debug Sticks RP by 8Crafter.\n§bhttps://sites.google.com/view/8craftermods/home\n§chttps://youtube.com/@8crafter",
-    "name": "v.1.26.0-preview.20+BUILD.3 8Crafter's Debug Sticks RP by 8Crafter.",
+    "description": "v.1.26.0-rc.2+BUILD.1 8Crafter's Debug Sticks RP by 8Crafter.\n§bhttps://sites.google.com/view/8craftermods/home\n§chttps://youtube.com/@8crafter",
+    "name": "v.1.26.0-rc.2+BUILD.1 8Crafter's Debug Sticks RP by 8Crafter.",
     "uuid": "5869846f-2019-4442-8e81-d3a75c5e003f",
-    "version": "1.26.0-preview.20+BUILD.3",
+    "version": "1.26.0-rc.2+BUILD.1",
     "min_engine_version": [ 1, 20, 40 ]
   },
   "modules": [
     {
-      "description": "v.1.26.0-preview.20+BUILD.3 8Crafter's Debug Sticks RP by 8Crafter.",
+      "description": "v.1.26.0-rc.2+BUILD.1 8Crafter's Debug Sticks RP by 8Crafter.",
       "type": "resources",
       "uuid": "3e4e2982-a23c-47ad-9256-ebc97345a371",
-      "version": "1.26.0-preview.20+BUILD.3"
+      "version": "1.26.0-rc.2+BUILD.1"
     }
   ],
   "dependencies": [
           {
               "uuid": "53170125-3e79-4659-9bba-e49eb90b6ded",
-              "version": "1.26.0-preview.20+BUILD.3"
+              "version": "1.26.0-rc.2+BUILD.1"
           }
       ],/*
   "subpacks": [
@@ -36,7 +36,8 @@
   "metadata": {
       "authors": ["Andexter8", "Andersen Zahn", "8Crafter"],
       "url": "https://sites.google.com/view/8craftermods/home",
-      "product_type": "addon"
+      "product_type": "addon",
+      "license": "Check LICENSE.txt"
   }
 }
 

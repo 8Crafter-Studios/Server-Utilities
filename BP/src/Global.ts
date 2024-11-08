@@ -290,14 +290,96 @@ declare global {
         function dsend(value: any, space?: string | number): void
         function esend(value: any, space?: string | number): void
         function fsend(value: any, space?: string | number): void
+        function bcsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void
+        function ccsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void
+        function dcsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void
+        function ecsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void
+        function fcsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void
         function psend(player: Player | executeCommandPlayerW, value: string): void
         function pasend(player: Player | executeCommandPlayerW, value: any): void
+        /**
+         * @remarks This function sends a player a message containing a stringified version of the JSON value passed in. It uses {@link JSONStringify}.
+         * @param player The player to send the message to.
+         * @param value The JSON to stringify.
+         * @param space The spacing for the stringified JSON.
+         */
         function pbsend(player: Player | executeCommandPlayerW, value: any, space?: string | number): void
+        /**
+         * @remarks This function sends a player a message containing a stringified version of the JSON value passed in. It uses {@link JSON.stringify}.
+         * @param player The player to send the message to.
+         * @param value The JSON to stringify.
+         * @param space The spacing for the stringified JSON.
+         */
         function pcsend(player: Player | executeCommandPlayerW, value: any, space?: string | number): void
+        /**
+         * @remarks This function sends a player a message containing a stringified version of the JSON value passed in. It uses {@link JSONB.stringify} with the following options: `{bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true}`.
+         * @param player The player to send the message to.
+         * @param value The JSON to stringify.
+         * @param space The spacing for the stringified JSON.
+         */
         function pdsend(player: Player | executeCommandPlayerW, value: any, space?: string | number): void
+        /**
+         * @remarks This function sends a player a message containing a stringified version of the JSON value passed in. It uses {@link JSONB.stringify} with the following options: `{bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true}`.
+         * @param player The player to send the message to.
+         * @param value The JSON to stringify.
+         * @param space The spacing for the stringified JSON.
+         */
         function pesend(player: Player | executeCommandPlayerW, value: any, space?: string | number): void
+        /**
+         * @remarks This function sends a player a message containing a stringified version of the JSON value passed in. It uses {@link JSONB.stringify} with the following options: `{bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false}`.
+         * @param player The player to send the message to.
+         * @param value The JSON to stringify.
+         * @param space The spacing for the stringified JSON.
+         */
         function pfsend(player: Player | executeCommandPlayerW, value: any, space?: string | number): void
+        /**
+         * @remarks The same as {@link pbsend} except that it colorizes the outputted JSON string.
+         * @param player The player to send the message to.
+         * @param value The JSON to stringify.
+         * @param space The spacing for the stringified JSON.
+         * @param options The options for colorizing the JSON string.
+         */
+        function pbcsend(player: Player | executeCommandPlayerW, value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void
+        /**
+         * @remarks The same as {@link pcsend} except that it colorizes the outputted JSON string.
+         * @param player The player to send the message to.
+         * @param value The JSON to stringify.
+         * @param space The spacing for the stringified JSON.
+         * @param options The options for colorizing the JSON string.
+         */
+        function pccsend(player: Player | executeCommandPlayerW, value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void
+        /**
+         * @remarks The same as {@link pdsend} except that it colorizes the outputted JSON string.
+         * @param player The player to send the message to.
+         * @param value The JSON to stringify.
+         * @param space The spacing for the stringified JSON.
+         * @param options The options for colorizing the JSON string.
+         */
+        function pdcsend(player: Player | executeCommandPlayerW, value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void
+        /**
+         * @remarks The same as {@link pesend} except that it colorizes the outputted JSON string.
+         * @param player The player to send the message to.
+         * @param value The JSON to stringify.
+         * @param space The spacing for the stringified JSON.
+         * @param options The options for colorizing the JSON string.
+         */
+        function pecsend(player: Player | executeCommandPlayerW, value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void
+        /**
+         * @remarks The same as {@link pfsend} except that it colorizes the outputted JSON string.
+         * @param player The player to send the message to.
+         * @param value The JSON to stringify.
+         * @param space The spacing for the stringified JSON.
+         * @param options The options for colorizing the JSON string.
+         */
+        function pfcsend(player: Player | executeCommandPlayerW, value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void
         function perror(player: Player | executeCommandPlayerW, error: Error, prefix?: string): void
+        /**
+         * @remarks Triggers a breakpoint when run while the {@link https://marketplace.visualstudio.com/items?itemName=mojang-studios.minecraft-debugger Visual Studio Code Minecraft Debugger Extension} is connected via the /script command.
+         * @since 1.26.0-rc.2+BUILD.1
+         * @since 11/7/2024 11:25 AM PST
+         * @version 1.0.0
+         */
+        function breakpoint(): void
         /**
          * Better Version of JSON.parse() that is able to read undefined, NaN, Infinity, and -Infinity values. 
          * @param {string} text A valid JSON string (with undefined, NaN, Infinity, and -Infinity values allowed). 
@@ -1751,6 +1833,21 @@ globalThis.esend = function esend(value: any, space?: string | number){
 globalThis.fsend = function fsend(value: any, space?: string | number){
     world.sendMessage(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false}))
 }; 
+globalThis.bcsend = function bcsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]){
+    world.sendMessage(colorizeJSONString(JSONStringify(value, true, space), options))
+}; 
+globalThis.ccsend = function ccsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]){
+    world.sendMessage(colorizeJSONString(JSON.stringify(value, undefined, space), options))
+}; 
+globalThis.dcsend = function dcsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]){
+    world.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true}), options))
+}; 
+globalThis.ecsend = function ecsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]){
+    world.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true}), options))
+}; 
+globalThis.fcsend = function fcsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]){
+    world.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false}), options))
+}; 
 globalThis.psend = function psend(player: Player|executeCommandPlayerW, value: string){
     player.sendMessage(value)
 }; 
@@ -1772,9 +1869,27 @@ globalThis.pesend = function pesend(player: Player|executeCommandPlayerW, value:
 globalThis.pfsend = function pfsend(player: Player|executeCommandPlayerW, value: any, space?: string | number){
     player.sendMessage(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false}))
 }; 
+globalThis.pbcsend = function pbcsend(player: Player|executeCommandPlayerW, value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]){
+    player.sendMessage(colorizeJSONString(JSONStringify(value, true, space), options))
+};
+globalThis.pccsend = function pccsend(player: Player|executeCommandPlayerW, value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]){
+    player.sendMessage(colorizeJSONString(JSON.stringify(value, undefined, space), options))
+};
+globalThis.pdcsend = function pdcsend(player: Player|executeCommandPlayerW, value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]){
+    player.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true}), options))
+};
+globalThis.pecsend = function pecsend(player: Player|executeCommandPlayerW, value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]){
+    player.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true}), options))
+};
+globalThis.pfcsend = function pfcsend(player: Player|executeCommandPlayerW, value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]){
+    player.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, {bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false}), options))
+};
 globalThis.perror = function perror(player: Player|executeCommandPlayerW, error: Error, prefix: string = "§c"){
     player.sendMessage(prefix+(tryget(()=>error.stringify())??(error+" "+error.stack)))
 }; 
+globalThis.breakpoint = function breakpoint(){
+    undefined; // Has a hit count type breakpoint with a value of 2.
+}
 globalThis.iterateGenerator = function iterateGenerator<TY, TR, TN>(extractorGenerator: Generator<TY, TR, TN>, maxTimePerTick=1500, whileConditions: boolean|number|string|Function=true){
     let lastYieldTime = Date.now(); // Initialize the last yield time
     async function iterateGeneratorB<TY, TR, TN>(extractorGenerator: Generator<TY, TR, TN>, lastYieldTime: number) {

@@ -919,7 +919,7 @@ export function globalSettings(sourceEntitya: Entity|executeCommandPlayerW|Playe
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*//*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
     
-        let [ chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix/*, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator*/, gametestStructureDefaultSpawnLocation, spawnCommandLocation, spawnCommandDimension, invalidChatCommandAction, chatCommandsEnbaled/*, disableCustomChatMessages, allowCustomChatMessagesMuting*//*, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes*//*, chatDisplayTimeStamp*/, autoSavePlayerData, bepl, beppb, aebe, aepl ] = t.formValues;
+        let [ chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix/*, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator*/, gametestStructureDefaultSpawnLocation, spawnCommandLocation, spawnCommandDimension, invalidChatCommandAction, chatCommandsEnbaled/*, disableCustomChatMessages, allowCustomChatMessagesMuting*//*, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes*//*, chatDisplayTimeStamp*/, autoSavePlayerData, playerInventoryDataSaveSystemEnabled, useLegacyPlayerInventoryDataSaveSystem, bepl, beppb, aebe, aepl ] = t.formValues;
         world.setDynamicProperty("andexdbSettings:chatCommandPrefix", chatCommandPrefix)
         world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", validChatCommandPrefixes)
         world.setDynamicProperty("andexdbSettings:chatRankPrefix", chatRankPrefix)
@@ -941,6 +941,8 @@ export function globalSettings(sourceEntitya: Entity|executeCommandPlayerW|Playe
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes)
         world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStamp)*/
         world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData)
+        config.system.playerInventoryDataSaveSystemEnabled=playerInventoryDataSaveSystemEnabled as boolean
+        config.system.useLegacyPlayerInventoryDataSaveSystem=useLegacyPlayerInventoryDataSaveSystem as boolean
         settings(sourceEntity); 
 }).catch(e => {
     console.error(e, e.stack);

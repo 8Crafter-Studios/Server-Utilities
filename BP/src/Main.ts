@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import { system } from "@minecraft/server";
 globalThis.beforeScriptStartTick=system.currentTick;
-export const format_version = "1.26.0-rc.1+BUILD.1";
+export const format_version = "1.26.0-rc.2+BUILD.1";
 globalThis.entity_scale_format_version=null;
 globalThis.multipleEntityScaleVersionsDetected=false;
 import "JSONB"
@@ -231,23 +231,23 @@ subscribedEvents.beforeWatchdogTerminate = system.beforeEvents.watchdogTerminate
             return;
         }else{
             e.cancel = true;
-            console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`);
+            console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}'`);
             try{
                 world.getAllPlayers().filter(p=>
                     p.hasTag("getWatchdogTerminationCancelWarnings")
                 ).forEach(p=>
-                    p.sendMessage(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`)
+                    p.sendMessage(`[Watchdog] Canceled critical exception of type '${e.terminateReason}'`)
                 );
             }catch{};
         }}
     }catch{
         e.cancel = true;
-        console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`);
+        console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}'`);
         try{
             world.getAllPlayers().filter(p=>
                 p.hasTag("getWatchdogTerminationCancelWarnings")
             ).forEach(p=>
-                p.sendMessage(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`)
+                p.sendMessage(`[Watchdog] Canceled critical exception of type '${e.terminateReason}'`)
             );
         }catch{};
     }

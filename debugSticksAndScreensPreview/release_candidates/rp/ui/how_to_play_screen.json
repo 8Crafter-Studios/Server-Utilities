@@ -570,7 +570,7 @@
     "controls": [
       {
         "paragraph_1@how_to_play_common.paragraph": {
-          "$text": "§cTHIS VERSION OF THIS ADD-ON WILL ONLY WORK FOR MINECRAFT §a1.21.3x §c(ex. §a1.21.30§c or §a1.21.31§c). \nIf you are on a different version of minecraft, please update this pack to the correct version for the version of Minecraft that you are playing on. \n§eThis add-on breaks every medium-sized update (ex. 1.21.0, 1.21.20, 1.21.30, or 1.21.40) and must be updated whenever that happens. \n§bYour data will be preserved when updating the pack to a newer version. "
+          "$text": "§cTHIS VERSION OF THIS ADD-ON WILL ONLY WORK FOR MINECRAFT §a1.21.4x §c(ex. §a1.21.40§c or §a1.21.41§c). \nIf you are on a different version of minecraft, please update this pack to the correct version for the version of Minecraft that you are playing on. \n§eThis add-on breaks every medium-sized update (ex. 1.21.0, 1.21.20, 1.21.30, or 1.21.40) and must be updated whenever that happens. \n§bYour data will be preserved when updating the pack to a newer version. "
         }
       },
       { "padding_1@how_to_play_common.padding": {} },
@@ -876,13 +876,13 @@
           }
       },
       {
-          "paragraph_22.1@how_to_play_common.paragraph": {
-              "$text": "Item Id: andexdb:liquid_clipped_pick_block_stick"
+          "paragraph_22@how_to_play_common.paragraph": {
+              "$text": "When you use the liquid clipped pick block stick on a block, it adds one of that block to your inventory. Unlike the regular pick block stick, this one can also target liquid blocks, allowing you to get lava, flowing lava, water, and flowing water into your inventory."
           }
       },
       {
-          "paragraph_22@how_to_play_common.paragraph": {
-              "$text": "When you use the liquid clipped pick block stick on a block, it adds one of that block to your inventory. Unlike the regular pick block stick, this one can also target liquid blocks, allowing you to get lava, flowing lava, water, and flowing water into your inventory."
+          "paragraph_22.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:liquid_clipped_pick_block_stick"
           }
       },
       {
@@ -891,13 +891,13 @@
           }
       },
       {
-          "paragraph_23.1@how_to_play_common.paragraph": {
-              "$text": "Item Id: andexdb:data_pick_block_stick"
+          "paragraph_23@how_to_play_common.paragraph": {
+              "$text": "When you use the data pick block stick on a block, it adds one of that block to your inventory, if the targeted block has any block entity data, it copies that too, just like CTRL + Pick Block."
           }
       },
       {
-          "paragraph_23@how_to_play_common.paragraph": {
-              "$text": "When you use the data pick block stick on a block, it adds one of that block to your inventory, if the targeted block has any block entity data, it copies that too, just like CTRL + Pick Block."
+          "paragraph_23.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:data_pick_block_stick"
           }
       },
       {
@@ -906,13 +906,13 @@
           }
       },
       {
-          "paragraph_24.1@how_to_play_common.paragraph": {
-              "$text": "Item Id: andexdb:liquid_clipped_data_pick_block_stick"
+          "paragraph_24@how_to_play_common.paragraph": {
+              "$text": "When you use the liquid clipped pick block stick on a block, it adds one of that block to your inventory, if the targeted block has any block entity data, it copies that too, just like CTRL + Pick Block. Unlike the regular pick block stick, this one can also target liquid blocks, allowing you to get lava, flowing lava, water, and flowing water into your inventory."
           }
       },
       {
-          "paragraph_24@how_to_play_common.paragraph": {
-              "$text": "When you use the liquid clipped pick block stick on a block, it adds one of that block to your inventory, if the targeted block has any block entity data, it copies that too, just like CTRL + Pick Block. Unlike the regular pick block stick, this one can also target liquid blocks, allowing you to get lava, flowing lava, water, and flowing water into your inventory."
+          "paragraph_24.1@how_to_play_common.paragraph": {
+              "$text": "Item Id: andexdb:liquid_clipped_data_pick_block_stick"
           }
       },
       { "padding_2@how_to_play_common.padding": {} },
