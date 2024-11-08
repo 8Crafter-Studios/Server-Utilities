@@ -3144,7 +3144,7 @@
             },
             {
                 "paragraph_0@how_to_play_common.paragraph": {
-                    "$text": "§l1. §rRun the command §b/structure load andexdb:-2-294_steb§r §b\\eb 0§r for enchantment levels -2 through 294. Run the command §b/structure load andexdb:-32k_steb§r or §b\\eb -32768§r for enchantment levels -32768 and 32767.§r"
+                    "$text": "§l1. §rRun the command §b/structure load andexdb:-2-294_steb§r or §b\\eb 0§r for enchantment levels -2 through 294. Run the command §b/structure load andexdb:-32k_steb§r or §b\\eb -32768§r for enchantment levels -32768 and 32767.§r"
                 }
             },
             {
