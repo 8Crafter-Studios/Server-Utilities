@@ -1185,6 +1185,21 @@ globalThis.esend = function esend(value, space) {
 globalThis.fsend = function fsend(value, space) {
     world.sendMessage(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false }));
 };
+globalThis.bcsend = function bcsend(value, space, options) {
+    world.sendMessage(colorizeJSONString(JSONStringify(value, true, space), options));
+};
+globalThis.ccsend = function ccsend(value, space, options) {
+    world.sendMessage(colorizeJSONString(JSON.stringify(value, undefined, space), options));
+};
+globalThis.dcsend = function dcsend(value, space, options) {
+    world.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true }), options));
+};
+globalThis.ecsend = function ecsend(value, space, options) {
+    world.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true }), options));
+};
+globalThis.fcsend = function fcsend(value, space, options) {
+    world.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false }), options));
+};
 globalThis.psend = function psend(player, value) {
     player.sendMessage(value);
 };
@@ -1206,8 +1221,26 @@ globalThis.pesend = function pesend(player, value, space) {
 globalThis.pfsend = function pfsend(player, value, space) {
     player.sendMessage(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false }));
 };
+globalThis.pbcsend = function pbcsend(player, value, space, options) {
+    player.sendMessage(colorizeJSONString(JSONStringify(value, true, space), options));
+};
+globalThis.pccsend = function pccsend(player, value, space, options) {
+    player.sendMessage(colorizeJSONString(JSON.stringify(value, undefined, space), options));
+};
+globalThis.pdcsend = function pdcsend(player, value, space, options) {
+    player.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true }), options));
+};
+globalThis.pecsend = function pecsend(player, value, space, options) {
+    player.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true }), options));
+};
+globalThis.pfcsend = function pfcsend(player, value, space, options) {
+    player.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false }), options));
+};
 globalThis.perror = function perror(player, error, prefix = "§c") {
     player.sendMessage(prefix + (tryget(() => error.stringify()) ?? (error + " " + error.stack)));
+};
+globalThis.breakpoint = function breakpoint() {
+    undefined; // Has a hit count type breakpoint with a value of 2.
 };
 globalThis.iterateGenerator = function iterateGenerator(extractorGenerator, maxTimePerTick = 1500, whileConditions = true) {
     let lastYieldTime = Date.now(); // Initialize the last yield time

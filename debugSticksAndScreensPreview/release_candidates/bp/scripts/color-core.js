@@ -6233,4 +6233,5 @@ export const getColorName = exports.getColorName;
 export const getContrastRatio = exports.getContrastRatio;
 export const getRelativeLuminance = exports.getRelativeLuminance;
 export const getWCAGCompliance = exports.getWCAGCompliance;
-// run in the debugger console (async()=>{const colorCore = await import("color-core"); console.log(Object.keys(colorCore.default).map(v=>`export const ${v} = exports.${v};`).join("\n"))})()
+// run in the debugger console (this was used to convert all the exports to named exports): (async()=>{const colorCore = await import("color-core"); console.log(Object.keys(colorCore.default).map(v=>`export const ${v} = exports.${v};`).join("\n"))})()
+// from 8Crafter's Debug Sticks, Chat Ranks, Custom UI, and JavaScript Commands/Script REPL and Server Utilities v1.26.0-rc.2+BULID.1: https://modbay.org/mods/1240-8crafters-debug-sticks.html
