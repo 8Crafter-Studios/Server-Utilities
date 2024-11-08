@@ -3144,27 +3144,27 @@
             },
             {
                 "paragraph_0@how_to_play_common.paragraph": {
-                    "$text": "§l1. §rRun the command §b/structure load andexdb:-2-294_steb§r §b\\eb 0§r for enchantment levels -2 through 294. Run the command §b/structure load andexdb:-32k_steb§r or §b\\eb -32768§r for enchantment levels -32768 and 32767."
+                    "$text": "§l1. §rRun the command §b/structure load andexdb:-2-294_steb§r §b\\eb 0§r for enchantment levels -2 through 294. Run the command §b/structure load andexdb:-32k_steb§r or §b\\eb -32768§r for enchantment levels -32768 and 32767.§r"
                 }
             },
             {
                 "paragraph_1@how_to_play_common.paragraph": {
-                    "$text": "§l2. Look through the barrels to find the levels of enchantments you want."
+                    "$text": "§l2. Look through the barrels to find the levels of enchantments you want.§r"
                 }
             },
             {
                 "paragraph_2@how_to_play_common.paragraph": {
-                    "$text": "§l3. Run the command §b\\roie§r followed by a list of the enchantments that you want to keep that are currently on the book that you are holding. For example: §b\\roie [\"sharpness\", \"fire_aspect\"]§r."
+                    "$text": "§l3. Run the command §b\\roie§r followed by a list of the enchantments that you want to keep that are currently on the book that you are holding. For example: §b\\roie [\"sharpness\", \"fire_aspect\"]§r.§r"
                 }
             },
             {
                 "paragraph_3@how_to_play_common.paragraph": {
-                    "$text": "§l4. Repeat steps 2-3 for each of the different levels of enchantments that you want."
+                    "$text": "§l4. Repeat steps 2-3 for each of the different levels of enchantments that you want.§r"
                 }
             },
             {
                 "paragraph_4@how_to_play_common.paragraph": {
-                    "$text": "§l5. Merge the books together in an anvil."
+                    "$text": "§l5. Merge the books together in an anvil.§r"
                 }
             },
             {
@@ -3174,27 +3174,27 @@
             },
             {
                 "paragraph_5@how_to_play_common.paragraph": {
-                    "$text": "§l1. Pick the item you want."
+                    "$text": "§l1. Pick the item you want.§r"
                 }
             },
             {
                 "paragraph_6@how_to_play_common.paragraph": {
-                    "$text": "§l2. Run the command §b\\gettransformst <item>§r (Replace <item> with the namespaced id of the item you want to put the enchantments on. For example: §b\\gettransformst netherreactor§r). You will get an enchantment transfer smithing template."
+                    "$text": "§l2. Run the command §b\\gettransformst <item>§r (Replace <item> with the namespaced id of the item you want to put the enchantments on. For example: §b\\gettransformst netherreactor§r). You will get an enchantment transfer smithing template.§r"
                 }
             },
             {
                 "paragraph_7@how_to_play_common.paragraph": {
-                    "$text": "§l3. Get a \"Smithing Table Enchanted Book\" and add the enchantments you want on it, to see how to get higher levels of enchantments than normally possible, go the \"How to get enchantments with higher levels than are normally possible\" section."
+                    "$text": "§l3. Get a \"Smithing Table Enchanted Book\" and add the enchantments you want on it, to see how to get higher levels of enchantments than normally possible, go the \"How to get enchantments with higher levels than are normally possible\" section.§r"
                 }
             },
             {
                 "paragraph_8@how_to_play_common.paragraph": {
-                    "$text": "§l4. Place a smithing table."
+                    "$text": "§l4. Place a smithing table.§r"
                 }
             },
             {
                 "paragraph_9@how_to_play_common.paragraph": {
-                    "$text": "§l5. Put a netherite ingot, the smithing table enchanted book, and the enchantment transfer smithing template into the smithing table. The result is your enchanted item."
+                    "$text": "§l5. Put a netherite ingot, the smithing table enchanted book, and the enchantment transfer smithing template into the smithing table. The result is your enchanted item.§r"
                 }
             }
         ]
