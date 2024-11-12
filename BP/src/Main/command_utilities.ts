@@ -256,7 +256,7 @@ import {
   chatSendNoCensor,
   notificationsSettings,
 } from "./ui.js";
-import { listoftransformrecipes } from "transformrecipes";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import {
   arrayify,
   utilsmetaimport,
@@ -309,7 +309,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "../Main";
-import * as transformrecipes from "transformrecipes";
+import * as transformrecipes from "Assets/constants/transformrecipes";
 import * as coords from "./coordinates";
 import * as cmds from "./commands";
 import * as bans from "./ban";

@@ -4,7 +4,7 @@ import { getUICustomForm, format_version, srun, dimensionTypeDisplayFormatting, 
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
-import { listoftransformrecipes } from "transformrecipes";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
@@ -13,7 +13,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
-import * as transformrecipes from "transformrecipes";
+import * as transformrecipes from "Assets/constants/transformrecipes";
 import * as coords from "Main/coordinates";
 import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
@@ -69,7 +69,18 @@ export async function forceShow(form, player, timeout) {
 }
 export const customFormDataTypes = [ModalFormData, ActionFormData, MessageFormData];
 export const customFormDataTypeIds = ["ModalFormData", "ActionFormData", "MessageFormData"];
-export const customElementTypes = [ModalFormData.prototype.title, ModalFormData.prototype.textField, ModalFormData.prototype.dropdown, ModalFormData.prototype.toggle, ModalFormData.prototype.slider, ActionFormData.prototype.body, ActionFormData.prototype.button, MessageFormData.prototype.button1, MessageFormData.prototype.button2, ModalFormData.prototype.submitButton];
+export const customElementTypes = [
+    ModalFormData.prototype.title,
+    ModalFormData.prototype.textField,
+    ModalFormData.prototype.dropdown,
+    ModalFormData.prototype.toggle,
+    ModalFormData.prototype.slider,
+    ActionFormData.prototype.body,
+    ActionFormData.prototype.button,
+    MessageFormData.prototype.button1,
+    MessageFormData.prototype.button2,
+    ModalFormData.prototype.submitButton,
+];
 export const customElementTypeIds = ["title", "textField", "dropdown", "toggle", "slider", "body", "button", "button1", "button2", "submitButton"];
 export function editCustomFormUI(UIId) {
     let customUI = getUICustomForm("customUIElement:" + UIId, "customUICode:" + UIId);
@@ -1270,6 +1281,7 @@ export function tpaSettings(sourceEntitya) {
     });
 }
 export class PlayerNotifications {
+    player;
     constructor(player) { this.player = player; }
     get getAllChatCommands() { return this.player.hasTag("getAllChatCommands"); }
     set getAllChatCommands(value) { value ? this.player.addTag("getAllChatCommands") : this.player.removeTag("getAllChatCommands"); }

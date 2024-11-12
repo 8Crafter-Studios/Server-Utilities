@@ -1,5 +1,6 @@
 import { Entity, world } from "@minecraft/server";
 export class MoneySystem {
+    playerID;
     get money() { return String(world.getDynamicProperty(`playerMoney:${this.playerID}`)).toBigInt() ?? 0n; }
     addMoney(amount) {
         world.setDynamicProperty(`playerMoney:${this.playerID}`, (this.money + amount.toBigInt()).toString());

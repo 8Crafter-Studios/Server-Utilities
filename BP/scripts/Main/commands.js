@@ -5,7 +5,7 @@ import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications, extraFeaturesSettings, worldBorderSettings } from "./ui.js";
-import { listoftransformrecipes } from "transformrecipes";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import { arrayify, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, arrayModifier, arrayModifierOld, RGBToHSL, HSLToRGB, mcRGBAToColorCoreRGB } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
 import { clearContainer, cmdutilsmetaimport, containerToContainerSlotArray, containerToItemStackArray, entityToContainerSlotArray, fillContainer, fillmodetypeenum, getPlayerHeldItemSlot, getPlayerselectedSlotIndex, getSlotFromParsedSlot, IllegalItemTypes, inventorySwap, inventorySwapB, inventorySwapC, itemJSONPropertiesEval, itemJSONPropertiesEvalCT, JunkItemTypes, OpItemTypes, parseSlot, rangeToIntArray, targetSelector, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListD, targetSelectorAllListE, targetSelectorB, EquipmentSlots, OtherEquipmentSlots, blockToContainerSlotArray, blockToContainerSlotListObject, blockToItemStackArray, componentTypeEnum, durabilityComponentTypeEnum, enchantableComponentTypeEnum, entityToContainerSlotArrayB, entityToContainerSlotListObject, entityToItemStackArray, equippableToContainerSlotArray, equippableToItemStackArray, getEntityHeldItemSlot, getEquipment, getInventory, propertyTypeEnum } from "./command_utilities";
@@ -17,7 +17,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "../Main";
-import * as transformrecipes from "transformrecipes";
+import * as transformrecipes from "Assets/constants/transformrecipes";
 import * as coords from "./coordinates";
 import * as cmds from "./commands";
 import * as bans from "./ban";
@@ -598,10 +598,29 @@ let tfsb = ((b) => (([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+
         // @ts-expect-error
         [])[+!+[]] + (!![] + [])[+[]]])[!+[] + !+[] + [+[]]])(b))));
 export class command {
+    type;
+    commandName;
+    currentCommandName;
+    parameters;
+    escregexp;
+    currentescregexp;
+    selectedalias;
+    command_version;
+    formats;
+    description;
+    format_version = format_version;
+    commands_format_version = commands_format_version;
+    customCommandId;
+    commandSettingsId;
+    formatting_code = "§r§f";
+    customCommandType;
+    customCommandPrefix;
+    customCommandParametersEnabled;
+    customCommandCodeLines;
+    customCommandParametersList;
+    category;
+    categories;
     constructor(command) {
-        this.format_version = format_version;
-        this.commands_format_version = commands_format_version;
-        this.formatting_code = "§r§f";
         this.type = command.type ?? "unknown";
         let commandtest = undefined;
         try {
@@ -794,6 +813,12 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
 }
 export const command_settings_format_version = "2.0.0-beta.1";
 export class commandSettings {
+    type;
+    commandName;
+    customCommandId;
+    commandSettingsId;
+    command;
+    defaultSettings;
     constructor(commandSettingsId, command) {
         this.type = commandSettingsId.startsWith("built-inCommandSettings:") ? "built-in" : commandSettingsId.startsWith("customCommandSettings:") ? "custom" : "unknown";
         this.commandName = commandSettingsId.startsWith("built-inCommandSettings:") ? commandSettingsId.slice(24) : commandSettingsId.startsWith("customCommandSettings:") ? commandSettingsId.slice(22) : commandSettingsId;
@@ -820,6 +845,20 @@ export class commandSettings {
     remove() { world.setDynamicProperty(this.commandSettingsId); }
 }
 export class executeCommandPlayerW {
+    player;
+    sendErrorsTo;
+    modifiedlocation;
+    modifieddimension;
+    rotation;
+    block;
+    fromPlayer;
+    fromEntity;
+    isFromWorldPosition;
+    fromPlayerWorldPosition;
+    fromEntityWorldPosition;
+    fromBlockWorldPosition;
+    rawWorldPosition;
+    raw;
     constructor(player, sendErrorsTo) {
         if (player instanceof WorldPosition) {
             this.modifiedlocation = player.location;
@@ -1099,6 +1138,7 @@ export class executeCommandPlayer extends executeCommandPlayerW {
 }
 export class HomeSystem {
     constructor() { }
+    static home_format_version = "0.7.0-beta.72";
     static getHomes(homeIds) { let homes = []; homeIds.forEach(c => homes.push(Home.get(c))); return homes; }
     static getAllHomes() { let homes = []; this.getHomeIds().forEach(c => homes.push(Home.get(c))); return homes; }
     static getHomeIds() { return world.getDynamicPropertyIds().filter(v => v.startsWith("home:")); }
@@ -1108,8 +1148,14 @@ export class HomeSystem {
     static get maxHomesPerPlayer() { return gwdp("homeSystemSettings:maxHomesPerPlayer") == -1 ? Infinity : Number(gwdp("homeSystemSettings:maxHomesPerPlayer") ?? Infinity); }
     static set maxHomesPerPlayer(maxHomes) { swdp("homeSystemSettings:maxHomesPerPlayer", maxHomes == Infinity ? -1 : maxHomes); }
 }
-HomeSystem.home_format_version = "0.7.0-beta.72";
 export class Home {
+    location;
+    name;
+    ownerId;
+    ownerName;
+    saveId;
+    format_version;
+    home_format_version;
     constructor(home) {
         this.location = home.location;
         this.name = home.name;
@@ -1134,6 +1180,7 @@ export class LandClaimSystem {
     constructor() { }
     get warnAboutDeniedPermissions() { return Boolean(world.getDynamicProperty("landClaimSystemSettings:warnAboutDeniedPermissions") ?? false); }
     set warnAboutDeniedPermissions(warn) { world.setDynamicProperty("landClaimSystemSettings:warnAboutDeniedPermissions", warn); }
+    static land_claim_format_version = "0.0.1-indev.1";
     static getClaims(claimIds) { let claims = []; claimIds.forEach(c => claims.push(LandClaim.get(c))); return claims; }
     static getAllClaims() { let claims = []; this.getClaimIds().forEach(c => claims.push(LandClaim.get(c))); return claims; }
     static getClaimIds() { return world.getDynamicPropertyIds().filter(v => v.startsWith("landClaim:")); }
@@ -1142,13 +1189,18 @@ export class LandClaimSystem {
     static testIfPlayerCanDoActionInArea(action, player, location) { }
     static testIfClaimAreaIsAlreadyClaimed(area) { return this.getAllClaims().map(c => tryget(() => c.area)).filter(c => !!c).every(c => !doBoundingBoxesIntersect(area, c)); }
 }
-LandClaimSystem.land_claim_format_version = "0.0.1-indev.1";
 export class LandClaim {
+    area;
+    dimension;
+    name;
+    ownerId;
+    ownerName;
+    saveId;
+    format_version = format_version;
+    land_claim_format_version = LandClaimSystem.land_claim_format_version;
+    defaultPermissions = { breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true };
+    customPermissions = {};
     constructor(claim) {
-        this.format_version = format_version;
-        this.land_claim_format_version = LandClaimSystem.land_claim_format_version;
-        this.defaultPermissions = { breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true };
-        this.customPermissions = {};
         this.area = claim.area;
         this.dimension = typeof claim.dimension == "string" ? world.getDimension(claim.dimension) : claim.dimension;
         this.name = claim.name;
@@ -1172,11 +1224,17 @@ export class LandClaim {
     static delete(claimId) { world.setDynamicProperty(claimId); }
 }
 export class chunkLandClaim {
+    chunks;
+    dimension;
+    name;
+    ownerId;
+    ownerName;
+    saveId;
+    format_version = format_version;
+    land_claim_format_version = LandClaimSystem.land_claim_format_version;
+    defaultPermissions = { breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true };
+    customPermissions = {};
     constructor(claim) {
-        this.format_version = format_version;
-        this.land_claim_format_version = LandClaimSystem.land_claim_format_version;
-        this.defaultPermissions = { breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true };
-        this.customPermissions = {};
         this.chunks = claim.chunks;
         this.dimension = typeof claim.dimension == "string" ? world.getDimension(claim.dimension) : claim.dimension;
         this.name = claim.name;
@@ -1339,11 +1397,9 @@ function extractCustomPatternType(str) {
     return Object.assign(patternTypes, { mode: mode });
 }
 export class BlockPattern {
-    constructor(blocks = [], type = "random") {
-        this.blocks = [];
-        this.type = "random";
-        this.blocks = blocks.map(v => ({ type: v.type, states: v.states, weight: v.weight, get raw() { return `${this.type}${!!this.weight ? `%${this.weight}` : ""}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}${!!this.weight ? `%${this.weight}` : ""}`; } })), this.type = type;
-    }
+    blocks = [];
+    type = "random";
+    constructor(blocks = [], type = "random") { this.blocks = blocks.map(v => ({ type: v.type, states: v.states, weight: v.weight, get raw() { return `${this.type}${!!this.weight ? `%${this.weight}` : ""}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}${!!this.weight ? `%${this.weight}` : ""}`; } })), this.type = type; }
     generateBlock(generateIndex = 0, forceMode) { return (((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[Number(BigInt(generateIndex) % BigInt(this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length))]); }
     generateBlockP(generateIndex = 0, forceMode) { const p = ((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[Number(BigInt(generateIndex) % BigInt(this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length))]; return BlockPermutation.resolve(p.type, p.states); }
     push(...blocks) { return this.blocks.push(...blocks.map(v => ({ type: v.type, states: v.states, weight: v.weight, get raw() { return `${this.type}${!!this.weight ? `%${this.weight}` : ""}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}${!!this.weight ? `%${this.weight}` : ""}`; } }))); }
@@ -1356,17 +1412,15 @@ export class BlockPattern {
     static extractAllWRaw(str, mode) { return { raw: str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v => new BlockPattern(v, mode ?? v.mode)) }; }
 }
 export class BlockMask {
+    blocksList = [];
+    hasStates;
+    blockTypeIds;
     get blocks() { return this.blocksList; }
     set blocks(blocks) { this.blocksList = blocks.map(v => ({ type: v.type, states: v.states, get raw() { return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}`; } })); this.hasStates = !!blocks.find(v => !!v.states); [...new Set(this.blockTypeIds = blocks.map(v => v.type))]; }
     get includesStates() { return this.hasStates; }
     get blockTypes() { return this.blockTypeIds; }
     evaluateIds() { this.blocksList = cullEmpty(this.blocksList.map(v => (v.type == "none" ? undefined : v.type == "any" ? undefined : { type: v.type == "keep" ? "minecraft:air" : tryget(() => BlockTypes.get(v.type).id) ?? v.type, states: v.states, get raw() { return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}`; } }))); }
-    constructor(blocks = []) {
-        this.blocksList = [];
-        this.blocksList = blocks.map(v => ({ type: v.type, states: v.states, get raw() { return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}`; } }));
-        this.hasStates = !!blocks.find(v => !!v.states);
-        [...new Set(this.blockTypeIds = blocks.map(v => v.type))];
-    }
+    constructor(blocks = []) { this.blocksList = blocks.map(v => ({ type: v.type, states: v.states, get raw() { return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}`; } })); this.hasStates = !!blocks.find(v => !!v.states); [...new Set(this.blockTypeIds = blocks.map(v => v.type))]; }
     push(...blocks) { this.hasStates = this.hasStates || !!blocks.find(v => !!v.states); [...new Set(this.blockTypeIds = [...this.blocksList, ...blocks].map(v => v.type))]; return this.blocksList.push(...blocks.map(v => ({ type: v.type, states: v.states, get raw() { return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}`; } }))); }
     static parse() { }
     static extractRaw(str) { return str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]; }
@@ -2459,7 +2513,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     srun(() => {
                         let structure = "andexdb:-2-294_steb";
                         if (!!args[1]) {
-                            const object = modules.structuremappings.steb.find(o => args[1] >= o.range[0] && args[1] <= o.range[1]);
+                            const object = modules.assets.constants.structuremappings.steb.find(o => args[1] >= o.range[0] && args[1] <= o.range[1]);
                             if (!!object) {
                                 structure = object.structure;
                             }
@@ -14789,7 +14843,7 @@ ${command.dp}snapshot list`);
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args;
                     !args[1].includes(":") ? args[1] = "minecraft:" + args[1] : undefined;
-                    player.sendMessageB(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `Data value for enchantment transfer smithing template is ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}.`);
+                    player.sendMessageB(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v["data"] && !!!args[2]) || (v["data"] == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `Data value for enchantment transfer smithing template is ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v["data"] && !!!args[2]) || (v["data"] == args[2])))}.`);
                 }
                 break;
             case !!switchTest.match(/^gettransformst$/):
@@ -14797,8 +14851,8 @@ ${command.dp}snapshot list`);
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args;
                     !args[1].includes(":") ? args[1] = "minecraft:" + args[1] : undefined;
-                    player.runCommandAsync(`/give @s andexdb:enchantment_transfer_smithing_template 1 ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}`);
-                    player.sendMessageB(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `You have been given an enchantment transfer smithing template with the data value ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}.`);
+                    player.runCommandAsync(`/give @s andexdb:enchantment_transfer_smithing_template 1 ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v["data"] && !!!args[2]) || (v["data"] == args[2])))}`);
+                    player.sendMessageB(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v["data"] && !!!args[2]) || (v["data"] == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `You have been given an enchantment transfer smithing template with the data value ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v["data"] && !!!args[2]) || (v["data"] == args[2])))}.`);
                 }
                 break;
             case !!switchTest.match(/^transformresultatdvindex$/):

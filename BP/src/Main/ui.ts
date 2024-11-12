@@ -4,7 +4,7 @@ import { getUICustomForm, format_version, srun, dimensionTypeDisplayFormatting, 
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
-import { listoftransformrecipes } from "transformrecipes";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";/*
@@ -13,7 +13,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import *  as main from "Main";
-import *  as transformrecipes from "transformrecipes";
+import *  as transformrecipes from "Assets/constants/transformrecipes";
 import *  as coords from "Main/coordinates";
 import *  as cmds from "Main/commands";
 import *  as bans from "Main/ban";
@@ -68,7 +68,48 @@ export async function forceShow<T extends ModalFormData|ActionFormData|MessageFo
 }
 export const customFormDataTypes = [ModalFormData, ActionFormData, MessageFormData]
 export const customFormDataTypeIds = ["ModalFormData", "ActionFormData", "MessageFormData"]
-export const customElementTypes = [ModalFormData.prototype.title, ModalFormData.prototype.textField, ModalFormData.prototype.dropdown, ModalFormData.prototype.toggle, ModalFormData.prototype.slider, ActionFormData.prototype.body, ActionFormData.prototype.button, MessageFormData.prototype.button1, MessageFormData.prototype.button2, ModalFormData.prototype.submitButton]
+export const customElementTypes = [
+    ModalFormData.prototype.title as (
+        titleText: RawMessage | string
+    ) => ModalFormData,
+    ModalFormData.prototype.textField as (
+        label: RawMessage | string,
+        placeholderText: RawMessage | string,
+        defaultValue?: RawMessage | string
+    ) => ModalFormData,
+    ModalFormData.prototype.dropdown as (
+        label: RawMessage | string,
+        options: (RawMessage | string)[],
+        defaultValueIndex?: number
+    ) => ModalFormData,
+    ModalFormData.prototype.toggle as (
+        label: RawMessage | string,
+        defaultValue?: boolean
+    ) => ModalFormData,
+    ModalFormData.prototype.slider as (
+        label: RawMessage | string,
+        minimumValue: number,
+        maximumValue: number,
+        valueStep: number,
+        defaultValue?: number
+    ) => ModalFormData,
+    ActionFormData.prototype.body as (
+        bodyText: RawMessage | string
+    ) => ActionFormData,
+    ActionFormData.prototype.button as (
+        text: RawMessage | string,
+        iconPath?: string
+    ) => ActionFormData,
+    MessageFormData.prototype.button1 as (
+        text: RawMessage | string
+    ) => MessageFormData,
+    MessageFormData.prototype.button2 as (
+        text: RawMessage | string
+    ) => MessageFormData,
+    ModalFormData.prototype.submitButton as (
+        submitButtonText: RawMessage | string
+    ) => ModalFormData,
+];
 export const customElementTypeIds = ["title", "textField", "dropdown", "toggle", "slider", "body", "button", "button1", "button2", "submitButton"]
 export type ModalFormElements = ({type: "title", title: RawMessage|string}|{type: "textField", label: RawMessage | string, placeholderText: RawMessage | string, defaultValue?: RawMessage | string}|{type: "dropdown", label: RawMessage | string, options: (RawMessage | string)[], defaultValueIndex?: number}|{type: "toggle", label: RawMessage | string, defaultValue?: boolean}|{type: "slider", label: RawMessage | string, minimumValue: number, maximumValue: number, valueStep: number, defaultValue?: number}|{type: "submitButton", submitButtonText: RawMessage | string})[]
 export function editCustomFormUI(UIId: String|string){

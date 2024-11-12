@@ -5,7 +5,13 @@ export const format_version = "1.26.0-rc.3+BUILD.1";
 export const supported_minecraft_version = "1.21.4x";
 globalThis.entity_scale_format_version=null;
 globalThis.multipleEntityScaleVersionsDetected=false;
-import "JSONB"
+globalThis.modules={
+    assets: {
+        classes: {},
+        constants: {},
+    },
+} as any;
+import "Assets/classes/JSONB"
 import "Global"
   
 /*
@@ -64,6 +70,10 @@ import "@minecraft/math.js";
 import "GlobalDecorators";
 export const mainmetaimport = import.meta
 export const editorStickMenuOpeningAsyncCancelActionNumbers = {} as {[id: string]: number}
+import *  as transformrecipes from "Assets/constants/transformrecipes";
+globalThis.modules.assets.constants.transformrecipes=transformrecipes
+import *  as errors from "Main/errors";
+globalThis.modules.errors=errors
 
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType/*, MinecraftBlockTypes*//*, Camera*/, Dimension, Entity, EntityInventoryComponent, type EntityRaycastHit, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, world, BlockInventoryComponent/*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */EntityType, EntityTypes/*, MinecraftEntityTypes*/, EquipmentSlot, Container, type BlockRaycastHit, EntityEquippableComponent, BlockTypes, MolangVariableMap, type Vector3, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, type DefinitionModifier, BlockStates, BlockVolume, CompoundBlockVolume/*, BlockVolumeUtils*//*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, type Vector2, ItemEnchantableComponent, type RawText, type RawMessage, DyeColor, type DimensionLocation, type Enchantment, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode, LocationOutOfWorldBoundariesError } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
@@ -82,30 +92,40 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import *  as main from "Main";
-import *  as transformrecipes from "transformrecipes";
+globalThis.modules.main=main
 import *  as coords from "Main/coordinates";
+globalThis.modules.coords=coords
 import *  as cmds from "Main/commands";
+globalThis.modules.cmds=cmds
 import *  as bans from "Main/ban";
+globalThis.modules.bans=bans
 import *  as uis from "Main/ui";
+globalThis.modules.uis=uis
 import *  as playersave from "Main/player_save";
+globalThis.modules.playersave=playersave
 import *  as spawnprot from "Main/spawn_protection";
+globalThis.modules.spawnprot=spawnprot
 import *  as chat from "Main/chat";
+globalThis.modules.chat=chat
 import *  as cmdutils from "Main/command_utilities";
+globalThis.modules.cmdutils=cmdutils
 import *  as cmdslist from "Main/commands_list";
+globalThis.modules.cmdslist=cmdslist
 import *  as cmdsdocs from "Main/commands_documentation";
+globalThis.modules.cmdsdocs=cmdsdocs
 import *  as utils from "Main/utilities";
-import *  as errors from "Main/errors";
+globalThis.modules.utils=utils
 import *  as shopmain from "ExtraFeatures/shop_main";
 import *  as servershop from "ExtraFeatures/server_shop";
 import *  as playershop from "ExtraFeatures/player_shop";
 import *  as moneysystem from "ExtraFeatures/money";
-import *  as structuremappings from "structure_mappings";
+import *  as structuremappings from "Assets/constants/structure_mappings";
 import mcMath from "@minecraft/math.js";
 import colorCore, { Color } from "color-core";
 import Decimal from "decimal.js";
 import * as semver from "semver";/*
 import { disableWatchdog } from "@minecraft/debug-utilities";*/
-import { listoftransformrecipes } from "transformrecipes";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import { chatMessage, patternColors, patternColorsMap, patternFunctionList, evaluateChatColorType, chatSend } from "Main/chat";
 import { targetSelectorAllListE, targetSelectorB, targetSelectorAllListC, clearContainer } from "Main/command_utilities";
 import { customModulo } from "Main/utilities";
@@ -138,6 +158,9 @@ export const modules = {
     mcCommon,
     mcVanillaData,*/
     main,
+    /**
+     * This is an alias of {@link modules.assets.constants.transformrecipes}
+     */
     transformrecipes,
     coords,
     cmds,
@@ -168,7 +191,16 @@ export const modules = {
     servershop,
     playershop,
     moneysystem,
-    structuremappings
+    assets: {
+        classes: {
+            JSONB,
+        },
+        constants: {
+            charMaps: await import("Assets/constants/charMaps"),
+            structuremappings,
+            transformrecipes,
+        }
+    }
 }
 globalThis.modules=modules
 declare global {

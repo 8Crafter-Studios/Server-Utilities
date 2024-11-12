@@ -4,7 +4,7 @@ import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates,
 import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings } from "./ui.js";
-import { listoftransformrecipes } from "transformrecipes";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import { arrayify, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, arrayModifier, arrayModifierOld } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
 import { cmdutilsmetaimport, targetSelector, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListD, targetSelectorAllListE, targetSelectorB } from "./command_utilities";
@@ -16,7 +16,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
-import * as transformrecipes from "transformrecipes";
+import * as transformrecipes from "Assets/constants/transformrecipes";
 import * as coords from "./coordinates";
 import * as cmds from "./commands";
 import * as bans from "./ban";
@@ -45,9 +45,21 @@ spawnprot;
 mcMath;
 export const ban_format_version = "1.2.0";
 export class ban {
+    type;
+    playerName;
+    originalPlayerId;
+    playerId;
+    originalPlayerName;
+    removeAfterBanExpires;
+    unbanDate;
+    banDate;
+    bannedById;
+    bannedByName;
+    reason;
+    format_version = format_version;
+    ban_format_version = ban_format_version;
+    banId;
     constructor(ban) {
-        this.format_version = format_version;
-        this.ban_format_version = ban_format_version;
         this.type = ban.type ?? (ban.playerName != undefined ? "name" : "id");
         this.unbanDate = ban.unbanDate;
         this.banDate = ban.banDate;

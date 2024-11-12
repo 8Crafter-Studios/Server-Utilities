@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-      "module": "ES2020",
-      "target": "ES2021",
+      "module": "ES2022",
+      "target": "ES2022",
       "moduleResolution": "Node",
       "allowSyntheticDefaultImports": true,
       "baseUrl": "./src",
@@ -11,9 +11,10 @@
         "@minecraft/math.js": ["../node_modules/@minecraft/math"]/*,
         "semver": ["C:/Users/ander/github/Debug Sticks/BP/node_modules/semver/index.d.ts"]*/
       },
-      "allowJs": true,/*
-      "declaration": true,
+      "allowJs": true,
+      "declaration": true,/*
       "declarationMap": true,*/
+      "declarationDir": "./declaration",
       "verbatimModuleSyntax": true/*, 
       "resolveJsonModule": true*/,
       "sourceMap": true,

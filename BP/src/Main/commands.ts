@@ -5,7 +5,7 @@ import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications, extraFeaturesSettings, worldBorderSettings } from "./ui.js";
-import { listoftransformrecipes } from "transformrecipes";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import { arrayify, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, arrayModifier, arrayModifierOld, RGBToHSL, HSLToRGB, mcRGBAToColorCoreRGB } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
 import { clearContainer, cmdutilsmetaimport,containerToContainerSlotArray,containerToItemStackArray,entityToContainerSlotArray,fillContainer,fillmodetypeenum,getPlayerHeldItemSlot,getPlayerselectedSlotIndex,getSlotFromParsedSlot,IllegalItemTypes,inventorySwap,inventorySwapB,inventorySwapC,itemJSONPropertiesEval,itemJSONPropertiesEvalCT,JunkItemTypes,OpItemTypes,parseSlot,rangeToIntArray,targetSelector,targetSelectorAllListB,targetSelectorAllListC,targetSelectorAllListD,targetSelectorAllListE,targetSelectorB,EquipmentSlots,OtherEquipmentSlots,blockToContainerSlotArray,blockToContainerSlotListObject,blockToItemStackArray,componentTypeEnum,durabilityComponentTypeEnum,enchantableComponentTypeEnum,entityToContainerSlotArrayB,entityToContainerSlotListObject,entityToItemStackArray,equippableToContainerSlotArray,equippableToItemStackArray,getEntityHeldItemSlot,getEquipment,getInventory,propertyTypeEnum } from "./command_utilities";
@@ -17,7 +17,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
 import * as mcCommon from "@minecraft/common";*//*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import *  as main from "../Main";
-import *  as transformrecipes from "transformrecipes";
+import *  as transformrecipes from "Assets/constants/transformrecipes";
 import *  as coords from "./coordinates";
 import *  as cmds from "./commands";
 import *  as bans from "./ban";
@@ -2213,7 +2213,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             srun(()=>{
                 let structure = "andexdb:-2-294_steb";
                 if(!!args[1]){
-                    const object = modules.structuremappings.steb.find(o=>args[1]>=o.range[0]&&args[1]<=o.range[1]);
+                    const object = modules.assets.constants.structuremappings.steb.find(o=>args[1]>=o.range[0]&&args[1]<=o.range[1]);
                     if(!!object){
                         structure=object.structure;
                     }else{
@@ -9914,15 +9914,15 @@ ${command.dp}snapshot list`); return}
             eventData.cancel = true;
             const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args as [string, string, number]
             !args[1].includes(":")?args[1]="minecraft:"+args[1]:undefined
-            player.sendMessageB(listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))==-1?"§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value.":`Data value for enchantment transfer smithing template is ${listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))}.`)
+            player.sendMessageB(listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v["data"]&&!!!args[2])||(v["data"]==args[2])))==-1?"§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value.":`Data value for enchantment transfer smithing template is ${listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v["data"]&&!!!args[2])||(v["data"]==args[2])))}.`)
         }
         break; 
         case !!switchTest.match(/^gettransformst$/): {
             eventData.cancel = true;
             const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args as [string, string, number]
             !args[1].includes(":")?args[1]="minecraft:"+args[1]:undefined
-            player.runCommandAsync(`/give @s andexdb:enchantment_transfer_smithing_template 1 ${listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))}`)
-            player.sendMessageB(listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))==-1?"§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value.":`You have been given an enchantment transfer smithing template with the data value ${listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v.data&&!!!args[2])||(v.data==args[2])))}.`)
+            player.runCommandAsync(`/give @s andexdb:enchantment_transfer_smithing_template 1 ${listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v["data"]&&!!!args[2])||(v["data"]==args[2])))}`)
+            player.sendMessageB(listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v["data"]&&!!!args[2])||(v["data"]==args[2])))==-1?"§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value.":`You have been given an enchantment transfer smithing template with the data value ${listoftransformrecipes.findIndex(v=>v.id==args[1]&&((!!!v["data"]&&!!!args[2])||(v["data"]==args[2])))}.`)
         }
         break; 
         case !!switchTest.match(/^transformresultatdvindex$/): {

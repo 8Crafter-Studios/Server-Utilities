@@ -46,6 +46,9 @@
          "path" : "contents.json"
       },
       {
+         "path" : "font/glyph_EF.png"
+      },
+      {
          "path" : "LICENSE.txt"
       },
       {
@@ -202,10 +205,10 @@
          "path" : "textures/items/diamond_red_right_arrow_transform_template.png"
       },
       {
-         "path" : "textures/items/orange_brush_dyed.tga"
+         "path" : "textures/particle/slight_red_tint.png"
       },
       {
-         "path" : "textures/particle/slight_red_tint.png"
+         "path" : "textures/items/orange_brush_dyed.tga"
       },
       {
          "path" : "ui/settings_screen.json"
