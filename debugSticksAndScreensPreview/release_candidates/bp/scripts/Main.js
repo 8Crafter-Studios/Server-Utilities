@@ -1,10 +1,17 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import { system } from "@minecraft/server";
 globalThis.beforeScriptStartTick = system.currentTick;
-export const format_version = "1.26.0-rc.2";
+export const format_version = "1.26.0-rc.3";
+export const supported_minecraft_version = "1.21.4x";
 globalThis.entity_scale_format_version = null;
 globalThis.multipleEntityScaleVersionsDetected = false;
-import "JSONB";
+globalThis.modules = {
+    assets: {
+        classes: {},
+        constants: {},
+    },
+};
+import "Assets/classes/JSONB";
 import "Global";
 /*
 import "AllayTests.js";
@@ -62,6 +69,10 @@ import "@minecraft/math.js";
 import "GlobalDecorators";
 export const mainmetaimport = import.meta;
 export const editorStickMenuOpeningAsyncCancelActionNumbers = {};
+import * as transformrecipes from "Assets/constants/transformrecipes";
+globalThis.modules.assets.constants.transformrecipes = transformrecipes;
+import * as errors from "Main/errors";
+globalThis.modules.errors = errors;
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode, LocationOutOfWorldBoundariesError } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
@@ -79,30 +90,40 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
-import * as transformrecipes from "transformrecipes";
+globalThis.modules.main = main;
 import * as coords from "Main/coordinates";
+globalThis.modules.coords = coords;
 import * as cmds from "Main/commands";
+globalThis.modules.cmds = cmds;
 import * as bans from "Main/ban";
+globalThis.modules.bans = bans;
 import * as uis from "Main/ui";
+globalThis.modules.uis = uis;
 import * as playersave from "Main/player_save";
+globalThis.modules.playersave = playersave;
 import * as spawnprot from "Main/spawn_protection";
+globalThis.modules.spawnprot = spawnprot;
 import * as chat from "Main/chat";
+globalThis.modules.chat = chat;
 import * as cmdutils from "Main/command_utilities";
+globalThis.modules.cmdutils = cmdutils;
 import * as cmdslist from "Main/commands_list";
+globalThis.modules.cmdslist = cmdslist;
 import * as cmdsdocs from "Main/commands_documentation";
+globalThis.modules.cmdsdocs = cmdsdocs;
 import * as utils from "Main/utilities";
-import * as errors from "Main/errors";
+globalThis.modules.utils = utils;
 import * as shopmain from "ExtraFeatures/shop_main";
 import * as servershop from "ExtraFeatures/server_shop";
 import * as playershop from "ExtraFeatures/player_shop";
 import * as moneysystem from "ExtraFeatures/money";
-import * as structuremappings from "structure_mappings";
+import * as structuremappings from "Assets/constants/structure_mappings";
 import mcMath from "@minecraft/math.js";
 import colorCore, { Color } from "color-core";
 import Decimal from "decimal.js";
 import * as semver from "semver"; /*
 import { disableWatchdog } from "@minecraft/debug-utilities";*/
-import { listoftransformrecipes } from "transformrecipes";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import { chatMessage, patternColors, patternColorsMap, patternFunctionList, evaluateChatColorType, chatSend } from "Main/chat";
 import { targetSelectorAllListE, targetSelectorB, targetSelectorAllListC, clearContainer } from "Main/command_utilities";
 import { customModulo } from "Main/utilities";
@@ -131,6 +152,9 @@ export const modules = {
     mcServerUi,
     GameTest,
     main,
+    /**
+     * This is an alias of {@link modules.assets.constants.transformrecipes}
+     */
     transformrecipes,
     coords,
     cmds,
@@ -156,7 +180,16 @@ export const modules = {
     servershop,
     playershop,
     moneysystem,
-    structuremappings
+    assets: {
+        classes: {
+            JSONB,
+        },
+        constants: {
+            charMaps: await import("Assets/constants/charMaps"),
+            structuremappings,
+            transformrecipes,
+        }
+    }
 };
 globalThis.modules = modules;
 globalThis.crashEnabled = false;
@@ -651,6 +684,19 @@ export class config {
     }
 }
 export class worldPlayers {
+    rotx;
+    roty;
+    dimension;
+    entity;
+    block; /*
+    constructor(location: Vector3, rotation: Vector2, dimension?: DimensionType|Dimension|string, entity?: Entity|Player, block?: Block) {
+        this.location = location;
+        this.rotation = rotation;
+        if(dimension == undefined){}else{this.dimension = world.getDimension((dimension as DimensionType)?.typeId ?? (dimension as Dimension)?.id ?? (dimension as string)); };
+        this.entity = entity as Entity
+        this.block = block*/ /*
+    if(dimension.constructor.name == DimensionType.constructor.name){this.dimension = world.getDimension((dimension as DimensionType)?.typeId)}else{this.dimension = world.getDimension((dimension as Dimension)?.id)}; */ /*
+}*/
     static get savedPlayers() {
         return savedPlayer.getSavedPlayers();
     }
@@ -746,6 +792,12 @@ export class worldPlayers {
  * @since 1.20.0-development.63
  */
 export class SemVerString {
+    major;
+    minor;
+    patch;
+    pre_release_stage_internal;
+    pre_release_version_internal;
+    build;
     constructor(major, minor, patch, pre_release, build /*, SemVerVersion*/) {
         if (!!!pre_release) { }
         else if (typeof pre_release != "string") {
@@ -806,12 +858,12 @@ export class SemVerString {
     toString() { return this.raw; }
     toPrimitive() { return this.raw; }
     toJSON() { return { major: this.major, minor: this.minor, patch: this.patch, pre_release_stage: this.pre_release_stage_internal, pre_release_version: this.pre_release_version_internal, build: this.build, type: "SemVerString" }; }
+    static pre_release_regex = /^(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))$/;
+    static build_regex = /^([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/;
+    static semver_regex = /^(?<base>(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*))(?:-(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)))?(?:\+(?<build>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
     static fromJSON(json) { return new SemVerString(Number(json.major), Number(json.minor), Number(json.patch), json.pre_release_stage + json.pre_release_version, json.build); }
     static fromString(string) { const json = string.match(SemVerString.semver_regex).groups; return new SemVerString(Number(json.major), Number(json.minor), Number(json.patch), json.pre_release_stage + json.pre_release_version, json.build); }
 }
-SemVerString.pre_release_regex = /^(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))$/;
-SemVerString.build_regex = /^([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/;
-SemVerString.semver_regex = /^(?<base>(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*))(?:-(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)))?(?:\+(?<build>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
 export function SemVerValidator(string) { return !!string.match(SemVerString.semver_regex); }
 export function SemVerMatcher(string) { return string.match(SemVerString.semver_regex); }
 /*let sourceEntity = Entity.prototype*/ /*
@@ -4622,16 +4674,19 @@ c*/
 /*convertToCompoundBlockVolume(String(world.getDynamicProperty("noPistonExtensionAreas")))*/ /*
 let b = a[Number(world.getAllPlayers()[0].getDynamicProperty("debugStickPropertyIndex"))]*/
 export class interactable_blockb {
-    constructor() {
-        this.id = "";
-        this.delay = 0;
-        this.holdDuration = 0;
-    }
+    id = "";
+    delay = 0;
+    holdDuration = 0;
 }
 ;
 export let interactable_block;
 interactable_block = [];
 export class customFormUIElement {
+    index;
+    type;
+    args;
+    code;
+    typeIndex;
     constructor(index, type, args) { this.index = index; this.type = type; this.args = args; this.code = this.type + "(" + this.args.join(", ") + ")"; this.typeIndex = customElementTypeIds.findIndex((value, index) => (value == this.type)); }
 }
 ;

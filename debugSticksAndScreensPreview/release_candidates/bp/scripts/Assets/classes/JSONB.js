@@ -67,7 +67,7 @@ export const JSONB = {};
         var partial;
         var value = holder[key];
         if (options.get) {
-            if (!!holder.__lookupGetter__(key)) {
+            if (Object.hasOwn(holder, "__lookupGetter__") ? !!holder?.__lookupGetter__(key) : false) {
                 if (options.set) {
                     if (!!holder.__lookupSetter__(key)) {
                         value = { get: holder.__lookupGetter__(key), set: holder.__lookupSetter__(key) };
@@ -81,13 +81,13 @@ export const JSONB = {};
                 }
             }
             else if (options.set) {
-                if (!!holder.__lookupSetter__(key)) {
+                if (Object.hasOwn(holder, "__lookupSetter__") ? !!holder.__lookupSetter__(key) : false) {
                     value = { set: holder.__lookupSetter__(key) };
                 }
             }
         }
         else if (options.set) {
-            if (!!holder.__lookupSetter__(key)) {
+            if (Object.hasOwn(holder, "__lookupSetter__") ? !!holder.__lookupSetter__(key) : false) {
                 value = { set: holder.__lookupSetter__(key) };
             }
         }

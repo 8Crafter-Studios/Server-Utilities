@@ -1,6 +1,5 @@
 {
     "namespace": "how_to_play",
-
     "how_to_play_screen@how_to_play_common.screen_base": {
         "$header_safezone_control": "common_store.store_top_bar_filler",
         "$header_bar_control": "common_store.store_top_bar",
@@ -29,7 +28,6 @@
       }
     ]*/
     },
-
     "how_to_play_selector_stack_panel": {
         "type": "stack_panel",
         "anchor_from": "top_left",
@@ -53,7 +51,10 @@
                                             "type": "panel",
                                             "anchor_from": "top_left",
                                             "anchor_to": "top_left",
-                                            "size": ["100%", "30px"],
+                                            "size": [
+                                                "100%",
+                                                "30px"
+                                            ],
                                             "controls": [
                                                 {
                                                     "vanilla_section_toggle_button@common_toggles.light_ui_toggle": {
@@ -63,7 +64,6 @@
                                                             "100%",
                                                             "30px"
                                                         ],
-
                                                         "$button_type_panel|default": "how_to_play_common.toggle_button_control_b",
                                                         "$checked_control": "common_toggles.toggle_checked",
                                                         "$radio_toggle_group": true,
@@ -71,12 +71,10 @@
                                                         "$toggle_group_default_selected": 0,
                                                         "$toggle_group_forced_index": 0,
                                                         "$button_text": "Vanilla Help Menu",
-
                                                         "$toggle_tab_focus_binding_type": "global",
                                                         "$toggle_tab_focus_binding_name": "#navigation_tab_focus_precedence",
                                                         "$toggle_on_hover_binding_type": "global",
                                                         "$toggle_on_hover_binding_name": "#toggle_on_hover",
-
                                                         "$toggle_view_binding_name": "ToggleVanillaHelpMenu",
                                                         "$toggle_property_bag": {
                                                             "#panel_title": "Vanilla Help Menu"
@@ -108,7 +106,10 @@
                                             "type": "stack_panel",
                                             "anchor_from": "top_left",
                                             "anchor_to": "top_left",
-                                            "min_size": ["100%", "0px"],
+                                            "min_size": [
+                                                "100%",
+                                                "0px"
+                                            ],
                                             "controls": [
                                                 {
                                                     "moving_around_button@how_to_play.andexsa_section_toggle_button": {}
@@ -121,7 +122,10 @@
                                             "type": "stack_panel",
                                             "anchor_from": "top_left",
                                             "anchor_to": "top_left",
-                                            "min_size": ["100%", "0px"],
+                                            "min_size": [
+                                                "100%",
+                                                "0px"
+                                            ],
                                             "controls": [
                                                 {
                                                     "moving_around_button@how_to_play.andexdb_section_toggle_button": {}
@@ -137,7 +141,10 @@
                                 "type": "stack_panel",
                                 "anchor_from": "top_left",
                                 "anchor_to": "top_left",
-                                "min_size": ["100%", "0px"],
+                                "min_size": [
+                                    "100%",
+                                    "0px"
+                                ],
                                 "controls": [
                                     {
                                         "andexdb_how_to_play_selector_pane_b@how_to_play.andexdb_how_to_play_selector_pane_b": {}
@@ -150,7 +157,10 @@
                                 "type": "stack_panel",
                                 "anchor_from": "top_left",
                                 "anchor_to": "top_left",
-                                "min_size": ["100%", "0px"],
+                                "min_size": [
+                                    "100%",
+                                    "0px"
+                                ],
                                 "controls": [
                                     {
                                         "andexsa_how_to_play_selector_pane_b@how_to_play.andexsa_how_to_play_selector_pane_b": {}
@@ -200,7 +210,6 @@
                                             "$toggle_group_forced_index": 4
                                         }
                                     },
-
                                     {
                                         "preparing_for_the_night_category@how_to_play_common.topic_category": {
                                             "$category": "preparingForTheNight"
@@ -231,7 +240,6 @@
                                             "$toggle_group_forced_index": 9
                                         }
                                     },
-
                                     {
                                         "surviving_the_first_night_category@how_to_play_common.topic_category": {
                                             "$category": "survivingTheFirstNight"
@@ -252,7 +260,6 @@
                                             "$toggle_group_forced_index": 12
                                         }
                                     },
-
                                     {
                                         "getting_settled_category@how_to_play_common.topic_category": {
                                             "$category": "gettingSettled"
@@ -273,7 +280,6 @@
                                             "$toggle_group_forced_index": 15
                                         }
                                     },
-
                                     {
                                         "education_category@how_to_play_common.topic_category": {
                                             "$category": "education",
@@ -325,10 +331,12 @@
                                             "$toggle_group_forced_index": 24
                                         }
                                     },
-
                                     {
                                         "padding_1@how_to_play_common.padding": {
-                                            "size": [0, 10]
+                                            "size": [
+                                                0,
+                                                10
+                                            ]
                                         }
                                     },
                                     {
@@ -350,28 +358,38 @@
             }
         ]
     },
-
     "andexdb_topic_category": {
         "type": "panel",
         "anchor_from": "top_left",
         "anchor_to": "top_left",
-        "size": ["100%", "16px"],
+        "size": [
+            "100%",
+            "16px"
+        ],
         "controls": [
             {
                 "category_text": {
                     "type": "label",
                     "anchor_from": "bottom_left",
                     "anchor_to": "bottom_left",
-                    "size": ["default", "default"],
-                    "max_size": ["100%", "100% - 4px"],
-                    "offset": ["0px", "-3px"],
+                    "size": [
+                        "default",
+                        "default"
+                    ],
+                    "max_size": [
+                        "100%",
+                        "100% - 4px"
+                    ],
+                    "offset": [
+                        "0px",
+                        "-3px"
+                    ],
                     "text": "$category",
                     "color": "$main_header_text_color"
                 }
             }
         ]
     },
-
     "andexdb_how_to_play_selector_pane_b": {
         "type": "stack_panel",
         "bindings": [
@@ -394,10 +412,14 @@
                     "$toggle_group_forced_index": 900
                 }
             },
-
             {
                 "andexdb_systems_category@how_to_play.andexdb_topic_category": {
                     "$category": "Systems"
+                }
+            },
+            {
+                "andexdb_enchant_anything_with_anything_button@how_to_play.andexdb_enchant_anything_with_anything_button": {
+                    "$toggle_group_forced_index": 926
                 }
             },
             {
@@ -424,8 +446,8 @@
                 "andexdb_world_border_system_button@how_to_play.andexdb_world_border_system_button": {
                     "$toggle_group_forced_index": 922
                 }
-            } /*
-      { "andexdb_money_system_button@how_to_play.andexdb_money_system_button": { "$toggle_group_forced_index": 923 } },*/,
+            }, /*
+      { "andexdb_money_system_button@how_to_play.andexdb_money_system_button": { "$toggle_group_forced_index": 923 } },*/
             {
                 "andexdb_server_shop_system_button@how_to_play.andexdb_server_shop_system_button": {
                     "$toggle_group_forced_index": 924
@@ -435,10 +457,9 @@
                 "andexdb_player_shop_system_button@how_to_play.andexdb_player_shop_system_button": {
                     "$toggle_group_forced_index": 925
                 }
-            } /*
+            }, /*
       { "andexdb_sign_shop_system_button@how_to_play.andexdb_sign_shop_system_button": { "$toggle_group_forced_index": 926 } },*/ /*
-      { "andexdb_trade_request_system_button@how_to_play.andexdb_trade_request_system_button": { "$toggle_group_forced_index": 927 } },*/,
-
+      { "andexdb_trade_request_system_button@how_to_play.andexdb_trade_request_system_button": { "$toggle_group_forced_index": 927 } },*/
             {
                 "andexdb_items_block_entities_category@how_to_play.andexdb_topic_category": {
                     "$category": "Items/Blocks/Entities"
@@ -459,7 +480,6 @@
                     "$toggle_group_forced_index": 913
                 }
             },
-
             {
                 "andexdb_commands_category@how_to_play.andexdb_topic_category": {
                     "$category": "Commands"
@@ -489,12 +509,11 @@
                 "andexdb_custom_commands_button@how_to_play.andexdb_custom_commands_button": {
                     "$toggle_group_forced_index": 921
                 }
-            } /*
+            }, /*
 
       { "andexdb_worldedit_category@how_to_play.andexdb_topic_category": { "$category": "WorldEdit" } },
       { "andexdb_worldedit_basics_button@how_to_play.andexdb_worldedit_basics_button": { "$toggle_group_forced_index": 928 } },
-      { "andexdb_worldedit_commands_button@how_to_play.andexdb_worldedit_commands_button": { "$toggle_group_forced_index": 929 } },*/,
-
+      { "andexdb_worldedit_commands_button@how_to_play.andexdb_worldedit_commands_button": { "$toggle_group_forced_index": 929 } },*/
             {
                 "andexdb_settings_category@how_to_play.andexdb_topic_category": {
                     "$category": "Settings"
@@ -541,7 +560,7 @@
                 }
             }
         ]
-    } /*
+    }, /*
 
   "andexdb_section_content_panels": {
     "type": "stack_panel",
@@ -581,14 +600,19 @@
         }
       }
     ]
-  },*/,
-
+  },*/
     "how_to_play_section_content_panels": {
         "type": "stack_panel",
         "anchor_from": "top_left",
         "anchor_to": "top_left",
-        "size": ["100% - 5px", "100%c + 5px"],
-        "offset": [2, 0],
+        "size": [
+            "100% - 5px",
+            "100%c + 5px"
+        ],
+        "offset": [
+            2,
+            0
+        ],
         "controls": [
             {
                 "general_tips_sections": {
@@ -624,7 +648,6 @@
                                     {
                                         "inventory_section@how_to_play.inventory_section": {}
                                     },
-
                                     {
                                         "your_first_craft_section@how_to_play.your_first_craft_section": {}
                                     },
@@ -640,7 +663,6 @@
                                     {
                                         "mining_section@how_to_play.mining_section": {}
                                     },
-
                                     {
                                         "nightfall_new_section@how_to_play.nightfall_new_section": {}
                                     },
@@ -650,7 +672,6 @@
                                     {
                                         "death_and_respawn_section@how_to_play.death_and_respawn_section": {}
                                     },
-
                                     {
                                         "food_section@how_to_play.food_section": {}
                                     },
@@ -660,7 +681,6 @@
                                     {
                                         "improved_tools_section@how_to_play.improved_tools_section": {}
                                     },
-
                                     {
                                         "world_builder_section@how_to_play.world_builder_section": {
                                             "ignored": "(not $education_edition)"
@@ -706,7 +726,6 @@
                                             "ignored": "(not $education_edition)"
                                         }
                                     },
-
                                     {
                                         "playing_together_section@how_to_play.playing_together_section": {
                                             "ignored": "$education_edition"
@@ -767,7 +786,9 @@
             {
                 "andexdb_installation_section@how_to_play.andexdb_installation_section": {}
             },
-
+            {
+                "andexdb_enchant_anything_with_anything_section@how_to_play.andexdb_enchant_anything_with_anything_section": {}
+            },
             {
                 "andexdb_ban_system_sectionn@how_to_play.andexdb_ban_system_section": {}
             },
@@ -782,17 +803,16 @@
             },
             {
                 "andexdb_world_border_system_section@how_to_play.andexdb_world_border_system_section": {}
-            } /*
-      { "andexdb_money_system_section@how_to_play.andexdb_money_system_section": {} },*/,
+            }, /*
+      { "andexdb_money_system_section@how_to_play.andexdb_money_system_section": {} },*/
             {
                 "andexdb_server_shop_system_section@how_to_play.andexdb_server_shop_system_section": {}
             },
             {
                 "andexdb_player_shop_system_section@how_to_play.andexdb_player_shop_system_section": {}
-            } /*
+            }, /*
       { "andexdb_sign_shop_system_section@how_to_play.andexdb_sign_shop_system_section": {} },*/ /*
-      { "andexdb_trade_request_system_section@how_to_play.andexdb_trade_request_system_section": {} },*/,
-
+      { "andexdb_trade_request_system_section@how_to_play.andexdb_trade_request_system_section": {} },*/
             {
                 "andexdb_settings_section@how_to_play.andexdb_settings_section": {}
             },
@@ -817,13 +837,15 @@
             {
                 "andexdb_notifications_settings_section@how_to_play.andexdb_notifications_settings_section": {}
             },
-
-            { "andexdb_items_section@how_to_play.andexdb_items_section": {} },
-            { "andexdb_blocks_section@how_to_play.andexdb_blocks_section": {} },
+            {
+                "andexdb_items_section@how_to_play.andexdb_items_section": {}
+            },
+            {
+                "andexdb_blocks_section@how_to_play.andexdb_blocks_section": {}
+            },
             {
                 "andexdb_entities_section@how_to_play.andexdb_entities_section": {}
             },
-
             {
                 "andexdb_commands_basics_section@how_to_play.andexdb_commands_basics_section": {}
             },
@@ -848,14 +870,19 @@
         "type": "panel",
         "anchor_from": "top_left",
         "anchor_to": "top_left",
-        "size": ["100%", "30px"],
+        "size": [
+            "100%",
+            "30px"
+        ],
         "controls": [
             {
                 "andexdb_section_toggle_button@common_toggles.light_ui_toggle": {
                     "anchor_from": "top_left",
                     "anchor_to": "top_left",
-                    "size": ["100%", "30px"],
-
+                    "size": [
+                        "100%",
+                        "30px"
+                    ],
                     "$button_type_panel|default": "how_to_play_common.toggle_button_control_b",
                     "$checked_control": "common_toggles.toggle_checked",
                     "$radio_toggle_group": true,
@@ -863,17 +890,14 @@
                     "$toggle_group_default_selected": 0,
                     "$toggle_group_forced_index": 2,
                     "$button_text": "8Crafter's Debug Sticks",
-
                     "$default_texture": "textures/ui/button_borderless_light_blue_default",
                     "$hover_texture": "textures/ui/button_borderless_light_blue_hover",
                     "$pressed_texture": "textures/ui/button_borderless_light_blue_hover_pressed",
                     "$pressed_no_hover_texture": "textures/ui/button_borderless_light_blue_pressed",
-
                     "$toggle_tab_focus_binding_type": "global",
                     "$toggle_tab_focus_binding_name": "#navigation_tab_focus_precedence",
                     "$toggle_on_hover_binding_type": "global",
                     "$toggle_on_hover_binding_name": "#toggle_on_hover",
-
                     "$toggle_view_binding_name": "ToggleAndexdbHelpMenu",
                     "$toggle_property_bag": {
                         "#panel_title": "Back"
@@ -899,19 +923,24 @@
             }
         ]
     },
-
     "andexdb_help_button": {
         "type": "panel",
         "anchor_from": "top_left",
         "anchor_to": "top_left",
-        "size": ["100%", "30px"],
+        "size": [
+            "100%",
+            "30px"
+        ],
         "controls": [
             {
                 "andexdb_help_button@settings_common.section_toggle_base": {
                     "$toggle_view_binding_name|default": "($section_topic + '_button_toggle')",
                     "$glyph_texture|default": "textures/ui/8Crafter",
                     "$glyph_color_texture|default": "textures/items/stick",
-                    "$glyph_size|default": [16, 16],
+                    "$glyph_size|default": [
+                        16,
+                        16
+                    ],
                     "$button_text|default": "menu.debugSticksGuide",
                     "$title_text|default": "menu.debugSticksGuide2",
                     "$toggle_property_bag": {
@@ -921,13 +950,11 @@
             }
         ]
     },
-
     "andexdb_installation_button@how_to_play.andexdb_help_button": {
         "$section_topic": "andexdbInstallation",
         "$button_text": "Installation/Setup",
         "$title_text": "andexdb.installationSlashSetup"
     },
-
     "andexdb_installation_section@how_to_play_common.main_sections": {
         "bindings": [
             {
@@ -943,7 +970,9 @@
                     "$text": "§cTHIS VERSION OF THIS ADD-ON WILL ONLY WORK FOR MINECRAFT §a1.21.4x §c(ex. §a1.21.40§c or §a1.21.41§c). \nIf you are on a different version of minecraft, please update this pack to the correct version for the version of Minecraft that you are playing on. \n§eThis add-on breaks every medium-sized update (ex. 1.21.0, 1.21.20, 1.21.30, or 1.21.40) and must be updated whenever that happens. \n§bYour data will be preserved when updating the pack to a newer version. "
                 }
             },
-            { "padding_1@how_to_play_common.padding": {} },
+            {
+                "padding_1@how_to_play_common.padding": {}
+            },
             {
                 "first_setup_section_header@how_to_play_common.subsection_title": {
                     "$text": "§aAdd-On Setup§r"
@@ -956,15 +985,17 @@
             },
             {
                 "paragraph_2_all_required_experimental_toggles@how_to_play_common.paragraph": {
-                    "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \n  ∙ Upcoming Creator Features\n  ∙ Beta APIs\n  ∙ Creator Cameras: New Third Person Presets\n  ∙ Creator Cameras: Focus Target Camera\n  ∙ Bundles"
+                    "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \n  ∙ Upcoming Creator Features\n  ∙ Beta APIs\n  ∙ Creator Cameras: New Third Person Presets\n  ∙ Creator Cameras: Focus Target Camera"
                 }
             },
             {
                 "paragraph_2_other_recommended_settings@how_to_play_common.paragraph": {
-                    "$text": "It is also recommended to enable the \"Education Edition\" toggle. "
+                    "$text": "It is also recommended to enable the \"Education Edition\" toggle."
                 }
             },
-            { "padding_2@how_to_play_common.padding": {} },
+            {
+                "padding_2@how_to_play_common.padding": {}
+            },
             {
                 "updating_section_header@how_to_play_common.subsection_title": {
                     "$text": "§bUpdating§r"
@@ -977,12 +1008,12 @@
             },
             {
                 "paragraph_3a@how_to_play_common.paragraph": {
-                    "$text": "To update the add-on on a world all you have to do is: "
+                    "$text": "To update the add-on on a world all you have to do is:"
                 }
             },
             {
                 "paragraph_3b@how_to_play_common.paragraph": {
-                    "$text": "1. Get the .mcaddon file for the new version. \n2. Import it into minecraft. \n3. Go on the edit world screen for the world that you want to update the add-on on. \n4. Deactivate the old version of the add-on. \n5. Activate the new version of the add-on. (Make sure that you activate the behavior pack first or else it might glitch and show that both the resource and behavior packs are on, when only the resource pack is on, which you will see if you go to the main menu and then back into the edit world screen again.)\n6. Go back to the main menu. \n7. Go into the edit world screen again and insure that both the resource and behavior packs are active. "
+                    "$text": "1. Get the .mcaddon file for the new version.\n2. Import it into minecraft.\n3. Go on the edit world screen for the world that you want to update the add-on on.\n4. Deactivate the old version of the add-on.\n5. Activate the new version of the add-on. (Make sure that you activate the behavior pack first or else it might glitch and show that both the resource and behavior packs are on, when only the resource pack is on, which you will see if you go to the main menu and then back into the edit world screen again.)\n6. Go back to the main menu.\n7. Go into the edit world screen again and insure that both the resource and behavior packs are active."
                 }
             },
             {
@@ -992,18 +1023,21 @@
             },
             {
                 "paragraph_3c@how_to_play_common.paragraph": {
-                    "$text": "To update the add-on on a realm all you have to do is: "
+                    "$text": "To update the add-on on a realm all you have to do is:"
                 }
             },
             {
                 "paragraph_3d@how_to_play_common.paragraph": {
-                    "$text": "1. Get the .mcaddon file for the new version. \n2. Import it into minecraft. \n3. Download the world from the realm. \n4. Go on the edit world screen for the world that you just downloaded. \n5. Deactivate the old version of the add-on. \n6. Activate the new version of the add-on. \n7. Go back to the main menu. \n8. Go into the edit world screen again and insure that both the resource and behavior packs are active. \n9. Load up the world. (This is very important, if you don't do this then the packs won't actually add when you put the world back on to the realm.)\n10. Save & Quit the world. \n11. Go to the realms settings screen. "
+                    "$text": "1. Get the .mcaddon file for the new version.\n2. Import it into minecraft.\n3. Download the world from the realm.\n4. Go on the edit world screen for the world that you just downloaded.\n5. Deactivate the old version of the add-on.\n6. Activate the new version of the add-on.\n7. Go back to the main menu.\n8. Go into the edit world screen again and insure that both the resource and behavior packs are active.\n9. Load up the world. (This is very important, if you don't do this then the packs won't actually add when you put the world back on to the realm.)\n10. Save & Quit the world.\n11. Go to the realms settings screen."
                 }
             },
             {
                 "image_1@how_to_play_common.image": {
                     "texture": "textures/ui/help/installation/edit_realm_button_arrow",
-                    "size": ["100%", "50px"]
+                    "size": [
+                        "100%",
+                        "50px"
+                    ]
                 }
             },
             {
@@ -1014,7 +1048,10 @@
             {
                 "image_2@how_to_play_common.image": {
                     "texture": "textures/ui/help/installation/select_realm_active_world_edit_world_button_arrow",
-                    "size": ["100%", "200px"]
+                    "size": [
+                        "100%",
+                        "200px"
+                    ]
                 }
             },
             {
@@ -1025,17 +1062,19 @@
             {
                 "image_3@how_to_play_common.image": {
                     "texture": "textures/ui/help/installation/realm_game_settings_replace_world_button_arrow",
-                    "size": ["100%", "100px"]
+                    "size": [
+                        "100%",
+                        "100px"
+                    ]
                 }
             },
             {
                 "paragraph_3g@how_to_play_common.paragraph": {
-                    "$text": "\n14. Select the world that you just added the packs to. "
+                    "$text": "\n14. Select the world that you just added the packs to."
                 }
             }
         ]
     },
-
     "andexdb_items_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/icon_recipe_item",
@@ -1054,7 +1093,9 @@
             }
         ],
         "controls": [
-            { "padding_1@how_to_play_common.padding": {} },
+            {
+                "padding_1@how_to_play_common.padding": {}
+            },
             {
                 "debug_sticks_section_header@how_to_play_common.subsection_title": {
                     "$text": "§dDebug Sticks§r"
@@ -1285,7 +1326,9 @@
                     "$text": "Item Id: andexdb:liquid_clipped_data_pick_block_stick"
                 }
             },
-            { "padding_2@how_to_play_common.padding": {} },
+            {
+                "padding_2@how_to_play_common.padding": {}
+            },
             {
                 "other_items_section_header@how_to_play_common.subsection_title": {
                     "$text": "§aBrushes"
@@ -1294,6 +1337,41 @@
             {
                 "paragraph_-2@how_to_play_common.paragraph": {
                     "$text": "The brush items are made to be used as worldedit brushes, to add functionality to them you have to use the §b\\brush§r command while holding the brush in your mainhand. There are 3 categories of brushes, the only differences between them are their textures, in each of those 3 categories there are 4 types, each with different repeat intervals."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.1@how_to_play_common.paragraph": {
+                    "$text": "  ∙ Brushes allow you to fill an area with a custom pattern just by looking at it. The brush will place from the first solid block in the direction that you are looking. Note that modifications done with the brush CANNOT be undone using §b\\undo§r."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.2@how_to_play_common.paragraph": {
+                    "$text": "  ∙ Brushes can be found in the items tab of the creative inventory. The different brush types are the number of uses per second they support. Brush 2 (no animation) and 4 (with animation) activate once per click, while Brush 1 uses the item 10 times per second when the use button is held, and Brush 3 will use the item every tick while the use button is held (recommended)."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.3@how_to_play_common.paragraph": {
+                    "$text": "  ∙ You can use the brush command (§b\\br§r, §b\\brush§r, §b\\\\br§r, or §b\\\\brush§r) while holding a brush to set its settings. Note that the brush command works on all non-stackable items, which will act like Brush 2."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.4@how_to_play_common.paragraph": {
+                    "$text": "  ∙ Ex: §b\\brush sphere stone,ice,diamond_block%%4 4§r. The full syntax can be found by running §b\\help cmd brush§r."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.5@how_to_play_common.paragraph": {
+                    "$text": "  ∙ Using the §b-l§r flag will make it so the item lore on the brush doesn't show up."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.6@how_to_play_common.paragraph": {
+                    "$text": "  ∙ The §b-h§r flag after the shape parameter makes the shape hollow (only works on certain shapes, see the help documentation)."
+                }
+            },
+            {
+                "bullet_point_paragraph_-2.7@how_to_play_common.paragraph": {
+                    "$text": "  ∙ §bsplatter§r will not affect air blocks, but fills in a circle area. §bsplattersurface§r does the same thing, but only affects the top layer of blocks. Ex: §b\\brush splattersurface s:stone,iron_block,diamond_block%%4 5 10§r. Decay values can be between 0 and 50."
                 }
             },
             {
@@ -1488,7 +1566,6 @@
             }
         ]
     },
-
     "andexdb_blocks_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/blocks/grass_side_carried",
@@ -1514,7 +1591,6 @@
             }
         ]
     },
-
     "andexdb_entities_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/icon_panda",
@@ -1540,7 +1616,6 @@
             }
         ]
     },
-
     "andexdb_commands_basics_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/ImpulseSquare",
@@ -1548,7 +1623,6 @@
         "$button_text": "Commands Basics",
         "$title_text": "andexdb.commandsBasics"
     },
-
     "andexdb_commands_basics_section@how_to_play_common.main_sections": {
         "bindings": [
             {
@@ -1601,7 +1675,6 @@
             }
         ]
     },
-
     "andexdb_commands_parameters_basics_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/ImpulseSquare",
@@ -1609,7 +1682,6 @@
         "$button_text": "Parameters Basics",
         "$title_text": "andexdb.commandsParametersBasics"
     },
-
     "andexdb_commands_parameters_basics_section@how_to_play_common.main_sections": {
         "bindings": [
             {
@@ -1805,7 +1877,6 @@
                     "$text": "Here are some examples: "
                 }
             },
-
             {
                 "bullet_point_paragraph_0@how_to_play_common.paragraph": {
                     "$text": "  ∙ <name: string>"
@@ -1826,7 +1897,6 @@
                     "$text": "  ∙ [-tfsa]"
                 }
             },
-
             {
                 "header_4@how_to_play_common.header": {
                     "$text": "Parameter Restrictions: "
@@ -2109,7 +2179,6 @@
             }
         ]
     },
-
     "andexdb_commands_parameters_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/ImpulseSquare",
@@ -2117,7 +2186,6 @@
         "$button_text": "Parameter types",
         "$title_text": "andexdb.commandsParameters"
     },
-
     "andexdb_commands_parameters_section@how_to_play_common.main_sections": {
         "bindings": [
             {
@@ -2363,7 +2431,6 @@
                     "$text": "Examples: "
                 }
             },
-
             {
                 "bullet_point_paragraph_0@how_to_play_common.paragraph": {
                     "$text": "  · @s"
@@ -2389,7 +2456,6 @@
                     "$text": "  · @e[family=monster,type=creeper]"
                 }
             },
-
             {
                 "header_18@how_to_play_common.header": {
                     "$text": "targetSelector"
@@ -2510,7 +2576,6 @@
                     "$text": "Examples: "
                 }
             },
-
             {
                 "bullet_point_paragraph_5@how_to_play_common.paragraph": {
                     "$text": "  · 70 92.67 -69.69"
@@ -2556,7 +2621,6 @@
                     "$text": "  · 19.38 ~-2210.21038 124065123478"
                 }
             },
-
             {
                 "header_29@how_to_play_common.header": {
                     "$text": "location"
@@ -2572,7 +2636,6 @@
                     "$text": "Examples: "
                 }
             },
-
             {
                 "bullet_point_paragraph_14@how_to_play_common.paragraph": {
                     "$text": "  · 70 92.67 -69.69"
@@ -2603,7 +2666,6 @@
                     "$text": "  · 19.38 ~-2210.21038 124065123478"
                 }
             },
-
             {
                 "header_30@how_to_play_common.header": {
                     "$text": "~"
@@ -2686,7 +2748,6 @@
             }
         ]
     },
-
     "andexdb_commands_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/ImpulseSquare",
@@ -2712,7 +2773,6 @@
             }
         ]
     },
-
     "andexdb_custom_commands_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/ChainSquare",
@@ -2720,7 +2780,6 @@
         "$button_text": "Custom Commands",
         "$title_text": "andexdb.customCommands"
     },
-
     "andexdb_custom_commands_section@how_to_play_common.main_sections": {
         "bindings": [
             {
@@ -2783,7 +2842,6 @@
             }
         ]
     },
-
     "andexdb_ban_system_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/hammer_l",
@@ -2791,7 +2849,6 @@
         "$button_text": "Ban System",
         "$title_text": "andexdb.banSystem"
     },
-
     "andexdb_ban_system_section@how_to_play_common.main_sections": {
         "bindings": [
             {
@@ -2812,7 +2869,9 @@
                     "$text": "1. Open the main menu (use \"\\mm\")\n2. Go to \"Manage Players\"\n3. Go through the pages to find the player you wish to ban and click on them\n4. Click \"Manage Bans\"\n5. Enter the time and reason, and submit it"
                 }
             },
-            { "padding_2@how_to_play_common.padding": {} },
+            {
+                "padding_2@how_to_play_common.padding": {}
+            },
             {
                 "never_joined_section_header@how_to_play_common.subsection_title": {
                     "$text": "§cHow do I ban a player who has never joined the world?§r"
@@ -2825,7 +2884,6 @@
             }
         ]
     },
-
     "andexdb_anti_spam_system_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/settings_glyph_color_2x",
@@ -2833,7 +2891,6 @@
         "$button_text": "Anti-Spam System",
         "$title_text": "andexdb.antiSpamSystem"
     },
-
     "andexdb_anti_spam_system_section@how_to_play_common.main_sections": {
         "bindings": [
             {
@@ -2881,7 +2938,6 @@
             }
         ]
     },
-
     "andexdb_home_system_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/store_home_icon",
@@ -2889,7 +2945,6 @@
         "$button_text": "Home System",
         "$title_text": "andexdb.homeSystem"
     },
-
     "andexdb_home_system_section@how_to_play_common.main_sections": {
         "bindings": [
             {
@@ -2932,7 +2987,6 @@
             }
         ]
     },
-
     "andexdb_tpa_system_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/items/ender_pearl",
@@ -2940,7 +2994,6 @@
         "$button_text": "TPA System",
         "$title_text": "andexdb.tpaSystem"
     },
-
     "andexdb_tpa_system_section@how_to_play_common.main_sections": {
         "bindings": [
             {
@@ -2963,7 +3016,6 @@
             }
         ]
     },
-
     "andexdb_world_border_system_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/xyz_axis",
@@ -2989,7 +3041,6 @@
             }
         ]
     },
-
     "andexdb_server_shop_system_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/servers" /*"textures/ui/store_home_icon"*/,
@@ -3015,7 +3066,6 @@
             }
         ]
     },
-
     "andexdb_player_shop_system_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/icon_multiplayer" /*"textures/ui/store_home_icon"*/,
@@ -3041,7 +3091,6 @@
             }
         ]
     },
-
     "andexdb_sign_shop_system_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/icon_sign" /*"textures/ui/store_home_icon"*/,
@@ -3067,7 +3116,89 @@
             }
         ]
     },
-
+    "andexdb_enchant_anything_with_anything_button@how_to_play.andexdb_help_button": {
+        "$glyph_texture": "textures/ui/8Crafter",
+        "$glyph_color_texture": "textures/items/book_enchanted",
+        "$section_topic": "andexdbEnchantAnythingWithAnything",
+        "$button_text": "Enchant Anything With Anything",
+        "$title_text": "andexdb.enchantAnythingWithAnything"
+    },
+    // to-do
+    "andexdb_enchant_anything_with_anything_section@how_to_play_common.main_sections": {
+        "bindings": [
+            {
+                "binding_type": "view",
+                "source_control_name": "andexdbEnchantAnythingWithAnything_button_toggle",
+                "source_property_name": "#toggle_state",
+                "target_property_name": "#visible"
+            }
+        ],
+        "controls": [
+            {
+                "padding_1@how_to_play_common.padding": {}
+            },
+            {
+                "get_higher_enchantment_levels_section_header@how_to_play_common.subsection_title": {
+                    "$text": "§aHow to get enchantments with higher levels than are normally possible§r"
+                }
+            },
+            {
+                "paragraph_0@how_to_play_common.paragraph": {
+                    "$text": "§l1. §rRun the command §b/structure load andexdb:-2-294_steb§r or §b\\eb 0§r for enchantment levels -2 through 294. Run the command §b/structure load andexdb:-32k_steb§r or §b\\eb -32768§r for enchantment levels -32768 and 32767.§r"
+                }
+            },
+            {
+                "paragraph_1@how_to_play_common.paragraph": {
+                    "$text": "§l2. Look through the barrels to find the levels of enchantments you want.§r"
+                }
+            },
+            {
+                "paragraph_2@how_to_play_common.paragraph": {
+                    "$text": "§l3. Run the command §b\\roie§r followed by a list of the enchantments that you want to keep that are currently on the book that you are holding. For example: §b\\roie [\"sharpness\", \"fire_aspect\"]§r.§r"
+                }
+            },
+            {
+                "paragraph_3@how_to_play_common.paragraph": {
+                    "$text": "§l4. Repeat steps 2-3 for each of the different levels of enchantments that you want.§r"
+                }
+            },
+            {
+                "paragraph_4@how_to_play_common.paragraph": {
+                    "$text": "§l5. Merge the books together in an anvil.§r"
+                }
+            },
+            {
+                "enchant_any_item_with_any_enchantment_section_header@how_to_play_common.subsection_title": {
+                    "$text": "§aHow do I enchant any item with any enchantment?§r"
+                }
+            },
+            {
+                "paragraph_5@how_to_play_common.paragraph": {
+                    "$text": "§l1. Pick the item you want.§r"
+                }
+            },
+            {
+                "paragraph_6@how_to_play_common.paragraph": {
+                    "$text": "§l2. Run the command §b\\gettransformst <item>§r (Replace <item> with the namespaced id of the item you want to put the enchantments on. For example: §b\\gettransformst netherreactor§r). You will get an enchantment transfer smithing template.§r"
+                }
+            },
+            {
+                "paragraph_7@how_to_play_common.paragraph": {
+                    "$text": "§l3. Get a \"Smithing Table Enchanted Book\" and add the enchantments you want on it, to see how to get higher levels of enchantments than normally possible, go the \"How to get enchantments with higher levels than are normally possible\" section.§r"
+                }
+            },
+            {
+                "paragraph_8@how_to_play_common.paragraph": {
+                    "$text": "§l4. Place a smithing table.§r"
+                }
+            },
+            {
+                "paragraph_9@how_to_play_common.paragraph": {
+                    "$text": "§l5. Put a netherite ingot, the smithing table enchanted book, and the enchantment transfer smithing template into the smithing table. The result is your enchanted item.§r"
+                }
+            }
+        ]
+    },
     "andexdb_settings_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/settings_glyph_color_2x",
@@ -3075,7 +3206,6 @@
         "$button_text": "Settings",
         "$title_text": "andexdb.settings"
     },
-
     "andexdb_settings_section@how_to_play_common.main_sections": {
         "bindings": [
             {
@@ -3093,7 +3223,6 @@
             }
         ]
     },
-
     "andexdb_global_settings_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/worldsIcon",
@@ -3101,7 +3230,6 @@
         "$button_text": "Global Settings",
         "$title_text": "andexdb.globalSettings"
     },
-
     "andexdb_global_settings_section@how_to_play_common.main_sections": {
         "bindings": [
             {
@@ -3124,7 +3252,6 @@
             }
         ]
     },
-
     "andexdb_chat_ranks_settings_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/message",
@@ -3132,7 +3259,6 @@
         "$button_text": "Chat Ranks Settings",
         "$title_text": "andexdb.chatRanksSettings"
     },
-
     "andexdb_chat_ranks_settings_section@how_to_play_common.main_sections": {
         "bindings": [
             {
@@ -3150,7 +3276,6 @@
             }
         ]
     },
-
     "andexdb_script_settings_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/debug_glyph_color",
@@ -3176,7 +3301,6 @@
             }
         ]
     },
-
     "andexdb_ui_settings_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/feedIcon",
@@ -3202,7 +3326,6 @@
             }
         ]
     },
-
     "andexdb_eval_auto_execute_settings_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/automation_glyph_color",
@@ -3228,7 +3351,6 @@
             }
         ]
     },
-
     "andexdb_personal_settings_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/profile_glyph_color",
@@ -3254,7 +3376,6 @@
             }
         ]
     },
-
     "andexdb_notifications_settings_button@how_to_play.andexdb_help_button": {
         "$glyph_texture": "textures/ui/8Crafter",
         "$glyph_color_texture": "textures/ui/icon_bell",

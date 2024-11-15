@@ -14,6 +14,52 @@ import { StorageFullError } from "Main/errors";
  * @see {@link ServerShop}
  */
 export class PlayerShop {
+    /**
+     * The id of the player shop.
+     */
+    id;
+    /**
+     * The display name of the player shop. This is displayed on the button for the player shop in the manage player shops menu.
+     */
+    name;
+    /**
+     * The title of the player shop. This is the title displayed at the top of the UI for the player shop.
+     */
+    title;
+    /**
+     * The body text that is displayed on the main page of the player shop.
+     */
+    mainPageBodyText;
+    /**
+     * The body text that is displayed on the main buy page of the server shop.
+     * @todo
+     */
+    mainBuyPageBodyText;
+    /**
+     * The body text that is displayed on the main sell page of the server shop.
+     * @todo
+     */
+    mainSellPageBodyText;
+    /**
+     * Whether or not players can sell items in this shop.
+     */
+    sellShop;
+    /**
+     * Whether or not players can buy items in this shop.
+     */
+    buyShop;
+    /**
+     * Whether or not this shop can be accessed by any player through the use of the \viewplayershops command.
+     */
+    publicShop;
+    /**
+     * The ID of the player who owns this player shop.
+     */
+    playerID;
+    /**
+     * The name of the player who owns this player shop.
+     */
+    playerName;
     constructor(config) {
         this.id = config.id ?? null;
         this.name = config.name ?? null;
@@ -970,6 +1016,8 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
     }
 }
 export class PlayerShopManager {
+    static playerShopItemTextureHints = ["textures/items/stick", "textures/blocks/gravel", "textures/blocks/reactor_core_stage_0"];
+    static playerShopPageTextureHints = ["textures/ui/arrowRight"];
     static get playerShopItemTextureHint() { return this.playerShopItemTextureHints[Math.floor(Math.random() * this.playerShopItemTextureHints.length)]; }
     static get playerShopPageTextureHint() { return this.playerShopPageTextureHints[Math.floor(Math.random() * this.playerShopPageTextureHints.length)]; }
     /**
@@ -3225,6 +3273,4 @@ Texture: ${page.texture}`);
         });
     }
 }
-PlayerShopManager.playerShopItemTextureHints = ["textures/items/stick", "textures/blocks/gravel", "textures/blocks/reactor_core_stage_0"];
-PlayerShopManager.playerShopPageTextureHints = ["textures/ui/arrowRight"];
 //# sourceMappingURL=player_shop.js.map

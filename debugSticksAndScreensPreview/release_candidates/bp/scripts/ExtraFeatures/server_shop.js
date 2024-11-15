@@ -13,6 +13,44 @@ import { MoneySystem } from "./money";
  * @see {@link PlayerShop}
  */
 export class ServerShop {
+    /**
+     * The id of the server shop.
+     */
+    id;
+    /**
+     * The display name of the server shop. This is displayed on the button for the server shop in the manage server shops menu.
+     */
+    name;
+    /**
+     * The title of the server shop. This is the title displayed at the top of the UI for the server shop.
+     */
+    title;
+    /**
+     * The body text that is displayed on the main page of the server shop.
+     */
+    mainPageBodyText;
+    /**
+     * The body text that is displayed on the main buy page of the server shop.
+     * @todo
+     */
+    mainBuyPageBodyText;
+    /**
+     * The body text that is displayed on the main sell page of the server shop.
+     * @todo
+     */
+    mainSellPageBodyText;
+    /**
+     * Whether or not players can sell items in this shop.
+     */
+    sellShop;
+    /**
+     * Whether or not players can buy items in this shop.
+     */
+    buyShop;
+    /**
+     * Whether or not this shop can be accessed by any player through the use of the \viewservershops command.
+     */
+    publicShop;
     constructor(config) {
         this.id = config.id ?? null;
         this.name = config.name ?? null;
@@ -702,6 +740,16 @@ export class LinkedServerShopCommands {
  * @see {@link PlayerShopManager}
  */
 export class ServerShopManager {
+    /**
+     *
+     * @see {@link PlayerShopManager.playerShopItemTextureHints}
+     */
+    static serverShopItemTextureHints = ["textures/items/stick", "textures/blocks/gravel", "textures/blocks/reactor_core_stage_0"];
+    /**
+     *
+     * @see {@link PlayerShopManager.playerShopPageTextureHints}
+     */
+    static serverShopPageTextureHints = ["textures/ui/arrowRight"];
     /**
      *
      * @see {@link PlayerShopManager.playerShopItemTextureHint}
@@ -2659,14 +2707,4 @@ Texture: ${page.texture}`);
         });
     }
 }
-/**
- *
- * @see {@link PlayerShopManager.playerShopItemTextureHints}
- */
-ServerShopManager.serverShopItemTextureHints = ["textures/items/stick", "textures/blocks/gravel", "textures/blocks/reactor_core_stage_0"];
-/**
- *
- * @see {@link PlayerShopManager.playerShopPageTextureHints}
- */
-ServerShopManager.serverShopPageTextureHints = ["textures/ui/arrowRight"];
 //# sourceMappingURL=server_shop.js.map

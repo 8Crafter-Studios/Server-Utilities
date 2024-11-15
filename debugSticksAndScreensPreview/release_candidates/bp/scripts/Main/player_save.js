@@ -1,7 +1,7 @@
 import { EquipmentSlot, Dimension, GameMode, world, Player, system, MemoryTier, PlatformType, StructureSaveMode, ItemStack, PlayerInputPermissions } from "@minecraft/server";
 import { format_version, config } from "Main";
 import { ban } from "./ban";
-import { listoftransformrecipes } from "transformrecipes";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
@@ -10,7 +10,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
-import * as transformrecipes from "transformrecipes";
+import * as transformrecipes from "Assets/constants/transformrecipes";
 import * as coords from "Main/coordinates";
 import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
@@ -41,9 +41,30 @@ spawnprot;
 mcMath;
 export const player_save_format_version = "1.5.0";
 export class savedPlayer {
+    name;
+    id;
+    nameTag;
+    tags;
+    items;
+    properties;
+    lastOnline;
+    firstJoined;
+    location;
+    dimension;
+    rotation;
+    isOp;
+    spawnPoint;
+    gameMode;
+    selectedSlotIndex;
+    scoreboardIdentity;
+    format_version = format_version;
+    player_save_format_version = player_save_format_version;
+    saveId;
+    memoryTier;
+    maxRenderDistance;
+    platformType;
+    inputPermissions;
     constructor(data) {
-        this.format_version = format_version;
-        this.player_save_format_version = player_save_format_version;
         if (!!data.format_version &&
             semver.gt(data.player_save_format_version ?? "0.0.0", player_save_format_version)) {
             throw new ParseError(`The saved player data could not be parsed because it was last saved in a newer format version. Data format version: ${JSON.stringify(data.player_save_format_version)}. Current format version: ${JSON.stringify(player_save_format_version)}.`);
