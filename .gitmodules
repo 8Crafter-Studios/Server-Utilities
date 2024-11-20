@@ -1,3 +1,4 @@
-[submodule "8Crafter-s-Debug-Sticks-BP-Development"]
+[submodule "BP"]
 	path = BP
-	url = https://github.com/Andexter8/8Crafter-s-Debug-Sticks-BP-Development
+	url = https://github.com/Andexter8/8Crafter-s-Debug-Sticks-BP-Development.git
+	branch = BP
